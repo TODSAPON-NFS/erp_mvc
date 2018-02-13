@@ -108,13 +108,13 @@
                             <a href="?app=purchase_request"><i class="fa  fa-file" aria-hidden="true"></i> Purchase Request (PR)</a>
                         </li>
                         <li>
-                            <a href="?app=customer_order"><i class="fa  fa-map" aria-hidden="true"></i> Customer Order </a>
-                        </li>
-                        <li>
-                            <a href="?app=customer_order"><i class="fa  fa-file-text-o" aria-hidden="true"></i> Supplier Invoice </a>
+                            <a href="?app=customer_purchase_order"><i class="fa  fa-map" aria-hidden="true"></i> Customer Order </a>
                         </li>
                         <li>
                             <a href="?app=purchase_order"><i class="fa  fa fa-file-powerpoint-o" aria-hidden="true"></i> Purchase Order (PO)</a>
+                        </li>
+                        <li>
+                            <a href="?app=supplier_invoice"><i class="fa  fa-file-text-o" aria-hidden="true"></i> Supplier Invoice </a>
                         </li>
                         <li>
                             <a href="?app=invoice"><i class="fa  fa-file-pdf-o" aria-hidden="true"></i> Invoice</a>

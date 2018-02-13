@@ -9,7 +9,6 @@ class CustomerPurchaseOrderModel extends BaseModel{
 
     function getCustomerPurchaseOrderBy($date_start  = '', $date_end  = ''){
         $sql = " SELECT customer_purchase_order_id, 
-        customer_purchase_order_type, 
         customer_purchase_order_code, 
         customer_purchase_order_date, 
         customer_purchase_order_status, 

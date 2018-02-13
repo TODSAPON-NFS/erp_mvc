@@ -2,27 +2,27 @@
     function check(){
 
 
-        var purchase_order_type = document.getElementById("purchase_order_type").value;
-        var supplier_id = document.getElementById("supplier_id").value;
-        var purchase_order_code = document.getElementById("purchase_order_code").value;
-        var purchase_order_date = document.getElementById("purchase_order_date").value;
-        var purchase_order_credit_term = document.getElementById("purchase_order_credit_term").value;
+        var customer_purchase_order_type = document.getElementById("customer_purchase_order_type").value;
+        var customer_id = document.getElementById("customer_id").value;
+        var customer_purchase_order_code = document.getElementById("customer_purchase_order_code").value;
+        var customer_purchase_order_date = document.getElementById("customer_purchase_order_date").value;
+        var customer_purchase_order_credit_term = document.getElementById("customer_purchase_order_credit_term").value;
         var employee_id = document.getElementById("employee_id").value;
         
-        purchase_order_type = $.trim(purchase_order_type);
-        supplier_id = $.trim(supplier_id);
-        purchase_order_code = $.trim(purchase_order_code);
-        purchase_order_date = $.trim(purchase_order_date);
-        purchase_order_credit_term = $.trim(purchase_order_credit_term);
+        customer_purchase_order_type = $.trim(customer_purchase_order_type);
+        customer_id = $.trim(customer_id);
+        customer_purchase_order_code = $.trim(customer_purchase_order_code);
+        customer_purchase_order_date = $.trim(customer_purchase_order_date);
+        customer_purchase_order_credit_term = $.trim(customer_purchase_order_credit_term);
         employee_id = $.trim(employee_id);
 
-        if(supplier_id.length == 0){
-            alert("Please input Supplier");
-            document.getElementById("supplier_id").focus();
+        if(customer_id.length == 0){
+            alert("Please input Customer");
+            document.getElementById("customer_id").focus();
             return false;
-        }else if(purchase_order_date.length == 0){
+        }else if(customer_purchase_order_date.length == 0){
             alert("Please input purchase Order Date");
-            document.getElementById("purchase_order_date").focus();
+            document.getElementById("customer_purchase_order_date").focus();
             return false;
         }else if(employee_id.length == 0){
             alert("Please input employee");
@@ -53,41 +53,30 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Add Purchase Order  
+                Add Customer Purchase Order  
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=purchase_order&action=add" >
+                <form role="form" method="post" onsubmit="return check();" action="index.php?app=customer_purchase_order&action=add" >
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label>Purchase Order Type <font color="#F00"><b>*</b></font></label>
-                                        <select id="purchase_order_type" name="purchase_order_type" class="form-control">
-                                                <option value="">Select</option>
-                                                <option>IN</option>
-                                                <option>OUT</option>
-                                            </select>
-                                        <p class="help-block">Example : IN.</p>
-                                    </div>
-                                </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Supplier Code <font color="#F00"><b>*</b></font></label>
-                                        <input id="supplier_code" name="supplier_code" class="form-control" readonly>
+                                        <label>Customer Code <font color="#F00"><b>*</b></font></label>
+                                        <input id="customer_code" name="customer_code" class="form-control" readonly>
                                         <p class="help-block">Example : PO1801001.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="form-group">
-                                        <label>Supplier  <font color="#F00"><b>*</b></font> </label>
-                                        <select id="supplier_id" name="supplier_id" class="form-control" >
+                                        <label>Customer  <font color="#F00"><b>*</b></font> </label>
+                                        <select id="customer_id" name="customer_id" class="form-control select" data-live-search="true" >
                                             <option value="">Select</option>
                                             <?php 
-                                            for($i =  0 ; $i < count($suppliers) ; $i++){
+                                            for($i =  0 ; $i < count($customers) ; $i++){
                                             ?>
-                                            <option value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
+                                            <option value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
                                             <?
                                             }
                                             ?>
@@ -98,41 +87,48 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Address <font color="#F00"><b>*</b></font></label>
-                                        <textarea  id="supplier_address" name="supplier_address" class="form-control" rows="5" readonly></textarea >
+                                        <textarea  id="customer_address" name="customer_address" class="form-control" rows="7" readonly></textarea >
                                         <p class="help-block">Example : IN.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>Remark  <font color="#F00"><b>*</b></font></label>
+                                        <textarea  id="customer_purchase_order_remark" name="customer_purchase_order_remark" class="form-control" rows="7" ></textarea >
+                                        <p class="help-block">Example : -.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-2">
                         </div>
                         <div class="col-lg-4">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Purchase Order Code <font color="#F00"><b>*</b></font></label>
-                                        <input id="purchase_order_code" name="purchase_order_code" class="form-control" value="<?php echo $last_code;?>" readonly>
+                                        <input id="customer_purchase_order_code" name="customer_purchase_order_code" class="form-control" value="<?php echo $last_code;?>" >
                                         <p class="help-block">Example : PO1801001.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Purchase Order Date</label>
-                                        <input type="text" id="purchase_order_date" name="purchase_order_date"  class="form-control calendar" readonly/>
+                                        <input type="text" id="customer_purchase_order_date" name="customer_purchase_order_date"  class="form-control calendar" readonly/>
                                         <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Credit term (Day)</label>
-                                        <input type="text" id="purchase_order_credit_term" name="purchase_order_credit_term"  class="form-control"/>
+                                        <input type="text" id="customer_purchase_order_credit_term" name="customer_purchase_order_credit_term"  class="form-control"/>
                                         <p class="help-block">10 </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Employee  <font color="#F00"><b>*</b></font> </label>
-                                        <select id="employee_id" name="employee_id" class="form-control" >
+                                        <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true" >
                                             <option value="">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($users) ; $i++){
@@ -148,7 +144,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Delivery by</label>
-                                        <input type="text" id="purchase_order_delivery_by" name="purchase_order_delivery_by"  class="form-control"/>
+                                        <input type="text" id="customer_purchase_order_delivery_by" name="customer_purchase_order_delivery_by"  class="form-control"/>
                                         <p class="help-block">DHL </p>
                                     </div>
                                 </div>

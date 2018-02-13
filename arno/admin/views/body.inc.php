@@ -66,8 +66,8 @@
         require_once("modules/purchase_request/views/index.inc.php");
     }else if($_GET['app'] == "purchase_order"){
         require_once("modules/purchase_order/views/index.inc.php");
-    }else if($_GET['app'] == "customer_order"){
-        require_once("modules/customer_order/views/index.inc.php");
+    }else if($_GET['app'] == "customer_purchase_order"){
+        require_once("modules/customer_purchase_order/views/index.inc.php");
     }else if($_GET['app'] == "invoice"){
         require_once("modules/invoice/views/index.inc.php");
     }else if($_GET['app'] == "delivery_note"){

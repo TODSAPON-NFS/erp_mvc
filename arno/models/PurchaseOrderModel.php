@@ -39,6 +39,8 @@ class PurchaseOrderModel extends BaseModel{
     function getPurchaseOrderByID($id){
         $sql = " SELECT * 
         FROM tb_purchase_order 
+        LEFT JOIN tb_supplier ON tb_purchase_order.supplier_id = tb_supplier.supplier_id 
+        LEFT JOIN tb_user ON tb_purchase_order.employee_id = tb_user.user_id 
         WHERE purchase_order_id = '$id' 
         ";
 
@@ -99,6 +101,7 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_delivery_term = '".$data['purchase_order_delivery_term']."', 
         purchase_order_delivery_by = '".$data['purchase_order_delivery_by']."', 
         purchase_order_date = '".$data['purchase_order_date']."', 
+        purchase_order_status = '".$data['purchase_order_status']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
         WHERE purchase_order_id = $id 
@@ -131,6 +134,119 @@ class PurchaseOrderModel extends BaseModel{
         }
 
 
+    }
+
+
+    function updatePurchaseOrderRequestByID($id,$data = []){
+        $sql = " UPDATE tb_purchase_order SET 
+        purchase_order_accept_status = '".$data['purchase_order_accept_status']."', 
+        purchase_order_accept_by = '".$data['purchase_order_accept_by']."', 
+        purchase_order_accept_date = '', 
+        purchase_order_status = '".$data['purchase_order_status']."', 
+        updateby = '".$data['updateby']."', 
+        lastupdate = NOW() 
+        WHERE purchase_order_id = $id 
+        ";
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+
+
+    }
+
+    function updatePurchaseOrderStatusByID($id,$data = []){
+        if ($data['updateby'] != ""){
+            $str = "updateby = '".$data['updateby']."', ";
+        }
+        $sql = " UPDATE tb_purchase_order SET 
+        purchase_order_status = '".$data['purchase_order_status']."', 
+        $str 
+        lastupdate = NOW() 
+        WHERE purchase_order_id = $id 
+        ";
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+
+
+    }
+
+    function getSupplierOrder(){
+
+        $sql = "SELECT tb_product_supplier.supplier_id, supplier_name_en , supplier_name_th 
+                FROM tb_product_supplier LEFT JOIN tb_supplier ON tb_product_supplier.supplier_id = tb_supplier.supplier_id 
+                WHERE product_id IN ( 
+                    SELECT DISTINCT product_id 
+                    FROM tb_purchase_request_list 
+                    WHERE purchase_order_list_id = 0 
+                    UNION 
+                    SELECT DISTINCT product_id 
+                    FROM tb_customer_purchase_order_list 
+                    WHERE purchase_order_list_id = 0 
+                    AND customer_purchase_order_list_qty - customer_purchase_order_list_hold > 0   
+                )
+                AND product_supplier_status = 'Active' 
+        ";
+        $data = [];
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+        return $data;
+    }
+
+    function generatePurchaseOrderListBySupplierId($supplier_id){
+        $sql = " SELECT tb.product_id, 
+        CONCAT(product_code_first,product_code) as product_code, 
+        product_name,    
+        IFNULL((
+            SELECT SUM(purchase_request_list_qty) 
+            FROM tb_purchase_request 
+            LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id 
+            WHERE product_id = tb.product_id 
+            AND purchase_order_list_id = 0 
+            AND purchase_request_accept_status = 'Approve' 
+        ),0)  
+        + IFNULL((
+            SELECT SUM(customer_purchase_order_list_qty - customer_purchase_order_list_hold) 
+            FROM tb_customer_purchase_order_list 
+            WHERE product_id = tb.product_id
+            AND purchase_order_list_id = 0
+        ),0) as purchase_order_list_qty, 
+        product_buyprice as purchase_order_list_price
+        FROM tb_product_supplier as tb 
+        LEFT JOIN tb_product ON tb.product_id = tb_product.product_id 
+        WHERE supplier_id = '$supplier_id' 
+        AND tb.product_id IN ( 
+            SELECT DISTINCT product_id 
+            FROM tb_purchase_request_list 
+            WHERE purchase_order_list_id = 0 
+            UNION 
+            SELECT DISTINCT product_id 
+            FROM tb_customer_purchase_order_list 
+            WHERE purchase_order_list_id = 0 
+            AND customer_purchase_order_list_qty - customer_purchase_order_list_hold > 0   
+        )
+        ";
+
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
     }
 
     function insertPurchaseOrder($data = []){

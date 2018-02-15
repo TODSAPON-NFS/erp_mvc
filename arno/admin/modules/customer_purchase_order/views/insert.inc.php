@@ -36,6 +36,18 @@
 
     }
 
+    function get_customer_detail(){
+        var customer_id = document.getElementById('customer_id').value;
+        if(customer_id != ''){
+            $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
+                document.getElementById('customer_code').value = data.customer_code;
+                document.getElementById('customer_tax').value = data.customer_tax;
+                document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
+            });
+        }
+        
+    }
+
 
 </script>
 
@@ -71,7 +83,7 @@
                                 <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>Customer  <font color="#F00"><b>*</b></font> </label>
-                                        <select id="customer_id" name="customer_id" class="form-control select" data-live-search="true" >
+                                        <select id="customer_id" name="customer_id" class="form-control select" data-live-search="true" onchange="get_customer_detail()">
                                             <option value="">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($customers) ; $i++){
@@ -86,14 +98,21 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Address <font color="#F00"><b>*</b></font></label>
+                                        <label>Address <font color="#F00"></font></label>
                                         <textarea  id="customer_address" name="customer_address" class="form-control" rows="7" readonly></textarea >
                                         <p class="help-block">Example : IN.</p>
                                     </div>
                                 </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Tax. <font color="#F00"></font></label>
+                                        <input id="customer_tax" name="customer_tax" class="form-control" readonly>
+                                        <p class="help-block">Example : 0305559003597.</p>
+                                    </div>
+                                </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Remark  <font color="#F00"><b>*</b></font></label>
+                                        <label>Remark  <font color="#F00"></font></label>
                                         <textarea  id="customer_purchase_order_remark" name="customer_purchase_order_remark" class="form-control" rows="7" ></textarea >
                                         <p class="help-block">Example : -.</p>
                                     </div>

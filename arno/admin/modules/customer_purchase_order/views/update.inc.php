@@ -55,17 +55,16 @@
         var product_name = "";
         var data = product_data.filter(val => val['product_id'] == $(id).val());
         if(data.length > 0){
-            $(id).closest('tr').children('td').children('input[name="product_id"]').val( data[0]['product_id'] );
-            $(id).closest('tr').children('td').children('input[name="product_name"]').val( data[0]['product_name'] );
+            $(id).closest('tr').children('td').children('input[name="product_name[]"]').val( data[0]['product_name'] );
         }
         
      }
 
      function update_sum(id){
 
-          var qty =  $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_qty"]').val(  );
-          var price =  $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price"]').val( );
-          var sum =  $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price_sum"]').val( );
+          var qty =  $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_qty[]"]').val(  );
+          var price =  $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val( );
+          var sum =  $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price_sum[]"]').val( );
 
         if(isNaN(qty)){
             qty = 0;
@@ -81,9 +80,9 @@
 
         sum = qty*price;
 
-        $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_qty"]').val( qty );
-        $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price"]').val( price );
-        $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price_sum"]').val( sum );
+        $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_qty[]"]').val( qty );
+        $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val( price );
+        $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price_sum[]"]').val( sum );
 
         
      }
@@ -98,16 +97,24 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
-                    '<input type="hidden" name="product_id" />'+
-                    '<select class="form-control select" type="text" name="product_code" onchange="show_data(this);" data-live-search="true" ></select>'+
+                    '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="product_name" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_qty" onchange="update_sum(this);" /></td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_price" onchange="update_sum(this);" /></td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum" onchange="update_sum(this);" /></td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_delivery_min" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_delivery_max" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_remark" /></td>'+
+                '<td>'+
+                    '<input type="text" class="form-control" name="product_name[]" readonly />'+
+                    '<span>Name.</span>'+
+                    '<input type="text" class="form-control" name="customer_purchase_order_product_name[]"  />'+
+                    '<span>Description.</span>'+
+                    '<input type="text" class="form-control" name="customer_purchase_order_product_detail[]"  />'+
+                '</td>'+
+                '<td><input type="text" class="form-control" name="customer_purchase_order_list_qty[]" onchange="update_sum(this);" /></td>'+
+                '<td>'+
+                    '<input type="text" class="form-control" name="customer_purchase_order_list_price[]" onchange="update_sum(this);" />'+
+                '</td>'+
+                '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
+                //'<td><input type="text" class="form-control" name="customer_purchase_order_list_delivery_min" readonly /></td>'+
+                //'<td><input type="text" class="form-control" name="customer_purchase_order_list_delivery_max" readonly /></td>'+
+                '<td><input type="text" class="form-control" name="customer_purchase_order_list_remark[]" /></td>'+
+                '<td><input type="text" class="form-control" name="customer_purchase_order_list_hold[]" /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -124,9 +131,21 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="customer_purchase_order_list_delivery_min"]').datepicker({ dateFormat: 'dd-mm-yy' });
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="customer_purchase_order_list_delivery_max"]').datepicker({ dateFormat: 'dd-mm-yy' });
+        //$(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="customer_purchase_order_list_delivery_min"]').datepicker({ dateFormat: 'dd-mm-yy' });
+        //$(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="customer_purchase_order_list_delivery_max"]').datepicker({ dateFormat: 'dd-mm-yy' });
      }
+
+     function get_customer_detail(){
+        var customer_id = document.getElementById('customer_id').value;
+        if(customer_id != ''){
+            $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
+                document.getElementById('customer_code').value = data.customer_code;
+                document.getElementById('customer_tax').value = data.customer_tax;
+                document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
+            });
+        }
+        
+    }
 
 </script>
 
@@ -152,19 +171,19 @@
                     <input type="hidden"  id="customer_purchase_order_id" name="customer_purchase_order_id" value="<?php echo $customer_purchase_order_id; ?>" />
                     <input type="hidden"  id="customer_purchase_order_date" name="customer_purchase_order_date" value="<?php echo $customer_purchase_order['customer_purchase_order_date']; ?>" />
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Customer Code <font color="#F00"><b>*</b></font></label>
-                                        <input id="customer_code" name="customer_code" class="form-control" value="<? echo $customer_purchase_order['customer_code'];?>" readonly>
+                                        <label>Customer Code <font color="#F00"></font></label>
+                                        <input id="customer_code" name="customer_code" class="form-control" value="<? echo $customer['customer_code'];?>" readonly>
                                         <p class="help-block">Example : A0001.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>Customer  <font color="#F00"><b>*</b></font> </label>
-                                        <select id="customer_id" name="customer_id" class="form-control" >
+                                        <select id="customer_id" name="customer_id" class="form-control select" onchange="get_customer_detail()" data-live-search="true">
                                             <option value="">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($customers) ; $i++){
@@ -179,30 +198,37 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Address <font color="#F00"><b>*</b></font></label>
-                                        <textarea  id="customer_address" name="customer_address" class="form-control" rows="7" readonly><? echo $customer_purchase_order['customer_address'];?></textarea >
+                                        <label>Address <font color="#F00"></font></label>
+                                        <textarea  id="customer_address" name="customer_address" class="form-control" rows="7" readonly><? echo $customer['customer_address_1'] ."\n". $customer['customer_address_2'] ."\n". $customer['customer_address_3'];?></textarea >
                                         <p class="help-block">Example : IN.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>Tax. <font color="#F00"></font></label>
+                                        <input id="customer_tax" name="customer_tax" class="form-control" value="<? echo $customer['customer_tax'];?>" readonly>
+                                        <p class="help-block">Example : 0305559003597.</p>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Remark <font color="#F00"><b>*</b></font></label>
-                                        <textarea  id="customer_purchase_order_remark" name="customer_purchase_order_remark" class="form-control" rows="7" readonly><? echo $customer_purchase_order['customer_address'];?></textarea >
+                                        <label>Remark <font color="#F00"></font></label>
+                                        <textarea  id="customer_purchase_order_remark" name="customer_purchase_order_remark" class="form-control" rows="7" ><? echo $customer_purchase_order['customer_purchase_order_remark'];?></textarea >
                                         <p class="help-block">Example : IN.</p>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-2">
                         </div>
                         <div class="col-lg-4">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Purchase Order Code <font color="#F00"><b>*</b></font></label>
-                                        <input id="customer_purchase_order_code" name="customer_purchase_order_code" class="form-control" value="<? echo $customer_purchase_order['customer_purchase_order_code'];?>" readonly>
+                                        <input id="customer_purchase_order_code" name="customer_purchase_order_code" class="form-control" value="<? echo $customer_purchase_order['customer_purchase_order_code'];?>" >
                                         <p class="help-block">Example : PO1801001.</p>
                                     </div>
                                 </div>
@@ -210,20 +236,20 @@
                                     <div class="form-group">
                                         <label>Purchase Order Date</label>
                                         <input type="text" id="customer_purchase_order_date" name="customer_purchase_order_date" value="<? echo $customer_purchase_order['customer_purchase_order_date'];?>"  class="form-control calendar" readonly/>
-                                        <p class="help-block">31/01/2018</p>
+                                        <p class="help-block">Example : 31-01-2018</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Credit term (Day)</label>
                                         <input type="text" id="customer_purchase_order_credit_term" name="customer_purchase_order_credit_term" value="<? echo $customer_purchase_order['customer_purchase_order_credit_term'];?>" class="form-control"/>
-                                        <p class="help-block">10 </p>
+                                        <p class="help-block">Example : 10 </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Employee  <font color="#F00"><b>*</b></font> </label>
-                                        <select id="employee_id" name="employee_id" class="form-control" >
+                                        <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true" >
                                             <option value="">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($users) ; $i++){
@@ -240,7 +266,7 @@
                                     <div class="form-group">
                                         <label>Delivery by</label>
                                         <input type="text" id="customer_purchase_order_delivery_by" name="customer_purchase_order_delivery_by" value="<? echo $customer_purchase_order['customer_purchase_order_delivery_by'];?>"  class="form-control"/>
-                                        <p class="help-block">DHL </p>
+                                        <p class="help-block">Example : DHL </p>
                                     </div>
                                 </div>
                             </div>
@@ -257,9 +283,10 @@
                                 <th>Qty</th>
                                 <th>@</th>
                                 <th>Amount</th>
-                                <th>Delivery Min</th>
-                                <th>Delivery Max</th>
+                                <!--<th>Delivery Min</th>
+                                <th>Delivery Max</th>-->
                                 <th>Remark</th>
+                                <th>Hold Stock</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -269,8 +296,7 @@
                             ?>
                             <tr class="odd gradeX">
                                 <td>
-                                    <input type="hidden" name="product_id"  value="<?php echo $customer_purchase_order_lists[$i]['product_id']; ?>" />
-                                    <select  class="form-control select" name="product_code" onchange="show_data(this);" data-live-search="true" >
+                                    <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
                                         <option value="">Select</option>
                                         <?php 
                                         for($ii =  0 ; $ii < count($products) ; $ii++){
@@ -281,13 +307,25 @@
                                         ?>
                                     </select>
                                 </td>
-                                <td><input type="text" class="form-control" name="product_name" readonly value="<?php echo $customer_purchase_order_lists[$i]['product_name']; ?>" /></td>
-                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_qty" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_qty']; ?>" /></td>
-                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_price" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_price']; ?>" /></td>
-                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_price_sum" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_price_sum']; ?>" /></td>
-                                <td><input type="text" class="form-control calendar" name="customer_purchase_order_list_delivery_min" readonly value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_delivery_min']; ?>" /></td>
+                                <td>
+                                    <input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $customer_purchase_order_lists[$i]['product_name']; ?>" />
+                                    <span>Name.</span>
+                                    <input type="text" class="form-control" name="customer_purchase_order_product_name[]"  value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_product_name']; ?>" />
+                                    <span>Description.</span>
+                                    <input type="text" class="form-control" name="customer_purchase_order_product_detail[]"  value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_product_detail']; ?>" />
+                                </td>
+                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_qty[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_qty']; ?>" /></td>
+                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_price[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_price']; ?>" /></td>
+                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_price_sum[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_price_sum']; ?>" /></td>
+                                
+                                <?php /*
+                                <td><input type="text" class="form-control calendar" name="customer_purchase_order_list_delivery_min" readonly value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_delivery_min']; ?>" /></td> 
                                 <td><input type="text" class="form-control calendar" name="customer_purchase_order_list_delivery_max" readonly value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_delivery_max']; ?>" /></td>
-                                <td><input type="text" class="form-control" name="customer_purchase_order_list_remark" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_remark']; ?>" /></td>
+                                */?>
+
+                                <td><input type="text" class="form-control" name="customer_purchase_order_list_remark[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_remark']; ?>" /></td>
+                                <td><input type="text" class="form-control" name="customer_purchase_order_list_hold[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_hold']; ?>" /></td>
+                                
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
@@ -307,7 +345,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
+                                <!--<td></td>-->
                                 <td></td>
                                 <td></td>
                                 <td>

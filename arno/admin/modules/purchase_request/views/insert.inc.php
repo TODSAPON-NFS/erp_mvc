@@ -28,18 +28,6 @@
             alert("Please input employee");
             document.getElementById("employee_id").focus();
             return false;
-        }else if(urgent_time.length == 0){
-            alert("Please input urgent time");
-            document.getElementById("urgent_time").focus();
-            return false;
-        }else if(isNaN(parseInt(urgent_time))){
-            alert("Please input number of urgent time");
-            document.getElementById("urgent_time").focus();
-            return false;
-        }else if(urgent_status.length == 0){
-            alert("Please input urgent status");
-            document.getElementById("urgent_status").focus();
-            return false;
         }else{
             return true;
         }
@@ -110,26 +98,7 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label>Urgent Time <font color="#F00"><b>*</b></font></label>
-                                <input id="urgent_time" name="urgent_time" class="form-control" >
-                                <p class="help-block">Example : 10 Day.</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label>Purchase Request Urgent <font color="#F00"><b>*</b></font></label>
-                                <select id="urgent_status" name="urgent_status" class="form-control">
-                                        <option value="">Select</option>
-                                        <option>Low</option>
-                                        <option>Medium</option>
-                                        <option>High</option>
-                                    </select>
-                                <p class="help-block">Example : Low.</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Customer </label>
                                 <select id="customer_id" name="customer_id" class="form-control" >
@@ -145,9 +114,7 @@
                                 <p class="help-block">Example : บริษัท เรเวลซอฟต์ จำกัด (Revel Soft co,ltd).</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Remark</label>
                                 <input id="purchase_request_remark" name="purchase_request_remark" class="form-control" />

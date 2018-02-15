@@ -20,16 +20,26 @@ $product_model = new ProductModel;
 $first_char = "PO";
 $purchase_order_id = $_GET['id'];
 $notification_id = $_GET['notification'];
+$supplier_id = $_GET['supplier_id'];
 if(!isset($_GET['action'])){
 
     $purchase_orders = $purchase_order_model->getPurchaseOrderBy();
+    $supplier_orders = $purchase_order_model->getSupplierOrder();
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
+    $products=$product_model->getProductBy();
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
+    
     $first_code = $first_char.date("y").date("m");
     $last_code = $purchase_order_model->getPurchaseOrderLastID($first_code,3);
+    if($supplier_id > 0){
+        $supplier=$supplier_model->getSupplierByID($supplier_id);
+        $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id);
+    }
+   
+
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
@@ -37,6 +47,7 @@ if(!isset($_GET['action'])){
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
     $purchase_order = $purchase_order_model->getPurchaseOrderByID($purchase_order_id);
+    $supplier=$supplier_model->getSupplierByID($purchase_order['supplier_id']);
     $purchase_order_lists = $purchase_order_list_model->getPurchaseOrderListBy($purchase_order_id);
     require_once($path.'update.inc.php');
 
@@ -57,21 +68,75 @@ if(!isset($_GET['action'])){
 <?php
 
 }else if ($_GET['action'] == 'add'){
-    if(isset($_POST['purchase_order_type'])){
+    if(isset($_POST['purchase_order_code'])){
         $data = [];
-        $data['purchase_order_type'] = $_POST['purchase_order_type'];
         $data['supplier_id'] = $_POST['supplier_id'];
         $data['purchase_order_code'] = $_POST['purchase_order_code'];
         $data['purchase_order_date'] = $_POST['purchase_order_date'];
         $data['purchase_order_credit_term'] = $_POST['purchase_order_credit_term'];
-        $data['purchase_order_accept_status'] = 'Waiting';
-        $data['purchase_order_status'] = 'Waiting';
+        $data['purchase_order_accept_status'] = '';
+        $data['purchase_order_status'] = '';
         $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
         $data['employee_id'] = $_POST['employee_id'];
 
         $output = $purchase_order_model->insertPurchaseOrder($data);
 
         if($output > 0){
+            $data = [];
+            $product_id = $_POST['product_id'];
+            $purchase_order_list_qty = $_POST['purchase_order_list_qty'];
+            $purchase_order_list_price = $_POST['purchase_order_list_price'];
+            $purchase_order_list_price_sum = $_POST['purchase_order_list_price_sum'];
+            $purchase_order_list_delivery_min = $_POST['purchase_order_list_delivery_min'];
+            $purchase_order_list_delivery_max = $_POST['purchase_order_list_delivery_max'];
+            $purchase_order_list_remark = $_POST['purchase_order_list_remark'];
+
+            $purchase_order_list_model->deletePurchaseOrderListByPurchaseOrderID($output);
+            
+            if(is_array($product_id)){
+                for($i=0; $i < count($product_id) ; $i++){
+                    $data_sub = [];
+                    $data_sub['purchase_order_id'] = $output;
+                    $data_sub['product_id'] = $product_id[$i];
+                    $data_sub['purchase_order_list_qty'] = $purchase_order_list_qty[$i];
+                    $data_sub['purchase_order_list_price'] = $purchase_order_list_price[$i];
+                    $data_sub['purchase_order_list_price_sum'] = $purchase_order_list_price_sum[$i];
+                    $data_sub['purchase_order_list_delivery_min'] = $purchase_order_list_delivery_min[$i];
+                    $data_sub['purchase_order_list_delivery_max'] = $purchase_order_list_delivery_max[$i];
+                    $data_sub['purchase_order_list_remark'] = $purchase_order_list_remark[$i];
+        
+                    $purchase_order_list_model->insertPurchaseOrderList($data_sub);
+                }
+                $data['purchase_order_status'] = 'New';
+            }else if($product_id != ""){
+                $data_sub = [];
+                $data_sub['purchase_order_id'] = $output;
+                $data_sub['product_id'] = $product_id;
+                $data_sub['purchase_order_list_qty'] = $purchase_order_list_qty;
+                $data_sub['purchase_order_list_price'] = $purchase_order_list_price;
+                $data_sub['purchase_order_list_price_sum'] = $purchase_order_list_price_sum;
+                $data_sub['purchase_order_list_delivery_min'] = $purchase_order_list_delivery_min;
+                $data_sub['purchase_order_list_delivery_max'] = $purchase_order_list_delivery_max;
+                $data_sub['purchase_order_list_remark'] = $purchase_order_list_remark;
+
+                $purchase_order_list_model->insertPurchaseOrderList($data_sub);
+                $data['purchase_order_status'] = 'New';
+            }else{
+                $data['purchase_order_status'] = '';
+            }
+
+            
+            $data['purchase_order_type'] = $_POST['purchase_order_type'];
+            $data['supplier_id'] = $_POST['supplier_id'];
+            $data['purchase_order_code'] = $_POST['purchase_order_code'];
+            $data['purchase_order_date'] = $_POST['purchase_order_date'];
+            $data['purchase_order_credit_term'] = $_POST['purchase_order_credit_term'];
+            $data['purchase_order_accept_status'] = '';
+            
+            $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
+            $data['employee_id'] = $_POST['employee_id'];
+
+            $purchase_order_model->updatePurchaseOrderByID($output,$data);
 ?>
         <script>window.location="index.php?app=purchase_order&action=update&id=<?php echo $output;?>"</script>
 <?php
@@ -88,23 +153,9 @@ if(!isset($_GET['action'])){
     
 }else if ($_GET['action'] == 'edit'){
     
-    if(isset($_POST['purchase_order_type'])){
+    if(isset($_POST['purchase_order_code'])){
+        
         $data = [];
-        $data['purchase_order_type'] = $_POST['purchase_order_type'];
-        $data['supplier_id'] = $_POST['supplier_id'];
-        $data['purchase_order_code'] = $_POST['purchase_order_code'];
-        $data['purchase_order_date'] = $_POST['purchase_order_date'];
-        $data['purchase_order_credit_term'] = $_POST['purchase_order_credit_term'];
-        $data['purchase_order_accept_status'] = 'Waiting';
-        $data['purchase_order_status'] = 'Waiting';
-        $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
-        $data['employee_id'] = $_POST['employee_id'];
-
-        $output = $purchase_order_model->updatePurchaseOrderByID($purchase_order_id,$data);
-
-        $notification_model->setNotification("Purchase Order","Purchase Order <br>No. ".$data['purchase_order_code']." ".$data['urgent_status'],"index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_manager_page","'High'");
-        
-        
         $product_id = $_POST['product_id'];
         $purchase_order_list_qty = $_POST['purchase_order_list_qty'];
         $purchase_order_list_price = $_POST['purchase_order_list_price'];
@@ -116,36 +167,52 @@ if(!isset($_GET['action'])){
         $purchase_order_list_model->deletePurchaseOrderListByPurchaseOrderID($purchase_order_id);
         if(is_array($product_id)){
             for($i=0; $i < count($product_id) ; $i++){
-                $data = [];
-                $data['purchase_order_id'] = $purchase_order_id;
-                $data['product_id'] = $product_id[$i];
-                $data['purchase_order_list_qty'] = $purchase_order_list_qty[$i];
-                $data['purchase_order_list_price'] = $purchase_order_list_price[$i];
-                $data['purchase_order_list_price_sum'] = $purchase_order_list_price_sum[$i];
-                $data['purchase_order_list_delivery_min'] = $purchase_order_list_delivery_min[$i];
-                $data['purchase_order_list_delivery_max'] = $purchase_order_list_delivery_max[$i];
-                $data['purchase_order_list_remark'] = $purchase_order_list_remark[$i];
+                $data_sub = [];
+                $data_sub['purchase_order_id'] = $purchase_order_id;
+                $data_sub['product_id'] = $product_id[$i];
+                $data_sub['purchase_order_list_qty'] = $purchase_order_list_qty[$i];
+                $data_sub['purchase_order_list_price'] = $purchase_order_list_price[$i];
+                $data_sub['purchase_order_list_price_sum'] = $purchase_order_list_price_sum[$i];
+                $data_sub['purchase_order_list_delivery_min'] = $purchase_order_list_delivery_min[$i];
+                $data_sub['purchase_order_list_delivery_max'] = $purchase_order_list_delivery_max[$i];
+                $data_sub['purchase_order_list_remark'] = $purchase_order_list_remark[$i];
     
-                $purchase_order_list_model->insertPurchaseOrderList($data);
+                $purchase_order_list_model->insertPurchaseOrderList($data_sub);
             }
-        }else{
-            $data = [];
-            $data['purchase_order_id'] = $purchase_order_id;
-            $data['product_id'] = $product_id;
-            $data['purchase_order_list_qty'] = $purchase_order_list_qty;
-            $data['purchase_order_list_price'] = $purchase_order_list_price;
-            $data['purchase_order_list_price_sum'] = $purchase_order_list_price_sum;
-            $data['purchase_order_list_delivery_min'] = $purchase_order_list_delivery_min;
-            $data['purchase_order_list_delivery_max'] = $purchase_order_list_delivery_max;
-            $data['purchase_order_list_remark'] = $purchase_order_list_remark;
+            $data['purchase_order_status'] = 'New';
+        }else if($product_id != ""){
+            $data_sub = [];
+            $data_sub['purchase_order_id'] = $purchase_order_id;
+            $data_sub['product_id'] = $product_id;
+            $data_sub['purchase_order_list_qty'] = $purchase_order_list_qty;
+            $data_sub['purchase_order_list_price'] = $purchase_order_list_price;
+            $data_sub['purchase_order_list_price_sum'] = $purchase_order_list_price_sum;
+            $data_sub['purchase_order_list_delivery_min'] = $purchase_order_list_delivery_min;
+            $data_sub['purchase_order_list_delivery_max'] = $purchase_order_list_delivery_max;
+            $data_sub['purchase_order_list_remark'] = $purchase_order_list_remark;
 
-            $purchase_order_list_model->insertPurchaseOrderList($data);
+            $purchase_order_list_model->insertPurchaseOrderList($data_sub);
+            $data['purchase_order_status'] = 'New';
+        }else{
+            $data['purchase_order_status'] = '';
         }
+
+        $data['supplier_id'] = $_POST['supplier_id'];
+        $data['purchase_order_code'] = $_POST['purchase_order_code'];
+        $data['purchase_order_date'] = $_POST['purchase_order_date'];
+        $data['purchase_order_credit_term'] = $_POST['purchase_order_credit_term'];
+        $data['purchase_order_accept_status'] = '';
+        
+        $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
+        $data['employee_id'] = $_POST['employee_id'];
+
+        $output = $purchase_order_model->updatePurchaseOrderByID($purchase_order_id,$data);
         
 
         if($output){
+        
 ?>
-        <script>window.location="index.php?app=purchase_order"</script>
+        <script>window.location="index.php?app=purchase_order&action=update&id=<?php echo $purchase_order_id;?>"</script>
 <?php
         }else{
 ?>
@@ -167,7 +234,15 @@ if(!isset($_GET['action'])){
         $data = [];
         $data['purchase_order_accept_status'] = $_POST['purchase_order_accept_status'];
         $data['purchase_order_accept_by'] = $user[0][0];
-        $data['purchase_order_status'] = 'Approved';
+        if($_POST['purchase_order_accept_status'] == 'Approve'){
+            $data['purchase_order_status'] = 'Approved';
+        }else if($_POST['purchase_order_accept_status'] == 'Waitting'){
+            $data['purchase_order_status'] = 'Request';
+        }else {
+            $data['purchase_order_status'] = 'New';
+        }
+        
+        
         $data['updateby'] = $user[0][0];
 
         $output = $purchase_order_model->updatePurchaseOrderAcceptByID($purchase_order_id,$data);
@@ -193,9 +268,77 @@ if(!isset($_GET['action'])){
         
         
     
+}else if ($_GET['action'] == 'request'){
+    
+    if(isset($purchase_order_id)){
+        $data = [];
+        $data['purchase_order_accept_status'] = "Waitting";
+        $data['purchase_order_accept_by'] = 0;
+
+        $data['purchase_order_status'] = 'Request';
+        
+        $data['updateby'] = $user[0][0];
+
+        $output = $purchase_order_model->updatePurchaseOrderRequestByID($purchase_order_id,$data);
+        $notification_model->setNotification("Purchase Order","Purchase Order <br>No. ".$data['purchase_order_code']." ".$data['urgent_status'],"index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_manager_page","'High'");
+
+        if($output){
+?>
+        <script>
+            alert("Send request complete.");
+            window.history.back();
+        </script>
+<?php
+        }else{
+?>
+        <script>window.history.back();</script>
+<?php
+        }
+    
+    }else{
+        ?>
+    <script>window.history.back();</script>
+        <?php
+    }
+        
+        
+    
+}else if ($_GET['action'] == 'checking'){
+    
+    if(isset($purchase_order_id)){
+        $data = [];
+
+        $data['purchase_order_status'] = 'Checking';
+        
+        $data['updateby'] = $user[0][0];
+
+        $output = $purchase_order_model->updatePurchaseOrderStatusByID($purchase_order_id,$data);
+        
+        if($output){
+?>
+        <script>
+            alert("Send checking complete.");
+            window.history.back();
+        </script>
+<?php
+        }else{
+?>
+        <script>window.history.back();</script>
+<?php
+        }
+    
+    }else{
+        ?>
+    <script>window.history.back();</script>
+        <?php
+    }
+        
+        
+    
 }else{
 
     $purchase_orders = $purchase_order_model->getPurchaseOrderBy();
+    $supplier_orders = $purchase_order_model->getSupplierOrder();
     require_once($path.'view.inc.php');
 
 }

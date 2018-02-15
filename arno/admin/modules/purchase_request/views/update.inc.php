@@ -39,18 +39,6 @@
             alert("Please input employee");
             document.getElementById("employee_id").focus();
             return false;
-        }else if(urgent_time.length == 0){
-            alert("Please input urgent time");
-            document.getElementById("urgent_time").focus();
-            return false;
-        }else if(isNaN(parseInt(urgent_time))){
-            alert("Please input number of urgent time");
-            document.getElementById("urgent_time").focus();
-            return false;
-        }else if(urgent_status.length == 0){
-            alert("Please input urgent status");
-            document.getElementById("urgent_status").focus();
-            return false;
         }else{
             return true;
         }
@@ -64,8 +52,7 @@
         var product_name = "";
         var data = product_data.filter(val => val['product_id'] == $(id).val());
         if(data.length > 0){
-            $(id).closest('tr').children('td').children('input[name="product_id"]').val( data[0]['product_id'] );
-            $(id).closest('tr').children('td').children('input[name="product_name"]').val( data[0]['product_name'] );
+            $(id).closest('tr').children('td').children('input[name="product_name[]"]').val( data[0]['product_name'] );
         }
         
      }
@@ -80,14 +67,12 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
-                    '<input type="hidden" name="product_id" />'+
-                    '<select class="form-control select" type="text" name="product_code" onchange="show_data(this);" data-live-search="true" ></select>'+
+                    '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="product_name" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="purchase_request_list_qty" /></td>'+
-                '<td><input type="text" class="form-control" name="purchase_request_list_delivery_min" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="purchase_request_list_delivery_max" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="purchase_request_list_remark" /></td>'+
+                '<td><input type="text" class="form-control" name="product_name[]" readonly /></td>'+
+                '<td><input type="text" class="form-control" name="purchase_request_list_qty[]" /></td>'+
+                '<td><input type="text" class="form-control" name="purchase_request_list_delivery[]" readonly /></td>'+
+                '<td><input type="text" class="form-control" name="purchase_request_list_remark[]" /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -104,8 +89,8 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_request_list_delivery_min"]').datepicker({ dateFormat: 'dd-mm-yy' });
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_request_list_delivery_max"]').datepicker({ dateFormat: 'dd-mm-yy' });
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_request_list_delivery_min[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_request_list_delivery_max[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
      }
 
 </script>
@@ -171,26 +156,7 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label>Urgent Time <font color="#F00"><b>*</b></font></label>
-                                <input id="urgent_time" name="urgent_time" class="form-control" value="<? echo $purchase_request['urgent_time'];?>">
-                                <p class="help-block">Example : 10 Day.</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label>Purchase Request Urgent <font color="#F00"><b>*</b></font></label>
-                                <select id="urgent_status" name="urgent_status" class="form-control select" data-live-search="true">
-                                        <option value="">Select</option>
-                                        <option <?php if($purchase_request['urgent_status'] == "Low"){?> selected <?php }?> >Low</option>
-                                        <option <?php if($purchase_request['urgent_status'] == "Medium"){?> selected <?php }?> >Medium</option>
-                                        <option <?php if($purchase_request['urgent_status'] == "High"){?> selected <?php }?> >High</option>
-                                    </select>
-                                <p class="help-block">Example : Low.</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Customer </label>
                                 <select id="customer_id" name="customer_id" class="form-control"  data-live-search="true">
@@ -206,9 +172,7 @@
                                 <p class="help-block">Example : บริษัท เรเวลซอฟต์ จำกัด (Revel Soft co,ltd).</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Remark</label>
                                 <input id="purchase_request_remark" name="purchase_request_remark" class="form-control" value="<? echo $purchase_request['purchase_request_remark'];?>"/>
@@ -224,7 +188,6 @@
                                 <th>Product Name</th>
                                 <th>Qty</th>
                                 <th>Delivery Min</th>
-                                <th>Delivery Max</th>
                                 <th>Remark</th>
                                 <th></th>
                             </tr>
@@ -235,8 +198,7 @@
                             ?>
                             <tr class="odd gradeX">
                                 <td>
-                                    <input type="hidden" name="product_id"  value="<?php echo $purchase_request_lists[$i]['product_id']; ?>" />
-                                    <select  class="form-control select" name="product_code" onchange="show_data(this);" data-live-search="true" >
+                                    <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
                                         <option value="">Select</option>
                                         <?php 
                                         for($ii =  0 ; $ii < count($products) ; $ii++){
@@ -247,11 +209,10 @@
                                         ?>
                                     </select>
                                 </td>
-                                <td><input type="text" class="form-control" name="product_name" readonly value="<?php echo $purchase_request_lists[$i]['product_name']; ?>" /></td>
-                                <td><input type="text" class="form-control" name="purchase_request_list_qty" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_qty']; ?>" /></td>
-                                <td><input type="text" class="form-control calendar" name="purchase_request_list_delivery_min" readonly value="<?php echo $purchase_request_lists[$i]['purchase_request_list_delivery_min']; ?>" /></td>
-                                <td><input type="text" class="form-control calendar" name="purchase_request_list_delivery_max" readonly value="<?php echo $purchase_request_lists[$i]['purchase_request_list_delivery_max']; ?>" /></td>
-                                <td><input type="text" class="form-control" name="purchase_request_list_remark" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_remark']; ?>" /></td>
+                                <td><input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $purchase_request_lists[$i]['product_name']; ?>" /></td>
+                                <td><input type="text" class="form-control" name="purchase_request_list_qty[]" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_qty']; ?>" /></td>
+                                <td><input type="text" class="form-control calendar" name="purchase_request_list_delivery[]" readonly value="<?php echo $purchase_request_lists[$i]['purchase_request_list_delivery']; ?>" /></td>
+                               <td><input type="text" class="form-control" name="purchase_request_list_remark[]" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_remark']; ?>" /></td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
@@ -267,7 +228,6 @@
                                 <td>
                                     
                                 </td>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>

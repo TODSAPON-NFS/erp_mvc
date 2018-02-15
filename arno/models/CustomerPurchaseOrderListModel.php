@@ -19,7 +19,8 @@ class CustomerPurchaseOrderListModel extends BaseModel{
         customer_purchase_order_list_price_sum, 
         customer_purchase_order_list_delivery_min,  
         customer_purchase_order_list_delivery_max, 
-        customer_purchase_order_list_remark 
+        customer_purchase_order_list_remark, 
+        customer_purchase_order_list_hold  
         FROM tb_customer_purchase_order_list LEFT JOIN tb_product ON tb_customer_purchase_order_list.product_id = tb_product.product_id 
         WHERE customer_purchase_order_id = '$customer_purchase_order_id' 
         ORDER BY customer_purchase_order_list_id 
@@ -49,6 +50,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             customer_purchase_order_list_delivery_min, 
             customer_purchase_order_list_delivery_max,
             customer_purchase_order_list_remark,
+            customer_purchase_order_list_hold,
             addby,
             adddate,
             updateby,
@@ -64,6 +66,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             '".$data['customer_purchase_order_list_delivery_min']."', 
             '".$data['customer_purchase_order_list_delivery_max']."', 
             '".$data['customer_purchase_order_list_remark']."',
+            '".$data['customer_purchase_order_list_hold']."',
             '".$data['addby']."', 
             NOW(), 
             '".$data['updateby']."', 

@@ -33,8 +33,10 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'update'){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
+    
     $users=$user_model->getUserBy();
     $customer_purchase_order = $customer_purchase_order_model->getCustomerPurchaseOrderByID($customer_purchase_order_id);
+    $customer=$customer_model->getCustomerByID($customer_purchase_order['customer_id']);
     $customer_purchase_order_lists = $customer_purchase_order_list_model->getCustomerPurchaseOrderListBy($customer_purchase_order_id);
     require_once($path.'update.inc.php');
 
@@ -42,7 +44,12 @@ if(!isset($_GET['action'])){
     if($notification_id != ""){
         $notification_model->setNotificationSeenByID($notification_id);
     }
-    $customer_purchase_order = $customer_purchase_order_model->getCustomerPurchaseOrderViewByID($customer_purchase_order_id);
+    $products=$product_model->getProductBy();
+    $customers=$customer_model->getCustomerBy();
+    
+    $users=$user_model->getUserBy();
+    $customer_purchase_order = $customer_purchase_order_model->getCustomerPurchaseOrderByID($customer_purchase_order_id);
+    $customer=$customer_model->getCustomerByID($customer_purchase_order['customer_id']);
     $customer_purchase_order_lists = $customer_purchase_order_list_model->getCustomerPurchaseOrderListBy($customer_purchase_order_id);
     require_once($path.'detail.inc.php');
 
@@ -100,18 +107,19 @@ if(!isset($_GET['action'])){
 
         $output = $customer_purchase_order_model->updateCustomerPurchaseOrderByID($customer_purchase_order_id,$data);
 
-        $notification_model->setNotification("Purchase Order","Purchase Order <br>No. ".$data['customer_purchase_order_code']." ".$data['urgent_status'],"index.php?app=customer_purchase_order&action=detail&id=$customer_purchase_order_id","license_manager_page","'High'");
+        $notification_model->setNotification("Customer Purchase Order","Customer Purchase Order <br>No. ".$data['customer_purchase_order_code']." ".$data['urgent_status'],"index.php?app=customer_purchase_order&action=detail&id=$customer_purchase_order_id","license_manager_page","'High'");
         
         
         $product_id = $_POST['product_id'];
-        $customer_purchase_order_list_name = $_POST['customer_purchase_order_list_name'];
-        $customer_purchase_order_list_detail = $_POST['customer_purchase_order_list_detail'];
+        $customer_purchase_order_product_name = $_POST['customer_purchase_order_product_name'];
+        $customer_purchase_order_product_detail = $_POST['customer_purchase_order_product_detail'];
         $customer_purchase_order_list_qty = $_POST['customer_purchase_order_list_qty'];
         $customer_purchase_order_list_price = $_POST['customer_purchase_order_list_price'];
         $customer_purchase_order_list_price_sum = $_POST['customer_purchase_order_list_price_sum'];
         $customer_purchase_order_list_delivery_min = $_POST['customer_purchase_order_list_delivery_min'];
         $customer_purchase_order_list_delivery_max = $_POST['customer_purchase_order_list_delivery_max'];
         $customer_purchase_order_list_remark = $_POST['customer_purchase_order_list_remark'];
+        $customer_purchase_order_list_hold = $_POST['customer_purchase_order_list_hold'];
 
         $customer_purchase_order_list_model->deleteCustomerPurchaseOrderListByCustomerPurchaseOrderID($customer_purchase_order_id);
         if(is_array($product_id)){
@@ -119,29 +127,31 @@ if(!isset($_GET['action'])){
                 $data = [];
                 $data['customer_purchase_order_id'] = $customer_purchase_order_id;
                 $data['product_id'] = $product_id[$i];
-                $data['customer_purchase_order_list_name'] = $customer_purchase_order_list_name[$i];
-                $data['customer_purchase_order_list_detail'] = $customer_purchase_order_list_detail[$i];
+                $data['customer_purchase_order_product_name'] = $customer_purchase_order_product_name[$i];
+                $data['customer_purchase_order_product_detail'] = $customer_purchase_order_product_detail[$i];
                 $data['customer_purchase_order_list_qty'] = $customer_purchase_order_list_qty[$i];
                 $data['customer_purchase_order_list_price'] = $customer_purchase_order_list_price[$i];
                 $data['customer_purchase_order_list_price_sum'] = $customer_purchase_order_list_price_sum[$i];
                 $data['customer_purchase_order_list_delivery_min'] = $customer_purchase_order_list_delivery_min[$i];
                 $data['customer_purchase_order_list_delivery_max'] = $customer_purchase_order_list_delivery_max[$i];
                 $data['customer_purchase_order_list_remark'] = $customer_purchase_order_list_remark[$i];
-    
+                $data['customer_purchase_order_list_hold'] = $customer_purchase_order_list_hold[$i];
+
                 $customer_purchase_order_list_model->insertCustomerPurchaseOrderList($data);
             }
         }else{
             $data = [];
             $data['customer_purchase_order_id'] = $customer_purchase_order_id;
             $data['product_id'] = $product_id;
-            $data['customer_purchase_order_list_name'] = $customer_purchase_order_list_name[$i];
-            $data['customer_purchase_order_list_detail'] = $customer_purchase_order_list_detail[$i];
+            $data['customer_purchase_order_product_name'] = $customer_purchase_order_product_name;
+            $data['customer_purchase_order_product_detail'] = $customer_purchase_order_product_detail;
             $data['customer_purchase_order_list_qty'] = $customer_purchase_order_list_qty;
             $data['customer_purchase_order_list_price'] = $customer_purchase_order_list_price;
             $data['customer_purchase_order_list_price_sum'] = $customer_purchase_order_list_price_sum;
             $data['customer_purchase_order_list_delivery_min'] = $customer_purchase_order_list_delivery_min;
             $data['customer_purchase_order_list_delivery_max'] = $customer_purchase_order_list_delivery_max;
             $data['customer_purchase_order_list_remark'] = $customer_purchase_order_list_remark;
+            $data['customer_purchase_order_list_hold'] = $customer_purchase_order_list_hold;
 
             $customer_purchase_order_list_model->insertCustomerPurchaseOrderList($data);
         }

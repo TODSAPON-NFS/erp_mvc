@@ -63,8 +63,6 @@ if(!isset($_GET['action'])){
         $data['purchase_request_code'] = $_POST['purchase_request_code'];
         $data['purchase_request_type'] = $_POST['purchase_request_type'];
         $data['employee_id'] = $_POST['employee_id'];
-        $data['urgent_time'] = $_POST['urgent_time'];
-        $data['urgent_status'] = $_POST['urgent_status'];
         $data['customer_id'] = $_POST['customer_id'];
         $data['purchase_request_remark'] = $_POST['purchase_request_remark'];
 
@@ -94,8 +92,6 @@ if(!isset($_GET['action'])){
         $data['purchase_request_type'] = $_POST['purchase_request_type'];
         $data['purchase_request_status'] = 'Waitting';
         $data['employee_id'] = $_POST['employee_id'];
-        $data['urgent_time'] = $_POST['urgent_time'];
-        $data['urgent_status'] = $_POST['urgent_status'];
         $data['customer_id'] = $_POST['customer_id'];
         $data['purchase_request_remark'] = $_POST['purchase_request_remark'];
 
@@ -106,36 +102,34 @@ if(!isset($_GET['action'])){
         
         $product_id = $_POST['product_id'];
         $purchase_request_list_qty = $_POST['purchase_request_list_qty'];
-        $purchase_request_list_delivery_min = $_POST['purchase_request_list_delivery_min'];
-        $purchase_request_list_delivery_max = $_POST['purchase_request_list_delivery_max'];
+        $purchase_request_list_delivery_min = $_POST['purchase_request_list_delivery'];
         $purchase_request_list_remark = $_POST['purchase_request_list_remark'];
 
         $purchase_request_list_model->deletePurchaseRequestListByPurchaseRequestID($purchase_request_id);
+
         if(is_array($product_id)){
             for($i=0; $i < count($product_id) ; $i++){
                 $data = [];
                 $data['purchase_request_id'] = $purchase_request_id;
                 $data['product_id'] = $product_id[$i];
                 $data['purchase_request_list_qty'] = $purchase_request_list_qty[$i];
-                $data['purchase_request_list_delivery_min'] = $purchase_request_list_delivery_min[$i];
-                $data['purchase_request_list_delivery_max'] = $purchase_request_list_delivery_max[$i];
+                $data['purchase_request_list_delivery'] = $purchase_request_list_delivery_min[$i];
                 $data['purchase_request_list_remark'] = $purchase_request_list_remark[$i];
     
                 $purchase_request_list_model->insertPurchaseRequestList($data);
+                echo $i;
             }
         }else{
             $data = [];
             $data['purchase_request_id'] = $purchase_request_id;
             $data['product_id'] = $product_id;
             $data['purchase_request_list_qty'] = $purchase_request_list_qty;
-            $data['purchase_request_list_delivery_min'] = $purchase_request_list_delivery_min;
-            $data['purchase_request_list_delivery_max'] = $purchase_request_list_delivery_max;
+            $data['purchase_request_list_delivery'] = $purchase_request_list_delivery_min;
             $data['purchase_request_list_remark'] = $purchase_request_list_remark;
-
+            echo "---";
             $purchase_request_list_model->insertPurchaseRequestList($data);
         }
         
-
         if($output){
 ?>
         <script>window.location="index.php?app=purchase_request"</script>
@@ -145,14 +139,14 @@ if(!isset($_GET['action'])){
         <script>window.history.back();</script>
 <?php
         }
-    
+   
     }else{
         ?>
     <script>window.history.back();</script>
         <?php
     }
         
-        
+      
     
 }else if ($_GET['action'] == 'approve'){
     

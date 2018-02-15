@@ -94,8 +94,6 @@ class PurchaseRequestModel extends BaseModel{
         customer_id = '".$data['customer_id']."', 
         employee_id = '".$data['employee_id']."', 
         purchase_request_date = '".$data['purchase_request_date']."', 
-        urgent_status = '".$data['urgent_status']."', 
-        urgent_time = '".$data['urgent_time']."', 
         purchase_request_accept_status = 'Waiting', 
         purchase_request_remark = '".$data['purchase_request_remark']."', 
         updateby = '".$data['updateby']."', 
@@ -132,9 +130,11 @@ class PurchaseRequestModel extends BaseModel{
 
     }
 
+    
+
     function insertPurchaseRequest($data = []){
-        $sql = " INSERT INTO tb_purchase_request (purchase_request_code,purchase_request_type,customer_id,employee_id,purchase_request_date,urgent_status,urgent_time,purchase_request_remark,addby,adddate) 
-        VALUES ('".$data['purchase_request_code']."','".$data['purchase_request_type']."','".$data['customer_id']."','".$data['employee_id']."','".$data['purchase_request_date']."','".$data['urgent_status']."','".$data['urgent_time']."','".$data['purchase_request_remark']."','".$data['addby']."',NOW()); 
+        $sql = " INSERT INTO tb_purchase_request (purchase_request_code,purchase_request_type,customer_id,employee_id,purchase_request_date,purchase_request_remark,addby,adddate) 
+        VALUES ('".$data['purchase_request_code']."','".$data['purchase_request_type']."','".$data['customer_id']."','".$data['employee_id']."','".$data['purchase_request_date']."','".$data['purchase_request_remark']."','".$data['addby']."',NOW()); 
         ";
 
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {

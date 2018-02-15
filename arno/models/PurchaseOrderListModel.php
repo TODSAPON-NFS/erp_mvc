@@ -17,7 +17,11 @@ class PurchaseOrderListModel extends BaseModel{
         purchase_order_list_price_sum, 
         purchase_order_list_delivery_min,  
         purchase_order_list_delivery_max, 
-        purchase_order_list_remark 
+        purchase_order_list_remark, 
+        purchase_order_list_supplier_qty, 
+        purchase_order_list_supplier_delivery_min,  
+        purchase_order_list_supplier_delivery_max, 
+        purchase_order_list_supplier_remark 
         FROM tb_purchase_order_list LEFT JOIN tb_product ON tb_purchase_order_list.product_id = tb_product.product_id 
         WHERE purchase_order_id = '$purchase_order_id' 
         ORDER BY purchase_order_list_id 
@@ -71,6 +75,23 @@ class PurchaseOrderListModel extends BaseModel{
             return false;
         }
 
+    }
+
+    function updatePurchaseOrderListById($data,$id){
+
+        $sql = " UPDATE tb_purchase_order_list 
+            SET purchase_order_list_supplier_qty = '".$data['purchase_order_list_supplier_qty']."',
+            purchase_order_list_supplier_delivery_min = '".$data['purchase_order_list_supplier_delivery_min']."', 
+            purchase_order_list_supplier_delivery_max = '".$data['purchase_order_list_supplier_delivery_max']."',
+            purchase_order_list_supplier_remark = '".$data['purchase_order_list_supplier_remark']."'
+            WHERE purchase_order_list_id = '$id'
+        ";
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
     }
 
 

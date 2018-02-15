@@ -13,8 +13,7 @@ class PurchaseRequestListModel extends BaseModel{
         product_name,   
         purchase_request_list_id, 
         purchase_request_list_qty,
-        purchase_request_list_delivery_min, 
-        purchase_request_list_delivery_max,
+        purchase_request_list_delivery,
         purchase_request_list_remark 
         FROM tb_purchase_request_list LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id 
         WHERE purchase_request_id = '$purchase_request_id' 
@@ -38,8 +37,7 @@ class PurchaseRequestListModel extends BaseModel{
             purchase_request_id,
             product_id,
             purchase_request_list_qty,
-            purchase_request_list_delivery_min, 
-            purchase_request_list_delivery_max,
+            purchase_request_list_delivery,
             purchase_request_list_remark,
             addby,
             adddate,
@@ -49,8 +47,7 @@ class PurchaseRequestListModel extends BaseModel{
             '".$data['purchase_request_id']."', 
             '".$data['product_id']."', 
             '".$data['purchase_request_list_qty']."', 
-            '".$data['purchase_request_list_delivery_min']."', 
-            '".$data['purchase_request_list_delivery_max']."', 
+            '".$data['purchase_request_list_delivery']."', 
             '".$data['purchase_request_list_remark']."',
             '".$data['addby']."', 
             NOW(), 

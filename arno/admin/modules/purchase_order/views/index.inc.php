@@ -157,6 +157,7 @@ if(!isset($_GET['action'])){
         
         $data = [];
         $product_id = $_POST['product_id'];
+        $purchase_order_list_id = $_POST['purchase_order_list_id'];
         $purchase_order_list_qty = $_POST['purchase_order_list_qty'];
         $purchase_order_list_price = $_POST['purchase_order_list_price'];
         $purchase_order_list_price_sum = $_POST['purchase_order_list_price_sum'];
@@ -164,7 +165,7 @@ if(!isset($_GET['action'])){
         $purchase_order_list_delivery_max = $_POST['purchase_order_list_delivery_max'];
         $purchase_order_list_remark = $_POST['purchase_order_list_remark'];
 
-        $purchase_order_list_model->deletePurchaseOrderListByPurchaseOrderID($purchase_order_id);
+        $purchase_order_list_model->deletePurchaseOrderListByPurchaseOrderIDNotIN($purchase_order_id,$purchase_order_list_id);
         if(is_array($product_id)){
             for($i=0; $i < count($product_id) ; $i++){
                 $data_sub = [];
@@ -177,7 +178,7 @@ if(!isset($_GET['action'])){
                 $data_sub['purchase_order_list_delivery_max'] = $purchase_order_list_delivery_max[$i];
                 $data_sub['purchase_order_list_remark'] = $purchase_order_list_remark[$i];
     
-                $purchase_order_list_model->insertPurchaseOrderList($data_sub);
+                $purchase_order_list_model->updatePurchaseOrderListByIdAdmin($data_sub,$purchase_order_list_id[$i]);
             }
             $data['purchase_order_status'] = 'New';
         }else if($product_id != ""){
@@ -191,11 +192,51 @@ if(!isset($_GET['action'])){
             $data_sub['purchase_order_list_delivery_max'] = $purchase_order_list_delivery_max;
             $data_sub['purchase_order_list_remark'] = $purchase_order_list_remark;
 
+            $purchase_order_list_model->updatePurchaseOrderListByIdAdmin($data_sub,$purchase_order_list_id);
+            $data['purchase_order_status'] = 'New';
+        }
+
+
+        $m_product_id = $_POST['m_product_id'];
+        $m_purchase_order_list_id = $_POST['m_purchase_order_list_id'];
+        $m_purchase_order_list_qty = $_POST['m_purchase_order_list_qty'];
+        $m_purchase_order_list_price = $_POST['m_purchase_order_list_price'];
+        $m_purchase_order_list_price_sum = $_POST['m_purchase_order_list_price_sum'];
+        $m_purchase_order_list_delivery_min = $_POST['m_purchase_order_list_delivery_min'];
+        $m_purchase_order_list_delivery_max = $_POST['m_purchase_order_list_delivery_max'];
+        $m_purchase_order_list_remark = $_POST['m_purchase_order_list_remark'];
+
+        if(is_array($m_product_id)){
+            for($i=0; $i < count($m_product_id) ; $i++){
+                $data_sub = [];
+                $data_sub['purchase_order_id'] = $purchase_order_id;
+                $data_sub['product_id'] = $m_product_id[$i];
+                $data_sub['purchase_order_list_qty'] = $m_purchase_order_list_qty[$i];
+                $data_sub['purchase_order_list_price'] = $m_purchase_order_list_price[$i];
+                $data_sub['purchase_order_list_price_sum'] = $m_purchase_order_list_price_sum[$i];
+                $data_sub['purchase_order_list_delivery_min'] = $m_purchase_order_list_delivery_min[$i];
+                $data_sub['purchase_order_list_delivery_max'] = $m_purchase_order_list_delivery_max[$i];
+                $data_sub['purchase_order_list_remark'] = $m_purchase_order_list_remark[$i];
+    
+                $purchase_order_list_model->insertPurchaseOrderList($data_sub);
+            }
+            $data['purchase_order_status'] = 'New';
+        }else if($m_product_id != ""){
+            $data_sub = [];
+            $data_sub['purchase_order_id'] = $purchase_order_id;
+            $data_sub['product_id'] = $m_product_id;
+            $data_sub['purchase_order_list_qty'] = $m_purchase_order_list_qty;
+            $data_sub['purchase_order_list_price'] = $m_purchase_order_list_price;
+            $data_sub['purchase_order_list_price_sum'] = $m_purchase_order_list_price_sum;
+            $data_sub['purchase_order_list_delivery_min'] = $m_purchase_order_list_delivery_min;
+            $data_sub['purchase_order_list_delivery_max'] = $m_purchase_order_list_delivery_max;
+            $data_sub['purchase_order_list_remark'] = $m_purchase_order_list_remark;
+
             $purchase_order_list_model->insertPurchaseOrderList($data_sub);
             $data['purchase_order_status'] = 'New';
-        }else{
-            $data['purchase_order_status'] = '';
         }
+
+
 
         $data['supplier_id'] = $_POST['supplier_id'];
         $data['purchase_order_code'] = $_POST['purchase_order_code'];
@@ -252,7 +293,7 @@ if(!isset($_GET['action'])){
             $notification_model->setNotificationSeenByURL('action=detail&id='.$purchase_order_id);
         
 ?>
-        <script>window.location="index.php?app=purchase_order"</script>
+        <script>window.location="index.php?app=purchase_order&action=detail&id=<?php echo $purchase_order_id;?>"</script>
 <?php
         }else{
 ?>
@@ -278,9 +319,10 @@ if(!isset($_GET['action'])){
         $data['purchase_order_status'] = 'Request';
         
         $data['updateby'] = $user[0][0];
+		$purchase_order = $purchase_order_model->getPurchaseOrderByID($purchase_order_id);
 
         $output = $purchase_order_model->updatePurchaseOrderRequestByID($purchase_order_id,$data);
-        $notification_model->setNotification("Purchase Order","Purchase Order <br>No. ".$data['purchase_order_code']." ".$data['urgent_status'],"index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_manager_page","'High'");
+        $notification_model->setNotification("Purchase Order","Purchase Order <br>No. ".$purchase_order['purchase_order_code']." ".$data['urgent_status'],"index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_manager_page","'High'");
 
         if($output){
 ?>
@@ -312,12 +354,132 @@ if(!isset($_GET['action'])){
         
         $data['updateby'] = $user[0][0];
 
-        $output = $purchase_order_model->updatePurchaseOrderStatusByID($purchase_order_id,$data);
         
-        if($output){
+        $supplier=$supplier_model->getSupplierByID($supplier_id);
+        //echo "<pre>";
+        //print_r($supplier);
+        //echo "</pre>";
+        if($supplier_id > 0){
+            /******** setmail ********************************************/
+            require("../controllers/mail/class.phpmailer.php");
+            $mail = new PHPMailer();
+            $body = '
+                We are opening the purchase order.
+                Can you please confirm the order details?. 
+                At <a href="http://support.revelsoft.co.th/erp_mvc/arno/supplier/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
+                Before I send you a purchase order.
+                <br>
+                <br>
+                <b> Best regards,</b><br><br>
+
+                <b> Vittawat Bussara</b><br>
+                <b> Head Office : </b> 2/27 Bangna Complex Office Tower,7th Flr.,Soi Bangna-Trad 25, Bangna-Trad Rd.,<br>
+                Bangna, Bangna, Bangkok 10260, THAILAND, Tel : +662 399 2784  Fax : +662 399 2327 <br>
+                <b> Tax ID :</b> 0105558002033 
+                
+            ';
+            $mail->CharSet = "utf-8";
+            $mail->IsSMTP();
+            $mail->SMTPDebug = 0;
+            $mail->SMTPAuth = true;
+            $mail->Host = "mail.revelsoft.co.th"; // SMTP server
+            $mail->Port = 587; 
+            $mail->Username = "support@revelsoft.co.th"; // account SMTP
+            $mail->Password = "support123456"; //  SMTP
+
+            $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
+            $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");
+            $mail->Subject = "Arno order recheck to ".$supplier['supplier_name_en'];
+
+            $mail->MsgHTML($body);
+
+            $mail->AddAddress($supplier['supplier_email'], "Supplier Mail"); //
+            //$mail->AddAddress($set1, $name); // 
+            if(!$mail->Send()) {
+                $result = "Mailer Error: " . $mail->ErrorInfo;
+            }else{
+                $output = $purchase_order_model->updatePurchaseOrderStatusByID($purchase_order_id,$data);
+                $result = "Send checking complete.";
+            } 
 ?>
         <script>
-            alert("Send checking complete.");
+            alert("<?php echo $result; ?>");
+            window.history.back();
+        </script>
+<?php
+        }else{
+?>
+        <script>window.history.back();</script>
+<?php
+        }
+    
+    }else{
+        ?>
+    <script>window.history.back();</script>
+        <?php
+    }
+        
+        
+    
+}else if ($_GET['action'] == 'sending'){
+    
+    if(isset($purchase_order_id)){
+        $data = [];
+
+        $data['purchase_order_status'] = 'Sending';
+        
+        $data['updateby'] = $user[0][0];
+
+        
+        $supplier=$supplier_model->getSupplierByID($supplier_id);
+        //echo "<pre>";
+        //print_r($supplier);
+        //echo "</pre>";
+        if($supplier_id > 0){
+            /******** setmail ********************************************/
+            require("../controllers/mail/class.phpmailer.php");
+            $mail = new PHPMailer();
+            $body = '
+                We are opened the purchase order.
+                Can you confirm the order details?. 
+                At <a href="http://support.revelsoft.co.th/erp_mvc/arno/supplier/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
+
+                <br>
+                <br>
+                <b> Best regards,</b><br><br>
+
+                <b> Vittawat Bussara</b><br>
+                <b> Head Office : </b> 2/27 Bangna Complex Office Tower,7th Flr.,Soi Bangna-Trad 25, Bangna-Trad Rd.,<br>
+                Bangna, Bangna, Bangkok 10260, THAILAND, Tel : +662 399 2784  Fax : +662 399 2327 <br>
+                <b> Tax ID :</b> 0105558002033 
+                
+            ';
+            $mail->CharSet = "utf-8";
+            $mail->IsSMTP();
+            $mail->SMTPDebug = 0;
+            $mail->SMTPAuth = true;
+            $mail->Host = "mail.revelsoft.co.th"; // SMTP server
+            $mail->Port = 587; 
+            $mail->Username = "support@revelsoft.co.th"; // account SMTP
+            $mail->Password = "support123456"; //  SMTP
+
+            $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
+            $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");
+            $mail->Subject = "Arno order confirm to ".$supplier['supplier_name_en'];
+
+            $mail->MsgHTML($body);
+
+            $mail->AddAddress($supplier['supplier_email'], "Supplier Mail"); //
+            //$mail->AddAddress($set1, $name); // 
+            if(!$mail->Send()) {
+                $result = "Mailer Error: " . $mail->ErrorInfo;
+            }else{
+                $output = $purchase_order_model->updatePurchaseOrderStatusByID($purchase_order_id,$data);
+                $result = "Send purchase order complete.";
+            } 
+?>
+        <script>
+            alert("<?php echo $result; ?>");
             window.history.back();
         </script>
 <?php

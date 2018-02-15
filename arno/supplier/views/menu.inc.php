@@ -5,7 +5,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Arno Thailand ERP</a>
+                <a class="navbar-brand" href="#">Arno Thailand ERP</a>
             </div>
             <!-- /.navbar-header -->
 

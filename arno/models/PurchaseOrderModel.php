@@ -12,6 +12,7 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_type, 
         purchase_order_code, 
         purchase_order_date, 
+        purchase_order_status,
         purchase_order_accept_status,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 
         IFNULL(CONCAT(tb3.user_name,' ',tb3.user_lastname),'-') as accept_name, 

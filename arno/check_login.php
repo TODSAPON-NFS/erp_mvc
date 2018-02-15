@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('/models/UserModel.php');
+require_once('models/UserModel.php');
 if(isset($_POST['username']) && isset($_POST['password'])){
 
     $user = $_POST['username'];

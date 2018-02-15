@@ -92,49 +92,75 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th>Product Code</th>
-                                <th>Product Name</th>
-                                <th>Qty</th>
-                                <th>@</th>
-                                <th>Amount</th>
-                                <th>Delivery Min</th>
-                                <th>Delivery Max</th>
-                                <th>Remark</th>
+								<th style="text-align:center;width:32px;">Item</th>
+                                <th style="text-align:center;">Product Code</th>
+                                <th style="text-align:center;">Product Name / Description</th>
+                                <th style="text-align:center;">Qty</th>
+                                <th style="text-align:center;">@</th>
+                                <th style="text-align:center;">Amount</th>
+								<!--
+                                <th style="text-align:center;">Delivery Min</th>
+                                <th style="text-align:center;">Delivery Max</th>
+                                <th style="text-align:center;">Remark</th>
+								-->
                             </tr>
                         </thead>
                         <tbody>
                             <?php 
+							$sub_total = 0;
                             for($i=0; $i < count($purchase_order_lists); $i++){
                             ?>
                             <tr class="odd gradeX">
+								<td>
+                                    <?php echo $i + 1; ?>.
+                                </td>
                                 <td>
                                     <?php echo $purchase_order_lists[$i]['product_code']?>
                                 </td>
-                                <td><?php echo $purchase_order_lists[$i]['product_name']?></td>
-                                <td><?php echo $purchase_order_lists[$i]['purchase_order_list_qty']?></td>
-                                <td><?php echo $purchase_order_lists[$i]['purchase_order_list_price']?></td>
-                                <td><?php echo $purchase_order_lists[$i]['purchase_order_list_price_sum']?></td>
-                                <td><?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']?></td>
-                                <td><?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_max']?></td>
+                                <td>
+								Product name : <?php echo $purchase_order_lists[$i]['product_name']?> <br>
+								Delivery : <?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']?> - <?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_max']?> <br>
+								Remark : <?php echo $purchase_order_lists[$i]['purchase_order_list_remark']?>
+								</td>
+                                <td align="right"><?php echo number_format($purchase_order_lists[$i]['purchase_order_list_qty'],0)?></td>
+                                <td align="right"><?php echo number_format($purchase_order_lists[$i]['purchase_order_list_price'],2)?></td>
+                                <td align="right"><?php echo number_format($purchase_order_lists[$i]['purchase_order_list_price_sum'],2)?></td>
+								<!--
+                                <td align="center"><?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']?></td>
+                                <td align="center"><?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_max']?></td>
                                 <td><?php echo $purchase_order_lists[$i]['purchase_order_list_remark']?></td>
+								-->
                             </tr>
                             <?
+							$sub_total += $purchase_order_lists[$i]['purchase_order_list_price_sum'];
                             }
                             ?>
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
+							<td>
+                                    
+                                </td>
                                 <td>
                                     
                                 </td>
                                 <td></td>
                                 <td></td>
+                                <td align="right">
+                                    Sub Total <br>
+                                    Vat <br>
+                                    Net Total <br>
+                                </td>
+                                <td align="right">
+                                    <?php echo number_format($sub_total,2);?> <br>
+                                    <?php echo number_format($sub_total * 0.07,2);?> <br>
+                                    <?php echo number_format($sub_total+($sub_total * 0.07),2);?> <br>
+                                </td>
+								<!--
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
-                                
+                                -->
                             </tr>
                         </tfoot>
                     </table>
@@ -142,10 +168,10 @@
 
                     <!-- /.row (nested) -->
                     <div class="row">
-                    <?php if($user[0][24] == "High" || $user[0][25] == "High" ){ ?>
+                    <?php if(($user[0][24] == "High" || $user[0][25] == "High" ) && $purchase_order['purchase_order_status'] == 'Request'){ ?>
                         <div class="col-lg-offset-9 col-lg-2" align="right">
                             <select id="purchase_order_accept_status" name="purchase_order_accept_status" class="form-control" data-live-search="true" >
-                                <option <?php if($purchase_order['purchase_order_accept_status'] == "Waiting"){?> selected <?php }?> >Waiting</option>
+                                <option <?php if($purchase_order['purchase_order_accept_status'] == "Waitting"){?> selected <?php }?> >Waitting</option>
                                 <option <?php if($purchase_order['purchase_order_accept_status'] == "Approve"){?> selected <?php }?> >Approve</option>
                                 <option <?php if($purchase_order['purchase_order_accept_status'] == "Not Approve"){?> selected <?php }?> >Not Approve</option>
                             </select>

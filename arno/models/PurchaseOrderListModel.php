@@ -69,6 +69,7 @@ class PurchaseOrderListModel extends BaseModel{
         ); 
         ";
 
+        //echo $sql;
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
@@ -94,6 +95,27 @@ class PurchaseOrderListModel extends BaseModel{
         }
     }
 
+    function updatePurchaseOrderListByIdAdmin($data,$id){
+
+        $sql = " UPDATE tb_purchase_order_list 
+            SET product_id = '".$data['product_id']."', 
+            purchase_order_list_qty = '".$data['purchase_order_list_qty']."',
+            purchase_order_list_price = '".$data['purchase_order_list_price']."', 
+            purchase_order_list_price_sum = '".$data['purchase_order_list_price_sum']."',
+            purchase_order_list_delivery_min = '".$data['purchase_order_list_delivery_min']."', 
+            purchase_order_list_delivery_max = '".$data['purchase_order_list_delivery_max']."',
+            purchase_order_list_remark = '".$data['purchase_order_list_remark']."'
+            WHERE purchase_order_list_id = '$id'
+        ";
+
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
 
     function deletePurchaseOrderListByID($id){
         $sql = "DELETE FROM tb_purchase_order_list WHERE purchase_order_list_id = '$id' ";
@@ -103,6 +125,25 @@ class PurchaseOrderListModel extends BaseModel{
 
     function deletePurchaseOrderListByPurchaseOrderID($id){
         $sql = "DELETE FROM tb_purchase_order_list WHERE purchase_order_id = '$id' ";
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+    }
+
+    function deletePurchaseOrderListByPurchaseOrderIDNotIN($id,$data){
+        $str ='';
+        if(is_array($data)){ 
+            for($i=0; $i < count($data) ;$i++){
+                $str .= $data[$i];
+                if($i + 1 < count($data)){
+                    $str .= ',';
+                }
+            }
+        }else{
+            $str = $data;
+        }
+
+        $sql = "DELETE FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str) ";
+     
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
     }

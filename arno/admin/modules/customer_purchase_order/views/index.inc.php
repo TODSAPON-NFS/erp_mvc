@@ -121,6 +121,8 @@ if(!isset($_GET['action'])){
         $customer_purchase_order_list_remark = $_POST['customer_purchase_order_list_remark'];
         $customer_purchase_order_list_hold = $_POST['customer_purchase_order_list_hold'];
 
+
+
         $customer_purchase_order_list_model->deleteCustomerPurchaseOrderListByCustomerPurchaseOrderID($customer_purchase_order_id);
         if(is_array($product_id)){
             for($i=0; $i < count($product_id) ; $i++){

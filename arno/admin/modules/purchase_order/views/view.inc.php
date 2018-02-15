@@ -74,9 +74,11 @@
                             <th>PO No.</th>
                             <th>Supplier</th>
                             <th>Request by</th>
+							<th>PO Status</th>
                             <th>Accept Status</th>
                             <th>Accept by</th>
                             <th>Remark</th>
+							
                             <th></th>
                         </tr>
                     </thead>
@@ -90,6 +92,7 @@
                             <td><?php echo $purchase_orders[$i]['purchase_order_code']; ?></td>
                             <td><?php echo $purchase_orders[$i]['supplier_name']; ?> </td>
                             <td><?php echo $purchase_orders[$i]['employee_name']; ?></td>
+							<td><?php echo $purchase_orders[$i]['purchase_order_status']; ?></td>
                             <td><?php echo $purchase_orders[$i]['purchase_order_accept_status']; ?></td>
                             <td><?php echo $purchase_orders[$i]['accept_name']; ?></td>
                             <td><?php echo $purchase_orders[$i]['purchase_order_remark']; ?></td>
@@ -99,7 +102,8 @@
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                 </a>
 
-                            <?php if($purchase_orders[$i]['purchase_order_accept_status'] == "Waiting"){ ?>
+
+                            <?php if($purchase_orders[$i]['purchase_order_status'] == "New" || $purchase_orders[$i]['purchase_order_status'] == "Approved"){ ?>
                                 <a href="?app=purchase_order&action=update&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 

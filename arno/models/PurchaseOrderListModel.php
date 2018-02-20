@@ -116,6 +116,34 @@ class PurchaseOrderListModel extends BaseModel{
         }
     }
 
+    function updateInvoiceSupplierListID($purchase_order_list_id,$invoice_supplier_list_id){
+        $sql = " UPDATE tb_purchase_request_list 
+            SET invoice_supplier_list_id = '$invoice_supplier_list_id' 
+            WHERE purchase_order_list_id = '$purchase_order_list_id' 
+        ";
+
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
+    function updateInvoiceCustomerListID($purchase_order_list_id,$invoice_customer_list_id){
+        $sql = " UPDATE tb_purchase_request_list 
+            SET invoice_customer_list_id = '$invoice_customer_list_id' 
+            WHERE purchase_order_list_id = '$purchase_order_list_id' 
+        ";
+
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
 
     function deletePurchaseOrderListByID($id){
         $sql = "DELETE FROM tb_purchase_order_list WHERE purchase_order_list_id = '$id' ";

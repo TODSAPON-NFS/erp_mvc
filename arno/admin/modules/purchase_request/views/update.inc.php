@@ -57,6 +57,15 @@
         
      }
 
+    function m_show_data(id){
+        var product_name = "";
+        var data = product_data.filter(val => val['product_id'] == $(id).val());
+        if(data.length > 0){
+            $(id).closest('tr').children('td').children('input[name="m_product_name[]"]').val( data[0]['product_name'] );
+        }
+        
+     }
+     
      function add_row(id){
          var index = 0;
          if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
@@ -67,12 +76,12 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
-                    '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                    '<select class="form-control select" type="text" name="m_product_id[]" onchange="m_show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="product_name[]" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="purchase_request_list_qty[]" /></td>'+
-                '<td><input type="text" class="form-control" name="purchase_request_list_delivery[]" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="purchase_request_list_remark[]" /></td>'+
+                '<td><input type="text" class="form-control" name="m_product_name[]" readonly /></td>'+
+                '<td><input type="text" class="form-control" name="m_purchase_request_list_qty[]" /></td>'+
+                '<td><input type="text" class="form-control" name="m_purchase_request_list_delivery[]" readonly /></td>'+
+                '<td><input type="text" class="form-control" name="m_purchase_request_list_remark[]" /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -89,9 +98,8 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_request_list_delivery_min[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_request_list_delivery_max[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
-     }
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="m_purchase_request_list_delivery[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
+       }
 
 </script>
 
@@ -198,6 +206,7 @@
                             ?>
                             <tr class="odd gradeX">
                                 <td>
+                                    <input type="hidden" class="form-control" name="purchase_request_list_id[]" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_id']; ?>" />
                                     <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
                                         <option value="">Select</option>
                                         <?php 

@@ -99,13 +99,13 @@ if(!isset($_GET['action'])){
 
         $notification_model->setNotification("Purchase Request","Purchase Request <br>No. ".$data['purchase_request_code']." ".$data['urgent_status'],"index.php?app=purchase_request&action=detail&id=$purchase_request_id","license_manager_page","'High'");
         
-        
         $product_id = $_POST['product_id'];
+        $purchase_request_list_id = $_POST['purchase_request_list_id'];
         $purchase_request_list_qty = $_POST['purchase_request_list_qty'];
         $purchase_request_list_delivery_min = $_POST['purchase_request_list_delivery'];
         $purchase_request_list_remark = $_POST['purchase_request_list_remark'];
 
-        $purchase_request_list_model->deletePurchaseRequestListByPurchaseRequestID($purchase_request_id);
+        $purchase_request_list_model->deletePurchaseRequestListByPurchaseRequestIDNotIN($purchase_request_id,$purchase_request_list_id);
 
         if(is_array($product_id)){
             for($i=0; $i < count($product_id) ; $i++){
@@ -116,7 +116,7 @@ if(!isset($_GET['action'])){
                 $data['purchase_request_list_delivery'] = $purchase_request_list_delivery_min[$i];
                 $data['purchase_request_list_remark'] = $purchase_request_list_remark[$i];
     
-                $purchase_request_list_model->insertPurchaseRequestList($data);
+                $purchase_request_list_model->updatePurchaseRquestListById($data,$purchase_request_list_id[$i]);
                 echo $i;
             }
         }else{
@@ -127,6 +127,34 @@ if(!isset($_GET['action'])){
             $data['purchase_request_list_delivery'] = $purchase_request_list_delivery_min;
             $data['purchase_request_list_remark'] = $purchase_request_list_remark;
             echo "---";
+            $purchase_request_list_model->updatePurchaseRquestListById($data,$purchase_request_list_id);
+        }
+
+
+        $m_product_id = $_POST['m_product_id'];
+        $m_purchase_request_list_qty = $_POST['m_purchase_request_list_qty'];
+        $m_purchase_request_list_delivery_min = $_POST['m_purchase_request_list_delivery'];
+        $m_purchase_request_list_remark = $_POST['m_purchase_request_list_remark'];
+
+
+        if(is_array($m_product_id)){
+            for($i=0; $i < count($m_product_id) ; $i++){
+                $data = [];
+                $data['purchase_request_id'] = $purchase_request_id;
+                $data['product_id'] = $m_product_id[$i];
+                $data['purchase_request_list_qty'] = $m_purchase_request_list_qty[$i];
+                $data['purchase_request_list_delivery'] = $m_purchase_request_list_delivery_min[$i];
+                $data['purchase_request_list_remark'] = $m_purchase_request_list_remark[$i];
+    
+                $purchase_request_list_model->insertPurchaseRequestList($data);
+            }
+        }else if ($m_product_id != ''){
+            $data = [];
+            $data['purchase_request_id'] = $purchase_request_id;
+            $data['product_id'] = $m_product_id;
+            $data['purchase_request_list_qty'] = $m_purchase_request_list_qty;
+            $data['purchase_request_list_delivery'] = $m_purchase_request_list_delivery_min;
+            $data['purchase_request_list_remark'] = $m_purchase_request_list_remark;
             $purchase_request_list_model->insertPurchaseRequestList($data);
         }
         

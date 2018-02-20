@@ -3,9 +3,14 @@
 abstract class BaseModel{
     protected $db;
     protected $host="localhost";
-    protected $username="revelsof_erp";
+    
+    protected $username="root";
+    //protected $username="revelsof_erp";
+    
     protected $password="root123456";
-    protected $db_name="revelsof_erp";
+
+    protected $db_name="revelsoft_erp";
+    //protected $db_name="revelsof_erp";
 
     function __construct(){
         $this->db = mysqli_connect($host, $username, $password, $db_name);

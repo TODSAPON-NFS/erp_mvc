@@ -2,14 +2,14 @@
     function check(){
 
 
-        var customer_purchase_order_type = document.getElementById("customer_purchase_order_type").value;
+       
         var customer_id = document.getElementById("customer_id").value;
         var customer_purchase_order_code = document.getElementById("customer_purchase_order_code").value;
         var customer_purchase_order_date = document.getElementById("customer_purchase_order_date").value;
         var customer_purchase_order_credit_term = document.getElementById("customer_purchase_order_credit_term").value;
         var employee_id = document.getElementById("employee_id").value;
         
-        customer_purchase_order_type = $.trim(customer_purchase_order_type);
+  
         customer_id = $.trim(customer_id);
         customer_purchase_order_code = $.trim(customer_purchase_order_code);
         customer_purchase_order_date = $.trim(customer_purchase_order_date);

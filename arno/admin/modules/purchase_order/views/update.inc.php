@@ -13,14 +13,13 @@
     function check(){
 
 
-        var purchase_order_type = document.getElementById("purchase_order_type").value;
+
         var supplier_id = document.getElementById("supplier_id").value;
         var purchase_order_code = document.getElementById("purchase_order_code").value;
         var purchase_order_date = document.getElementById("purchase_order_date").value;
         var purchase_order_credit_term = document.getElementById("purchase_order_credit_term").value;
         var employee_id = document.getElementById("employee_id").value;
         
-        purchase_order_type = $.trim(purchase_order_type);
         supplier_id = $.trim(supplier_id);
         purchase_order_code = $.trim(purchase_order_code);
         purchase_order_date = $.trim(purchase_order_date);
@@ -142,6 +141,8 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
+                    '<input type="hidden" name="customer_purchase_order_list_id[]" value="0" />'+
+                    '<input type="hidden" name="purchase_request_list_id[]" value="0" />'+ 
                     '<select class="form-control select" type="text" name="m_product_id[]" onchange="m_show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td><input type="text" class="form-control" name="m_product_name[]" readonly /></td>'+
@@ -305,6 +306,8 @@
                             <tr class="odd gradeX">
                                 <td>
                                     <input type="hidden" name="purchase_order_list_id[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_id']; ?>"/>
+                                    <input type="hidden" name="customer_purchase_order_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['customer_purchase_order_list_id'];?>" />
+                                    <input type="hidden" name="purchase_request_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['purchase_request_list_id'];?>" />
                                     <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
                                         <option value="">Select</option>
                                         <?php 

@@ -71,9 +71,9 @@ class PurchaseOrderListModel extends BaseModel{
 
         //echo $sql;
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-           return true;
+            return mysqli_insert_id($this->db);
         }else {
-            return false;
+            return 0;
         }
 
     }
@@ -124,8 +124,20 @@ class PurchaseOrderListModel extends BaseModel{
     }
 
     function deletePurchaseOrderListByPurchaseOrderID($id){
+
+        $sql = "UPDATE  tb_purchase_request_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = "UPDATE  tb_customer_purchase_order_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+
         $sql = "DELETE FROM tb_purchase_order_list WHERE purchase_order_id = '$id' ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        
 
     }
 
@@ -138,11 +150,21 @@ class PurchaseOrderListModel extends BaseModel{
                     $str .= ',';
                 }
             }
-        }else{
+        }else if ($data != ''){
             $str = $data;
+        }else{
+            $str='0';
         }
 
         $sql = "DELETE FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str) ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = "UPDATE  tb_purchase_request_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN ($str) ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = "UPDATE  tb_customer_purchase_order_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN ($str) ";
      
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 

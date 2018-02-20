@@ -12,14 +12,13 @@
     function check(){
 
 
-        var purchase_order_type = document.getElementById("purchase_order_type").value;
+  
         var supplier_id = document.getElementById("supplier_id").value;
         var purchase_order_code = document.getElementById("purchase_order_code").value;
         var purchase_order_date = document.getElementById("purchase_order_date").value;
         var purchase_order_credit_term = document.getElementById("purchase_order_credit_term").value;
         var employee_id = document.getElementById("employee_id").value;
         
-        purchase_order_type = $.trim(purchase_order_type);
         supplier_id = $.trim(supplier_id);
         purchase_order_code = $.trim(purchase_order_code);
         purchase_order_date = $.trim(purchase_order_date);
@@ -105,6 +104,8 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
+                    '<input type="hidden" name="customer_purchase_order_list_id[]" value="0" />'+
+                    '<input type="hidden" name="purchase_request_list_id[]" value="0" />'+     
                     '<select class="form-control select" type="text" name="product_id" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td><input type="text" class="form-control" name="product_name[]" readonly /></td>'+
@@ -266,6 +267,8 @@
                             ?>
                             <tr class="odd gradeX">
                                 <td>
+                                    <input type="hidden" name="customer_purchase_order_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['customer_purchase_order_list_id'];?>" />
+                                    <input type="hidden" name="purchase_request_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['purchase_request_list_id'];?>" />
                                    
                                     <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
                                         <option value="">Select</option>
@@ -282,8 +285,8 @@
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="purchase_order_list_qty[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_qty']; ?>" /></td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="purchase_order_list_price[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_price']; ?>" /></td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="purchase_order_list_price_sum[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_qty'] * $purchase_order_lists[$i]['purchase_order_list_price']; ?>" /></td>
-                                <td><input type="text" class="form-control" name="purchase_order_list_delivery_min[]" readonly value="<?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']; ?>" /></td>
-                                <td><input type="text" class="form-control" name="purchase_order_list_delivery_max[]" readonly value="<?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_max']; ?>" /></td>
+                                <td><input type="text" class="form-control calendar" name="purchase_order_list_delivery_min[]" readonly value="<?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']; ?>" /></td>
+                                <td><input type="text" class="form-control calendar" name="purchase_order_list_delivery_max[]" readonly value="<?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_max']; ?>" /></td>
                                 <td><input type="text" class="form-control" name="purchase_order_list_remark[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_remark']; ?>" /></td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">

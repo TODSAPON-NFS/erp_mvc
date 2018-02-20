@@ -111,6 +111,7 @@ if(!isset($_GET['action'])){
         
         
         $product_id = $_POST['product_id'];
+        $customer_purchase_order_list_id = $_POST['customer_purchase_order_list_id'];
         $customer_purchase_order_product_name = $_POST['customer_purchase_order_product_name'];
         $customer_purchase_order_product_detail = $_POST['customer_purchase_order_product_detail'];
         $customer_purchase_order_list_qty = $_POST['customer_purchase_order_list_qty'];
@@ -123,7 +124,8 @@ if(!isset($_GET['action'])){
 
 
 
-        $customer_purchase_order_list_model->deleteCustomerPurchaseOrderListByCustomerPurchaseOrderID($customer_purchase_order_id);
+        $customer_purchase_order_list_model->deleteCustomerPurchaseOrderListByCustomerPurchaseOrderIDNotIN($customer_purchase_order_id,$customer_purchase_order_list_id);
+
         if(is_array($product_id)){
             for($i=0; $i < count($product_id) ; $i++){
                 $data = [];
@@ -139,7 +141,7 @@ if(!isset($_GET['action'])){
                 $data['customer_purchase_order_list_remark'] = $customer_purchase_order_list_remark[$i];
                 $data['customer_purchase_order_list_hold'] = $customer_purchase_order_list_hold[$i];
 
-                $customer_purchase_order_list_model->insertCustomerPurchaseOrderList($data);
+                $customer_purchase_order_list_model->updateCustomerPurchaseOrderListById($data,$customer_purchase_order_list_id[$i]);
             }
         }else{
             $data = [];
@@ -155,9 +157,57 @@ if(!isset($_GET['action'])){
             $data['customer_purchase_order_list_remark'] = $customer_purchase_order_list_remark;
             $data['customer_purchase_order_list_hold'] = $customer_purchase_order_list_hold;
 
+            $customer_purchase_order_list_model->updateCustomerPurchaseOrderListById($data,$customer_purchase_order_list_id);
+        }
+
+
+        $m_product_id = $_POST['m_product_id'];
+        $m_customer_purchase_order_list_id = $_POST['m_customer_purchase_order_list_id'];
+        $m_customer_purchase_order_product_name = $_POST['m_customer_purchase_order_product_name'];
+        $m_customer_purchase_order_product_detail = $_POST['m_customer_purchase_order_product_detail'];
+        $m_customer_purchase_order_list_qty = $_POST['m_customer_purchase_order_list_qty'];
+        $m_customer_purchase_order_list_price = $_POST['m_customer_purchase_order_list_price'];
+        $m_customer_purchase_order_list_price_sum = $_POST['m_customer_purchase_order_list_price_sum'];
+        $m_customer_purchase_order_list_delivery_min = $_POST['m_customer_purchase_order_list_delivery_min'];
+        $m_customer_purchase_order_list_delivery_max = $_POST['m_customer_purchase_order_list_delivery_max'];
+        $m_customer_purchase_order_list_remark = $_POST['m_customer_purchase_order_list_remark'];
+        $m_customer_purchase_order_list_hold = $_POST['m_customer_purchase_order_list_hold'];
+        
+
+        if(is_array($m_product_id)){
+            for($i=0; $i < count($m_product_id) ; $i++){
+                $data = [];
+                $data['customer_purchase_order_id'] = $customer_purchase_order_id;
+                $data['product_id'] = $m_product_id[$i];
+                $data['customer_purchase_order_product_name'] = $m_customer_purchase_order_product_name[$i];
+                $data['customer_purchase_order_product_detail'] = $m_customer_purchase_order_product_detail[$i];
+                $data['customer_purchase_order_list_qty'] = $m_customer_purchase_order_list_qty[$i];
+                $data['customer_purchase_order_list_price'] = $m_customer_purchase_order_list_price[$i];
+                $data['customer_purchase_order_list_price_sum'] = $m_customer_purchase_order_list_price_sum[$i];
+                $data['customer_purchase_order_list_delivery_min'] = $m_customer_purchase_order_list_delivery_min[$i];
+                $data['customer_purchase_order_list_delivery_max'] = $m_customer_purchase_order_list_delivery_max[$i];
+                $data['customer_purchase_order_list_remark'] = $m_customer_purchase_order_list_remark[$i];
+                $data['customer_purchase_order_list_hold'] = $m_customer_purchase_order_list_hold[$i];
+
+                $customer_purchase_order_list_model->insertCustomerPurchaseOrderList($data);
+            }
+        }else if ($m_product_id != ""){
+            $data = [];
+            $data['customer_purchase_order_id'] = $customer_purchase_order_id;
+            $data['product_id'] = $m_product_id;
+            $data['customer_purchase_order_product_name'] = $m_customer_purchase_order_product_name;
+            $data['customer_purchase_order_product_detail'] = $m_customer_purchase_order_product_detail;
+            $data['customer_purchase_order_list_qty'] = $m_customer_purchase_order_list_qty;
+            $data['customer_purchase_order_list_price'] = $m_customer_purchase_order_list_price;
+            $data['customer_purchase_order_list_price_sum'] = $m_customer_purchase_order_list_price_sum;
+            $data['customer_purchase_order_list_delivery_min'] = $m_customer_purchase_order_list_delivery_min;
+            $data['customer_purchase_order_list_delivery_max'] = $m_customer_purchase_order_list_delivery_max;
+            $data['customer_purchase_order_list_remark'] = $m_customer_purchase_order_list_remark;
+            $data['customer_purchase_order_list_hold'] = $m_customer_purchase_order_list_hold;
+
             $customer_purchase_order_list_model->insertCustomerPurchaseOrderList($data);
         }
-        
+
 
         if($output){
 ?>

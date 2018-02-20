@@ -13,14 +13,14 @@
     function check(){
 
 
-        var customer_purchase_order_type = document.getElementById("customer_purchase_order_type").value;
+   
         var customer_id = document.getElementById("customer_id").value;
         var customer_purchase_order_code = document.getElementById("customer_purchase_order_code").value;
         var customer_purchase_order_date = document.getElementById("customer_purchase_order_date").value;
         var customer_purchase_order_credit_term = document.getElementById("customer_purchase_order_credit_term").value;
         var employee_id = document.getElementById("employee_id").value;
         
-        customer_purchase_order_type = $.trim(customer_purchase_order_type);
+
         customer_id = $.trim(customer_id);
         customer_purchase_order_code = $.trim(customer_purchase_order_code);
         customer_purchase_order_date = $.trim(customer_purchase_order_date);
@@ -51,6 +51,8 @@
         $(id).closest('tr').remove();
      }
 
+
+
      function show_data(id){
         var product_name = "";
         var data = product_data.filter(val => val['product_id'] == $(id).val());
@@ -59,6 +61,17 @@
         }
         
      }
+
+
+    function m_show_data(id){
+        var product_name = "";
+        var data = product_data.filter(val => val['product_id'] == $(id).val());
+        if(data.length > 0){
+            $(id).closest('tr').children('td').children('input[name="m_product_name[]"]').val( data[0]['product_name'] );
+        }
+        
+     }
+
 
      function update_sum(id){
 
@@ -87,6 +100,33 @@
         
      }
 
+     function m_update_sum(id){
+
+        var qty =  $(id).closest('tr').children('td').children('input[name="m_customer_purchase_order_list_qty[]"]').val(  );
+        var price =  $(id).closest('tr').children('td').children('input[name="m_customer_purchase_order_list_price[]"]').val( );
+        var sum =  $(id).closest('tr').children('td').children('input[name="m_customer_purchase_order_list_price_sum[]"]').val( );
+
+        if(isNaN(qty)){
+        qty = 0;
+        }
+
+        if(isNaN(price)){
+        price = 0;
+        }
+
+        if(isNaN(sum)){
+        sum = 0;
+        }
+
+        sum = qty*price;
+
+        $(id).closest('tr').children('td').children('input[name="m_customer_purchase_order_list_qty[]"]').val( qty );
+        $(id).closest('tr').children('td').children('input[name="m_customer_purchase_order_list_price[]"]').val( price );
+        $(id).closest('tr').children('td').children('input[name="m_customer_purchase_order_list_price_sum[]"]').val( sum );
+
+
+    }
+
      function add_row(id){
          var index = 0;
          if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
@@ -97,24 +137,25 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
-                    '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                    
+                    '<select class="form-control select" type="text" name="m_product_id[]" onchange="m_show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td>'+
-                    '<input type="text" class="form-control" name="product_name[]" readonly />'+
+                    '<input type="text" class="form-control" name="m_product_name[]" readonly />'+
                     '<span>Name.</span>'+
-                    '<input type="text" class="form-control" name="customer_purchase_order_product_name[]"  />'+
+                    '<input type="text" class="form-control" name="m_customer_purchase_order_product_name[]"  />'+
                     '<span>Description.</span>'+
-                    '<input type="text" class="form-control" name="customer_purchase_order_product_detail[]"  />'+
+                    '<input type="text" class="form-control" name="m_customer_purchase_order_product_detail[]"  />'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_qty[]" onchange="update_sum(this);" /></td>'+
+                '<td><input type="text" class="form-control" name="m_customer_purchase_order_list_qty[]" onchange="m_update_sum(this);" /></td>'+
                 '<td>'+
-                    '<input type="text" class="form-control" name="customer_purchase_order_list_price[]" onchange="update_sum(this);" />'+
+                    '<input type="text" class="form-control" name="m_customer_purchase_order_list_price[]" onchange="m_update_sum(this);" />'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
+                '<td><input type="text" class="form-control" name="m_customer_purchase_order_list_price_sum[]" onchange="m_update_sum(this);" /></td>'+
                 //'<td><input type="text" class="form-control" name="customer_purchase_order_list_delivery_min" readonly /></td>'+
                 //'<td><input type="text" class="form-control" name="customer_purchase_order_list_delivery_max" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_remark[]" /></td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_hold[]" /></td>'+
+                '<td><input type="text" class="form-control" name="m_customer_purchase_order_list_remark[]" /></td>'+
+                '<td><input type="text" class="form-control" name="m_customer_purchase_order_list_hold[]" /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -296,6 +337,7 @@
                             ?>
                             <tr class="odd gradeX">
                                 <td>
+                                    <input type="hidden" name="customer_purchase_order_list_id[]" value="<? echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_id'] ?>" />
                                     <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
                                         <option value="">Select</option>
                                         <?php 

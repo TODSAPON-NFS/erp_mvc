@@ -65,24 +65,24 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Add Customer Purchase Order  
+               เพิ่มใบสั่งซื้อสินค้าของลูกค้า / Add Customer Purchase Order  
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=customer_purchase_order&action=add" >
+                <form role="form" method="post" onsubmit="return check();" action="index.php?app=customer_purchase_order&action=add" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Customer Code <font color="#F00"><b>*</b></font></label>
+                                        <label>รหัสลูกค้า / Customer Code <font color="#F00"><b>*</b></font></label>
                                         <input id="customer_code" name="customer_code" class="form-control" readonly>
                                         <p class="help-block">Example : PO1801001.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="form-group">
-                                        <label>Customer  <font color="#F00"><b>*</b></font> </label>
+                                        <label>ลูกค้า / Customer  <font color="#F00"><b>*</b></font> </label>
                                         <select id="customer_id" name="customer_id" class="form-control select" data-live-search="true" onchange="get_customer_detail()">
                                             <option value="">Select</option>
                                             <?php 
@@ -98,21 +98,21 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Address <font color="#F00"></font></label>
+                                        <label>ที่อยู่ / Address <font color="#F00"></font></label>
                                         <textarea  id="customer_address" name="customer_address" class="form-control" rows="7" readonly></textarea >
                                         <p class="help-block">Example : IN.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Tax. <font color="#F00"></font></label>
+                                        <label>หมายเลขผู้เสียภาษี / Tax. <font color="#F00"></font></label>
                                         <input id="customer_tax" name="customer_tax" class="form-control" readonly>
                                         <p class="help-block">Example : 0305559003597.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Remark  <font color="#F00"></font></label>
+                                        <label>หมายเหตุ / Remark  <font color="#F00"></font></label>
                                         <textarea  id="customer_purchase_order_remark" name="customer_purchase_order_remark" class="form-control" rows="7" ></textarea >
                                         <p class="help-block">Example : -.</p>
                                     </div>
@@ -125,28 +125,28 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Purchase Order Code <font color="#F00"><b>*</b></font></label>
+                                        <label>เลขที่ใบสั่งซื้อ / PO Code <font color="#F00"><b>*</b></font></label>
                                         <input id="customer_purchase_order_code" name="customer_purchase_order_code" class="form-control" value="<?php echo $last_code;?>" >
                                         <p class="help-block">Example : PO1801001.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Purchase Order Date</label>
+                                        <label>วันที่ออกใบสั่งซื้อ / PO Date</label>
                                         <input type="text" id="customer_purchase_order_date" name="customer_purchase_order_date"  class="form-control calendar" readonly/>
                                         <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Credit term (Day)</label>
+                                        <label>จ่ายเงินภายใน (วัน) / Credit term (Day)</label>
                                         <input type="text" id="customer_purchase_order_credit_term" name="customer_purchase_order_credit_term"  class="form-control"/>
                                         <p class="help-block">10 </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Employee  <font color="#F00"><b>*</b></font> </label>
+                                        <label>พนักงานขาย / Sale  <font color="#F00"><b>*</b></font> </label>
                                         <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true" >
                                             <option value="">Select</option>
                                             <?php 
@@ -162,9 +162,16 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Delivery by</label>
+                                        <label>จัดส่งโดย / Delivery by</label>
                                         <input type="text" id="customer_purchase_order_delivery_by" name="customer_purchase_order_delivery_by"  class="form-control"/>
                                         <p class="help-block">DHL </p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>ไฟล์แนบ / File </label>
+                                        <input accept=".pdf"   type="file" id="customer_purchase_order_file" name="customer_purchase_order_file" >
+                                        <p class="help-block">Example : .pdf</p>
                                     </div>
                                 </div>
                             </div>
@@ -174,6 +181,7 @@
                     <!-- /.row (nested) -->
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
+                            <a href="index.php?app=customer_purchase_order" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>

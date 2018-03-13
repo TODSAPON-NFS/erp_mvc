@@ -12,6 +12,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         customer_purchase_order_code, 
         customer_purchase_order_date, 
         customer_purchase_order_status, 
+        customer_purchase_order_file, 
         customer_purchase_order_remark, 
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 
         user_position_name,
@@ -82,6 +83,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         customer_id = '".$data['customer_id']."', 
         employee_id = '".$data['employee_id']."', 
         customer_purchase_order_code = '".$data['customer_purchase_order_code']."', 
+        customer_purchase_order_file = '".$data['customer_purchase_order_file']."', 
         customer_purchase_order_credit_term = '".$data['customer_purchase_order_credit_term']."', 
         customer_purchase_order_delivery_term = '".$data['customer_purchase_order_delivery_term']."', 
         customer_purchase_order_delivery_by = '".$data['customer_purchase_order_delivery_by']."', 
@@ -108,6 +110,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
             customer_id,
             employee_id,           
             customer_purchase_order_code,
+            customer_purchase_order_file,
             customer_purchase_order_credit_term,
             customer_purchase_order_delivery_term,
             customer_purchase_order_delivery_by,
@@ -122,6 +125,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         $data['customer_id']."','".
         $data['employee_id']."','".
         $data['customer_purchase_order_code']."','".
+        $data['customer_purchase_order_file']."','".
         $data['customer_purchase_order_credit_term']."','".
         $data['customer_purchase_order_delivery_term']."','".
         $data['customer_purchase_order_delivery_by']."','".

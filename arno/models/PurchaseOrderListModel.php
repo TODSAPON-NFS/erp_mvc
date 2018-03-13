@@ -183,18 +183,18 @@ class PurchaseOrderListModel extends BaseModel{
         }else{
             $str='0';
         }
+        $sql = "UPDATE  tb_purchase_request_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str)) ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = "UPDATE  tb_customer_purchase_order_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str)) ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT); 
 
         $sql = "DELETE FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str) ";
      
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
-        $sql = "UPDATE  tb_purchase_request_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN ($str) ";
-     
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
-
-        $sql = "UPDATE  tb_customer_purchase_order_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN ($str) ";
-     
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

@@ -79,6 +79,10 @@ if(!isset($_GET['action'])){
         $data['credit_day'] = $_POST['credit_day'];
         $data['condition_pay'] = $_POST['condition_pay'];
         $data['pay_limit'] = $_POST['pay_limit'];
+        $data['account_type'] = $_POST['account_type'];
+        $data['vat_type'] = $_POST['vat_type'];
+        $data['vat'] = $_POST['vat'];
+        $data['holding_tax'] = $_POST['holding_tax'];
 
         $check = true;
 
@@ -156,6 +160,10 @@ if(!isset($_GET['action'])){
         $data['credit_day'] = $_POST['credit_day'];
         $data['condition_pay'] = $_POST['condition_pay'];
         $data['pay_limit'] = $_POST['pay_limit'];
+        $data['account_type'] = $_POST['account_type'];
+        $data['vat_type'] = $_POST['vat_type'];
+        $data['vat'] = $_POST['vat'];
+        $data['holding_tax'] = $_POST['holding_tax'];
 
         $check = true;
 

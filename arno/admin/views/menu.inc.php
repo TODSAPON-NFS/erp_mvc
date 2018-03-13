@@ -80,10 +80,10 @@
                             <div class="input-group custom-search-form">
                                 <input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
+                                    <button class="btn btn-default" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
                             </div>
                             <!-- /input-group -->
                         </li>
@@ -102,7 +102,10 @@
                             <a href="?app=product"><i class="fa  fa-cubes fa-fw" aria-hidden="true"></i> Product</a>
                         </li>
                         <li>
-                            <a href="?app=delivery_note"><i class="fa  fa-file-o" aria-hidden="true"></i> Delivery Note (DN)</a>
+                            <a href="?app=delivery_note_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> Delivery Note Supplier (DNS)</a>
+                        </li>
+                        <li>
+                            <a href="?app=delivery_note_customer"><i class="fa  fa-file-o" aria-hidden="true"></i> Delivery Note Customer (DNC)</a>
                         </li>
                         <li>
                             <a href="?app=purchase_request"><i class="fa  fa-file" aria-hidden="true"></i> Purchase Request (PR)</a>
@@ -114,10 +117,10 @@
                             <a href="?app=purchase_order"><i class="fa  fa fa-file-powerpoint-o" aria-hidden="true"></i> Purchase Order (PO)</a>
                         </li>
                         <li>
-                            <a href="?app=supplier_invoice"><i class="fa  fa-file-text-o" aria-hidden="true"></i> Supplier Invoice </a>
+                            <a href="?app=invoice_supplier"><i class="fa  fa-file-text-o" aria-hidden="true"></i> Supplier Invoice </a>
                         </li>
                         <li>
-                            <a href="?app=invoice"><i class="fa  fa-file-pdf-o" aria-hidden="true"></i> Invoice</a>
+                            <a href="?app=invoice_customer"><i class="fa  fa-file-pdf-o" aria-hidden="true"></i> Customer Invoice</a>
                         </li>
                         <li>
                             <a href="?app=move_stock"><i class="fa fa-database fa-fw" aria-hidden="true"></i> Move Stock</a>

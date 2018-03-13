@@ -117,7 +117,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Edit Purchase Request 
+            แก้ไขใบร้องขอสั่งซื้อสินค้า / Edit Purchase Request 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -127,14 +127,14 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Purchase Request Code <font color="#F00"><b>*</b></font></label>
+                                <label>หมายเลขใบร้องขอสั่งซื้อสินค้า / PR Code <font color="#F00"><b>*</b></font></label>
                                 <input id="purchase_request_code" name="purchase_request_code" class="form-control"  value="<? echo $purchase_request['purchase_request_code'];?>" readonly>
                                 <p class="help-block">Example : PR1801001.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Purchase Request Type <font color="#F00"><b>*</b></font></label>
+                                <label>ประเภทใบร้องขอสั่งซื้อสินค้า / PR Type <font color="#F00"><b>*</b></font></label>
                                 <select id="purchase_request_type" name="purchase_request_type" class="form-control select"  data-live-search="true">
                                     <option value="">Select</option>
                                     <option <?php if($purchase_request['purchase_request_type'] == "Sale"){?> selected <?php }?> >Sale</option>
@@ -146,7 +146,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Employee  <font color="#F00"><b>*</b></font> </label>
+                                <label>ผู้ร้องขอ / Request by  <font color="#F00"><b>*</b></font> </label>
                                 <select id="employee_id" name="employee_id" class="form-control select"  data-live-search="true">
                                     <option value="">Select</option>
                                     <?php 
@@ -166,7 +166,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label>Customer </label>
+                                <label>สำหรับลูกค้า / Customer </label>
                                 <select id="customer_id" name="customer_id" class="form-control"  data-live-search="true">
                                     <option value="0">Select</option>
                                     <?php 
@@ -182,7 +182,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label>Remark</label>
+                                <label>หมายเหตุ / Remark</label>
                                 <input id="purchase_request_remark" name="purchase_request_remark" class="form-control" value="<? echo $purchase_request['purchase_request_remark'];?>"/>
                                 <p class="help-block">Example : -.</p>
                             </div>
@@ -192,11 +192,11 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th>Product Code</th>
-                                <th>Product Name</th>
-                                <th>Qty</th>
-                                <th>Delivery Min</th>
-                                <th>Remark</th>
+                                <th style="text-align:center;">รหัสสินค้า <br>(Product Code)</th>
+                                <th style="text-align:center;">ชื่อสินค้า<br>(Product Name)</th>
+                                <th style="text-align:center;">จำนวน<br>(Qty)</th>
+                                <th style="text-align:center;">วันที่ใช้สินค้า<br>(Delivery Min)</th>
+                                <th style="text-align:center;">หมายเหตุ<br>(Remark)</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -253,6 +253,8 @@
                     <!-- /.row (nested) -->
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
+                            <a href="index.php?app=purchase_request" class="btn btn-default">Back</a>
+                        
                             <button type="reset" class="btn btn-primary">Reset</button>
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>

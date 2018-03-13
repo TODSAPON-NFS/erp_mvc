@@ -184,6 +184,10 @@ class PurchaseOrderModel extends BaseModel{
                 FROM tb_product_supplier LEFT JOIN tb_supplier ON tb_product_supplier.supplier_id = tb_supplier.supplier_id 
                 WHERE product_id IN ( 
                     SELECT DISTINCT product_id 
+                    FROM tb_delivery_note_supplier_list 
+                    WHERE purchase_order_list_id = 0 
+                    UNION 
+                    SELECT DISTINCT product_id 
                     FROM tb_purchase_request_list 
                     WHERE purchase_order_list_id = 0 
                     UNION 
@@ -256,6 +260,31 @@ class PurchaseOrderModel extends BaseModel{
 
         //echo $sql_customer."<br><br>";
         if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+
+        $sql_dn = "SELECT tb_delivery_note_supplier_list.product_id, 
+        delivery_note_supplier_list_id,
+        CONCAT(product_code_first,product_code) as product_code, 
+        product_name, 
+        (delivery_note_supplier_list_qty) as purchase_order_list_qty, 
+        product_buyprice as purchase_order_list_price ,
+        CONCAT('Order for delivey note supplier ',delivery_note_supplier_code) as purchase_order_list_remark 
+        FROM tb_delivery_note_supplier 
+        LEFT JOIN tb_delivery_note_supplier_list ON tb_delivery_note_supplier.delivery_note_supplier_id = tb_delivery_note_supplier_list.delivery_note_supplier_id 
+        LEFT JOIN tb_product ON tb_delivery_note_supplier_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_product_supplier ON tb_delivery_note_supplier_list.product_id = tb_product_supplier.product_id 
+        WHERE tb_product_supplier.supplier_id = '$supplier_id' 
+        AND purchase_order_list_id = 0 ";
+
+        //echo $sql_dn."<br><br>";
+
+        if ($result = mysqli_query($this->db,$sql_dn, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;

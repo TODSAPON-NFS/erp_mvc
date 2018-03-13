@@ -12,7 +12,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                        Purchase Request List
+                        รายการใบร้องขอสั่งซื้อสินค้า / Purchase Request List
                             <a class="btn btn-success " style="float:right;" href="?app=purchase_request&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                         </div>
                         <!-- /.panel-heading -->

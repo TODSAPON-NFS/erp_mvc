@@ -12,7 +12,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                        Customer Purchase Order List
+                        รายการใบสั่งซื้อสินค้าของลูกค้า / Customer Purchase Order List
                             <a class="btn btn-success " style="float:right;" href="?app=customer_purchase_order&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                         </div>
                         <!-- /.panel-heading -->
@@ -45,6 +45,15 @@
                                         <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_remark']; ?></td>
                                         <td>-</td>
                                         <td>
+                                            <?
+                                                if($customer_purchase_orders[$i]['customer_purchase_order_file'] != ""){
+                                            ?>
+                                                <a href="../upload/customer_purchase_order/<?php echo $customer_purchase_orders[$i]['customer_purchase_order_file'];?>" target="_blank">
+                                                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                </a> 
+                                            <?
+                                                }
+                                            ?>
                                             <a href="?app=customer_purchase_order&action=detail&id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>">
                                                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                             </a>

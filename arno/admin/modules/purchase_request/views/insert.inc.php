@@ -53,7 +53,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Add Purchase Request  
+            เพิ่มใบร้องขอสั่งซื้อสินค้า /  Add Purchase Request  
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -61,14 +61,14 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Purchase Request Code <font color="#F00"><b>*</b></font></label>
+                                <label>ประเภทใบร้องขอสั่งซื้อสินค้า / PR Code <font color="#F00"><b>*</b></font></label>
                                 <input id="purchase_request_code" name="purchase_request_code" class="form-control" value="<?php echo $last_code;?>" readonly>
                                 <p class="help-block">Example : PR1801001.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Purchase Request Type <font color="#F00"><b>*</b></font></label>
+                                <label>ประเภทใบร้องขอสั่งซื้อสินค้า / PR Type <font color="#F00"><b>*</b></font></label>
                                 <select id="purchase_request_type" name="purchase_request_type" class="form-control">
                                         <option value="">Select</option>
                                         <option>Sale</option>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Employee  <font color="#F00"><b>*</b></font> </label>
+                                <label>ผู้ร้องขอ / Request by  <font color="#F00"><b>*</b></font> </label>
                                 <select id="employee_id" name="employee_id" class="form-control" >
                                     <option value="">Select</option>
                                     <?php 
@@ -100,7 +100,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label>Customer </label>
+                                <label>สำหรับลูกค้า / Customer </label>
                                 <select id="customer_id" name="customer_id" class="form-control" >
                                     <option value="0">Select</option>
                                     <?php 
@@ -116,7 +116,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label>Remark</label>
+                                <label>หมายเหตุ / Remark</label>
                                 <input id="purchase_request_remark" name="purchase_request_remark" class="form-control" />
                                 <p class="help-block">Example : -.</p>
                             </div>
@@ -125,6 +125,7 @@
                     <!-- /.row (nested) -->
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
+                            <a href="index.php?app=purchase_request" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>

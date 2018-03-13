@@ -68,9 +68,16 @@
         require_once("modules/purchase_order/views/index.inc.php");
     }else if($_GET['app'] == "customer_purchase_order"){
         require_once("modules/customer_purchase_order/views/index.inc.php");
-    }else if($_GET['app'] == "invoice"){
-        require_once("modules/invoice/views/index.inc.php");
-    }else if($_GET['app'] == "delivery_note"){
-        require_once("modules/delivery_note/views/index.inc.php");
+    }else if($_GET['app'] == "invoice_supplier"){
+        require_once("modules/invoice_supplier/views/index.inc.php");
+    }else if($_GET['app'] == "invoice_customer"){
+        require_once("modules/invoice_customer/views/index.inc.php");
+    }
+    
+    
+    else if($_GET['app'] == "delivery_note_customer"){
+        require_once("modules/delivery_note_customer/views/index.inc.php");
+    }else if($_GET['app'] == "delivery_note_supplier"){
+        require_once("modules/delivery_note_supplier/views/index.inc.php");
     }
 ?>

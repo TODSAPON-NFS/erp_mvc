@@ -219,7 +219,6 @@ if(!isset($_GET['action'])){
 
 
         $m_product_id = $_POST['m_product_id'];
-        $m_purchase_order_list_id = $_POST['m_purchase_order_list_id'];
         $m_purchase_order_list_qty = $_POST['m_purchase_order_list_qty'];
         $m_purchase_order_list_price = $_POST['m_purchase_order_list_price'];
         $m_purchase_order_list_price_sum = $_POST['m_purchase_order_list_price_sum'];
@@ -239,14 +238,7 @@ if(!isset($_GET['action'])){
                 $data_sub['purchase_order_list_delivery_max'] = $m_purchase_order_list_delivery_max[$i];
                 $data_sub['purchase_order_list_remark'] = $m_purchase_order_list_remark[$i];
     
-                $id = $purchase_order_list_model->insertPurchaseOrderList($data_sub);
-                if($id > 0){
-                    if($purchase_request_list_id[$i] > 0){
-                        $purchase_request_list_model->updatePurchaseOrderId($purchase_request_list_id[$i],$id);
-                    }else if ($customer_purchase_order_list_id[$i] > 0 ){
-                        $customer_purchase_order_list_model->updatePurchaseOrderId($customer_purchase_order_list_id[$i],$id);
-                    }
-                }
+                $purchase_order_list_model->insertPurchaseOrderList($data_sub);
             }
             $data['purchase_order_status'] = 'New';
         }else if($m_product_id != ""){
@@ -260,14 +252,7 @@ if(!isset($_GET['action'])){
             $data_sub['purchase_order_list_delivery_max'] = $m_purchase_order_list_delivery_max;
             $data_sub['purchase_order_list_remark'] = $m_purchase_order_list_remark;
 
-            $id = $purchase_order_list_model->insertPurchaseOrderList($data_sub);
-                if($id > 0){
-                    if($purchase_request_list_id > 0){
-                        $purchase_request_list_model->updatePurchaseOrderId($purchase_request_list_id,$id);
-                    }else if ($customer_purchase_order_list_id > 0 ){
-                        $customer_purchase_order_list_model->updatePurchaseOrderId($customer_purchase_order_list_id,$id);
-                    }
-                }
+            $purchase_order_list_model->insertPurchaseOrderList($data_sub);
             $data['purchase_order_status'] = 'New';
         }
 

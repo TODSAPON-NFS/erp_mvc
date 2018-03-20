@@ -49,16 +49,19 @@
         require_once("modules/supplier_logistic/views/index.inc.php");
     }
 
-    else if($_GET['app'] == "stock_list"){
+    
+    else if($_GET['app'] == "move_stock"){
+        require_once("modules/move_stock/views/index.inc.php");
+    }else if($_GET['app'] == "stock_group"){
+        require_once("modules/stock_group/views/index.inc.php");
+    }else if($_GET['app'] == "stock"){
+        require_once("modules/stock/views/index.inc.php");
+    }else if($_GET['app'] == "stock_list"){
         require_once("modules/stock_list/views/index.inc.php");
     }else if($_GET['app'] == "stock_in"){
         require_once("modules/stock_in/views/index.inc.php");
     }else if($_GET['app'] == "stock_out"){
         require_once("modules/stock_out/views/index.inc.php");
-    }else if($_GET['app'] == "stock_borrow_out"){
-        require_once("modules/stock_borrow_out/views/index.inc.php");
-    }else if($_GET['app'] == "stock_borrow_in"){
-        require_once("modules/stock_borrow_in/views/index.inc.php");
     }
 
 

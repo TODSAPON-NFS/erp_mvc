@@ -180,6 +180,51 @@
         
     } 
 
+    function search_pop_like(id){
+        var customer_id = document.getElementById('customer_id').value;
+        var val = document.getElementsByName('customer_purchase_order_list_id[]');
+        var customer_purchase_order_list_id = [];
+        
+        for(var i = 0 ; i < val.length ; i++){
+            customer_purchase_order_list_id.push(val[i].value);
+        }
+
+        $.post( "controllers/getInvoiceCustomerListByCustomerID.php", { 'customer_id': customer_id, 'customer_purchase_order_list_id': JSON.stringify(customer_purchase_order_list_id), search : $(id).val() }, function( data ) {
+            var content = "";
+                if(data.length > 0){
+                    data_buffer = data;
+                    
+                    for(var i = 0; i < data.length ; i++){
+
+                        content += '<tr class="odd gradeX">'+
+                                        '<td>'+
+                                            '<input type="checkbox" name="p_id" value="'+data[i].product_id+'" />'+     
+                                        '</td>'+
+                                        '<td>'+
+                                            data[i].product_code+
+                                        '</td>'+
+                                        '<td>'+
+                                            data[i].product_name+
+                                        '</td>'+
+                                        '<td align="right">'+
+                                            data[i].invoice_customer_list_qty +
+                                        '</td>'+
+                                        '<td align="right">'+
+                                            data[i].invoice_customer_list_price +
+                                        '</td>'+
+                                        '<td align="right">'+
+                                            (data[i].invoice_customer_list_qty * data[i].invoice_customer_list_price) +
+                                        '</td>'+
+                                    '</tr>';
+
+                }
+            }
+            $('#bodyAdd').html(content);
+            
+        });
+        
+    }
+
     function add_row(id){
         $('#modalAdd').modal('hide');
         var checkbox = document.getElementsByName('p_id');
@@ -516,6 +561,12 @@
                                             </div>
 
                                             <div  class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-offset-8 col-md-4" align="right">
+                                                    <input type="text" class="form-control" name="search_pop" onchange="search_pop_like(this)" placeholder="Search"/>
+                                                </div>
+                                            </div>
+                                            <br>
                                             <table width="100%" class="table table-striped table-bordered table-hover" >
                                                 <thead>
                                                     <tr>

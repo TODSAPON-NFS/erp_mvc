@@ -51,6 +51,10 @@
             document.getElementById('supplier_code').value = data.supplier_code;
             document.getElementById('supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
         });
+
+        $.post( "controllers/getPurchaseOrderCodeByID.php", { 'supplier_id': supplier_id }, function( data ) {
+            document.getElementById('purchase_order_code').value = data;
+        });
     }
 
     
@@ -104,17 +108,21 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
-                    '<input type="hidden" name="customer_purchase_order_list_id[]" value="0" />'+
+                    '<input type="hidden" name="customer_purchase_order_list_detail_id[]" value="0" />'+
                     '<input type="hidden" name="purchase_request_list_id[]" value="0" />'+     
                     '<select class="form-control select" type="text" name="product_id" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="product_name[]" readonly /></td>'+
+                '<td>'+
+                '<input type="text" class="form-control" name="product_name[]" readonly />'+
+                '<span>Remark</span>'+
+                '<input type="text" class="form-control" name="purchase_order_list_remark[]" />'+
+                '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_qty[]" onchange="update_sum(this);" /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_price[]" onchange="update_sum(this);" /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
                 '<td><input type="text" class="form-control" name="purchase_order_list_delivery_min[]" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="purchase_order_list_delivery_max[]" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="purchase_order_list_remark[]" /></td>'+
+                //'<td><input type="text" class="form-control" name="purchase_order_list_delivery_max[]" readonly /></td>'+
+                //'<td><input type="text" class="form-control" name="purchase_order_list_remark[]" /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -152,24 +160,24 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Add Purchase Order  
+               เพิ่มใบสั่งซื้อสินค้า / Add Purchase Order  
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <form role="form" method="post" onsubmit="return check();" action="index.php?app=purchase_order&action=add" >
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Supplier Code <font color="#F00"><b>*</b></font></label>
+                                        <label>รหัสผู้ขาย / Supplier Code <font color="#F00"><b>*</b></font></label>
                                         <input id="supplier_code" name="supplier_code" class="form-control" value="<? echo $supplier['supplier_code'];?>" readonly>
                                         <p class="help-block">Example : A0001.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="form-group">
-                                        <label>Supplier  <font color="#F00"><b>*</b></font> </label>
+                                        <label>ผู้ขาย / Supplier  <font color="#F00"><b>*</b></font> </label>
                                         <select id="supplier_id" name="supplier_id" class="form-control select" onchange="get_supplier_detail()" data-live-search="true">
                                             <option value="">Select</option>
                                             <?php 
@@ -185,41 +193,41 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Address <font color="#F00"><b>*</b></font></label>
+                                        <label>ที่อยู่ / Address <font color="#F00"><b>*</b></font></label>
                                         <textarea  id="supplier_address" name="supplier_address" class="form-control" rows="5" readonly><? echo $supplier['supplier_address_1'] ."\n". $supplier['supplier_address_2'] ."\n". $supplier['supplier_address_3'];?></textarea >
                                         <p class="help-block">Example : IN.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-2">
                         </div>
                         <div class="col-lg-4">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Purchase Order Code <font color="#F00"><b>*</b></font></label>
+                                        <label>รหัสใบสั่งซื้อสินค้า / Purchase Order Code <font color="#F00"><b>*</b></font></label>
                                         <input id="purchase_order_code" name="purchase_order_code" class="form-control" value="<?php echo $last_code;?>" readonly>
                                         <p class="help-block">Example : PO1801001.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Purchase Order Date</label>
+                                        <label>วันที่ออกใบสั่งซื้อสินค้า / Purchase Order Date</label>
                                         <input type="text" id="purchase_order_date" name="purchase_order_date"  class="form-control calendar" readonly/>
                                         <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Credit term (Day)</label>
+                                        <label>เครดิต (วัน) / Credit term (Day)</label>
                                         <input type="text" id="purchase_order_credit_term" name="purchase_order_credit_term"  class="form-control"/>
                                         <p class="help-block">10 </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Employee  <font color="#F00"><b>*</b></font> </label>
+                                        <label>ผู้ออกใบสั่งซื้อ / Employee  <font color="#F00"><b>*</b></font> </label>
                                         <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true">
                                             <option value="">Select</option>
                                             <?php 
@@ -235,8 +243,8 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Delivery by</label>
-                                        <input type="text" id="purchase_order_delivery_by" name="purchase_order_delivery_by"  class="form-control"/>
+                                        <label>จัดส่งโดย / Delivery by</label>
+                                        <input type="text" id="purchase_order_delivery_by" name="purchase_order_delivery_by" value="<?PHP echo $supplier['delivery_by'] ?>"  class="form-control"/>
                                         <p class="help-block">DHL </p>
                                     </div>
                                 </div>
@@ -250,15 +258,15 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th>Product Code</th>
-                                <th>Product Name</th>
-                                <th>Qty</th>
-                                <th>@</th>
-                                <th>Amount</th>
-                                <th>Delivery Min</th>
-                                <th>Delivery Max</th>
-                                <th>Remark</th>
-                                <th></th>
+                                <th style="text-align:center;" width="150">รหัสสินค้า <br> (Product Code)</th>
+                                <th style="text-align:center;" >ชื่อสินค้า / หมายเหตุ <br> (Product Name / Remark)</th>
+                                <th style="text-align:center;" width="120">จำนวน <br> (Qty)</th>
+                                <th style="text-align:center;" width="120">ราคาต่หน่วย <br> (Unit price)</th>
+                                <th style="text-align:center;" width="120">จำนวนเงิน <br> (Amount)</th>
+                                <th style="text-align:center;" width="120">วันที่จัดส่ง <br> (Delivery)</th>
+                                <!--<th>Delivery Max</th>
+                                <th>Remark</th>-->
+                                <th width="24"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -267,7 +275,7 @@
                             ?>
                             <tr class="odd gradeX">
                                 <td>
-                                    <input type="hidden" name="customer_purchase_order_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['customer_purchase_order_list_id'];?>" />
+                                    <input type="hidden" name="customer_purchase_order_list_detail_id[]" value="<?PHP echo  $purchase_order_lists[$i]['customer_purchase_order_list_detail_id'];?>" />
                                     <input type="hidden" name="purchase_request_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['purchase_request_list_id'];?>" />
                                    
                                     <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
@@ -281,13 +289,19 @@
                                         ?>
                                     </select>
                                 </td>
-                                <td><input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $purchase_order_lists[$i]['product_name']; ?>" /></td>
+                                <td>
+                                    <input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $purchase_order_lists[$i]['product_name']; ?>" />
+                                    <span>Remark.</span>
+                                    <input type="text" class="form-control" name="purchase_order_list_remark[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_remark']; ?>" />
+                                </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="purchase_order_list_qty[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_qty']; ?>" /></td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="purchase_order_list_price[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_price']; ?>" /></td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="purchase_order_list_price_sum[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_qty'] * $purchase_order_lists[$i]['purchase_order_list_price']; ?>" /></td>
                                 <td><input type="text" class="form-control calendar" name="purchase_order_list_delivery_min[]" readonly value="<?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']; ?>" /></td>
+                                <!--
                                 <td><input type="text" class="form-control calendar" name="purchase_order_list_delivery_max[]" readonly value="<?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_max']; ?>" /></td>
                                 <td><input type="text" class="form-control" name="purchase_order_list_remark[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_remark']; ?>" /></td>
+                                -->
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
@@ -308,8 +322,8 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
+                                <!--<td></td>
+                                <td></td>-->
                                 <td>
                                     <a href="javascript:;" onclick="add_row(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i>

@@ -47,6 +47,174 @@
 
     }
 
+
+    function add_row_from(id,list_id){
+        var hold = $(id).closest('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]').children('div').children('div').children('div').children('input[name="stock_hold[]"]');
+
+        var stock_hold = $(id).closest('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]').children('div').children('div').children('div').children('select[name="stock_hold_id[]"]');
+        var supplier = $(id).closest('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]').children('div').children('div').children('div').children('select[name="buy_supplier_id[]"]');
+        var stock = $(id).closest('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]').children('div').children('div').children('div').children('select[name="stock_group_id[]"]');
+        var qty = $(id).closest('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]').children('div').children('div').children('div').children('input[name="qty[]"]');
+
+        var stock_hold_text = $(id).closest('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]').children('div').children('div').children('div').children('select[name="stock_hold_id[]"]').children("option:selected");
+        var supplier_text = $(id).closest('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]').children('div').children('div').children('div').children('select[name="buy_supplier_id[]"]').children("option:selected");
+        var stock_text = $(id).closest('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]').children('div').children('div').children('div').children('select[name="stock_group_id[]"]').children("option:selected");
+
+        var detail = "";
+        var content = "";
+        if ($(hold[0]).prop('checked'))
+        {
+            if($(stock_hold[0]).val() == ""){
+                alert("Please select stock hold.");
+                $(stock_hold).focus();
+                return false;
+            }else if($(qty[0]).val() == ""){
+                alert("Please input qty.");
+                $(qty[0]).focus();
+                return false;
+            }else if(!$.isNumeric($(qty).val())){
+                alert("Please input number of qty.");
+                $(qty[0]).focus();
+                return false;
+            }else{
+
+            
+                detail = "คลังสินค้า "+$(stock_hold_text[0]).text()+" จำนวน "+$(qty[0]).val();
+                content =   '<li class="list-group-item">'+
+                                    '<input type="hidden" name="supplier_id_'+list_id+'[]" value="0" />'+
+                                    '<input type="hidden" name="stock_group_id_'+list_id+'[]" value="0" />'+
+                                    '<input type="hidden" name="stock_hold_id_'+list_id+'[]" value="'+$(stock_hold[0]).val()+'" />'+
+                                    '<input type="hidden" name="qty_'+list_id+'[]" value="'+$(qty[0]).val()+'" />'+
+                                    '<input type="hidden" name="customer_purchase_order_list_detail_id_'+list_id+'[]" value="0" />'+
+                                    '<a href="javascript:;" class="close" onclick="delete_supplier(this)" >&times;</a>'+
+                                    detail+
+                            '</li>';
+            }
+        }else{
+            if($(supplier[0]).val() == ""){
+                alert("Please select supplier.");
+                $(supplier).focus();
+                return false;
+            }else if($(stock[0]).val() == ""){
+                alert("Please select stock.");
+                $(stock).focus();
+                return false;
+            }else if($(qty[0]).val() == ""){
+                alert("Please input qty.");
+                $(qty[0]).focus();
+                return false;
+            }else if(!$.isNumeric($(qty).val())){
+                alert("Please input number of qty.");
+                $(qty[0]).focus();
+                return false;
+            }else{
+
+            
+
+                detail = "ซื้อจาก "+$(supplier_text[0]).text()+" จำนวน "+$(qty[0]).val()+' ('+$(stock_text[0]).text()+')';
+                content =   '<li class="list-group-item">'+
+                                    '<input type="hidden" name="supplier_id_'+list_id+'[]" value="'+$(supplier[0]).val()+'" />'+
+                                    '<input type="hidden" name="stock_group_id_'+list_id+'[]" value="'+$(stock[0]).val()+'" />'+
+                                    '<input type="hidden" name="stock_hold_id_'+list_id+'[]" value="0" />'+
+                                    '<input type="hidden" name="qty_'+list_id+'[]" value="'+$(qty[0]).val()+'" />'+
+                                    '<input type="hidden" name="customer_purchase_order_list_detail_id_'+list_id+'[]" value="0" />'+
+                                    '<a href="javascript:;" class="close" onclick="delete_supplier(this)" >&times;</a>'+
+                                    detail+
+                            '</li>';
+            }
+        }
+
+        
+
+        $($(id).closest('td')[0]).append(content);
+
+        var modal = $(id).closest('tr').children('td').children('div[name="modalAdd"]');
+        if(modal.length > 0){
+            $(modal[0]).modal('hide');
+        }
+
+    }
+
+    function show_row_from(id){
+       
+        var p_id = $(id).closest('tr').children('td').children('div').children('select[name="product_id[]"]');
+
+        if(p_id.length > 0){
+            $.post( "controllers/getSupplierListByProductID.php", { 'product_id': $(p_id[0]).val()}, function( data ) {
+
+                var modelsupp = $(id).closest('tr').children('td').children('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]')
+                                .children('div').children('div').children('div').children('select[name="buy_supplier_id[]"]');
+                if(modelsupp.length > 0){
+                    var content = "<option value=''>Select Product</option>";
+                    $.each(data, function (index, value) {
+                        content += "<option value='" + value['supplier_id'] + "'>"+value['supplier_name_th']+"("+value['supplier_name_en']+")</option>";
+                    });
+                    $(modelsupp[0]).html(content);
+                }
+
+            });
+
+            $.post( "controllers/getStockGroupByProductID.php", { 'product_id': $(p_id[0]).val()}, function( data ) {
+
+                var modelhold = $(id).closest('tr').children('td').children('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]')
+                                .children('div').children('div').children('div').children('select[name="stock_hold_id[]"]');
+                if(modelhold.length > 0){
+                    var content = "<option value=''>Select Product</option>";
+                    $.each(data, function (index, value) {
+                        content += "<option value='" + value['stock_group_id'] + "'>"+value['stock_group_name']+"</option>";
+                    });
+                    $(modelhold[0]).html(content);
+                }
+
+            });
+
+            $.post( "controllers/getStockGroup.php", { 'product_id': $(p_id[0]).val()}, function( data ) {
+
+                var modelstock = $(id).closest('tr').children('td').children('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]')
+                                .children('div').children('div').children('div').children('select[name="stock_group_id[]"]');
+                if(modelstock.length > 0){
+                    var content = "<option value=''>Select Product</option>";
+                    $.each(data, function (index, value) {
+                        content += "<option value='" + value['stock_group_id'] + "'>"+value['stock_group_name']+"</option>";
+                    });
+                    $(modelstock[0]).html(content);
+                }
+
+            });
+
+            var modal = $(id).closest('tr').children('td').children('div[name="modalAdd"]');
+            if(modal.length > 0){
+                $(modal[0]).modal('show');
+            }
+        }
+        
+
+    } 
+
+    function changeSupplier (id){
+        
+        var stock_hold = $(id).closest('div[name="modelBody"]').children('div').children('div').children('div').children('select[name="stock_hold_id[]"]');
+        var supplier = $(id).closest('div[name="modelBody"]').children('div').children('div').children('div').children('select[name="buy_supplier_id[]"]');
+        var stock = $(id).closest('div[name="modelBody"]').children('div').children('div').children('div').children('select[name="stock_group_id[]"]');
+
+        if ($(id).prop('checked'))
+        {
+            $(stock_hold[0]).attr("disabled",false);
+            $(supplier[0]).attr("disabled",true);
+            $(stock[0]).attr("disabled",true);
+
+        }else{
+
+            $(stock_hold[0]).attr("disabled",true);
+            $(supplier[0]).attr("disabled",false);
+            $(stock[0]).attr("disabled",false);
+        }
+    }
+
+    function delete_supplier(id){
+        $(id).closest('li').remove();
+    }
+
      function delete_row(id){
         $(id).closest('tr').remove();
      }
@@ -63,69 +231,6 @@
      }
 
 
-    function m_show_data(id){
-        var product_name = "";
-        var data = product_data.filter(val => val['product_id'] == $(id).val());
-        if(data.length > 0){
-            $(id).closest('tr').children('td').children('input[name="m_product_name[]"]').val( data[0]['product_name'] );
-        }
-        
-     }
-
-
-     function update_sum(id){
-
-          var qty =  $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_qty[]"]').val(  );
-          var price =  $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val( );
-          var sum =  $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price_sum[]"]').val( );
-
-        if(isNaN(qty)){
-            qty = 0;
-        }
-
-        if(isNaN(price)){
-            price = 0;
-        }
-
-        if(isNaN(sum)){
-            sum = 0;
-        }
-
-        sum = qty*price;
-
-        $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_qty[]"]').val( qty );
-        $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val( price );
-        $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price_sum[]"]').val( sum );
-
-        
-     }
-
-     function m_update_sum(id){
-
-        var qty =  $(id).closest('tr').children('td').children('input[name="m_customer_purchase_order_list_qty[]"]').val(  );
-        var price =  $(id).closest('tr').children('td').children('input[name="m_customer_purchase_order_list_price[]"]').val( );
-        var sum =  $(id).closest('tr').children('td').children('input[name="m_customer_purchase_order_list_price_sum[]"]').val( );
-
-        if(isNaN(qty)){
-        qty = 0;
-        }
-
-        if(isNaN(price)){
-        price = 0;
-        }
-
-        if(isNaN(sum)){
-        sum = 0;
-        }
-
-        sum = qty*price;
-
-        $(id).closest('tr').children('td').children('input[name="m_customer_purchase_order_list_qty[]"]').val( qty );
-        $(id).closest('tr').children('td').children('input[name="m_customer_purchase_order_list_price[]"]').val( price );
-        $(id).closest('tr').children('td').children('input[name="m_customer_purchase_order_list_price_sum[]"]').val( sum );
-
-
-    }
 
      function add_row(id){
          var index = 0;
@@ -138,24 +243,23 @@
             '<tr class="odd gradeX">'+
                 '<td>'+
                     
-                    '<select class="form-control select" type="text" name="m_product_id[]" onchange="m_show_data(this);" data-live-search="true" ></select>'+
+                    '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td>'+
-                    '<input type="text" class="form-control" name="m_product_name[]" readonly />'+
+                    '<input type="text" class="form-control" name="product_name[]" readonly />'+
                     '<span>Name.</span>'+
-                    '<input type="text" class="form-control" name="m_customer_purchase_order_product_name[]"  />'+
+                    '<input type="text" class="form-control" name="customer_purchase_order_product_name[]"  />'+
                     '<span>Description.</span>'+
-                    '<input type="text" class="form-control" name="m_customer_purchase_order_product_detail[]"  />'+
+                    '<input type="text" class="form-control" name="customer_purchase_order_product_detail[]"  />'+
+                    '<span>Remark.</span>'+
+                    '<input type="text" class="form-control" name="customer_purchase_order_list_remark[]" />'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="m_customer_purchase_order_list_qty[]" onchange="m_update_sum(this);" /></td>'+
+                '<td><input type="text" class="form-control" name="customer_purchase_order_list_qty[]" onchange="update_sum(this);" /></td>'+
                 '<td>'+
-                    '<input type="text" class="form-control" name="m_customer_purchase_order_list_price[]" onchange="m_update_sum(this);" />'+
+                    '<input type="text" class="form-control" name="customer_purchase_order_list_price[]" onchange="update_sum(this);" />'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="m_customer_purchase_order_list_price_sum[]" onchange="m_update_sum(this);" /></td>'+
-                //'<td><input type="text" class="form-control" name="customer_purchase_order_list_delivery_min" readonly /></td>'+
-                //'<td><input type="text" class="form-control" name="customer_purchase_order_list_delivery_max" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="m_customer_purchase_order_list_remark[]" /></td>'+
-                '<td><input type="text" class="form-control" name="m_customer_purchase_order_list_hold[]" /></td>'+
+                '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
+                '<td><input type="text" class="form-control" name="customer_purchase_order_list_hold[]" /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -172,9 +276,7 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
-        //$(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="customer_purchase_order_list_delivery_min"]').datepicker({ dateFormat: 'dd-mm-yy' });
-        //$(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="customer_purchase_order_list_delivery_max"]').datepicker({ dateFormat: 'dd-mm-yy' });
-     }
+    }
 
      function get_customer_detail(){
         var customer_id = document.getElementById('customer_id').value;
@@ -312,6 +414,7 @@
                                         <p class="help-block">Example : DHL </p>
                                     </div>
                                 </div>
+
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ไฟล์แนบ / File </label>
@@ -330,13 +433,10 @@
                             <tr>
                                 <th style="text-align:center;">รหัสสินค้า <br>(Product Code)</th>
                                 <th style="text-align:center;">ชื่อสินค้า <br>(Product Name)</th>
-                                <th style="text-align:center;">จำนวน <br>(Qty)</th>
-                                <th style="text-align:center;">ราคา <br>(@)</th>
-                                <th style="text-align:center;">ราคารวม <br>(Amount)</th>
-                                <!--<th>Delivery Min</th>
-                                <th>Delivery Max</th>-->
-                                <th style="text-align:center;">หมายเหตุ <br>(Remark)</th>
-                                <th style="text-align:center;">ใช้สินค้าจากคลัง <br>(Hold Stock)</th>
+                                <th style="text-align:center;" width="96">จำนวน <br>(Qty)</th>
+                                <th style="text-align:center;" width="96">ราคา <br>(@)</th>
+                                <th style="text-align:center;" width="96">ราคารวม <br>(Amount)</th>
+                                <th style="text-align:center;">การสั่งซื้อ<br>(From)</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -364,18 +464,110 @@
                                     <input type="text" class="form-control" name="customer_purchase_order_product_name[]"  value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_product_name']; ?>" />
                                     <span>Description.</span>
                                     <input type="text" class="form-control" name="customer_purchase_order_product_detail[]"  value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_product_detail']; ?>" />
+                                    <span>Remark.</span>
+                                    <input type="text" class="form-control" name="customer_purchase_order_list_remark[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_remark']; ?>" />
                                 </td>
                                 <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_qty[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_qty']; ?>" /></td>
                                 <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_price[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_price']; ?>" /></td>
                                 <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_price_sum[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_price_sum']; ?>" /></td>
-                                
-                                <?php /*
-                                <td><input type="text" class="form-control calendar" name="customer_purchase_order_list_delivery_min" readonly value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_delivery_min']; ?>" /></td> 
-                                <td><input type="text" class="form-control calendar" name="customer_purchase_order_list_delivery_max" readonly value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_delivery_max']; ?>" /></td>
-                                */?>
+                                <td>
+                                    <a href="javascript:;" onclick="show_row_from(this);" style="color:red;">
+                                        <i class="fa fa-plus" aria-hidden="true"></i> 
+                                        <span>เพิ่มการสั่งซื้อ</span>
+                                    </a>
 
-                                <td><input type="text" class="form-control" name="customer_purchase_order_list_remark[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_remark']; ?>" /></td>
-                                <td><input type="text" class="form-control" name="customer_purchase_order_list_hold[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_hold']; ?>" /></td>
+                                    <div name="modalAdd" class="modal fade" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog modal-lg " role="document">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title">เลือกการสั่งซื้อ / Choose from</h4>
+                                                </div>
+
+                                                <div  class="modal-body" name="modelBody">
+                                                    <div class="row">
+                                                        <div class="col-lg-4">
+                                                            <div class="form-group">
+                                                                <label>ใช้สินค้าจากคลัง / Stock hold  <font color="#F00"><b>*</b></font> </label>
+                                                                <input type="checkbox" onclick="changeSupplier(this)"name="stock_hold[]"  value="1" class="form-group" /> 
+                                                                <p class="help-block">Example : true is stock hold.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>    
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-lg-8">
+                                                            <div class="form-group">
+                                                                <label>ดึงจากคลังสินค้า / Hold Stock  <font color="#F00"><b>*</b></font> </label>
+                                                                <select  class="form-control " name="stock_hold_id[]" disabled  >
+                                                                    <option value="">Select</option>
+                                                                </select>
+                                                                <p class="help-block">Example : Main stock.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>    
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-lg-4">
+                                                            <div class="form-group">
+                                                                <label>ผู้ขาย / Supplier  <font color="#F00"><b>*</b></font> </label>
+                                                                <select  class="form-control " name="buy_supplier_id[]"  >
+                                                                    <option value="">Select</option>
+                                                                </select>
+                                                                <p class="help-block">Example : revel.</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="form-group">
+                                                                <label>คลังสินค้า / Stock  <font color="#F00"><b>*</b></font> </label>
+                                                                <select  class="form-control " name="stock_group_id[]" onchange="show_data(this);"  >
+                                                                    <option value="">Select</option>
+                                                                </select>
+                                                                <p class="help-block">Example : Main stock.</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="form-group">
+                                                                <label>จำนวนสินค้า / Qty  <font color="#F00"><b>*</b></font> </label>
+                                                                <input  class="form-control" name="qty[]" />
+                                                                <p class="help-block">Example : 10.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary" onclick="add_row_from(this,'<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_id']; ?>');">Add</button>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+
+                                    <ul class="list-group">
+                                        <?PHP $cpold = $customer_purchase_order_list_detail_model->getCustomerPurchaseOrderListDetailBy($customer_purchase_order_lists[$i]['customer_purchase_order_list_id']);?>
+                                        <?PHP for($ii=0; $ii < count($cpold); $ii++){?>
+                                                <li class="list-group-item">
+                                                        <input type="hidden" name="supplier_id_<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_id']; ?>[]" value="<?php echo $cpold[$ii]['supplier_id']; ?>" />
+                                                        <input type="hidden" name="stock_group_id_<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_id']; ?>[]" value="<?php echo $cpold[$ii]['stock_group_id']; ?>" />
+                                                        <input type="hidden" name="stock_hold_id_<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_id']; ?>[]" value="<?php echo $cpold[$ii]['stock_hold_id']; ?>" />
+                                                        <input type="hidden" name="qty_<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_id']; ?>[]" value="<?php echo $cpold[$ii]['qty']; ?>" />
+                                                        <input type="hidden" name="customer_purchase_order_list_detail_id_<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_id']; ?>[]" value="<?php echo $cpold[$ii]['customer_purchase_order_list_detail_id']; ?>" />
+                                                        <a href="javascript:;" class="close" onclick="delete_supplier(this)" >&times;</a>
+                                                       <?php if($cpold[$ii]['supplier_id'] == 0){
+                                                            echo "คลังสินค้า ".$cpold[$ii]['stock_hold_name']." จำนวน ".$cpold[$ii]['qty'] ; 
+                                                       }else{
+                                                            echo "ซื้อจาก ".$cpold[$ii]['supplier_name_th']." จำนวน ".$cpold[$ii]['qty']." (".$cpold[$ii]['stock_group_name'].")"; 
+                                                       }?>
+                                                </li>
+                                        <?PHP }?>
+                                    </ul>
+
+                                    
+
+
+                                </td>
                                 
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -395,8 +587,6 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <!--<td></td>-->
                                 <td></td>
                                 <td></td>
                                 <td>

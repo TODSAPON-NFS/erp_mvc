@@ -1,6 +1,6 @@
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Main Stock </h1>
+                    <h1 class="page-header"><?PHP echo $stock_group['stock_group_name'];?> </h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -14,7 +14,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <form action="?app=stock_list" method="post">
+                            <form action="?app=stock_list&action=view&id=<?PHP echo $stock_group_id?>" method="post">
 
                                 <div class="row">
                                     <div class="col-lg-3">

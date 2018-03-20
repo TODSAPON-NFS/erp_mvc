@@ -19,8 +19,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
         customer_purchase_order_list_price_sum, 
         customer_purchase_order_list_delivery_min,  
         customer_purchase_order_list_delivery_max, 
-        customer_purchase_order_list_remark, 
-        customer_purchase_order_list_hold  
+        customer_purchase_order_list_remark 
         FROM tb_customer_purchase_order_list LEFT JOIN tb_product ON tb_customer_purchase_order_list.product_id = tb_product.product_id 
         WHERE customer_purchase_order_id = '$customer_purchase_order_id' 
         ORDER BY customer_purchase_order_list_id 
@@ -50,7 +49,8 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             customer_purchase_order_list_delivery_min, 
             customer_purchase_order_list_delivery_max,
             customer_purchase_order_list_remark,
-            customer_purchase_order_list_hold,
+            customer_purchase_order_list_id, 
+            stock_group_id, 
             addby,
             adddate,
             updateby,
@@ -65,8 +65,9 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             '".$data['customer_purchase_order_list_price_sum']."', 
             '".$data['customer_purchase_order_list_delivery_min']."', 
             '".$data['customer_purchase_order_list_delivery_max']."', 
-            '".$data['customer_purchase_order_list_remark']."',
-            '".$data['customer_purchase_order_list_hold']."',
+            '".$data['customer_purchase_order_list_remark']."', 
+            '".$data['customer_purchase_order_list_id']."', 
+            '".$data['stock_group_id']."', 
             '".$data['addby']."', 
             NOW(), 
             '".$data['updateby']."', 
@@ -91,12 +92,12 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             customer_purchase_order_list_qty = '".$data['customer_purchase_order_list_qty']."', 
             customer_purchase_order_list_price = '".$data['customer_purchase_order_list_price']."', 
             customer_purchase_order_list_price_sum = '".$data['customer_purchase_order_list_price_sum']."', 
-            customer_purchase_order_list_hold = '".$data['customer_purchase_order_list_hold']."', 
             customer_purchase_order_list_delivery_min = '".$data['customer_purchase_order_list_delivery_min']."', 
             customer_purchase_order_list_delivery_max = '".$data['customer_purchase_order_list_delivery_max']."', 
             customer_purchase_order_list_remark = '".$data['customer_purchase_order_list_remark']."', 
-            purchase_order_list_id = '".$data['purchase_order_list_id']."'
-            WHERE customer_purchase_order_list_id = '$id'
+            customer_purchase_order_list_id = '".$data['customer_purchase_order_list_id']."', 
+            stock_group_id = '".$data['stock_group_id']."' 
+            WHERE customer_purchase_order_list_id = '$id' 
         ";
 
 
@@ -107,19 +108,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
         }
     }
 
-    function updatePurchaseOrderId($customer_purchase_order_list_id,$purchase_order_list_id){
-        $sql = " UPDATE tb_customer_purchase_order_list 
-            SET purchase_order_list_id = '$purchase_order_list_id' 
-            WHERE customer_purchase_order_list_id = '$customer_purchase_order_list_id' 
-        ";
-
-
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-           return true;
-        }else {
-            return false;
-        }
-    }
+    
 
 
     function deleteCustomerPurchaseOrderListByID($id){

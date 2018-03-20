@@ -390,11 +390,18 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่รับใบกำกับภาษี / Date recieve</label>
                                         
                                         <p class="help-block"><?PHP echo $invoice_supplier['invoice_supplier_date_recieve'];?></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>หมายเลขรับใบกำกับภาษี / recieve code <font color="#F00"><b>*</b></font></label>
+                                        <p class="help-block"><?PHP echo $invoice_supplier['invoice_supplier_code_gen'];?></p>
                                     </div>
                                 </div>
 
@@ -466,7 +473,16 @@
                                     <span>ราคารวมทั้งสิ้น / Sub total</span>
                                 </td>
                                 <td style="text-align: right;">
-                                    <?PHP echo number_format($total,2) ;?>
+                                <?PHP
+                                    if($invoice_supplier['vat_type'] == 1){
+                                        $total_val = $total - (($invoice_supplier['vat']/( 100 + $invoice_supplier['vat'] )) * $total);
+                                    } else if($invoice_supplier['vat_type'] == 2){
+                                        $total_val = $total;
+                                    } else {
+                                        $total_val = $total;
+                                    }
+                                ?>
+                                    <?PHP echo number_format($total_val,2) ;?>
                                 </td>
                             </tr>
                             <tr class="odd gradeX">
@@ -477,7 +493,7 @@
                                                 <span>จำนวนภาษีมูลค่าเพิ่ม / Vat</span>
                                             </td>
                                             <td style = "padding-left:8px;padding-right:8px;width:72px;text-align: right;">
-                                                <?PHP echo $vat;?>
+                                            <?PHP echo $invoice_supplier['vat'];?>
                                             </td>
                                             <td width="16">
                                             %
@@ -487,7 +503,16 @@
                                     
                                 </td>
                                 <td style="text-align: right;">
-                                    <?PHP echo number_format(($vat/100) * $total,2) ;?>
+                                <?PHP 
+                                    if($invoice_supplier['vat_type'] == 1){
+                                        $vat_val = ($invoice_supplier['vat']/( 100 + $invoice_supplier['vat'] )) * $total;
+                                    } else if($invoice_supplier['vat_type'] == 2){
+                                        $vat_val = ($invoice_supplier['vat']/100) * $total;
+                                    } else {
+                                        $vat_val = 0.0;
+                                    }
+                                    ?>
+                                    <?PHP echo number_format($vat_val,2) ;?>
                                 </td>
 
                             </tr>
@@ -496,7 +521,16 @@
                                     <span>จำนวนเงินรวมทั้งสิ้น / Net Total</span>
                                 </td>
                                 <td style="text-align: right;">
-                                   <?PHP echo number_format(($vat/100) * $total + $total,2) ;?>
+                                <?PHP 
+                                    if($invoice_supplier['vat_type'] == 1){
+                                        $net_val =  $total;
+                                    } else if($invoice_supplier['vat_type'] == 2){
+                                        $net_val = ($invoice_supplier['vat']/100) * $total + $total;
+                                    } else {
+                                        $net_val = $total;
+                                    }
+                                    ?>
+                                   <?PHP echo number_format($net_val,2) ;?>
                                 </td>
 
                             </tr>

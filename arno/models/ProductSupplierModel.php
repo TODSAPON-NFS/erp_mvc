@@ -7,13 +7,17 @@ class ProductSupplierModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getProductSupplierBy($product_id, $supplier_name_th = '', $supplier_name_en = ''){
-        $sql = " SELECT product_supplier_id, supplier_name_th, supplier_name_en, product_buyprice, lead_time, product_supplier_status   
+    function getProductSupplierBy($product_id, $supplier_name_th = '', $supplier_name_en = '',$product_supplier_status = '' ){
+        $str ="";
+        if($product_supplier_status != ""){
+            $str ="AND product_supplier_status='$product_supplier_status'";
+        }
+        $sql = " SELECT tb_product_supplier.supplier_id, product_supplier_id, supplier_name_th, supplier_name_en, product_buyprice, lead_time, product_supplier_status   
         FROM tb_product_supplier LEFT JOIN tb_supplier ON tb_product_supplier.supplier_id = tb_supplier.supplier_id 
         WHERE product_id = '$product_id' 
         AND ( supplier_name_en LIKE ('%$supplier_name_en%') 
         OR supplier_name_th LIKE ('%$supplier_name_th%')
-        ) ORDER BY supplier_name_en  
+        ) $str ORDER BY supplier_name_en  
         ";
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];

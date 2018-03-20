@@ -4,7 +4,7 @@ $user = $_SESSION['user'];
 
 require_once('../models/PurchaseOrderModel.php');
 require_once('../models/PurchaseOrderListModel.php');
-require_once('../models/CustomerPurchaseOrderListModel.php');
+require_once('../models/CustomerPurchaseOrderListDetailModel.php');
 require_once('../models/PurchaseRequestListModel.php');
 require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
@@ -19,7 +19,7 @@ $notification_model = new NotificationModel;
 $purchase_order_model = new PurchaseOrderModel;
 $purchase_order_list_model = new PurchaseOrderListModel;
 $purchase_request_list_model = new PurchaseRequestListModel;
-$customer_purchase_order_list_model = new CustomerPurchaseOrderListModel;
+$customer_purchase_order_list_detail_model = new CustomerPurchaseOrderListDetailModel;
 $product_model = new ProductModel;
 $first_char = "PO";
 $purchase_order_id = $_GET['id'];
@@ -35,11 +35,17 @@ if(!isset($_GET['action'])){
     $products=$product_model->getProductBy();
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
-    
-    $first_code = $first_char.date("y").date("m");
-    $last_code = $purchase_order_model->getPurchaseOrderLastID($first_code,3);
+
+
     if($supplier_id > 0){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
+        if($supplier['supplier_domestic'] == "ภายในประเทศ"){
+            $first_char = "LP";
+        }else{
+            $first_char = "PO";
+        }
+        $first_code = $first_char.date("y").date("m");
+        $last_code = $purchase_order_model->getPurchaseOrderLastID($first_code,3);
         $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id);
     }
    
@@ -89,7 +95,7 @@ if(!isset($_GET['action'])){
             $data = [];
             $product_id = $_POST['product_id'];
             $purchase_request_list_id = $_POST['purchase_request_list_id'];
-            $customer_purchase_order_list_id = $_POST['customer_purchase_order_list_id'];
+            $customer_purchase_order_list_detail_id = $_POST['customer_purchase_order_list_detail_id'];
             $purchase_order_list_qty = $_POST['purchase_order_list_qty'];
             $purchase_order_list_price = $_POST['purchase_order_list_price'];
             $purchase_order_list_price_sum = $_POST['purchase_order_list_price_sum'];
@@ -115,8 +121,8 @@ if(!isset($_GET['action'])){
                     if($id > 0){
                         if($purchase_request_list_id[$i] > 0){
                             $purchase_request_list_model->updatePurchaseOrderId($purchase_request_list_id[$i],$id);
-                        }else if ($customer_purchase_order_list_id[$i] > 0 ){
-                            $customer_purchase_order_list_model->updatePurchaseOrderId($customer_purchase_order_list_id[$i],$id);
+                        }else if ($customer_purchase_order_list_detail_id[$i] > 0 ){
+                            $customer_purchase_order_list_detail_model->updatePurchaseOrderId($customer_purchase_order_list_detail_id[$i],$id);
                         }
                     }
                 }
@@ -136,8 +142,8 @@ if(!isset($_GET['action'])){
                 if($id > 0){
                     if($purchase_request_list_id > 0){
                         $purchase_request_list_model->updatePurchaseOrderId($purchase_request_list_id,$id);
-                    }else if ($customer_purchase_order_list_id > 0 ){
-                        $customer_purchase_order_list_model->updatePurchaseOrderId($customer_purchase_order_list_id,$id);
+                    }else if ($customer_purchase_order_list_detail_id > 0 ){
+                        $customer_purchase_order_list_detail_model->updatePurchaseOrderId($customer_purchase_order_list_detail_id,$id);
                     }
                 }
                 $data['purchase_order_status'] = 'New';

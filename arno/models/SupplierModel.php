@@ -7,15 +7,10 @@ class SupplierModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getSupplierBy($supplier_code = '',$supplier_name_th = '',$supplier_name_en = '', $supplier_tax = '', $supplier_email = '', $supplier_tel  = ''){
+    function getSupplierBy($supplier_domestic=""){
         $sql = " SELECT supplier_id, supplier_code, supplier_name_th, supplier_name_en , supplier_tax , supplier_tel, supplier_email   
         FROM tb_supplier 
-        WHERE supplier_code LIKE ('%$supplier_code%') 
-        OR supplier_name_th LIKE ('%$supplier_name_th%') 
-        OR supplier_name_en LIKE ('%$supplier_name_en%') 
-        OR supplier_tax LIKE ('%$supplier_tax%') 
-        OR supplier_tel LIKE ('%$supplier_tel%') 
-        OR supplier_email LIKE ('%$supplier_email%') 
+        WHERE supplier_domestic LIKE ('%$supplier_domestic%') 
         ORDER BY supplier_name_th  
         ";
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {

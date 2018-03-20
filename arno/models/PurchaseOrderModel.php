@@ -218,7 +218,7 @@ class PurchaseOrderModel extends BaseModel{
         product_name, 
         purchase_request_list_qty as purchase_order_list_qty, 
         product_buyprice as purchase_order_list_price ,
-        CONCAT('Order for purchase request ',purchase_request_code) as purchase_order_list_remark 
+        CONCAT('PR : ',purchase_request_code) as purchase_order_list_remark 
         FROM tb_purchase_request 
         LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id 
         LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id 
@@ -243,19 +243,20 @@ class PurchaseOrderModel extends BaseModel{
        
 
         $sql_customer = "SELECT tb_customer_purchase_order_list.product_id, 
-        customer_purchase_order_list_id,
+        customer_purchase_order_list_detail_id,
         CONCAT(product_code_first,product_code) as product_code, 
         product_name, 
-        (customer_purchase_order_list_qty - customer_purchase_order_list_hold) as purchase_order_list_qty, 
+        (qty) as purchase_order_list_qty, 
         product_buyprice as purchase_order_list_price ,
-        CONCAT('Order for customer purchase order ',customer_purchase_order_code) as purchase_order_list_remark 
+        CONCAT('Customer ',customer_name_th,' PO : ',customer_purchase_order_code) as purchase_order_list_remark 
         FROM tb_customer_purchase_order 
+        LEFT JOIN tb_customer ON tb_customer_purchase_order.customer_id = tb_customer.customer_id
         LEFT JOIN tb_customer_purchase_order_list ON tb_customer_purchase_order.customer_purchase_order_id = tb_customer_purchase_order_list.customer_purchase_order_id 
         LEFT JOIN tb_product ON tb_customer_purchase_order_list.product_id = tb_product.product_id 
         LEFT JOIN tb_product_supplier ON tb_customer_purchase_order_list.product_id = tb_product_supplier.product_id 
-        WHERE supplier_id = '$supplier_id' 
-        AND purchase_order_list_id = 0 
-        AND customer_purchase_order_list_qty - customer_purchase_order_list_hold > 0
+        LEFT JOIN tb_customer_purchase_order_list_detail ON tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list_detail.customer_purchase_order_list_id 
+        WHERE tb_customer_purchase_order_list_detail.supplier_id = '$supplier_id' 
+        AND tb_customer_purchase_order_list_detail.purchase_order_list_id = 0 
         AND product_supplier_status = 'Active' ";
 
         //echo $sql_customer."<br><br>";
@@ -274,7 +275,7 @@ class PurchaseOrderModel extends BaseModel{
         product_name, 
         (delivery_note_supplier_list_qty) as purchase_order_list_qty, 
         product_buyprice as purchase_order_list_price ,
-        CONCAT('Order for delivey note supplier ',delivery_note_supplier_code) as purchase_order_list_remark 
+        CONCAT('Supplier DN : ',delivery_note_supplier_code) as purchase_order_list_remark 
         FROM tb_delivery_note_supplier 
         LEFT JOIN tb_delivery_note_supplier_list ON tb_delivery_note_supplier.delivery_note_supplier_id = tb_delivery_note_supplier_list.delivery_note_supplier_id 
         LEFT JOIN tb_product ON tb_delivery_note_supplier_list.product_id = tb_product.product_id 
@@ -348,7 +349,7 @@ class PurchaseOrderModel extends BaseModel{
         $sql = " UPDATE tb_purchase_request_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
-        $sql = " UPDATE tb_customer_purchase_order_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+        $sql = " UPDATE tb_customer_purchase_order_list_detail SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_purchase_order WHERE purchase_order_id = '$id' ";

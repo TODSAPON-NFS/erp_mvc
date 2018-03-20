@@ -73,6 +73,10 @@
             document.getElementById('invoice_supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
             document.getElementById('invoice_supplier_tax').value = data.supplier_tax ;
         });
+
+        $.post( "controllers/getInvoiceSupplierCodeByID.php", { 'supplier_id': supplier_id }, function( data ) {
+            //document.getElementById('invoice_supplier_code_gen').value = data;
+        });
     }
 
     
@@ -173,6 +177,51 @@
         
     } 
 
+    function search_pop_like(id){
+        var supplier_id = document.getElementById('supplier_id').value;
+        var val = document.getElementsByName('purchase_order_list_id[]');
+        var purchase_order_list_id = [];
+        
+        for(var i = 0 ; i < val.length ; i++){
+            purchase_order_list_id.push(val[i].value);
+        }
+
+        $.post( "controllers/getInvoiceSupplierListBySupplierID.php", { 'supplier_id': supplier_id, 'purchase_order_list_id': JSON.stringify(purchase_order_list_id), search : $(id).val() }, function( data ) {
+            var content = "";
+            if(data.length > 0){
+                data_buffer = data;
+                
+                for(var i = 0; i < data.length ; i++){
+
+                    content += '<tr class="odd gradeX">'+
+                                    '<td>'+
+                                        '<input type="checkbox" name="p_id" value="'+data[i].product_id+'" />'+     
+                                    '</td>'+
+                                    '<td>'+
+                                        data[i].product_code+
+                                    '</td>'+
+                                    '<td>'+
+                                        data[i].product_name+
+                                        '<br>Remark : '+
+                                        data[i].invoice_supplier_list_remark+
+                                    '</td>'+
+                                    '<td align="right">'+
+                                        data[i].invoice_supplier_list_qty +
+                                    '</td>'+
+                                    '<td align="right">'+
+                                        data[i].invoice_supplier_list_price +
+                                    '</td>'+
+                                    '<td align="right">'+
+                                        (data[i].invoice_supplier_list_qty * data[i].invoice_supplier_list_price) +
+                                    '</td>'+
+                                '</tr>';
+
+                }
+            }
+            $('#bodyAdd').html(content);
+        });
+    }
+
     function add_row(id){
         $('#modalAdd').modal('hide');
         var checkbox = document.getElementsByName('p_id');
@@ -189,7 +238,8 @@
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
                         '<td>'+
-                            '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'" readonly />'+     
+                            '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'" readonly />'+  
+                            '<input type="hidden" name="stock_group_id[]" value="'+ data_buffer[i].stock_group_id +'" readonly />'+    
                             '<input type="hidden" name="invoice_supplier_list_id[]" value="0" />'+  
                             '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
                         '</td>'+
@@ -245,7 +295,8 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
-                    '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+     
+                    '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+    
+                    '<input type="hidden" name="stock_group_id[]" value="<?PHP $stock_group_id?>" />'+  
                     '<input type="hidden" name="invoice_supplier_list_id[]" value="0" />'+  
                     '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
@@ -328,7 +379,7 @@
                     <input type="hidden"  id="invoice_supplier_id" name="invoice_supplier_id" value="<?php echo $invoice_supplier_id; ?>" />
                     <input type="hidden"  id="invoice_supplier_date" name="invoice_supplier_date" value="<?php echo $invoice_supplier['invoice_supplier_date']; ?>" />
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-7">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -374,12 +425,50 @@
                                         <p class="help-block">Example : 0305559003597.</p>
                                     </div>
                                 </div>
+                                <?PHP if($supplier['supplier_domestic'] == "ภายนอกประเทศ"){ ?>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>Exchange rate Baht<font color="#F00"><b>*</b></font></label>
+                                            <input  id="exchange_rate_baht" name="exchange_rate_baht" class="form-control" value="<?php echo $invoice_supplier['exchange_rate_baht'];?>" >
+                                            <p class="help-block">Example : 0.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>Import duty<font color="#F00"><b>*</b></font></label>
+                                            <input  id="import_duty" name="import_duty" class="form-control" value="<?php echo $invoice_supplier['import_duty'];?>" >
+                                            <p class="help-block">Example : 0.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>Freight in<font color="#F00"><b>*</b></font></label>
+                                            <input  id="freight_in" name="freight_in" class="form-control" value="<?php echo $invoice_supplier['freight_in'];?>" >
+                                            <p class="help-block">Example : 0.</p>
+                                        </div>
+                                    </div>
+                                <?PHP } ?>
                             </div>
-                        </div>
-                        <div class="col-lg-1">
                         </div>
                         <div class="col-lg-5">
                             <div class="row">
+                                    
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>วันที่รับสินค้า / Date recieve</label>
+                                        <input type="text" id="invoice_supplier_date_recieve" name="invoice_supplier_date_recieve"  class="form-control calendar" value="<?PHP echo $invoice_supplier['invoice_supplier_date_recieve'];?>" readonly/>
+                                        <p class="help-block">31/01/2018</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>หมายเลขรับใบกำกับภาษี / recieve code <font color="#F00"><b>*</b></font></label>
+                                        <input id="invoice_supplier_code_gen" name="invoice_supplier_code_gen" class="form-control" value="<?PHP echo $invoice_supplier['invoice_supplier_code_gen'];?>" readonly>
+                                        <p class="help-block">Example : INV1801001.</p>
+                                    </div>
+                                </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -413,13 +502,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label>วันที่รับใบกำกับภาษี / Date recieve</label>
-                                        <input type="text" id="invoice_supplier_date_recieve" name="invoice_supplier_date_recieve"  class="form-control calendar" value="<?PHP echo $invoice_supplier['invoice_supplier_date_recieve'];?>" readonly/>
-                                        <p class="help-block">31/01/2018</p>
-                                    </div>
-                                </div>
+                                
 
                                 <div class="col-lg-12">
                                     <div class="form-group">
@@ -465,6 +548,7 @@
                             <tr class="odd gradeX">
                                 <td>
                                     <input type="hidden" name="purchase_order_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['purchase_order_list_id'];?>" />
+                                    <input type="hidden" name="stock_group_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['stock_group_id'];?>" />
                                     <input type="hidden" name="invoice_supplier_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id'];?>" />
                                     <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
                                         <option value="">Select</option>
@@ -516,6 +600,12 @@
                                             </div>
 
                                             <div  class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-offset-8 col-md-4" align="right">
+                                                    <input type="text" class="form-control" name="search_pop" onchange="search_pop_like(this)" placeholder="Search"/>
+                                                </div>
+                                            </div>
+                                            <br>
                                             <table width="100%" class="table table-striped table-bordered table-hover" >
                                                 <thead>
                                                     <tr>
@@ -566,7 +656,7 @@
                                                 <span>จำนวนภาษีมูลค่าเพิ่ม / Vat</span>
                                             </td>
                                             <td style = "padding-left:8px;padding-right:8px;width:72px;">
-                                                <input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_vat" name="invoice_supplier_vat" value="<?PHP echo $vat;?>" />
+                                                <input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_vat" name="invoice_supplier_vat" value="<?php echo $supplier['vat'];?>" />
                                             </td>
                                             <td width="16">
                                             %
@@ -576,7 +666,7 @@
                                     
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_vat_price"  name="invoice_supplier_vat_price" value="<?PHP echo number_format(($vat/100) * $total,2) ;?>"  readonly/>
+                                    <input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_vat_price"  name="invoice_supplier_vat_price" value="<?PHP echo number_format(($supplier['vat']/100) * $total,2) ;?>"  readonly/>
                                 </td>
                                 <td>
                                 </td>

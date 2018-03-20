@@ -123,28 +123,10 @@
                             <a href="?app=invoice_customer"><i class="fa  fa-file-pdf-o" aria-hidden="true"></i> Customer Invoice</a>
                         </li>
                         <li>
-                            <a href="?app=move_stock"><i class="fa fa-database fa-fw" aria-hidden="true"></i> Move Stock</a>
+                            <a href="?app=move_stock"><i class="fa fa-share-square" aria-hidden="true"></i> Move Stock</a>
                         </li>
-                        <!-- /.nav-second-level -->
                         <li>
-                            <a href="#"><i class="fa  fa-archive fa-fw"></i> Stock Main<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="?app=stock_list">Stock List </a>
-                                </li>
-                                <li>
-                                    <a href="?app=stock_in">Stock In </a>
-                                </li>
-                                <li>
-                                    <a href="?app=stock_out">Stock Out </a>
-                                </li>
-                                <li>
-                                    <a href="?app=stock_borrow_in">Stock Borrow In </a>
-                                </li>
-                                <li>
-                                    <a href="?app=stock_borrow_out">Stock Borrow Out </a>
-                                </li>
-                            </ul> 
+                            <a href="?app=stock_group"><i class="fa fa-database fa-fw" aria-hidden="true"></i> Stock </a>
                         </li>
                         <!-- /.nav-second-level -->
                     </ul>

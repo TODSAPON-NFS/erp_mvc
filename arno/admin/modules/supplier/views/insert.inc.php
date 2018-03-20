@@ -105,7 +105,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Supplier Management</h1>
+        <h1 class="page-header">จัดการผู้ขาย / Supplier Management</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -114,7 +114,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Add Supplier 
+                เพิ่มผู้ขาย / Add Supplier 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

@@ -43,6 +43,8 @@ class ProductModel extends BaseModel{
         }
 
     }
+
+    
     
 
     function updateProductByID($id,$data = []){

@@ -10,15 +10,16 @@
 
 <!-- /.row -->
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-            รายการใบกำกับภาษีรับเข้าตามผู้ขาย / Invoice Supplier to do
+            รายการใบกำกับภาษีรับเข้าตามผู้ขายในประเทศ
+            <a class="btn btn-success " style="float:right;" href="?app=invoice_supplier&action=insert&sort=ภายในประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
 
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table width="100%" class="table table-striped table-bordered table-hover" >
                     <thead>
                         <tr>
                             <th width="64px" >No.</th>
@@ -28,13 +29,58 @@
                     </thead>
                     <tbody>
                         <?php 
-                        for($i=0; $i < count($supplier_orders); $i++){
+                        for($i=0; $i < count($supplier_orders_in); $i++){
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
-                            <td><?php echo $supplier_orders[$i]['supplier_name_en']; ?> (<?php echo $supplier_orders[$i]['supplier_name_th']; ?>)</td>
+                            <td><?php echo $supplier_orders_in[$i]['supplier_name_en']; ?> (<?php echo $supplier_orders_in[$i]['supplier_name_th']; ?>)</td>
                             <td>
-                                <a href="?app=invoice_supplier&action=insert&supplier_id=<?php echo $supplier_orders[$i]['supplier_id'];?>">
+                                <a href="?app=invoice_supplier&action=insert&supplier_id=<?php echo $supplier_orders_in[$i]['supplier_id'];?>">
+                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                </a>
+
+                            </td>
+
+                        </tr>
+                        <?
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            รายการใบกำกับภาษีรับเข้าตามผู้ขายนอกประเทศ
+            <a class="btn btn-success " style="float:right;" href="?app=invoice_supplier&action=insert&sort=ภายนอกประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+
+                <table width="100%" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="64px" >No.</th>
+                            <th>Supplier</th>
+                            <th width="180px" >Open Invoice Supplier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        for($i=0; $i < count($supplier_orders_out); $i++){
+                        ?>
+                        <tr class="odd gradeX">
+                            <td><?php echo $i+1; ?></td>
+                            <td><?php echo $supplier_orders_out[$i]['supplier_name_en']; ?> (<?php echo $supplier_orders_out[$i]['supplier_name_th']; ?>)</td>
+                            <td>
+                                <a href="?app=invoice_supplier&action=insert&supplier_id=<?php echo $supplier_orders_out[$i]['supplier_id'];?>">
                                     <i class="fa fa-plus-square" aria-hidden="true"></i>
                                 </a>
 
@@ -62,7 +108,6 @@
         <div class="panel panel-default">
             <div class="panel-heading">
             รายการใบกำกับภาษีรับเข้า / Invoice Supplier List
-                <a class="btn btn-success " style="float:right;" href="?app=invoice_supplier&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -97,9 +142,13 @@
                                 <a href="?app=invoice_supplier&action=detail&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                 </a>
+                                <?PHP if($invoice_suppliers[$i]['supplier_domestic'] == "ภายนอกประเทศ"){ ?>
+                                <a href="?app=invoice_supplier&action=cost&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
+                                    <i class="fa fa-money" aria-hidden="true"></i>
+                                </a>
+                                <?PHP } ?>
 
-
-                                <a href="?app=invoice_supplier&action=update&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
+                                <a href="?app=invoice_supplier&action=update&sort=<?PHP echo $invoice_suppliers[$i]['supplier_domestic'];?>&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
                                 <a href="?app=invoice_supplier&action=delete&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" onclick="return confirm('You want to delete Invoice Supplier : <?php echo $invoice_suppliers[$i]['invoice_supplier_code']; ?>');" style="color:red;">

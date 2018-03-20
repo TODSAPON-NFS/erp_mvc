@@ -26,7 +26,7 @@ if(!isset($_GET['action'])){
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
-    $products=$product_model->getProductBy();
+    $products=$product_model->getProductBy('','','','Active');
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
     $first_code = $first_char.date("y").date("m");
@@ -34,7 +34,7 @@ if(!isset($_GET['action'])){
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
-    $products=$product_model->getProductBy();
+    $products=$product_model->getProductBy('','','','Active');
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
     $delivery_note_customer = $delivery_note_customer_model->getDeliveryNoteCustomerByID($delivery_note_customer_id);

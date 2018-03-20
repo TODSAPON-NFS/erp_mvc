@@ -7,7 +7,7 @@ require_once('../../models/InvoiceSupplierModel.php');
 $purchase_order_list_id = json_decode($_POST['purchase_order_list_id'],true);
 
 $invoice_supplier_model = new InvoiceSupplierModel;
-$supplier = $invoice_supplier_model->generateInvoiceSupplierListBySupplierId($_POST['supplier_id'],$purchase_order_list_id );
+$supplier = $invoice_supplier_model->generateInvoiceSupplierListBySupplierId($_POST['supplier_id'],$purchase_order_list_id ,$_POST['search']);
 echo json_encode($supplier);
 
 ?>

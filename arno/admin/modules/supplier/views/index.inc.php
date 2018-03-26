@@ -4,14 +4,16 @@ $user = $_SESSION['user'];
 require_once('../models/UserModel.php');
 require_once('../models/SupplierModel.php');
 require_once('../models/NotificationModel.php');
-
+require_once('../models/CurrencyModel.php');
+require_once('../models/AccountTypeModel.php');
 $path = "modules/supplier/views/";
 $target_dir = "../upload/supplier/";
 $model_user = new UserModel;
 $model_supplier = new SupplierModel;
 
 $notification_model = new NotificationModel;
-
+$currency_model = new CurrencyModel;
+$account_type_model = new AccountTypeModel;
 $supplier_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 
@@ -31,6 +33,8 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'insert'){
 
     $user = $model_user->getUserBy();
+    $currency = $currency_model->getCurrencyBy();
+    $account_type = $account_type_model->getAccountTypeBy();
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
@@ -38,7 +42,8 @@ if(!isset($_GET['action'])){
     
     $Supplier = $model_supplier->getSupplierByID($supplier_id);
     $user = $model_user->getUserByID($Supplier['user_id']);
-
+    $currency = $currency_model->getCurrencyBy();
+    $account_type = $account_type_model->getAccountTypeBy();
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'delete'){
@@ -82,7 +87,7 @@ if(!isset($_GET['action'])){
         $data['account_type'] = $_POST['account_type'];
         $data['vat_type'] = $_POST['vat_type'];
         $data['vat'] = $_POST['vat'];
-        $data['holding_tax'] = $_POST['holding_tax'];
+        $data['currency_id'] = $_POST['currency_id'];
 
         $check = true;
 
@@ -163,7 +168,7 @@ if(!isset($_GET['action'])){
         $data['account_type'] = $_POST['account_type'];
         $data['vat_type'] = $_POST['vat_type'];
         $data['vat'] = $_POST['vat'];
-        $data['holding_tax'] = $_POST['holding_tax'];
+        $data['currency_id'] = $_POST['currency_id'];
 
         $check = true;
 

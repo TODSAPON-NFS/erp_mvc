@@ -9,6 +9,8 @@ require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/SupplierModel.php');
+require_once('../models/ExchangeRateBahtModel.php');
+require_once('../functions/DateTimeFunction.func.php');
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/invoice_supplier/views/";
@@ -19,6 +21,8 @@ $invoice_supplier_model = new InvoiceSupplierModel;
 $invoice_supplier_list_model = new InvoiceSupplierListModel;
 $purchase_order_list_model = new PurchaseOrderListModel;
 $product_model = new ProductModel;
+$exchange_rate_baht_model = new ExchangeRateBahtModel;
+$date_time_function_model = new DateTimeFunction;
 $invoice_supplier_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $supplier_id = $_GET['supplier_id'];
@@ -75,22 +79,19 @@ if(!isset($_GET['action'])){
     $suppliers=$supplier_model->getSupplierBy($supplier['supplier_domestic']);
     $invoice_supplier_lists = $invoice_supplier_list_model->getInvoiceSupplierListBy($invoice_supplier_id);
 
+    $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($date_time_function_model->changeDateFormat($invoice_supplier['invoice_supplier_date_recieve']),$supplier['currency_id']);
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
-    if($notification_id != ""){
-        $notification_model->setNotificationSeenByID($notification_id);
-    }
     $invoice_supplier = $invoice_supplier_model->getInvoiceSupplierViewByID($invoice_supplier_id);
     $invoice_supplier_lists = $invoice_supplier_list_model->getInvoiceSupplierListBy($invoice_supplier_id);
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'cost'){
-    if($notification_id != ""){
-        $notification_model->setNotificationSeenByID($notification_id);
-    }
     $invoice_supplier = $invoice_supplier_model->getInvoiceSupplierViewByID($invoice_supplier_id);
     $invoice_supplier_lists = $invoice_supplier_list_model->getInvoiceSupplierListBy($invoice_supplier_id);
+    $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($date_time_function_model->changeDateFormat($invoice_supplier['invoice_supplier_date_recieve']),$invoice_supplier['currency_id']);
+    
     require_once($path.'cost.inc.php');
 
 }else if ($_GET['action'] == 'delete'){
@@ -120,7 +121,6 @@ if(!isset($_GET['action'])){
         $data['invoice_supplier_tax'] = $_POST['invoice_supplier_tax'];
         $data['invoice_supplier_term'] = $_POST['invoice_supplier_term'];
         $data['invoice_supplier_due'] = $_POST['invoice_supplier_due'];
-        $data['exchange_rate_baht'] = $_POST['exchange_rate_baht'];
         $data['import_duty'] = $_POST['import_duty'];
         $data['freight_in'] = $_POST['freight_in'];
         $data['addby'] = $user[0][0];
@@ -211,7 +211,6 @@ if(!isset($_GET['action'])){
         $data['invoice_supplier_tax'] = $_POST['invoice_supplier_tax'];
         $data['invoice_supplier_term'] = $_POST['invoice_supplier_term'];
         $data['invoice_supplier_due'] = $_POST['invoice_supplier_due'];
-        $data['exchange_rate_baht'] = $_POST['exchange_rate_baht'];
         $data['import_duty'] = $_POST['import_duty'];
         $data['freight_in'] = $_POST['freight_in'];
         $data['addby'] = $user[0][0];

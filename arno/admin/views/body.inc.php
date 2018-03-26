@@ -75,6 +75,8 @@
         require_once("modules/invoice_supplier/views/index.inc.php");
     }else if($_GET['app'] == "invoice_customer"){
         require_once("modules/invoice_customer/views/index.inc.php");
+    }else if($_GET['app'] == "exchange_rate_baht"){
+        require_once("modules/exchange_rate_baht/views/index.inc.php");
     }
     
     

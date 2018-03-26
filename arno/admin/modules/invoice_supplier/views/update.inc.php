@@ -429,7 +429,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>Exchange rate Baht<font color="#F00"><b>*</b></font></label>
-                                            <input  id="exchange_rate_baht" name="exchange_rate_baht" class="form-control" value="<?php echo $invoice_supplier['exchange_rate_baht'];?>" >
+                                            <input  id="exchange_rate_baht" name="exchange_rate_baht" class="form-control" value="<?php echo $exchange_rate_baht['exchange_rate_baht_value'];?>" readonly>
                                             <p class="help-block">Example : 0.</p>
                                         </div>
                                     </div>

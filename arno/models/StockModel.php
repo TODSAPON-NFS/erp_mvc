@@ -75,20 +75,20 @@ class StockModel extends BaseModel{
     }
 
     function getStockLogListByDate($date_start = '', $date_end = ''){
-        $str = " AND STR_TO_DATE(stock_date,'%Y-%m-%d %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') AND STR_TO_DATE(stock_date,'%Y-%m-%d %H:%i:%s') <= STR_TO_DATE('$date_end','%Y-%m-%d %H:%i:%s') ";
+        $str = " AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%Y-%m-%d %H:%i:%s') ";
 
         $sql_old_in = "SELECT SUM(qty) 
         FROM ".$this->table_name."  
         WHERE ".$this->table_name.".product_id = tb.product_id 
         AND stock_type = 'in' 
-        AND STR_TO_DATE(stock_date,'%Y-%m-%d %H:%i:%s') < STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s')";
+        AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') < STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s')";
 
 
         $sql_old_out = "SELECT SUM(qty) 
         FROM ".$this->table_name."  
         WHERE ".$this->table_name.".product_id = tb.product_id 
         AND stock_type = 'out' 
-        AND STR_TO_DATE(stock_date,'%Y-%m-%d %H:%i:%s') < STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s')";
+        AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') < STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s')";
 
 
         $sql_in = "SELECT SUM(qty) 
@@ -154,9 +154,9 @@ class StockModel extends BaseModel{
         LEFT JOIN tb_product ON ".$this->table_name.".product_id = tb_product.product_id 
         LEFT JOIN tb_supplier ON ".$this->table_name.".supplier_id = tb_supplier.supplier_id 
         WHERE stock_type = 'in' 
-        AND STR_TO_DATE(stock_date,'%Y-%m-%d %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') 
-        AND STR_TO_DATE(stock_date,'%Y-%m-%d %H:%i:%s') <= STR_TO_DATE('$date_end','%Y-%m-%d %H:%i:%s') 
-        ORDER BY STR_TO_DATE(stock_date,'%Y-%m-%d %H:%i:%s') 
+        AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') 
+        AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%Y-%m-%d %H:%i:%s') 
+        ORDER BY STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') 
         ";
 
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
@@ -176,9 +176,9 @@ class StockModel extends BaseModel{
         LEFT JOIN tb_product ON ".$this->table_name.".product_id = tb_product.product_id 
         LEFT JOIN tb_customer ON ".$this->table_name.".customer_id = tb_customer.customer_id 
         WHERE stock_type = 'out' 
-        AND STR_TO_DATE(stock_date,'%Y-%m-%d %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') 
-        AND STR_TO_DATE(stock_date,'%Y-%m-%d %H:%i:%s') <= STR_TO_DATE('$date_end','%Y-%m-%d %H:%i:%s') 
-        ORDER BY STR_TO_DATE(stock_date,'%Y-%m-%d %H:%i:%s') 
+        AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') 
+        AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%Y-%m-%d %H:%i:%s') 
+        ORDER BY STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') 
         ";
 
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {

@@ -44,6 +44,7 @@ class SupplierModel extends BaseModel{
     function getSupplierByID($id){
         $sql = " SELECT * 
         FROM tb_supplier 
+        LEFT JOIN tb_currency ON tb_supplier.currency_id = tb_currency.currency_id 
         WHERE supplier_id = '$id' 
         ";
 
@@ -82,7 +83,7 @@ class SupplierModel extends BaseModel{
         account_type = '".$data['account_type']."', 
         vat_type = '".$data['vat_type']."', 
         vat = '".$data['vat']."', 
-        holding_tax = '".$data['holding_tax']."' , 
+        currency_id = '".$data['currency_id']."' , 
         supplier_logo = '".$data['supplier_logo']."' , 
         updateby = '".$data['updateby']."',  
         lastupdate = NOW() 
@@ -142,7 +143,7 @@ class SupplierModel extends BaseModel{
             account_type, 
             vat_type, 
             vat,  
-            holding_tax,
+            currency_id,
             supplier_logo,
             addby,
             adddate
@@ -169,7 +170,7 @@ class SupplierModel extends BaseModel{
             '".$data['account_type']."', 
             '".$data['vat_type']."', 
             '".$data['vat']."',  
-            '".$data['holding_tax']."', 
+            '".$data['currency_id']."', 
             '".$data['supplier_logo']."',    
             '".$data['addby']."', 
             NOW()  

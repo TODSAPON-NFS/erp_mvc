@@ -59,7 +59,8 @@
         <div class="panel panel-default">
             <div class="panel-heading">
             รายการใบกำกับภาษีรับเข้าตามผู้ขายนอกประเทศ
-            <a class="btn btn-success " style="float:right;" href="?app=invoice_supplier&action=insert&sort=ภายนอกประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+            <a class="btn btn-success " style="float:right;margin-left:8px;" href="?app=invoice_supplier&action=insert&sort=ภายนอกประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+            <a class="btn btn-primary " style="float:right;" href="?app=exchange_rate_baht&action=view" ><i class="fa fa-plus" aria-hidden="true"></i> Exchange rate</a>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

@@ -328,8 +328,17 @@
                     </div>
                     <div class="col-lg-2">
                         <div class="form-group">
-                            <label>ภาษีหัก ณ ที่จ่าย / Holding tax. </label>
-                            <input id="holding_tax" name="holding_tax" type="text" class="form-control" value="3" style="text-align:right;" value="<? echo $Supplier['holding_tax']?>">
+                            <label>สกุลเงิน / Curreny. </label>
+                            <select id="currency_id" name="currency_id" class="form-control">
+                                <option value="">เลือก / Select</option>
+                                <?PHP 
+                                    for($i=0; $i < count($currency) ; $i++){
+                                ?>
+                                    <option value="<?PHP echo $currency[$i]['currency_id'];?>" <?PHP if($currency[$i]['currency_id'] == $Supplier['currency_id']){?> Selected <?PHP }?>><?PHP echo $currency[$i]['currency_name_en'];?></option>
+                                <?PHP
+                                    }
+                                ?>
+                            </select>
                             <p class="help-block">Example : 3.</p>
                         </div>
                     </div>

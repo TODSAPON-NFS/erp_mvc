@@ -17,14 +17,15 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>Code</th>
-                                        <th>Name thai</th>
-                                        <th>Name english</th>
-                                        <th>TAX ID</th>
-                                        <th>Mobile</th>
-                                        <th>Email</th>
-                                        <th></th>
+                                        <th style="text-align:center;">ลำดับ<br>No.</th>
+                                        <th style="text-align:center;">รหัสลูกค้า<br>Code</th>
+                                        <th style="text-align:center;">ชื่อไทย<br>Name thai</th>
+                                        <th style="text-align:center;">ชื่ออังกฤษ<br>Name english</th>
+                                        <th style="text-align:center;">บริษัท<br>Domestic</th>
+                                        <th style="text-align:center;">เลขผู้เสียภาษี<br>TAX ID</th>
+                                        <th style="text-align:center;">โทรศัพท์<br>Mobile</th>
+                                        <th style="text-align:center;">อีเมล์<br>Email</th>
+                                        <th style="text-align:center;"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -36,6 +37,7 @@
                                         <td><?php echo $Supplier[$i]['supplier_code']; ?></td>
                                         <td><?php echo $Supplier[$i]['supplier_name_th']; ?></td>
                                         <td><?php echo $Supplier[$i]['supplier_name_en']; ?></td>
+                                        <td><?php echo $Supplier[$i]['supplier_domestic']; ?></td>
                                         <td><?php echo $Supplier[$i]['supplier_tax']; ?></td>
                                         <td class="center"><?php echo $Supplier[$i]['supplier_tel']; ?></td>
                                         <td class="center"><?php echo $Supplier[$i]['supplier_email']; ?></td>

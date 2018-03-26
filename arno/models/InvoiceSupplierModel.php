@@ -14,8 +14,7 @@ class InvoiceSupplierModel extends BaseModel{
         invoice_supplier_date_recieve,  
         invoice_supplier_total_price, 
         invoice_supplier_vat_price, 
-        invoice_supplier_net_price, 
-        exchange_rate_baht, 
+        invoice_supplier_net_price,  
         import_duty, 
         freight_in, 
         supplier_domestic,
@@ -96,8 +95,7 @@ class InvoiceSupplierModel extends BaseModel{
         invoice_supplier_address = '".$data['invoice_supplier_address']."', 
         invoice_supplier_tax = '".$data['invoice_supplier_tax']."', 
         invoice_supplier_term = '".$data['invoice_supplier_term']."', 
-        invoice_supplier_due = '".$data['invoice_supplier_due']."', 
-        exchange_rate_baht = '".$data['exchange_rate_baht']."', 
+        invoice_supplier_due = '".$data['invoice_supplier_due']."',  
         import_duty = '".$data['import_duty']."', 
         freight_in = '".$data['freight_in']."', 
         updateby = '".$data['updateby']."', 
@@ -240,8 +238,7 @@ class InvoiceSupplierModel extends BaseModel{
             invoice_supplier_address,
             invoice_supplier_tax,
             invoice_supplier_term,
-            invoice_supplier_due,
-            exchange_rate_baht, 
+            invoice_supplier_due, 
             import_duty, 
             freight_in, 
             addby,
@@ -263,8 +260,7 @@ class InvoiceSupplierModel extends BaseModel{
         $data['invoice_supplier_address']."','".
         $data['invoice_supplier_tax']."','".
         $data['invoice_supplier_term']."','".
-        $data['invoice_supplier_due']."','".
-        $data['exchange_rate_baht']."','".
+        $data['invoice_supplier_due']."','". 
         $data['import_duty']."','".
         $data['freight_in']."','".
         $data['addby']."',".

@@ -51,7 +51,7 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label>Exchange rate Baht<font color="#F00"><b>*</b></font></label>
-                                        <p class="help-block"><?php echo $invoice_supplier['exchange_rate_baht'];?></p>
+                                        <p class="help-block"><?php echo $exchange_rate_baht['exchange_rate_baht_value'];?></p>
                                     </div>
                                 </div>
 
@@ -143,9 +143,9 @@
                                 <th style="text-align:center;">ลำดับ <br> (์No.)</th>
                                 <th style="text-align:center;" width="200" >รหัสสินค้า <br> (Product Code)</th>
                                 <th style="text-align:center;" width="150">จำนวน <br> (Qty)</th>
-                                <th style="text-align:center;" width="150">ราคาต่อหน่วย <br> (Unit price) </th>
+                                <th style="text-align:center;" width="150">ราคาต่อหน่วย <br> (Unit price <?PHP echo $exchange_rate_baht['currency_sign'];?>) </th>
                                 <th style="text-align:center;" width="150">ราคาต่อหน่วย (บาท) <br> (Unit price baht) </th>
-                                <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount)</th>
+                                <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount <?PHP echo $exchange_rate_baht['currency_sign'];?>)</th>
                                 <th style="text-align:center;" width="150">จำนวนเงิน (บาท) <br> (Amount baht)</th>
                                 <th style="text-align:center;" width="150">ภาษีนำเข้า (บาท) <br> (Import duty)</th>
                                 <th style="text-align:center;" width="150">ค่าจัดส่ง (บาท) <br> (Freight in)</th>
@@ -162,16 +162,23 @@
                             for($i=0; $i < count($invoice_supplier_lists); $i++){
                                 $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
                                 $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
-                                $cost_duty += $cost_price * $cost_price;
+                                $cost_duty += $cost_qty * $cost_price;
                             }
 
                             for($i=0; $i < count($invoice_supplier_lists); $i++){
                                 $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
+
                                 $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
-                                $cost_price_ex = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] * $invoice_supplier['exchange_rate_baht'];
+
+                                $cost_price_ex = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] * $exchange_rate_baht['exchange_rate_baht_value'];
+
                                 $cost_price_total = $cost_qty * $cost_price;
+
                                 $cost_price_ex_total = $cost_qty * $cost_price_ex;
+
+
                                 $cost_price_duty = $cost_price_total / $cost_duty * $invoice_supplier['import_duty'];
+
                                 $cost_price_f = $cost_price_total / $cost_duty * $invoice_supplier['freight_in'];
                                 $cost_total = $cost_price_f + $cost_price_duty + $cost_price_ex_total;
                             ?>

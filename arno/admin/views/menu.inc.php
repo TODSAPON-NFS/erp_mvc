@@ -123,7 +123,7 @@
                             <a href="?app=invoice_customer"><i class="fa  fa-file-pdf-o" aria-hidden="true"></i> Customer Invoice</a>
                         </li>
                         <li>
-                            <a href="?app=move_stock"><i class="fa fa-share-square" aria-hidden="true"></i> Move Stock</a>
+                            <a href="?app=stock_move"><i class="fa fa-share-square" aria-hidden="true"></i> Move Stock</a>
                         </li>
                         <li>
                             <a href="?app=stock_group"><i class="fa fa-database fa-fw" aria-hidden="true"></i> Stock </a>

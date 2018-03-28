@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Customer Purchase Order Management</h1>
+        <h1 class="page-header">Customer Order Management</h1>
     </div>
     <div class="col-lg-6" align="right">
         
@@ -12,7 +12,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                        รายการใบสั่งซื้อสินค้าของลูกค้า / Customer Purchase Order List
+                        รายการใบสั่งซื้อสินค้าของลูกค้า / Customer Order List
                             <a class="btn btn-success " style="float:right;" href="?app=customer_purchase_order&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                         </div>
                         <!-- /.panel-heading -->

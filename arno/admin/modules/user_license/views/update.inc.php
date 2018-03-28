@@ -37,8 +37,8 @@
         <h1 class="page-header">Employee Management</h1>
     </div>
     <div class="col-lg-6" align="right">
-        <a href="?app=employee" class="btn btn-primary  btn-menu">Employee</a>
-        <a href="?app=employee_license" class="btn btn-primary active btn-menu">License</a>
+        <a href="?app=employee" class="btn btn-primary  btn-menu">พนักงาน / Employee</a>
+        <a href="?app=employee_license" class="btn btn-primary active btn-menu">สิทธิ์การใช้งาน / License</a>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -47,7 +47,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Edit Employee License
+            แก้ไขสิทธิ์การใช้งาน / Edit License
                 
             </div>
             <!-- /.panel-heading -->
@@ -58,7 +58,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label>License name <font color="#F00"><b>*</b></font></label>
+                                <label>ชื่อสิทธิ์การใช้งาน / License name <font color="#F00"><b>*</b></font></label>
                                 <input id="license_name" name="license_name" class="form-control" value="<?php echo $license['license_name']?>">
                                 <p class="help-block">Example : สิทธ์การใช้งานที่ 1.</p>
                             </div>
@@ -69,7 +69,7 @@
                      <div class="row">
                      <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Sale Page  </label>
+                                <label>ระบบผู้ขาย / Sale Page  </label>
                                 <select id="license_sale_page" name="license_sale_page" class="form-control">
                                         
                                         <option <?php if($license['license_sale_page'] == 'No'){?> selected <?php } ?>>No</option>
@@ -84,7 +84,7 @@
 
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Purchase Page  </label>
+                                <label>ระบบจัดซื้อ / Purchase Page  </label>
                                 <select id="license_purchase_page" name="license_purchase_page" class="form-control">
                                         
                                 <option <?php if($license['license_purchase_page'] == 'No'){?> selected <?php } ?>>No</option>
@@ -100,7 +100,7 @@
                         
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Manager Page  </label>
+                                <label>ระบบผู้จัดการ / Manager Page  </label>
                                 <select id="license_manager_page" name="license_manager_page" class="form-control">
                                         
                                         <option <?php if($license['license_manager_page'] == 'No'){?> selected <?php } ?>>No</option>
@@ -119,7 +119,7 @@
                        
                      <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Inventery Page  </label>
+                                <label>ระบบคลังสินค้า / Inventery Page  </label>
                                 <select id="license_inventery_page" name="license_inventery_page" class="form-control">
                                         
                                 <option <?php if($license['license_inventery_page'] == 'No'){?> selected <?php } ?>>No</option>
@@ -134,7 +134,7 @@
 
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Sale Page  </label>
+                                <label>ระบบบัญชี / Account Page  </label>
                                 <select id="license_account_page" name="license_account_page" class="form-control">
                                         
                                 <option <?php if($license['license_account_page'] == 'No'){?> selected <?php } ?>>No</option>
@@ -149,7 +149,7 @@
                         
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>Report Page  </label>
+                                <label>ระบบรายงาน / Report Page  </label>
                                 <select id="license_report_page" name="license_report_page" class="form-control">
                                         
                                 <option <?php if($license['license_report_page'] == 'No'){?> selected <?php } ?>>No</option>

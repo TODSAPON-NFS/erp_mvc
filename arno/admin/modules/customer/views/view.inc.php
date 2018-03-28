@@ -9,7 +9,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Customer List
+                            รายการลูกค้า / Customer List
                             <a class="btn btn-success " style="float:right;" href="?app=customer&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                         </div>
                         <!-- /.panel-heading -->
@@ -17,13 +17,13 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>Code</th>
-                                        <th>Name thai</th>
-                                        <th>Name english</th>
-                                        <th>TAX ID</th>
-                                        <th>Mobile</th>
-                                        <th>Email</th>
+                                        <th style="text-align:center">ลำดับ <br>No.</th>
+                                        <th style="text-align:center">รหัสลูกค้า <br>Code</th>
+                                        <th style="text-align:center">ชื่อไทย <br>Name thai</th>
+                                        <th style="text-align:center">ชื่ออังกฤษ <br>Name english</th>
+                                        <th style="text-align:center">เลขผู้เสียภาษี <br>TAX ID</th>
+                                        <th style="text-align:center">โทรศัพท์ <br>Mobile</th>
+                                        <th style="text-align:center">อีเมล์ <br>Email</th>
                                         <th></th>
                                     </tr>
                                 </thead>

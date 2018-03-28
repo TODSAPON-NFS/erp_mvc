@@ -3,8 +3,8 @@
         <h1 class="page-header">Employee Management</h1>
     </div>
     <div class="col-lg-6" align="right">
-        <a href="?app=employee" class="btn btn-primary  btn-menu">Employee</a>
-        <a href="?app=employee_license" class="btn btn-primary active btn-menu">License</a>
+        <a href="?app=employee" class="btn btn-primary  btn-menu">พนักงาน / Employee</a>
+        <a href="?app=employee_license" class="btn btn-primary active btn-menu">สิทธิ์การใช้งาน / License</a>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -13,7 +13,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Employee License List
+                            รายการสิทธิ์การใช้งาน / License List
                             <a class="btn btn-success " style="float:right;" href="?app=employee_license&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                         </div>
                         <!-- /.panel-heading -->
@@ -21,14 +21,14 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>License Name</th>
-                                        <th>Sale Page</th>
-                                        <th>Purchase Page</th>
-                                        <th>Manager Page</th>
-                                        <th>Inventery Page</th>
-                                        <th>Account Page</th>
-                                        <th>Report Page</th>
+                                        <th style="text-align:center;">ลำดับ <br>No.</th>
+                                        <th style="text-align:center;">ชื่อสิทธิ์การใช้งาน <br>License Name</th>
+                                        <th style="text-align:center;">ระบบผู้ขาย <br>Sale Page</th>
+                                        <th style="text-align:center;">ระบบจัดซื้อ <br>Purchase Page</th>
+                                        <th style="text-align:center;">ระบบผู้จัดการ <br>Manager Page</th>
+                                        <th style="text-align:center;">ระบบคลังสินค้า <br>Inventery Page</th>
+                                        <th style="text-align:center;">ระบบบัญชี <br>Account Page</th>
+                                        <th style="text-align:center;">ระบบรายงาน <br>Report Page</th>
                                         <th></th>
                                     </tr>
                                 </thead>

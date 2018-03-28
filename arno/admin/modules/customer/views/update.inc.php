@@ -115,7 +115,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Update Customer 
+                แก้ไขลูกค้า / Update Customer 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -128,21 +128,21 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label>Customer code<font color="#F00"><b>*</b></font></label>
+                                    <label>รหัสลูกค้า / Customer code<font color="#F00"><b>*</b></font></label>
                                     <input id="customer_code" name="customer_code" readonly="true" class="form-control" value="<? echo $customer['customer_code']?>">
                                     <p class="help-block">Example : R001.</p>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label>Customer name (Thai)<font color="#F00"><b>*</b></font></label>
+                                    <label>ชื่อลูกค้า (ไทย) / Customer name (Thai)<font color="#F00"><b>*</b></font></label>
                                     <input id="customer_name_th" name="customer_name_th" class="form-control" value="<? echo $customer['customer_name_th']?>">
                                     <p class="help-block">Example : บริษัท เรเวลซอฟต์ จำกัด.</p>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label>Customer name (English)<font color="#F00"><b>*</b></font></label>
+                                    <label>ชื่อลูกค้า (อังกฤษ) / Customer name (English)<font color="#F00"><b>*</b></font></label>
                                     <input id="customer_name_en" name="customer_name_en" class="form-control" onChange="update_code()" value="<? echo $customer['customer_name_en']?>">
                                     <p class="help-block">Example : Revel Soft Co., Ltd.</p>
                                 </div>
@@ -153,7 +153,7 @@
                             <div class="col-lg-4">
                                 
                                     <div class="form-group">
-                                        <label>Customer Type <font color="#F00"><b>*</b></font></label>
+                                        <label>การจดทะเบียน / Company registration<font color="#F00"><b>*</b></font></label>
                                         <select id="customer_type" name="customer_type" class="form-control">
                                             <option value="">Select</option>
                                             <option <?php if($customer['customer_type'] == 'บริษัทจำกัด'){?> selected <?php } ?> >บริษัทจำกัด</option>
@@ -168,7 +168,7 @@
                             <div class="col-lg-4">
                                 
                                     <div class="form-group">
-                                        <label>Tax. <font color="#F00"><b>*</b></font></label>
+                                        <label>เลขประจำตัวผู้เสียภาษี / Tax. <font color="#F00"><b>*</b></font></label>
                                         <input id="customer_tax" name="customer_tax" class="form-control" value="<? echo $customer['customer_tax']?>">
                                         <p class="help-block">Example : 123456789012345.</p>
                                     </div>
@@ -176,7 +176,7 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label>Domestic <font color="#F00"><b>*</b></font> </label>
+                                    <label>พื้นที่จดทะเบียน / Domestic <font color="#F00"><b>*</b></font> </label>
                                     <select id="customer_domestic" name="customer_domestic" class="form-control">
                                         <option value="">Select</option>
                                         <option <?php if($customer['customer_domestic'] == 'ภายในประเทศ'){?> selected <?php } ?> >ภายในประเทศ</option>
@@ -194,7 +194,7 @@
                         
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label>Branch <font color="#F00"><b>*</b></font></label>
+                                    <label>สาขา / Branch <font color="#F00"><b>*</b></font></label>
                                     <select id="customer_branch" name="customer_branch" class="form-control">
                                             <option value="">Select</option>
                                             <option <?php if($customer['customer_branch'] == 'สำนักงานใหญ่'){?> selected <?php } ?> >สำนักงานใหญ่</option>
@@ -205,21 +205,21 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label>Zone </label>
+                                    <label>พื้นที่การขาย / Zone </label>
                                     <input id="customer_zone" name="customer_zone" type="text" class="form-control" value="<? echo $customer['customer_zone']?>">
                                     <p class="help-block">Example : ชลบุรี.</p>
                                 </div>
                             </div>
                             <div class="col-lg-2">
                                 <div class="form-group">
-                                    <label>Credit Day </label>
+                                    <label>เครดิต / Credit Day </label>
                                     <input id="credit_day" name="credit_day" type="text" class="form-control" value="<? echo $customer['credit_day']?>">
                                     <p class="help-block">Example : 30 (วัน).</p>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label>Pay Type </label>
+                                    <label>เงื่อนไขการชำระเงิน / Pay Type </label>
                                     <select id="condition_pay" name="condition_pay" class="form-control">
                                         <option value="">Select</option>
                                         <option <?php if($customer['condition_pay'] == 'เช็ค'){?> selected <?php } ?> >เช็ค</option>
@@ -233,21 +233,21 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label>Telephone </label>
+                                    <label>โทรศัพท์ / Telephone </label>
                                     <input id="customer_tel" name="customer_tel" type="text" class="form-control" value="<? echo $customer['customer_tel']?>">
                                     <p class="help-block">Example : 023456789.</p>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label>Fax </label>
+                                    <label>แฟกซ์ / Fax </label>
                                     <input id="customer_fax" name="customer_fax" type="text" class="form-control" value="<? echo $customer['customer_fax']?>">
                                     <p class="help-block">Example : 020265389-01.</p>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label>Email </label>
+                                    <label>อีเมล์ / Email </label>
                                     <input id="customer_email" name="customer_email" type="email" class="form-control" value="<? echo $customer['customer_email']?>" >
                                     <p class="help-block">Example : admin@arno.co.th.</p>
                                 </div>
@@ -257,7 +257,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>Address 1 </label>
+                                    <label>ที่อยู่ 1 / Address 1 </label>
                                     <input id="customer_address_1" name="customer_address_1" type="text" class="form-control" value="<? echo $customer['customer_address_1']?>" >
                                     <p class="help-block">Example : ตึกบางนาธานี.</p>
                                 </div>
@@ -267,7 +267,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>Address 2 </label>
+                                    <label>ที่อยู่ 2 / Address 2 </label>
                                     <input id="customer_address_2" name="customer_address_2" type="text" class="form-control" value="<? echo $customer['customer_address_2']?>">
                                     <p class="help-block">Example : เขตบางนา.</p>
                                 </div>
@@ -277,14 +277,14 @@
                         <div class="row">
                             <div class="col-lg-10">
                                 <div class="form-group">
-                                    <label>Address 3 </label>
+                                    <label>ที่อยู่ 3 / Address 3 </label>
                                     <input id="customer_address_3" name="customer_address_3" type="text" class="form-control" value="<? echo $customer['customer_address_3']?>">
                                     <p class="help-block">Example : กรุงเทพ.</p>
                                 </div>
                             </div>
                             <div class="col-lg-2">
                                 <div class="form-group">
-                                    <label>Zipcode </label>
+                                    <label>รหัสไปรษณีย์ / Zipcode </label>
                                     <input id="customer_zipcode" name="customer_zipcode" type="text" class="form-control" value="<? echo $customer['customer_zipcode']?>">
                                     <p class="help-block">Example : 20150.</p>
                                 </div>
@@ -296,7 +296,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>Customer Picture <font color="#F00"><b>*</b></font></label>
+                                    <label>รูปลูกค้า / Customer Picture <font color="#F00"><b>*</b></font></label>
                                     <img class="img-responsive" id="img_logo" src="../upload/customer/<?php echo $customer['customer_logo']; ?>" />
                                 
                                     <input accept=".jpg , .png"   type="file" id="customer_logo" name="customer_logo" onChange="readURL(this);">

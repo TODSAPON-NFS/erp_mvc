@@ -294,7 +294,7 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Purchase Request Management</h1>
+        <h1 class="page-header">Customer Order Management</h1>
     </div>
     <div class="col-lg-6" align="right">
        
@@ -306,7 +306,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            แก้ไขใบสั่งซื้อสินค้าของลูกค้า /  Edit Purchase Request 
+            แก้ไขใบสั่งซื้อสินค้าของลูกค้า /  Edit Customer Order
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

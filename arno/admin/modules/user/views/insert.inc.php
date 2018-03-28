@@ -131,8 +131,8 @@
         <h1 class="page-header">Employee Management</h1>
     </div>
     <div class="col-lg-6" align="right">
-        <a href="?app=employee" class="btn btn-primary active btn-menu">Employee</a>
-        <a href="?app=employee_license" class="btn btn-primary  btn-menu">License</a>
+        <a href="?app=employee" class="btn btn-primary active btn-menu">พนักงาน / Employee</a>
+        <a href="?app=employee_license" class="btn btn-primary  btn-menu">สิทธิ์การใช้งาน / License</a>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -141,7 +141,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Add employee 
+            เพิ่มพนักงาน / Add employee 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -149,7 +149,7 @@
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>Employee Code <font color="#F00"><b>*</b></font></label>
+                                <label>รหัสพนักงาน / Employee Code <font color="#F00"><b>*</b></font></label>
                                 <input id="user_code" name="user_code" class="form-control">
                                 <p class="help-block">Example : 0000001.</p>
                             </div>
@@ -157,7 +157,7 @@
                         <div class="col-lg-3">
                             
                                 <div class="form-group">
-                                    <label>Prename <font color="#F00"><b>*</b></font></label>
+                                    <label>คำนำหน้าชื่อ / Prename <font color="#F00"><b>*</b></font></label>
                                     <select id="user_prefix" name="user_prefix" class="form-control">
                                         <option value="">Select</option>
                                         <option>นาย</option>
@@ -171,7 +171,7 @@
                         <div class="col-lg-3">
                             
                                 <div class="form-group">
-                                    <label>Name <font color="#F00"><b>*</b></font></label>
+                                    <label>ชื่อ / Name <font color="#F00"><b>*</b></font></label>
                                     <input id="user_name" name="user_name" class="form-control">
                                     <p class="help-block">Example : วินัย.</p>
                                 </div>
@@ -180,7 +180,7 @@
                         <div class="col-lg-3">
                             
                                 <div class="form-group">
-                                    <label>Lastname <font color="#F00"><b>*</b></font></label>
+                                    <label>นามสกุล / Lastname <font color="#F00"><b>*</b></font></label>
                                     <input id="user_lastname" name="user_lastname" class="form-control">
                                     <p class="help-block">Example : ชาญชัย.</p>
                                 </div>
@@ -192,7 +192,7 @@
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>Email </label>
+                                <label>อีเมล์ / Email </label>
                                 <input id="user_email" name="user_email" type="email" class="form-control">
                                 <p class="help-block">Example : admin@arno.co.th.</p>
                             </div>
@@ -200,7 +200,7 @@
                         <div class="col-lg-3">
                             
                                 <div class="form-group">
-                                    <label>Mobile </label>
+                                    <label>โทรศัพท์ / Mobile </label>
                                     <input id="user_mobile" name="user_mobile" type="text" class="form-control">
                                     <p class="help-block">Example : 0610243003.</p>
                                 </div>
@@ -209,7 +209,7 @@
                         <div class="col-lg-3">
                             
                                 <div class="form-group">
-                                    <label>Username <font color="#F00"><b>*</b></font></label>
+                                    <label>ยูสเซอร์ / Username <font color="#F00"><b>*</b></font></label>
                                     <input id="user_username" name="user_username" class="form-control">
                                     <p class="help-block">Example : thana.</p>
                                 </div>
@@ -217,7 +217,7 @@
                         </div>
                         <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label>Password <font color="#F00"><b>*</b></font></label>
+                                    <label>รหัสผ่าน / Password <font color="#F00"><b>*</b></font></label>
                                     <input id="user_password" name="user_password" type="password" class="form-control">
                                     <p class="help-block">Example : thanaadmin.</p>
                                 </div>
@@ -229,7 +229,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <label>Address <font color="#F00"><b>*</b></font> </label>
+                                <label>ที่อยู่ / Address <font color="#F00"><b>*</b></font> </label>
                                 <input type="text" id="user_address" name="user_address" class="form-control">
                                 <p class="help-block">Example : 271/55.</p>
                             </div>
@@ -242,7 +242,7 @@
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>Province <font color="#F00"><b>*</b></font> </label>
+                                <label>จังหวัด / Province <font color="#F00"><b>*</b></font> </label>
                                 <select id="user_province" name="user_province" data-live-search="true" class="form-control" onchange="getAmphur()">
                                     <option value="">Select</option>
                                     <?php 
@@ -259,7 +259,7 @@
 
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>Amphur <font color="#F00"><b>*</b></font> </label>
+                                <label>อำเภอ / Amphur <font color="#F00"><b>*</b></font> </label>
                                 <select id="user_amphur" name="user_amphur" data-live-search="true"  class="form-control" onchange="getDistrict()">
                                 <option value="">Select</option>
                                 </select>
@@ -269,7 +269,7 @@
 
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>Distict <font color="#F00"><b>*</b></font> </label>
+                                <label>ตำบล / Distict <font color="#F00"><b>*</b></font> </label>
                                 <select id="user_district" name="user_district" data-live-search="true" class="form-control">
                                 <option value="">Select</option>
                                 </select>
@@ -279,7 +279,7 @@
 
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>Zipcode <font color="#F00"><b>*</b></font> </label>
+                                <label>เลขไปรษณีย์ / Zipcode <font color="#F00"><b>*</b></font> </label>
                                 <input id="user_zipcode" name="user_zipcode" type="text" readonly class="form-control">
                                 <p class="help-block">Example : 30000.</p>
                             </div>
@@ -293,7 +293,7 @@
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>Position <font color="#F00"><b>*</b></font> </label>
+                                <label>ตำแหน่ง / Position <font color="#F00"><b>*</b></font> </label>
                                 <select class="form-control" id="user_position_id" name="user_position_id">
                                 <option value="">Select</option>
                                     <?php 
@@ -310,7 +310,7 @@
 
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>License <font color="#F00"><b>*</b></font> </label>
+                                <label>สิทธิ์การใช้งาน / License <font color="#F00"><b>*</b></font> </label>
                                 <select class="form-control" id="license_id" name="license_id">
                                 <option value="">Select</option>
                                     <?php 
@@ -327,7 +327,7 @@
 
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>Status <font color="#F00"><b>*</b></font> </label>
+                                <label>สถานะ / Status <font color="#F00"><b>*</b></font> </label>
                                 <select class="form-control" id="user_status_id" name="user_status_id">
                                 <option value="">Select</option>
                                     <?php 

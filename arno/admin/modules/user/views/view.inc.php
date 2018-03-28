@@ -3,8 +3,8 @@
         <h1 class="page-header">Employee Management</h1>
     </div>
     <div class="col-lg-6" align="right">
-        <a href="?app=employee" class="btn btn-primary active btn-menu">Employee</a>
-        <a href="?app=employee_license" class="btn btn-primary  btn-menu">License</a>
+        <a href="?app=employee" class="btn btn-primary active btn-menu">พนักงาน / Employee</a>
+        <a href="?app=employee_license" class="btn btn-primary  btn-menu">สิทธิ์การใช้งาน / License</a>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -13,7 +13,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Employee List
+                            รายชื่อพนักงาน / Employee List
                             <a class="btn btn-success " style="float:right;" href="?app=employee&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                         </div>
                         <!-- /.panel-heading -->
@@ -21,13 +21,13 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Mobile</th>
-                                        <th>Email</th>
-                                        <th>Status</th>
+                                        <th style="text-align:center;">ลำดับ <br>No.</th>
+                                        <th style="text-align:center;">รหัส <br>ID</th>
+                                        <th style="text-align:center;">ชื่อ <br>Name</th>
+                                        <th style="text-align:center;">ตำแหน่ง <br>Position</th>
+                                        <th style="text-align:center;">โทรศัพท์ <br>Mobile</th>
+                                        <th style="text-align:center;">อีเมล์ <br>Email</th>
+                                        <th style="text-align:center;">สถานะ <br>Status</th>
                                         <th></th>
                                     </tr>
                                 </thead>

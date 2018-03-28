@@ -53,7 +53,7 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Purchase Order Management</h1>
+        <h1 class="page-header">Customer Order Management</h1>
     </div>
     <div class="col-lg-6" align="right">
        
@@ -65,7 +65,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-               เพิ่มใบสั่งซื้อสินค้าของลูกค้า / Add Customer Purchase Order  
+               เพิ่มใบสั่งซื้อสินค้าของลูกค้า / Add Customer Order  
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

@@ -50,8 +50,8 @@
     }
 
     
-    else if($_GET['app'] == "move_stock"){
-        require_once("modules/move_stock/views/index.inc.php");
+    else if($_GET['app'] == "stock_move"){
+        require_once("modules/stock_move/views/index.inc.php");
     }else if($_GET['app'] == "stock_group"){
         require_once("modules/stock_group/views/index.inc.php");
     }else if($_GET['app'] == "stock"){

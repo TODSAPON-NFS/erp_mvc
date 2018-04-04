@@ -30,6 +30,23 @@ class ProductSupplierModel extends BaseModel{
 
     }
 
+    function getProductBySupplierID($supplier_id){
+        $sql = " SELECT tb_product_supplier.product_id, CONCAT(product_code_first,product_code) as product_code, product_name, product_description , product_type, product_status, product_buyprice   
+        FROM tb_product_supplier LEFT JOIN tb_product ON tb_product_supplier.product_id = tb_product.product_id 
+        WHERE supplier_id = '$supplier_id' AND product_supplier_status = 'Active' 
+        ORDER BY product_name  
+        ";
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getProductSupplierByID($id){
         $sql = " SELECT * 
         FROM tb_product_supplier 

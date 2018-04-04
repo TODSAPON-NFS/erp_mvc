@@ -8,7 +8,7 @@ require_once('../models/CustomerPurchaseOrderListDetailModel.php');
 require_once('../models/PurchaseRequestListModel.php');
 require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
-require_once('../models/ProductModel.php');
+require_once('../models/ProductSupplierModel.php');
 require_once('../models/SupplierModel.php');
 date_default_timezone_set('asia/bangkok');
 
@@ -20,7 +20,7 @@ $purchase_order_model = new PurchaseOrderModel;
 $purchase_order_list_model = new PurchaseOrderListModel;
 $purchase_request_list_model = new PurchaseRequestListModel;
 $customer_purchase_order_list_detail_model = new CustomerPurchaseOrderListDetailModel;
-$product_model = new ProductModel;
+$product_supplier_model = new ProductSupplierModel;
 $first_char = "PO";
 $purchase_order_id = $_GET['id'];
 $notification_id = $_GET['notification'];
@@ -32,13 +32,15 @@ if(!isset($_GET['action'])){
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
-    $products=$product_model->getProductBy();
+    
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
 
 
     if($supplier_id > 0){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
+        $products=$product_supplier_model->getProductBySupplierID($supplier_id);
+        
         if($supplier['supplier_domestic'] == "ภายในประเทศ"){
             $first_char = "LP";
         }else{
@@ -46,18 +48,20 @@ if(!isset($_GET['action'])){
         }
         $first_code = $first_char.date("y").date("m");
         $last_code = $purchase_order_model->getPurchaseOrderLastID($first_code,3);
-        $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id);
+
+        //$purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id);
     }
    
 
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
-    $products=$product_model->getProductBy();
+    
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
     $purchase_order = $purchase_order_model->getPurchaseOrderByID($purchase_order_id);
     $supplier=$supplier_model->getSupplierByID($purchase_order['supplier_id']);
+    $products=$product_supplier_model->getProductBySupplierID($purchase_order['supplier_id']);
     $purchase_order_lists = $purchase_order_list_model->getPurchaseOrderListBy($purchase_order_id);
     require_once($path.'update.inc.php');
 
@@ -87,6 +91,9 @@ if(!isset($_GET['action'])){
         $data['purchase_order_accept_status'] = '';
         $data['purchase_order_status'] = '';
         $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
+        $data['purchase_order_total'] = (float)filter_var($purchase_order_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['purchase_order_vat'] = (float)filter_var($purchase_order_vat, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['purchase_order_net'] = (float)filter_var($purchase_order_net, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['employee_id'] = $_POST['employee_id'];
 
         $output = $purchase_order_model->insertPurchaseOrder($data);
@@ -94,8 +101,11 @@ if(!isset($_GET['action'])){
         if($output > 0){
             $data = [];
             $product_id = $_POST['product_id'];
+
             $purchase_request_list_id = $_POST['purchase_request_list_id'];
             $customer_purchase_order_list_detail_id = $_POST['customer_purchase_order_list_detail_id'];
+            $delivery_note_supplier_list_id = $_POST['delivery_note_supplier_list_id'];
+
             $purchase_order_list_qty = $_POST['purchase_order_list_qty'];
             $purchase_order_list_price = $_POST['purchase_order_list_price'];
             $purchase_order_list_price_sum = $_POST['purchase_order_list_price_sum'];
@@ -110,9 +120,9 @@ if(!isset($_GET['action'])){
                     $data_sub['purchase_order_id'] = $output;
                     $data_sub['product_id'] = $product_id[$i];
                     
-                    $data_sub['purchase_order_list_qty'] = $purchase_order_list_qty[$i];
-                    $data_sub['purchase_order_list_price'] = $purchase_order_list_price[$i];
-                    $data_sub['purchase_order_list_price_sum'] = $purchase_order_list_price_sum[$i];
+                    $data_sub['purchase_order_list_qty'] = (float)filter_var($purchase_order_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data_sub['purchase_order_list_price'] = (float)filter_var($purchase_order_list_price[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data_sub['purchase_order_list_price_sum'] = (float)filter_var($purchase_order_list_price_sum[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data_sub['purchase_order_list_delivery_min'] = $purchase_order_list_delivery_min[$i];
                     $data_sub['purchase_order_list_delivery_max'] = $purchase_order_list_delivery_max[$i];
                     $data_sub['purchase_order_list_remark'] = $purchase_order_list_remark[$i];
@@ -123,6 +133,8 @@ if(!isset($_GET['action'])){
                             $purchase_request_list_model->updatePurchaseOrderId($purchase_request_list_id[$i],$id);
                         }else if ($customer_purchase_order_list_detail_id[$i] > 0 ){
                             $customer_purchase_order_list_detail_model->updatePurchaseOrderId($customer_purchase_order_list_detail_id[$i],$id);
+                        }else if ($delivery_note_supplier_list_id[$i] > 0 ){
+                            $delivery_note_supplier_list_model->updatePurchaseOrderId($delivery_note_supplier_list_id[$i],$id);
                         }
                     }
                 }
@@ -131,9 +143,9 @@ if(!isset($_GET['action'])){
                 $data_sub = [];
                 $data_sub['purchase_order_id'] = $output;
                 $data_sub['product_id'] = $product_id;
-                $data_sub['purchase_order_list_qty'] = $purchase_order_list_qty;
-                $data_sub['purchase_order_list_price'] = $purchase_order_list_price;
-                $data_sub['purchase_order_list_price_sum'] = $purchase_order_list_price_sum;
+                $data_sub['purchase_order_list_qty'] = (float)filter_var($purchase_order_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data_sub['purchase_order_list_price'] = (float)filter_var($purchase_order_list_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data_sub['purchase_order_list_price_sum'] = (float)filter_var($purchase_order_list_price_sum, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['purchase_order_list_delivery_min'] = $purchase_order_list_delivery_min;
                 $data_sub['purchase_order_list_delivery_max'] = $purchase_order_list_delivery_max;
                 $data_sub['purchase_order_list_remark'] = $purchase_order_list_remark;
@@ -144,6 +156,8 @@ if(!isset($_GET['action'])){
                         $purchase_request_list_model->updatePurchaseOrderId($purchase_request_list_id,$id);
                     }else if ($customer_purchase_order_list_detail_id > 0 ){
                         $customer_purchase_order_list_detail_model->updatePurchaseOrderId($customer_purchase_order_list_detail_id,$id);
+                    }else if ($delivery_note_supplier_list_id[$i] > 0 ){
+                        $delivery_note_supplier_list_model->updatePurchaseOrderId($delivery_note_supplier_list_id[$i],$id);
                     }
                 }
                 $data['purchase_order_status'] = 'New';
@@ -152,14 +166,15 @@ if(!isset($_GET['action'])){
             }
 
             
-            $data['purchase_order_type'] = $_POST['purchase_order_type'];
             $data['supplier_id'] = $_POST['supplier_id'];
             $data['purchase_order_code'] = $_POST['purchase_order_code'];
             $data['purchase_order_date'] = $_POST['purchase_order_date'];
             $data['purchase_order_credit_term'] = $_POST['purchase_order_credit_term'];
             $data['purchase_order_accept_status'] = '';
-            
             $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
+            $data['purchase_order_total'] = (float)filter_var($purchase_order_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['purchase_order_vat'] = (float)filter_var($purchase_order_vat, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['purchase_order_net'] = (float)filter_var($purchase_order_net, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data['employee_id'] = $_POST['employee_id'];
 
             $purchase_order_model->updatePurchaseOrderByID($output,$data);
@@ -180,10 +195,16 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'edit'){
     
     if(isset($_POST['purchase_order_code'])){
-        
+
         $data = [];
+        
+     
         $product_id = $_POST['product_id'];
         
+        $purchase_request_list_id = $_POST['purchase_request_list_id'];
+        $customer_purchase_order_list_detail_id = $_POST['customer_purchase_order_list_detail_id'];
+        $delivery_note_supplier_list_id = $_POST['delivery_note_supplier_list_id'];
+
         $purchase_order_list_id = $_POST['purchase_order_list_id'];
         $purchase_order_list_qty = $_POST['purchase_order_list_qty'];
         $purchase_order_list_price = $_POST['purchase_order_list_price'];
@@ -193,75 +214,67 @@ if(!isset($_GET['action'])){
         $purchase_order_list_remark = $_POST['purchase_order_list_remark'];
 
         $purchase_order_list_model->deletePurchaseOrderListByPurchaseOrderIDNotIN($purchase_order_id,$purchase_order_list_id);
+        
         if(is_array($product_id)){
             for($i=0; $i < count($product_id) ; $i++){
                 $data_sub = [];
                 $data_sub['purchase_order_id'] = $purchase_order_id;
                 $data_sub['product_id'] = $product_id[$i];
-                $data_sub['purchase_order_list_qty'] = $purchase_order_list_qty[$i];
-                $data_sub['purchase_order_list_price'] = $purchase_order_list_price[$i];
-                $data_sub['purchase_order_list_price_sum'] = $purchase_order_list_price_sum[$i];
+                
+                $data_sub['purchase_order_list_qty'] = (float)filter_var($purchase_order_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data_sub['purchase_order_list_price'] = (float)filter_var($purchase_order_list_price[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data_sub['purchase_order_list_price_sum'] = (float)filter_var($purchase_order_list_price_sum[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['purchase_order_list_delivery_min'] = $purchase_order_list_delivery_min[$i];
                 $data_sub['purchase_order_list_delivery_max'] = $purchase_order_list_delivery_max[$i];
                 $data_sub['purchase_order_list_remark'] = $purchase_order_list_remark[$i];
     
-                $purchase_order_list_model->updatePurchaseOrderListByIdAdmin($data_sub,$purchase_order_list_id[$i]);
+                if($purchase_order_list_id[$i] != '0' ){
+                    $purchase_order_list_model->updatePurchaseOrderListByIdAdmin($data_sub,$purchase_order_list_id[$i]);
+                }else{
+                    $id = $purchase_order_list_model->insertPurchaseOrderList($data_sub);
+                    if($id > 0){
+                        if($purchase_request_list_id[$i] > 0){
+                            $purchase_request_list_model->updatePurchaseOrderId($purchase_request_list_id[$i],$id);
+                        }else if ($customer_purchase_order_list_detail_id[$i] > 0 ){
+                            $customer_purchase_order_list_detail_model->updatePurchaseOrderId($customer_purchase_order_list_detail_id[$i],$id);
+                        }else if ($delivery_note_supplier_list_id[$i] > 0 ){
+                            $delivery_note_supplier_list_model->updatePurchaseOrderId($delivery_note_supplier_list_id[$i],$id);
+                        }
+                    }
+                }
+                
             }
             $data['purchase_order_status'] = 'New';
         }else if($product_id != ""){
             $data_sub = [];
             $data_sub['purchase_order_id'] = $purchase_order_id;
             $data_sub['product_id'] = $product_id;
-            $data_sub['purchase_order_list_qty'] = $purchase_order_list_qty;
-            $data_sub['purchase_order_list_price'] = $purchase_order_list_price;
-            $data_sub['purchase_order_list_price_sum'] = $purchase_order_list_price_sum;
+            $data_sub['purchase_order_list_qty'] = (float)filter_var($purchase_order_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data_sub['purchase_order_list_price'] = (float)filter_var($purchase_order_list_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data_sub['purchase_order_list_price_sum'] = (float)filter_var($purchase_order_list_price_sum, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data_sub['purchase_order_list_delivery_min'] = $purchase_order_list_delivery_min;
             $data_sub['purchase_order_list_delivery_max'] = $purchase_order_list_delivery_max;
             $data_sub['purchase_order_list_remark'] = $purchase_order_list_remark;
+            
+            if($purchase_order_list_id != '0'){
+                $purchase_order_list_model->updatePurchaseOrderListByIdAdmin($data_sub,$purchase_order_list_id);
+            }else{
+                $id = $purchase_order_list_model->insertPurchaseOrderList($data_sub);
 
-            $purchase_order_list_model->updatePurchaseOrderListByIdAdmin($data_sub,$purchase_order_list_id);
-            $data['purchase_order_status'] = 'New';
-        }
-
-
-        $m_product_id = $_POST['m_product_id'];
-        $m_purchase_order_list_qty = $_POST['m_purchase_order_list_qty'];
-        $m_purchase_order_list_price = $_POST['m_purchase_order_list_price'];
-        $m_purchase_order_list_price_sum = $_POST['m_purchase_order_list_price_sum'];
-        $m_purchase_order_list_delivery_min = $_POST['m_purchase_order_list_delivery_min'];
-        $m_purchase_order_list_delivery_max = $_POST['m_purchase_order_list_delivery_max'];
-        $m_purchase_order_list_remark = $_POST['m_purchase_order_list_remark'];
-
-        if(is_array($m_product_id)){
-            for($i=0; $i < count($m_product_id) ; $i++){
-                $data_sub = [];
-                $data_sub['purchase_order_id'] = $purchase_order_id;
-                $data_sub['product_id'] = $m_product_id[$i];
-                $data_sub['purchase_order_list_qty'] = $m_purchase_order_list_qty[$i];
-                $data_sub['purchase_order_list_price'] = $m_purchase_order_list_price[$i];
-                $data_sub['purchase_order_list_price_sum'] = $m_purchase_order_list_price_sum[$i];
-                $data_sub['purchase_order_list_delivery_min'] = $m_purchase_order_list_delivery_min[$i];
-                $data_sub['purchase_order_list_delivery_max'] = $m_purchase_order_list_delivery_max[$i];
-                $data_sub['purchase_order_list_remark'] = $m_purchase_order_list_remark[$i];
-    
-                $purchase_order_list_model->insertPurchaseOrderList($data_sub);
+                if($id > 0){
+                    if($purchase_request_list_id > 0){
+                        $purchase_request_list_model->updatePurchaseOrderId($purchase_request_list_id,$id);
+                    }else if ($customer_purchase_order_list_detail_id > 0 ){
+                        $customer_purchase_order_list_detail_model->updatePurchaseOrderId($customer_purchase_order_list_detail_id,$id);
+                    }else if ($delivery_note_supplier_list_id[$i] > 0 ){
+                        $delivery_note_supplier_list_model->updatePurchaseOrderId($delivery_note_supplier_list_id[$i],$id);
+                    }
+                }
             }
             $data['purchase_order_status'] = 'New';
-        }else if($m_product_id != ""){
-            $data_sub = [];
-            $data_sub['purchase_order_id'] = $purchase_order_id;
-            $data_sub['product_id'] = $m_product_id;
-            $data_sub['purchase_order_list_qty'] = $m_purchase_order_list_qty;
-            $data_sub['purchase_order_list_price'] = $m_purchase_order_list_price;
-            $data_sub['purchase_order_list_price_sum'] = $m_purchase_order_list_price_sum;
-            $data_sub['purchase_order_list_delivery_min'] = $m_purchase_order_list_delivery_min;
-            $data_sub['purchase_order_list_delivery_max'] = $m_purchase_order_list_delivery_max;
-            $data_sub['purchase_order_list_remark'] = $m_purchase_order_list_remark;
-
-            $purchase_order_list_model->insertPurchaseOrderList($data_sub);
-            $data['purchase_order_status'] = 'New';
+        }else{
+            $data['purchase_order_status'] = '';
         }
-
 
 
         $data['supplier_id'] = $_POST['supplier_id'];
@@ -269,11 +282,13 @@ if(!isset($_GET['action'])){
         $data['purchase_order_date'] = $_POST['purchase_order_date'];
         $data['purchase_order_credit_term'] = $_POST['purchase_order_credit_term'];
         $data['purchase_order_accept_status'] = '';
-        
         $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
+        $data['purchase_order_total'] = (float)filter_var($purchase_order_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['purchase_order_vat'] = (float)filter_var($purchase_order_vat, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['purchase_order_net'] = (float)filter_var($purchase_order_net, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['employee_id'] = $_POST['employee_id'];
 
-        $output = $purchase_order_model->updatePurchaseOrderByID($purchase_order_id,$data);
+        $output = $purchase_order_model->updatePurchaseOrderByID($purchase_order_id , $data);
         
 
         if($output){

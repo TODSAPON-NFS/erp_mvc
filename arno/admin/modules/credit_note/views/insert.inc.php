@@ -1,64 +1,45 @@
 <script>
-
-    var product_data = [
-    <?php for($i = 0 ; $i < count($products) ; $i++ ){?>
-        {
-            product_id:'<?php echo $products[$i]['product_id'];?>',
-            product_code:'<?php echo $products[$i]['product_code'];?>',
-            product_name:'<?php echo $products[$i]['product_name'];?>'
-        },
-    <?php }?>
-    ];
-
+    var total_old = 0.0;
+    var invoice_customer = [];
     var data_buffer = [];
     function check(){
 
         var customer_id = document.getElementById("customer_id").value;
-        var invoice_customer_code = document.getElementById("invoice_customer_code").value;
-        var invoice_customer_date = document.getElementById("invoice_customer_date").value;
-        //var invoice_customer_date_recieve = document.getElementById("invoice_customer_date_recieve").value;
-        var invoice_customer_term = document.getElementById("invoice_customer_term").value;
-        var invoice_customer_due = document.getElementById("invoice_customer_due").value;
+        var credit_note_code = document.getElementById("credit_note_code").value;
+        var credit_note_date = document.getElementById("credit_note_date").value;
+        var credit_note_term = document.getElementById("credit_note_term").value;
+        var credit_note_due = document.getElementById("credit_note_due").value;
         var employee_id = document.getElementById("employee_id").value;
 
         
         customer_id = $.trim(customer_id);
-        invoice_customer_code = $.trim(invoice_customer_code);
-        invoice_customer_date = $.trim(invoice_customer_date);
-        //invoice_customer_date_recieve = $.trim(invoice_customer_date_recieve);
-        invoice_customer_term = $.trim(invoice_customer_term);
-        invoice_customer_due = $.trim(invoice_customer_due);
+        credit_note_code = $.trim(credit_note_code);
+        credit_note_date = $.trim(credit_note_date);
+        credit_note_term = $.trim(credit_note_term);
+        credit_note_due = $.trim(credit_note_due);
         employee_id = $.trim(employee_id);
 
         if(customer_id.length == 0){
             alert("Please input iupplier.");
             document.getElementById("customer_id").focus();
             return false;
-        }else if(invoice_customer_code.length == 0){
-            alert("Please input invoice Customer date.");
-            document.getElementById("invoice_customer_code").focus();
+        }else if(credit_note_code.length == 0){
+            alert("Please input Credit Note date.");
+            document.getElementById("credit_note_code").focus();
             return false;
-        }else if(invoice_customer_date.length == 0){
-            alert("Please input invoice Customer date.");
-            document.getElementById("invoice_customer_date").focus();
-            return false;
-        }
-        
-        /*
-        else if(invoice_customer_date_recieve.length == 0){
-            alert("Please input invoice Customer date recieve.");
-            document.getElementById("invoice_customer_date_recieve").focus();
+        }else if(credit_note_date.length == 0){
+            alert("Please input Credit Note date.");
+            document.getElementById("credit_note_date").focus();
             return false;
         }
-        */
 
-        else if(invoice_customer_term.length == 0){
-            alert("Please input invoice Customer term.");
-            document.getElementById("invoice_customer_term").focus();
+        else if(credit_note_term.length == 0){
+            alert("Please input Credit Note term.");
+            document.getElementById("credit_note_term").focus();
             return false;
-        }else if(invoice_customer_due.length == 0){
-            alert("Please input invoice Customer due");
-            document.getElementById("invoice_customer_due").focus();
+        }else if(credit_note_due.length == 0){
+            alert("Please input Credit Note due");
+            document.getElementById("credit_note_due").focus();
             return false;
         }else if(employee_id.length == 0){
             alert("Please input employee");
@@ -76,10 +57,22 @@
         var customer_id = document.getElementById('customer_id').value;
         $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
             document.getElementById('customer_code').value = data.customer_code;
-            document.getElementById('invoice_customer_name').value = data.customer_name_en +' (' + data.customer_name_th +')';
-            document.getElementById('invoice_customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
-            document.getElementById('invoice_customer_tax').value = data.customer_tax ;
+            document.getElementById('credit_note_name').value = data.customer_name_en +' (' + data.customer_name_th +')';
+            document.getElementById('credit_note_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
+            document.getElementById('credit_note_tax').value = data.customer_tax ;
         });
+
+         $.post( "controllers/getInvoiceCustomerByCustomerID.php", { 'customer_id': customer_id }, function( data ) {
+            invoice_customer = data;
+            $('select[name="invoice_customer_id"]').empty();
+            var str = "<option value=''>Select Invoice</option>";
+            $.each(data, function (index, value) {
+                str += "<option value='" + value['invoice_customer_id'] + "'>"+value['invoice_customer_code']+"</option>";
+            });
+            
+            $('select[name="invoice_customer_id"]').html(str);
+            $('select[name="invoice_customer_id"]').selectpicker('refresh');
+         });
     }
 
     
@@ -87,20 +80,12 @@
         $(id).closest('tr').remove();
      }
 
-     function show_data(id){
-        var product_name = "";
-        var data = product_data.filter(val => val['product_id'] == $(id).val());
-        if(data.length > 0){
-            $(id).closest('tr').children('td').children('input[name="product_name[]"]').val( data[0]['product_name'] );
-        }
-        
-     }
 
      function update_sum(id){
 
-          var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val(  ).replace(',',''));
-          var price =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_price[]"]').val( ).replace(',',''));
-          var sum =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_total[]"]').val( ).replace(',',''));
+          var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="credit_note_list_qty[]"]').val(  ).replace(',',''));
+          var price =  parseFloat($(id).closest('tr').children('td').children('input[name="credit_note_list_price[]"]').val( ).replace(',',''));
+          var sum =  parseFloat($(id).closest('tr').children('td').children('input[name="credit_note_list_total[]"]').val( ).replace(',',''));
 
         if(isNaN(qty)){
             qty = 0;
@@ -116,9 +101,9 @@
 
         sum = qty*price;
 
-        $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val( qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $(id).closest('tr').children('td').children('input[name="invoice_customer_list_price[]"]').val( price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $(id).closest('tr').children('td').children('input[name="invoice_customer_list_total[]"]').val( sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $(id).closest('tr').children('td').children('input[name="credit_note_list_qty[]"]').val( qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $(id).closest('tr').children('td').children('input[name="credit_note_list_price[]"]').val( price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $(id).closest('tr').children('td').children('input[name="credit_note_list_total[]"]').val( sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
 
         calculateAll();
 
@@ -127,18 +112,22 @@
 
 
 
-    function show_purchase_order(id){
-        var customer_id = document.getElementById('customer_id').value;
-        var val = document.getElementsByName('customer_purchase_order_list_id[]');
-        var customer_purchase_order_list_id = [];
+    function show_invoice_customer(id){
+        var invoice_customer_id = document.getElementById('invoice_customer_id').value;
+        var val = document.getElementsByName('invoice_customer_list_id[]');
+        var invoice_customer_list_id = [];
         
         for(var i = 0 ; i < val.length ; i++){
-            customer_purchase_order_list_id.push(val[i].value);
+            invoice_customer_list_id.push(val[i].value);
         }
         
-        if(customer_id != ""){
+        if(invoice_customer_id != ""){
 
-            $.post( "controllers/getInvoiceCustomerListByCustomerID.php", { 'customer_id': customer_id, 'customer_purchase_order_list_id': JSON.stringify(customer_purchase_order_list_id) }, function( data ) {
+            $.post( "controllers/getCreditNoteListByInvoiceCustomerID.php", { 'invoice_customer_id': invoice_customer_id, 'invoice_customer_list_id': JSON.stringify(invoice_customer_list_id) }, function( data ) {
+               //alert(data);
+               //$('#bodyAdd').html(data);
+               //     $('#modalAdd').modal('show');
+               
                 if(data.length > 0){
                     data_buffer = data;
                     var content = "";
@@ -155,13 +144,13 @@
                                             data[i].product_name+
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].invoice_customer_list_qty +
+                                            data[i].credit_note_list_qty +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].invoice_customer_list_price +
+                                            data[i].credit_note_list_price +
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].invoice_customer_list_qty * data[i].invoice_customer_list_price) +
+                                            (data[i].credit_note_list_qty * data[i].credit_note_list_price) +
                                         '</td>'+
                                     '</tr>';
 
@@ -169,8 +158,6 @@
                     $('#bodyAdd').html(content);
                     $('#modalAdd').modal('show');
 
-                }else{
-                    add_row_new(id);
                 }
                 
             });
@@ -181,15 +168,15 @@
     } 
 
     function search_pop_like(id){
-        var customer_id = document.getElementById('customer_id').value;
-        var val = document.getElementsByName('customer_purchase_order_list_id[]');
-        var customer_purchase_order_list_id = [];
+        var invoice_customer_id = document.getElementById('invoice_customer_id').value;
+        var val = document.getElementsByName('invoice_customer_list_id[]');
+        var invoice_customer_list_id = [];
         
         for(var i = 0 ; i < val.length ; i++){
-            customer_purchase_order_list_id.push(val[i].value);
+            invoice_customer_list_id.push(val[i].value);
         }
 
-        $.post( "controllers/getInvoiceCustomerListByCustomerID.php", { 'customer_id': customer_id, 'customer_purchase_order_list_id': JSON.stringify(customer_purchase_order_list_id), search : $(id).val() }, function( data ) {
+        $.post( "controllers/getCreditNoteListByInvoiceCustomerID.php", { 'invoice_customer_id': invoice_customer_id, 'invoice_customer_list_id': JSON.stringify(invoice_customer_list_id), search : $(id).val() }, function( data ) {
             var content = "";
                 if(data.length > 0){
                     data_buffer = data;
@@ -207,13 +194,13 @@
                                             data[i].product_name+
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].invoice_customer_list_qty +
+                                            data[i].credit_note_list_qty +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].invoice_customer_list_price +
+                                            data[i].credit_note_list_price +
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].invoice_customer_list_qty * data[i].invoice_customer_list_price) +
+                                            (data[i].credit_note_list_qty * data[i].credit_note_list_price) +
                                         '</td>'+
                                     '</tr>';
 
@@ -240,19 +227,23 @@
 
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
-                        '<td>'+
-                            '<input type="hidden" name="customer_purchase_order_list_id[]" value="'+ data_buffer[i].customer_purchase_order_list_id +'" readonly />'+     
-                            '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                        '<td>'+    
+                            '<input type="hidden" name="invoice_customer_list_id[]" value="'+data_buffer[i].invoice_customer_list_id+'" />'+
+                            '<input type="hidden" name="product_id[]" value="'+data_buffer[i].product_id+'" />'+
+                            data_buffer[i].product_code +
                         '</td>'+
                         '<td>'+
-                            '<input type="text" class="form-control" name="product_name[]" value="'+ data_buffer[i].product_name +'" readonly />'+
-                            '<input type="text" class="form-control" name="invoice_customer_list_product_name[]" placeholder="Product Name (Customer)" />'+
-                            '<input type="text" class="form-control" name="invoice_customer_list_product_detail[]" placeholder="Product Detail (Customer)" />'+
-                            '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark"/>'+
+                            'Product name : ' + data_buffer[i].credit_note_list_product_name + '<br>' +
+                            'Product detail : ' + data_buffer[i].credit_note_list_product_detail + '<br>' +
+                            'Remark : ' +
+
+                            '<input type="hidden"  name="credit_note_list_product_name[]" value="'+ data_buffer[i].credit_note_list_product_name +'" />'+
+                            '<input type="hidden"  name="credit_note_list_product_detail[]" value="'+ data_buffer[i].credit_note_list_product_detail +'" />'+
+                            '<input type="text" class="form-control"  name="credit_note_list_remark[]" value="'+ data_buffer[i].credit_note_list_remark +'" />'+
                         '</td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_qty +'" /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_price +'" /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);"  value="'+ (data_buffer[i].invoice_customer_list_qty * data_buffer[i].invoice_customer_list_price) +'" readonly /></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="credit_note_list_qty[]" onchange="update_sum(this);" value="'+ data_buffer[i].credit_note_list_qty +'" /></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="credit_note_list_price[]" onchange="update_sum(this);" value="'+ data_buffer[i].credit_note_list_price +'" /></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="credit_note_list_total[]" onchange="update_sum(this);"  value="'+ (data_buffer[i].credit_note_list_qty * data_buffer[i].credit_note_list_price) +'" readonly /></td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -261,21 +252,6 @@
                     '</tr>'
                 );
 
-                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
-                var str = "<option value=''>Select Product</option>";
-                $.each(product_data, function (index, value) {
-                    if(value['product_id'] == data_buffer[i].product_id){
-                        str += "<option value='" + value['product_id'] + "' selected >"+value['product_code']+"</option>";
-                    }else{
-                        str += "<option value='" + value['product_id'] + "'>"+value['product_code']+"</option>";
-                    }
-                    
-                });
-
-                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
-
-                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
-
             }
             
         }
@@ -283,48 +259,6 @@
     }
 
     
-
-
-    function add_row_new(id){
-        $('#modalAdd').modal('hide');
-        var index = 0;
-        if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
-            index = 1;
-        }else{
-            index = $(id).closest('table').children('tbody').children('tr').length + 1;
-        }
-        $(id).closest('table').children('tbody').append(
-            '<tr class="odd gradeX">'+
-                '<td>'+
-                    '<input type="hidden" name="customer_purchase_order_list_id[]" value="0" />'+     
-                    '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
-                '</td>'+
-                '<td>'+
-                    '<input type="text" class="form-control" name="product_name[]" readonly />'+
-                    '<input type="text" class="form-control" name="invoice_customer_list_product_name[]" placeholder="Product Name (Customer)" />'+
-                    '<input type="text" class="form-control" name="invoice_customer_list_product_detail[]" placeholder="Product Detail (Customer)" />'+
-                    '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark"/>'+
-                '</td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);" readonly /></td>'+
-                '<td>'+
-                    '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
-                        '<i class="fa fa-times" aria-hidden="true"></i>'+
-                    '</a>'+
-                '</td>'+
-            '</tr>'
-        );
-
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
-        var str = "<option value=''>Select Product</option>";
-        $.each(product_data, function (index, value) {
-            str += "<option value='" + value['product_id'] + "'>"+value['product_code']+"</option>";
-        });
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
-
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
-    }
 
 
     function checkAll(id)
@@ -337,20 +271,31 @@
         }
     }
 
+    function update_total_old(){
+        var data = invoice_customer.filter(val => val['invoice_customer_id'] == $('#invoice_customer_id').val());
+        if(data.length > 0){
+            total_old =  data[0].invoice_customer_total_price * 1.00;
+            calculateAll();
+        }
+    }
+
 
     function calculateAll(){
 
-        var val = document.getElementsByName('invoice_customer_list_total[]');
+        var val = document.getElementsByName('credit_note_list_total[]');
         var total = 0.0;
         
         for(var i = 0 ; i < val.length ; i++){
             
             total += parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),''));
         }
+        $('#credit_note_total_old').val(total_old.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
 
-        $('#invoice_customer_total_price').val(total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $('#invoice_customer_vat_price').val((total * ($('#invoice_customer_vat').val()/100.0)).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $('#invoice_customer_net_price').val((total * ($('#invoice_customer_vat').val()/100.0) + total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#credit_note_total_price').val(total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+
+        $('#credit_note_total').val((total_old - total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#credit_note_vat_price').val((total * ($('#credit_note_vat').val()/100.0)).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#credit_note_net_price').val((total * ($('#credit_note_vat').val()/100.0) + total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
 
     }
 
@@ -362,7 +307,7 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Invoice Customer Management</h1>
+        <h1 class="page-header">Credit Note Management</h1>
     </div>
     <div class="col-lg-6" align="right">
        
@@ -374,11 +319,11 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            เพิ่มใบกำกับภาษี / Add Invoice Customer  
+            เพิ่มใบลดหนี้ / Add Credit Note  
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=invoice_customer&action=add" >
+                <form role="form" method="post" onsubmit="return check();" action="index.php?app=credit_note&action=add" >
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="row">
@@ -407,22 +352,22 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>ชื่อตามใบกำกับภาษี / Full name <font color="#F00"><b>*</b></font></label>
-                                        <input  id="invoice_customer_name" name="invoice_customer_name" class="form-control" value="<?php echo $customer['customer_name_en'];?> (<?php echo $customer['customer_name_th'];?>)" >
+                                        <label>ชื่อตามใบลดหนี้ / Full name <font color="#F00"><b>*</b></font></label>
+                                        <input  id="credit_note_name" name="credit_note_name" class="form-control" value="<?php echo $customer['customer_name_en'];?> (<?php echo $customer['customer_name_th'];?>)" >
                                         <p class="help-block">Example : Revel soft.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ที่อยู่ตามใบกำภาษี / Address <font color="#F00"><b>*</b></font></label>
-                                        <textarea  id="invoice_customer_address" name="invoice_customer_address" class="form-control" rows="5" ><?php echo $customer['customer_address_1'] ."\n". $customer['customer_address_2'] ."\n". $customer['customer_address_3'];?></textarea >
+                                        <textarea  id="credit_note_address" name="credit_note_address" class="form-control" rows="5" ><?php echo $customer['customer_address_1'] ."\n". $customer['customer_address_2'] ."\n". $customer['customer_address_3'];?></textarea >
                                         <p class="help-block">Example : IN.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>เลขประจำตัวผู้เสียภาษี / Tax <font color="#F00"><b>*</b></font></label>
-                                        <input  id="invoice_customer_tax" name="invoice_customer_tax" class="form-control" value="<?php echo $customer['customer_tax'];?>" >
+                                        <input  id="credit_note_tax" name="credit_note_tax" class="form-control" value="<?php echo $customer['customer_tax'];?>" >
                                         <p class="help-block">Example : 0305559003597.</p>
                                     </div>
                                 </div>
@@ -435,32 +380,49 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>วันที่ออกใบกำกับภาษี / Date</label>
-                                        <input type="text" id="invoice_customer_date" name="invoice_customer_date"  class="form-control calendar" readonly/>
+                                        <label>วันที่ออกใบลดหนี้ / Date</label>
+                                        <input type="text" id="credit_note_date" name="credit_note_date"  class="form-control calendar" readonly/>
                                         <p class="help-block">01-03-2018</p>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>หมายเลขใบกำกับภาษี / Inv code <font color="#F00"><b>*</b></font></label>
-                                        <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" value="<?php echo $last_code;?>" >
-                                        <p class="help-block">Example : INV1801001.</p>
+                                        <label>เลขที่ใบลดหนี้ / CN code <font color="#F00"><b>*</b></font></label>
+                                        <input id="credit_note_code" name="credit_note_code" class="form-control" value="<?php echo $last_code;?>" >
+                                        <p class="help-block">Example : CN1801001.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>อ้างอิงใบกำกับภาษีหมายเลข / Inv Code  <font color="#F00"><b>*</b></font> </label>
+                                        <select id="invoice_customer_id" name="invoice_customer_id" class="form-control select" onchange="update_total_old();" data-live-search="true">
+                                            <option value="">Select</option>
+                                            <?php 
+                                            for($i =  0 ; $i < count($invoice_customers) ; $i++){
+                                            ?>
+                                            <option value="<?php echo $invoice_customers[$i]['invoice_customer_id'] ?>"><?php echo $invoice_customers[$i]['invoice_customer_code'] ?> </option>
+                                            <?
+                                            }
+                                            ?>
+                                        </select>
+                                        <p class="help-block">Example : INV1802001.</p>
                                     </div>
                                 </div>
                                 
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>กำหนดชำระ / Due </label>
-                                        <input type="text" id="invoice_customer_due" name="invoice_customer_due"  class="form-control calendar" readonly/>
+                                        <input type="text" id="credit_note_due" name="credit_note_due"  class="form-control calendar" readonly/>
                                         <p class="help-block">01-03-2018 </p>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>เงื่อนไขการชำระ / term </label>
-                                        <input type="text" id="invoice_customer_term" name="invoice_customer_term"  class="form-control"  />
+                                        <label>เงื่อนไขการชำระ / Term </label>
+                                        <input type="text" id="credit_note_term" name="credit_note_term"  class="form-control"  />
                                         <p class="help-block">Bank </p>
                                     </div>
                                 </div>
@@ -468,7 +430,7 @@
 
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>พนักงานขาย / Sale  <font color="#F00"><b>*</b></font> </label>
+                                        <label>ผู้ออกใบลดหนี้ / Employee  <font color="#F00"><b>*</b></font> </label>
                                         <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true">
                                             <option value="">Select</option>
                                             <?php 
@@ -505,32 +467,26 @@
                         <tbody>
                             <?php 
                             $total = 0;
-                            for($i=0; $i < count($invoice_customer_lists); $i++){
+                            for($i=0; $i < count($credit_note_lists); $i++){
                             ?>
                             <tr class="odd gradeX">
                                 <td>
-                                    <input type="hidden" name="customer_purchase_order_list_id[]" value="<?PHP echo  $invoice_customer_lists[$i]['customer_purchase_order_list_id'];?>" />
-                                   
-                                    <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
-                                        <option value="">Select</option>
-                                        <?php 
-                                        for($ii =  0 ; $ii < count($products) ; $ii++){
-                                        ?>
-                                        <option <?php if($products[$ii]['product_id'] == $invoice_customer_lists[$i]['product_id']){?> selected <?php }?> value="<?php echo $products[$ii]['product_id'] ?>"><?php echo $products[$ii]['product_code'] ?></option>
-                                        <?
-                                        }
-                                        ?>
-                                    </select>
+                                    <input type="hidden" name="invoice_customer_list_id[]" value="<?PHP echo  $credit_note_lists[$i]['invoice_customer_list_id'];?>" />
+                                    <input type="hidden" name="product_id[]" value="<?PHP echo  $credit_note_lists[$i]['product_id'];?>" />
+                                    <?PHP echo  $credit_note_lists[$i]['product_code'];?>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $invoice_customer_lists[$i]['product_name']; ?>" />
-                                    <input type="text" class="form-control" name="invoice_customer_list_product_name[]"  placeholder="Product Name (Customer)"/>
-                                    <input type="text" class="form-control" name="invoice_customer_list_product_detail[]"  placeholder="Product Detail (Customer)" />
-                                    <input type="text" class="form-control" name="invoice_customer_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_remark']; ?>" />
+                                    <span>Product name : </span><?php echo $credit_note_lists[$i]['credit_note_list_product_name']; ?><br>
+                                    <span>Product detail : </span><?php echo $credit_note_lists[$i]['credit_note_list_product_detail']; ?><br>
+                                    <span>Remark : </span><?php echo $credit_note_lists[$i]['credit_note_list_remark']; ?><br>
+
+                                    <input type="hidden"  name="credit_note_list_product_name[]"  value="<?php echo $credit_note_lists[$i]['credit_note_list_product_name']; ?>"/>
+                                    <input type="hidden"  name="credit_note_list_product_detail[]"  value="<?php echo $credit_note_lists[$i]['credit_note_list_product_detail']; ?>" />
+                                    <input type="text" class="form-control"  name="credit_note_list_remark[]"  placeholder="Remark" value="<?php echo $credit_note_lists[$i]['credit_note_list_remark']; ?>" />
                                 </td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_qty[]" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_qty']; ?>" /></td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_price[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" /></td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="invoice_customer_list_total[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_qty'] * $invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="credit_note_list_qty[]" value="<?php echo $credit_note_lists[$i]['credit_note_list_qty']; ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="credit_note_list_price[]" value="<?php echo  number_format($credit_note_lists[$i]['credit_note_list_price'],2); ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="credit_note_list_total[]" value="<?php echo  number_format($credit_note_lists[$i]['credit_note_list_qty'] * $credit_note_lists[$i]['credit_note_list_price'],2); ?>" /></td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
@@ -538,7 +494,7 @@
                                 </td>
                             </tr>
                             <?
-                                $total += $invoice_customer_lists[$i]['invoice_customer_list_qty'] * $invoice_customer_lists[$i]['invoice_customer_list_price'];
+                                $total += $credit_note_lists[$i]['credit_note_list_qty'] * $credit_note_lists[$i]['credit_note_list_price'];
                             }
                             ?>
                         </tbody>
@@ -546,7 +502,7 @@
                         <tfoot>
                             <tr class="odd gradeX">
                                 <td colspan="6" align="center">
-                                    <a href="javascript:;" onclick="show_purchase_order(this);" style="color:red;">
+                                    <a href="javascript:;" onclick="show_invoice_customer(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> 
                                         <span>เพิ่มสินค้า / Add product</span>
                                     </a>
@@ -585,9 +541,10 @@
                                             </div>
 
                                             <div class="modal-footer">
+
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" onclick="add_row_new(this);">New Row</button>
                                                 <button type="button" class="btn btn-primary" onclick="add_row(this);">Add Product</button>
+
                                             </div>
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
@@ -596,19 +553,44 @@
 
                                 </td>
                             </tr>
+
                             <tr class="odd gradeX">
-                                <td colspan="2" rowspan="3">
+                                <td colspan="2" rowspan="5">
                                     
                                 </td>
                                 <td colspan="2" align="left" style="vertical-align: middle;">
-                                    <span>ราคารวมทั้งสิ้น / Sub total</span>
+                                    <span>มูลค่าใบกำกับเดิม / Old total</span>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" style="text-align: right;" id="invoice_customer_total_price" name="invoice_customer_total_price" value="<?PHP echo number_format($total,2) ;?>"  readonly/>
+                                    <input type="text" class="form-control" style="text-align: right;" id="credit_note_total_old" name="credit_note_total_old" value="<?PHP echo number_format($invoice_customer['invoice_customer_total_price'],2) ;?>"  readonly/>
                                 </td>
                                 <td>
                                 </td>
                             </tr>
+
+                            <tr class="odd gradeX">
+                                <td colspan="2" align="left" style="vertical-align: middle;">
+                                    <span>มูลค่าที่ถูกต้อง / Total</span>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" style="text-align: right;" id="credit_note_total" name="credit_note_total" value="<?PHP echo number_format($invoice_customer['invoice_customer_total_price'] - $total ,2) ;?>"  readonly/>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+
+                            <tr class="odd gradeX">
+                                <td colspan="2" align="left" style="vertical-align: middle;">
+                                    <span>ผลต่าง / Sub total</span>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" style="text-align: right;" id="credit_note_total_price" name="credit_note_total_price" value="<?PHP echo number_format($total,2) ;?>"  readonly/>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+
+
                             <tr class="odd gradeX">
                                 <td colspan="2" align="left" style="vertical-align: middle;">
                                     <table>
@@ -617,7 +599,7 @@
                                                 <span>จำนวนภาษีมูลค่าเพิ่ม / Vat</span>
                                             </td>
                                             <td style = "padding-left:8px;padding-right:8px;width:72px;">
-                                                <input type="text" class="form-control" style="text-align: right;" id="invoice_customer_vat" name="invoice_customer_vat" value="<?PHP echo $vat;?>" />
+                                                <input type="text" class="form-control" style="text-align: right;" id="credit_note_vat" name="credit_note_vat" value="<?PHP echo $vat;?>" />
                                             </td>
                                             <td>
                                             %
@@ -627,7 +609,7 @@
                                     
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" style="text-align: right;" id="invoice_customer_vat_price"  name="invoice_customer_vat_price" value="<?PHP echo number_format(($vat/100) * $total,2) ;?>"  readonly/>
+                                    <input type="text" class="form-control" style="text-align: right;" id="credit_note_vat_price"  name="credit_note_vat_price" value="<?PHP echo number_format(($vat/100) * $total,2) ;?>"  readonly/>
                                 </td>
                                 <td>
                                 </td>
@@ -637,7 +619,7 @@
                                     <span>จำนวนเงินรวมทั้งสิ้น / Net Total</span>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" style="text-align: right;" id="invoice_customer_net_price" name="invoice_customer_net_price" value="<?PHP echo number_format(($vat/100) * $total + $total,2) ;?>" readonly/>
+                                    <input type="text" class="form-control" style="text-align: right;" id="credit_note_net_price" name="credit_note_net_price" value="<?PHP echo number_format(($vat/100) * $total + $total,2) ;?>" readonly/>
                                 </td>
                                 <td>
                                 </td>
@@ -648,7 +630,7 @@
                     <!-- /.row (nested) -->
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
-                            <a href="index.php?app=invoice_customer" class="btn btn-default">Back</a>
+                            <a href="index.php?app=credit_note" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>

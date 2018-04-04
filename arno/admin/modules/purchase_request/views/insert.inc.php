@@ -1,4 +1,14 @@
 <script>
+    var product_data = [
+    <?php for($i = 0 ; $i < count($products) ; $i++ ){?>
+        {
+            product_id:'<?php echo $products[$i]['product_id'];?>',
+            product_code:'<?php echo $products[$i]['product_code'];?>',
+            product_name:'<?php echo $products[$i]['product_name'];?>'
+        },
+    <?php }?>
+    ];
+    
     function check(){
 
 
@@ -106,7 +116,7 @@
                                     <?php 
                                     for($i =  0 ; $i < count($customers) ; $i++){
                                     ?>
-                                    <option value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_th'] ?> (<?php echo $customers[$i]['customer_name_en'] ?>)</option>
+                                    <option <?PHP if($user[0][0] == $users[$i]['user_id']){?> SELECTED <?PHP }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_th'] ?> (<?php echo $customers[$i]['customer_name_en'] ?>)</option>
                                     <?
                                     }
                                     ?>

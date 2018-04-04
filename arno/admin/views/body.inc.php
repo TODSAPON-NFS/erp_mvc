@@ -77,8 +77,13 @@
         require_once("modules/invoice_customer/views/index.inc.php");
     }else if($_GET['app'] == "exchange_rate_baht"){
         require_once("modules/exchange_rate_baht/views/index.inc.php");
+    }else if($_GET['app'] == "credit_note"){
+        require_once("modules/credit_note/views/index.inc.php");
+    }else if($_GET['app'] == "debit_note"){
+        require_once("modules/debit_note/views/index.inc.php");
+    }else if($_GET['app'] == "billing_note"){
+        require_once("modules/billing_note/views/index.inc.php");
     }
-    
     
     else if($_GET['app'] == "delivery_note_customer"){
         require_once("modules/delivery_note_customer/views/index.inc.php");

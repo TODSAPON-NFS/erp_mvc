@@ -53,6 +53,25 @@ class InvoiceCustomerModel extends BaseModel{
 
     }
 
+    function getInvoiceCustomerByCustomerID($id){
+        $sql = " SELECT * 
+        FROM tb_invoice_customer 
+        LEFT JOIN tb_customer ON tb_invoice_customer.customer_id = tb_customer.customer_id 
+        LEFT JOIN tb_user ON tb_invoice_customer.employee_id = tb_user.user_id 
+        WHERE tb_invoice_customer.customer_id = '$id' 
+        ";
+
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getInvoiceCustomerViewByID($id){
         $sql = " SELECT *   
         FROM tb_invoice_customer 

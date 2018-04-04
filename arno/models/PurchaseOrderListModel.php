@@ -11,7 +11,10 @@ class PurchaseOrderListModel extends BaseModel{
         $sql = " SELECT tb_purchase_order_list.product_id, 
         CONCAT(product_code_first,product_code) as product_code, 
         product_name,   
-        purchase_order_list_id,  
+        tb_purchase_order_list.purchase_order_list_id,  
+        IFNULL(purchase_request_list_id,0) as purchase_request_list_id,
+        IFNULL(customer_purchase_order_list_detail_id,0) as customer_purchase_order_list_detail_id,
+        IFNULL(delivery_note_supplier_list_id,0) as delivery_note_supplier_list_id,
         purchase_order_list_qty, 
         purchase_order_list_price, 
         purchase_order_list_price_sum, 
@@ -22,9 +25,13 @@ class PurchaseOrderListModel extends BaseModel{
         purchase_order_list_supplier_delivery_min,  
         purchase_order_list_supplier_delivery_max, 
         purchase_order_list_supplier_remark 
-        FROM tb_purchase_order_list LEFT JOIN tb_product ON tb_purchase_order_list.product_id = tb_product.product_id 
+        FROM tb_purchase_order_list 
+        LEFT JOIN tb_product ON tb_purchase_order_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_purchase_request_list ON tb_purchase_order_list.purchase_order_list_id = tb_purchase_request_list.purchase_order_list_id
+        LEFT JOIN tb_customer_purchase_order_list_detail ON tb_purchase_order_list.purchase_order_list_id = tb_customer_purchase_order_list_detail.purchase_order_list_id
+        LEFT JOIN tb_delivery_note_supplier_list ON tb_purchase_order_list.purchase_order_list_id = tb_delivery_note_supplier_list.purchase_order_list_id
         WHERE purchase_order_id = '$purchase_order_id' 
-        ORDER BY purchase_order_list_id 
+        ORDER BY tb_purchase_order_list.purchase_order_list_id 
         ";
 
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
@@ -130,6 +137,7 @@ class PurchaseOrderListModel extends BaseModel{
         }
     }
 
+    
     function updateInvoiceCustomerListID($purchase_order_list_id,$invoice_customer_list_id){
         $sql = " UPDATE tb_purchase_request_list 
             SET invoice_customer_list_id = '$invoice_customer_list_id' 
@@ -145,11 +153,13 @@ class PurchaseOrderListModel extends BaseModel{
     }
 
 
+
     function deletePurchaseOrderListByID($id){
         $sql = "DELETE FROM tb_purchase_order_list WHERE purchase_order_list_id = '$id' ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
     }
+
 
     function deletePurchaseOrderListByPurchaseOrderID($id){
 
@@ -157,7 +167,11 @@ class PurchaseOrderListModel extends BaseModel{
      
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
-        $sql = "UPDATE  tb_customer_purchase_order_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+        $sql = "UPDATE  tb_customer_purchase_order_list_detail SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = "UPDATE  tb_delivery_note_supplier_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
      
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
@@ -187,7 +201,11 @@ class PurchaseOrderListModel extends BaseModel{
      
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
-        $sql = "UPDATE  tb_customer_purchase_order_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str)) ";
+        $sql = "UPDATE  tb_customer_purchase_order_list_detail SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str)) ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT); 
+
+        $sql = "UPDATE  tb_delivery_note_supplier_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str)) ";
      
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT); 
 

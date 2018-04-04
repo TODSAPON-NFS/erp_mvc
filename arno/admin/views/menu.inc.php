@@ -88,46 +88,68 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="?app=employee"><i class="fa fa-user" aria-hidden="true"></i> Employee</a>
+                            <div class="nav-title">ระบบพื้นฐาน</div>
+                        </li>
+                        <li>
+                            <a href="?app=employee"><i class="fa fa-user" aria-hidden="true"></i> พนักงาน (Employee)</a>
                         </li>
 
                         <li>
-                            <a href="?app=supplier"><i class="fa fa-building-o" aria-hidden="true"></i> Supplier</a>
+                            <a href="?app=supplier"><i class="fa fa-building-o" aria-hidden="true"></i> ผู้ขาย (Supplier)</a>
                         </li>
 
                         <li>
-                            <a href="?app=customer"><i class="fa fa-users" aria-hidden="true"></i> Customer</a>
+                            <a href="?app=customer"><i class="fa fa-users" aria-hidden="true"></i> ลูกค้า (Employee)</a>
                         </li>
                         <li>
-                            <a href="?app=product"><i class="fa  fa-cubes fa-fw" aria-hidden="true"></i> Product</a>
+                            <a href="?app=product"><i class="fa  fa-cubes fa-fw" aria-hidden="true"></i> สินค้า (Product)</a>
                         </li>
                         <li>
-                            <a href="?app=delivery_note_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> Delivery Note Supplier (DNS)</a>
+                            <div class="nav-title">ระบบจัดซื้อ</div>
                         </li>
                         <li>
-                            <a href="?app=delivery_note_customer"><i class="fa  fa-file-o" aria-hidden="true"></i> Delivery Note Customer (DNC)</a>
+                            <a href="?app=delivery_note_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบยืมจากผู้ขาย (Supplier DN)</a>
                         </li>
                         <li>
-                            <a href="?app=purchase_request"><i class="fa  fa-file" aria-hidden="true"></i> Purchase Request (PR)</a>
+                            <a href="?app=delivery_note_customer"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบยืมลูกค้า (Customer DN)</a>
                         </li>
                         <li>
-                            <a href="?app=customer_purchase_order"><i class="fa  fa-map" aria-hidden="true"></i> Customer Order </a>
+                            <a href="?app=purchase_request"><i class="fa  fa-file" aria-hidden="true"></i> ร้องขอสั่งซื้อสินค้า (PR)</a>
                         </li>
                         <li>
-                            <a href="?app=purchase_order"><i class="fa  fa fa-file-powerpoint-o" aria-hidden="true"></i> Purchase Order (PO)</a>
+                            <a href="?app=customer_purchase_order"><i class="fa  fa-map" aria-hidden="true"></i> ใบสั่งซื้อลูกค้า (Customer PO) </a>
                         </li>
                         <li>
-                            <a href="?app=invoice_supplier"><i class="fa  fa-file-text-o" aria-hidden="true"></i> Supplier Invoice </a>
+                            <a href="?app=purchase_order"><i class="fa  fa fa-file-powerpoint-o" aria-hidden="true"></i> ใบสั่งซื้อ (PO)</a>
                         </li>
                         <li>
-                            <a href="?app=invoice_customer"><i class="fa  fa-file-pdf-o" aria-hidden="true"></i> Customer Invoice</a>
+                            <a href="?app=invoice_supplier"><i class="fa  fa-file-text-o" aria-hidden="true"></i> ใบรับสินค้า (Supplier Invoice) </a>
                         </li>
                         <li>
-                            <a href="?app=stock_move"><i class="fa fa-share-square" aria-hidden="true"></i> Move Stock</a>
+                            <div class="nav-title">ระบบบัญชี</div>
                         </li>
                         <li>
-                            <a href="?app=stock_group"><i class="fa fa-database fa-fw" aria-hidden="true"></i> Stock </a>
+                            <a href="?app=invoice_customer"><i class="fa  fa-file-pdf-o" aria-hidden="true"></i> ใบกำกับภาษี (Customer Invoice)</a>
                         </li>
+                        <li>
+                            <a href="?app=credit_note"><i class="fa  fa-credit-card" aria-hidden="true"></i> ใบลดหนี้ (Credit Note)</a>
+                        </li>
+                        <li>
+                            <a href="?app=debit_note"><i class="fa  fa-credit-card-alt" aria-hidden="true"></i> ใบเพิ่มหนี้ (Debit Note)</a>
+                        </li>
+                        <li>
+                            <a href="?app=billing_note"><i class="fa  fa-money" aria-hidden="true"></i> ใบวางบิล (Billing Note)</a>
+                        </li>
+                        <li>
+                            <div class="nav-title">ระบบคลังสินค้า</div>
+                        </li>
+                        <li>
+                            <a href="?app=stock_group"><i class="fa fa-database fa-fw" aria-hidden="true"></i>คลังสินค้า (Stock) </a>
+                        </li>
+                        <li>
+                            <a href="?app=stock_move"><i class="fa fa-share-square" aria-hidden="true"></i> ใบโอนคลังสินค้า (Move Stock)</a>
+                        </li>
+                        
                         <!-- /.nav-second-level -->
                     </ul>
                 </div>

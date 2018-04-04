@@ -80,6 +80,7 @@ body {
 .sidebar ul li a.active {
   background-color: #eeeeee;
 }
+
 .sidebar .arrow {
   float: right;
 }

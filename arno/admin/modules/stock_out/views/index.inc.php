@@ -6,7 +6,7 @@ require_once('../models/StockGroupModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/SupplierModel.php');
 
-$path = "modules/stock_in/views/";
+$path = "modules/stock_out/views/";
 $model_stock = new StockModel;
 $model_stock_group = new StockGroupModel;
 $model_product = new ProductModel;
@@ -33,12 +33,12 @@ $end = $de[2].'-'.$de[1].'-'.$de[0].' 23:59:59';
 
 
 if(!isset($_GET['action'])){
-    $stock_ins = $model_stock->getStockOutByDate($start, $end);
+    $stock_outs = $model_stock->getStockOutByDate($start, $end);
     require_once($path.'view.inc.php');
 
 }else{
 
-    $stock_in = $model_stock->getStockOutByDate($start, $end);
+    $stock_outs = $model_stock->getStockOutByDate($start, $end);
     require_once($path.'view.inc.php');
 
 }

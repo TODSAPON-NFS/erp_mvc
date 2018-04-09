@@ -242,7 +242,7 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
-                    
+                    '<input type="hidden" class="form-control" name="customer_purchase_order_list_id[]" value="0" readonly />'+
                     '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td>'+

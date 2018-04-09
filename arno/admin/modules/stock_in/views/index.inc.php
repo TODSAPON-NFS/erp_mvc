@@ -38,7 +38,7 @@ if(!isset($_GET['action'])){
 
 }else{
 
-    $stock_in = $model_stock->getStockInByDate($start, $end);
+    $stock_ins = $model_stock->getStockInByDate($start, $end);
     require_once($path.'view.inc.php');
 
 }

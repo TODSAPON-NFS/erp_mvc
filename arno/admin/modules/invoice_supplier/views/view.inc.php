@@ -18,7 +18,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-
+                <div style="font-size:18px;padding: 8px 0px;">แยกตามผู้ขาย</div>
                 <table width="100%" class="table table-striped table-bordered table-hover" >
                     <thead>
                         <tr>
@@ -48,6 +48,35 @@
                     </tbody>
                 </table>
                 
+                <div style="font-size:18px;padding: 8px 0px;">แยกตามใบสั่งซื้อ</div>
+                <table width="100%" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="64px" >No.</th>
+                            <th>Purchase Order</th>
+                            <th width="180px" >Open Invoice Supplier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        for($i=0; $i < count($purchase_orders_in); $i++){
+                        ?>
+                        <tr class="odd gradeX">
+                            <td><?php echo $i+1; ?></td>
+                            <td><?php echo $purchase_orders_in[$i]['purchase_order_code']; ?> (<?php echo $purchase_orders_in[$i]['supplier_name_th']; ?>) </td>
+                            <td>
+                                <a href="?app=invoice_supplier&action=insert&supplier_id=<?php echo $purchase_orders_in[$i]['supplier_id'];?>&purchase_order_id=<?php echo $purchase_orders_in[$i]['purchase_order_id'];?>">
+                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                </a>
+
+                            </td>
+
+                        </tr>
+                        <?
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
             <!-- /.panel-body -->
         </div>
@@ -62,9 +91,10 @@
             <a class="btn btn-success " style="float:right;margin-left:8px;" href="?app=invoice_supplier&action=insert&sort=ภายนอกประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
             <a class="btn btn-primary " style="float:right;" href="?app=exchange_rate_baht&action=view" ><i class="fa fa-plus" aria-hidden="true"></i> Exchange rate</a>
             </div>
+
             <!-- /.panel-heading -->
             <div class="panel-body">
-
+                <div style="font-size:18px;padding: 8px 0px;">แยกตามผู้ขาย</div>
                 <table width="100%" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -94,6 +124,35 @@
                     </tbody>
                 </table>
                 
+                <div style="font-size:18px;padding: 8px 0px;">แยกตามใบสั่งซื้อ</div>
+                <table width="100%" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="64px" >No.</th>
+                            <th>Purchase Order</th>
+                            <th width="180px" >Open Invoice Supplier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        for($i=0; $i < count($purchase_orders_out); $i++){
+                        ?>
+                        <tr class="odd gradeX">
+                            <td><?php echo $i+1; ?></td>
+                            <td><?php echo $purchase_orders_out[$i]['purchase_order_code']; ?> (<?php echo $purchase_orders_out[$i]['supplier_name_th']; ?>) </td>
+                            <td>
+                                <a href="?app=invoice_supplier&action=insert&supplier_id=<?php echo $purchase_orders_out[$i]['supplier_id'];?>&purchase_order_id=<?php echo $purchase_orders_out[$i]['purchase_order_id'];?>">
+                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                </a>
+
+                            </td>
+
+                        </tr>
+                        <?
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
             <!-- /.panel-body -->
         </div>

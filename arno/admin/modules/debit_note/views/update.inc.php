@@ -237,6 +237,7 @@
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
                         '<td>'+    
+                            '<input type="hidden" name="debit_note_list_id[]" value="0" />'+
                             '<input type="hidden" name="invoice_customer_list_id[]" value="'+data_buffer[i].invoice_customer_list_id+'" />'+
                             '<input type="hidden" name="product_id[]" value="'+data_buffer[i].product_id+'" />'+
                             data_buffer[i].product_code +
@@ -481,6 +482,7 @@
                             ?>
                             <tr class="odd gradeX">
                                 <td>
+                                    <input type="hidden" name="debit_note_list_id[]" value="<?PHP echo  $debit_note_lists[$i]['debit_note_list_id'];?>" />
                                     <input type="hidden" name="invoice_customer_list_id[]" value="<?PHP echo  $debit_note_lists[$i]['invoice_customer_list_id'];?>" />
                                     <input type="hidden" name="product_id[]" value="<?PHP echo  $debit_note_lists[$i]['product_id'];?>" />
                                     <?PHP echo  $debit_note_lists[$i]['product_code'];?>

@@ -82,6 +82,7 @@ if(!isset($_GET['action'])){
         $data['customer_id'] = $_POST['customer_id'];
         $data['employee_id'] = $_POST['employee_id'];
         $data['invoice_customer_id'] = $_POST['invoice_customer_id'];
+        $data['credit_note_type_id'] = $_POST['credit_note_type_id'];
         $data['credit_note_code'] = $_POST['credit_note_code'];
         $data['credit_note_total_old'] = (float)filter_var($_POST['credit_note_total_old'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['credit_note_total'] = (float)filter_var($_POST['credit_note_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -119,6 +120,8 @@ if(!isset($_GET['action'])){
                 for($i=0; $i < count($product_id) ; $i++){
                     $data_sub = [];
                     $data_sub['credit_note_id'] = $output;
+                    $data_sub['credit_note_type_id'] = $_POST['credit_note_type_id'];
+                    $data_sub['stock_date'] = $_POST['credit_note_date'];
                     $data_sub['product_id'] = $product_id[$i];
                     $data_sub['stock_group_id'] = $stock_group_id[$i];
                     $data_sub['invoice_customer_list_id'] = $invoice_customer_list_id[$i];
@@ -134,6 +137,8 @@ if(!isset($_GET['action'])){
             }else if($product_id != ""){
                 $data_sub = [];
                 $data_sub['credit_note_id'] = $output;
+                $data_sub['credit_note_type_id'] = $_POST['credit_note_type_id'];
+                $data_sub['stock_date'] = $_POST['credit_note_date'];
                 $data_sub['product_id'] = $product_id;
                 $data_sub['stock_group_id'] = $stock_group_id;
                 $data_sub['invoice_customer_list_id'] = $invoice_customer_list_id;
@@ -169,6 +174,7 @@ if(!isset($_GET['action'])){
         $data['customer_id'] = $_POST['customer_id'];
         $data['employee_id'] = $_POST['employee_id'];
         $data['invoice_customer_id'] = $_POST['invoice_customer_id'];
+        $data['credit_note_type_id'] = $_POST['credit_note_type_id'];
         $data['credit_note_code'] = $_POST['credit_note_code'];
         $data['credit_note_total_old'] = (float)filter_var($_POST['credit_note_total_old'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['credit_note_total'] = (float)filter_var($_POST['credit_note_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -206,6 +212,8 @@ if(!isset($_GET['action'])){
             for($i=0; $i < count($product_id) ; $i++){
                 $data_sub = [];
                 $data_sub['credit_note_id'] = $credit_note_id;
+                $data_sub['credit_note_type_id'] = $_POST['credit_note_type_id'];
+                $data_sub['stock_date'] = $_POST['credit_note_date'];
                 $data_sub['product_id'] = $product_id[$i];
                 $data_sub['stock_group_id'] = $stock_group_id[$i];
                 $data_sub['invoice_customer_list_id'] = $invoice_customer_list_id[$i];
@@ -216,7 +224,7 @@ if(!isset($_GET['action'])){
                 $data_sub['credit_note_list_total'] = (float)filter_var($credit_note_list_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['credit_note_list_remark'] = $credit_note_list_remark[$i];
 
-                if($credit_note_list_id[$i] > 0){
+                if($credit_note_list_id[$i] != '0'){
                     $credit_note_list_model->updateCreditNoteListById($data_sub,$credit_note_list_id[$i]);
                 }else{
                     $id = $credit_note_list_model->insertCreditNoteList($data_sub);
@@ -226,6 +234,8 @@ if(!isset($_GET['action'])){
         }else if($product_id != ""){
             $data_sub = [];
             $data_sub['credit_note_id'] = $credit_note_id;
+            $data_sub['credit_note_type_id'] = $_POST['credit_note_type_id'];
+            $data_sub['stock_date'] = $_POST['credit_note_date'];
             $data_sub['product_id'] = $product_id;
             $data_sub['stock_group_id'] = $stock_group_id;
             $data_sub['invoice_customer_list_id'] = $invoice_customer_list_id;
@@ -236,10 +246,10 @@ if(!isset($_GET['action'])){
             $data_sub['credit_note_list_total'] = (float)filter_var($credit_note_list_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data_sub['credit_note_list_remark'] = $credit_note_list_remark;
 
-            if($credit_note_list_id > 0){
-                $credit_note_list_model->updateCreditNoteListById($data_sub);
+            if($credit_note_list_id != '0'){
+                $credit_note_list_model->updateCreditNoteListById($data_sub,$credit_note_list_id);
             }else{
-                $id = $credit_note_list_model->insertCreditNoteList($data_sub,$credit_note_list_id);
+                $id = $credit_note_list_model->insertCreditNoteList($data_sub);
             }
         }
 

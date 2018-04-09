@@ -216,7 +216,7 @@ if(!isset($_GET['action'])){
                 $data_sub['debit_note_list_total'] = (float)filter_var($debit_note_list_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['debit_note_list_remark'] = $debit_note_list_remark[$i];
 
-                if($debit_note_list_id[$i] > 0){
+                if($debit_note_list_id[$i] != '0'){
                     $debit_note_list_model->updateDebitNoteListById($data_sub,$debit_note_list_id[$i]);
                 }else{
                     $id = $debit_note_list_model->insertDebitNoteList($data_sub);
@@ -236,10 +236,10 @@ if(!isset($_GET['action'])){
             $data_sub['debit_note_list_total'] = (float)filter_var($debit_note_list_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data_sub['debit_note_list_remark'] = $debit_note_list_remark;
 
-            if($debit_note_list_id > 0){
-                $debit_note_list_model->updateDebitNoteListById($data_sub);
+            if($debit_note_list_id != "0"){
+                $debit_note_list_model->updateDebitNoteListById($data_sub,$debit_note_list_id);
             }else{
-                $id = $debit_note_list_model->insertDebitNoteList($data_sub,$debit_note_list_id);
+                $id = $debit_note_list_model->insertDebitNoteList($data_sub);
             }
         }
 

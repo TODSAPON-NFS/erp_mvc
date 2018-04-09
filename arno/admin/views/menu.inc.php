@@ -126,7 +126,7 @@
                             <a href="?app=invoice_supplier"><i class="fa  fa-file-text-o" aria-hidden="true"></i> ใบรับสินค้า (Supplier Invoice) </a>
                         </li>
                         <li>
-                            <div class="nav-title">ระบบบัญชี</div>
+                            <div class="nav-title">ระบบขายสินค้า</div>
                         </li>
                         <li>
                             <a href="?app=invoice_customer"><i class="fa  fa-file-pdf-o" aria-hidden="true"></i> ใบกำกับภาษี (Customer Invoice)</a>

@@ -26,6 +26,7 @@ $date_time_function_model = new DateTimeFunction;
 $invoice_supplier_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $supplier_id = $_GET['supplier_id'];
+$purchase_order_id = $_GET['purchase_order_id'];
 $sort = $_GET['sort'];
 $vat = 7;
 $first_char = "RR";
@@ -35,6 +36,8 @@ if(!isset($_GET['action'])){
     $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy();
     $supplier_orders_in = $invoice_supplier_model->getSupplierOrder("ภายในประเทศ");
     $supplier_orders_out = $invoice_supplier_model->getSupplierOrder("ภายนอกประเทศ");
+    $purchase_orders_in = $invoice_supplier_model->getPurchaseOrder("ภายในประเทศ");
+    $purchase_orders_out = $invoice_supplier_model->getPurchaseOrder("ภายนอกประเทศ");
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -51,7 +54,7 @@ if(!isset($_GET['action'])){
     
     if($supplier_id > 0){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
-        $invoice_supplier_lists = $invoice_supplier_model->generateInvoiceSupplierListBySupplierId($supplier_id);
+        $invoice_supplier_lists = $invoice_supplier_model->generateInvoiceSupplierListBySupplierId($supplier_id,"","",$purchase_order_id);
         $suppliers=$supplier_model->getSupplierBy($supplier['supplier_domestic']);
         if($supplier['supplier_domestic'] == "ภายในประเทศ"){
             $first_char = "RR";
@@ -303,7 +306,10 @@ if(!isset($_GET['action'])){
 }else{
 
     $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy();
-    $supplier_orders = $invoice_supplier_model->getSupplierOrder();
+    $supplier_orders_in = $invoice_supplier_model->getSupplierOrder("ภายในประเทศ");
+    $supplier_orders_out = $invoice_supplier_model->getSupplierOrder("ภายนอกประเทศ");
+    $purchase_orders_in = $invoice_supplier_model->getPurchaseOrder("ภายในประเทศ");
+    $purchase_orders_out = $invoice_supplier_model->getPurchaseOrder("ภายนอกประเทศ");
     require_once($path.'view.inc.php');
 
 }

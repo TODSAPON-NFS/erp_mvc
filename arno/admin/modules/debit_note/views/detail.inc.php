@@ -22,7 +22,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>รหัสผู้ซื้อ / Customer Code <font color="#F00"><b>*</b></font></label> 
-                                        <p class="help-block"><? echo $customer['customer_code'];?></p>
+                                        <p class="help-block"><? echo $debit_note['customer_code'];?></p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">

@@ -230,6 +230,7 @@
                         '<td>'+    
                             '<input type="hidden" name="invoice_customer_list_id[]" value="'+data_buffer[i].invoice_customer_list_id+'" />'+
                             '<input type="hidden" name="product_id[]" value="'+data_buffer[i].product_id+'" />'+
+                            '<input type="hidden" name="stock_group_id[]" value="'+data_buffer[i].stock_group_id+'" />'+
                             data_buffer[i].product_code +
                         '</td>'+
                         '<td>'+
@@ -389,8 +390,18 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>เลขที่ใบลดหนี้ / CN code <font color="#F00"><b>*</b></font></label>
-                                        <input id="credit_note_code" name="credit_note_code" class="form-control" value="<?php echo $last_code;?>" >
+                                        <input id="credit_note_code" name="credit_note_code" class="form-control" value="<?php echo $last_code;?>" readonly />
                                         <p class="help-block">Example : CN1801001.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>ประเภทใบลดหนี้ / Credit note type  <font color="#F00"><b>*</b></font> </label>
+                                        <select id="credit_note_type_id" name="credit_note_type_id" class="form-control" >
+                                            <option <?PHP if($credit_note['credit_note_type_id'] == "1"){ ?> selected <?PHP }?> value="1">ใบลดหนี้ / รับคืนสินค้า</option>
+                                            <option <?PHP if($credit_note['credit_note_type_id'] == "2"){ ?> selected <?PHP }?> value="2">ใบลดหนี้</option>
+                                        </select>
+                                        <p class="help-block">Example : ใบลดหนี้ / รับคืนสินค้า.</p>
                                     </div>
                                 </div>
 
@@ -473,6 +484,7 @@
                                 <td>
                                     <input type="hidden" name="invoice_customer_list_id[]" value="<?PHP echo  $credit_note_lists[$i]['invoice_customer_list_id'];?>" />
                                     <input type="hidden" name="product_id[]" value="<?PHP echo  $credit_note_lists[$i]['product_id'];?>" />
+                                    <input type="hidden" name="stock_group_id[]" value="<?PHP echo  $credit_note_lists[$i]['stock_group_id'];?>" />
                                     <?PHP echo  $credit_note_lists[$i]['product_code'];?>
                                 </td>
                                 <td>

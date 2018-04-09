@@ -17,35 +17,70 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div style="font-size:18px;padding: 8px 0px;">แยกตามลูกค้า</div>
+                        <table width="100%" class="table table-striped table-bordered table-hover" >
+                            <thead>
+                                <tr>
+                                    <th width="64px" >No.</th>
+                                    <th>Customer</th>
+                                    <th width="180px" >Open Invoice Customer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                for($i=0; $i < count($customer_orders); $i++){
+                                ?>
+                                <tr class="odd gradeX">
+                                    <td><?php echo $i+1; ?></td>
+                                    <td><?php echo $customer_orders[$i]['customer_name_en']; ?> (<?php echo $customer_orders[$i]['customer_name_th']; ?>)</td>
+                                    <td>
+                                        <a href="?app=invoice_customer&action=insert&customer_id=<?php echo $customer_orders[$i]['customer_id'];?>">
+                                            <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                        </a>
 
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                    <thead>
-                        <tr>
-                            <th width="64px" >No.</th>
-                            <th>Customer</th>
-                            <th width="180px" >Open Invoice Customer</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                        for($i=0; $i < count($customer_orders); $i++){
-                        ?>
-                        <tr class="odd gradeX">
-                            <td><?php echo $i+1; ?></td>
-                            <td><?php echo $customer_orders[$i]['customer_name_en']; ?> (<?php echo $customer_orders[$i]['customer_name_th']; ?>)</td>
-                            <td>
-                                <a href="?app=invoice_customer&action=insert&customer_id=<?php echo $customer_orders[$i]['customer_id'];?>">
-                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
-                                </a>
+                                    </td>
 
-                            </td>
+                                </tr>
+                                <?
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="font-size:18px;padding: 8px 0px;">แยกตามใบสั่งซื้อ</div>
+                        <table width="100%" class="table table-striped table-bordered table-hover" >
+                            <thead>
+                                <tr>
+                                    <th width="64px" >No.</th>
+                                    <th>Customer Purchase Order</th>
+                                    <th width="180px" >Open Invoice Customer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                for($i=0; $i < count($customer_purchase_orders); $i++){
+                                ?>
+                                <tr class="odd gradeX">
+                                    <td><?php echo $i+1; ?></td>
+                                    <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?> (<?php echo $customer_purchase_orders[$i]['customer_name_th']; ?>)</td>
+                                    <td>
+                                        <a href="?app=invoice_customer&action=insert&customer_id=<?php echo $customer_purchase_orders[$i]['customer_id'];?>&customer_purchase_order_id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>">
+                                            <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                        </a>
 
-                        </tr>
-                        <?
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                                    </td>
+
+                                </tr>
+                                <?
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 
             </div>
             <!-- /.panel-body -->

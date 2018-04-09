@@ -49,8 +49,6 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             customer_purchase_order_list_delivery_min, 
             customer_purchase_order_list_delivery_max,
             customer_purchase_order_list_remark,
-            customer_purchase_order_list_id, 
-            stock_group_id, 
             addby,
             adddate,
             updateby,
@@ -65,9 +63,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             '".$data['customer_purchase_order_list_price_sum']."', 
             '".$data['customer_purchase_order_list_delivery_min']."', 
             '".$data['customer_purchase_order_list_delivery_max']."', 
-            '".$data['customer_purchase_order_list_remark']."', 
-            '".$data['customer_purchase_order_list_id']."', 
-            '".$data['stock_group_id']."', 
+            '".$data['customer_purchase_order_list_remark']."',  
             '".$data['addby']."', 
             NOW(), 
             '".$data['updateby']."', 
@@ -95,8 +91,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             customer_purchase_order_list_delivery_min = '".$data['customer_purchase_order_list_delivery_min']."', 
             customer_purchase_order_list_delivery_max = '".$data['customer_purchase_order_list_delivery_max']."', 
             customer_purchase_order_list_remark = '".$data['customer_purchase_order_list_remark']."', 
-            customer_purchase_order_list_id = '".$data['customer_purchase_order_list_id']."', 
-            stock_group_id = '".$data['stock_group_id']."' 
+            
             WHERE customer_purchase_order_list_id = '$id' 
         ";
 

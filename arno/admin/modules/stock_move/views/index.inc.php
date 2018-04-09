@@ -54,7 +54,7 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'delete'){
 
-    $stock_move_list_model->deleteStockMoveListByStockMoveID($stock_move_id);
+    //$stock_move_list_model->deleteStockMoveListByStockMoveID($stock_move_id);
     $stock_moves = $stock_move_model->deleteStockMoveById($stock_move_id);
 ?>
     <script>window.location="index.php?app=stock_move"</script>
@@ -89,7 +89,7 @@ if(!isset($_GET['action'])){
                     $data = [];
                     $data['stock_group_id_out'] = $_POST['stock_group_id_out'];
                     $data['stock_group_id_in'] = $_POST['stock_group_id_in'];
-                    $data['stock_move_date'] = $_POST['stock_move_date'];
+                    $data['stock_date'] = $_POST['stock_move_date'];
                     $data['stock_move_id'] = $stock_move_id;
                     $data['product_id'] = $product_id[$i];
                     $data['stock_move_list_qty'] = $stock_move_list_qty[$i];
@@ -105,7 +105,7 @@ if(!isset($_GET['action'])){
                 $data = [];
                 $data['stock_group_id_out'] = $_POST['stock_group_id_out'];
                 $data['stock_group_id_in'] = $_POST['stock_group_id_in'];
-                $data['stock_move_date'] = $_POST['stock_move_date'];
+                $data['stock_date'] = $_POST['stock_move_date'];
                 $data['stock_move_id'] = $stock_move_id;
                 $data['product_id'] = $product_id;
                 $data['stock_move_list_qty'] = $stock_move_list_qty;
@@ -155,7 +155,7 @@ if(!isset($_GET['action'])){
                 $data = [];
                 $data['stock_group_id_out'] = $_POST['stock_group_id_out'];
                 $data['stock_group_id_in'] = $_POST['stock_group_id_in'];
-                $data['stock_move_date'] = $_POST['stock_move_date'];
+                $data['stock_date'] = $_POST['stock_move_date'];
                 $data['stock_move_id'] = $stock_move_id;
                 $data['product_id'] = $product_id[$i];
                 $data['stock_move_list_qty'] = $stock_move_list_qty[$i];
@@ -171,7 +171,7 @@ if(!isset($_GET['action'])){
             $data = [];
             $data['stock_group_id_out'] = $_POST['stock_group_id_out'];
             $data['stock_group_id_in'] = $_POST['stock_group_id_in'];
-            $data['stock_move_date'] = $_POST['stock_move_date'];
+            $data['stock_date'] = $_POST['stock_move_date'];
             $data['stock_move_id'] = $stock_move_id;
             $data['product_id'] = $product_id;
             $data['stock_move_list_qty'] = $stock_move_list_qty;

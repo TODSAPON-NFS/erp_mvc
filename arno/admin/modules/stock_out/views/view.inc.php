@@ -55,17 +55,17 @@
                                 </thead>
                                 <tbody>
                                     <?php 
-                                    for($i=0; $i < count($stock_ins); $i++){
+                                    for($i=0; $i < count($stock_outs); $i++){
                                     ?>
                                     <tr class="odd gradeX">
                                         <td><?php echo $i+1; ?></td>
-                                        <td><?php echo $stock_ins[$i]['stock_date']; ?></td>
-                                        <td><?php echo $stock_ins[$i]['customer_name_en'] ?> (<?php echo $suppliers[$i]['customer_name_th'] ?>)</td>
-                                        <td><?php echo $stock_ins[$i]['product_code']; ?></td>
-                                        <td><?php echo $stock_ins[$i]['product_name']; ?></td>
-                                        <td><?php echo $stock_ins[$i]['product_type']; ?></td>
-                                        <td><?php echo $stock_ins[$i]['product_status']; ?></td>
-                                        <td><?php echo $stock_ins[$i]['qty']; ?></td>
+                                        <td><?php echo $stock_outs[$i]['stock_date']; ?></td>
+                                        <td><?php echo $stock_outs[$i]['customer_name_en'] ?> (<?php echo $suppliers[$i]['customer_name_th'] ?>)</td>
+                                        <td><?php echo $stock_outs[$i]['product_code']; ?></td>
+                                        <td><?php echo $stock_outs[$i]['product_name']; ?></td>
+                                        <td><?php echo $stock_outs[$i]['product_type']; ?></td>
+                                        <td><?php echo $stock_outs[$i]['product_status']; ?></td>
+                                        <td><?php echo $stock_outs[$i]['qty']; ?></td>
                                     </tr>
                                    <?
                                     }

@@ -12,14 +12,12 @@ class BillingNoteModel extends BaseModel{
         billing_note_code, 
         billing_note_date, 
         billing_note_total,
-        IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 
-        billing_note_term, 
-        billing_note_due, 
+        IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name,  
         IFNULL(CONCAT(tb2.customer_name_en,' (',tb2.customer_name_th,')'),'-') as customer_name  
         FROM tb_billing_note 
         LEFT JOIN tb_user as tb1 ON tb_billing_note.employee_id = tb1.user_id 
         LEFT JOIN tb_customer as tb2 ON tb_billing_note.customer_id = tb2.customer_id 
-        ORDER BY STR_TO_DATE(billing_note_date,'%Y-%m-%d %H:%i:%s') DESC 
+        ORDER BY STR_TO_DATE(billing_note_date,'%d-%m-%Y %H:%i:%s') DESC 
          ";
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -54,7 +52,6 @@ class BillingNoteModel extends BaseModel{
     function getBillingNoteViewByID($id){
         $sql = " SELECT *   
         FROM tb_billing_note 
-        LEFT JOIN tb_invoice_customer ON tb_billing_note.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
         LEFT JOIN tb_user ON tb_billing_note.employee_id = tb_user.user_id 
         LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user.user_position_id 
         LEFT JOIN tb_customer ON tb_billing_note.customer_id = tb_customer.customer_id 
@@ -87,8 +84,35 @@ class BillingNoteModel extends BaseModel{
 
     }
 
+    function getCustomerOrder(){
 
-    function generateBillingNoteListByInvoiceCustomerId($invoice_customer_id, $data = [],$search=""){
+        $sql = "SELECT tb_customer.customer_id, customer_name_en , customer_name_th 
+                FROM tb_customer 
+                WHERE customer_id IN ( 
+                    SELECT DISTINCT customer_id 
+                    FROM tb_invoice_customer
+                    WHERE invoice_customer_id NOT IN (
+                        SELECT invoice_customer_id 
+                        FROM tb_billing_note_list
+                        GROUP BY invoice_customer_id 
+                    ) 
+                    GROUP BY customer_id 
+                ) 
+        ";
+        $data = [];
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+        return $data;
+    }
+
+
+    function generateBillingNoteListByCustomerId($invoice_customer_id, $data = [],$search=""){
 
         $str ='0';
 
@@ -105,34 +129,20 @@ class BillingNoteModel extends BaseModel{
             $str='0';
         }
 
-        $sql_customer = "SELECT tb2.product_id, 
-        tb2.invoice_customer_list_id, 
-        CONCAT(product_code_first,product_code) as product_code, 
-        product_name,  
-        IFNULL(invoice_customer_list_qty 
-        - IFNULL((
-            SELECT SUM(billing_note_list_qty) 
-            FROM tb_billing_note_list 
-            WHERE invoice_customer_list_id = tb2.invoice_customer_list_id 
-        ),0) ,0) as billing_note_list_qty,  
-        invoice_customer_list_price as billing_note_list_price, 
-        invoice_customer_list_total as billing_note_list_total, 
-        invoice_customer_list_product_name as billing_note_list_product_name, 
-        invoice_customer_list_product_detail as billing_note_list_product_detail, 
-        invoice_customer_list_remark as billing_note_list_remark 
+        $sql_customer = "SELECT invoice_customer_id, 
+        invoice_customer_code,
+        '0' as billing_note_list_paid, 
+        invoice_customer_net_price as billing_note_list_net, 
+        invoice_customer_date as billing_note_list_date, 
+        invoice_customer_due as billing_note_list_due 
         FROM tb_invoice_customer 
-        LEFT JOIN tb_invoice_customer_list as tb2 ON tb_invoice_customer.invoice_customer_id = tb2.invoice_customer_id 
-        LEFT JOIN tb_product ON tb2.product_id = tb_product.product_id 
-        WHERE tb_invoice_customer.invoice_customer_id = '$invoice_customer_id' 
-        AND tb2.invoice_customer_list_id NOT IN ($str) 
-        AND tb2.invoice_customer_list_id IN (
-            SELECT tb_invoice_customer_list.invoice_customer_list_id 
-            FROM tb_invoice_customer_list  
-            LEFT JOIN tb_billing_note_list ON  tb_invoice_customer_list.invoice_customer_list_id = tb_billing_note_list.invoice_customer_list_id 
-            GROUP BY tb_invoice_customer_list.invoice_customer_list_id 
-            HAVING IFNULL(SUM(billing_note_list_qty),0) < AVG(invoice_customer_list_qty)  
+        WHERE tb_invoice_customer.invoice_customer_id NOT IN ($str) 
+        AND tb_invoice_customer.invoice_customer_id NOT IN (
+            SELECT invoice_customer_id 
+            FROM tb_billing_note_list 
+            GROUP BY invoice_customer_id 
         ) 
-        AND (product_name LIKE ('%$search%') OR invoice_customer_code LIKE ('%$search%')) ";
+        ORDER BY  STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') ";
 
         //echo $sql_customer;
 
@@ -154,21 +164,15 @@ class BillingNoteModel extends BaseModel{
         $sql = " UPDATE tb_billing_note SET 
         customer_id = '".$data['customer_id']."', 
         employee_id = '".$data['employee_id']."', 
-        invoice_customer_id = '".$data['invoice_customer_id']."', 
-        billing_note_code = '".$data['billing_note_code']."', 
-        billing_note_total_old = '".$data['billing_note_total_old']."', 
-        billing_note_total = '".$data['billing_note_total']."', 
-        billing_note_total_price = '".$data['billing_note_total_price']."', 
-        billing_note_vat = '".$data['billing_note_vat']."', 
-        billing_note_vat_price = '".$data['billing_note_vat_price']."', 
-        billing_note_net_price = '".$data['billing_note_net_price']."', 
+        billing_note_code = '".$data['billing_note_code']."',
         billing_note_date = '".$data['billing_note_date']."', 
-        billing_note_remark = '".$data['billing_note_remark']."', 
         billing_note_name = '".$data['billing_note_name']."', 
         billing_note_address = '".$data['billing_note_address']."', 
         billing_note_tax = '".$data['billing_note_tax']."', 
-        billing_note_term = '".$data['billing_note_term']."', 
-        billing_note_due = '".$data['billing_note_due']."', 
+        billing_note_remark = '".$data['billing_note_remark']."', 
+        billing_note_sent_name = '".$data['billing_note_sent_name']."', 
+        billing_note_recieve_name = '".$data['billing_note_recieve_name']."', 
+        billing_note_total = '".$data['billing_note_total']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
         WHERE billing_note_id = $id 
@@ -189,21 +193,15 @@ class BillingNoteModel extends BaseModel{
         $sql = " INSERT INTO tb_billing_note (
             customer_id,
             employee_id,
-            invoice_customer_id,
             billing_note_code,
-            billing_note_total_old,
-            billing_note_total,
-            billing_note_total_price,
-            billing_note_vat,
-            billing_note_vat_price,
-            billing_note_net_price,
             billing_note_date,
-            billing_note_remark,
             billing_note_name,
             billing_note_address,
             billing_note_tax,
-            billing_note_term,
-            billing_note_due,
+            billing_note_remark,
+            billing_note_sent_name,
+            billing_note_recieve_name,
+            billing_note_total,
             addby,
             adddate,
             updateby,
@@ -211,21 +209,15 @@ class BillingNoteModel extends BaseModel{
         VALUES ('".
         $data['customer_id']."','".
         $data['employee_id']."','".
-        $data['invoice_customer_id']."','".
         $data['billing_note_code']."','".
-        $data['billing_note_total_old']."','".
-        $data['billing_note_total']."','".
-        $data['billing_note_total_price']."','".
-        $data['billing_note_vat']."','".
-        $data['billing_note_vat_price']."','".
-        $data['billing_note_net_price']."','".
         $data['billing_note_date']."','".
-        $data['billing_note_remark']."','".
         $data['billing_note_name']."','".
         $data['billing_note_address']."','".
         $data['billing_note_tax']."','".
-        $data['billing_note_term']."','".
-        $data['billing_note_due']."','".
+        $data['billing_note_remark']."','".
+        $data['billing_note_sent_name']."','".
+        $data['billing_note_recieve_name']."','".
+        $data['billing_note_total']."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].

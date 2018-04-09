@@ -26,7 +26,8 @@ class StockModel extends BaseModel{
                 `delivery_note_customer_list_id` int(11) DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการยืมออก', 
                 `invoice_supplier_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการซื้อเข้า', 
                 `invoice_customer_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการขายออก', 
-                `stock_move_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการย้าย', 
+                `stock_move_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการย้ายคลังสินค้า', 
+                `credit_note_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการใบลดหนี้', 
                 `addby` int(11) NOT NULL COMMENT 'ผู้เพิ่มสินค้า', 
                 `adddate` varchar(50) NOT NULL COMMENT 'เวลาเพิ่มสินค้า', 
                 `updateby` int(11) NOT NULL COMMENT 'ผู้แก้ไขสิ้นค้า', 
@@ -152,12 +153,15 @@ class StockModel extends BaseModel{
         product_name, product_type, product_status , qty , supplier_name_th, supplier_name_en 
         FROM ".$this->table_name." 
         LEFT JOIN tb_product ON ".$this->table_name.".product_id = tb_product.product_id 
-        LEFT JOIN tb_supplier ON ".$this->table_name.".supplier_id = tb_supplier.supplier_id 
+        LEFT JOIN tb_invoice_supplier_list ON ".$this->table_name.".invoice_supplier_list_id = tb_invoice_supplier_list.invoice_supplier_list_id 
+        LEFT JOIN tb_invoice_supplier ON tb_invoice_supplier_list.invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id 
+        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
         WHERE stock_type = 'in' 
         AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') 
         AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%Y-%m-%d %H:%i:%s') 
         ORDER BY STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') 
         ";
+
 
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -170,11 +174,13 @@ class StockModel extends BaseModel{
     }
 
     function getStockOutByDate($date_start = '', $date_end = ''){
-        $sql = "SELECT stock_log_id, stock_date, ".$this->table_name.".product_id,  CONCAT(product_code_first,product_code) as product_code, 
+        $sql = "SELECT stock_id, stock_date, ".$this->table_name.".product_id,  CONCAT(product_code_first,product_code) as product_code, 
         product_name, product_type, product_status , qty , customer_name_th, customer_name_en 
         FROM ".$this->table_name." 
         LEFT JOIN tb_product ON ".$this->table_name.".product_id = tb_product.product_id 
-        LEFT JOIN tb_customer ON ".$this->table_name.".customer_id = tb_customer.customer_id 
+        LEFT JOIN tb_invoice_customer_list ON ".$this->table_name.".invoice_customer_list_id = tb_invoice_customer_list.invoice_customer_list_id 
+        LEFT JOIN tb_invoice_customer ON tb_invoice_customer_list.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
+        LEFT JOIN tb_customer ON tb_invoice_customer.customer_id = tb_customer.customer_id 
         WHERE stock_type = 'out' 
         AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') 
         AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%Y-%m-%d %H:%i:%s') 

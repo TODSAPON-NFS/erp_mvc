@@ -23,10 +23,10 @@
                         <tr>
                             <th width="48"> ลำดับ <br>No.</th>
                             <th width="150">วันที่ออกใบลดหนี้ <br>Credit Note Date</th>
-                            <th width="150">หมายเลขใบลดหนี้ <br>Credit Note Code.</th>
+                            <th width="150">หมายเลขใบลดหนี้ <br>Credit Note Code</th>
                             <th>ลูกค้า <br>Customer</th>
                             <th width="150" > ผู้ออก<br>Create by</th>
-                            <th>หมายเหตุ <br>Remark</th>
+                            <th>ประเภทใบลดหนี้ <br>Credit Note Type</th>
 							
                             <th width="64"></th>
                         </tr>
@@ -41,7 +41,7 @@
                             <td><?php echo $credit_notes[$i]['credit_note_code']; ?></td>
                             <td><?php echo $credit_notes[$i]['customer_name']; ?> </td>
                             <td><?php echo $credit_notes[$i]['employee_name']; ?></td>
-                            <td><?php echo $credit_notes[$i]['credit_note_remark']; ?></td>
+                            <td><?php echo $credit_notes[$i]['credit_note_type_name']; ?></td>
 
                             <td>
                                 <a href="?app=credit_note&action=detail&id=<?php echo $credit_notes[$i]['credit_note_id'];?>">

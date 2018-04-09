@@ -193,6 +193,7 @@ class StockMoveModel extends BaseModel{
  
          for($i = 0 ; $i < count($sql_delete); $i++){
              mysqli_query($this->db,$sql_delete[$i], MYSQLI_USE_RESULT);
+             //echo $sql_delete[$i]."<br><br>";
          }
  
 

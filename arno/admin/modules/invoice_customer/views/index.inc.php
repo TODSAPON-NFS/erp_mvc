@@ -8,6 +8,7 @@ require_once('../models/CustomerPurchaseOrderListModel.php');
 require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
+require_once('../models/StockGroupModel.php');
 require_once('../models/CustomerModel.php');
 date_default_timezone_set('asia/bangkok');
 
@@ -19,9 +20,11 @@ $invoice_customer_model = new InvoiceCustomerModel;
 $invoice_customer_list_model = new InvoiceCustomerListModel;
 $customer_purchase_order_list_model = new CustomerPurchaseOrderListModel;
 $product_model = new ProductModel;
+$stock_group_model = new StockGroupModel;
 $invoice_customer_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $customer_id = $_GET['customer_id'];
+$customer_purchase_order_id = $_GET['customer_purchase_order_id'];
 $vat = 7;
 $first_char = "INV";
 
@@ -29,6 +32,7 @@ if(!isset($_GET['action'])){
 
     $invoice_customers = $invoice_customer_model->getInvoiceCustomerBy();
     $customer_orders = $invoice_customer_model->getCustomerOrder();
+    $customer_purchase_orders = $invoice_customer_model->getCustomerPurchaseOrder();
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -36,12 +40,13 @@ if(!isset($_GET['action'])){
     $last_code = $invoice_customer_model->getInvoiceCustomerLastID($first_code,3);
 
     $products=$product_model->getProductBy('','','','Active');
+    $stock_groups=$stock_group_model->getStockGroupBy();
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
     
     if($customer_id > 0){
         $customer=$customer_model->getCustomerByID($customer_id);
-        $invoice_customer_lists = $invoice_customer_model->generateInvoiceCustomerListByCustomerId($customer_id);
+        $invoice_customer_lists = $invoice_customer_model->generateInvoiceCustomerListByCustomerId($customer_id,'','',$customer_purchase_order_id);
     }
    
 
@@ -49,6 +54,7 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'update'){
     $products=$product_model->getProductBy('','','','Active');
+    $stock_groups=$stock_group_model->getStockGroupBy();
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
 
@@ -63,18 +69,12 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'detail'){
     
     $invoice_customer = $invoice_customer_model->getInvoiceCustomerViewByID($invoice_customer_id);
-    //echo "<pre>";
-    //print_r($invoice_customer);
-    //echo "</pre>";
     $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy($invoice_customer_id);
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'print'){
     
     $invoice_customer = $invoice_customer_model->getInvoiceCustomerViewByID($invoice_customer_id);
-    //echo "<pre>";
-    //print_r($invoice_customer);
-    //echo "</pre>";
     $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy($invoice_customer_id);
     require_once($path.'print.inc.php');
 
@@ -127,6 +127,7 @@ if(!isset($_GET['action'])){
                     $data_sub['product_id'] = $product_id[$i];
                     $data_sub['customer_purchase_order_list_id'] = $customer_purchase_order_list_id[$i];
                     $data_sub['stock_group_id'] = $stock_group_id[$i];
+                    $data_sub['stock_date'] = $_POST['invoice_customer_date'];
                     $data_sub['invoice_customer_list_product_name'] = $invoice_customer_list_product_name[$i];
                     $data_sub['invoice_customer_list_product_detail'] = $invoice_customer_list_product_detail[$i];
                     $data_sub['invoice_customer_list_qty'] = (float)filter_var($invoice_customer_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -142,6 +143,7 @@ if(!isset($_GET['action'])){
                 $data_sub['product_id'] = $product_id;
                 $data_sub['customer_purchase_order_list_id'] = $customer_purchase_order_list_id;
                 $data_sub['stock_group_id'] = $stock_group_id;
+                $data_sub['stock_date'] = $_POST['invoice_customer_date'];
                 $data_sub['invoice_customer_list_product_name'] = $invoice_customer_list_product_name;
                 $data_sub['invoice_customer_list_product_detail'] = $invoice_customer_list_product_detail;
                 $data_sub['invoice_customer_list_qty'] = (float)filter_var($invoice_customer_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -184,6 +186,7 @@ if(!isset($_GET['action'])){
         $data['invoice_customer_tax'] = $_POST['invoice_customer_tax'];
         $data['invoice_customer_term'] = $_POST['invoice_customer_term'];
         $data['invoice_customer_due'] = $_POST['invoice_customer_due'];
+        $data['invoice_customer_close'] = $_POST['invoice_customer_close'];
         $data['addby'] = $user[0][0];
 
 
@@ -198,11 +201,8 @@ if(!isset($_GET['action'])){
         $invoice_customer_list_total = $_POST['invoice_customer_list_total'];
         $invoice_customer_list_remark = $_POST['invoice_customer_list_remark'];
 
-        
         $invoice_customer_list_model->deleteInvoiceCustomerListByInvoiceCustomerIDNotIN($invoice_customer_id,$invoice_customer_list_id);
         
-        
-
         if(is_array($product_id)){
             for($i=0; $i < count($product_id) ; $i++){
                 $data_sub = [];
@@ -210,6 +210,7 @@ if(!isset($_GET['action'])){
                 $data_sub['product_id'] = $product_id[$i];
                 $data_sub['customer_purchase_order_list_id'] = $customer_purchase_order_list_id[$i];
                 $data_sub['stock_group_id'] = $stock_group_id[$i];
+                $data_sub['stock_date'] = $_POST['invoice_customer_date'];
                 $data_sub['invoice_customer_list_product_name'] = $invoice_customer_list_product_name[$i];
                 $data_sub['invoice_customer_list_product_detail'] = $invoice_customer_list_product_detail[$i];
                 $data_sub['invoice_customer_list_qty'] = (float)filter_var($invoice_customer_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -230,6 +231,7 @@ if(!isset($_GET['action'])){
             $data_sub['product_id'] = $product_id;
             $data_sub['customer_purchase_order_list_id'] = $customer_purchase_order_list_id;
             $data_sub['stock_group_id'] = $stock_group_id;
+            $data_sub['stock_date'] = $_POST['invoice_customer_date'];
             $data_sub['invoice_customer_list_product_name'] = $invoice_customer_list_product_name;
             $data_sub['invoice_customer_list_product_detail'] = $invoice_customer_list_product_detail;
             $data_sub['invoice_customer_list_qty'] = (float)filter_var($invoice_customer_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);

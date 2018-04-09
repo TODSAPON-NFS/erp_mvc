@@ -10,9 +10,17 @@
     <?php }?>
     ];
 
+    var stock_data = [
+    <?php for($i = 0 ; $i < count($stock_groups) ; $i++ ){?>
+        {
+            stock_group_id:'<?php echo $stock_groups[$i]['stock_group_id'];?>',
+            stock_group_name:'<?php echo $stock_groups[$i]['stock_group_name'];?>'
+        },
+    <?php }?>
+    ];
+
     var data_buffer = [];
     function check(){
-
         var customer_id = document.getElementById("customer_id").value;
         var invoice_customer_code = document.getElementById("invoice_customer_code").value;
         var invoice_customer_date = document.getElementById("invoice_customer_date").value;
@@ -67,9 +75,6 @@
         }else{
             return true;
         }
-
-
-
     }
 
     function get_customer_detail(){
@@ -87,11 +92,22 @@
         $(id).closest('tr').remove();
      }
 
-     function show_data(id){
+     function show_qty(id){
+        var stock_group_id = $(id).closest('tr').children('td').children('select[name="stock_group_id[]"]').val();
+        var product_id = $(id).closest('tr').children('td').children('div').children('select[name="product_id[]"]').val();
+
+        $.post( "controllers/getQtyBy.php", { 'stock_group_id': stock_group_id,'product_id': product_id }, function( data ) {
+            $(id).closest('tr').children('td').children('span[name="qty[]"]').html( data.stock_old );
+        });
+        
+     }
+
+     function show_data (id){
         var product_name = "";
         var data = product_data.filter(val => val['product_id'] == $(id).val());
         if(data.length > 0){
             $(id).closest('tr').children('td').children('input[name="product_name[]"]').val( data[0]['product_name'] );
+            show_qty(id);
         }
         
      }
@@ -153,6 +169,8 @@
                                         '</td>'+
                                         '<td>'+
                                             data[i].product_name+
+                                            '<br>Remark : '+
+                                            data[i].invoice_customer_list_remark+
                                         '</td>'+
                                         '<td align="right">'+
                                             data[i].invoice_customer_list_qty +
@@ -205,6 +223,8 @@
                                         '</td>'+
                                         '<td>'+
                                             data[i].product_name+
+                                            '<br>Remark : '+
+                                            data[i].invoice_customer_list_remark+
                                         '</td>'+
                                         '<td align="right">'+
                                             data[i].invoice_customer_list_qty +
@@ -246,11 +266,16 @@
                         '</td>'+
                         '<td>'+
                             '<input type="text" class="form-control" name="product_name[]" value="'+ data_buffer[i].product_name +'" readonly />'+
-                            '<input type="text" class="form-control" name="invoice_customer_list_product_name[]" placeholder="Product Name (Customer)" />'+
-                            '<input type="text" class="form-control" name="invoice_customer_list_product_detail[]" placeholder="Product Detail (Customer)" />'+
-                            '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark"/>'+
+                            '<input type="text" class="form-control" name="invoice_customer_list_product_name[]" placeholder="Product Name (Customer)" value="'+ data_buffer[i].invoice_customer_list_product_name +'"/>'+
+                            '<input type="text" class="form-control" name="invoice_customer_list_product_detail[]" placeholder="Product Detail (Customer)" value="'+ data_buffer[i].invoice_customer_list_product_detail +'"/>'+
+                            '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark" value="'+ data_buffer[i].invoice_customer_list_remark +'"/>'+
                         '</td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_qty +'" /></td>'+
+                        '<td align="right">'+
+                            '<select class="form-control"  name="stock_group_id[]" onchange="show_data(this);" ></select>'+
+                            'Qty in stock : <span name="qty[]">0</span> pcs<br>'+
+                            'Qty sale : <span>'+ data_buffer[i].invoice_customer_list_qty +'</span> pcs<br>'+
+                            '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_qty +'" />'+
+                        '</td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_price +'" /></td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);"  value="'+ (data_buffer[i].invoice_customer_list_qty * data_buffer[i].invoice_customer_list_price) +'" readonly /></td>'+
                         '<td>'+
@@ -261,7 +286,7 @@
                     '</tr>'
                 );
 
-                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
+                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').empty();
                 var str = "<option value=''>Select Product</option>";
                 $.each(product_data, function (index, value) {
                     if(value['product_id'] == data_buffer[i].product_id){
@@ -272,9 +297,16 @@
                     
                 });
 
-                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
-                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
+                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').html(str);
+
+                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').selectpicker();
+
+                var str_stock = "<option value=''>Select Stock</option>";
+                $.each(stock_data, function (index, value) {
+                    str_stock += "<option value='" + value['stock_group_id'] + "'>"+value['stock_group_name']+"</option>";
+                });
+                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').html(str_stock);
 
             }
             
@@ -305,7 +337,12 @@
                     '<input type="text" class="form-control" name="invoice_customer_list_product_detail[]" placeholder="Product Detail (Customer)" />'+
                     '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark"/>'+
                 '</td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" /></td>'+
+                '<td align="right">'+
+                    '<select class="form-control" name="stock_group_id[]" onchange="show_data(this);"  ></select>'+
+                    'Qty in stock : <span name="qty[]">0</span> pcs<br>'+
+                    'Qty sale : <span>0</span> pcs<br>'+
+                    '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" />'+
+                '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);" readonly /></td>'+
                 '<td>'+
@@ -316,14 +353,23 @@
             '</tr>'
         );
 
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').empty();
         var str = "<option value=''>Select Product</option>";
         $.each(product_data, function (index, value) {
             str += "<option value='" + value['product_id'] + "'>"+value['product_code']+"</option>";
         });
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').html(str);
 
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').selectpicker('reset');
+
+
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').empty();
+        
+        var str_stock = "<option value=''>Select Stock</option>";
+        $.each(stock_data, function (index, value) {
+            str_stock += "<option value='" + value['stock_group_id'] + "'>"+value['stock_group_name']+"</option>";
+        });
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').html(str_stock);
     }
 
 
@@ -524,11 +570,25 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $invoice_customer_lists[$i]['product_name']; ?>" />
-                                    <input type="text" class="form-control" name="invoice_customer_list_product_name[]"  placeholder="Product Name (Customer)"/>
-                                    <input type="text" class="form-control" name="invoice_customer_list_product_detail[]"  placeholder="Product Detail (Customer)" />
+                                    <input type="text" class="form-control" name="invoice_customer_list_product_name[]"  placeholder="Product Name (Customer)" value="<?PHP echo $invoice_customer_lists[$i]['invoice_customer_list_product_name'];?>"/>
+                                    <input type="text" class="form-control" name="invoice_customer_list_product_detail[]"  placeholder="Product Detail (Customer)" value="<?PHP echo $invoice_customer_lists[$i]['invoice_customer_list_product_detail'];?>"/>
                                     <input type="text" class="form-control" name="invoice_customer_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_remark']; ?>" />
                                 </td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_qty[]" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_qty']; ?>" /></td>
+                                <td align="right">
+                                    <select  class="form-control" name="stock_group_id[]" onchange="show_qty(this);" >
+                                        <option value="">Select</option>
+                                        <?php 
+                                        for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
+                                        ?>
+                                        <option <?php if($stock_groups[$ii]['stock_group_id'] == $invoice_customer_lists[$i]['stock_group_id']){?> selected <?php }?> value="<?php echo $stock_groups[$ii]['stock_group_id'] ?>"><?php echo $stock_groups[$ii]['stock_group_name'] ?></option>
+                                        <?
+                                        }
+                                        ?>
+                                    </select>
+                                    Qty in stock : <span name="qty[]">0</span> pcs<br>
+                                    Qty sale : <span><?php echo $invoice_customer_lists[$i]['invoice_customer_list_qty']; ?></span> pcs<br>
+                                    <input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_qty[]" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_qty']; ?>" />
+                                </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_price[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" /></td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="invoice_customer_list_total[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_qty'] * $invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" /></td>
                                 <td>

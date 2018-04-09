@@ -112,6 +112,37 @@ class InvoiceSupplierModel extends BaseModel{
 
     }
 
+    function getPurchaseOrder($type = "ภายในประเทศ"){
+
+        $sql = "    SELECT tb_purchase_order.purchase_order_id , purchase_order_code, tb_purchase_order.supplier_id, supplier_name_en, supplier_name_th 
+                    FROM tb_purchase_order 
+                    LEFT JOIN tb_supplier ON tb_purchase_order.supplier_id = tb_supplier.supplier_id
+                    LEFT JOIN tb_purchase_order_list ON tb_purchase_order.purchase_order_id = tb_purchase_order_list.purchase_order_id
+                    WHERE purchase_order_list_id IN ( 
+                        SELECT tb_purchase_order_list.purchase_order_list_id 
+                        FROM tb_purchase_order_list  
+                        LEFT JOIN tb_invoice_supplier_list ON  tb_purchase_order_list.purchase_order_list_id = tb_invoice_supplier_list.purchase_order_list_id 
+                        GROUP BY tb_purchase_order_list.purchase_order_list_id 
+                        HAVING IFNULL(SUM(invoice_supplier_list_qty),0) < AVG(purchase_order_list_qty)  
+                    ) 
+                    AND purchase_order_status = 'Confirm'
+                    AND supplier_domestic = '$type' 
+                    GROUP BY tb_purchase_order.purchase_order_id
+                
+        ";
+
+        //echo $sql;
+        $data = [];
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+        return $data;
+    }
 
     function getSupplierOrder($type = "ภายในประเทศ"){
 
@@ -160,7 +191,7 @@ class InvoiceSupplierModel extends BaseModel{
 
     }
 
-    function generateInvoiceSupplierListBySupplierId($supplier_id, $data = [], $search = ""){
+    function generateInvoiceSupplierListBySupplierId($supplier_id, $data = [], $search = "", $purchase_order_id=""){
 
         $str ='0';
 
@@ -175,6 +206,11 @@ class InvoiceSupplierModel extends BaseModel{
             $str = $data;
         }else{
             $str='0';
+        }
+        $str_po = "";
+
+        if($purchase_order_id != ""){
+            $str_po = "AND tb_purchase_order.purchase_order_id = '$purchase_order_id' ";
         }
 
         $sql_customer = "SELECT tb2.product_id, 
@@ -196,6 +232,7 @@ class InvoiceSupplierModel extends BaseModel{
         LEFT JOIN tb_customer_purchase_order_list_detail ON tb2.purchase_order_list_id = tb_customer_purchase_order_list_detail.purchase_order_list_id
         LEFT JOIN tb_product ON tb2.product_id = tb_product.product_id 
         WHERE tb_purchase_order.supplier_id = '$supplier_id' 
+        $str_po 
         AND tb2.purchase_order_list_id NOT IN ($str) 
         AND tb2.purchase_order_list_id IN ( 
             SELECT tb_purchase_order_list.purchase_order_list_id 

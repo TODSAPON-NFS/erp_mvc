@@ -124,6 +124,7 @@ class InvoiceCustomerModel extends BaseModel{
         invoice_customer_tax = '".$data['invoice_customer_tax']."', 
         invoice_customer_term = '".$data['invoice_customer_term']."', 
         invoice_customer_due = '".$data['invoice_customer_due']."', 
+        invoice_customer_close = '".$data['invoice_customer_close']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
         WHERE invoice_customer_id = $id 
@@ -136,6 +137,36 @@ class InvoiceCustomerModel extends BaseModel{
         }
 
 
+    }
+
+
+    function getCustomerPurchaseOrder(){
+
+        $sql = "SELECT tb_customer_purchase_order.customer_purchase_order_id, customer_purchase_order_code, tb_customer.customer_id, customer_name_en , customer_name_th 
+                FROM tb_customer_purchase_order 
+                LEFT JOIN tb_customer 
+                ON tb_customer_purchase_order.customer_id = tb_customer.customer_id 
+                LEFT JOIN tb_customer_purchase_order_list 
+                ON tb_customer_purchase_order.customer_purchase_order_id = tb_customer_purchase_order_list.customer_purchase_order_id 
+                WHERE customer_purchase_order_list_id IN ( 
+                    SELECT tb_customer_purchase_order_list.customer_purchase_order_list_id 
+                    FROM tb_customer_purchase_order_list  
+                    LEFT JOIN tb_invoice_customer_list ON  tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_invoice_customer_list.customer_purchase_order_list_id  
+                    GROUP BY tb_customer_purchase_order_list.customer_purchase_order_list_id 
+                    HAVING IFNULL(SUM(invoice_customer_list_qty),0) < AVG(customer_purchase_order_list_qty)  
+                ) 
+                GROUP BY tb_customer_purchase_order.customer_purchase_order_id
+        ";
+        $data = [];
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+        return $data;
     }
 
 
@@ -169,7 +200,7 @@ class InvoiceCustomerModel extends BaseModel{
         return $data;
     }
 
-    function generateInvoiceCustomerListByCustomerId($customer_id, $data = [],$search=""){
+    function generateInvoiceCustomerListByCustomerId($customer_id, $data = [],$search="",$customer_purchase_order_id=""){
 
         $str ='0';
 
@@ -186,6 +217,10 @@ class InvoiceCustomerModel extends BaseModel{
             $str='0';
         }
 
+        if($customer_purchase_order_id != ""){
+            $str_po = "AND tb_customer_purchase_order.customer_purchase_order_id = '$customer_purchase_order_id' ";
+        }
+
         $sql_customer = "SELECT tb2.product_id, 
         tb2.customer_purchase_order_list_id, 
         CONCAT(product_code_first,product_code) as product_code, 
@@ -196,13 +231,16 @@ class InvoiceCustomerModel extends BaseModel{
             FROM tb_invoice_customer_list 
             WHERE customer_purchase_order_list_id = tb2.customer_purchase_order_list_id 
         ),0) ,0) as invoice_customer_list_qty,  
+        customer_purchase_order_product_name as invoice_customer_list_product_name,
+        customer_purchase_order_product_detail as invoice_customer_list_product_detail,
         customer_purchase_order_list_price as invoice_customer_list_price, 
         customer_purchase_order_list_price_sum as invoice_customer_list_total, 
-        CONCAT('Order for customer purchase order ',customer_purchase_order_code) as invoice_customer_list_remark 
+        CONCAT('Order for customer PO : ',customer_purchase_order_code) as invoice_customer_list_remark 
         FROM tb_customer_purchase_order 
         LEFT JOIN tb_customer_purchase_order_list as tb2 ON tb_customer_purchase_order.customer_purchase_order_id = tb2.customer_purchase_order_id 
         LEFT JOIN tb_product ON tb2.product_id = tb_product.product_id 
         WHERE tb_customer_purchase_order.customer_id = '$customer_id' 
+        $str_po 
         AND tb2.customer_purchase_order_list_id NOT IN ($str) 
         AND tb2.customer_purchase_order_list_id IN (
             SELECT tb_customer_purchase_order_list.customer_purchase_order_list_id 
@@ -290,7 +328,7 @@ class InvoiceCustomerModel extends BaseModel{
                  $sql_delete [] = "
                      CALL delete_stock('".
                      $row['stock_group_id']."','".
-                     $row['invoice_customer_list_id']."','in');
+                     $row['invoice_customer_list_id']."','out');
                  ";
                 
              }

@@ -9,6 +9,8 @@ class CreditNoteModel extends BaseModel{
 
     function getCreditNoteBy($date_start  = '', $date_end  = ''){
         $sql = " SELECT credit_note_id, 
+        credit_note_type_name,
+        tb_credit_note.credit_note_type_id,
         credit_note_code, 
         credit_note_date, 
         credit_note_total_old,
@@ -21,9 +23,10 @@ class CreditNoteModel extends BaseModel{
         credit_note_due, 
         IFNULL(CONCAT(tb2.customer_name_en,' (',tb2.customer_name_th,')'),'-') as customer_name  
         FROM tb_credit_note 
+        LEFT JOIN tb_credit_note_type ON tb_credit_note.credit_note_type_id = tb_credit_note_type.credit_note_type_id 
         LEFT JOIN tb_user as tb1 ON tb_credit_note.employee_id = tb1.user_id 
         LEFT JOIN tb_customer as tb2 ON tb_credit_note.customer_id = tb2.customer_id 
-        ORDER BY STR_TO_DATE(credit_note_date,'%Y-%m-%d %H:%i:%s') DESC 
+        ORDER BY STR_TO_DATE(credit_note_date,'%d-%m-%Y %H:%i:%s') DESC 
          ";
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -58,6 +61,7 @@ class CreditNoteModel extends BaseModel{
     function getCreditNoteViewByID($id){
         $sql = " SELECT *   
         FROM tb_credit_note 
+        LEFT JOIN tb_credit_note_type ON tb_credit_note.credit_note_type_id = tb_credit_note_type.credit_note_type_id 
         LEFT JOIN tb_invoice_customer ON tb_credit_note.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
         LEFT JOIN tb_user ON tb_credit_note.employee_id = tb_user.user_id 
         LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user.user_position_id 
@@ -113,6 +117,7 @@ class CreditNoteModel extends BaseModel{
         tb2.invoice_customer_list_id, 
         CONCAT(product_code_first,product_code) as product_code, 
         product_name,  
+        stock_group_id,
         IFNULL(invoice_customer_list_qty 
         - IFNULL((
             SELECT SUM(credit_note_list_qty) 
@@ -159,6 +164,7 @@ class CreditNoteModel extends BaseModel{
         customer_id = '".$data['customer_id']."', 
         employee_id = '".$data['employee_id']."', 
         invoice_customer_id = '".$data['invoice_customer_id']."', 
+        credit_note_type_id = '".$data['credit_note_type_id']."', 
         credit_note_code = '".$data['credit_note_code']."', 
         credit_note_total_old = '".$data['credit_note_total_old']."', 
         credit_note_total = '".$data['credit_note_total']."', 
@@ -194,6 +200,7 @@ class CreditNoteModel extends BaseModel{
             customer_id,
             employee_id,
             invoice_customer_id,
+            credit_note_type_id,
             credit_note_code,
             credit_note_total_old,
             credit_note_total,
@@ -216,6 +223,7 @@ class CreditNoteModel extends BaseModel{
         $data['customer_id']."','".
         $data['employee_id']."','".
         $data['invoice_customer_id']."','".
+        $data['credit_note_type_id']."','".
         $data['credit_note_code']."','".
         $data['credit_note_total_old']."','".
         $data['credit_note_total']."','".

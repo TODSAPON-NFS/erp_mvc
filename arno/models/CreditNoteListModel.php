@@ -74,20 +74,20 @@ class CreditNoteListModel extends BaseModel{
        // echo $sql . "<br><br>";
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $id = mysqli_insert_id($this->db);
+            if($data['credit_note_type_id'] == '1'){
+                $sql = "
+                    CALL insert_stock_credit('".
+                    $data['stock_group_id']."','".
+                    $id."','".
+                    $data['product_id']."','".
+                    $data['credit_note_list_qty']."','".
+                    $data['stock_date']."');
+                ";
 
-            $sql = "
-                CALL insert_stock_credit_note('".
-                $data['stock_group_id']."','".
-                $id."','".
-                $data['product_id']."','".
-                $data['credit_note_list_qty']."','".
-                $data['stock_date']."');
-            ";
+                //echo $sql . "<br><br>";
 
-            //echo $sql . "<br><br>";
-
-            mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
-
+                mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+            }
             return $id; 
         }else {
             return 0;
@@ -114,18 +114,21 @@ class CreditNoteListModel extends BaseModel{
       // echo $sql . "<br><br>";
 
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            $sql = "
-                CALL update_stock_credit_note('".
-                $data['stock_group_id']."','".
-                $id."','".
-                $data['product_id']."','".
-                $data['credit_note_list_qty']."','".
-                $data['stock_date']."');
-            ";
+            if($data['credit_note_type_id'] == '1'){
+                $sql = "
+                    CALL update_stock_credit('".
+                    $data['stock_group_id']."','".
+                    $id."','".
+                    $data['product_id']."','".
+                    $data['credit_note_list_qty']."','".
+                    $data['stock_date']."');
+                ";
 
-            //echo $sql . "<br><br>";
+                //echo $sql . "<br><br>";
 
-            mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+                mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);                                                        
+            }
+            
            return true;
         }else {
             return false;

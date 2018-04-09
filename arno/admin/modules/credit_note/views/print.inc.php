@@ -1,6 +1,14 @@
-<div style="font-size:10px;padding-left:32px;padding-top:220px;">
+<div  style="font-size:10px;padding-left:32px;padding-top:48px;width:595px; heigth:320px;">
+    <div style="font-size:22px;">ARNO (THAILAND) CO.,LTD.</div>
+    <div style="font-size:18px;">บริษัท อาร์โน (ประเทศไทย) จำกัด</div>
+    <div>สำนักงานใหญ่ : 2/27 อาคารบางนาคอมเพล็กซ์ ออฟฟิศทาวเวอร์ชั้น 7 ซอยบางนา-ตราด 25 ถนนบางนา-ตราด</div>
+    <div>แขวงบางนาเหนือ เขตบางนา กรุงเทพฯ 10260</div>
+    <div>038-989 615 Fax. 038-989 614</div>
+    <div>เลขประจำตัวผู้เสียภาษี 0105550006519</div><br>
+    <div align="right" style="padding-right:80px;font-size:22px;"><?PHP echo $credit_note['credit_note_type_name']; ?></div>
+    <br>
     <div style="display:block;padding:8;">
-        <?PHP echo $credit_note['customer_code']; ?>
+        รหัสลูกค้า : <?PHP echo $credit_note['customer_code']; ?>
     </div>
     <div>
         <table width="595" heigth="320">
@@ -10,49 +18,42 @@
                     <?PHP echo $credit_note['credit_note_address']; ?><br>
                     เลขประจำตัวผู้เสียภาษี / Tax : <?PHP echo $credit_note['credit_note_tax']; ?>
                 </td>
-                <td width="200">
+                <td width="280">
                     <table>
                         <tr>
-                            <td width="60" height="32" valign="middle" align="left">
-                            </td>
-                            <td width="140" height="32" valign="middle" align="left">
-                                <?PHP echo $credit_note['credit_note_date']; ?>
-                            </td>
-                            <td width="60" height="32" valign="middle" align="left">
+                            <td width="100" height="32" valign="middle" align="left">
+                            เลขที่ใบลดหนี้
                             </td>
                             <td width="140" height="32" valign="middle" align="left">
                                 <?PHP echo $credit_note['credit_note_code']; ?>
                             </td>
-
                         </tr>
-
                         <tr>
-                            <td width="60" height="32" valign="middle" align="left">
+                            <td width="100" height="32" valign="middle" align="left">
+                            วันที่
                             </td>
-
                             <td width="140" height="32" valign="middle" align="left">
-                                <?PHP echo $credit_note['credit_note_term']; ?>
-                            </td>
-
-                            <td width="60" height="32" valign="middle" align="left">
-                            </td>
-
-                            <td width="140" height="32" valign="middle" align="left">
-                                -
+                                <?PHP echo $credit_note['credit_note_date']; ?>
                             </td>
 
                         </tr>
 
                         <tr>
-                            <td width="60" height="32" valign="middle" align="left">
+                            <td width="100" height="32" valign="middle" align="left">
+                            อ้างอิงใบกำกับภาษี
                             </td>
+
                             <td width="140" height="32" valign="middle" align="left">
-                                <?PHP echo $credit_note['credit_note_due']; ?>
+                                <?PHP echo $credit_note['invoice_customer_code']; ?>
                             </td>
-                            <td width="60" height="32" valign="middle" align="left">
+                        </tr>
+                        <tr>
+                            <td width="100" height="32" valign="middle" align="left">
+                            พนักงานขาย
                             </td>
+
                             <td width="140" height="32" valign="middle" align="left">
-                                <?PHP echo $credit_note['user_name']; ?> <?PHP echo $credit_note['user_lastname']; ?>
+                            <?PHP echo $credit_note['user_name']; ?> <?PHP echo $credit_note['user_lastname']; ?>
                             </td>
 
                         </tr>
@@ -62,48 +63,58 @@
             </tr>
         </table>
     </div>
-
+    
     <div style="height:64px;">
 
     </div>
-
+    <div>บริษัทได้รับสินค้า/ลดหนี้ค่าสินค้าและเครดิตบัญชีของท่านตามรายการสินค้าดังต่อไปนี้</div><bR>
     <div style="height:440px;">
         <table width="595" >
-
+            <thead>
+                <tr style="border-bottom:1px solid #000;border-top:1px solid #000;padding:16px 0px;">
+                    <th width="24">No.</th>
+                    <th style="text-align:center;">รหัสสินค้า </th>
+                    <th style="text-align:center;">รายละเอียดสินค้า </th>
+                    <th style="text-align:center;" width="90">จำนวน </th>
+                    <th style="text-align:center;" width="90">หน่วยละ</th>
+                    <th style="text-align:center;" width="90">จำนวนเงิน</th>
+                    
+                </tr>
+            </thead>
             <tbody>
                 <?php 
                 $total = 0;
                 for($i=0; $i < count($credit_note_lists); $i++){
                 ?>
-                <tr >
-                    <td valign="top" width="20">
-                        <?php echo $i+1; ?>.
+                <tr class="odd gradeX">
+                    <td><?PHP echo $i+1;?></td>
+                    <td>
+                        <?PHP echo  $credit_note_lists[$i]['product_code'];?>
                     </td>
-
-                    <td valign="top" width="280">
-                        <b><?php echo $credit_note_lists[$i]['product_code']; ?></b><br>
-                        <span>Sub name : </span><?php echo $credit_note_lists[$i]['credit_note_list_product_name']; ?><br>
-                        <span>Detail : </span><?php echo $credit_note_lists[$i]['credit_note_list_product_detail']; ?><br>
+                    <td>
+                        <span>Product name : </span><?php echo $credit_note_lists[$i]['credit_note_list_product_name']; ?><br>
+                        <span>Product detail : </span><?php echo $credit_note_lists[$i]['credit_note_list_product_detail']; ?><br>
                         <span>Remark : </span><?php echo $credit_note_lists[$i]['credit_note_list_remark']; ?><br>
                     </td>
-
-                    <td valign="top" align="right" width="80"><?php echo $credit_note_lists[$i]['credit_note_list_qty']; ?></td>
-                    <td valign="top" align="right" width="80"><?php echo  number_format($credit_note_lists[$i]['credit_note_list_price'],2); ?></td>
-                    <td valign="top" align="right" width="80"><?php echo  number_format($credit_note_lists[$i]['credit_note_list_qty'] * $credit_note_lists[$i]['credit_note_list_price'],2); ?></td>
+                    <td align="right"><?php echo $credit_note_lists[$i]['credit_note_list_qty']; ?></td>
+                    <td align="right"><?php echo  number_format($credit_note_lists[$i]['credit_note_list_price'],2); ?></td>
+                    <td align="right"><?php echo  number_format($credit_note_lists[$i]['credit_note_list_qty'] * $credit_note_lists[$i]['credit_note_list_price'],2); ?></td>
                     
-
                 </tr>
                 <?
                     $total += $credit_note_lists[$i]['credit_note_list_qty'] * $credit_note_lists[$i]['credit_note_list_price'];
                 }
                 ?>
             </tbody>
+            
         </table>
     </div>
                         
                         
     <table width="595">
-        <tr>
+    <tfoot>
+
+    <tr>
             <td width="20">
             </td>
 
@@ -118,51 +129,84 @@
             
 
         </tr>
-            
-        <tr class="odd gradeX">
-            <td colspan="2" rowspan="3">
-                
-            </td>
-            <td colspan="2" align="left" style="vertical-align: middle;">
-                
-            </td>
-            <td style="text-align: right;">
-                <?PHP echo number_format($total,2) ;?>
-            </td>
-            
-        </tr>
-        <tr class="odd gradeX">
-            <td colspan="2" align="left" style="vertical-align: middle;">
-                <table>
-                    <tr>
-                        <td>
                             
-                        </td>
-                        <td style = "padding-left:8px;padding-right:8px;width:72px;">
-                            <?PHP echo $vat;?>
-                        </td>
-                        <td width="16">
-                        
-                        </td>
-                    </tr>
-                </table>
-                
-            </td>
-            <td style="text-align: right;">
-                <?PHP echo number_format(($vat/100) * $total,2) ;?>
-            </td>
+                            <tr class="odd gradeX">
+                                <td colspan="1" rowspan="8">
+                                    
+                                </td>
+                                <td colspan="3" align="right" style="vertical-align: middle;">
+                                    <span>รวม</span>
+                                </td>
+                                <td style="text-align: right;">
+                                <?PHP echo number_format($total,2) ;?>
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+                              
+                                <td colspan="3" align="right" style="vertical-align: middle;">
+                                    <span></span>
+                                </td>
+                                <td style="text-align: right;">
+                                    
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td colspan="3" align="right" style="vertical-align: middle;">
+                                    <span>มูลค่าของสินค้าหรือบริการใบกำกับภาษีเดิม</span>
+                                </td>
+                                <td style="text-align: right;">
+                                    <?PHP echo number_format($credit_note['credit_note_total_old'],2) ;?>
+                                </td>
+                            </tr>
             
-        </tr>
-        <tr class="odd gradeX">
-            <td colspan="2" align="left" style="vertical-align: middle;">
-                
-            </td>
-            <td style="text-align: right;">
-                <?PHP echo number_format(($vat/100) * $total + $total,2) ;?>
-            </td>
+                            <tr class="odd gradeX">
+                                <td colspan="3" align="right" style="vertical-align: middle;">
+                                    <span>มูลค่าของสินค้าหรือบริการที่ถูกต้อง</span>
+                                </td>
+                                <td style="text-align: right;">
+                                    <?PHP echo number_format($credit_note['credit_note_total_old'] - $total ,2) ;?>
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td colspan="2">
+                                    <br>
+                                </td>
+                                <td colspan="3" align="right" style="vertical-align: middle;">
+                                    <span></span>
+                                </td>
+                                <td style="text-align: right;">
+                                    
+                                </td>
+                            </tr>
             
-        </tr>
-    </table>   
+                            <tr class="odd gradeX">
+                                <td colspan="3" align="right" style="vertical-align: middle;">
+                                    <span>ผลต่าง</span>
+                                </td>
+                                <td style="text-align: right;">
+                                    <?PHP echo number_format($total,2) ;?>
+                                </td>
+                            </tr>
+            
+                            <tr class="odd gradeX">
+                                <td colspan="2" align="right" style="vertical-align: middle;">
+                                จำนวนภาษีมูลค่าเพิ่ม <?PHP echo number_format($vat,2);?> %
+                                                                        
+                                </td>
+                                <td style="text-align: right;">
+                                    <?PHP echo number_format(($vat/100) * $total,2) ;?>
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td colspan="3" align="right" style="vertical-align: middle;">
+                                    <span>จำนวนเงินรวมทั้งสิ้น</span>
+                                </td>
+                                <td style="text-align: right;">
+                                    <?PHP echo number_format(($vat/100) * $total + $total,2) ;?>
+                                </td>
+                            </tr>
+                        </tfoot>
+    </table>    
 
 </div>
                 

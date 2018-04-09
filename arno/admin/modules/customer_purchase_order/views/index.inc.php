@@ -288,7 +288,7 @@ if(!isset($_GET['action'])){
 
             if($output){
     ?>
-            <script>window.location="index.php?app=customer_purchase_order&action=update&id=".$customer_purchase_order_id</script>
+            <script>window.location="index.php?app=customer_purchase_order&action=update&id=<?PHP echo $customer_purchase_order_id;?>"</script>
     <?php
             }else{
     ?>

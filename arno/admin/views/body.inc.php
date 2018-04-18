@@ -17,6 +17,8 @@
     
     else if($_GET['app'] == "product"){
         require_once("modules/product/views/index.inc.php");
+    }else if($_GET['app'] == "product_category"){
+        require_once("modules/product_category/views/index.inc.php");
     }else if($_GET['app'] == "product_type"){
         require_once("modules/product_type/views/index.inc.php");
     }else if($_GET['app'] == "product_group"){
@@ -65,7 +67,9 @@
     }
 
 
-    else if($_GET['app'] == "purchase_request"){
+    else if($_GET['app'] == "regrind_supplier"){
+        require_once("modules/regrind_supplier/views/index.inc.php");
+    }else if($_GET['app'] == "purchase_request"){
         require_once("modules/purchase_request/views/index.inc.php");
     }else if($_GET['app'] == "purchase_order"){
         require_once("modules/purchase_order/views/index.inc.php");

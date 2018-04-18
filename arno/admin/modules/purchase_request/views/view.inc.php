@@ -20,14 +20,14 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>PR Date</th>
-                                        <th>PR No.</th>
-                                        <th>Request by</th>
-                                        <th>Request Type</th>
-                                        <th>Accept Status</th>
-                                        <th>Accept by</th>
-                                        <th>Remark</th>
+                                        <th>ลำดับ<br>No.</th>
+                                        <th>วันที่ออกใบร้องขอ<br>PR Date</th>
+                                        <th>หมายเลขใบร้องขอ<br>PR No.</th>
+                                        <th>ร้องขอโดย<br>Request by</th>
+                                        <th>ประเภทการร้องขอ<br>Request Type</th>
+                                        <th>สถานะอนุมัติ<br>Accept Status</th>
+                                        <th>ผู้อนุมัติ<br>Accept by</th>
+                                        <th>หมายเหตุ<br>Remark</th>
                                         <th></th>
                                     </tr>
                                 </thead>

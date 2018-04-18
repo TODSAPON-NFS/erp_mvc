@@ -3,10 +3,11 @@
                     <h1 class="page-header">Product Management</h1>
                 </div>
                 <div class="col-lg-6" align="right">
-                    <a href="?app=product" class="btn btn-primary active btn-menu">Product</a>
-                    <a href="?app=product_type" class="btn btn-primary btn-menu">Type</a>
-                    <a href="?app=product_group" class="btn btn-primary btn-menu">Group</a>
-                    <a href="?app=product_unit" class="btn btn-primary btn-menu">Unit</a>
+                    <a href="?app=product" class="btn btn-primary active btn-menu">สินค้า / Product</a>
+                    <a href="?app=product_category" class="btn btn-primary btn-menu">ลักษณะ / Category</a>
+                    <a href="?app=product_type" class="btn btn-primary btn-menu">ประเภท / Type</a>
+                    <a href="?app=product_group" class="btn btn-primary btn-menu">กลุ่ม / Group</a>
+                    <a href="?app=product_unit" class="btn btn-primary btn-menu">หน่วย / Unit</a>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -15,7 +16,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Product List
+                            รายการสินค้า / Product List
                             <a class="btn btn-success " style="float:right;" href="?app=product&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                         </div>
                         <!-- /.panel-heading -->
@@ -24,10 +25,10 @@
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Product Code</th>
-                                        <th>Product Name</th>
-                                        <th>Description</th>
-                                        <th>Status</th>
+                                        <th>รหัสสินค้า <br>Product Code</th>
+                                        <th>ชื่อสินค้า <br>Product Name</th>
+                                        <th>รายละเอียด <br> Description</th>
+                                        <th>สถานะ <br> Status</th>
                                         <th></th>
                                     </tr>
                                 </thead>

@@ -59,7 +59,8 @@ class ProductModel extends BaseModel{
         product_unit = '".$data['product_unit']."', 
         product_drawing = '".$data['product_drawing']."', 
         product_logo = '".$data['product_logo']."',
-        product_status = '".$data['product_status']."'  
+        product_status = '".$data['product_status']."', 
+        product_category_id = '".$data['product_category_id']."' 
         WHERE product_id = $id 
         ";
 
@@ -86,7 +87,8 @@ class ProductModel extends BaseModel{
             product_unit,
             product_drawing,
             product_logo,
-            product_status 
+            product_status, 
+            product_category_id
         ) VALUES (
             '".$data['product_code_first']."', 
             '".$data['product_code']."', 
@@ -98,7 +100,8 @@ class ProductModel extends BaseModel{
             '".$data['product_unit']."', 
             '".$data['product_drawing']."', 
             '".$data['product_logo']."', 
-            '".$data['product_status']."' 
+            '".$data['product_status']."', 
+            '".$data['product_category_id']."' 
         ); 
         ";
 

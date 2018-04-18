@@ -20,14 +20,14 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>PO Date</th>
-                                        <th>PO No.</th>
-                                        <th>Customer</th>
-                                        <th>Employee</th>
-                                        <th>Status</th>
-                                        <th>Remark</th>
-                                        <th>Invoice</th>
+                                        <th>ลำดับ<br>No.</th>
+                                        <th>วันที่รับใบสั่งซื้อ<br>PO Date</th>
+                                        <th>หมายเลขใบสั่งซื้อ<br>PO No.</th>
+                                        <th>ลูกค้า<br>Customer</th>
+                                        <th>พนักงาน<br>Employee</th>
+                                        <th>สถานะ<br>Status</th>
+                                        <th>หมายเหตุ<br>Remark</th>
+                                        <th>ใบกำกับภาษี<br>Invoice</th>
                                         <th></th>
                                     </tr>
                                 </thead>

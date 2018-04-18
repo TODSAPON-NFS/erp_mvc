@@ -26,10 +26,11 @@
         <h1 class="page-header">Product Management</h1>
     </div>
     <div class="col-lg-6" align="right">
-        <a href="?app=product" class="btn btn-primary btn-menu">Product</a>
-        <a href="?app=product_type" class="btn btn-primary  btn-menu">Type</a>
-        <a href="?app=product_group" class="btn btn-primary active btn-menu">Group</a>
-        <a href="?app=product_unit" class="btn btn-primary btn-menu">Unit</a>
+        <a href="?app=product" class="btn btn-primary  btn-menu">สินค้า / Product</a>
+        <a href="?app=product_category" class="btn btn-primary btn-menu">ลักษณะ / Category</a>
+        <a href="?app=product_type" class="btn btn-primary btn-menu">ประเภท / Type</a>
+        <a href="?app=product_group" class="btn btn-primary btn-menu active">กลุ่ม / Group</a>
+        <a href="?app=product_unit" class="btn btn-primary btn-menu">หน่วย / Unit</a>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -39,7 +40,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Product Group
+                            กลุ่มสินค้า / Product Group
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -48,14 +49,14 @@
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label>Group name<font color="#F00"><b>*</b></font></label>
+                                            <label>ชื่อกลุ่มสินค้า / Group name<font color="#F00"><b>*</b></font></label>
                                             <input id="product_group_name" name="product_group_name"  class="form-control" value="<? echo $product_group['product_group_name'];?>">
                                             <p class="help-block">Example : Consumable.</p>
                                         </div>
                                     </div>
                                     <div class="col-lg-8">
                                         <div class="form-group">
-                                            <label>Group detail <font color="#F00"><b>*</b></font></label>
+                                            <label>รายละเอียดกลุ่มสินค้า / Group detail <font color="#F00"><b>*</b></font></label>
                                             <input id="product_group_detail" name="product_group_detail" class="form-control" value="<? echo $product_group['product_group_detail'];?>">
                                             <p class="help-block">Example : -.</p>
                                         </div>
@@ -75,9 +76,9 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>Group name</th>
-                                        <th>Group detail</th>
+                                        <th>ลำดับ <br>No.</th>
+                                        <th>ชื่อกลุ่มสินค้า<br>Group name</th>
+                                        <th>รายละเอียดกลุ่มสินค้า<br>Group detail</th>
                                         <th></th>
                                     </tr>
                                 </thead>

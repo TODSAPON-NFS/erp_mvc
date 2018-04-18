@@ -13,7 +13,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            Purchase order to do
+            เปิดใบสั่งซื้ออ้างอิงตามบริษัท / Purchase order to do
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -21,9 +21,9 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
-                            <th width="64px" >No.</th>
-                            <th>Supplier</th>
-                            <th width="180px" >Open purchase order</th>
+                            <th width="64px" >ลำดับ <br>No.</th>
+                            <th>ผู้ขาย <br>Supplier</th>
+                            <th width="180px" >เปิดใบสั่งซื้อ <br>Open purchase order</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,7 +61,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            Purchase Order List
+             รายใบสั่งซื้อ / Purchase Order List
                 <a class="btn btn-success " style="float:right;" href="?app=purchase_order&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
             </div>
             <!-- /.panel-heading -->
@@ -69,15 +69,15 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
-                            <th>No.</th>
-                            <th>PO Date</th>
-                            <th>PO No.</th>
-                            <th>Supplier</th>
-                            <th>Request by</th>
-							<th>PO Status</th>
-                            <th>Accept Status</th>
-                            <th>Accept by</th>
-                            <th>Remark</th>
+                            <th>ลำดับ<br>No.</th>
+                            <th>วันที่ออกใบสั่งซื้อ<br>PO Date</th>
+                            <th>หมายเลขใบสั่งซื้อ<br>PO No.</th>
+                            <th>ผู้ขาย<br>Supplier</th>
+                            <th>ผู้ออกใบสั่งซื้อ<br>Request by</th>
+							<th>สถานะสั่งซื้อ<br>PO Status</th>
+                            <th>สถานะอนุมัติ<br>Accept Status</th>
+                            <th>ผู้อนุมัติ<br>Accept by</th>
+                            <th>หมายเหตุ<br>Remark</th>
 							
                             <th></th>
                         </tr>
@@ -107,10 +107,11 @@
                                 <a href="?app=purchase_order&action=update&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
+                               
+                            <?php } ?>
                                 <a href="?app=purchase_order&action=delete&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>" onclick="return confirm('You want to delete Purchase Order : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
-                            <?php } ?>
 
                             </td>
 

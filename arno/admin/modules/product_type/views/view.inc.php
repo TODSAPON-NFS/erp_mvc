@@ -26,10 +26,11 @@
         <h1 class="page-header">Product Management</h1>
     </div>
     <div class="col-lg-6" align="right">
-        <a href="?app=product" class="btn btn-primary btn-menu">Product</a>
-        <a href="?app=product_type" class="btn btn-primary active btn-menu">Type</a>
-        <a href="?app=product_group" class="btn btn-primary btn-menu">Group</a>
-        <a href="?app=product_unit" class="btn btn-primary btn-menu">Unit</a>
+        <a href="?app=product" class="btn btn-primary btn-menu">สินค้า / Product</a>
+        <a href="?app=product_category" class="btn btn-primary btn-menu">ลักษณะ / Category</a>
+        <a href="?app=product_type" class="btn btn-primary btn-menu active">ประเภท / Type</a>
+        <a href="?app=product_group" class="btn btn-primary btn-menu ">กลุ่ม / Group</a>
+        <a href="?app=product_unit" class="btn btn-primary btn-menu ">หน่วย / Unit</a>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -39,7 +40,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Product Type
+                            ประเภทสินค้า / Product Type
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -48,21 +49,21 @@
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label>Type name<font color="#F00"><b>*</b></font></label>
+                                            <label>ชื่อประเภทสินค้า / Type name<font color="#F00"><b>*</b></font></label>
                                             <input id="product_type_name" name="product_type_name"  class="form-control" value="<? echo $product_type['product_type_name'];?>">
                                             <p class="help-block">Example : Special Tool.</p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label>First char</label>
+                                            <label>ตัวอักษรขึ้นต้น / First char</label>
                                             <input id="product_type_first_char" name="product_type_first_char"  class="form-control" value="<? echo $product_type['product_type_first_char'];?>">
                                             <p class="help-block">Example : EN.</p>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label>Generate Code Auto</label>
+                                            <label>สร้างรหัสสินค้าอัตโนมัติ / Generate Code Auto</label>
                                             <select id="product_type_auto" name="product_type_auto" class="form-control">
                                                 <option value="">Select</option>
                                                 <option <?php if($product_type['product_type_auto'] == '0'){?> selected <?php } ?> value="0" >None</option>
@@ -72,9 +73,9 @@
                                             <p class="help-block">Example : None.</p>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label>Code Digit</label>
+                                            <label>จำนวนหลักของรหัสสินค้า / Code Digit</label>
                                             <input id="product_type_digit" name="product_type_digit"  class="form-control" value="<? echo $product_type['product_type_digit'];?>">
                                             <p class="help-block">Example : 8.</p>
                                         </div>
@@ -83,7 +84,7 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Type detail <font color="#F00"><b>*</b></font></label>
+                                            <label>รายละเอียดประเภท / Type detail <font color="#F00"><b>*</b></font></label>
                                             <input id="product_type_detail" name="product_type_detail" class="form-control" value="<? echo $product_type['product_type_detail'];?>">
                                             <p class="help-block">Example : -.</p>
                                         </div>
@@ -103,10 +104,10 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>Type name</th>
-                                        <th>First char</th>
-                                        <th>Type detail</th>
+                                        <th>ลำดับ<br>No.</th>
+                                        <th>ชื่อประเภทสินค้า<br>Type name</th>
+                                        <th>ตัวอักษรขึ้นต้น<br>First char</th>
+                                        <th>รายละเอียดประเภทสินค้า<br>Type detail</th>
                                         <th></th>
                                     </tr>
                                 </thead>

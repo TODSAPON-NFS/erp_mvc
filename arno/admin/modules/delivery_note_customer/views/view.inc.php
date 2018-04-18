@@ -20,13 +20,13 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>DNC Date</th>
-                                        <th>DNC No.</th>
-                                        <th>Customer</th>
-                                        <th>Contact</th>
-                                        <th>Sent by</th>
-                                        <th>Remark</th>
+                                        <th>ลำดับ <br>No.</th>
+                                        <th>วันที่รับใบยืม <br>DNC Date</th>
+                                        <th>หมายเลขใบยืม <br>DNC No.</th>
+                                        <th>ลูกค้า <br>Customer</th>
+                                        <th>ผู้ติดต่อ <br>Contact</th>
+                                        <th>ผู้ส่ง <br>Send by</th>
+                                        <th>หมายเหตุ <br>Remark</th>
                                         <th></th>
                                     </tr>
                                 </thead>

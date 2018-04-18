@@ -196,8 +196,9 @@ class PurchaseOrderModel extends BaseModel{
                     UNION 
                     SELECT DISTINCT product_id 
                     FROM tb_customer_purchase_order_list 
-                    WHERE purchase_order_list_id = 0 
-                    AND customer_purchase_order_list_qty - customer_purchase_order_list_hold > 0   
+                    LEFT JOIN tb_customer_purchase_order_list_detail 
+                    ON  tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list.customer_purchase_order_list_id
+                    WHERE purchase_order_list_id = 0   
                 )
                 AND product_supplier_status = 'Active' 
         ";

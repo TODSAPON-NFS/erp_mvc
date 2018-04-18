@@ -100,10 +100,11 @@
         <h1 class="page-header">Product Management</h1>
     </div>
     <div class="col-lg-6" align="right">
-        <a href="?app=product" class="btn btn-primary active btn-menu">Product</a>
-        <a href="?app=product_type" class="btn btn-primary  btn-menu">Type</a>
-        <a href="?app=product_group" class="btn btn-primary  btn-menu">Group</a>
-        <a href="?app=product_unit" class="btn btn-primary btn-menu">Unit</a>
+        <a href="?app=product" class="btn btn-primary active btn-menu">สินค้า / Product</a>
+        <a href="?app=product_category" class="btn btn-primary btn-menu">ลักษณะ / Category</a>
+        <a href="?app=product_type" class="btn btn-primary btn-menu">ประเภท / Type</a>
+        <a href="?app=product_group" class="btn btn-primary btn-menu">กลุ่ม / Group</a>
+        <a href="?app=product_unit" class="btn btn-primary btn-menu">หน่วย / Unit</a>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -112,7 +113,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Add Product 
+                เพิ่มสินค้า / Add Product 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -120,9 +121,9 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Product code <font color="#F00"><b>*</b></font></label>
+                                    <label>รหัสสินค้า / Product code <font color="#F00"><b>*</b></font></label>
                                     <div class="row">
                                         <div class="col-lg-3">
                                             <input id="product_code_first" id="product_code_first" value="" class="form-control" readonly />
@@ -134,19 +135,37 @@
                                     <p class="help-block">Example : VNMG060404EN.</p>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 
                                     <div class="form-group">
-                                        <label>Name. <font color="#F00"><b>*</b></font></label>
+                                        <label>ชื่อสินค้า / Name. <font color="#F00"><b>*</b></font></label>
                                         <input id="product_name" name="product_name" class="form-control">
                                         <p class="help-block">Example : VNMG060404EN...</p>
                                     </div>
                                 
                             </div>
-                            <div class="col-lg-2">
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>ลักษณะสินค้า / Product Category  <font color="#F00"><b>*</b></font> </label>
+                                    <select id="product_category_id" name="product_category_id" class="form-control" onChange="update_code()">
+                                            <option value="">Select</option>
+                                            <?php 
+                                                for($i =  0 ; $i < count($product_category) ; $i++){
+                                            ?>
+                                            <option  value="<?php echo $product_category[$i]['product_category_id'] ?>"><?php echo $product_category[$i]['product_category_name'] ?></option>
+                                            <?
+                                                }
+                                            ?>
+                                        </select>
+                                    <p class="help-block">Example : Special Tool.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-4">
                                 
                                     <div class="form-group">
-                                        <label>Product Group <font color="#F00"><b>*</b></font></label>
+                                        <label>กลุ่มสินค้า / Product Group <font color="#F00"><b>*</b></font></label>
                                         <select id="product_group" name="product_group" onchange="change_dd()" class="form-control">
                                             <option value="">Select</option>
                                             <?php 
@@ -162,9 +181,9 @@
                                 
                             </div>
                             
-                            <div class="col-lg-2">
+                            <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label>Product Type <font color="#F00"><b>*</b></font> </label>
+                                    <label>ประเภทสินค้า / Product Type <font color="#F00"><b>*</b></font> </label>
                                     <select id="product_type" name="product_type" class="form-control" onChange="update_code()">
                                             <option value="">Select</option>
                                             <?php 
@@ -178,7 +197,6 @@
                                     <p class="help-block">Example : Special Tool.</p>
                                 </div>
                             </div>
-                            
                             <!-- /.col-lg-6 (nested) -->
                         </div>
 
@@ -187,7 +205,7 @@
                         
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label>Barcode </label>
+                                    <label>หมายเลขบาร์โค๊ต / Barcode </label>
                                     <input id="product_barcode" name="product_barcode" type="text" class="form-control">
                                     <p class="help-block">Example : 123456789.</p>
                                 </div>
@@ -195,7 +213,7 @@
                             
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label>Product Unit <font color="#F00"><b>*</b></font> </label>
+                                    <label>หน่วยสินค้า / Product Unit <font color="#F00"><b>*</b></font> </label>
                                     <select id="product_unit" name="product_unit" class="form-control">
                                             <option value="">Select</option>
                                             <?php 
@@ -211,7 +229,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label>Produc Status <font color="#F00"><b>*</b></font> </label>
+                                    <label>สถานะสินค้า / Produc Status <font color="#F00"><b>*</b></font> </label>
                                     <select id="product_status" name="product_status" class="form-control">
                                             <option value="">Select</option>
                                             <option>Ative</option>
@@ -225,7 +243,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>Description </label>
+                                    <label>รายละเอียดสินค้า / Description </label>
                                     <input id="product_description" name="product_description" type="text" class="form-control">
                                     <p class="help-block">Example : Description...</p>
                                 </div>
@@ -234,7 +252,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>Drawing </label>
+                                    <label>แบบสินค้า / Drawing </label>
                                     <input id="product_drawing_url" name="product_drawing_url" type="text" readonly class="form-control">
                                     <input accept=".pdf"   type="file" id="product_drawing" name="product_drawing" onChange="readURL(this);">
                                     <p class="help-block">Example : .pdf</p>
@@ -246,7 +264,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>Product Picture </label>
+                                    <label>รูปสินค้า / Product Picture </label>
                                     <img class="img-responsive" id="img_logo" src="../upload/product/default.png" />
                                     <input accept=".jpg , .png"   type="file" id="product_logo" name="product_logo" onChange="readURL_logo(this);">
                                     <p class="help-block">Example : .jpg or .png </p>

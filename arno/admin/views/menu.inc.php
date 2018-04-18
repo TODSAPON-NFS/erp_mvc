@@ -108,6 +108,9 @@
                             <div class="nav-title">ระบบจัดซื้อ</div>
                         </li>
                         <li>
+                            <a href="?app=regrind_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบรีกายร์สินค้า (Regrind)</a>
+                        </li>
+                        <li>
                             <a href="?app=delivery_note_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบยืมจากผู้ขาย (Supplier DN)</a>
                         </li>
                         <li>
@@ -148,6 +151,9 @@
                         </li>
                         <li>
                             <a href="?app=stock_move"><i class="fa fa-share-square" aria-hidden="true"></i> ใบโอนคลังสินค้า (Move Stock)</a>
+                        </li>
+                        <li>
+                            <a href="?app=issue_move"><i class="fa fa-outdent" aria-hidden="true"></i> ใบนำออกสินค้า (Issue Stock)</a>
                         </li>
                         
                         <!-- /.nav-second-level -->

@@ -2,6 +2,7 @@
 require_once('../models/ProductModel.php');
 require_once('../models/ProductGroupModel.php');
 require_once('../models/ProductTypeModel.php');
+require_once('../models/ProductCategoryModel.php');
 require_once('../models/ProductUnitModel.php');
 require_once('../models/ProductCustomerModel.php');
 require_once('../models/ProductSupplierModel.php');
@@ -12,6 +13,7 @@ $path = "modules/product/views/";
 $model_product = new ProductModel;
 $model_product_group = new ProductGroupModel;
 $model_product_type = new ProductTypeModel;
+$model_product_category = new ProductCategoryModel;
 $model_product_unit = new ProductUnitModel;
 $model_product_customer = new ProductCustomerModel;
 $model_product_supplier = new ProductSupplierModel;
@@ -31,6 +33,7 @@ if(!isset($_GET['action'])){
 
     $product_group = $model_product_group->getProductGroupBy();
     $product_type = $model_product_type->getProductTypeBy();
+    $product_category = $model_product_category->getProductCategoryBy();
     $product_unit = $model_product_unit->getProductUnitBy();
     require_once($path.'insert.inc.php');
 
@@ -40,6 +43,7 @@ if(!isset($_GET['action'])){
     $product = $model_product->getProductByID($product_id);
     $product_group = $model_product_group->getProductGroupBy();
     $product_type = $model_product_type->getProductTypeBy();
+    $product_category = $model_product_category->getProductCategoryBy();
     $product_unit = $model_product_unit->getProductUnitBy();
 
     $product_customers = $model_product_customer->getProductCustomerBy($product_id);
@@ -91,7 +95,7 @@ if(!isset($_GET['action'])){
         $data['product_type'] = $_POST['product_type'];
         $data['product_unit'] = $_POST['product_unit'];
         $data['product_status'] = $_POST['product_status'];
-
+        $data['product_category_id'] = $_POST['product_category_id'];
         $check = true;
 
         if($_FILES['product_drawing']['name'] == ""){
@@ -186,7 +190,7 @@ if(!isset($_GET['action'])){
         $data['product_type'] = $_POST['product_type'];
         $data['product_unit'] = $_POST['product_unit'];
         $data['product_status'] = $_POST['product_status'];
-
+        $data['product_category_id'] = $_POST['product_category_id'];
 
 
         $check = true;

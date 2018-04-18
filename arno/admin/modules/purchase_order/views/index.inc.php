@@ -46,10 +46,11 @@ if(!isset($_GET['action'])){
         }else{
             $first_char = "PO";
         }
+
         $first_code = $first_char.date("y").date("m");
         $last_code = $purchase_order_model->getPurchaseOrderLastID($first_code,3);
 
-        //$purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id);
+        $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id);
     }
    
 

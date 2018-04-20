@@ -85,6 +85,7 @@ if(!isset($_GET['action'])){
                 $check = false;
             }else if (move_uploaded_file($_FILES["customer_logo"]["tmp_name"], $target_file)) {
                 $data['customer_logo'] = strtolower($_FILES['customer_logo']['name']);
+                
             } else {
                 $error_msg =  "Sorry, there was an error uploading your file.";
                 $check = false;
@@ -161,8 +162,10 @@ if(!isset($_GET['action'])){
             }else if (move_uploaded_file($_FILES["customer_logo"]["tmp_name"], $target_file)) {
                 $data['customer_logo'] = strtolower($_FILES['customer_logo']['name']);
                 $target_file = $target_dir . $_POST["customer_logo_o"];
-                if (file_exists($target_file)) {
-                    unlink($target_file);
+                if($_POST["customer_logo_o"] != 'default.png'){
+                    if (file_exists($target_file)) {
+                        unlink($target_file);
+                    }
                 }
             } else {
                 $error_msg =  "Sorry, there was an error uploading your file.";

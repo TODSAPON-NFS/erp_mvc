@@ -64,6 +64,8 @@
         require_once("modules/stock_in/views/index.inc.php");
     }else if($_GET['app'] == "stock_out"){
         require_once("modules/stock_out/views/index.inc.php");
+    }else if($_GET['app'] == "stock_issue"){
+        require_once("modules/stock_issue/views/index.inc.php");
     }
 
 

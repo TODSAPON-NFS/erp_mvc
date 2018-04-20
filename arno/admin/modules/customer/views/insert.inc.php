@@ -191,15 +191,11 @@
                         <!-- /.row (nested) -->
                         <div class="row">
                         
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>สาขา / Branch <font color="#F00"><b>*</b></font></label>
-                                    <select id="customer_branch" name="customer_branch" class="form-control">
-                                            <option value="">Select</option>
-                                            <option>สำนักงานใหญ่</option>
-                                            <option>สำนักงานย่อย</option>
-                                        </select>
-                                    <p class="help-block">Example : สำนักงานใหญ่.</p>
+                                    <input id="customer_branch" name="customer_branch" class="form-control" />
+                                    <p class="help-block">Example : 0000 = สำนักงานใหญ่.</p>
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -209,14 +205,14 @@
                                     <p class="help-block">Example : ชลบุรี.</p>
                                 </div>
                             </div>
-                            <div class="col-lg-2">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>เครดิต / Credit Day </label>
                                     <input id="credit_day" name="credit_day" type="text" class="form-control">
                                     <p class="help-block">Example : 30 (วัน).</p>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>เงื่อนไขการชำระเงิน / Pay Type </label>
                                     <select id="condition_pay" name="condition_pay" class="form-control">
@@ -274,14 +270,14 @@
                         </div>
                         <!-- /.row (nested) -->
                         <div class="row">
-                            <div class="col-lg-10">
+                            <div class="col-lg-9">
                                 <div class="form-group">
                                     <label>ที่อยู่ 3 / Address 3 </label>
                                     <input id="customer_address_3" name="customer_address_3" type="text" class="form-control">
                                     <p class="help-block">Example : กรุงเทพ.</p>
                                 </div>
                             </div>
-                            <div class="col-lg-2">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>รหัสไปรษณีย์ / Zipcode </label>
                                     <input id="customer_zipcode" name="customer_zipcode" type="text" class="form-control">

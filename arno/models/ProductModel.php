@@ -44,6 +44,91 @@ class ProductModel extends BaseModel{
 
     }
 
+    function getProductDataByID($product_id,$stock_group_id){
+        $sql = "SELECT table_name FROM tb_stock_group WHERE tb_stock_group.stock_group_id = '$stock_group_id'";
+        $table_name ="";
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $table_name = $row['table_name'];
+            }
+            $result->close();
+        }
+
+        $sql_in = "SELECT SUM(qty) 
+        FROM ".$table_name."  
+        WHERE ".$table_name.".product_id = tb.product_id 
+        AND stock_type = 'in' ";
+
+        $sql_out = "SELECT SUM(qty) 
+        FROM ".$table_name." 
+        WHERE ".$table_name.".product_id = tb.product_id 
+        AND stock_type = 'out' ";
+
+        $sql = " SELECT product_name, product_buyprice as product_price, (IFNULL(($sql_in),0) - IFNULL(($sql_out),0)) as product_qty  
+        FROM tb_product as tb 
+        LEFT JOIN tb_product_supplier ON tb.product_id = tb_product_supplier.product_id 
+        WHERE tb.product_id = '$product_id' 
+        AND product_supplier_status = 'Active' 
+        ";
+
+        //echo $sql;
+        
+
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+
+    function getProductDataByCode($product_code,$stock_group_id,$qty){
+        $sql = "SELECT table_name FROM tb_stock_group WHERE tb_stock_group.stock_group_id = '$stock_group_id'";
+        $table_name ="";
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $table_name = $row['table_name'];
+            }
+            $result->close();
+        }
+
+        $sql_in = "SELECT SUM(qty) 
+        FROM ".$table_name."  
+        WHERE ".$table_name.".product_id = tb.product_id 
+        AND stock_type = 'in' ";
+
+        $sql_out = "SELECT SUM(qty) 
+        FROM ".$table_name." 
+        WHERE ".$table_name.".product_id = tb.product_id 
+        AND stock_type = 'out' ";
+
+        $sql = " SELECT product_code, product_name, product_buyprice as product_price, $qty as product_qty  
+        FROM tb_product as tb 
+        LEFT JOIN tb_product_supplier ON tb.product_id = tb_product_supplier.product_id 
+        WHERE tb.product_code = '$product_code' 
+        AND product_supplier_status = 'Active' 
+        ";
+
+        //echo $sql;
+        
+
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     
     
 

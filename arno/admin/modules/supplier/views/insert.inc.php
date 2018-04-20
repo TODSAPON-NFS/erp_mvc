@@ -274,7 +274,7 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>รูปผู้ขาย / Supplier Picture </label>
-                                    <img class="img-responsive" id="img_logo" src="../upload/Supplier/default.png" /><br>
+                                    <img class="img-responsive" id="img_logo" src="../upload/supplier/default.png" /><br>
                                     <input accept=".jpg , .png"   type="file" id="supplier_logo" name="supplier_logo" onChange="readURL(this);">
                                     <p class="help-block">Example : .jpg or .png </p>
                                 </div>

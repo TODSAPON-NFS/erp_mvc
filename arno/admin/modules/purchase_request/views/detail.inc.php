@@ -83,7 +83,7 @@
                                 </td>
                                 <td><?php echo $purchase_request_lists[$i]['product_name']; ?></td>
                                 <td><?php echo $purchase_request_lists[$i]['purchase_request_list_qty']; ?></td>
-                                <td><?php echo $purchase_request_lists[$i]['purchase_request_list_delivery_min']; ?></td>
+                                <td><?php echo $purchase_request_lists[$i]['purchase_request_list_delivery']; ?></td>
                                 <td><?php echo $purchase_request_lists[$i]['purchase_request_list_remark']; ?></td>
                                
                             </tr>

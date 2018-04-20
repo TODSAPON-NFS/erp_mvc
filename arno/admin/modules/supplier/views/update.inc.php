@@ -194,12 +194,8 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>สาขา / Branch <font color="#F00"><b>*</b></font></label>
-                                    <select id="supplier_branch" name="supplier_branch" class="form-control">
-                                            <option value="">Select</option>
-                                            <option <?php if($Supplier['supplier_branch'] == 'สำนักงานใหญ่'){?> selected <?php } ?> >สำนักงานใหญ่</option>
-                                            <option <?php if($Supplier['supplier_branch'] == 'สำนักงานย่อย'){?> selected <?php } ?> >สำนักงานย่อย</option>
-                                        </select>
-                                    <p class="help-block">Example : สำนักงานใหญ่.</p>
+                                    <input id="supplier_branch" name="supplier_branch" class="form-control" value="<? echo $Supplier['supplier_branch']?>"/>
+                                    <p class="help-block">Example : 0000 = สำนักงานใหญ่, 0001 = สาขาย่อยที่ 1 .</p>
                                 </div>
                             </div>
                             <div class="col-lg-8">
@@ -256,14 +252,14 @@
                         </div>
                         <!-- /.row (nested) -->
                         <div class="row">
-                            <div class="col-lg-10">
+                            <div class="col-lg-9">
                                 <div class="form-group">
                                     <label>ที่อยู่ 3 / Address 3 </label>
                                     <input id="supplier_address_3" name="supplier_address_3" type="text" class="form-control" value="<? echo $Supplier['supplier_address_3']?>">
                                     <p class="help-block">Example : กรุงเทพ.</p>
                                 </div>
                             </div>
-                            <div class="col-lg-2">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>รหัสไปรษณีย์ / Zipcode </label>
                                     <input id="supplier_zipcode" name="supplier_zipcode" type="text" class="form-control" value="<? echo $Supplier['supplier_zipcode']?>">
@@ -278,7 +274,7 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>รูปผู้ขาย / Supplier Picture <font color="#F00"><b>*</b></font></label>
-                                    <img class="img-responsive" id="img_logo" src="../upload/Supplier/<?php echo $Supplier['supplier_logo']; ?>" />
+                                    <img class="img-responsive" id="img_logo" src="../upload/supplier/<?php echo $Supplier['supplier_logo']; ?>" />
                                 
                                     <input accept=".jpg , .png"   type="file" id="supplier_logo" name="supplier_logo" onChange="readURL(this);">
                                     <p class="help-block">Example : .jpg or .png </p>

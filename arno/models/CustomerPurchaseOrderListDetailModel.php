@@ -94,7 +94,7 @@ class CustomerPurchaseOrderListDetailModel extends BaseModel{
     }
 
     function updatePurchaseOrderId($customer_purchase_order_list_detail_id,$purchase_order_list_id){
-        $sql = " UPDATE tb_customer_purchase_order_list_detail
+        $sql = " UPDATE tb_customer_purchase_order_list_detail 
             SET purchase_order_list_id = '$purchase_order_list_id' 
             WHERE customer_purchase_order_list_detail_id = '$customer_purchase_order_list_detail_id' 
         ";

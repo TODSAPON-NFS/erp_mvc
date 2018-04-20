@@ -153,7 +153,7 @@
                             <a href="?app=stock_move"><i class="fa fa-share-square" aria-hidden="true"></i> ใบโอนคลังสินค้า (Move Stock)</a>
                         </li>
                         <li>
-                            <a href="?app=issue_move"><i class="fa fa-outdent" aria-hidden="true"></i> ใบนำออกสินค้า (Issue Stock)</a>
+                            <a href="?app=stock_issue"><i class="fa fa-outdent" aria-hidden="true"></i> ใบนำออกสินค้า (Issue Stock)</a>
                         </li>
                         
                         <!-- /.nav-second-level -->

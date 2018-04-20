@@ -259,7 +259,7 @@
                     '<input type="text" class="form-control" name="customer_purchase_order_list_price[]" onchange="update_sum(this);" />'+
                 '</td>'+
                 '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_hold[]" /></td>'+
+                '<td></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -288,6 +288,35 @@
             });
         }
         
+    }
+
+    function update_sum(id){
+
+        var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_qty[]"]').val(  ).replace(',',''));
+        var price =  parseFloat($(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val( ).replace(',',''));
+        var sum =  parseFloat($(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price_sum[]"]').val( ).replace(',',''));
+
+        if(isNaN(qty)){
+        qty = 0;
+        }
+
+        if(isNaN(price)){
+        price = 0.0;
+        }
+
+        if(isNaN(sum)){
+        sum = 0.0;
+        }
+
+        sum = qty*price;
+
+        $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_qty[]"]').val( qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val( price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price_sum[]"]').val( sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+
+        calculateAll();
+
+
     }
 
 </script>
@@ -467,9 +496,9 @@
                                     <span>Remark.</span>
                                     <input type="text" class="form-control" name="customer_purchase_order_list_remark[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_remark']; ?>" />
                                 </td>
-                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_qty[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_qty']; ?>" /></td>
-                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_price[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_price']; ?>" /></td>
-                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_price_sum[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_price_sum']; ?>" /></td>
+                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_qty[]" value="<?php echo number_format($customer_purchase_order_lists[$i]['customer_purchase_order_list_qty'],2); ?>" /></td>
+                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_price[]" value="<?php echo number_format($customer_purchase_order_lists[$i]['customer_purchase_order_list_price'],2); ?>" /></td>
+                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_price_sum[]" value="<?php echo number_format($customer_purchase_order_lists[$i]['customer_purchase_order_list_price_sum'],2); ?>" /></td>
                                 <td>
                                     <a href="javascript:;" onclick="show_row_from(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> 

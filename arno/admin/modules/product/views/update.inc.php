@@ -188,7 +188,7 @@
                                     <label>รหัสสินค้า / Product code <font color="#F00"><b>*</b></font></label>
                                     <div class="row">
                                         <div class="col-lg-3">
-                                            <input id="product_code_first" id="product_code_first" value="" class="form-control" readonly />
+                                            <input id="product_code_first" name="product_code_first" value="<?php echo $product['product_code_first']?>" class="form-control" readonly />
                                         </div>
                                         <div class="col-lg-9">
                                             <input id="product_code" name="product_code" class="form-control"  value="<?php echo $product['product_code']?>" readonly>

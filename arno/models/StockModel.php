@@ -27,6 +27,7 @@ class StockModel extends BaseModel{
                 `invoice_supplier_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการซื้อเข้า', 
                 `invoice_customer_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการขายออก', 
                 `stock_move_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการย้ายคลังสินค้า', 
+                `stock_issue_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการตัดคลังสินค้า', 
                 `credit_note_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการใบลดหนี้', 
                 `addby` int(11) NOT NULL COMMENT 'ผู้เพิ่มสินค้า', 
                 `adddate` varchar(50) NOT NULL COMMENT 'เวลาเพิ่มสินค้า', 

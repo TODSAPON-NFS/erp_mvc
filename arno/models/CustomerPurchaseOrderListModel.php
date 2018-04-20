@@ -91,11 +91,11 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             customer_purchase_order_list_delivery_min = '".$data['customer_purchase_order_list_delivery_min']."', 
             customer_purchase_order_list_delivery_max = '".$data['customer_purchase_order_list_delivery_max']."', 
             customer_purchase_order_list_remark = '".$data['customer_purchase_order_list_remark']."', 
-            
+            lastupdate = NOW()  
             WHERE customer_purchase_order_list_id = '$id' 
         ";
 
-
+        //echo $sql;
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {

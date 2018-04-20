@@ -86,7 +86,7 @@ if(!isset($_GET['action'])){
     if(isset($_POST['product_name'])){
 
         $data = [];
-        $data['product_code_fisrt'] = $_POST['product_code_fisrt'];
+        $data['product_code_first'] = $_POST['product_code_first'];
         $data['product_code'] = $_POST['product_code'];
         $data['product_name'] = $_POST['product_name'];
         $data['product_group'] = $_POST['product_group'];
@@ -123,7 +123,7 @@ if(!isset($_GET['action'])){
         }
 
         if($_FILES['product_logo']['name'] == ""){
-            $data['product_logo'] = $_POST['product_logo_o'];
+            $data['product_logo'] = "default.png";
         }else {
             $target_file = $target_dir . strtolower(basename($_FILES["product_logo"]["name"]));
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -139,10 +139,6 @@ if(!isset($_GET['action'])){
                 $check = false;
             }else if (move_uploaded_file($_FILES["product_logo"]["tmp_name"], $target_file)) {
                 $data['product_logo'] = strtolower($_FILES['product_logo']['name']);
-                $target_file = $target_dir . $_POST["product_logo_o"];
-                if (file_exists($target_file)) {
-                    unlink($target_file);
-                }
             } else {
                 $error_msg =  "Sorry, there was an error uploading your file.";
                 $check = false;
@@ -161,7 +157,7 @@ if(!isset($_GET['action'])){
 
             if($pro > 0){
     ?>
-            <script>window.location="index.php?app=product?action=update&id=<?php echo $pro?>"</script>
+            <script>window.location="index.php?app=product&action=update&id=<?php echo $pro?>"</script>
     <?php
             }else{
     ?>
@@ -181,7 +177,7 @@ if(!isset($_GET['action'])){
     
     if(isset($_POST['product_name'])){
         $data = [];
-        $data['product_code_fisrt'] = $_POST['product_code_fisrt'];
+        $data['product_code_first'] = $_POST['product_code_first'];
         $data['product_code'] = $_POST['product_code'];
         $data['product_name'] = $_POST['product_name'];
         $data['product_group'] = $_POST['product_group'];
@@ -213,8 +209,10 @@ if(!isset($_GET['action'])){
             }else if (move_uploaded_file($_FILES["product_drawing"]["tmp_name"], $target_file)) {
                 $data['product_drawing'] = strtolower($_FILES['product_drawing']['name']);
                 $target_file = $target_dir . $_POST["product_drawing_o"];
-                if (file_exists($target_file)) {
-                    unlink($target_file);
+                if($_POST["product_logo_o"] != 'default.png'){
+                    if (file_exists($target_file)) {
+                        unlink($target_file);
+                    }
                 }
             } else {
                 $error_msg =  "Sorry, there was an error uploading your file.";

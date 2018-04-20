@@ -198,9 +198,11 @@ class PurchaseOrderModel extends BaseModel{
                     FROM tb_customer_purchase_order_list 
                     LEFT JOIN tb_customer_purchase_order_list_detail 
                     ON  tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list.customer_purchase_order_list_id
-                    WHERE purchase_order_list_id = 0   
+                    WHERE tb_customer_purchase_order_list_detail.purchase_order_list_id = 0   
+                    AND tb_customer_purchase_order_list_detail.supplier_id != 0 
                 )
                 AND product_supplier_status = 'Active' 
+                GROUP BY tb_product_supplier.supplier_id 
         ";
         $data = [];
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {

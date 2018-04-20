@@ -202,7 +202,6 @@ if(!isset($_GET['action'])){
 
 
             $customer_purchase_order_list_model->deleteCustomerPurchaseOrderListByCustomerPurchaseOrderIDNotIN($customer_purchase_order_id,$customer_purchase_order_list_id);
-
             if(is_array($product_id)){
                 for($i=0; $i < count($product_id) ; $i++){
                     $data = [];
@@ -210,9 +209,9 @@ if(!isset($_GET['action'])){
                     $data['product_id'] = $product_id[$i];
                     $data['customer_purchase_order_product_name'] = $customer_purchase_order_product_name[$i];
                     $data['customer_purchase_order_product_detail'] = $customer_purchase_order_product_detail[$i];
-                    $data['customer_purchase_order_list_qty'] = $customer_purchase_order_list_qty[$i];
-                    $data['customer_purchase_order_list_price'] = $customer_purchase_order_list_price[$i];
-                    $data['customer_purchase_order_list_price_sum'] = $customer_purchase_order_list_price_sum[$i];
+                    $data['customer_purchase_order_list_qty'] = (float)filter_var($customer_purchase_order_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data['customer_purchase_order_list_price'] = (float)filter_var($customer_purchase_order_list_price[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data['customer_purchase_order_list_price_sum'] = (float)filter_var($customer_purchase_order_list_price_sum[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data['customer_purchase_order_list_remark'] = $customer_purchase_order_list_remark[$i];
                     $data['customer_purchase_order_list_hold'] = $customer_purchase_order_list_hold[$i];
 
@@ -265,21 +264,65 @@ if(!isset($_GET['action'])){
                     }
                 }
             }else if($product_id != ""){
+                
                 $data = [];
                 $data['customer_purchase_order_id'] = $customer_purchase_order_id;
                 $data['product_id'] = $product_id;
                 $data['customer_purchase_order_product_name'] = $customer_purchase_order_product_name;
                 $data['customer_purchase_order_product_detail'] = $customer_purchase_order_product_detail;
-                $data['customer_purchase_order_list_qty'] = $customer_purchase_order_list_qty;
-                $data['customer_purchase_order_list_price'] = $customer_purchase_order_list_price;
-                $data['customer_purchase_order_list_price_sum'] = $customer_purchase_order_list_price_sum;
+                $data['customer_purchase_order_list_qty'] = (float)filter_var($customer_purchase_order_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['customer_purchase_order_list_price'] = (float)filter_var($customer_purchase_order_list_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['customer_purchase_order_list_price_sum'] = (float)filter_var($customer_purchase_order_list_price_sum, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['customer_purchase_order_list_remark'] = $customer_purchase_order_list_remark;
                 $data['customer_purchase_order_list_hold'] = $customer_purchase_order_list_hold;
 
                 if($customer_purchase_order_list_id == "" || $customer_purchase_order_list_id == "0"){
                     $customer_purchase_order_list_model->insertCustomerPurchaseOrderList($data);
+                 
                 }else{
-                    $customer_purchase_order_list_model->updateCustomerPurchaseOrderListById($data,$customer_purchase_order_list_id);
+                   
+                        $customer_purchase_order_list_model->updateCustomerPurchaseOrderListById($data,$customer_purchase_order_list_id);
+
+                        $supplier_id = $_POST['supplier_id_'.$customer_purchase_order_list_id];
+                        $stock_hold_id = $_POST['stock_hold_id_'.$customer_purchase_order_list_id];
+                        $stock_group_id = $_POST['stock_group_id_'.$customer_purchase_order_list_id];
+                        $qty = $_POST['qty_'.$customer_purchase_order_list_id];
+                        $customer_purchase_order_list_detail_id = $_POST['customer_purchase_order_list_detail_id_'.$customer_purchase_order_list_id];
+
+                        $customer_purchase_order_list_detail_model->deleteCustomerPurchaseOrderListDetailByIDNotIN($customer_purchase_order_list_id,$customer_purchase_order_list_detail_id);
+
+                        if(is_array($supplier_id)){
+                            for($ii=0; $ii < count($supplier_id) ; $ii++){
+                                $data = [];
+                                $data['supplier_id'] = $supplier_id[$ii];
+                                $data['stock_hold_id'] = $stock_hold_id[$ii];
+                                $data['stock_group_id'] = $stock_group_id[$ii];
+                                $data['qty'] = $qty[$ii];
+                                $data['customer_purchase_order_list_id'] = $customer_purchase_order_list_id;
+                                $data['customer_purchase_order_list_detail_id'] = $customer_purchase_order_list_detail_id[$ii];
+                                
+                                if($customer_purchase_order_list_detail_id[$ii] == '0' || $customer_purchase_order_list_detail_id[$ii] == ''){
+                                    
+                                    $customer_purchase_order_list_detail_model->insertCustomerPurchaseOrderListDetail($data);
+                                }else{
+                                    $customer_purchase_order_list_detail_model->updateCustomerPurchaseOrderListDetailByID($customer_purchase_order_list_detail_id[$ii], $data);
+                                }
+                            }
+                        }else if($supplier_id != ""){
+                            $data = [];
+                            $data['supplier_id'] = $supplier_id;
+                            $data['stock_hold_id'] = $stock_hold_id;
+                            $data['stock_group_id'] = $stock_group_id;
+                            $data['qty'] = $qty;
+                            $data['customer_purchase_order_list_id'] = $customer_purchase_order_list_id;
+                            $data['customer_purchase_order_list_detail_id'] = $customer_purchase_order_list_detail_id;
+                            
+                            if($customer_purchase_order_list_detail_id == '0' || $customer_purchase_order_list_detail_id == ''){
+                                $customer_purchase_order_list_detail_model->insertCustomerPurchaseOrderListDetail($data);
+                            }else{
+                                $customer_purchase_order_list_detail_model->updateCustomerPurchaseOrderListDetailByID($customer_purchase_order_list_detail_id, $data);
+                            }
+                        }
                 }
                 
 

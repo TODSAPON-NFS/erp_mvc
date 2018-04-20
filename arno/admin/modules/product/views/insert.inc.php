@@ -126,7 +126,7 @@
                                     <label>รหัสสินค้า / Product code <font color="#F00"><b>*</b></font></label>
                                     <div class="row">
                                         <div class="col-lg-3">
-                                            <input id="product_code_first" id="product_code_first" value="" class="form-control" readonly />
+                                            <input id="product_code_first" name="product_code_first" value="" class="form-control" readonly />
                                         </div>
                                         <div class="col-lg-9">
                                             <input id="product_code" name="product_code" class="form-control" onChange="update_code()">
@@ -232,11 +232,11 @@
                                     <label>สถานะสินค้า / Produc Status <font color="#F00"><b>*</b></font> </label>
                                     <select id="product_status" name="product_status" class="form-control">
                                             <option value="">Select</option>
-                                            <option>Ative</option>
+                                            <option>Active</option>
                                             <option>Inactive</option>
             
                                         </select>
-                                    <p class="help-block">Example : Ative.</p>
+                                    <p class="help-block">Example : Active.</p>
                                 </div>
                             </div>
                         </div>

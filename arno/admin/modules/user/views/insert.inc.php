@@ -104,7 +104,7 @@
         var user_province = document.getElementById("user_province").value;
         $.post( "controllers/getAmphur.php", { 'province': user_province }, function( data ) {
             $("#user_amphur").html(data);
-            $("#user_amphur").selectpicker();
+            $("#user_amphur").selectpicker('refresh');
 
         });
 
@@ -116,7 +116,7 @@
         var user_amphur = document.getElementById("user_amphur").value;
         $.post( "controllers/getDistrict.php", { 'amphur': user_amphur }, function( data ) {
             $("#user_district").html(data);
-            $("#user_district").selectpicker();
+            $("#user_district").selectpicker('refresh');
         });
 
         $.post( "controllers/getZipcode.php", { 'amphur': user_amphur }, function( data ) {

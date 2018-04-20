@@ -192,15 +192,11 @@
                         <!-- /.row (nested) -->
                         <div class="row">
                         
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>สาขา / Branch <font color="#F00"><b>*</b></font></label>
-                                    <select id="customer_branch" name="customer_branch" class="form-control">
-                                            <option value="">Select</option>
-                                            <option <?php if($customer['customer_branch'] == 'สำนักงานใหญ่'){?> selected <?php } ?> >สำนักงานใหญ่</option>
-                                            <option <?php if($customer['customer_branch'] == 'สำนักงานย่อย'){?> selected <?php } ?> >สำนักงานย่อย</option>
-                                        </select>
-                                    <p class="help-block">Example : สำนักงานใหญ่.</p>
+                                    <input id="customer_branch" name="customer_branch" class="form-control" value="<? echo $customer['customer_branch']?>"/>
+                                    <p class="help-block">Example : 0000 = สำนักงานใหญ่.</p>
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -210,14 +206,14 @@
                                     <p class="help-block">Example : ชลบุรี.</p>
                                 </div>
                             </div>
-                            <div class="col-lg-2">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>เครดิต / Credit Day </label>
                                     <input id="credit_day" name="credit_day" type="text" class="form-control" value="<? echo $customer['credit_day']?>">
                                     <p class="help-block">Example : 30 (วัน).</p>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>เงื่อนไขการชำระเงิน / Pay Type </label>
                                     <select id="condition_pay" name="condition_pay" class="form-control">

@@ -172,9 +172,9 @@ if(!isset($_GET['action'])){
 
         $check = true;
 
-        if($_FILES['supplier_logo']['name'] == ""){
+        if($_FILES['supplier_logo']['name'] == ""  ){
             $data['supplier_logo'] = $_POST['supplier_logo_o'];
-        }else {
+        }else  {
             
             $target_file = $target_dir . strtolower(basename($_FILES["supplier_logo"]["name"]));
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -191,9 +191,13 @@ if(!isset($_GET['action'])){
             }else if (move_uploaded_file($_FILES["supplier_logo"]["tmp_name"], $target_file)) {
                 $data['supplier_logo'] = strtolower($_FILES['supplier_logo']['name']);
                 $target_file = $target_dir . $_POST["supplier_logo_o"];
-                if (file_exists($target_file)) {
-                    unlink($target_file);
+                if($_POST["supplier_logo_o"] != 'default.png'){
+                    if (file_exists($target_file)) {
+                        unlink($target_file);
+                    }
                 }
+            
+
             } else {
                 $error_msg =  "Sorry, there was an error uploading your file.";
                 $check = false;

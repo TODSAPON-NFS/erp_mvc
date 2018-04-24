@@ -177,8 +177,6 @@ class PurchaseOrderModel extends BaseModel{
         }else {
             return false;
         }
-
-
     }
 
     function getSupplierOrder(){

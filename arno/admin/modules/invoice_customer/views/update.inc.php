@@ -249,7 +249,8 @@
                             '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark" value="'+ data_buffer[i].invoice_customer_list_remark +'"/>'+
                         '</td>'+
                         '<td align="right">'+
-                            '<select class="form-control select" type="text" name="stock_group_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                            //'<select class="form-control select" type="text" name="stock_group_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                            '<input  class="form-control " type="hidden" name="stock_group_id[]" value="<?PHP echo $$stock_groups[0]['stock_group_id']; ?>" />'+
                             '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_qty +'" />'+
                         '</td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_price +'" /></td>'+
@@ -315,7 +316,8 @@
                     '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark"/>'+
                 '</td>'+
                 '<td align="right">'+
-                    '<select class="form-control select" type="text" name="stock_group_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                    //'<select class="form-control select" type="text" name="stock_group_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                    '<input  class="form-control " type="hidden" name="stock_group_id[]" value="<?PHP echo $$stock_groups[0]['stock_group_id']; ?>" />'+
                     '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_qty +'" />'+
                 '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" /></td>'+
@@ -564,6 +566,7 @@
                                     <input type="text" class="form-control" name="invoice_customer_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_remark']; ?>" />
                                 </td>
                                 <td align="right">
+                                    <!--
                                     <select  class="form-control " name="stock_group_id[]" onchange="show_qty(this);" >
                                         <option value="">Select</option>
                                         <?php 
@@ -576,6 +579,8 @@
                                     </select>
                                     Qty in stock : <span>0</span> pcs<br>
                                     Qty sale : <span><?php echo $invoice_customer_lists[$i]['invoice_customer_list_qty']; ?></span> pcs<br>
+                                    -->
+                                    <input  class="form-control " type="hidden" name="stock_group_id[]" value="<?PHP echo $$stock_groups[0]['stock_group_id']; ?>" />
                                     <input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_qty[]" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_qty']; ?>" />
                                 
 

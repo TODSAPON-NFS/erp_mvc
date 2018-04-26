@@ -85,17 +85,17 @@
                             <?PHP echo  $billing_note_lists[$i]['billing_note_list_due'];?>
                         </td>
                         <td align="right">
-                            <?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_net'],2);?>
+                            <?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_amount'],2);?>
                         </td>
                         <td align="right">
                             <?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_paid'],2);?>
                         </td>
                         <td align="right">
-                            <?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_net'] - $billing_note_lists[$i]['billing_note_list_paid'],2);?>
+                            <?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_amount'] - $billing_note_lists[$i]['billing_note_list_paid'],2);?>
                         </td>
                     </tr>
                 <?
-                    $total += $billing_note_lists[$i]['billing_note_list_net'] - $billing_note_lists[$i]['billing_note_list_paid'];
+                    $total += $billing_note_lists[$i]['billing_note_list_amount'] - $billing_note_lists[$i]['billing_note_list_paid'];
                 }
                 ?>
             </tbody>
@@ -122,7 +122,7 @@
             
         <tr class="odd gradeX" style="border-bottom:1px solid #000;border-top:1px solid #000;padding:8px 0px;">
             <td colspan="3" >
-                (<?PHP echo $billing_note['billing_note_net_thai'];?>)
+                (<?PHP echo $number_2_text->convert(number_format($total,2));?>)
             </td>
             <td colspan="2" align="left" style="vertical-align: middle;">
                 Total

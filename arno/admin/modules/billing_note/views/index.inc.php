@@ -1,7 +1,7 @@
 <?php
 session_start();
 $user = $_SESSION['user'];
-
+require_once('../functions/NumbertoTextFunction.func.php');
 require_once('../models/BillingNoteModel.php');
 require_once('../models/BillingNoteListModel.php');
 require_once('../models/UserModel.php');
@@ -11,6 +11,7 @@ require_once('../models/InvoiceCustomerModel.php');
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/billing_note/views/";
+$number_2_text = new Number2Text;
 $user_model = new UserModel;
 $customer_model = new CustomerModel;
 $invoice_customer_model = new InvoiceCustomerModel;

@@ -8,16 +8,18 @@ class OfficialReceiptListModel extends BaseModel{
     }
 
     function getOfficialReceiptListBy($official_receipt_id){
-        $sql = " SELECT official_receipt_id,
-        official_receipt_list_id,  
-        tb_official_receipt_list.invoice_customer_id,
-        invoice_customer_code, 
-        '0' as official_receipt_list_paid, 
-        invoice_customer_net_price as official_receipt_list_net, 
+        $sql = " SELECT official_receipt_list_id, 
+        tb_official_receipt_list.billing_note_list_id,
+        invoice_customer_code,
         invoice_customer_date as official_receipt_list_date, 
-        invoice_customer_due as official_receipt_list_due, 
-        official_receipt_list_remark 
-        FROM tb_official_receipt_list LEFT JOIN tb_invoice_customer ON tb_official_receipt_list.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
+        invoice_customer_due as official_receipt_list_due,
+        billing_note_code,
+        official_receipt_inv_amount,
+        official_receipt_bal_amount 
+        FROM tb_official_receipt_list
+        LEFT JOIN tb_billing_note_list ON tb_official_receipt_list.billing_note_list_id = tb_billing_note_list.billing_note_list_id 
+        LEFT JOIN tb_billing_note ON tb_billing_note_list.billing_note_id = tb_billing_note.billing_note_id 
+        LEFT JOIN tb_invoice_customer ON tb_billing_note_list.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
         WHERE official_receipt_id = '$official_receipt_id' 
         ORDER BY official_receipt_list_id 
         ";
@@ -37,20 +39,20 @@ class OfficialReceiptListModel extends BaseModel{
     function insertOfficialReceiptList($data = []){
         $sql = " INSERT INTO tb_official_receipt_list (
             official_receipt_id,
-            invoice_customer_id,
             official_receipt_inv_amount,
             official_receipt_bal_amount,
             official_receipt_list_remark,
+            billing_note_list_id,
             addby,
             adddate,
             updateby,
             lastupdate
         ) VALUES (
             '".$data['official_receipt_id']."', 
-            '".$data['invoice_customer_id']."',
             '".$data['official_receipt_inv_amount']."',
             '".$data['official_receipt_bal_amount']."',
             '".$data['official_receipt_list_remark']."', 
+            '".$data['billing_note_list_id']."', 
             '".$data['addby']."', 
             NOW(), 
             '".$data['updateby']."', 
@@ -73,13 +75,12 @@ class OfficialReceiptListModel extends BaseModel{
     function updateOfficialReceiptListById($data,$id){
 
         $sql = " UPDATE tb_official_receipt_list 
-            SET invoice_customer_id = '".$data['invoice_customer_id']."', 
-            official_receipt_inv_amount = '".$data['official_receipt_inv_amount']."' 
+            SET official_receipt_inv_amount = '".$data['official_receipt_inv_amount']."' 
             official_receipt_bal_amount = '".$data['official_receipt_bal_amount']."' 
             official_receipt_list_remark = '".$data['official_receipt_list_remark']."' 
             WHERE official_receipt_list_id = '$id'
         ";
-      // echo $sql . "<br><br>";
+      //echo $sql . "<br><br>";
 
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
            return true;

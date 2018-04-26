@@ -5,24 +5,25 @@
     <div>สำนักงานใหญ่ : 2/27 อาคารบางนาคอมเพล็กซ์ ออฟฟิศทาวเวอร์ชั้น 7 ซอยบางนา-ตราด 25 ถนนบางนา-ตราด</div>
     <div>แขวงบางนาเหนือ เขตบางนา กรุงเทพฯ 10260</div>
     <div>038-989 615 Fax. 038-989 614</div>
-    <div align="right" style="padding-right:80px;font-size:22px;">ใบเสร็จ</div>
-
+    <div align="center" style="font-size:22px;">ใบเสร็จรับเงิน</div>
+    <div align="center" style="font-size:22px;">OFFICIAL RECEIPT</div>
     <div style="display:block;padding:8;">
-        ลูกค้า : <?PHP echo $official_receipt['customer_code']; ?>
+        Receipt by thanks from : -
+        
     </div>
 
     <div>
-        <table width="595" heigth="320">
+        <table width="480" heigth="320">
             <tr>
                 <td style="padding:8px;">
                     <?PHP echo $official_receipt['official_receipt_name']; ?> <br>
                     <?PHP echo $official_receipt['official_receipt_address']; ?><br>
                     เลขประจำตัวผู้เสียภาษี / Tax : <?PHP echo $official_receipt['official_receipt_tax']; ?>
                 </td>
-                <td width="200">
+                <td width="240">
                     <table>
                         <tr>
-                            <td width="40" height="32" valign="middle" align="left">
+                            <td width="100" height="32" valign="middle" align="left">
                             No.
                             </td>
                             <td width="140" height="32" valign="middle" align="left">
@@ -33,11 +34,21 @@
                        
                         <tr>
                             
-                            <td width="40" height="32" valign="middle" align="left">
+                            <td width="100" height="32" valign="middle" align="left">
                             Date
                             </td>
                             <td width="140" height="32" valign="middle" align="left">
                             : <?PHP echo $official_receipt['official_receipt_date']; ?>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            
+                            <td width="100" height="32" valign="middle" align="left">
+                            Customer code
+                            </td>
+                            <td width="140" height="32" valign="middle" align="left">
+                            : <?PHP echo $official_receipt['customer_code']; ?>
                             </td>
 
                         </tr>
@@ -49,20 +60,20 @@
     </div>
 
     <div style="height:64px;">
-
+        Begin payment for the followings invoice : - 
     </div>
 
-    <div style="height:440px;">
+    <div style="height:325px;">
         <table width="595" >
             <thead>
-                <tr style="border-bottom:1px solid #000;border-top:1px solid #000;padding:16px 0px;">
-                    <th style="text-align:center;">No.</th>
-                    <th style="text-align:center;">Invoice Number</th>
-                    <th style="text-align:center;">Date</th>
-                    <th style="text-align:center;" width="100">Due Date</th>
-                    <th style="text-align:center;" width="100">Amount</th>
-                    <th style="text-align:center;" width="100">Paid</th>
-                    <th style="text-align:center;" width="100">Balance</th>
+                <tr style="border-bottom:1px dashed #000;border-top:1px dashed #000;">
+                    <th style="text-align:center; padding:4px 0px;" >SQ.</th>
+                    <th style="text-align:center; padding:4px 0px;" >INV.No</th>
+                    <th style="text-align:center; padding:4px 0px;" >INV.DD.</th>
+                    <th style="text-align:center; padding:4px 0px;" >DUE DD.</th>
+                    <th style="text-align:center; padding:4px 0px;" >BILLING NO. </th>
+                    <th style="text-align:center; padding:4px 0px;" >INV. AMOUNT</th>
+                    <th style="text-align:center; padding:4px 0px;" >BAL. AMOUNT</th>
                 </tr>
             </thead>
 
@@ -84,18 +95,18 @@
                         <td align="center">
                             <?PHP echo  $official_receipt_lists[$i]['official_receipt_list_due'];?>
                         </td>
-                        <td align="right">
-                            <?PHP echo  number_format($official_receipt_lists[$i]['official_receipt_list_net'],2);?>
+                        <td align="center">
+                            <?PHP echo  $official_receipt_lists[$i]['billing_note_code'];?>
                         </td>
                         <td align="right">
-                            <?PHP echo  number_format($official_receipt_lists[$i]['official_receipt_list_paid'],2);?>
+                            <?PHP echo  number_format($official_receipt_lists[$i]['official_receipt_inv_amount'],2);?>
                         </td>
                         <td align="right">
-                            <?PHP echo  number_format($official_receipt_lists[$i]['official_receipt_list_net'] - $official_receipt_lists[$i]['official_receipt_list_paid'],2);?>
+                            <?PHP echo  number_format($official_receipt_lists[$i]['official_receipt_bal_amount'],2);?>
                         </td>
                     </tr>
                 <?
-                    $total += $official_receipt_lists[$i]['official_receipt_list_net'] - $official_receipt_lists[$i]['official_receipt_list_paid'];
+                    $total += $official_receipt_lists[$i]['official_receipt_bal_amount'];
                 }
                 ?>
             </tbody>
@@ -112,22 +123,26 @@
                 
             </td>
 
-
+            <td width="80" align="right"></td>
             <td width="80" align="right"></td>
             <td width="80" align="right"></td>
             <td width="80" align="right"></td>
             
 
         </tr>
-            
-        <tr class="odd gradeX" style="border-bottom:1px solid #000;border-top:1px solid #000;padding:8px 0px;">
+        <tr class="odd gradeX" style="border-bottom:1px dashed #000;">
+            <td colspan="6" >
+                (<?PHP echo $number_2_text->convert(number_format($total,2));?>)
+            </td>
+        </tr>    
+        <tr class="odd gradeX" >
             <td colspan="3" >
-                (<?PHP echo $official_receipt['official_receipt_net_thai'];?>)
+               
             </td>
-            <td colspan="2" align="left" style="vertical-align: middle;">
-                Total
+            <td colspan="2" align="right" style="vertical-align: middle;">
+                Total Baht
             </td>
-            <td style="text-align: right;">
+            <td style="text-align: right;border-bottom:1px dashed #000;" >
                 <?PHP echo number_format($total,2) ;?>
             </td>
             
@@ -137,23 +152,73 @@
             <td colspan="4" >
             <br>
             <br>
-                <div><b>Remark</b></div>
-                <div>วบ.mail 5-10 +recpt ที่พระราม2, TR15</div>
-                <div>ชื่อผู้รับวางบิล   ______________________</div>
-                <div>วันที่รับ __/__/____</div><br>
-                <div><b>จ่ายโดย</b> </div>
-                <div style="padding-left : 40px;">|_| การโอนเงิน วันที่ _______________</div>
-                <div style="padding-left : 40px;">|_| เช็ค วันที่รับเช็ค _______________</div>
+                <table>
+                    <tr>
+                        <td colspan="4" style="padding:8px 0px;">Payment in form of </b></td>
+                    <tr>
+                    <tr>
+                        <td>[ ]</td>
+                        <td>CASH  no._____________________</td>
+                        <td>date ___________________</td>
+                        <td>Baht _________________</td>
+                    </tr>
+                    <tr>
+                        <td>[ ]</td>
+                        <td>TRANSFER no.________________</td>
+                        <td>date ___________________</td>
+                        <td>Baht _________________</td>
+                    </tr>
+                    <tr>
+                        <td>[ ]</td>
+                        <td>CHEQUE no.__________________</td>
+                        <td>chq.dd._________________</td>
+                        <td>Baht _________________</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Bank_________________________</td>
+                        <td>Branch_________________</td>
+                        <td>Baht _________________</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="padding:8px 0px;">Deduction </b></td>
+                    <tr>
+                        <td>[ ]</td>
+                        <td>Withholding tax (if any)</td>
+                        <td></td>
+                        <td>Baht _________________</td>
+                    </tr>
+                    <tr>
+                        <td>[ ]</td>
+                        <td>[ ] Bank charges (if any)</td>
+                        <td></td>
+                        <td>Baht _________________</td>
+                    </tr>
+                </table>
             </td>
             <td colspan="3" align="left" style="vertical-align: middle;">
-            <br><br>
-            <div>บริษัท อาร์โน (ประเทศไทย) จำกัด</div>
-            <div>ชื่อผู้วางบิล   ______________________</div>
+            
             </td>
                        
         </tr>
         
-    </table>   
-
+    </table>  
+    <div>
+    For payment for cheque, please make a crossed cheque payable to "ARNO (THAILAND) CO.,LTD."
+    This Official Receipt is valid only after the cheque is honoured by the bank or transferred to ARNO (THAILAND) CO.,LTD account. 
+    </div>
+    <br>
+    <table width="100%">
+        <tr>
+            <td align="center"> .............................. </td>
+            <td align="center"> .............................. </td>
+            <td align="center"> .............................. </td>
+        </tr>
+        <tr>
+            <td align="center"> Bill collector </td>
+            <td align="center"> Date </td>
+            <td align="center"> Authorized Signature </td>
+        </tr>
+    </table>
 </div>
                 

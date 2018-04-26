@@ -1,7 +1,7 @@
 <?php
 session_start();
 $user = $_SESSION['user'];
-
+require_once('../functions/NumbertoTextFunction.func.php');
 require_once('../models/OfficialReceiptModel.php');
 require_once('../models/OfficialReceiptListModel.php');
 require_once('../models/UserModel.php');
@@ -11,6 +11,7 @@ require_once('../models/InvoiceCustomerModel.php');
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/official_receipt/views/";
+$number_2_text = new Number2Text;
 $user_model = new UserModel;
 $customer_model = new CustomerModel;
 $invoice_customer_model = new InvoiceCustomerModel;
@@ -34,6 +35,7 @@ if(!isset($_GET['action'])){
     $last_code = $official_receipt_model->getOfficialReceiptLastID($first_code,3);
     $customers=$customer_model->getCustomerBy();
     $customer=$customer_model->getCustomerByID($customer_id);
+    $official_receipt_lists = $official_receipt_model->generateOfficialReceiptListByCustomerId($customer_id,$billing_note_list_id ,$_POST['search'],"" );
     $users=$user_model->getUserBy();
    
 
@@ -82,41 +84,47 @@ if(!isset($_GET['action'])){
         $data['official_receipt_address'] = $_POST['official_receipt_address'];
         $data['official_receipt_tax'] = $_POST['official_receipt_tax'];
         $data['official_receipt_remark'] = $_POST['official_receipt_remark'];
-        $data['official_receipt_total_old'] = (float)filter_var($_POST['official_receipt_total_old'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['official_receipt_total'] = (float)filter_var($_POST['official_receipt_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['official_receipt_sent_name'] = $_POST['official_receipt_sent_name'];
         $data['official_receipt_recieve_name'] = $_POST['official_receipt_recieve_name'];
         $data['addby'] = $user[0][0];
 
-        $output = $official_receipt_model->insertOfficialReceipt($data);
+        $official_receipt_id = $official_receipt_model->insertOfficialReceipt($data);
 
         
-        if($output > 0){
+        if($official_receipt_id > 0){
             $data = [];
-            $invoice_customer_id = $_POST['invoice_customer_id'];
+            $official_receipt_list_id = $_POST['official_receipt_list_id'];
+            $billing_note_list_id = $_POST['billing_note_list_id'];
+            $official_receipt_inv_amount = $_POST['official_receipt_inv_amount'];
+            $official_receipt_bal_amount = $_POST['official_receipt_bal_amount'];
             $official_receipt_list_remark = $_POST['official_receipt_list_remark'];
 
-            
            
-            if(is_array($invoice_customer_id)){
-                for($i=0; $i < count($invoice_customer_id) ; $i++){
+            if(is_array($billing_note_list_id)){
+                for($i=0; $i < count($billing_note_list_id) ; $i++){
                     $data_sub = [];
-                    $data_sub['official_receipt_id'] = $output;
-                    $data_sub['invoice_customer_id'] = $invoice_customer_id[$i];
+                    $data_sub['official_receipt_id'] = $official_receipt_id;
+                    $data_sub['billing_note_list_id'] = $billing_note_list_id[$i];
+                    $data_sub['official_receipt_inv_amount'] = $official_receipt_inv_amount[$i];
+                    $data_sub['official_receipt_bal_amount'] = $official_receipt_bal_amount[$i];
                     $data_sub['official_receipt_list_remark'] = $official_receipt_list_remark[$i];
 
                     $id = $official_receipt_list_model->insertOfficialReceiptList($data_sub);
                 }
-            }else if($invoice_customer_id != ""){
+            }else if($billing_note_list_id != ""){
                 $data_sub = [];
-                $data_sub['official_receipt_id'] = $output;
-                $data_sub['invoice_customer_id'] = $invoice_customer_id;
+                $data_sub['official_receipt_id'] = $official_receipt_id;
+                $data_sub['billing_note_list_id'] = $billing_note_list_id;
+                $data_sub['official_receipt_inv_amount'] = $official_receipt_inv_amount;
+                $data_sub['official_receipt_bal_amount'] = $official_receipt_bal_amount;
                 $data_sub['official_receipt_list_remark'] = $official_receipt_list_remark;
     
                 $id = $official_receipt_list_model->insertOfficialReceiptList($data_sub);
             }
 
 ?>
-        <script>window.location="index.php?app=official_receipt&action=update&id=<?php echo $output;?>"</script>
+        <script>window.location="index.php?app=official_receipt&action=update&id=<?php echo $official_receipt_id;?>"</script>
 <?php
         }else{
 ?>
@@ -142,26 +150,30 @@ if(!isset($_GET['action'])){
         $data['official_receipt_address'] = $_POST['official_receipt_address'];
         $data['official_receipt_tax'] = $_POST['official_receipt_tax'];
         $data['official_receipt_remark'] = $_POST['official_receipt_remark'];
-        $data['official_receipt_total_old'] = (float)filter_var($_POST['official_receipt_total_old'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['official_receipt_total'] = (float)filter_var($_POST['official_receipt_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['official_receipt_sent_name'] = $_POST['official_receipt_sent_name'];
         $data['official_receipt_recieve_name'] = $_POST['official_receipt_recieve_name'];
         $data['updateby'] = $user[0][0];
 
-
-        $invoice_customer_id = $_POST['invoice_customer_id'];
         $official_receipt_list_id = $_POST['official_receipt_list_id'];
-         $official_receipt_list_remark = $_POST['official_receipt_list_remark'];
+        $billing_note_list_id = $_POST['billing_note_list_id'];
+        $official_receipt_inv_amount = $_POST['official_receipt_inv_amount'];
+        $official_receipt_bal_amount = $_POST['official_receipt_bal_amount'];
+        $official_receipt_list_remark = $_POST['official_receipt_list_remark'];
 
         
         $official_receipt_list_model->deleteOfficialReceiptListByOfficialReceiptIDNotIN($official_receipt_id,$official_receipt_list_id);
         
         
 
-        if(is_array($invoice_customer_id)){
-            for($i=0; $i < count($invoice_customer_id) ; $i++){
+        if(is_array($billing_note_list_id)){
+           
+            for($i=0; $i < count($billing_note_list_id) ; $i++){
                 $data_sub = [];
                 $data_sub['official_receipt_id'] = $official_receipt_id;
-                $data_sub['invoice_customer_id'] = $invoice_customer_id[$i];
+                $data_sub['billing_note_list_id'] = $billing_note_list_id[$i];
+                $data_sub['official_receipt_inv_amount'] = $official_receipt_inv_amount[$i];
+                $data_sub['official_receipt_bal_amount'] = $official_receipt_bal_amount[$i];
                 $data_sub['official_receipt_list_remark'] = $official_receipt_list_remark[$i];
 
                 if($official_receipt_list_id[$i] != '0'){
@@ -171,10 +183,12 @@ if(!isset($_GET['action'])){
                 }
                 
             }
-        }else if($invoice_customer_id != ""){
+        }else if($billing_note_list_id != ""){
             $data_sub = [];
             $data_sub['official_receipt_id'] = $official_receipt_id;
-            $data_sub['invoice_customer_id'] = $invoice_customer_id;
+            $data_sub['billing_note_list_id'] = $billing_note_list_id;
+            $data_sub['official_receipt_inv_amount'] = $official_receipt_inv_amount;
+            $data_sub['official_receipt_bal_amount'] = $official_receipt_bal_amount;
             $data_sub['official_receipt_list_remark'] = $official_receipt_list_remark;
 
             if($official_receipt_list_id != "0"){

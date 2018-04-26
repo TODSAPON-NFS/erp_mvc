@@ -82,12 +82,12 @@
                         <thead>
                             <tr>
                                 <th style="text-align:center;">ลำดับ <br> (์NO)</th>
-                                <th style="text-align:center;">หมายใบกำกับภาษี <br> (Invoice Number)</th>
-                                <th style="text-align:center;">วันที่ออก <br> (Date)</th>
-                                <th style="text-align:center;" width="150">กำหนดชำระ <br> (Due Date)</th>
-                                <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount) </th>
-                                <th style="text-align:center;" width="150">ชำระแล้ว <br> (Paid)</th>
-                                <th style="text-align:center;" width="150">ยอดชำระคงเหลือ <br> (Balance)</th>
+                                <th style="text-align:center;" >หมายใบกำกับภาษี <br> (INV.No.)</th>
+                                <th style="text-align:center;" >วันที่ออก <br> (INV.DD.)</th>
+                                <th style="text-align:center;" >กำหนดชำระ <br> (DUE DD.)</th>
+                                <th style="text-align:center;" >หมายเลขใบวางบิล <br> (BILLING NO.) </th>
+                                <th style="text-align:center;" >ยอดคงเหลือชำระ <br> (INV. AMOUNT) </th>
+                                <th style="text-align:center;" >ยอดชาระ <br> (BAL. AMOUNT)</th>
                             </tr>
                         </thead>
 
@@ -110,17 +110,17 @@
                                     <?PHP echo  $official_receipt_lists[$i]['official_receipt_list_due'];?>
                                 </td>
                                 <td align="right">
-                                    <?PHP echo  number_format($official_receipt_lists[$i]['official_receipt_list_net'],2);?>
+                                    <?PHP echo  $official_receipt_lists[$i]['billing_note_code'];?>
                                 </td>
                                 <td align="right">
-                                    <?PHP echo  number_format($official_receipt_lists[$i]['official_receipt_list_paid'],2);?>
+                                    <?PHP echo  number_format($official_receipt_lists[$i]['official_receipt_inv_amount'],2);?>
                                 </td>
                                 <td align="right">
-                                    <?PHP echo  number_format($official_receipt_lists[$i]['official_receipt_list_net'] - $official_receipt_lists[$i]['official_receipt_list_paid'],2);?>
+                                    <?PHP echo  number_format($official_receipt_lists[$i]['official_receipt_bal_amount'],2);?>
                                 </td>
                             </tr>
                             <?
-                                $total += $official_receipt_lists[$i]['official_receipt_list_net'] - $official_receipt_lists[$i]['official_receipt_list_paid'];
+                                $total += $official_receipt_lists[$i]['official_receipt_bal_amount'] ;
                             }
                             ?>
                         </tbody>
@@ -128,7 +128,7 @@
                         <tfoot>
                             
                         <tr class="odd gradeX">
-                                <td colspan="4"></td>
+                                <td colspan="4"><?PHP echo $number_2_text->convert(number_format($total,2));?></td>
                                 <td colspan="2" align="left" style="vertical-align: middle;">
                                     <span>จำนวนเงินรวมทั้งสิ้น / Net Total</span>
                                 </td>

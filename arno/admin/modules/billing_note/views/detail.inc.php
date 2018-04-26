@@ -110,17 +110,17 @@
                                     <?PHP echo  $billing_note_lists[$i]['billing_note_list_due'];?>
                                 </td>
                                 <td align="right">
-                                    <?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_net'],2);?>
+                                    <?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_amount'],2);?>
                                 </td>
                                 <td align="right">
                                     <?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_paid'],2);?>
                                 </td>
                                 <td align="right">
-                                    <?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_net'] - $billing_note_lists[$i]['billing_note_list_paid'],2);?>
+                                    <?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_amount'] - $billing_note_lists[$i]['billing_note_list_paid'],2);?>
                                 </td>
                             </tr>
                             <?
-                                $total += $billing_note_lists[$i]['billing_note_list_net'] - $billing_note_lists[$i]['billing_note_list_paid'];
+                                $total += $billing_note_lists[$i]['billing_note_list_amount'] - $billing_note_lists[$i]['billing_note_list_paid'];
                             }
                             ?>
                         </tbody>
@@ -128,7 +128,7 @@
                         <tfoot>
                             
                         <tr class="odd gradeX">
-                                <td colspan="4"></td>
+                                <td colspan="4"><?PHP echo $number_2_text->convert(number_format($total,2));?></td>
                                 <td colspan="2" align="left" style="vertical-align: middle;">
                                     <span>จำนวนเงินรวมทั้งสิ้น / Net Total</span>
                                 </td>

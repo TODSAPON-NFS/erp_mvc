@@ -77,7 +77,7 @@
                     var content = "";
                     for(var i = 0; i < data.length ; i++){
 
-                        content += '<tr class="odd gradeX">'+
+                         content += '<tr class="odd gradeX">'+
                                         '<td>'+
                                             '<input type="checkbox" name="p_id" value="'+data[i].billing_note_list_id+'" />'+     
                                         '</td>'+
@@ -91,13 +91,13 @@
                                             data[i].official_receipt_list_due +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].official_receipt_list_net +
+                                            data[i].billing_note_code +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].official_receipt_list_paid +
+                                            data[i].official_receipt_inv_amount +
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].official_receipt_list_net - data[i].official_receipt_list_paid) +
+                                            (data[i].official_receipt_bal_amount) +
                                         '</td>'+
                                     '</tr>';
 
@@ -131,7 +131,7 @@
                     
                     for(var i = 0; i < data.length ; i++){
 
-                        content += '<tr class="odd gradeX">'+
+                         content += '<tr class="odd gradeX">'+
                                         '<td>'+
                                             '<input type="checkbox" name="p_id" value="'+data[i].billing_note_list_id+'" />'+     
                                         '</td>'+
@@ -145,13 +145,13 @@
                                             data[i].official_receipt_list_due +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].official_receipt_list_net +
+                                            data[i].billing_note_code +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].official_receipt_list_paid +
+                                            data[i].official_receipt_inv_amount +
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].official_receipt_list_net - data[i].official_receipt_list_paid) +
+                                            (data[i].official_receipt_bal_amount) +
                                         '</td>'+
                                     '</tr>';
 
@@ -189,15 +189,14 @@
                         '<td>'+
                             data_buffer[i].official_receipt_list_due + 
                         '</td>'+
-                        '<td align="right">'+
-                            data_buffer[i].official_receipt_list_net + 
+                        '<td align="center">'+
+                            data_buffer[i].billing_note_code + 
                         '</td>'+
                         '<td align="right">'+
-                            data_buffer[i].official_receipt_list_paid +
+                            '<input type="text" class="form-control" style="text-align:right" name="official_receipt_inv_amount[]" value="' + (data_buffer[i].official_receipt_inv_amount) + '" />'+
                         '</td>'+
                         '<td align="right">'+
-                            (data_buffer[i].official_receipt_list_net - data_buffer[i].official_receipt_list_paid) + 
-                            '<input type="hidden" name="official_receipt_list_total[]" value="'+(data_buffer[i].official_receipt_list_net - data_buffer[i].official_receipt_list_paid)+'" />'+
+                            '<input  type="text" class="form-control" style="text-align:right"  name="official_receipt_bal_amount[]" value="' + (data_buffer[i].official_receipt_bal_amount) + '" />'+
                         '</td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -229,7 +228,7 @@
 
     function calculateAll(){
 
-        var val = document.getElementsByName('official_receipt_list_total[]');
+        var val = document.getElementsByName('official_receipt_bal_amount[]');
         var total = 0.0;
         
         for(var i = 0 ; i < val.length ; i++){
@@ -237,7 +236,7 @@
             total += parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),''));
         }
        
-        $('#official_receipt_net').val((total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#official_receipt_total').val((total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
     }
 
 
@@ -363,12 +362,12 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th style="text-align:center;">หมายใบกำกับภาษี <br> (Invoice Number)</th>
-                                <th style="text-align:center;">วันที่ออก <br> (Date)</th>
-                                <th style="text-align:center;" width="150">กำหนดชำระ <br> (Due Date)</th>
-                                <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount) </th>
-                                <th style="text-align:center;" width="150">ชำระแล้ว <br> (Paid)</th>
-                                <th style="text-align:center;" width="150">ยอดชำระคงเหลือ <br> (Balance)</th>
+                                <th style="text-align:center;" >หมายใบกำกับภาษี <br> (INV.No.)</th>
+                                <th style="text-align:center;" >วันที่ออก <br> (INV.DD.)</th>
+                                <th style="text-align:center;" >กำหนดชำระ <br> (DUE DD.)</th>
+                                <th style="text-align:center;" >หมายเลขใบวางบิล <br> (BILLING NO.) </th>
+                                <th style="text-align:center;" >ยอดคงเหลือชำระ <br> (INV. AMOUNT) </th>
+                                <th style="text-align:center;" >ยอดชาระ <br> (BAL. AMOUNT)</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -379,25 +378,25 @@
                             for($i=0; $i < count($official_receipt_lists); $i++){
                             ?>
                             <tr class="odd gradeX">
-                                <td>
+                                <td >
                                     <input type="hidden" name="official_receipt_list_id[]" value="<?PHP echo  $official_receipt_lists[$i]['official_receipt_list_id'];?>" />
                                     <input type="hidden" name="billing_note_list_id[]" value="<?PHP echo  $official_receipt_lists[$i]['billing_note_list_id'];?>" />
                                     <?PHP echo  $official_receipt_lists[$i]['invoice_customer_code'];?>
                                 </td>
-                                <td>
+                                <td align="center">
                                     <?PHP echo  $official_receipt_lists[$i]['official_receipt_list_date'];?>
                                 </td>
-                                <td>
+                                <td align="center">
                                     <?PHP echo  $official_receipt_lists[$i]['official_receipt_list_due'];?>
                                 </td>
-                                <td align="right">
-                                    <?PHP echo  $official_receipt_lists[$i]['official_receipt_list_net'];?>
+                                <td align="center">
+                                    <?PHP echo  $official_receipt_lists[$i]['billing_note_code'];?>
                                 </td>
-                                <td  align="right">
-                                    <?PHP echo  $official_receipt_lists[$i]['official_receipt_list_paid'];?>
+                                <td>
+                                    <input type="text" class="form-control" style="text-align:right" name="official_receipt_inv_amount[]" value="<?PHP echo  $official_receipt_lists[$i]['official_receipt_inv_amount'];?>" readonly/>
                                 </td>
-                                <td align="right">
-                                    <?PHP echo  $official_receipt_lists[$i]['official_receipt_list_net'] - $official_receipt_lists[$i]['official_receipt_list_paid'];?>
+                                <td>
+                                    <input type="text" class="form-control" style="text-align:right" name="official_receipt_bal_amount[]" value="<?PHP echo  $official_receipt_lists[$i]['official_receipt_bal_amount'];?>" />
                                 </td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -406,7 +405,7 @@
                                 </td>
                             </tr>
                             <?
-                                $total += $official_receipt_lists[$i]['official_receipt_list_net'] - $official_receipt_lists[$i]['official_receipt_list_paid'];
+                                $total += $official_receipt_lists[$i]['official_receipt_bal_amount'];
                             }
                             ?>
                         </tbody>
@@ -473,7 +472,7 @@
                                     <span>จำนวนเงินรวมทั้งสิ้น / Net Total</span>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" style="text-align: right;" id="official_receipt_net" name="official_receipt_net" value="<?PHP echo number_format($total,2) ;?>" readonly/>
+                                    <input type="text" class="form-control" style="text-align: right;" id="official_receipt_total" name="official_receipt_total" value="<?PHP echo number_format($total,2) ;?>" readonly/>
                                 </td>
                                 <td>
                                 </td>

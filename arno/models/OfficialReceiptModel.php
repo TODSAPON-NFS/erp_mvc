@@ -133,20 +133,22 @@ class OfficialReceiptModel extends BaseModel{
 
         $sql_customer = "SELECT billing_note_list_id, 
         invoice_customer_code,
-        '0' as official_receipt_list_paid, 
-        invoice_customer_net_price as official_receipt_list_net, 
         invoice_customer_date as official_receipt_list_date, 
-        invoice_customer_due as official_receipt_list_due 
-        FROM tb_invoice_customer 
-        WHERE tb_invoice_customer.billing_note_list_id NOT IN ($str) 
-        AND tb_invoice_customer.billing_note_list_id NOT IN (
+        invoice_customer_due as official_receipt_list_due,
+        billing_note_code,
+        billing_note_list_balance as official_receipt_inv_amount,
+        billing_note_list_balance as official_receipt_bal_amount 
+        FROM tb_billing_note 
+        LEFT JOIN tb_billing_note_list ON tb_billing_note.billing_note_id = tb_billing_note_list.billing_note_id 
+        LEFT JOIN tb_invoice_customer ON tb_billing_note_list.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
+        WHERE tb_billing_note_list.billing_note_list_id NOT IN ($str) 
+        AND tb_billing_note_list.billing_note_list_id NOT IN (
             SELECT billing_note_list_id 
             FROM tb_official_receipt_list 
             GROUP BY billing_note_list_id 
         ) 
         ORDER BY  STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') ";
 
-        //echo $sql_customer;
 
         $data = [];
         if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {

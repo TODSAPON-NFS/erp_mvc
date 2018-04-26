@@ -132,7 +132,7 @@ class BillingNoteModel extends BaseModel{
         $sql_customer = "SELECT invoice_customer_id, 
         invoice_customer_code,
         '0' as billing_note_list_paid, 
-        invoice_customer_net_price as billing_note_list_net, 
+        invoice_customer_net_price as billing_note_list_amount, 
         invoice_customer_date as billing_note_list_date, 
         invoice_customer_due as billing_note_list_due 
         FROM tb_invoice_customer 
@@ -173,6 +173,7 @@ class BillingNoteModel extends BaseModel{
         billing_note_sent_name = '".$data['billing_note_sent_name']."', 
         billing_note_recieve_name = '".$data['billing_note_recieve_name']."', 
         billing_note_total = '".$data['billing_note_total']."', 
+        billing_note_total_text = '".$data['billing_note_total_text']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
         WHERE billing_note_id = $id 
@@ -202,6 +203,7 @@ class BillingNoteModel extends BaseModel{
             billing_note_sent_name,
             billing_note_recieve_name,
             billing_note_total,
+            billing_note_total_text,
             addby,
             adddate,
             updateby,
@@ -218,6 +220,7 @@ class BillingNoteModel extends BaseModel{
         $data['billing_note_sent_name']."','".
         $data['billing_note_recieve_name']."','".
         $data['billing_note_total']."','".
+        $data['billing_note_total_text']."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].

@@ -108,7 +108,10 @@
                             <div class="nav-title">ระบบจัดซื้อ</div>
                         </li>
                         <li>
-                            <a href="?app=regrind_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบรีกายร์สินค้า (Regrind)</a>
+                            <a href="?app=regrind_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบส่งรีกายร์สินค้า (Send Regrind)</a>
+                        </li>
+                        <li>
+                            <a href="?app=regrind_supplier_receive"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบรับรีกายร์สินค้า (Receive Regrind)</a>
                         </li>
                         <li>
                             <a href="?app=delivery_note_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบยืมจากผู้ขาย (Supplier DN)</a>
@@ -142,6 +145,9 @@
                         </li>
                         <li>
                             <a href="?app=billing_note"><i class="fa  fa-money" aria-hidden="true"></i> ใบวางบิล (Billing Note)</a>
+                        </li>
+                        <li>
+                            <a href="?app=official_receipt"><i class="fa  fa-money" aria-hidden="true"></i> ใบเสร็จ (Official Receipt)</a>
                         </li>
                         <li>
                             <div class="nav-title">ระบบคลังสินค้า</div>

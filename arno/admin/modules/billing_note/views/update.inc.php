@@ -91,13 +91,13 @@
                                             data[i].billing_note_list_due +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].billing_note_list_net +
+                                            data[i].billing_note_list_amount +
                                         '</td>'+
                                         '<td align="right">'+
                                             data[i].billing_note_list_paid +
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].billing_note_list_net - data[i].billing_note_list_paid) +
+                                            (data[i].billing_note_list_amount - data[i].billing_note_list_paid) +
                                         '</td>'+
                                     '</tr>';
 
@@ -145,13 +145,13 @@
                                             data[i].billing_note_list_due +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].billing_note_list_net +
+                                            data[i].billing_note_list_amount +
                                         '</td>'+
                                         '<td align="right">'+
                                             data[i].billing_note_list_paid +
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].billing_note_list_net - data[i].billing_note_list_paid) +
+                                            (data[i].billing_note_list_amount - data[i].billing_note_list_paid) +
                                         '</td>'+
                                     '</tr>';
 
@@ -190,14 +190,13 @@
                             data_buffer[i].billing_note_list_due + 
                         '</td>'+
                         '<td align="right">'+
-                            data_buffer[i].billing_note_list_net + 
+                            '<input type="text" class="form-control" style="text-align:right" name="billing_note_list_amount[]" onchange="update_sum(this);" value="'+data_buffer[i].billing_note_list_amount+'" />'+
                         '</td>'+
                         '<td align="right">'+
-                            data_buffer[i].billing_note_list_paid +
+                        '<input type="text" class="form-control" style="text-align:right" name="billing_note_list_paid[]" onchange="update_sum(this);" value="'+data_buffer[i].billing_note_list_paid+'" />'+
                         '</td>'+
                         '<td align="right">'+
-                            (data_buffer[i].billing_note_list_net - data_buffer[i].billing_note_list_paid) + 
-                            '<input type="hidden" name="billing_note_list_total[]" value="'+(data_buffer[i].billing_note_list_net - data_buffer[i].billing_note_list_paid)+'" />'+
+                        '<input type="text" class="form-control" style="text-align:right" name="billing_note_list_balance[]" onchange="update_sum(this);" value="'+(data_buffer[i].billing_note_list_amount - data_buffer[i].billing_note_list_paid)+'" readonly />'+
                         '</td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -226,10 +225,39 @@
         }
     }
 
+    function update_sum(id){
+                    
+        var amount =  parseFloat($(id).closest('tr').children('td').children('input[name="billing_note_list_amount[]"]').val(  ).replace(',',''));
+        var paid =  parseFloat($(id).closest('tr').children('td').children('input[name="billing_note_list_paid[]"]').val( ).replace(',',''));
+        var balance =  parseFloat($(id).closest('tr').children('td').children('input[name="billing_note_list_balance[]"]').val( ).replace(',',''));
+
+        if(isNaN(amount)){
+            amount = 0;
+        }
+
+        if(isNaN(paid)){
+            paid = 0.0;
+        }
+
+        if(isNaN(balance)){
+            balance = 0.0;
+        }
+
+        balance = amount-paid;
+
+        $(id).closest('tr').children('td').children('input[name="billing_note_list_amount[]"]').val( amount.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $(id).closest('tr').children('td').children('input[name="billing_note_list_paid[]"]').val( paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $(id).closest('tr').children('td').children('input[name="billing_note_list_balance[]"]').val( sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+
+        calculateAll();         
+
+
+    }                                                                   
+
 
     function calculateAll(){
 
-        var val = document.getElementsByName('billing_note_list_total[]');
+        var val = document.getElementsByName('billing_note_total[]');
         var total = 0.0;
         
         for(var i = 0 ; i < val.length ; i++){
@@ -391,13 +419,13 @@
                                     <?PHP echo  $billing_note_lists[$i]['billing_note_list_due'];?>
                                 </td>
                                 <td align="right">
-                                    <?PHP echo  $billing_note_lists[$i]['billing_note_list_net'];?>
+                                    <input type="text" class="form-control" style="text-align:right" name="billing_note_list_amount[]" onchange="update_sum(this);" value="<?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_amount'],2);?>" />
                                 </td>
                                 <td  align="right">
-                                    <?PHP echo  $billing_note_lists[$i]['billing_note_list_paid'];?>
+                                    <input type="text" class="form-control" style="text-align:right" name="billing_note_list_paid[]" onchange="update_sum(this);" value="<?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_paid'],2);?>" />
                                 </td>
                                 <td align="right">
-                                    <?PHP echo  $billing_note_lists[$i]['billing_note_list_net'] - $billing_note_lists[$i]['billing_note_list_paid'];?>
+                                    <input type="text" class="form-control" style="text-align:right" name="billing_note_list_balance[]" onchange="update_sum(this);" value="<?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_amount'] - $billing_note_lists[$i]['billing_note_list_paid'],2);?>"  readonly />
                                 </td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -406,7 +434,7 @@
                                 </td>
                             </tr>
                             <?
-                                $total += $billing_note_lists[$i]['billing_note_list_net'] - $billing_note_lists[$i]['billing_note_list_paid'];
+                                $total += $billing_note_lists[$i]['billing_note_list_amount'] - $billing_note_lists[$i]['billing_note_list_paid'];
                             }
                             ?>
                         </tbody>
@@ -473,7 +501,7 @@
                                     <span>จำนวนเงินรวมทั้งสิ้น / Net Total</span>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" style="text-align: right;" id="billing_note_net" name="billing_note_net" value="<?PHP echo number_format($total,2) ;?>" readonly/>
+                                    <input type="text" class="form-control" style="text-align: right;" id="billing_note_total" name="billing_note_total" value="<?PHP echo number_format($total,2) ;?>" readonly/>
                                 </td>
                                 <td>
                                 </td>

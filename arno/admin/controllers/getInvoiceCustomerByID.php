@@ -7,5 +7,6 @@ require_once('../../models/InvoiceCustomerModel.php');
 $invoice_customer_model = new InvoiceCustomerModel;
 $invoice_customer = $invoice_customer_model->getInvoiceCustomerViewByID($_POST['invoice_customer_id']);
 
+
 echo json_encode($invoice_customer);
 ?>

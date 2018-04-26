@@ -13,7 +13,7 @@ class BillingNoteListModel extends BaseModel{
         tb_billing_note_list.invoice_customer_id,
         invoice_customer_code, 
         '0' as billing_note_list_paid, 
-        invoice_customer_net_price as billing_note_list_net, 
+        invoice_customer_net_price as billing_note_list_amount, 
         invoice_customer_date as billing_note_list_date, 
         invoice_customer_due as billing_note_list_due, 
         billing_note_list_remark 
@@ -38,6 +38,9 @@ class BillingNoteListModel extends BaseModel{
         $sql = " INSERT INTO tb_billing_note_list (
             billing_note_id,
             invoice_customer_id,
+            billing_note_list_amount,
+            billing_note_list_paid,
+            billing_note_list_balance,
             billing_note_list_remark,
             addby,
             adddate,
@@ -46,6 +49,9 @@ class BillingNoteListModel extends BaseModel{
         ) VALUES (
             '".$data['billing_note_id']."', 
             '".$data['invoice_customer_id']."', 
+            '".$data['billing_note_list_amount']."',
+            '".$data['billing_note_list_paid']."',
+            '".$data['billing_note_list_balance']."',
             '".$data['billing_note_list_remark']."', 
             '".$data['addby']."', 
             NOW(), 
@@ -70,6 +76,9 @@ class BillingNoteListModel extends BaseModel{
 
         $sql = " UPDATE tb_billing_note_list 
             SET invoice_customer_id = '".$data['invoice_customer_id']."', 
+            billing_note_list_amount = '".$data['billing_note_list_amount']."', 
+            billing_note_list_paid = '".$data['billing_note_list_paid']."',
+            billing_note_list_balance = '".$data['billing_note_list_balance']."',  
             billing_note_list_remark = '".$data['billing_note_list_remark']."' 
             WHERE billing_note_list_id = '$id'
         ";

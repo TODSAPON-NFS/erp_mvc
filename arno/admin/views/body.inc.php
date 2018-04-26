@@ -5,6 +5,7 @@
         require_once("modules/notification/views/index.inc.php");
     }
     
+
     
     else if($_GET['app'] == "employee"){
         require_once("modules/user/views/index.inc.php");
@@ -14,6 +15,7 @@
         require_once("modules/user_license/views/index.inc.php");
     }
     
+
     
     else if($_GET['app'] == "product"){
         require_once("modules/product/views/index.inc.php");
@@ -26,6 +28,7 @@
     }else if($_GET['app'] == "product_unit"){
         require_once("modules/product_unit/views/index.inc.php");
     }
+    
     
     
     else if($_GET['app'] == "customer"){
@@ -89,9 +92,9 @@
         require_once("modules/debit_note/views/index.inc.php");
     }else if($_GET['app'] == "billing_note"){
         require_once("modules/billing_note/views/index.inc.php");
-    }
-    
-    else if($_GET['app'] == "delivery_note_customer"){
+    }else if($_GET['app'] == "official_receipt"){
+        require_once("modules/official_receipt/views/index.inc.php");
+    }else if($_GET['app'] == "delivery_note_customer"){
         require_once("modules/delivery_note_customer/views/index.inc.php");
     }else if($_GET['app'] == "delivery_note_supplier"){
         require_once("modules/delivery_note_supplier/views/index.inc.php");

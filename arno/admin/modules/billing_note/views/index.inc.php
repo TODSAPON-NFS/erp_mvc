@@ -82,7 +82,7 @@ if(!isset($_GET['action'])){
         $data['billing_note_address'] = $_POST['billing_note_address'];
         $data['billing_note_tax'] = $_POST['billing_note_tax'];
         $data['billing_note_remark'] = $_POST['billing_note_remark'];
-        $data['billing_note_total_old'] = (float)filter_var($_POST['billing_note_total_old'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['billing_note_total'] = (float)filter_var($_POST['billing_note_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['billing_note_sent_name'] = $_POST['billing_note_sent_name'];
         $data['billing_note_recieve_name'] = $_POST['billing_note_recieve_name'];
         $data['addby'] = $user[0][0];
@@ -93,8 +93,10 @@ if(!isset($_GET['action'])){
         if($output > 0){
             $data = [];
             $invoice_customer_id = $_POST['invoice_customer_id'];
+            $billing_note_list_amount = $_POST['billing_note_list_amount'];
+            $billing_note_list_paid = $_POST['billing_note_list_paid'];
+            $billing_note_list_balance = $_POST['billing_note_list_balance'];
             $billing_note_list_remark = $_POST['billing_note_list_remark'];
-
             
            
             if(is_array($invoice_customer_id)){
@@ -102,6 +104,9 @@ if(!isset($_GET['action'])){
                     $data_sub = [];
                     $data_sub['billing_note_id'] = $output;
                     $data_sub['invoice_customer_id'] = $invoice_customer_id[$i];
+                    $data_sub['billing_note_list_amount'] = $billing_note_list_amount[$i];
+                    $data_sub['billing_note_list_paid'] = $billing_note_list_paid[$i];
+                    $data_sub['billing_note_list_balance'] = $billing_note_list_balance[$i];
                     $data_sub['billing_note_list_remark'] = $billing_note_list_remark[$i];
 
                     $id = $billing_note_list_model->insertBillingNoteList($data_sub);
@@ -110,6 +115,9 @@ if(!isset($_GET['action'])){
                 $data_sub = [];
                 $data_sub['billing_note_id'] = $output;
                 $data_sub['invoice_customer_id'] = $invoice_customer_id;
+                $data_sub['billing_note_list_amount'] = $billing_note_list_amount;
+                $data_sub['billing_note_list_paid'] = $billing_note_list_paid;
+                $data_sub['billing_note_list_balance'] = $billing_note_list_balance;
                 $data_sub['billing_note_list_remark'] = $billing_note_list_remark;
     
                 $id = $billing_note_list_model->insertBillingNoteList($data_sub);
@@ -149,8 +157,10 @@ if(!isset($_GET['action'])){
 
 
         $invoice_customer_id = $_POST['invoice_customer_id'];
-        $billing_note_list_id = $_POST['billing_note_list_id'];
-         $billing_note_list_remark = $_POST['billing_note_list_remark'];
+        $billing_note_list_amount = $_POST['billing_note_list_amount'];
+        $billing_note_list_paid = $_POST['billing_note_list_paid'];
+        $billing_note_list_balance = $_POST['billing_note_list_balance'];
+        $billing_note_list_remark = $_POST['billing_note_list_remark'];
 
         
         $billing_note_list_model->deleteBillingNoteListByBillingNoteIDNotIN($billing_note_id,$billing_note_list_id);
@@ -162,6 +172,9 @@ if(!isset($_GET['action'])){
                 $data_sub = [];
                 $data_sub['billing_note_id'] = $billing_note_id;
                 $data_sub['invoice_customer_id'] = $invoice_customer_id[$i];
+                $data_sub['billing_note_list_amount'] = $billing_note_list_amount[$i];
+                $data_sub['billing_note_list_paid'] = $billing_note_list_paid[$i];
+                $data_sub['billing_note_list_balance'] = $billing_note_list_balance[$i];
                 $data_sub['billing_note_list_remark'] = $billing_note_list_remark[$i];
 
                 if($billing_note_list_id[$i] != '0'){
@@ -175,6 +188,9 @@ if(!isset($_GET['action'])){
             $data_sub = [];
             $data_sub['billing_note_id'] = $billing_note_id;
             $data_sub['invoice_customer_id'] = $invoice_customer_id;
+            $data_sub['billing_note_list_amount'] = $billing_note_list_amount;
+            $data_sub['billing_note_list_paid'] = $billing_note_list_paid;
+            $data_sub['billing_note_list_balance'] = $billing_note_list_balance;
             $data_sub['billing_note_list_remark'] = $billing_note_list_remark;
 
             if($billing_note_list_id != "0"){

@@ -4,27 +4,27 @@
     function check(){
 
         var customer_id = document.getElementById("customer_id").value;
-        var billing_note_code = document.getElementById("billing_note_code").value;
-        var billing_note_date = document.getElementById("billing_note_date").value;
+        var official_receipt_code = document.getElementById("official_receipt_code").value;
+        var official_receipt_date = document.getElementById("official_receipt_date").value;
         var employee_id = document.getElementById("employee_id").value;
 
         
         customer_id = $.trim(customer_id);
-        billing_note_code = $.trim(billing_note_code);
-        billing_note_date = $.trim(billing_note_date);
+        official_receipt_code = $.trim(official_receipt_code);
+        official_receipt_date = $.trim(official_receipt_date);
         employee_id = $.trim(employee_id);
 
         if(customer_id.length == 0){
             alert("Please input iupplier.");
             document.getElementById("customer_id").focus();
             return false;
-        }else if(billing_note_code.length == 0){
-            alert("Please input Billing Note date.");
-            document.getElementById("billing_note_code").focus();
+        }else if(official_receipt_code.length == 0){
+            alert("Please input Official Receipt date.");
+            document.getElementById("official_receipt_code").focus();
             return false;
-        }else if(billing_note_date.length == 0){
-            alert("Please input Billing Note date.");
-            document.getElementById("billing_note_date").focus();
+        }else if(official_receipt_date.length == 0){
+            alert("Please input Official Receipt date.");
+            document.getElementById("official_receipt_date").focus();
             return false;
         }else if(employee_id.length == 0){
             alert("Please input employee");
@@ -42,9 +42,9 @@
         var customer_id = document.getElementById('customer_id').value;
         $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
             document.getElementById('customer_code').value = data.customer_code;
-            document.getElementById('billing_note_name').value = data.customer_name_en +' (' + data.customer_name_th +')';
-            document.getElementById('billing_note_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
-            document.getElementById('billing_note_tax').value = data.customer_tax ;
+            document.getElementById('official_receipt_name').value = data.customer_name_en +' (' + data.customer_name_th +')';
+            document.getElementById('official_receipt_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
+            document.getElementById('official_receipt_tax').value = data.customer_tax ;
         });
     }
 
@@ -58,19 +58,19 @@
 
     function show_invoice_customer(id){
         var customer_id = document.getElementById('customer_id').value;
-        var val = document.getElementsByName('invoice_customer_id[]');
-        var invoice_customer_id = [];
+        var val = document.getElementsByName('billing_note_list_id[]');
+        var billing_note_list_id = [];
         
         for(var i = 0 ; i < val.length ; i++){
-            invoice_customer_id.push(val[i].value);
+            billing_note_list_id.push(val[i].value);
         }
         
         if(customer_id != ""){
 
-            $.post( "controllers/getBillingNoteListByCustomerID.php", { 'customer_id': customer_id, 'invoice_customer_id': JSON.stringify(invoice_customer_id) }, function( data ) {
+            $.post( "controllers/getOfficialReceiptListByCustomerID.php", { 'customer_id': customer_id, 'billing_note_list_id': JSON.stringify(billing_note_list_id) }, function( data ) {
                //alert(data);
-                $('#bodyAdd').html(data);
-                $('#modalAdd').modal('show');
+               // $('#bodyAdd').html(data);
+               // $('#modalAdd').modal('show');
                
                 if(data.length > 0){
                     data_buffer = data;
@@ -79,25 +79,25 @@
 
                         content += '<tr class="odd gradeX">'+
                                         '<td>'+
-                                            '<input type="checkbox" name="p_id" value="'+data[i].invoice_customer_id+'" />'+     
+                                            '<input type="checkbox" name="p_id" value="'+data[i].billing_note_list_id+'" />'+     
                                         '</td>'+
                                         '<td>'+
                                             data[i].invoice_customer_code+
                                         '</td>'+
                                         '<td>'+
-                                            data[i].billing_note_list_date+
+                                            data[i].official_receipt_list_date+
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].billing_note_list_due +
+                                            data[i].official_receipt_list_due +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].billing_note_list_amount +
+                                            data[i].official_receipt_list_net +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].billing_note_list_paid +
+                                            data[i].official_receipt_list_paid +
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].billing_note_list_amount - data[i].billing_note_list_paid) +
+                                            (data[i].official_receipt_list_net - data[i].official_receipt_list_paid) +
                                         '</td>'+
                                     '</tr>';
 
@@ -117,43 +117,43 @@
 
     function search_pop_like(id){
         var customer_id = document.getElementById('customer_id').value;
-        var val = document.getElementsByName('invoice_customer_id[]');
-        var invoice_customer_id = [];
+        var val = document.getElementsByName('billing_note_list_id[]');
+        var billing_note_list_id = [];
         
         for(var i = 0 ; i < val.length ; i++){
-            invoice_customer_id.push(val[i].value);
+            billing_note_list_id.push(val[i].value);
         }
 
-        $.post( "controllers/getBillingNoteListByCustomerID.php", { 'customer_id': customer_id, 'invoice_customer_id': JSON.stringify(invoice_customer_id), search : $(id).val() }, function( data ) {
+        $.post( "controllers/getOfficialReceiptListByCustomerID.php", { 'customer_id': customer_id, 'billing_note_list_id': JSON.stringify(billing_note_list_id), search : $(id).val() }, function( data ) {
             var content = "";
-            if(data.length > 0){
-                data_buffer = data;
-                
-                for(var i = 0; i < data.length ; i++){
+                if(data.length > 0){
+                    data_buffer = data;
+                    
+                    for(var i = 0; i < data.length ; i++){
 
-                    content += '<tr class="odd gradeX">'+
-                                    '<td>'+
-                                        '<input type="checkbox" name="p_id" value="'+data[i].invoice_customer_id+'" />'+     
-                                    '</td>'+
-                                    '<td>'+
-                                        data[i].invoice_customer_code+
-                                    '</td>'+
-                                    '<td>'+
-                                        data[i].billing_note_list_date+
-                                    '</td>'+
-                                    '<td align="right">'+
-                                        data[i].billing_note_list_due +
-                                    '</td>'+
-                                    '<td align="right">'+
-                                        data[i].billing_note_list_amount +
-                                    '</td>'+
-                                    '<td align="right">'+
-                                        data[i].billing_note_list_paid +
-                                    '</td>'+
-                                    '<td align="right">'+
-                                        (data[i].billing_note_list_amount - data[i].billing_note_list_paid) +
-                                    '</td>'+
-                                '</tr>';
+                        content += '<tr class="odd gradeX">'+
+                                        '<td>'+
+                                            '<input type="checkbox" name="p_id" value="'+data[i].billing_note_list_id+'" />'+     
+                                        '</td>'+
+                                        '<td>'+
+                                            data[i].invoice_customer_code+
+                                        '</td>'+
+                                        '<td>'+
+                                            data[i].official_receipt_list_date+
+                                        '</td>'+
+                                        '<td align="right">'+
+                                            data[i].official_receipt_list_due +
+                                        '</td>'+
+                                        '<td align="right">'+
+                                            data[i].official_receipt_list_net +
+                                        '</td>'+
+                                        '<td align="right">'+
+                                            data[i].official_receipt_list_paid +
+                                        '</td>'+
+                                        '<td align="right">'+
+                                            (data[i].official_receipt_list_net - data[i].official_receipt_list_paid) +
+                                        '</td>'+
+                                    '</tr>';
 
                 }
             }
@@ -179,24 +179,25 @@
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
                         '<td>'+  
-                            '<input type="hidden" name="billing_note_list_id[]" value="0" />'+
-                            '<input type="hidden" name="invoice_customer_id[]" value="'+data_buffer[i].invoice_customer_id+'" />'+
+                            '<input type="hidden" name="official_receipt_list_id[]" value="0" />'+
+                            '<input type="hidden" name="billing_note_list_id[]" value="'+data_buffer[i].billing_note_list_id+'" />'+
                             data_buffer[i].invoice_customer_code +
                         '</td>'+
                         '<td>'+
-                            data_buffer[i].billing_note_list_date + 
+                            data_buffer[i].official_receipt_list_date + 
                         '</td>'+
                         '<td>'+
-                            data_buffer[i].billing_note_list_due + 
+                            data_buffer[i].official_receipt_list_due + 
                         '</td>'+
                         '<td align="right">'+
-                            '<input type="text" class="form-control" name="billing_note_list_amount[]" style="text-align:right" onchange="update_sum(this);" value="'+data_buffer[i].billing_note_list_amount+'" />'+
+                            data_buffer[i].official_receipt_list_net + 
                         '</td>'+
                         '<td align="right">'+
-                        '<input type="text" class="form-control" name="billing_note_list_paid[]" style="text-align:right" onchange="update_sum(this);" value="'+data_buffer[i].billing_note_list_paid+'" />'+
+                            data_buffer[i].official_receipt_list_paid +
                         '</td>'+
                         '<td align="right">'+
-                        '<input type="text" class="form-control" name="billing_note_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="'+(data_buffer[i].billing_note_list_amount - data_buffer[i].billing_note_list_paid)+'" readonly />'+
+                            (data_buffer[i].official_receipt_list_net - data_buffer[i].official_receipt_list_paid) + 
+                            '<input type="hidden" name="official_receipt_list_total[]" value="'+(data_buffer[i].official_receipt_list_net - data_buffer[i].official_receipt_list_paid)+'" />'+
                         '</td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -225,38 +226,10 @@
         }
     }
 
-    function update_sum(id){
-
-        var amount =  parseFloat($(id).closest('tr').children('td').children('input[name="billing_note_list_amount[]"]').val(  ).replace(',',''));
-        var paid =  parseFloat($(id).closest('tr').children('td').children('input[name="billing_note_list_paid[]"]').val( ).replace(',',''));
-        var balance =  parseFloat($(id).closest('tr').children('td').children('input[name="billing_note_list_balance[]"]').val( ).replace(',',''));
-
-        if(isNaN(amount)){
-            amount = 0;
-        }
-
-        if(isNaN(paid)){
-            paid = 0.0;
-        }
-
-        if(isNaN(balance)){
-            balance = 0.0;
-        }
-
-        balance = amount-paid;
-
-        $(id).closest('tr').children('td').children('input[name="billing_note_list_amount[]"]').val( amount.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $(id).closest('tr').children('td').children('input[name="billing_note_list_paid[]"]').val( paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $(id).closest('tr').children('td').children('input[name="billing_note_list_balance[]"]').val( sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-
-        calculateAll();
-
-
-    }
 
     function calculateAll(){
 
-        var val = document.getElementsByName('billing_note_list_balance[]');
+        var val = document.getElementsByName('official_receipt_list_total[]');
         var total = 0.0;
         
         for(var i = 0 ; i < val.length ; i++){
@@ -264,7 +237,7 @@
             total += parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),''));
         }
        
-        $('#billing_note_total').val((total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#official_receipt_net').val((total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
     }
 
 
@@ -275,7 +248,7 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Billing Note Management</h1>
+        <h1 class="page-header">Official Receipt Management</h1>
     </div>
     <div class="col-lg-6" align="right">
        
@@ -287,18 +260,18 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            เพิ่มใบวางบิล / Add Billing Note  
+            แก้ใบเสร็จ / Edit Official Receipt  
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=billing_note&action=add" >
+                <form role="form" method="post" onsubmit="return check();" action="index.php?app=official_receipt&action=edit&id=<?PHP echo $official_receipt_id?>" >
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>รหัสผู้ซื้อ / Customer Code <font color="#F00"><b>*</b></font></label>
-                                        <input id="customer_code" name="customer_code" class="form-control" value="<? echo $customer['customer_code'];?>" readonly>
+                                        <input id="customer_code" name="customer_code" class="form-control" value="<? echo $official_receipt['customer_code'];?>" readonly>
                                         <p class="help-block">Example : A0001.</p>
                                     </div>
                                 </div>
@@ -310,7 +283,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($customers) ; $i++){
                                             ?>
-                                            <option <?php if($customers[$i]['customer_id'] == $customer['customer_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
+                                            <option <?php if($customers[$i]['customer_id'] == $official_receipt['customer_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
                                             <?
                                             }
                                             ?>
@@ -320,22 +293,22 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>ชื่อตามใบวางบิล / Full name <font color="#F00"><b>*</b></font></label>
-                                        <input  id="billing_note_name" name="billing_note_name" class="form-control" value="<?php echo $customer['customer_name_en'];?> (<?php echo $customer['customer_name_th'];?>)" >
+                                        <label>ชื่อตามใบเสร็จ / Full name <font color="#F00"><b>*</b></font></label>
+                                        <input  id="official_receipt_name" name="official_receipt_name" class="form-control" value="<?php echo $official_receipt['customer_name_en'];?> (<?php echo $official_receipt['customer_name_th'];?>)" >
                                         <p class="help-block">Example : Revel soft.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ที่อยู่ตามใบกำภาษี / Address <font color="#F00"><b>*</b></font></label>
-                                        <textarea  id="billing_note_address" name="billing_note_address" class="form-control" rows="5" ><?php echo $customer['customer_address_1'] ."\n". $customer['customer_address_2'] ."\n". $customer['customer_address_3'];?></textarea >
+                                        <textarea  id="official_receipt_address" name="official_receipt_address" class="form-control" rows="5" ><?php echo $official_receipt['customer_address_1'] ."\n". $official_receipt['customer_address_2'] ."\n". $official_receipt['customer_address_3'];?></textarea >
                                         <p class="help-block">Example : IN.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>เลขประจำตัวผู้เสียภาษี / Tax <font color="#F00"><b>*</b></font></label>
-                                        <input  id="billing_note_tax" name="billing_note_tax" class="form-control" value="<?php echo $customer['customer_tax'];?>" >
+                                        <input  id="official_receipt_tax" name="official_receipt_tax" class="form-control" value="<?php echo $official_receipt['customer_tax'];?>" >
                                         <p class="help-block">Example : 0305559003597.</p>
                                     </div>
                                 </div>
@@ -348,16 +321,16 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>วันที่ออกใบวางบิล / Date</label>
-                                        <input type="text" id="billing_note_date" name="billing_note_date"  class="form-control calendar" readonly/>
+                                        <label>วันที่ออกใบเสร็จ / Date</label>
+                                        <input type="text" id="official_receipt_date" name="official_receipt_date"  class="form-control calendar" value="<?php echo $official_receipt['official_receipt_date'];?>" readonly/>
                                         <p class="help-block">01-03-2018</p>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>หมายเลขใบวางบิล / CN code <font color="#F00"><b>*</b></font></label>
-                                        <input id="billing_note_code" name="billing_note_code" class="form-control" value="<?php echo $last_code;?>" >
+                                        <label>หมายเลขใบเสร็จ / CN code <font color="#F00"><b>*</b></font></label>
+                                        <input id="official_receipt_code" name="official_receipt_code" class="form-control" value="<?php echo $official_receipt['official_receipt_code'];?>" >
                                         <p class="help-block">Example : CN1801001.</p>
                                     </div>
                                 </div>
@@ -365,13 +338,13 @@
 
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>ผู้ออกใบวางบิล / Employee  <font color="#F00"><b>*</b></font> </label>
+                                        <label>ผู้ออกใบเสร็จ / Employee  <font color="#F00"><b>*</b></font> </label>
                                         <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true">
                                             <option value="">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($users) ; $i++){
                                             ?>
-                                            <option <?PHP if($user[0][0] == $users[$i]['user_id']){?> SELECTED <?PHP }?> value="<?php echo $users[$i]['user_id'] ?>"><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
+                                            <option <?PHP if($official_receipt['employee_id'] == $users[$i]['user_id']){?> SELECTED <?PHP }?> value="<?php echo $users[$i]['user_id'] ?>"><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
                                             <?
                                             }
                                             ?>
@@ -403,28 +376,28 @@
                         <tbody>
                             <?php 
                             $total = 0;
-                            for($i=0; $i < count($billing_note_lists); $i++){
+                            for($i=0; $i < count($official_receipt_lists); $i++){
                             ?>
                             <tr class="odd gradeX">
                                 <td>
-                                    <input type="hidden" name="billing_note_list_id[]" value="<?PHP echo  $billing_note_lists[$i]['billing_note_list_id'];?>" />
-                                    <input type="hidden" name="invoice_customer_id[]" value="<?PHP echo  $billing_note_lists[$i]['invoice_customer_id'];?>" />
-                                    <?PHP echo  $billing_note_lists[$i]['invoice_customer_code'];?>
+                                    <input type="hidden" name="official_receipt_list_id[]" value="<?PHP echo  $official_receipt_lists[$i]['official_receipt_list_id'];?>" />
+                                    <input type="hidden" name="billing_note_list_id[]" value="<?PHP echo  $official_receipt_lists[$i]['billing_note_list_id'];?>" />
+                                    <?PHP echo  $official_receipt_lists[$i]['invoice_customer_code'];?>
                                 </td>
                                 <td>
-                                    <?PHP echo  $billing_note_lists[$i]['invoice_customer_date'];?>
+                                    <?PHP echo  $official_receipt_lists[$i]['official_receipt_list_date'];?>
                                 </td>
                                 <td>
-                                    <?PHP echo  $billing_note_lists[$i]['invoice_customer_due'];?>
+                                    <?PHP echo  $official_receipt_lists[$i]['official_receipt_list_due'];?>
                                 </td>
                                 <td align="right">
-                                    <input type="text" class="form-control" name="billing_note_list_amount[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_amount'],2);?>" />
+                                    <?PHP echo  $official_receipt_lists[$i]['official_receipt_list_net'];?>
                                 </td>
                                 <td  align="right">
-                                    <input type="text" class="form-control" name="billing_note_list_paid[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_paid'],2);?>" />
+                                    <?PHP echo  $official_receipt_lists[$i]['official_receipt_list_paid'];?>
                                 </td>
                                 <td align="right">
-                                    <input type="text" class="form-control" name="billing_note_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($billing_note_lists[$i]['billing_note_list_amount'] - $billing_note_lists[$i]['billing_note_list_paid'],2);?>" readonly/>
+                                    <?PHP echo  $official_receipt_lists[$i]['official_receipt_list_net'] - $official_receipt_lists[$i]['official_receipt_list_paid'];?>
                                 </td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -433,7 +406,7 @@
                                 </td>
                             </tr>
                             <?
-                                $total += $billing_note_lists[$i]['billing_note_list_amount'] - $billing_note_lists[$i]['billing_note_list_paid'];
+                                $total += $official_receipt_lists[$i]['official_receipt_list_net'] - $official_receipt_lists[$i]['official_receipt_list_paid'];
                             }
                             ?>
                         </tbody>
@@ -500,7 +473,7 @@
                                     <span>จำนวนเงินรวมทั้งสิ้น / Net Total</span>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" style="text-align: right;" id="billing_note_total" name="billing_note_total" value="<?PHP echo number_format($total,2) ;?>" readonly/>
+                                    <input type="text" class="form-control" style="text-align: right;" id="official_receipt_net" name="official_receipt_net" value="<?PHP echo number_format($total,2) ;?>" readonly/>
                                 </td>
                                 <td>
                                 </td>
@@ -511,7 +484,7 @@
                     <!-- /.row (nested) -->
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
-                            <a href="index.php?app=billing_note" class="btn btn-default">Back</a>
+                            <a href="index.php?app=official_receipt" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>

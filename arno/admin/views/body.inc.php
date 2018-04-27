@@ -74,6 +74,8 @@
 
     else if($_GET['app'] == "regrind_supplier"){
         require_once("modules/regrind_supplier/views/index.inc.php");
+    }else if($_GET['app'] == "regrind_supplier_receive"){
+        require_once("modules/regrind_supplier_receive/views/index.inc.php");
     }else if($_GET['app'] == "purchase_request"){
         require_once("modules/purchase_request/views/index.inc.php");
     }else if($_GET['app'] == "purchase_order"){

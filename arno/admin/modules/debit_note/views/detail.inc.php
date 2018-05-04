@@ -141,7 +141,8 @@
                             
                             <tr class="odd gradeX">
                                 <td colspan="2" rowspan="5">
-                                    
+                                    <b>หมายเหตุ</b>
+                                    <p><?PHP echo $debit_note['debit_note_remark'];?></p>
                                 </td>
                                 <td colspan="2" align="left" style="vertical-align: middle;">
                                     <span>มูลค่าใบกำกับเดิม / Old total</span>

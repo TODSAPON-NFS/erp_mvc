@@ -466,6 +466,14 @@
                                         <p class="help-block">Example : Thana Tepchuleepornsil.</p>
                                     </div>
                                 </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>หมายเหตุ / Remark  <font color="#F00"><b>*</b></font> </label>
+                                        <textarea id="credit_note_remark" name="credit_note_remark" class="form-control" ><?PHP echo $credit_note['credit_note_remark'];?></textarea>
+                                        <p class="help-block">Example : -.</p>
+                                    </div>
+                                </div>
                                 
                             </div>
                         </div>

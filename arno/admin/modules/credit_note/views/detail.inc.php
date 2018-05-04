@@ -141,7 +141,8 @@
                             
                             <tr class="odd gradeX">
                                 <td colspan="2" rowspan="5">
-                                    
+                                    <b>Remark</b>
+                                    <p><?php echo $credit_note['credit_note_remark'];?></p>
                                 </td>
                                 <td colspan="2" align="left" style="vertical-align: middle;">
                                     <span>มูลค่าใบกำกับเดิม / Old total</span>

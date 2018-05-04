@@ -131,8 +131,9 @@
         </tr>
                             
                             <tr class="odd gradeX">
-                                <td colspan="1" rowspan="8">
-                                    
+                                <td colspan="1" rowspan="8" style="vertical-align: top;">
+                                    <b>หมายเหตุ</b>
+                                    <p><?php echo $credit_note['credit_note_remark'];?></p>
                                 </td>
                                 <td colspan="3" align="right" style="vertical-align: middle;">
                                     <span>รวม</span>

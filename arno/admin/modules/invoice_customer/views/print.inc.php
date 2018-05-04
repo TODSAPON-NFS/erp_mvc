@@ -165,4 +165,6 @@
     </table>   
 
 </div>
+
+<script>//window.print();</script>
                 

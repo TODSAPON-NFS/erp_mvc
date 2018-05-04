@@ -82,7 +82,12 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>หมายเลขใบเสนอราคา / Quotation code <font color="#F00"><b>*</b></font></label>
-                                        <p class="help-block"><?php echo $quotation['quotation_code'];?></p>
+                                        <p class="help-block">
+                                            <?php echo $quotation['quotation_code'];?>
+                                            <?php if($quotation['quotation_cancelled'] != 0){ ?>
+                                                <span><font color="#F00">(Cancelled)</font></span>
+                                            <?PHP } ?>
+                                        </p>
                                     </div>
                                 </div>                              
 

@@ -57,6 +57,18 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=purchase_request"</script>
 <?php
 
+}else if ($_GET['action'] == 'cancelled'){
+    $purchase_request_model->cancelPurchaseRequestById($purchase_request_id);
+?>
+    <script>window.location="index.php?app=purchase_request"</script>
+<?php
+
+}else if ($_GET['action'] == 'uncancelled'){
+    $purchase_request_model->uncancelPurchaseRequestById($purchase_request_id);
+?>
+    <script>window.location="index.php?app=purchase_request"</script>
+<?php
+
 }else if ($_GET['action'] == 'add'){
     if(isset($_POST['purchase_request_code'])){
         $data = [];

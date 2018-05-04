@@ -23,8 +23,13 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>ประเภทใบร้องขอสั่งซื้อสินค้า / PR Code <font color="#F00"><b>*</b></font></label>
-                                <p class="help-block"><? echo $purchase_request['purchase_request_code'];?></p>
+                                <label>หมายเลขสั่งซื้อสินค้า / PR Code <font color="#F00"><b>*</b></font></label>
+                                <p class="help-block">
+                                    <? echo $purchase_request['purchase_request_code'];?>
+                                    <?php if($purchase_request['purchase_request_cancelled'] != 0){ ?>
+                                        <span><font color="#F00">(Cancelled)</font></span>
+                                    <?PHP } ?>
+                                </p>
                             </div>
                         </div>
                         <div class="col-lg-4">

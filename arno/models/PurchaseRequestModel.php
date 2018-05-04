@@ -16,6 +16,7 @@ class PurchaseRequestModel extends BaseModel{
         purchase_request_type, 
         purchase_request_accept_status, 
         IFNULL(CONCAT(tb2.user_name,' ',tb2.user_lastname),'-') as accept_name, 
+        purchase_request_cancelled, 
         purchase_request_remark 
         FROM tb_purchase_request LEFT JOIN tb_user as tb1 ON tb_purchase_request.employee_id = tb1.user_id 
         LEFT JOIN tb_user as tb2 ON tb_purchase_request.purchase_request_accept_by = tb2.user_id 
@@ -84,6 +85,36 @@ class PurchaseRequestModel extends BaseModel{
             return $row['purchase_request_lastcode'];
         }
 
+    }
+
+    function cancelPurchaseRequestByID($id){
+        $sql = " UPDATE tb_purchase_request SET 
+        purchase_request_cancelled = '1', 
+        updateby = '".$data['updateby']."', 
+        lastupdate = '".$data['lastupdate']."' 
+        WHERE purchase_request_id = $id 
+        ";
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
+    function uncancelPurchaseRequestByID($id){
+        $sql = " UPDATE tb_purchase_request SET 
+        purchase_request_cancelled = '0', 
+        updateby = '".$data['updateby']."', 
+        lastupdate = '".$data['lastupdate']."' 
+        WHERE purchase_request_id = $id 
+        ";
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
     }
 
    

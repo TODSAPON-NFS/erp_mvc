@@ -30,6 +30,7 @@ if(!isset($_GET['action'])){
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
     $first_code = $first_char.date("y").date("m");
+    $first_date = date("d")."-".date("m")."-".date("Y");
     $last_code = $delivery_note_supplier_model->getDeliveryNoteSupplierLastID($first_code,3);
     require_once($path.'insert.inc.php');
 

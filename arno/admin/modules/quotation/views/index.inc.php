@@ -31,6 +31,7 @@ if(!isset($_GET['action'])){
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
     $first_code = $first_char.date("y").date("m");
+    $first_date = date("d")."-".date("m")."-".date("Y");
     $last_code = $quotation_model->getQuotationLastID($first_code,3);
     require_once($path.'insert.inc.php');
 

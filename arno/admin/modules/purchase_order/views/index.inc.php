@@ -36,7 +36,7 @@ if(!isset($_GET['action'])){
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
 
-
+    $first_date = date("d")."-".date("m")."-".date("Y");
     if($supplier_id > 0){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
         $products=$product_supplier_model->getProductBySupplierID($supplier_id);
@@ -48,6 +48,7 @@ if(!isset($_GET['action'])){
         }
 
         $first_code = $first_char.date("y").date("m");
+        $first_date = date("d")."-".date("m")."-".date("Y");
         $last_code = $purchase_order_model->getPurchaseOrderLastID($first_code,3);
 
         $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id);

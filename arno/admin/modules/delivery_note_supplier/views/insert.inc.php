@@ -191,7 +191,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>วันที่ออกใบยืม / DNS Date</label>
-                                        <input type="text" id="delivery_note_supplier_date" name="delivery_note_supplier_date"  class="form-control calendar" readonly/>
+                                        <input type="text" id="delivery_note_supplier_date" name="delivery_note_supplier_date" value="<?PHP echo $first_date; ?>"  class="form-control calendar" readonly/>
                                         <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>

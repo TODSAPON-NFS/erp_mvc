@@ -32,6 +32,7 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'insert'){
     $first_code = $first_char.date("y").date("m");
+    $first_date = date("d")."-".date("m")."-".date("Y");
     $last_code = $official_receipt_model->getOfficialReceiptLastID($first_code,3);
     $customers=$customer_model->getCustomerBy();
     $customer=$customer_model->getCustomerByID($customer_id);

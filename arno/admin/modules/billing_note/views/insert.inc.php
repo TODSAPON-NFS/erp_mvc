@@ -349,7 +349,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่ออกใบวางบิล / Date</label>
-                                        <input type="text" id="billing_note_date" name="billing_note_date"  class="form-control calendar" readonly/>
+                                        <input type="text" id="billing_note_date" name="billing_note_date"  class="form-control calendar" value="<?PHP echo $first_date?>" readonly/>
                                         <p class="help-block">01-03-2018</p>
                                     </div>
                                 </div>

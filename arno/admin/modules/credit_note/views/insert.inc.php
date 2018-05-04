@@ -382,7 +382,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่ออกใบลดหนี้ / Date</label>
-                                        <input type="text" id="credit_note_date" name="credit_note_date"  class="form-control calendar" readonly/>
+                                        <input type="text" id="credit_note_date" name="credit_note_date" value="<?PHP echo $first_date;?>"  class="form-control calendar" readonly/>
                                         <p class="help-block">01-03-2018</p>
                                     </div>
                                 </div>

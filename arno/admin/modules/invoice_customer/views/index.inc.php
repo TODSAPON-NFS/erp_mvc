@@ -37,6 +37,7 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'insert'){
     $first_code = $first_char.date("y").date("m");
+    $first_date = date("d")."-".date("m")."-".date("Y");
     $last_code = $invoice_customer_model->getInvoiceCustomerLastID($first_code,3);
 
     $products=$product_model->getProductBy('','','','Active');

@@ -176,7 +176,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>วันที่ออกใบย้ายสินค้า / Stock Move Date</label>
-                                        <input type="text" id="stock_move_date" name="stock_move_date"  class="form-control calendar" value="<?php echo $stock_move['stock_move_date'];?>" readonly/>
+                                        <input type="text" id="stock_move_date" name="stock_move_date"  class="form-control calendar" value="<?php echo $first_date;?>" readonly/>
                                         <p class="help-block">31-01-2018</p>
                                     </div>
                                 </div>

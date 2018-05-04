@@ -484,7 +484,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่ออกใบกำกับภาษี / Date</label>
-                                        <input type="text" id="invoice_customer_date" name="invoice_customer_date"  class="form-control calendar" readonly/>
+                                        <input type="text" id="invoice_customer_date" name="invoice_customer_date" value="<?PHP echo $first_date;?>"  class="form-control calendar" readonly/>
                                         <p class="help-block">01-03-2018</p>
                                     </div>
                                 </div>

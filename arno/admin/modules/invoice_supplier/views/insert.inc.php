@@ -521,7 +521,7 @@
                                  <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่รับสินค้า / Date recieve</label>
-                                        <input type="text" id="invoice_supplier_date_recieve" name="invoice_supplier_date_recieve"  class="form-control calendar" readonly/>
+                                        <input type="text" id="invoice_supplier_date_recieve" name="invoice_supplier_date_recieve" value="<?PHP echo $first_date;?>"  class="form-control calendar" readonly/>
                                         <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>

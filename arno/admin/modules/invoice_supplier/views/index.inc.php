@@ -66,6 +66,7 @@ if(!isset($_GET['action'])){
     
     
     $first_code = $first_char.date("y").date("m");
+    $first_date = date("d")."-".date("m")."-".date("Y");
     $last_code = $invoice_supplier_model->getInvoiceSupplierLastID($first_code,3);
    
 

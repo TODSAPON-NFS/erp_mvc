@@ -321,7 +321,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่ออกใบเสร็จ / Date</label>
-                                        <input type="text" id="official_receipt_date" name="official_receipt_date"  class="form-control calendar" readonly/>
+                                        <input type="text" id="official_receipt_date" name="official_receipt_date" value="<? echo $first_date;?>"  class="form-control calendar" readonly/>
                                         <p class="help-block">01-03-2018</p>
                                     </div>
                                 </div>

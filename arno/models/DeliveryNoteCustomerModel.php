@@ -55,7 +55,7 @@ class DeliveryNoteCustomerModel extends BaseModel{
         $sql = " SELECT *   
         FROM tb_delivery_note_customer 
         LEFT JOIN tb_user ON tb_delivery_note_customer.employee_id = tb_user.user_id 
-        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user.user_position_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
         LEFT JOIN tb_customer ON tb_delivery_note_customer.customer_id = tb_customer.customer_id 
         WHERE delivery_note_customer_id = '$id' 
         ";

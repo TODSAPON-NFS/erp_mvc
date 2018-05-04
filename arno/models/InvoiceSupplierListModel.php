@@ -19,6 +19,7 @@ class InvoiceSupplierListModel extends BaseModel{
         invoice_supplier_list_qty, 
         invoice_supplier_list_price, 
         invoice_supplier_list_total, 
+        invoice_supplier_list_cost, 
         invoice_supplier_list_remark 
         FROM tb_invoice_supplier_list LEFT JOIN tb_product ON tb_invoice_supplier_list.product_id = tb_product.product_id 
         WHERE invoice_supplier_id = '$invoice_supplier_id' 
@@ -49,6 +50,7 @@ class InvoiceSupplierListModel extends BaseModel{
             invoice_supplier_list_remark,
             stock_group_id,
             purchase_order_list_id,
+            invoice_supplier_list_cost,
             addby,
             adddate,
             updateby,
@@ -63,7 +65,8 @@ class InvoiceSupplierListModel extends BaseModel{
             '".$data['invoice_supplier_list_total']."', 
             '".$data['invoice_supplier_list_remark']."',
             '".$data['stock_group_id']."', 
-            '".$data['purchase_order_list_id']."',
+            '".$data['purchase_order_list_id']."', 
+            '".$data['invoice_supplier_list_cost']."',
             '".$data['addby']."', 
             NOW(), 
             '".$data['updateby']."', 
@@ -77,12 +80,14 @@ class InvoiceSupplierListModel extends BaseModel{
             $id = mysqli_insert_id($this->db);
 
             $sql = "
-                CALL insert_stock('".
+                CALL insert_stock_supplier('".
                 $data['stock_group_id']."','".
                 $id."','".
                 $data['product_id']."','".
                 $data['invoice_supplier_list_qty']."','".
-                $data['stock_date']."','in');
+                $data['stock_date']."','".
+                $data['invoice_supplier_list_cost']."'".
+                ");
             ";
 
             //echo $sql . "<br><br>";
@@ -109,6 +114,7 @@ class InvoiceSupplierListModel extends BaseModel{
             invoice_supplier_list_total = '".$data['invoice_supplier_list_price_sum']."', 
             invoice_supplier_list_remark = '".$data['invoice_supplier_list_remark']."', 
             stock_group_id = '".$data['stock_group_id']."', 
+            invoice_supplier_list_cost = '".$data['invoice_supplier_list_cost']."', 
             purchase_order_list_id = '".$data['purchase_order_list_id']."' 
             WHERE invoice_supplier_list_id = '$id' 
         ";
@@ -116,12 +122,16 @@ class InvoiceSupplierListModel extends BaseModel{
         //echo $sql . "<br><br>";
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $sql = "
-                CALL update_stock('".
+                CALL update_stock_supplier('".
                 $data['stock_group_id']."','".
                 $id."','".
                 $data['product_id']."','".
-                $data['invoice_supplier_list_qty']."','".
-                $data['stock_date']."','in');
+                $data['stock_date']."','".
+                $data['old_qty']."','". 
+                $data['old_cost']."','". 
+                $data['invoice_supplier_list_qty']."','". 
+                $data['invoice_supplier_list_cost']."'".
+                ");
             ";
 
             //echo $sql . "<br><br>";
@@ -166,25 +176,30 @@ class InvoiceSupplierListModel extends BaseModel{
             $str='0';
         }
 
-        $sql = "    SELECT invoice_supplier_list_id, stock_group_id 
+        $sql = "    SELECT invoice_supplier_list_id, stock_group_id, product_id,  invoice_supplier_list_qty, invoice_supplier_list_cost
                     FROM  tb_invoice_supplier_list 
                     WHERE invoice_supplier_id = '$id' 
                     AND invoice_supplier_list_id NOT IN ($str) ";   
-
+        //echo $sql . "<br><br>";
         $sql_delete=[];
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $sql_delete [] = "
-                    CALL delete_stock('".
+                    CALL delete_stock_supplier('".
                     $row['stock_group_id']."','".
-                    $row['invoice_supplier_list_id']."','in');
+                    $row['invoice_supplier_list_id']."','".
+                    $row['product_id']."','".
+                    $row['invoice_supplier_list_qty']."','".
+                    $row['invoice_supplier_list_cost']."'".
+                    ");
                 ";
-               
+            
             }
             $result->close();
         }
 
         for($i = 0 ; $i < count($sql_delete); $i++){
+            //echo $sql_delete[$i] . "<br><br>";
             mysqli_query($this->db,$sql_delete[$i], MYSQLI_USE_RESULT);
         }
 

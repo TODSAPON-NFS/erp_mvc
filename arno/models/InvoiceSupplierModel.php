@@ -61,7 +61,7 @@ class InvoiceSupplierModel extends BaseModel{
         $sql = " SELECT *   
         FROM tb_invoice_supplier 
         LEFT JOIN tb_user ON tb_invoice_supplier.employee_id = tb_user.user_id 
-        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user.user_position_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
         LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
         WHERE invoice_supplier_id = '$id' 
         ";
@@ -225,7 +225,8 @@ class InvoiceSupplierModel extends BaseModel{
             WHERE purchase_order_list_id = tb2.purchase_order_list_id 
         ),0) ,0) as invoice_supplier_list_qty, 
         purchase_order_list_price as invoice_supplier_list_price, 
-        purchase_order_list_price_sum as invoice_supplier_list_total, 
+        purchase_order_list_price_sum as invoice_supplier_list_total,
+        purchase_order_list_price_sum as invoice_supplier_list_cost, 
         CONCAT('PO : ',purchase_order_code) as invoice_supplier_list_remark 
         FROM tb_purchase_order 
         LEFT JOIN tb_purchase_order_list as tb2 ON tb_purchase_order.purchase_order_id = tb2.purchase_order_id 
@@ -319,17 +320,22 @@ class InvoiceSupplierModel extends BaseModel{
 
     function deleteInvoiceSupplierByID($id){
 
-        $sql = "    SELECT invoice_supplier_list_id, stock_group_id 
+        $sql = "    SELECT invoice_supplier_list_id, stock_group_id, product_id, invoice_supplier_list_qty, invoice_supplier_list_cost
                     FROM  tb_invoice_supplier_list 
                     WHERE invoice_supplier_id = '$id' ";   
                      
          $sql_delete=[];
+
          if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
              while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                  $sql_delete [] = "
-                     CALL delete_stock('".
+                     CALL delete_stock_supplier('".
                      $row['stock_group_id']."','".
-                     $row['invoice_supplier_list_id']."','in');
+                     $row['invoice_supplier_list_id']."','".
+                     $row['product_id']."','".
+                     $row['invoice_supplier_list_qty']."','".
+                     $row['invoice_supplier_list_cost']."'".
+                     ");
                  ";
                 
              }
@@ -337,6 +343,8 @@ class InvoiceSupplierModel extends BaseModel{
          }
  
          for($i = 0 ; $i < count($sql_delete); $i++){
+
+            //echo $sql_delete[$i] . "<br><br>";
              mysqli_query($this->db,$sql_delete[$i], MYSQLI_USE_RESULT);
          }
  
@@ -346,8 +354,6 @@ class InvoiceSupplierModel extends BaseModel{
 
         $sql = " DELETE FROM tb_invoice_supplier WHERE invoice_supplier_id = '$id' ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
-
-        
 
     }
 

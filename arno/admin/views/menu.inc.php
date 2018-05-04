@@ -135,6 +135,9 @@
                             <div class="nav-title">ระบบขายสินค้า</div>
                         </li>
                         <li>
+                            <a href="?app=quotation"><i class="fa fa-database fa-fw" aria-hidden="true"></i>ใบเสนอราคา (Quotation) </a>
+                        </li>
+                        <li>
                             <a href="?app=invoice_customer"><i class="fa  fa-file-pdf-o" aria-hidden="true"></i> ใบกำกับภาษี (Customer Invoice)</a>
                         </li>
                         <li>
@@ -153,7 +156,10 @@
                             <div class="nav-title">ระบบคลังสินค้า</div>
                         </li>
                         <li>
-                            <a href="?app=stock_group"><i class="fa fa-database fa-fw" aria-hidden="true"></i>คลังสินค้า (Stock) </a>
+                            <a href="?app=search_product"><i class="fa fa-search fa-fw" aria-hidden="true"></i>ค้นหาสินค้า (Search product) </a>
+                        </li>
+                        <li>
+                            <a href="?app=stock_type"><i class="fa fa-database fa-fw" aria-hidden="true"></i>คลังสินค้า (Stock) </a>
                         </li>
                         <li>
                             <a href="?app=stock_move"><i class="fa fa-share-square" aria-hidden="true"></i> ใบโอนคลังสินค้า (Move Stock)</a>

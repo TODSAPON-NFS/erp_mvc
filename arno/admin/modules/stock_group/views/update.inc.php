@@ -47,14 +47,46 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=stock_group&action=edit" enctype="multipart/form-data">
+                <form role="form" method="post" onsubmit="return check();" action="index.php?app=stock_group&action=edit&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_group["stock_group_id"];?>" enctype="multipart/form-data">
                     <input type="hidden" name="stock_group_id" value="<?PHP echo $stock_group["stock_group_id"];?>" />
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label>ชื่อคลังสินค้า / Stock Name. <font color="#F00"><b>*</b></font></label>
                                 <input id="stock_group_name" name="stock_group_name" class="form-control" value="<?PHP echo $stock_group['stock_group_name'];?>">
                                 <p class="help-block">Example : Main Stock</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>ผู้ดูแล / Employee  <font color="#F00"><b>*</b></font> </label>
+                                <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true">
+                                    <option value="">Select</option>
+                                    <?php 
+                                    for($i =  0 ; $i < count($users) ; $i++){
+                                    ?>
+                                    <option value="<?php echo $users[$i]['user_id'] ?>" <?PHP if( $users[$i]['user_id'] == $stock_group['employee_id']){ ?> SELECTED <?PHP }?> ><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
+                                    <?
+                                    }
+                                    ?>
+                                </select>
+                                <p class="help-block">Example : Thana Tepchuleepornsil.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>ประเภทคลังสินค้า / Employee  <font color="#F00"><b>*</b></font> </label>
+                                <select id="stock_type_id" name="stock_type_id" class="form-control select" data-live-search="true">
+                                    <option value="">Select</option>
+                                    <?php 
+                                    for($i =  0 ; $i < count($stock_types) ; $i++){
+                                    ?>
+                                    <option value="<?php echo $stock_types[$i]['stock_type_id'] ?>" <?PHP if( $stock_types[$i]['stock_type_id'] == $stock_group['stock_type_id']){ ?> SELECTED <?PHP }?> ><?php echo $stock_types[$i]['stock_type_code'] ?> - <?php echo $stock_types[$i]['stock_type_name'] ?></option>
+                                    <?
+                                    }
+                                    ?>
+                                </select>
+                                <p class="help-block">Example : Thana Tepchuleepornsil.</p>
                             </div>
                         </div>
                     </div>

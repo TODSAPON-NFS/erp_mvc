@@ -61,7 +61,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         $sql = " SELECT *   
         FROM tb_customer_purchase_order 
         LEFT JOIN tb_user ON tb_customer_purchase_order.employee_id = tb_user.user_id 
-        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user.user_position_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
         LEFT JOIN tb_customer ON tb_customer_purchase_order.customer_id = tb_customer.customer_id 
         WHERE customer_purchase_order_id = '$id' 
         "; 

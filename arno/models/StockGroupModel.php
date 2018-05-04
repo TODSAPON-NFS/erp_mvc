@@ -7,8 +7,14 @@ class StockGroupModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getStockGroupBy(){
-        $sql = "  SELECT * FROM tb_stock_group WHERE 1 ";
+    function getStockGroupBy($stock_type_id = ""){
+        
+        $str = "";
+        if($stock_type_id != ""){
+            $str = " WHERE stock_type_id = '$stock_type_id' ";
+        }
+
+        $sql = "  SELECT * FROM tb_stock_group $str ";
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -92,6 +98,8 @@ class StockGroupModel extends BaseModel{
 
     function updateStockGroupByID($id,$data = []){
         $sql = " UPDATE tb_stock_group SET 
+        stock_type_id= '".$data['stock_type_id']."' , 
+        employee_id = '".$data['employee_id']."' , 
         stock_group_name = '".$data['stock_group_name']."' , 
         stock_group_detail = '".$data['stock_group_detail']."' , 
         stock_group_notification = '".$data['stock_group_notification']."' , 
@@ -109,7 +117,9 @@ class StockGroupModel extends BaseModel{
     }
 
     function insertStockGroup($data = []){
-        $sql = " INSERT INTO tb_stock_group (
+        $sql = " INSERT INTO tb_stock_group ( 
+            stock_type_id,
+            employee_id, 
             stock_group_name, 
             stock_group_detail, 
             stock_group_notification, 
@@ -118,6 +128,8 @@ class StockGroupModel extends BaseModel{
             addby,
             adddate
         ) VALUES (  
+            '".$data['stock_type_id']."', 
+            '".$data['employee_id']."', 
             '".$data['stock_group_name']."', 
             '".$data['stock_group_detail']."', 
             '".$data['stock_group_notification']."', 

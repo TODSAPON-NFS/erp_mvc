@@ -55,7 +55,7 @@ class RegrindSupplierModel extends BaseModel{
         $sql = " SELECT *   
         FROM tb_regrind_supplier 
         LEFT JOIN tb_user ON tb_regrind_supplier.employee_id = tb_user.user_id 
-        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user.user_position_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
         LEFT JOIN tb_supplier ON tb_regrind_supplier.supplier_id = tb_supplier.supplier_id 
         WHERE regrind_supplier_id = '$id' 
         ";

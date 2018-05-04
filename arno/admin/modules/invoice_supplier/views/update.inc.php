@@ -82,6 +82,8 @@
     
     function delete_row(id){
         $(id).closest('tr').remove();
+        calculateAll();
+        calculateCost();
      }
 
      function show_data(id){
@@ -241,6 +243,7 @@
                             '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'" readonly />'+  
                             '<input type="hidden" name="stock_group_id[]" value="'+ data_buffer[i].stock_group_id +'" readonly />'+    
                             '<input type="hidden" name="invoice_supplier_list_id[]" value="0" />'+  
+                            '<input type="hidden" name="invoice_supplier_list_cost[]" value="0" readonly />'+ 
                             '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
                         '</td>'+
                         '<td>'+
@@ -249,9 +252,9 @@
                             '<input type="text" class="form-control" name="invoice_supplier_list_product_detail[]" placeholder="Product Detail (Supplier)" />'+
                             '<input type="text" class="form-control" name="invoice_supplier_list_remark[]" placeholder="Remark"/>'+
                         '</td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_supplier_list_qty[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_supplier_list_qty +'" /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_supplier_list_price[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_supplier_list_price +'" /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_supplier_list_total[]" onchange="update_sum(this);"  value="'+ (data_buffer[i].invoice_supplier_list_qty * data_buffer[i].invoice_supplier_list_price) +'" readonly /></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_supplier_list_qty[]"  onchange="update_sum(this);" value="'+ data_buffer[i].invoice_supplier_list_qty +'" /></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_supplier_list_price[]"  onchange="update_sum(this);" value="'+ data_buffer[i].invoice_supplier_list_price +'" /></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_supplier_list_total[]"  onchange="update_sum(this);"  value="'+ (data_buffer[i].invoice_supplier_list_qty * data_buffer[i].invoice_supplier_list_price) +'" readonly /></td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -298,6 +301,9 @@
                     '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+    
                     '<input type="hidden" name="stock_group_id[]" value="<?PHP $stock_group_id?>" />'+  
                     '<input type="hidden" name="invoice_supplier_list_id[]" value="0" />'+  
+                    '<input type="hidden" name="invoice_supplier_list_cost[]" value="0" readonly />'+ 
+                    '<input type="hidden" name="old_cost[]" value="0" readonly />'+
+                    '<input type="hidden" name="old_qty[]" value="0" readonly />'+
                     '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td>'+
@@ -306,9 +312,9 @@
                     '<input type="text" class="form-control" name="invoice_supplier_list_product_detail[]" placeholder="Product Detail (Supplier)" />'+
                     '<input type="text" class="form-control" name="invoice_supplier_list_remark[]" placeholder="Remark"/>'+
                 '</td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_supplier_list_qty[]" onchange="update_sum(this);" /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_supplier_list_price[]" onchange="update_sum(this);" /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_supplier_list_total[]" onchange="update_sum(this);" readonly /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" name="invoice_supplier_list_qty[]" onchange="update_sum(this);" /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" name="invoice_supplier_list_price[]" onchange="update_sum(this);" /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" name="invoice_supplier_list_total[]" onchange="update_sum(this);" readonly /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -336,6 +342,76 @@
         }else{
             $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', false);
         }
+    }
+
+
+    function calculateAll(){
+
+        var val = document.getElementsByName('invoice_supplier_list_total[]');
+        var total = 0.0;
+
+        for(var i = 0 ; i < val.length ; i++){
+            
+            total += parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),''));
+        }
+
+        $('#invoice_supplier_total_price').val(total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#invoice_supplier_vat_price').val((total * ($('#invoice_supplier_vat').val()/100.0)).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#invoice_supplier_net_price').val((total * ($('#invoice_supplier_vat').val()/100.0) + total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        calculateCost();
+    }
+
+    function calculateCost(){
+
+        var invoice_supplier_list_cost = document.getElementsByName('invoice_supplier_list_cost[]');
+        var invoice_supplier_list_total = document.getElementsByName('invoice_supplier_list_total[]');
+        var invoice_supplier_list_qty = document.getElementsByName('invoice_supplier_list_qty[]');
+        var exchange_rate_baht = parseFloat(document.getElementById('exchange_rate_baht').value.toString().replace(new RegExp(',', 'g'),''));
+        var invoice_supplier_total_price = parseFloat(document.getElementById('invoice_supplier_total_price').value.toString().replace(new RegExp(',', 'g'),''));
+
+
+        var invoice_supplier_total_price_ex = 0; 
+        var import_duty = parseFloat(document.getElementById('import_duty').value.toString().replace(new RegExp(',', 'g'),''));
+        var freight_in = parseFloat(document.getElementById('freight_in').value.toString().replace(new RegExp(',', 'g'),''));
+
+
+        if(isNaN(exchange_rate_baht)){
+            exchange_rate_baht = 0.0;
+        }
+        if(isNaN(invoice_supplier_total_price)){
+            invoice_supplier_total_price = 0.0;
+        }
+
+        if(isNaN(import_duty)){
+            import_duty = 0.0;
+        }
+
+        if(isNaN(freight_in)){
+            freight_in = 0.0;
+        }
+
+        invoice_supplier_total_price_ex = invoice_supplier_total_price * exchange_rate_baht; 
+
+        for(var i=0; i < invoice_supplier_list_cost.length; i++){
+
+            var cost_price_total = parseFloat(invoice_supplier_list_total[i].value.toString().replace(new RegExp(',', 'g'),'')) * exchange_rate_baht ;
+            var qty = parseFloat(invoice_supplier_list_qty[i].value.toString().replace(new RegExp(',', 'g'),''));
+            var cost_price_duty = cost_price_total / invoice_supplier_total_price_ex * import_duty;
+            var cost_price_f = cost_price_total / invoice_supplier_total_price_ex * freight_in;
+            var cost_total = (cost_price_f + cost_price_duty + cost_price_total)/qty;
+
+            if (invoice_supplier_total_price_ex > 0){
+                invoice_supplier_list_cost[i].value = cost_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+            }else{
+                invoice_supplier_list_cost[i].value = 0;                
+            }
+        }
+        
+        document.getElementById('exchange_rate_baht').value = exchange_rate_baht.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        document.getElementById('invoice_supplier_total_price').value = invoice_supplier_total_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        document.getElementById('import_duty').value = import_duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        document.getElementById('freight_in').value = freight_in.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
     }
 
 </script>
@@ -367,7 +443,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>รหัสผู้ขาย / Supplier Code <font color="#F00"><b>*</b></font></label>
-                                        <input id="supplier_code" name="supplier_code" class="form-control" value="<? echo $supplier['supplier_code'];?>" readonly>
+                                        <input id="supplier_code" name="supplier_code"  class="form-control" value="<? echo $supplier['supplier_code'];?>" readonly>
                                         <p class="help-block">Example : A0001.</p>
                                     </div>
                                 </div>
@@ -412,7 +488,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>Exchange rate Baht<font color="#F00"><b>*</b></font></label>
-                                            <input  id="exchange_rate_baht" name="exchange_rate_baht" class="form-control" value="<?php echo $exchange_rate_baht['exchange_rate_baht_value'];?>" readonly>
+                                            <input  id="exchange_rate_baht" name="exchange_rate_baht" onchange="calculateCost();" class="form-control" value="<?php echo $exchange_rate_baht['exchange_rate_baht_value'];?>">
                                             <p class="help-block">Example : 0.</p>
                                         </div>
                                     </div>
@@ -420,7 +496,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>Import duty<font color="#F00"><b>*</b></font></label>
-                                            <input  id="import_duty" name="import_duty" class="form-control" value="<?php echo $invoice_supplier['import_duty'];?>" >
+                                            <input  id="import_duty" name="import_duty" onchange="calculateCost();" class="form-control" value="<?php echo $invoice_supplier['import_duty'];?>" >
                                             <p class="help-block">Example : 0.</p>
                                         </div>
                                     </div>
@@ -428,7 +504,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>Freight in<font color="#F00"><b>*</b></font></label>
-                                            <input  id="freight_in" name="freight_in" class="form-control" value="<?php echo $invoice_supplier['freight_in'];?>" >
+                                            <input  id="freight_in" name="freight_in" onchange="calculateCost();" class="form-control" value="<?php echo $invoice_supplier['freight_in'];?>" >
                                             <p class="help-block">Example : 0.</p>
                                         </div>
                                     </div>
@@ -526,13 +602,38 @@
                         <tbody>
                             <?php 
                             $total = 0;
+                            $cost_duty = 0;
+                            $cost_price_total_s = 0;
+                            $cost_price_ex_total_s = 0;
                             for($i=0; $i < count($invoice_supplier_lists); $i++){
+                                $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
+                                $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
+                                $cost_duty += $cost_qty * $cost_price;
+                            }
+
+
+                            for($i=0; $i < count($invoice_supplier_lists); $i++){
+
+                                $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
+                                $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
+                                $cost_price_ex = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] * $exchange_rate_baht['exchange_rate_baht_value'];
+
+                                $cost_price_total = $cost_qty * $cost_price;
+                                $cost_price_ex_total = $cost_qty * $cost_price_ex;
+
+
+                                $cost_price_duty = $cost_price_total / $cost_duty * $invoice_supplier['import_duty'];
+                                $cost_price_f = $cost_price_total / $cost_duty * $invoice_supplier['freight_in'];
+                                $cost_total = $cost_price_f + $cost_price_duty + $cost_price_ex_total;
                             ?>
                             <tr class="odd gradeX">
                                 <td>
                                     <input type="hidden" name="purchase_order_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['purchase_order_list_id'];?>" />
                                     <input type="hidden" name="stock_group_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['stock_group_id'];?>" />
                                     <input type="hidden" name="invoice_supplier_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id'];?>" />
+                                    <input type="hidden" name="invoice_supplier_list_cost[]" value="<?PHP echo  $cost_total;?>" />
+                                    <input type="hidden" name="old_cost[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_cost'];?>" />
+                                    <input type="hidden" name="old_qty[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];?>" />
                                     <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
                                         <option value="">Select</option>
                                         <?php 

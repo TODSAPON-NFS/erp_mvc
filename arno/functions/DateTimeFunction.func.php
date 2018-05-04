@@ -1,9 +1,9 @@
 <?PHP 
 class DateTimeFunction{
-    function changeDateFormat($date){
+    function changeDateFormat($date,$char = '-'){
         $dt = explode(' ',$date);
-        $dt = explode('-',$dt[0]);
-        return $dt[2].'-'.$dt[1].'-'.$dt[0];
+        $dt = explode($char,$dt[0]);
+        return $dt[2].$char.$dt[1].$char.$dt[0];
     }
 }
 

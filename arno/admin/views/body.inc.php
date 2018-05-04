@@ -57,6 +57,8 @@
     
     else if($_GET['app'] == "stock_move"){
         require_once("modules/stock_move/views/index.inc.php");
+    }else if($_GET['app'] == "stock_type"){
+        require_once("modules/stock_type/views/index.inc.php");
     }else if($_GET['app'] == "stock_group"){
         require_once("modules/stock_group/views/index.inc.php");
     }else if($_GET['app'] == "stock"){
@@ -100,5 +102,10 @@
         require_once("modules/delivery_note_customer/views/index.inc.php");
     }else if($_GET['app'] == "delivery_note_supplier"){
         require_once("modules/delivery_note_supplier/views/index.inc.php");
+    }else if($_GET['app'] == "quotation"){
+        require_once("modules/quotation/views/index.inc.php");
+    }else if($_GET['app'] == "search_product"){
+        require_once("modules/search_product/views/index.inc.php");
     }
+
 ?>

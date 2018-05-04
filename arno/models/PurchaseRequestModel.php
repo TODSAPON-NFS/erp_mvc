@@ -55,7 +55,7 @@ class PurchaseRequestModel extends BaseModel{
         $sql = " SELECT *   
         FROM tb_purchase_request 
         LEFT JOIN tb_user ON tb_purchase_request.employee_id = tb_user.user_id 
-        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user.user_position_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
         LEFT JOIN tb_customer ON tb_purchase_request.customer_id = tb_customer.customer_id 
         WHERE purchase_request_id = '$id' 
         ";

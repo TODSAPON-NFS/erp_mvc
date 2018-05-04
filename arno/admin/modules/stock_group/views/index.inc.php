@@ -1,25 +1,37 @@
 <?php
 require_once('../models/StockGroupModel.php');
 require_once('../models/StockModel.php');
+require_once('../models/UserModel.php');
+require_once('../models/StockTypeModel.php');
+
 
 $path = "modules/stock_group/views/";
 $model_stock_group = new StockGroupModel;
 $model_stock = new StockModel;
+$model_user = new UserModel;
+$model_stock_type = new StockTypeModel;
+
 
 $stock_group_id = $_GET['id'];
+$stock_type_id = $_GET['stock_type_id'];
+
 
 if(!isset($_GET['action'])){
 
-    $stock_groups = $model_stock_group->getStockGroupBy();
+    $stock_groups = $model_stock_group->getStockGroupBy($stock_type_id);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
 
+    $users = $model_user->getUserBy();
+    $stock_types = $model_stock_type->getStockTypeBy();
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
    
     $stock_group = $model_stock_group->getStockGroupByID($stock_group_id);
+    $users = $model_user->getUserBy();
+    $stock_types = $model_stock_type->getStockTypeBy();
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'delete'){
@@ -39,6 +51,9 @@ if(!isset($_GET['action'])){
     if(isset($_POST['stock_group_name'])){
 
         $data = [];
+        $data['stock_type_id'] = $_POST['stock_type_id'];
+        $data['employee_id'] = $_POST['employee_id'];
+        $data['stock_group_name'] = $_POST['stock_group_name'];
         $data['stock_group_name'] = $_POST['stock_group_name'];
         $data['stock_group_detail'] = $_POST['stock_group_detail'];
         $data['stock_group_notification'] = $_POST['stock_group_notification'];
@@ -52,18 +67,18 @@ if(!isset($_GET['action'])){
             $model_stock->setTableName($table_name);
             $model_stock->createStockTable();
 ?>
-        <script>window.location="index.php?app=stock_group&action=update&id=<?php echo $id?>"</script>
+        <script>window.location="index.php?app=stock_group&action=update&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $id?>"</script>
 <?php
         }else{
 ?>
-        <script>window.location="index.php?app=stock_group"</script>
+        <script>window.location="index.php?app=stock_group&stock_type_id=<?php echo $stock_type_id;?>"</script>
 <?php
         }
                     
      
     }else{
         ?>
-    <script>window.location="index.php?app=stock_group"</script>
+    <script>window.location="index.php?app=stock_group&stock_type_id=<?php echo $stock_type_id;?>"</script>
         <?php
     }
     
@@ -71,6 +86,8 @@ if(!isset($_GET['action'])){
     
     if(isset($_POST['stock_group_name'])){
         $data = [];
+        $data['stock_type_id'] = $_POST['stock_type_id'];
+        $data['employee_id'] = $_POST['employee_id'];
         $data['stock_group_name'] = $_POST['stock_group_name'];
         $data['stock_group_detail'] = $_POST['stock_group_detail'];
         $data['stock_group_notification'] = $_POST['stock_group_notification'];
@@ -80,24 +97,24 @@ if(!isset($_GET['action'])){
         $user = $model_stock_group->updateStockGroupByID($_POST['stock_group_id'],$data);
         if($user){
 ?>
-        <script>window.location="index.php?app=stock_group"</script>
+        <script>window.location="index.php?app=stock_group&stock_type_id=<?php echo $stock_type_id;?>"</script>
 <?php
         }else{
 ?>
-        <script>window.location="index.php?app=stock_group"</script>
+        <script>window.location="index.php?app=stock_group&stock_type_id=<?php echo $stock_type_id;?>"</script>
 <?php
         }
                     
     }else{
         ?>
-    <script>window.location="index.php?app=stock_group"</script>
+    <script>window.location="index.php?app=stock_group&stock_type_id=<?php echo $stock_type_id;?>"</script>
         <?php
     }
     
                  
 } else {
 
-    $stock_groups = $model_stock_group->getStockGroupBy();
+    $stock_groups = $model_stock_group->getStockGroupBy($stock_type_id);
     require_once($path.'view.inc.php');
 
 }

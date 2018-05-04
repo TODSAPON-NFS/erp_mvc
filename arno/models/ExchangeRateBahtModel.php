@@ -53,6 +53,7 @@ class ExchangeRateBahtModel extends BaseModel{
         AND STR_TO_DATE(tb_exchange_rate_baht.exchange_rate_baht_date,'%Y-%m-%d %H:%i:%s') = STR_TO_DATE('$date 00:00:00','%Y-%m-%d %H:%i:%s') 
         ";
 
+
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

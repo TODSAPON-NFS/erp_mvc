@@ -60,7 +60,7 @@ class DebitNoteModel extends BaseModel{
         FROM tb_debit_note 
         LEFT JOIN tb_invoice_customer ON tb_debit_note.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
         LEFT JOIN tb_user ON tb_debit_note.employee_id = tb_user.user_id 
-        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user.user_position_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
         LEFT JOIN tb_customer ON tb_debit_note.customer_id = tb_customer.customer_id 
         WHERE debit_note_id = '$id' 
         ";

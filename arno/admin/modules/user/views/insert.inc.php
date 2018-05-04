@@ -100,16 +100,11 @@
     }
 
     function getAmphur(){
-        
         var user_province = document.getElementById("user_province").value;
         $.post( "controllers/getAmphur.php", { 'province': user_province }, function( data ) {
             $("#user_amphur").html(data);
             $("#user_amphur").selectpicker('refresh');
-
         });
-
-        
-        
     }
 
     function getDistrict(){

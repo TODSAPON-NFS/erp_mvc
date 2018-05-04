@@ -69,6 +69,7 @@ if(!isset($_GET['action'])){
     $last_code = $invoice_supplier_model->getInvoiceSupplierLastID($first_code,3);
    
 
+    $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($date_time_function_model->changeDateFormat($invoice_supplier['invoice_supplier_date_recieve']),$supplier['currency_id']);
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
@@ -123,9 +124,9 @@ if(!isset($_GET['action'])){
         $data['invoice_supplier_address'] = $_POST['invoice_supplier_address'];
         $data['invoice_supplier_tax'] = $_POST['invoice_supplier_tax'];
         $data['invoice_supplier_term'] = $_POST['invoice_supplier_term'];
-        $data['invoice_supplier_due'] = $_POST['invoice_supplier_due'];
-        $data['import_duty'] = $_POST['import_duty'];
-        $data['freight_in'] = $_POST['freight_in'];
+        $data['invoice_supplier_due'] = $_POST['invoice_supplier_due']; 
+        $data['import_duty'] = (float)filter_var($_POST['import_duty'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['freight_in'] = (float)filter_var($_POST['freight_in'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['addby'] = $user[0][0];
 
         $output = $invoice_supplier_model->insertInvoiceSupplier($data);
@@ -136,6 +137,7 @@ if(!isset($_GET['action'])){
             $invoice_supplier_list_product_name = $_POST['invoice_supplier_list_product_name'];
             $invoice_supplier_list_product_detail = $_POST['invoice_supplier_list_product_detail'];
             $invoice_supplier_list_qty = $_POST['invoice_supplier_list_qty'];
+            $invoice_supplier_list_cost = $_POST['invoice_supplier_list_cost'];
             $invoice_supplier_list_price = $_POST['invoice_supplier_list_price'];
             $invoice_supplier_list_total = $_POST['invoice_supplier_list_total'];
             $invoice_supplier_list_remark = $_POST['invoice_supplier_list_remark'];
@@ -154,6 +156,7 @@ if(!isset($_GET['action'])){
                     $data_sub['invoice_supplier_list_qty'] = (float)filter_var($invoice_supplier_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data_sub['invoice_supplier_list_price'] = (float)filter_var($invoice_supplier_list_price[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data_sub['invoice_supplier_list_total'] = (float)filter_var($invoice_supplier_list_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data_sub['invoice_supplier_list_cost'] = (float)filter_var($invoice_supplier_list_cost[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data_sub['invoice_supplier_list_remark'] = $invoice_supplier_list_remark[$i];
                     $data_sub['purchase_order_list_id'] = $purchase_order_list_id[$i];
                     $data_sub['stock_group_id'] = $stock_group_id[$i];
@@ -172,6 +175,7 @@ if(!isset($_GET['action'])){
                 $data_sub['invoice_supplier_list_qty'] = (float)filter_var($invoice_supplier_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['invoice_supplier_list_price'] = (float)filter_var($invoice_supplier_list_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['invoice_supplier_list_total'] = (float)filter_var($invoice_supplier_list_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data_sub['invoice_supplier_list_cost'] = (float)filter_var($invoice_supplier_list_cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['invoice_supplier_list_remark'] = $invoice_supplier_list_remark;
                 $data_sub['purchase_order_list_id'] = $purchase_order_list_id;
                 $data_sub['stock_group_id'] = $stock_group_id;
@@ -214,8 +218,8 @@ if(!isset($_GET['action'])){
         $data['invoice_supplier_tax'] = $_POST['invoice_supplier_tax'];
         $data['invoice_supplier_term'] = $_POST['invoice_supplier_term'];
         $data['invoice_supplier_due'] = $_POST['invoice_supplier_due'];
-        $data['import_duty'] = $_POST['import_duty'];
-        $data['freight_in'] = $_POST['freight_in'];
+        $data['import_duty'] = (float)filter_var($_POST['import_duty'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['freight_in'] = (float)filter_var($_POST['freight_in'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['addby'] = $user[0][0];
 
        
@@ -228,6 +232,7 @@ if(!isset($_GET['action'])){
         $invoice_supplier_list_qty = $_POST['invoice_supplier_list_qty'];
         $invoice_supplier_list_price = $_POST['invoice_supplier_list_price'];
         $invoice_supplier_list_total = $_POST['invoice_supplier_list_total'];
+        $invoice_supplier_list_cost = $_POST['invoice_supplier_list_cost'];
         $invoice_supplier_list_remark = $_POST['invoice_supplier_list_remark'];
         $purchase_order_list_id = $_POST['purchase_order_list_id'];
         $stock_group_id = $_POST['stock_group_id'];
@@ -246,6 +251,7 @@ if(!isset($_GET['action'])){
                 $data_sub['invoice_supplier_list_qty'] = (float)filter_var($invoice_supplier_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['invoice_supplier_list_price'] = (float)filter_var($invoice_supplier_list_price[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['invoice_supplier_list_total'] = (float)filter_var($invoice_supplier_list_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data_sub['invoice_supplier_list_cost'] = (float)filter_var($invoice_supplier_list_cost[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['invoice_supplier_list_remark'] = $invoice_supplier_list_remark[$i];
 
                 $data_sub['stock_group_id'] = $stock_group_id[$i];
@@ -269,6 +275,7 @@ if(!isset($_GET['action'])){
             $data_sub['invoice_supplier_list_qty'] = (float)filter_var($invoice_supplier_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data_sub['invoice_supplier_list_price'] = (float)filter_var($invoice_supplier_list_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data_sub['invoice_supplier_list_total'] = (float)filter_var($invoice_supplier_list_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data_sub['invoice_supplier_list_cost'] = (float)filter_var($invoice_supplier_list_cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data_sub['invoice_supplier_list_remark'] = $invoice_supplier_list_remark;
 
             $data_sub['stock_group_id'] = $stock_group_id;

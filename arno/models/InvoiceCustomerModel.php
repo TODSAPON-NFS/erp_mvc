@@ -76,7 +76,7 @@ class InvoiceCustomerModel extends BaseModel{
         $sql = " SELECT *   
         FROM tb_invoice_customer 
         LEFT JOIN tb_user ON tb_invoice_customer.employee_id = tb_user.user_id 
-        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user.user_position_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
         LEFT JOIN tb_customer ON tb_invoice_customer.customer_id = tb_customer.customer_id 
         WHERE invoice_customer_id = '$id' 
         ";
@@ -235,6 +235,7 @@ class InvoiceCustomerModel extends BaseModel{
         customer_purchase_order_product_detail as invoice_customer_list_product_detail,
         customer_purchase_order_list_price as invoice_customer_list_price, 
         customer_purchase_order_list_price_sum as invoice_customer_list_total, 
+        customer_purchase_order_list_price_sum as invoice_customer_list_cost,
         CONCAT('Order for customer PO : ',customer_purchase_order_code) as invoice_customer_list_remark 
         FROM tb_customer_purchase_order 
         LEFT JOIN tb_customer_purchase_order_list as tb2 ON tb_customer_purchase_order.customer_purchase_order_id = tb2.customer_purchase_order_id 
@@ -318,22 +319,27 @@ class InvoiceCustomerModel extends BaseModel{
     function deleteInvoiceCustomerByID($id){
 
 
-        $sql = "    SELECT invoice_customer_list_id, stock_group_id 
-                    FROM  tb_invoice_customer_list 
-                    WHERE invoice_customer_id = '$id' ";  
-
-        $sql_delete=[];
-         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                 $sql_delete [] = "
-                     CALL delete_stock('".
-                     $row['stock_group_id']."','".
-                     $row['invoice_customer_list_id']."','out');
-                 ";
+        $sql = "    SELECT invoice_customer_list_id, stock_group_id, product_id, invoice_customer_list_qty, invoice_customer_list_cost
+        FROM  tb_invoice_customer_list 
+        WHERE invoice_customer_id = '$id' ";   
                 
-             }
-             $result->close();
-         }
+        $sql_delete=[];
+
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+            $sql_delete [] = "
+                CALL delete_stock_customer('".
+                $row['stock_group_id']."','".
+                $row['invoice_customer_list_id']."','".
+                $row['product_id']."','".
+                $row['invoice_customer_list_qty']."','".
+                $row['invoice_customer_list_cost']."'".
+                ");
+            ";
+            
+        }
+        $result->close();
+        }
  
          for($i = 0 ; $i < count($sql_delete); $i++){
              mysqli_query($this->db,$sql_delete[$i], MYSQLI_USE_RESULT);

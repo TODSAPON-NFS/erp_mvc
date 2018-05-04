@@ -111,7 +111,7 @@
                             <td><?php echo $i+1; ?></td>
                             <td><?php echo $supplier_orders_out[$i]['supplier_name_en']; ?> (<?php echo $supplier_orders_out[$i]['supplier_name_th']; ?>)</td>
                             <td>
-                                <a href="?app=invoice_supplier&action=insert&supplier_id=<?php echo $supplier_orders_out[$i]['supplier_id'];?>">
+                                <a href="?app=invoice_supplier&action=insert&sort=ภายนอกประเทศ&supplier_id=<?php echo $supplier_orders_out[$i]['supplier_id'];?>">
                                     <i class="fa fa-plus-square" aria-hidden="true"></i>
                                 </a>
 
@@ -141,7 +141,7 @@
                             <td><?php echo $i+1; ?></td>
                             <td><?php echo $purchase_orders_out[$i]['purchase_order_code']; ?> (<?php echo $purchase_orders_out[$i]['supplier_name_th']; ?>) </td>
                             <td>
-                                <a href="?app=invoice_supplier&action=insert&supplier_id=<?php echo $purchase_orders_out[$i]['supplier_id'];?>&purchase_order_id=<?php echo $purchase_orders_out[$i]['purchase_order_id'];?>">
+                                <a href="?app=invoice_supplier&action=insert&sort=ภายนอกประเทศ&supplier_id=<?php echo $purchase_orders_out[$i]['supplier_id'];?>&purchase_order_id=<?php echo $purchase_orders_out[$i]['purchase_order_id'];?>">
                                     <i class="fa fa-plus-square" aria-hidden="true"></i>
                                 </a>
 

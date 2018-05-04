@@ -76,12 +76,12 @@ class InvoiceCustomerListModel extends BaseModel{
             $id = mysqli_insert_id($this->db);
 
             $sql = "
-                CALL insert_stock('".
+                CALL insert_stock_customer('".
                 $data['stock_group_id']."','".
                 $id."','".
                 $data['product_id']."','".
                 $data['invoice_customer_list_qty']."','".
-                $data['stock_date']."','out');
+                $data['stock_date']."','".$data['invoice_customer_list_cost']."');
             ";
 
             //echo $sql . "<br><br>";
@@ -115,12 +115,12 @@ class InvoiceCustomerListModel extends BaseModel{
 
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $sql = "
-                CALL update_stock('".
+                CALL update_stock_customer('".
                 $data['stock_group_id']."','".
                 $id."','".
                 $data['product_id']."','".
                 $data['invoice_customer_list_qty']."','".
-                $data['stock_date']."','out');
+                $data['stock_date']."','".$data['invoice_customer_list_cost']."');
             ";
 
             //echo $sql . "<br><br>";
@@ -189,9 +189,9 @@ class InvoiceCustomerListModel extends BaseModel{
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $sql_delete [] = "
-                    CALL delete_stock('".
+                    CALL delete_stock_customer('".
                     $row['stock_group_id']."','".
-                    $row['invoice_customer_list_id']."','out');
+                    $row['invoice_customer_list_id']."');
                 ";
                
             }

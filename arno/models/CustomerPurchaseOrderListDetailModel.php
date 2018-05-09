@@ -21,11 +21,14 @@ class CustomerPurchaseOrderListDetailModel extends BaseModel{
                     tb_supplier.supplier_name_en,
                     qty, 
                     customer_purchase_order_list_id ,
+                    stock_type_code,
+                    stock_type_name,
                     customer_purchase_order_list_detail_id 
                     FROM tb_customer_purchase_order_list_detail 
                     LEFT JOIN tb_supplier ON tb_customer_purchase_order_list_detail.supplier_id = tb_supplier.supplier_id 
                     LEFT JOIN tb_stock_group as tb_1 ON tb_customer_purchase_order_list_detail.stock_group_id = tb_1.stock_group_id  
                     LEFT JOIN tb_stock_group as tb_2 ON tb_customer_purchase_order_list_detail.stock_hold_id = tb_2.stock_group_id 
+                    LEFT JOIN tb_stock_type ON tb_1.stock_type_id = tb_stock_type.stock_type_id 
                     WHERE $str ";
 
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {

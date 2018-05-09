@@ -185,7 +185,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>หมายเลขใบยืม / DNS Code  <font color="#F00"><b>*</b></font></label>
-                                        <input id="delivery_note_supplier_code" name="delivery_note_supplier_code" class="form-control" value="<?PHP echo $delivery_note_supplier['delivery_note_supplier_code']; ?>" readonly>
+                                        <input id="delivery_note_supplier_code" name="delivery_note_supplier_code" class="form-control" value="<?php echo $delivery_note_supplier['delivery_note_supplier_code']; ?>-<?PHP echo strtoupper(substr($delivery_note_supplier['employee_name'],0,2));?>" readonly>
                                         <p class="help-block">Example : DNS1801001.</p>
                                     </div>
                                 </div>

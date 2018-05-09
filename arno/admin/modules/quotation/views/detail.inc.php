@@ -75,7 +75,10 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่ออกใบเสนอราคา / Quotation Date</label>
-                                        <p class="help-block"><?PHP echo $quotation['quotation_date'];?></p>
+                                        <p class="help-block">
+                                            <?PHP echo $quotation['quotation_date'];?>
+                                            <?php if($quotation['quotation_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $quotation['quotation_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($quotation['quotation_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?>
+                                        </p>
                                     </div>
                                 </div>
 

@@ -11,6 +11,11 @@ class PurchaseRequestModel extends BaseModel{
         $sql = " 
         SELECT purchase_request_id, 
         purchase_request_date, 
+        purchase_request_rewrite_id,
+        IFNULL((
+            SELECT COUNT(*) FROM tb_purchase_request WHERE purchase_request_rewrite_id = tb.purchase_request_id 
+        ),0) as count_rewrite,
+        purchase_request_rewrite_no,
         purchase_request_code, 
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as request_name, 
         purchase_request_type, 
@@ -18,8 +23,9 @@ class PurchaseRequestModel extends BaseModel{
         IFNULL(CONCAT(tb2.user_name,' ',tb2.user_lastname),'-') as accept_name, 
         purchase_request_cancelled, 
         purchase_request_remark 
-        FROM tb_purchase_request LEFT JOIN tb_user as tb1 ON tb_purchase_request.employee_id = tb1.user_id 
-        LEFT JOIN tb_user as tb2 ON tb_purchase_request.purchase_request_accept_by = tb2.user_id 
+        FROM tb_purchase_request as tb 
+        LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
+        LEFT JOIN tb_user as tb2 ON tb.purchase_request_accept_by = tb2.user_id 
         ORDER BY STR_TO_DATE(purchase_request_date,'%Y-%m-%d %H:%i:%s') DESC 
          ";
          /*WHERE STR_TO_DATE(purchase_request_date,'%Y-%m-%d %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') 
@@ -164,8 +170,30 @@ class PurchaseRequestModel extends BaseModel{
     
 
     function insertPurchaseRequest($data = []){
-        $sql = " INSERT INTO tb_purchase_request (purchase_request_code,purchase_request_type,customer_id,employee_id,purchase_request_date,purchase_request_remark,addby,adddate) 
-        VALUES ('".$data['purchase_request_code']."','".$data['purchase_request_type']."','".$data['customer_id']."','".$data['employee_id']."','".$data['purchase_request_date']."','".$data['purchase_request_remark']."','".$data['addby']."',NOW()); 
+        $sql = " INSERT INTO tb_purchase_request (
+            purchase_request_rewrite_id,
+            purchase_request_rewrite_no,
+            purchase_request_code,
+            purchase_request_type,
+            customer_id,
+            employee_id,
+            purchase_request_date,
+            purchase_request_remark,
+            purchase_request_accept_status,
+            addby,
+            adddate) 
+        VALUES ('".
+        $data['purchase_request_rewrite_id']."','".
+        $data['purchase_request_rewrite_no']."','".
+        $data['purchase_request_code']."','".
+        $data['purchase_request_type']."','".
+        $data['customer_id']."','".
+        $data['employee_id']."','".
+        $data['purchase_request_date']."','".
+        $data['purchase_request_remark']."','".
+        $data['purchase_request_accept_status']."','".
+        $data['addby']."',".
+        "NOW()); 
         ";
 
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {

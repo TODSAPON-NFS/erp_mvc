@@ -30,6 +30,7 @@ if(!isset($_GET['action'])){
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
+    $first_date = date("d")."-".date("m")."-".date("Y");
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
     require_once($path.'insert.inc.php');

@@ -56,15 +56,6 @@
         }
         
      }
-
-    function m_show_data(id){
-        var product_name = "";
-        var data = product_data.filter(val => val['product_id'] == $(id).val());
-        if(data.length > 0){
-            $(id).closest('tr').children('td').children('input[name="m_product_name[]"]').val( data[0]['product_name'] );
-        }
-        
-     }
      
      function add_row(id){
          var index = 0;
@@ -76,12 +67,13 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
-                    '<select class="form-control select" type="text" name="m_product_id[]" onchange="m_show_data(this);" data-live-search="true" ></select>'+
+                    '<input type="hidden" class="form-control" name="purchase_request_list_id[]" value="0" />'+
+                    '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="m_product_name[]" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="m_purchase_request_list_qty[]" /></td>'+
-                '<td><input type="text" class="form-control" name="m_purchase_request_list_delivery[]" readonly /></td>'+
-                '<td><input type="text" class="form-control" name="m_purchase_request_list_remark[]" /></td>'+
+                '<td><input type="text" class="form-control" name="product_name[]" readonly /></td>'+
+                '<td><input type="text" class="form-control" style="text-align:right;" name="purchase_request_list_qty[]"  value="1"/></td>'+
+                '<td><input type="text" class="form-control" name="purchase_request_list_delivery[]" readonly /></td>'+
+                '<td><input type="text" class="form-control" name="purchase_request_list_remark[]" /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -98,7 +90,7 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="m_purchase_request_list_delivery[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_request_list_delivery[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
        }
 
 </script>
@@ -127,7 +119,7 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>หมายเลขใบร้องขอสั่งซื้อสินค้า / PR Code <font color="#F00"><b>*</b></font></label>
+                                <label>หมายเลขใบร้องขอสั่งซื้อสินค้า / PR Code <font color="#F00"><b>* </b></font> <?php if($purchase_request['purchase_request_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_request['purchase_request_rewrite_no']; ?></font></b> <?PHP } ?></label>
                                 <input id="purchase_request_code" name="purchase_request_code" class="form-control"  value="<? echo $purchase_request['purchase_request_code'];?>" readonly>
                                 <p class="help-block">Example : PR1801001.</p>
                             </div>
@@ -194,7 +186,7 @@
                             <tr>
                                 <th style="text-align:center;">รหัสสินค้า <br>(Product Code)</th>
                                 <th style="text-align:center;">ชื่อสินค้า<br>(Product Name)</th>
-                                <th style="text-align:center;">จำนวน<br>(Qty)</th>
+                                <th style="text-align:center;max-width:100;">จำนวน<br>(Qty)</th>
                                 <th style="text-align:center;">วันที่ใช้สินค้า<br>(Delivery Min)</th>
                                 <th style="text-align:center;">หมายเหตุ<br>(Remark)</th>
                                 <th></th>
@@ -219,7 +211,7 @@
                                     </select>
                                 </td>
                                 <td><input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $purchase_request_lists[$i]['product_name']; ?>" /></td>
-                                <td><input type="text" class="form-control" name="purchase_request_list_qty[]" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_qty']; ?>" /></td>
+                                <td><input type="text" class="form-control" style="text-align:right;" name="purchase_request_list_qty[]" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_qty']; ?>" /></td>
                                 <td><input type="text" class="form-control calendar" name="purchase_request_list_delivery[]" readonly value="<?php echo $purchase_request_lists[$i]['purchase_request_list_delivery']; ?>" /></td>
                                <td><input type="text" class="form-control" name="purchase_request_list_remark[]" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_remark']; ?>" /></td>
                                 <td>

@@ -161,7 +161,7 @@
                 if(modelhold.length > 0){
                     var content = "<option value=''>Select Product</option>";
                     $.each(data, function (index, value) {
-                        content += "<option value='" + value['stock_group_id'] + "'>"+value['stock_group_name']+"</option>";
+                        content += "<option value='" + value['stock_group_id'] + "'>"+ value['stock_type_code'] + " "+ value['stock_type_name'] + " -> " + value['stock_group_name'] + "</option>";
                     });
                     $(modelhold[0]).html(content);
                 }
@@ -175,7 +175,7 @@
                 if(modelstock.length > 0){
                     var content = "<option value=''>Select Product</option>";
                     $.each(data, function (index, value) {
-                        content += "<option value='" + value['stock_group_id'] + "'>"+value['stock_group_name']+"</option>";
+                        content += "<option value='" + value['stock_group_id'] + "'>"+ value['stock_type_code'] + " "+ value['stock_type_name'] + " -> " + value['stock_group_name'] + "</option>";
                     });
                     $(modelstock[0]).html(content);
                 }
@@ -550,7 +550,7 @@
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
                                                                 <label>คลังสินค้า / Stock  <font color="#F00"><b>*</b></font> </label>
-                                                                <select  class="form-control " name="stock_group_id[]" onchange="show_data(this);"  >
+                                                                <select  class="form-control " name="stock_group_id[]"   >
                                                                     <option value="">Select</option>
                                                                 </select>
                                                                 <p class="help-block">Example : Main stock.</p>
@@ -587,7 +587,7 @@
                                                        <?php if($cpold[$ii]['supplier_id'] == 0){
                                                             echo "คลังสินค้า ".$cpold[$ii]['stock_hold_name']." จำนวน ".$cpold[$ii]['qty'] ; 
                                                        }else{
-                                                            echo "ซื้อจาก ".$cpold[$ii]['supplier_name_th']." จำนวน ".$cpold[$ii]['qty']." (".$cpold[$ii]['stock_group_name'].")"; 
+                                                            echo "ซื้อจาก ".$cpold[$ii]['supplier_name_th']." จำนวน ".$cpold[$ii]['qty']." (".$cpold[$ii]['stock_type_code']." ".$cpold[$ii]['stock_type_name']." -> ".$cpold[$ii]['stock_group_name'].")"; 
                                                        }?>
                                                 </li>
                                         <?PHP }?>

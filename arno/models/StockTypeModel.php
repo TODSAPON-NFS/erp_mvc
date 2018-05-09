@@ -39,10 +39,10 @@ class StockTypeModel extends BaseModel{
 
 
     function updateStockTypeByID($id,$data = []){
+
         $sql = " UPDATE tb_stock_type SET 
         stock_type_code = '".$data['stock_type_code']."' , 
-        stock_type_name = '".$data['stock_type_name']."' , 
-        stock_group_id = '".$data['stock_group_id']."'  
+        stock_type_name = '".$data['stock_type_name']."'  
         WHERE stock_type_id = $id 
         ";
 
@@ -51,16 +51,25 @@ class StockTypeModel extends BaseModel{
         }else {
             return false;
         }
+
     }
 
 
 
-    function updateStockPrimaryByID($id,$stock_group_id){
+
+    function setPrimaryByID($stock_type_id){
+
         $sql = " UPDATE tb_stock_type SET 
-        stock_group_id = '".$stock_group_id."'  
-        WHERE stock_type_id = $id 
+        stock_type_primary = '0' 
         ";
 
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = " UPDATE tb_stock_type SET 
+        stock_type_primary = '1'  
+        WHERE stock_type_id = '$stock_type_id' 
+        ";
+        
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
@@ -73,12 +82,10 @@ class StockTypeModel extends BaseModel{
     function insertStockType($data = []){
         $sql = " INSERT INTO tb_stock_type (
             stock_type_code, 
-            stock_type_name, 
-            stock_group_id 
+            stock_type_name 
         ) VALUES (  
             '".$data['stock_type_code']."', 
-            '".$data['stock_type_name']."', 
-            '".$data['stock_group_id']."'  
+            '".$data['stock_type_name']."' 
         ); 
         ";
 

@@ -298,7 +298,7 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>หมายเลขใบเสนอราคา / Quotation code <font color="#F00"><b>*</b></font></label>
+                                        <label>หมายเลขใบเสนอราคา / Quotation code <font color="#F00"><b>*</b></font> <?php if($quotation['quotation_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $quotation['quotation_rewrite_no']; ?></font></b> <?PHP } ?></label>
                                         <input id="quotation_code" name="quotation_code" class="form-control" value="<?PHP echo $quotation['quotation_code'];?>" readonly>
                                         <p class="help-block">Example : INV1801001.</p>
                                     </div>

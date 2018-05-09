@@ -185,7 +185,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>หมายเลขใบยืม / DNC Code  <font color="#F00"><b>*</b></font></label>
-                                        <input id="delivery_note_customer_code" name="delivery_note_customer_code" class="form-control" value="<?PHP echo $delivery_note_customer['delivery_note_customer_code']; ?>" readonly>
+                                        <input id="delivery_note_customer_code" name="delivery_note_customer_code" class="form-control" value="<?php echo $delivery_note_customer['delivery_note_customer_code']; ?>-<?PHP echo strtoupper(substr($delivery_note_customer['employee_name'],0,2));?>" readonly>
                                         <p class="help-block">Example : DNC1801001.</p>
                                     </div>
                                 </div>

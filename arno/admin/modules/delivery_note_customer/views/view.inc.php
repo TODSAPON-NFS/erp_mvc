@@ -37,7 +37,7 @@
                                     <tr class="odd gradeX">
                                         <td><?php echo $i+1; ?></td>
                                         <td><?php echo $delivery_note_customers[$i]['delivery_note_customer_date']; ?></td>
-                                        <td><?php echo $delivery_note_customers[$i]['delivery_note_customer_code']; ?></td>
+                                        <td><?php echo $delivery_note_customers[$i]['delivery_note_customer_code']; ?>-<?PHP echo strtoupper(substr($delivery_note_customers[$i]['employee_name'],0,2));?></td>
                                         <td><?php echo $delivery_note_customers[$i]['customer_name']; ?></td>
                                         <td><?php echo $delivery_note_customers[$i]['contact_name']; ?></td>
                                         <td><?php echo $delivery_note_customers[$i]['employee_name']; ?></td>

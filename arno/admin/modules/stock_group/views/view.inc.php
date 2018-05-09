@@ -34,6 +34,19 @@
                                         <td><?php echo $stock_groups[$i]['stock_group_name']; ?></td>
                                         <td><?php echo $stock_groups[$i]['stock_group_detail']; ?></td>
                                         <td>
+                                            <?PHP 
+                                                if($stock_groups[$i]['stock_group_primary'] == '0'){
+                                            ?>
+                                                <a href="?app=stock_group&action=set_primary&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_groups[$i]['stock_group_id'];?>" style="color:#6e6e6e;">
+                                                    <i class="fa fa-key" aria-hidden="true"></i>
+                                                </a> 
+                                            <?PHP
+                                                }else{
+                                            ?>
+                                                <font color="#f4d742"><i class="fa fa-key" aria-hidden="true"></i></font>
+                                            <?PHP
+                                                }
+                                            ?>
                                             <a href="?app=stock_in&action=view&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_groups[$i]['stock_group_id'];?>">
                                                 <i class="fa fa-sign-in" aria-hidden="true"></i>
                                             </a>

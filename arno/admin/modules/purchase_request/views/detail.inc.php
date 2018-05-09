@@ -23,12 +23,10 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>หมายเลขสั่งซื้อสินค้า / PR Code <font color="#F00"><b>*</b></font></label>
+                                <label>หมายเลขสั่งซื้อสินค้า / PR Code <font color="#F00"><b>*</b></font> </label>
                                 <p class="help-block">
                                     <? echo $purchase_request['purchase_request_code'];?>
-                                    <?php if($purchase_request['purchase_request_cancelled'] != 0){ ?>
-                                        <span><font color="#F00">(Cancelled)</font></span>
-                                    <?PHP } ?>
+                                    <?php if($purchase_request['purchase_request_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_request['purchase_request_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($purchase_request['purchase_request_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?>
                                 </p>
                             </div>
                         </div>
@@ -102,7 +100,7 @@
                     <div class="row">
                     <div class="col-lg-offset-8 col-lg-2" align="right">
                         
-                    <?php if($user[0][24] == "High" || $user[0][25] == "High" ){ ?>
+                    <?php if(($user[0][24] == "High" || $user[0][25] == "High" ) && $purchase_request['purchase_request_cancelled'] == 0 ){ ?>
                         
                             <select id="purchase_request_accept_status" name="purchase_request_accept_status" class="form-control" data-live-search="true" >
                                 <option <?php if($purchase_request['purchase_request_accept_status'] == "Waiting"){?> selected <?php }?> >Waiting</option>
@@ -114,7 +112,8 @@
                         </div>
                         <div class="col-lg-2" align="right">
                             <a href="index.php?app=purchase_request" class="btn btn-default">Back</a>
-                            <?php if($user[0][24] == "High" || $user[0][25] == "High" ){ ?>
+
+                            <?php if(($user[0][24] == "High" || $user[0][25] == "High" ) && $purchase_request['purchase_request_cancelled'] == 0 ){ ?>
                             <button type="submit" class="btn btn-success">Save</button>
                             <?php } ?>
                             

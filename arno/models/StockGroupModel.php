@@ -11,10 +11,13 @@ class StockGroupModel extends BaseModel{
         
         $str = "";
         if($stock_type_id != ""){
-            $str = " WHERE stock_type_id = '$stock_type_id' ";
+            $str = " WHERE tb_stock_type.stock_type_id = '$stock_type_id' ";
         }
 
-        $sql = "  SELECT * FROM tb_stock_group $str ";
+        $sql = "  SELECT * 
+                  FROM tb_stock_group 
+                  LEFT JOIN tb_stock_type ON tb_stock_group.stock_type_id = tb_stock_type.stock_type_id 
+                  $str ";
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -93,6 +96,27 @@ class StockGroupModel extends BaseModel{
             return false;
         }
 
+    }
+
+    function setPrimaryByID($stock_type_id,$stock_group_id){
+
+        $sql = " UPDATE tb_stock_group SET 
+        stock_group_primary = '0' 
+        WHERE stock_type_id = '$stock_type_id' 
+        ";
+
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = " UPDATE tb_stock_group SET 
+        stock_group_primary = '1'  
+        WHERE stock_group_id = '$stock_group_id'  
+        ";
+        
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
     }
 
 

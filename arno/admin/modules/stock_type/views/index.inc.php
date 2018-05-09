@@ -33,6 +33,16 @@ if(!isset($_GET['action'])){
 
     }
  
+}else if ($_GET['action'] == 'set_primary'){
+
+    if($model_stock_type->setPrimaryByID($stock_type_id)){
+    ?>
+        <script>window.location="index.php?app=stock_type"</script>
+    <?php
+    }  else{
+        echo "-";
+    }
+ 
 }else if ($_GET['action'] == 'add'){
     if(isset($_POST['stock_type_code'])){
 

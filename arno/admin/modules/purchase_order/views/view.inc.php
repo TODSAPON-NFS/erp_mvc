@@ -89,7 +89,7 @@
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
                             <td><?php echo $purchase_orders[$i]['purchase_order_date']; ?></td>
-                            <td><?php echo $purchase_orders[$i]['purchase_order_code']; ?></td>
+                            <td><?php echo $purchase_orders[$i]['purchase_order_code']; ?> <?php if($purchase_orders[$i]['purchase_order_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_orders[$i]['purchase_order_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($purchase_orders[$i]['purchase_order_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
                             <td><?php echo $purchase_orders[$i]['supplier_name']; ?> </td>
                             <td><?php echo $purchase_orders[$i]['employee_name']; ?></td>
 							<td><?php echo $purchase_orders[$i]['purchase_order_status']; ?></td>
@@ -103,15 +103,40 @@
                                 </a>
 
 
-                            <?php if($purchase_orders[$i]['purchase_order_status'] == "New" || $purchase_orders[$i]['purchase_order_status'] == "Approved"){ ?>
-                                <a href="?app=purchase_order&action=update&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </a> 
-                               
-                            <?php } ?>
-                                <a href="?app=purchase_order&action=delete&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>" onclick="return confirm('You want to delete Purchase Order : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" style="color:red;">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                </a>
+                                <?php if($purchase_orders[$i]['purchase_order_status'] == "New" || $purchase_orders[$i]['purchase_order_status'] == "Approved"){ ?>
+                                    
+                                    <?php if($purchase_orders[$i]['purchase_order_cancelled'] == 0){ ?>
+                                        <a href="?app=purchase_order&action=cancelled&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="ยกเลิกใบร้องขอ" onclick="return confirm('You want to cancelled purchase request : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" style="color:#F00;">
+                                            <i class="fa fa-ban" aria-hidden="true"></i>
+                                        </a>
+                                        <a href="?app=purchase_order&action=rewrite&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="เขียนใบร้องขอใหม่" onclick="return confirm('You want to rewrite purchase request : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" style="color:#F00;">
+                                            <i class="fa fa-registered" aria-hidden="true"></i>
+                                        </a>
+                                        <a href="?app=purchase_order&action=update&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="แก้ไขใบร้องขอ">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        </a> 
+                                    <?php } else if($purchase_orders[$i]['count_rewrite'] == 0) { ?>
+
+                                        <a href="?app=purchase_order&action=uncancelled&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled purchase request : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" >
+                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                        </a>
+                                        <a href="?app=purchase_order&action=rewrite&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="เขียนใบร้องขอใหม่" onclick="return confirm('You want to rewrite purchase request : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" style="color:#F00;">
+                                            <i class="fa fa-registered" aria-hidden="true"></i>
+                                        </a>
+                                        <a href="?app=purchase_order&action=delete&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>" onclick="return confirm('You want to delete Purchase Order : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" style="color:red;">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </a>
+                                    <?PHP }else{ ?>
+                                        <a href="?app=purchase_order&action=uncancelled&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled purchase request : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" >
+                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                        </a>
+                                        <a href="?app=purchase_order&action=delete&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>" onclick="return confirm('You want to delete Purchase Order : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" style="color:red;">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </a>
+                                    <?PHP } ?>
+                                        
+                                    
+                                <?php } ?>
 
                             </td>
 

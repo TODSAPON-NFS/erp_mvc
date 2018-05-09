@@ -447,7 +447,7 @@
                           
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>รหัสผู้ขาย / Supplier Code <font color="#F00"><b>*</b></font></label>
+                                        <label>รหัสผู้ขาย / Supplier Code <font color="#F00"><b>*</b></font> <?php if($purchase_order['purchase_order_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_order['purchase_order_rewrite_no']; ?></font></b> <?PHP } ?></label>
                                         <input id="supplier_code" name="supplier_code" class="form-control" value="<? echo $supplier['supplier_code'];?>" readonly>
                                         <p class="help-block">Example : A0001.</p>
                                     </div>
@@ -720,10 +720,12 @@
                     <!-- /.row (nested) -->
                     <div class="row">
                         <div class="col-lg-offset-6 col-lg-6" align="right">
-                            <button type="reset" class="btn btn-primary">Reset</button>
+                            <a href="index.php?app=purchase_order" class="btn btn-default">Back</a>
+                            
                             <?php 
                             if( $purchase_order['purchase_order_status'] == 'New'){
                             ?>
+                            <button type="reset" class="btn btn-primary">Reset</button>
                             <button type="submit" class="btn btn-success">Save</button>
                             <a href="index.php?app=purchase_order&action=checking&id=<?php echo $purchase_order_id;?>&supplier_id=<?PHP echo $purchase_order['supplier_id']; ?>" class="btn btn-danger" >Check Order</a>
                             <a href="index.php?app=purchase_order&action=request&id=<?php echo $purchase_order_id;?>" class="btn btn-warning" >Request Order</a>

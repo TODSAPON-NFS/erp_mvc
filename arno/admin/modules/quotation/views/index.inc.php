@@ -41,9 +41,10 @@ if(!isset($_GET['action'])){
     
     $users=$user_model->getUserBy();
     $quotation = $quotation_model->getQuotationByID($quotation_id);
+    $quotation_lists = $quotation_list_model->getQuotationListBy($quotation_id);
+    
     $customer=$customer_model->getCustomerByID($quotation['customer_id']);
     $vat = $quotation['quotation_vat'];
-    $quotation_lists = $quotation_list_model->getQuotationListBy($quotation_id);
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
@@ -238,6 +239,56 @@ if(!isset($_GET['action'])){
     }
         
       
+    
+}else if ($_GET['action'] == 'rewrite'){
+        
+    $quotation = $quotation_model->getQuotationByID($quotation_id);
+    $quotation_lists = $quotation_list_model->getQuotationListBy($quotation_id);
+    $quotations = $quotation_model->cancelQuotationById($quotation_id);
+    
+        $data = [];
+        $data['quotation_date'] = $quotation['quotation_date'];
+        $data['quotation_rewrite_id'] = $quotation_id;
+        $data['quotation_rewrite_no'] = $quotation['quotation_rewrite_no'] + 1;
+        $data['employee_id'] = $quotation['employee_id'];
+        $data['customer_id'] = $quotation['customer_id'];
+        $data['quotation_code'] = $quotation['quotation_code'];
+        $data['quotation_contact_name'] = $quotation['quotation_contact_name'];
+        $data['quotation_contact_tel'] = $quotation['quotation_contact_tel'];
+        $data['quotation_contact_email'] = $quotation['quotation_contact_email'];
+        $data['quotation_total'] = $quotation['quotation_total'];
+        $data['quotation_vat'] = $quotation['quotation_vat'];
+        $data['quotation_vat_price'] = $quotation['quotation_vat_price'];
+        $data['quotation_vat_net'] = $quotation['quotation_vat_net'];
+        $data['quotation_remark'] = $quotation['quotation_remark'];
+
+        $quotation_id = $quotation_model->insertQuotation($data);
+
+        for($i=0; $i < count($quotation_lists) ; $i++){
+            $data = [];
+            $data['quotation_id'] = $quotation_id;
+            $data['product_id'] = $quotation_lists[$i]['product_id'];
+            $data['quotation_list_qty'] = $quotation_lists[$i]['quotation_list_qty'];
+            $data['quotation_list_price'] = $quotation_lists[$i]['quotation_list_price'];
+            $data['quotation_list_sum'] = $quotation_lists[$i]['quotation_list_sum'];
+            $data['quotation_list_discount'] = $quotation_lists[$i]['quotation_list_discount'];
+            $data['quotation_list_discount_type'] = $quotation_lists[$i]['quotation_list_discount_type'];
+            $data['quotation_list_total'] = $quotation_lists[$i]['quotation_list_total'];
+            $data['quotation_list_remark'] = $quotation_lists[$i]['quotation_list_remark'];
+
+            $quotation_list_model->insertQuotationList($data);
+
+        }
+
+        if($quotation_id > 0){
+?>
+        <script>window.location="index.php?app=quotation&action=update&id=<?php echo $quotation_id;?>"</script>
+<?php
+        }else{
+?>
+        <script>window.history.back();</script>
+<?php
+        }
     
 }else if ($_GET['action'] == 'approve'){
     

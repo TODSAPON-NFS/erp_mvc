@@ -12,18 +12,24 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_type, 
         purchase_order_code, 
         purchase_order_date, 
+        purchase_order_rewrite_id,
+        IFNULL((
+            SELECT COUNT(*) FROM tb_purchase_order WHERE purchase_order_rewrite_id = tb.purchase_order_id 
+        ),0) as count_rewrite,
+        purchase_order_rewrite_no,
         purchase_order_status,
         purchase_order_accept_status,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 
         IFNULL(CONCAT(tb3.user_name,' ',tb3.user_lastname),'-') as accept_name, 
         purchase_order_credit_term, 
         purchase_order_delivery_term, 
+        purchase_order_cancelled,
         IFNULL(CONCAT(tb2.supplier_name_en,' (',tb2.supplier_name_th,')'),'-') as supplier_name, 
         purchase_order_delivery_by 
-        FROM tb_purchase_order 
-        LEFT JOIN tb_user as tb1 ON tb_purchase_order.employee_id = tb1.user_id 
-        LEFT JOIN tb_user as tb3 ON tb_purchase_order.purchase_order_accept_by = tb3.user_id 
-        LEFT JOIN tb_supplier as tb2 ON tb_purchase_order.supplier_id = tb2.supplier_id 
+        FROM tb_purchase_order as tb
+        LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
+        LEFT JOIN tb_user as tb3 ON tb.purchase_order_accept_by = tb3.user_id 
+        LEFT JOIN tb_supplier as tb2 ON tb.supplier_id = tb2.supplier_id 
         ORDER BY STR_TO_DATE(purchase_order_date,'%d-%m-%Y %H:%i:%s') DESC 
          ";
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
@@ -92,6 +98,37 @@ class PurchaseOrderModel extends BaseModel{
     }
 
    
+    function cancelPurchaseOrderByID($id){
+        $sql = " UPDATE tb_purchase_order SET 
+        purchase_order_cancelled = '1', 
+        updateby = '".$data['updateby']."', 
+        lastupdate = '".$data['lastupdate']."' 
+        WHERE purchase_order_id = $id 
+        ";
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
+    function uncancelPurchaseOrderByID($id){
+        $sql = " UPDATE tb_purchase_order SET 
+        purchase_order_cancelled = '0', 
+        updateby = '".$data['updateby']."', 
+        lastupdate = '".$data['lastupdate']."' 
+        WHERE purchase_order_id = $id 
+        ";
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
+
     function updatePurchaseOrderByID($id,$data = []){
         $sql = " UPDATE tb_purchase_order SET 
         supplier_id = '".$data['supplier_id']."', 
@@ -190,7 +227,10 @@ class PurchaseOrderModel extends BaseModel{
                     UNION 
                     SELECT DISTINCT product_id 
                     FROM tb_purchase_request_list 
+                    LEFT JOIN tb_purchase_request ON tb_purchase_request_list.purchase_request_id = tb_purchase_request.purchase_request_id
                     WHERE purchase_order_list_id = 0 
+                    AND tb_purchase_request.purchase_request_cancelled = 0 
+                    AND purchase_request_accept_status = 'Approve' 
                     UNION 
                     SELECT DISTINCT product_id 
                     FROM tb_customer_purchase_order_list 
@@ -359,6 +399,8 @@ class PurchaseOrderModel extends BaseModel{
         $sql = " INSERT INTO tb_purchase_order (
             supplier_id,
             employee_id,
+            purchase_order_rewrite_id,
+            purchase_order_rewrite_no,
             purchase_order_accept_status,
             purchase_order_accept_by,
             purchase_order_accept_date,
@@ -379,6 +421,8 @@ class PurchaseOrderModel extends BaseModel{
         VALUES ('".
         $data['supplier_id']."','".
         $data['employee_id']."','".
+        $data['purchase_order_rewrite_id']."','".
+        $data['purchase_order_rewrite_no']."','".
         $data['purchase_order_accept_status']."','".
         $data['purchase_order_accept_by']."','".
         $data['purchase_order_accept_date']."','".

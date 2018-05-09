@@ -26,7 +26,10 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Purchase Order Type <font color="#F00"><b>*</b></font></label>
-                                        <p class="help-block"><?php echo $purchase_order['purchase_order_type']?></p>
+                                        <p class="help-block">
+                                        <?php echo $purchase_order['purchase_order_type']?> 
+                                        <?php if($purchase_order['purchase_order_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_order['purchase_order_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($purchase_order['purchase_order_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?>
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -177,9 +180,17 @@
                             </select>
                         </div>
                         <div class="col-lg-1" align="right">
+                            <a href="index.php?app=purchase_order" class="btn btn-default">Back</a>
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>
-                    <?php } ?>
+                    <?php } else { ?>
+                        <div class="col-lg-offset-9 col-lg-2" align="right">
+                            
+                        </div>
+                        <div class="col-lg-1" align="right">
+                            <a href="index.php?app=purchase_order" class="btn btn-default">Back</a>
+                        </div>
+                    <?PHP } ?>
                     </div>
                 </form>
             </div>

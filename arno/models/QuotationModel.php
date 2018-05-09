@@ -11,6 +11,11 @@ class QuotationModel extends BaseModel{
         $sql = " 
         SELECT quotation_id, 
         quotation_date, 
+        quotation_rewrite_id,
+        IFNULL((
+            SELECT COUNT(*) FROM tb_quotation WHERE quotation_rewrite_id = tb.quotation_id 
+        ),0) as count_rewrite,
+        quotation_rewrite_no,
         quotation_code, 
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 
         quotation_total,
@@ -18,8 +23,9 @@ class QuotationModel extends BaseModel{
         quotation_contact_name,
         quotation_cancelled,
         quotation_remark 
-        FROM tb_quotation LEFT JOIN tb_user as tb1 ON tb_quotation.employee_id = tb1.user_id 
-        LEFT JOIN tb_customer as tb2 ON tb_quotation.customer_id = tb2.customer_id 
+        FROM tb_quotation as tb 
+        LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
+        LEFT JOIN tb_customer as tb2 ON tb.customer_id = tb2.customer_id 
         ORDER BY STR_TO_DATE(quotation_date,'%Y-%m-%d %H:%i:%s') DESC 
          ";
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
@@ -148,6 +154,7 @@ class QuotationModel extends BaseModel{
     function insertQuotation($data = []){
         $sql = " INSERT INTO tb_quotation (
             quotation_rewrite_id,
+            quotation_rewrite_no,
             customer_id,
             employee_id,
             quotation_code,
@@ -165,6 +172,7 @@ class QuotationModel extends BaseModel{
             adddate
         ) VALUES ('".
         $data['quotation_rewrite_id']."','".
+        $data['quotation_rewrite_no']."','".
         $data['customer_id']."','".
         $data['employee_id']."','".
         $data['quotation_code']."','".

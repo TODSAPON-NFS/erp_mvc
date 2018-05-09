@@ -45,6 +45,19 @@
 
                                         </td>
                                         <td>
+                                            <?PHP 
+                                                if($stock_types[$i]['stock_type_primary'] == '0'){
+                                            ?>
+                                                <a href="?app=stock_type&action=set_primary&id=<?php echo $stock_types[$i]['stock_type_id'];?>" style="color:#6e6e6e;">
+                                                    <i class="fa fa-key" aria-hidden="true"></i>
+                                                </a> 
+                                            <?PHP
+                                                }else{
+                                            ?>
+                                                <font color="#f4d742"><i class="fa fa-key" aria-hidden="true"></i></font>
+                                            <?PHP
+                                                }
+                                            ?>
                                             <a href="?app=stock_group&action=view&stock_type_id=<?php echo $stock_types[$i]['stock_type_id'];?>">
                                                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                             </a> 

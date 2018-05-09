@@ -41,10 +41,20 @@ if(!isset($_GET['action'])){
     if($model_stock_group->deleteStockGroupById($stock_group_id)){
         $model_stock->deleteStockTable();
     ?>
-        <script>window.location="index.php?app=stock_group"</script>
+        <script>window.location="index.php?app=stock_group&stock_type_id=<?php echo $stock_type_id;?>"</script>
     <?php
     }  else{
 
+    }
+ 
+}else if ($_GET['action'] == 'set_primary'){
+
+    if($model_stock_group->setPrimaryByID($stock_type_id,$stock_group_id)){
+    ?>
+        <script>window.location="index.php?app=stock_group&stock_type_id=<?php echo $stock_type_id;?>"</script>
+    <?php
+    }  else{
+        echo "-";
     }
  
 }else if ($_GET['action'] == 'add'){

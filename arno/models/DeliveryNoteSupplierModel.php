@@ -91,7 +91,7 @@ class DeliveryNoteSupplierModel extends BaseModel{
         $sql = " UPDATE tb_delivery_note_supplier SET 
         supplier_id = '".$data['supplier_id']."', 
         employee_id = '".$data['employee_id']."', 
-        delivery_note_supplier_code = '".$data['delivery_note_supplier_code']."', 
+        
         delivery_note_supplier_date = '".$data['delivery_note_supplier_date']."', 
         delivery_note_supplier_remark = '".$data['delivery_note_supplier_remark']."', 
         delivery_note_supplier_file = '".$data['delivery_note_supplier_file']."', 

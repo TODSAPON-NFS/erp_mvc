@@ -133,7 +133,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>วันที่ออกใบสั่งซื้อ / PO Date</label>
-                                        <input type="text" id="customer_purchase_order_date" name="customer_purchase_order_date"  class="form-control calendar" readonly/>
+                                        <input type="text" id="customer_purchase_order_date" name="customer_purchase_order_date"  class="form-control calendar" value="<?PHP echo $first_date;?>" readonly/>
                                         <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>

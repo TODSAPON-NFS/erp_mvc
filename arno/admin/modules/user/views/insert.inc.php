@@ -336,6 +336,19 @@
                                 <p class="help-block">Example : ทำงาน.</p>
                             </div>
                         </div>
+
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>ลายเซ็น / Signature <font color="#F00"><b>*</b></font> </label>
+                                <div align="center">
+                                    <input name="hidden_data" id='hidden_data' type="hidden"/>
+                                    <canvas id="signature" width="280px" height="280px"  style="border: 1px solid #ddd;"></canvas>
+                                    <br>
+                                    <a class="btn btn-default" id="clear-signature" >Clear</a>
+                                </div>
+                                <p class="help-block">Example : ทำงาน.</p>
+                            </div>
+                        </div>
                         
                         <!-- /.col-lg-6 (nested) -->
                     </div>

@@ -215,6 +215,7 @@ class InvoiceSupplierModel extends BaseModel{
 
         $sql_customer = "SELECT tb2.product_id, 
         tb2.purchase_order_list_id, 
+        '' as regrind_supplier_list_id,
         CONCAT(product_code_first,product_code) as product_code, 
         IFNULL(stock_group_id,(SELECT IFNULL(MIN(stock_group_id),0) FROM tb_stock_group WHERE 1)) as stock_group_id,
         product_name,  
@@ -256,6 +257,51 @@ class InvoiceSupplierModel extends BaseModel{
             $result->close();
             
         }
+
+        
+        $sql_customer = "SELECT tb2.product_id, 
+        tb2.regrind_supplier_list_id, 
+        '' as purchase_order_list_id,
+        CONCAT(product_code_first,product_code) as product_code, 
+        IFNULL(stock_group_id,(SELECT IFNULL(MIN(stock_group_id),0) FROM tb_stock_group WHERE 1)) as stock_group_id,
+        product_name,  
+        IFNULL(regrind_supplier_list_qty 
+        - IFNULL((
+            SELECT SUM(invoice_supplier_list_qty) 
+            FROM tb_invoice_supplier_list 
+            WHERE regrind_supplier_list_id = tb2.regrind_supplier_list_id 
+        ),0) ,0) as invoice_supplier_list_qty, 
+        '0' as invoice_supplier_list_price, 
+        '0' as invoice_supplier_list_total,
+        '0' as invoice_supplier_list_cost, 
+        CONCAT('PO : ',regrind_supplier_code) as invoice_supplier_list_remark 
+        FROM tb_regrind_supplier 
+        LEFT JOIN tb_regrind_supplier_list as tb2 ON tb_regrind_supplier.regrind_supplier_id = tb2.regrind_supplier_id 
+        LEFT JOIN tb_product ON tb2.product_id = tb_product.product_id 
+        WHERE tb_regrind_supplier.supplier_id = '$supplier_id' 
+        $str_po 
+        AND tb2.regrind_supplier_list_id NOT IN ($str) 
+        AND tb2.regrind_supplier_list_id IN ( 
+            SELECT tb_regrind_supplier_list.regrind_supplier_list_id 
+            FROM tb_regrind_supplier_list  
+            LEFT JOIN tb_invoice_supplier_list ON  tb_regrind_supplier_list.regrind_supplier_list_id = tb_invoice_supplier_list.regrind_supplier_list_id 
+            GROUP BY tb_regrind_supplier_list.regrind_supplier_list_id 
+            HAVING IFNULL(SUM(invoice_supplier_list_qty),0) < AVG(regrind_supplier_list_qty)  
+        ) 
+        AND (product_name LIKE ('%$search%') OR regrind_supplier_code LIKE ('%$search%')) ";
+
+        //echo $sql_customer;
+
+        if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+
+
 
         return $data;
     }

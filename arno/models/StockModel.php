@@ -29,6 +29,7 @@ class StockModel extends BaseModel{
                 `stock_move_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการย้ายคลังสินค้า', 
                 `stock_issue_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการตัดคลังสินค้า', 
                 `credit_note_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการใบลดหนี้', 
+                `regrind_supplier_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการใบ Regrind', 
                 `addby` int(11) NOT NULL COMMENT 'ผู้เพิ่มสินค้า', 
                 `adddate` varchar(50) NOT NULL COMMENT 'เวลาเพิ่มสินค้า', 
                 `updateby` int(11) NOT NULL COMMENT 'ผู้แก้ไขสิ้นค้า', 
@@ -212,6 +213,7 @@ class StockModel extends BaseModel{
         invoice_supplier_list_id = '".$data['invoice_supplier_list_id']."' , 
         invoice_customer_list_id = '".$data['invoice_customer_list_id']."' , 
         stock_move_list_id = '".$data['stock_move_list_id']."' , 
+        regrind_supplier_list_id = '".$data['regrind_supplier_list_id']."' , 
         updateby = '".$data['updateby']."',  
         lastupdate = NOW() 
         WHERE stock_id = $id ;
@@ -236,6 +238,7 @@ class StockModel extends BaseModel{
             delivery_note_customer_list_id, 
             invoice_supplier_list_id, 
             invoice_customer_list_id, 
+            regrind_supplier_list_id,
             stock_move_list_id, 
             addby,
             adddate
@@ -250,6 +253,7 @@ class StockModel extends BaseModel{
             '".$data['delivery_note_customer_list_id']."', 
             '".$data['invoice_supplier_list_id']."', 
             '".$data['invoice_customer_list_id']."', 
+            '".$data['regrind_supplier_list_id']."', 
             '".$data['stock_move_list_id']."', 
             '".$data['addby']."', 
             NOW()  

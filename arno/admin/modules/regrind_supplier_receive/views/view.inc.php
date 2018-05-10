@@ -7,6 +7,91 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            เปิดใบรับรีกายร์อ้างอิงตามบริษัท / Purchase order to do
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+
+                <div class="row">
+                            <div class="col-md-6">
+                                <table width="100%" class="table table-striped table-bordered table-hover" >
+                                    <thead>
+                                        <tr>
+                                            <th width="64px" >ลำดับ <br>No.</th>
+                                            <th>ผู้ขาย <br>Supplier</th>
+                                            <th width="180px" >เปิดใบรับรีกายร์ <br>Open recieve regrind</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php 
+                                        for($i=0; $i < count($suppliers); $i++){
+                                        ?>
+                                        <tr class="odd gradeX">
+                                            <td><?php echo $i+1; ?></td>
+                                            <td><?php echo $suppliers[$i]['supplier_name_en']; ?> (<?php echo $suppliers[$i]['supplier_name_th']; ?>)</td>
+                                            <td>
+                                                <a href="?app=regrind_supplier_receive&action=insert&supplier_id=<?php echo $suppliers[$i]['supplier_id'];?>">
+                                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                                </a>
+
+                                            </td>
+
+                                        </tr>
+                                        <?
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table width="100%" class="table table-striped table-bordered table-hover" >
+                                    <thead>
+                                        <tr>
+                                            <th width="64px" >ลำดับ <br>No.</th>
+                                            <th>ผู้ขาย <br>ใบส่งรีกายร์</th>
+                                            <th width="180px" >เปิดใบรับรีกายร์ <br>Open recieve regrind</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php 
+                                        for($i=0; $i < count($regrind_suppliers); $i++){
+                                        ?>
+                                        <tr class="odd gradeX">
+                                            <td><?php echo $i+1; ?></td>
+                                            <td><?php echo $regrind_suppliers[$i]['regrind_supplier_code']; ?> <?php echo $regrind_suppliers[$i]['supplier_name_en']; ?> (<?php echo $regrind_suppliers[$i]['supplier_name_th']; ?>)</td>
+                                            <td>
+                                                <a href="?app=regrind_supplier_receive&action=insert&supplier_id=<?php echo $regrind_suppliers[$i]['supplier_id'];?>">
+                                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                                </a>
+
+                                            </td>
+
+                                        </tr>
+                                        <?
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
@@ -16,6 +101,8 @@
                             <a class="btn btn-success " style="float:right;" href="?app=regrind_supplier_receive&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                         </div>
                         <!-- /.panel-heading -->
+
+                        
                         <div class="panel-body">
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>

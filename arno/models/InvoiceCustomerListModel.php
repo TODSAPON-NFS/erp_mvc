@@ -76,13 +76,15 @@ class InvoiceCustomerListModel extends BaseModel{
             $id = mysqli_insert_id($this->db);
 
             $sql = "
-                CALL insert_stock_customer('".
-                $data['stock_group_id']."','".
-                $id."','".
-                $data['product_id']."','".
-                $data['invoice_customer_list_qty']."','".
-                $data['stock_date']."','".$data['invoice_customer_list_cost']."');
-            ";
+            CALL insert_stock_customer('".
+            $data['stock_group_id']."','".
+            $id."','".
+            $data['product_id']."','".
+            $data['invoice_customer_list_qty']."','".
+            $data['stock_date']."','".
+            $data['invoice_customer_list_cost']."'".
+            ");
+        ";
 
             //echo $sql . "<br><br>";
 
@@ -119,8 +121,12 @@ class InvoiceCustomerListModel extends BaseModel{
                 $data['stock_group_id']."','".
                 $id."','".
                 $data['product_id']."','".
-                $data['invoice_customer_list_qty']."','".
-                $data['stock_date']."','".$data['invoice_customer_list_cost']."');
+                $data['stock_date']."','".
+                $data['old_qty']."','". 
+                $data['old_cost']."','". 
+                $data['invoice_customer_list_qty']."','". 
+                $data['invoice_customer_list_cost']."'".
+                ");
             ";
 
             //echo $sql . "<br><br>";
@@ -191,7 +197,11 @@ class InvoiceCustomerListModel extends BaseModel{
                 $sql_delete [] = "
                     CALL delete_stock_customer('".
                     $row['stock_group_id']."','".
-                    $row['invoice_customer_list_id']."');
+                    $row['invoice_customer_list_id']."','".
+                    $row['product_id']."','".
+                    $row['invoice_customer_list_qty']."','".
+                    $row['invoice_customer_list_cost']."'".
+                    ");
                 ";
                
             }

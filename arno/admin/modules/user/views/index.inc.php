@@ -11,6 +11,7 @@ $position = new UserPositionModel;
 $status = new UserStatusModel;
 $license = new LicenseModel;
 $address = new AddressModel;
+$target_dir = "../upload/employee/";
 
 if(!isset($_GET['action'])){
 
@@ -66,8 +67,14 @@ if(!isset($_GET['action'])){
         $user = $model->insertUser($data);
 
         if($user){
+            $img = $_POST['hidden_data'];
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+            $data = base64_decode($img);
+            $file = $target_dir . $user . ".png";
+            $success = file_put_contents($file, $data);
 ?>
-        <script>window.location="index.php?app=employee"</script>
+        <script>window.location="index.php?app=employee&action=update&id=<?PHP echo $user?>"</script>
 <?php
         }else{
 ?>
@@ -104,6 +111,12 @@ if(!isset($_GET['action'])){
         $user = $model->updateUserByID($_POST['user_id'],$data);
 
         if($user){
+            $img = $_POST['hidden_data'];
+            $img = str_replace('data:image/png;base64,', '', $img);
+            $img = str_replace(' ', '+', $img);
+            $data = base64_decode($img);
+            $file = $target_dir . $_POST['user_id'] . ".png";
+            $success = file_put_contents($file, $data);
 ?>
         <script>window.location="index.php?app=employee"</script>
 <?php

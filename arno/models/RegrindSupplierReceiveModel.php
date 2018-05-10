@@ -71,8 +71,38 @@ class RegrindSupplierReceiveModel extends BaseModel{
 
     }
 
-
     function getRegrindSupplier(){
+
+        $sql = "SELECT tb_regrind_supplier.regrind_supplier_id, regrind_supplier_code, tb_supplier.supplier_id, supplier_name_en , supplier_name_th 
+                FROM tb_regrind_supplier 
+                LEFT JOIN tb_supplier 
+                ON tb_regrind_supplier.supplier_id = tb_supplier.supplier_id 
+                LEFT JOIN tb_regrind_supplier_list 
+                ON tb_regrind_supplier.regrind_supplier_id = tb_regrind_supplier_list.regrind_supplier_id 
+                WHERE regrind_supplier_list_id IN ( 
+                    SELECT tb_regrind_supplier_list.regrind_supplier_list_id 
+                    FROM tb_regrind_supplier_list  
+                    LEFT JOIN tb_invoice_supplier_list ON  tb_regrind_supplier_list.regrind_supplier_list_id = tb_invoice_supplier_list.regrind_supplier_list_id 
+                    LEFT JOIN tb_regrind_supplier_receive_list ON  tb_regrind_supplier_list.regrind_supplier_list_id = tb_regrind_supplier_receive_list.regrind_supplier_list_id 
+                    GROUP BY tb_regrind_supplier_list.regrind_supplier_list_id 
+                    HAVING (IFNULL(SUM(regrind_supplier_receive_list_qty),0) + IFNULL(SUM(invoice_supplier_list_qty),0)) < AVG(regrind_supplier_list_qty)  
+                ) 
+                GROUP BY tb_regrind_supplier.regrind_supplier_id
+        ";
+        $data = [];
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+        return $data;
+    }
+
+
+    function getSupplier(){
 
         $sql = "SELECT tb_supplier.supplier_id, supplier_name_en , supplier_name_th 
                 FROM tb_supplier 
@@ -84,9 +114,10 @@ class RegrindSupplierReceiveModel extends BaseModel{
                     WHERE regrind_supplier_list_id IN ( 
                         SELECT tb_regrind_supplier_list.regrind_supplier_list_id 
                         FROM tb_regrind_supplier_list  
-                        LEFT JOIN tb_regrind_supplier_receive_list ON  tb_regrind_supplier_list.regrind_supplier_list_id = tb_regrind_supplier_receive_list.regrind_supplier_list_id  
+                        LEFT JOIN tb_invoice_supplier_list ON  tb_regrind_supplier_list.regrind_supplier_list_id = tb_invoice_supplier_list.regrind_supplier_list_id 
+                        LEFT JOIN tb_regrind_supplier_receive_list ON  tb_regrind_supplier_list.regrind_supplier_list_id = tb_regrind_supplier_receive_list.regrind_supplier_list_id 
                         GROUP BY tb_regrind_supplier_list.regrind_supplier_list_id 
-                        HAVING IFNULL(SUM(regrind_supplier_receive_list_qty),0) < AVG(regrind_supplier_list_qty)  
+                        HAVING (IFNULL(SUM(regrind_supplier_receive_list_qty),0) + IFNULL(SUM(invoice_supplier_list_qty),0)) < AVG(regrind_supplier_list_qty) 
                     ) 
                 ) 
         ";
@@ -123,7 +154,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
             $str_po = "AND tb_regrind_supplier.regrind_supplier_id = '$regrind_supplier_id' ";
         }
 
-        $sql_customer = "SELECT tb2.product_id, 
+        $sql_supplier = "SELECT tb2.product_id, 
         tb2.regrind_supplier_list_id, 
         CONCAT(product_code_first,product_code) as product_code, 
         product_name,  
@@ -132,26 +163,33 @@ class RegrindSupplierReceiveModel extends BaseModel{
             SELECT SUM(regrind_supplier_receive_list_qty) 
             FROM tb_regrind_supplier_receive_list 
             WHERE regrind_supplier_list_id = tb2.regrind_supplier_list_id 
+        ),0)
+        - IFNULL((
+            SELECT SUM(invoice_supplier_list_qty) 
+            FROM tb_invoice_supplier_list 
+            WHERE regrind_supplier_list_id = tb2.regrind_supplier_list_id 
         ),0) ,0) as regrind_supplier_receive_list_qty,  
-        CONCAT('Order for customer PO : ',regrind_supplier_code) as regrind_supplier_receive_list_remark 
+        CONCAT('Order for supplier PO : ',regrind_supplier_code) as regrind_supplier_receive_list_remark 
         FROM tb_regrind_supplier 
         LEFT JOIN tb_regrind_supplier_list as tb2 ON tb_regrind_supplier.regrind_supplier_id = tb2.regrind_supplier_id 
         LEFT JOIN tb_product ON tb2.product_id = tb_product.product_id 
-        WHERE tb_regrind_supplier.customer_id = '$customer_id' 
+        WHERE tb_regrind_supplier.supplier_id = '$supplier_id' 
         $str_po 
         AND tb2.regrind_supplier_list_id NOT IN ($str) 
         AND tb2.regrind_supplier_list_id IN (
             SELECT tb_regrind_supplier_list.regrind_supplier_list_id 
             FROM tb_regrind_supplier_list  
+            LEFT JOIN tb_invoice_supplier_list ON  tb_regrind_supplier_list.regrind_supplier_list_id = tb_invoice_supplier_list.regrind_supplier_list_id 
             LEFT JOIN tb_regrind_supplier_receive_list ON  tb_regrind_supplier_list.regrind_supplier_list_id = tb_regrind_supplier_receive_list.regrind_supplier_list_id 
             GROUP BY tb_regrind_supplier_list.regrind_supplier_list_id 
-            HAVING IFNULL(SUM(regrind_supplier_receive_list_qty),0) < AVG(regrind_supplier_list_qty)  
+            HAVING (IFNULL(SUM(regrind_supplier_receive_list_qty),0) + IFNULL(SUM(invoice_supplier_list_qty),0)) < AVG(regrind_supplier_list_qty)  
+
         ) 
         AND (product_name LIKE ('%$search%') OR regrind_supplier_code LIKE ('%$search%')) ";
 
-        //echo $sql_customer;
+        //echo $sql_supplier;
         $data = [];
-        if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query($this->db,$sql_supplier, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;

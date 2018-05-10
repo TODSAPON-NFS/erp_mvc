@@ -16,16 +16,23 @@ $supplier_model = new SupplierModel;
 $regrind_supplier_receive_model = new RegrindSupplierReceiveModel;
 $regrind_supplier_receive_list_model = new RegrindSupplierReceiveListModel;
 $product_model = new ProductModel;
-$first_char = "RG";
+$first_char = "RGR";
 $regrind_supplier_receive_id = $_GET['id'];
+$regrind_supplier_id = $_GET['regrind_supplier_id'];
+$supplier_id = $_GET['supplier_id'];
 $target_dir = "../upload/regrind_supplier_receive/";
 
 if(!isset($_GET['action'])){
-
+    $suppliers = $regrind_supplier_receive_model->getSupplier();
+    $regrind_suppliers = $regrind_supplier_receive_model->getRegrindSupplier();
     $regrind_supplier_receives = $regrind_supplier_receive_model->getRegrindSupplierReceiveBy();
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
+    if($supplier_id > 0){
+        $supplier=$supplier_model->getSupplierByID($supplier_id);
+        $regrind_supplier_receive_lists = $regrind_supplier_receive_model->generateRegrindSupplierReceiveListBySupplierId($supplier_id,[] ,$_POST['search']);
+    }
     $products=$product_model->getProductBy('','','','Active');
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
@@ -112,6 +119,7 @@ if(!isset($_GET['action'])){
             if($regrind_supplier_receive_id > 0){
 
                 $product_id = $_POST['product_id'];
+                $regrind_supplier_list_id = $_POST['regrind_supplier_list_id'];
                 $regrind_supplier_receive_list_id = $_POST['regrind_supplier_receive_list_id'];
                 $regrind_supplier_receive_list_qty = $_POST['regrind_supplier_receive_list_qty'];
                 $regrind_supplier_receive_list_remark = $_POST['regrind_supplier_receive_list_remark'];
@@ -121,6 +129,7 @@ if(!isset($_GET['action'])){
                 if(is_array($product_id)){
                     for($i=0; $i < count($product_id) ; $i++){
                         $data = [];
+                        $data['regrind_supplier_list_id'] = $regrind_supplier_list_id[$i];
                         $data['regrind_supplier_receive_id'] = $regrind_supplier_receive_id;
                         $data['product_id'] = $product_id[$i];
                         $data['regrind_supplier_receive_list_qty'] = $regrind_supplier_receive_list_qty[$i];
@@ -134,6 +143,7 @@ if(!isset($_GET['action'])){
                     }
                 }else{
                     $data = [];
+                    $data['regrind_supplier_list_id'] = $regrind_supplier_list_id;
                     $data['regrind_supplier_receive_id'] = $regrind_supplier_receive_id;
                     $data['product_id'] = $product_id;
                     $data['regrind_supplier_receive_list_qty'] = $regrind_supplier_receive_list_qty;
@@ -215,6 +225,7 @@ if(!isset($_GET['action'])){
             $output = $regrind_supplier_receive_model->updateRegrindSupplierReceiveByID($regrind_supplier_receive_id,$data);
 
             $product_id = $_POST['product_id'];
+            $regrind_supplier_list_id = $_POST['regrind_supplier_list_id'];
             $regrind_supplier_receive_list_id = $_POST['regrind_supplier_receive_list_id'];
             $regrind_supplier_receive_list_qty = $_POST['regrind_supplier_receive_list_qty'];
             $regrind_supplier_receive_list_remark = $_POST['regrind_supplier_receive_list_remark'];
@@ -224,7 +235,8 @@ if(!isset($_GET['action'])){
             if(is_array($product_id)){
                 for($i=0; $i < count($product_id) ; $i++){
                     $data = [];
-                    $data['regrind_supplier_receive_id'] = $regrind_supplier_receive_id;
+
+                    $data['regrind_supplier_list_id'] = $regrind_supplier_list_id;
                     $data['product_id'] = $product_id[$i];
                     $data['regrind_supplier_receive_list_qty'] = $regrind_supplier_receive_list_qty[$i];
                     $data['regrind_supplier_receive_list_remark'] = $regrind_supplier_receive_list_remark[$i];
@@ -237,7 +249,7 @@ if(!isset($_GET['action'])){
                 }
             }else{
                 $data = [];
-                $data['regrind_supplier_receive_id'] = $regrind_supplier_receive_id;
+                $data['regrind_supplier_list_id'] = $regrind_supplier_list_id;
                 $data['product_id'] = $product_id;
                 $data['regrind_supplier_receive_list_qty'] = $regrind_supplier_receive_list_qty;
                 $data['regrind_supplier_receive_list_remark'] = $regrind_supplier_receive_list_remark;

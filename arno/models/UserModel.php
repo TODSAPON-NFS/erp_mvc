@@ -96,9 +96,9 @@ class UserModel extends BaseModel{
         ";
 
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-           return true;
+            return mysqli_insert_id($this->db);
         }else {
-            return false;
+            return 0;
         }
 
     }

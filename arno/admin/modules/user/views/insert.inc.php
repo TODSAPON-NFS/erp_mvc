@@ -92,6 +92,9 @@
             document.getElementById("user_status_id").focus();
             return false;
         }else{
+            var canvas = document.getElementById("signature");
+            var dataURL = canvas.toDataURL("image/png");
+            document.getElementById('hidden_data').value = dataURL;
             return true;
         }
 

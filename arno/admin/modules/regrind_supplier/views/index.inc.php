@@ -271,6 +271,15 @@ if(!isset($_GET['action'])){
         
      
     
+} else if($_GET['action'] == 'send'){
+    $img = $_POST['hidden_data'];
+    $data['contact_signature'] = $img;
+
+    $regrind_supplier_model->updateContactSignatureByID($regrind_supplier_id,$data);
+
+?>
+    <script>window.location="index.php?app=regrind_supplier&action=detail&id=<?php echo $regrind_supplier_id;?>"</script>
+<?PHP
 }else{
 
     $regrind_suppliers = $regrind_supplier_model->getRegrindSupplierBy();

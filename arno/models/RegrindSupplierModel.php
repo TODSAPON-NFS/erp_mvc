@@ -95,13 +95,30 @@ class RegrindSupplierModel extends BaseModel{
         regrind_supplier_date = '".$data['regrind_supplier_date']."', 
         regrind_supplier_remark = '".$data['regrind_supplier_remark']."', 
         regrind_supplier_file = '".$data['regrind_supplier_file']."', 
-        employee_signature = '".$data['employee_signature']."', 
         contact_name = '".$data['contact_name']."', 
-        contact_signature = '".$data['contact_signature']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
         WHERE regrind_supplier_id = $id 
         ";
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+
+
+    }
+
+    function updateContactSignatureByID($id,$data = []){
+        $sql = " UPDATE tb_regrind_supplier SET 
+        contact_signature = '".$data['contact_signature']."', 
+        updateby = '".$data['updateby']."', 
+        lastupdate = NOW()  
+        WHERE regrind_supplier_id = $id 
+        ";
+
+        //echo $sql;
 
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
            return true;

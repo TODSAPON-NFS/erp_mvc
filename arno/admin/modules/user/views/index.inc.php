@@ -68,11 +68,8 @@ if(!isset($_GET['action'])){
 
         if($user){
             $img = $_POST['hidden_data'];
-            $img = str_replace('data:image/png;base64,', '', $img);
-            $img = str_replace(' ', '+', $img);
-            $data = base64_decode($img);
-            $file = $target_dir . $user . ".png";
-            $success = file_put_contents($file, $data);
+            $data['user_signature'] = $img;
+            $model->updateUserSignatureByID($_POST['user_id'],$data);
 ?>
         <script>window.location="index.php?app=employee&action=update&id=<?PHP echo $user?>"</script>
 <?php
@@ -112,11 +109,15 @@ if(!isset($_GET['action'])){
 
         if($user){
             $img = $_POST['hidden_data'];
+            $data['user_signature'] = $img;
+            $model->updateUserSignatureByID($_POST['user_id'],$data);
+/*
             $img = str_replace('data:image/png;base64,', '', $img);
             $img = str_replace(' ', '+', $img);
             $data = base64_decode($img);
             $file = $target_dir . $_POST['user_id'] . ".png";
             $success = file_put_contents($file, $data);
+*/
 ?>
         <script>window.location="index.php?app=employee"</script>
 <?php

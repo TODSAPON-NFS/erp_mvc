@@ -44,16 +44,22 @@
             responsive: true
         });
         $('.select').selectpicker();
-        <?PHP if($_GET['app'] == "employee" && ($_GET['action'] == 'update' || $_GET['action'] == 'insert') ){ ?>
+        <?PHP if(($_GET['app'] == "employee" || $_GET['app'] == "regrind_supplier") && ($_GET['action'] == 'update' || $_GET['action'] == 'insert'|| $_GET['action'] == 'detail') ){ ?>
 
-var c = document.getElementById("signature");
-    var ctx = c.getContext("2d");
-    var img = new Image();
-    img.onload = function() {
-        ctx.drawImage(img, 0, 0);
-    };
-    img.src = '<?PHP echo $target_dir . $user['user_id'] . ".png";?>';
-    
+        var c = document.getElementById("signature");
+        var ctx = c.getContext("2d");
+        var img = new Image();
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+        };
+        <?PHP if($_GET['app'] == "employee"){?>
+            img.src = '<?PHP echo $user['user_signature'];?>';
+        <?PHP } ?>
+
+        <?PHP if($_GET['app'] == "regrind_supplier"){?>
+            img.src = '<?PHP echo $regrind_supplier['contact_signature'];?>';
+        <?PHP } ?>
+
         var canvas = document.getElementById("signature");
         var signaturePad = new SignaturePad(canvas);
         

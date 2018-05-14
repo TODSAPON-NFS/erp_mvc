@@ -1,4 +1,11 @@
-
+<script>
+    function set_hidden(){
+        var canvas = document.getElementById("signature");
+        var dataURL = canvas.toDataURL("image/png");
+        document.getElementById('hidden_data').value = dataURL;
+        return true;
+    }
+</script>
 <div class="row">
     <div class="col-lg-6">
         <h1 class="page-header">Regrind Supplier  Management</h1>
@@ -108,14 +115,33 @@
                             ?>
                         </tbody>
                     </table> 
+                    
+                    <form role="form" method="post" onsubmit="return set_hidden();" action="index.php?app=regrind_supplier&action=send&id=<?php echo $regrind_supplier_id;?>" >
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>ลายเซ็นผู้รับสินค้า / Signature <font color="#F00"><b>*</b></font> </label>
+                                <div align="center">
+                                    <input name="hidden_data" id='hidden_data' type="hidden"/>
+                                    <canvas id="signature" width="280px" height="280px" style="border: 1px solid #ddd;"></canvas>
+                                    <br>
+                                    <a class="btn btn-default" id="clear-signature" >Clear</a>
+                                </div>
+                                <p class="help-block">Example : ทำงาน.</p>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <!-- /.row (nested) -->
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="index.php?app=regrind_supplier" class="btn btn-default">Back</a>
                             <a href="index.php?app=regrind_supplier&action=print&id=<?PHP echo $regrind_supplier_id?>" class="btn btn-danger">Print</a>
+                            <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     </div>
+                    </form>
             </div>
             <!-- /.panel-body -->
         </div>

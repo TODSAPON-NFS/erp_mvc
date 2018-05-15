@@ -167,6 +167,12 @@
                         <li>
                             <a href="?app=stock_issue"><i class="fa fa-outdent" aria-hidden="true"></i> ใบนำออกสินค้า (Issue Stock)</a>
                         </li>
+                        <li>
+                            <div class="nav-title">ระบบความรู้</div>
+                        </li>
+                        <li>
+                            <a href="?app=job"><i class="fa fa-outdent" aria-hidden="true"></i> งานจัดการต้นทุน (Cost per Part)</a>
+                        </li>
                         
                         <!-- /.nav-second-level -->
                     </ul>

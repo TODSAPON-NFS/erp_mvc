@@ -115,6 +115,8 @@
                 document.getElementById('customer_name').value = data.customer_name_en +' (' + data.customer_name_th +')';
                 document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
                 document.getElementById('customer_tax').value = data.customer_tax ;
+
+                getNewCode();
             });
         }
         
@@ -188,6 +190,17 @@
         $('#quotation_vat_price').val((total * ($('#quotation_vat').val()/100.0)).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
         $('#quotation_vat_net').val((total * ($('#quotation_vat').val()/100.0) + total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
         
+    }
+
+    function getNewCode(){
+        var customer_code = document.getElementById('customer_code').value;
+        var emp = $("#emp_id option:selected").text().substring(0, 2).toUpperCase();
+        var first_code = customer_code+"-"+emp+"-<?PHP echo date("y").date("m"); ?>"; 
+        document.getElementById('employee_id').value = document.getElementById('emp_id').value; 
+        $.post( "controllers/getQuotationCodeIndex.php", { 'first_code': first_code }, function( data ) {
+            document.getElementById('quotation_code').value = data;
+        });
+
     }
 
 </script>
@@ -307,12 +320,13 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>พนักงานขาย / Sale  <font color="#F00"><b>*</b></font> </label>
-                                        <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true">
+                                        <input id="employee_id" type="hidden" name="employee_id" value="<? echo $user["user_id"];?>" />
+                                        <select id="emp_id" class="form-control select" data-live-search="true" onchange="getNewCode();">
                                             <option value="">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($users) ; $i++){
                                             ?>
-                                            <option value="<?php echo $users[$i]['user_id'] ?>" <?PHP if( $users[$i]['user_id'] == $quotation['employee_id']){ ?> SELECTED <?PHP }?> ><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
+                                            <option value="<?php echo $users[$i]['user_id'] ?>" <?PHP if( $users[$i]['user_id'] == $user['user_id']){ ?> SELECTED <?PHP }?> ><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
                                             <?
                                             }
                                             ?>

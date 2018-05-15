@@ -46,6 +46,7 @@ class StockTypeModel extends BaseModel{
         WHERE stock_type_id = $id 
         ";
 
+        //echo $sql;
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {

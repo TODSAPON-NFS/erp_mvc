@@ -27,6 +27,58 @@
 
     }
 
+    
+    function delete_row(id){
+        $(id).closest('tr').remove();
+
+        var tr =  $('#table').children('tbody').children('tr').children('td:first-child');
+            
+        for(i=0; i<tr.length; i++){
+            tr[i].innerHTML = (i+1)+".";
+        }
+     }
+
+    function addEmployee(id){
+        var emp_id = document.getElementById("emp_id").value;
+        var val = document.getElementsByName('employee_id[]');
+        
+        if (emp_id != ""){
+            for(var i = 0 ; i < val.length ; i++){
+                if(val[i].value == emp_id){
+                    alert("Employee exits.");
+                    return false;
+                }
+            }
+
+            $('#table').children('tbody').append(
+                '<tr class="odd gradeX">'+
+                    '<td></td>'+
+                    '<td>'+
+                        '<input type="hidden" name="stock_type_user_id[]" value="0" />'+
+                        '<input type="hidden" name="employee_id[]" value="'+emp_id+'" />'+
+                        '<span>'+$("#emp_id option:selected").text()+'</span>'+
+                    '</td>'+
+                    '<td>'+
+                        '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
+                            '<i class="fa fa-times" aria-hidden="true"></i>'+
+                        '</a>'+
+                    '</td>'+
+                '</tr>'
+            );
+
+            var tr =  $('#table').children('tbody').children('tr').children('td:first-child');
+            
+            for(i=0; i<tr.length; i++){
+                tr[i].innerHTML = (i+1)+".";
+            }
+            
+        }else{
+            alert("Please select employee.");
+        }
+        
+    }
+
+
 
 </script>
 
@@ -64,6 +116,65 @@
                             </div>
                         </div>
                     </div>
+
+
+                    <div>
+                    Employee reference :
+                    </div>
+
+                    <table id="table" width="100%" class="table table-striped table-bordered table-hover" >
+                        <thead>
+                            <tr>
+                                <th width="120px" style="text-align:center;">ลำดับ<br>(No.)</th>
+                                <th style="text-align:center;">พนักงานที่มีสิทธิ์เข้าถึง<br>(Employee)</th>
+                                <th width="120px">
+                                    
+                                </th>
+                            </tr>
+                            <tr>
+                                <th width="120px" style="text-align:center;"></th>
+                                <th style="text-align:center;">
+                                    <select id="emp_id" class="form-control select" data-live-search="true" >
+                                        <option value="">Select</option>
+                                        <?php 
+                                        for($i =  0 ; $i < count($users) ; $i++){
+                                        ?>
+                                        <option value="<?php echo $users[$i]['user_id'] ?>" <?PHP if( $users[$i]['user_id'] == $user['user_id']){ ?> SELECTED <?PHP }?> ><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
+                                        <?
+                                        }
+                                        ?>
+                                    </select>
+                                </th>
+                                <th>
+                                <a class="btn btn-success " href="javascript:;" onclick="addEmployee(this);" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                            $total = 0;
+                            for($i=0; $i < count($stock_type_users); $i++){
+                            ?>
+                            <tr class="odd gradeX">
+                                <td>
+                                </td>
+                                <td>
+                                    <input type="hidden" class="form-control" name="employee_id[]" value="<?php echo $stock_type_users[$i]['employee_id']; ?>" />
+                                    <input type="hidden" class="form-control" name="stock_type_user_id[]" value="<?php echo $stock_type_users[$i]['stock_type_user_id']; ?>" />
+                                    <span><?PHP echo $stock_type_users[$i]['user_name']?> <?PHP echo $stock_type_users[$i]['user_lastname']?> (<?PHP echo $stock_type_users[$i]['user_position_name']?>)</span>
+                                </td>
+                                <td>
+                                    <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <?
+                            }
+                            ?>
+                        </tbody>
+                        
+                    </table>
 
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">

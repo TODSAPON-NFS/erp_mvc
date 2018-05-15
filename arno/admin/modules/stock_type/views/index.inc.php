@@ -1,9 +1,13 @@
 <?php
+require_once('../models/UserModel.php');
+require_once('../models/StockTypeUserModel.php');
 require_once('../models/StockTypeModel.php');
 require_once('../models/StockModel.php');
 require_once('../models/StockGroupModel.php');
 
 $path = "modules/stock_type/views/";
+$user_model = new UserModel;
+$model_stock_type_user = new StockTypeUserModel;
 $model_stock_type = new StockTypeModel;
 $model_stock = new StockModel;
 $model_stock_group = new StockGroupModel;
@@ -15,12 +19,14 @@ if(!isset($_GET['action'])){
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
-
+    
+    $users=$user_model->getUserBy();
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
-   
+}else if ($_GET['action'] == 'update'){ 
+    $users=$user_model->getUserBy();
     $stock_type = $model_stock_type->getStockTypeByID($stock_type_id);
+    $stock_type_users = $model_stock_type_user->getStockTypeUserBy($stock_type_id);
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'delete'){
@@ -51,11 +57,37 @@ if(!isset($_GET['action'])){
         $data['stock_type_name'] = $_POST['stock_type_name'];
         $data['stock_group_id'] = $_POST['stock_group_id'];
 
-        $id = $model_stock_type->insertStockType($data);
+        $stock_type_id = $model_stock_type->insertStockType($data);
 
-        if($id > 0){
+        
+        if($stock_type_id > 0){
+            $employee_id = $_POST['employee_id'];
+            $stock_type_user_id = $_POST['stock_type_user_id'];
+
+            $model_stock_type_user->deleteStockTypeUserByEmployeeIDNotIN($stock_type_id,$stock_type_user_id);
+
+            if(is_array($employee_id)){
+                for($i=0; $i < count($employee_id) ; $i++){
+                    $data = [];
+                    $data['stock_type_id'] = $stock_type_id;
+                    $data['employee_id'] = $employee_id[$i];
+                    if($stock_type_user_id[$i] == 0){
+                        $model_stock_type_user->insertStockTypeUser($data);
+                    }
+                }
+            }else{
+                $data = [];
+                $data['stock_type_id'] = $stock_type_id;
+                $data['employee_id'] = $employee_id;
+    
+                if($stock_type_user_id == 0){
+                    $model_stock_type_user->insertStockTypeUser($data);
+                }
+            }
+
+
 ?>
-        <script>window.location="index.php?app=stock_type&action=update&id=<?php echo $id?>"</script>
+        <script>window.location="index.php?app=stock_type&action=update&id=<?php echo $stock_type_id?>"</script>
 <?php
         }else{
 ?>
@@ -78,8 +110,39 @@ if(!isset($_GET['action'])){
         $data['stock_type_name'] = $_POST['stock_type_name'];
         $data['stock_group_id'] = $_POST['stock_group_id'];
        
-        $user = $model_stock_type->updateStockTypeByID($_POST['stock_type_id'],$data);
-        if($user){
+        $output = $model_stock_type->updateStockTypeByID($stock_type_id,$data);
+
+        if($output){
+            $employee_id = $_POST['employee_id'];
+            $stock_type_user_id = $_POST['stock_type_user_id'];
+
+            $model_stock_type_user->deleteStockTypeUserByEmployeeIDNotIN($stock_type_id,$stock_type_user_id);
+
+            if(is_array($employee_id)){
+
+                for($i=0; $i < count($employee_id) ; $i++){
+
+                    $data = [];
+                    $data['stock_type_id'] = $stock_type_id;
+                    $data['employee_id'] = $employee_id[$i];
+
+                    if($stock_type_user_id[$i] == 0){
+                        $model_stock_type_user->insertStockTypeUser($data);
+                    }
+
+                }
+
+            }else{
+
+                $data = [];
+                $data['stock_type_id'] = $stock_type_id;
+                $data['employee_id'] = $employee_id;
+    
+                if($stock_type_user_id == 0){
+                    $model_stock_type_user->insertStockTypeUser($data);
+                }
+
+            }
 ?>
         <script>window.location="index.php?app=stock_type"</script>
 <?php

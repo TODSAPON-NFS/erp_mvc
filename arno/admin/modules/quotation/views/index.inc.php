@@ -17,7 +17,7 @@ $notification_model = new NotificationModel;
 $quotation_model = new QuotationModel;
 $quotation_list_model = new QuotationListModel;
 $product_model = new ProductModel;
-$first_char = "QU";
+$first_char = "";
 $quotation_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $vat = 7;
@@ -29,10 +29,18 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'insert'){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
+    $user=$user_model->getUserByID($user[0][0]);
     $users=$user_model->getUserBy();
-    $first_code = $first_char.date("y").date("m");
+
+    $cus_firstcode = strtoupper($customers[0]['customer_code']);
+    $emp_firstcode = strtoupper(substr($user['user_name'],0,2));
+    $first_code = $cus_firstcode."-".$emp_firstcode."-".date("y").date("m");
+
     $first_date = date("d")."-".date("m")."-".date("Y");
+
+
     $last_code = $quotation_model->getQuotationLastID($first_code,3);
+    
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){

@@ -67,10 +67,40 @@ class JobOperationProcessToolModel extends BaseModel{
             job_operation_process_tool_toollife = '".$data['job_operation_process_tool_toollife']."', 
             job_operation_process_tool_name = '".$data['job_operation_process_tool_name']."',
             job_operation_process_tool_remark = '".$data['job_operation_process_tool_remark']."', 
-            job_operation_process_tool_status = '".$data['job_operation_process_tool_status']."' 
+            job_operation_process_tool_active = '".$data['job_operation_process_tool_active']."' 
             WHERE job_operation_process_tool_id = '$id'
         ";
 
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
+    function activeJobOperationProcessToolByID($id){
+        $sql = " UPDATE tb_job_operation_process_tool SET 
+        job_operation_process_tool_active = '1', 
+        updateby = '".$data['updateby']."', 
+        lastupdate = '".$data['lastupdate']."' 
+        WHERE job_operation_process_tool_id = $id 
+        ";
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
+    function inactiveJobOperationProcessToolByID($id){
+        $sql = " UPDATE tb_job_operation_process_tool SET 
+        job_operation_process_tool_active = '0', 
+        updateby = '".$data['updateby']."', 
+        lastupdate = '".$data['lastupdate']."' 
+        WHERE job_operation_process_tool_id = $id 
+        ";
 
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
            return true;

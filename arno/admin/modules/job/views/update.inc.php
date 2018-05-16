@@ -12,6 +12,7 @@
 
      function check(){
 
+
         var quotation_code = document.getElementById("quotation_code").value;
         var quotation_type = document.getElementById("quotation_type").value;
         var employee_id = document.getElementById("employee_id").value;
@@ -65,7 +66,7 @@
          }else{
             index = $(id).closest('table').children('tbody').children('tr').length + 1;
          }
-         $(id).closest('table').children('tbody').append(
+        $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
                     '<input type="hidden" name="quotation_list_id[]" value="0" />'+
@@ -73,21 +74,21 @@
                     '<select class="form-control select" name="product_select[]"  onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td>'+
-                    '<input type="text" class="form-control"  name="product_name[]" readonly />'+
+                    '<input type="text" class="form-control" name="product_name[]" readonly />'+
                     '<div>หมายเหตุ</div>'+
-                    '<input type="text" class="form-control"  name="quotation_list_remark[]" />'+
+                    '<input type="text" class="form-control" name="quotation_list_remark[]" />'+
                 '</td>'+
-                '<td  style="max-width:100px;"><input type="text" class="form-control" onchange="update_sum(this)" style="text-align:right;" name="quotation_list_qty[]" value="1" /></td>'+
-                '<td  style="max-width:100px;"><input type="text" class="form-control" onchange="update_sum(this)" style="text-align:right;" name="quotation_list_price[]" value="0.00" /></td>'+
-                '<td  style="max-width:120px;"><input type="text" class="form-control" style="text-align:right;" name="quotation_list_sum[]" value="0.00" readonly /></td>'+
+                '<td  style="max-width:100px;"><input type="text" onchange="update_sum(this)" class="form-control" style="text-align:right;" name="quotation_list_qty[]" value="1" /></td>'+
+                '<td  style="max-width:100px;"><input type="text" onchange="update_sum(this)" class="form-control" style="text-align:right;" name="quotation_list_price[]" value="0.00" /></td>'+
+                '<td  style="max-width:120px;"><input type="text"  class="form-control" style="text-align:right;" name="quotation_list_sum[]" value="0.00" readonly /></td>'+
                 '<td width="100px"><input type="text" class="form-control" onchange="update_sum(this)" style="text-align:right;" name="quotation_list_discount[]" value="0.00" /></td>'+
                 '<td width="80px">'+
-                    '<select class="form-control" onchange="update_sum(this)" name="quotation_list_discount_type[]">'+
+                    '<select class="form-control" onchange="update_sum(this)" name="quotation_list_discount_type[]" >'+
                         '<option value="0"  SELECTED >%</option>'+
                         '<option value="1">-</option>'+
                     '</select>'+
                 '</td>'+
-                '<td  style="max-width:120px;"><input type="text" class="form-control" name="quotation_list_total[]" style="text-align:right;" value="0.00" readonly /></td>'+
+                '<td  style="max-width:120px;"><input type="text" class="form-control" name="quotation_list_total[]" style="text-align:right;" value="0.00" readonly/></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -104,8 +105,7 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_select[]"]').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_select[]"]').selectpicker();
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="m_quotation_list_delivery[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
-    }
+   }
 
     function get_customer_detail(){
         var customer_id = parseInt(document.getElementById('customer_id').value);
@@ -115,8 +115,6 @@
                 document.getElementById('customer_name').value = data.customer_name_en +' (' + data.customer_name_th +')';
                 document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
                 document.getElementById('customer_tax').value = data.customer_tax ;
-
-                getNewCode();
             });
         }
         
@@ -186,20 +184,8 @@
         }
 
         $('#quotation_total').val(total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-
         $('#quotation_vat_price').val((total * ($('#quotation_vat').val()/100.0)).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
         $('#quotation_vat_net').val((total * ($('#quotation_vat').val()/100.0) + total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        
-    }
-
-    function getNewCode(){
-        var customer_code = document.getElementById('customer_code').value;
-        var emp = $("#emp_id option:selected").text().substring(0, 2).toUpperCase();
-        var first_code = customer_code+"-"+emp+"-<?PHP echo date("y").date("m"); ?>"; 
-        document.getElementById('employee_id').value = document.getElementById('emp_id').value; 
-        $.post( "controllers/getQuotationCodeIndex.php", { 'first_code': first_code }, function( data ) {
-            document.getElementById('quotation_code').value = data;
-        });
 
     }
 
@@ -219,11 +205,11 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            เพิ่มใบเสนอราคาสินค้า / Add Quotation 
+            แก้ไขใบเสนอราคาสินค้า / Edit Quotation 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=quotation&action=add" >
+                <form role="form" method="post" onsubmit="return check();" action="index.php?app=quotation&action=edit&id=<?php echo $quotation_id;?>" >
                 <input type="hidden"  id="quotation_id" name="quotation_id" value="<?php echo $quotation_id; ?>" />
                     <div class="row">
                         <div class="col-lg-6">
@@ -239,7 +225,7 @@
                                     <div class="form-group">
                                         <label>ผู้ซื้อ / Customer  <font color="#F00"><b>*</b></font> </label>
                                         <select id="customer_id" name="customer_id" class="form-control select" onchange="get_customer_detail()" data-live-search="true">
-                                            <option value="">Select</option>
+                                            <option value="0">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($customers) ; $i++){
                                             ?>
@@ -265,6 +251,7 @@
                                         <p class="help-block">Example : Revel soft.</p>
                                     </div>
                                 </div>
+                                
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ที่อยู่ตามใบกำภาษี / Address <font color="#F00"><b>*</b></font></label>
@@ -304,15 +291,15 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่ออกใบเสนอราคา / Quotation Date</label>
-                                        <input type="text" id="quotation_date" name="quotation_date" value="<?PHP echo $first_date;?>"  class="form-control calendar" readonly/>
+                                        <input type="text" id="quotation_date" name="quotation_date" value="<?PHP echo $quotation['quotation_date'];?>"  class="form-control calendar" readonly/>
                                         <p class="help-block">01-03-2018</p>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>หมายเลขใบเสนอราคา / Quotation code <font color="#F00"><b>*</b></font></label>
-                                        <input id="quotation_code" name="quotation_code" class="form-control" value="<?PHP echo $last_code;?>" readonly>
+                                        <label>หมายเลขใบเสนอราคา / Quotation code <font color="#F00"><b>*</b></font> <?php if($quotation['quotation_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $quotation['quotation_rewrite_no']; ?></font></b> <?PHP } ?></label>
+                                        <input id="quotation_code" name="quotation_code" class="form-control" value="<?PHP echo $quotation['quotation_code'];?>" readonly>
                                         <p class="help-block">Example : INV1801001.</p>
                                     </div>
                                 </div>                              
@@ -320,13 +307,12 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>พนักงานขาย / Sale  <font color="#F00"><b>*</b></font> </label>
-                                        <input id="employee_id" type="hidden" name="employee_id" value="<? echo $user["user_id"];?>" />
-                                        <select id="emp_id" class="form-control select" data-live-search="true" onchange="getNewCode();">
+                                        <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true">
                                             <option value="">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($users) ; $i++){
                                             ?>
-                                            <option value="<?php echo $users[$i]['user_id'] ?>" <?PHP if( $users[$i]['user_id'] == $user['user_id']){ ?> SELECTED <?PHP }?> ><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
+                                            <option value="<?php echo $users[$i]['user_id'] ?>" <?PHP if( $users[$i]['user_id'] == $quotation['employee_id']){ ?> SELECTED <?PHP }?> ><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
                                             <?
                                             }
                                             ?>
@@ -358,9 +344,9 @@
                                 <th style="text-align:center;">ชื่อสินค้า/หมายเหตุ<br>(Product Name/Remark)</th>
                                 <th style="text-align:center;max-width:100px;">จำนวน<br>(Qty)</th>
                                 <th style="text-align:center;max-width:100px;">ราคาต่อชิ้น<br>(Price)</th>
-                                <th style="text-align:center;max-width:120px;">ราคารวม<br>(Total price)</th>
+                                <th style="text-align:center;">ราคารวม<br>(Total price)</th>
                                 <th style="text-align:center;" colspan="2">ส่วนลด<br>(Discount)</th>
-                                <th style="text-align:center;max-width:120px;">ราคาสุทธิ<br>(Net price)</th>
+                                <th style="text-align:center;">ราคาสุทธิ<br>(Net price)</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -389,17 +375,17 @@
                                     <div>หมายเหตุ.</div>
                                     <input type="text" class="form-control" name="quotation_list_remark[]" value="<?php echo $quotation_lists[$i]['quotation_list_remark']; ?>" />
                                 </td>
-                                <td style="max-width:100px;"><input type="text" class="form-control" onchange="update_sum(this)" style="text-align:right;" name="quotation_list_qty[]" value="<?php echo $quotation_lists[$i]['quotation_list_qty']; ?>" /></td>
-                                <td style="max-width:100px;"><input type="text" class="form-control" onchange="update_sum(this)" style="text-align:right;" name="quotation_list_price[]" value="<?php echo $quotation_lists[$i]['quotation_list_price']; ?>" /></td>
-                                <td  style="max-width:120px;"><input type="text" class="form-control"  style="text-align:right;" name="quotation_list_sum[]" value="<?php echo $quotation_lists[$i]['quotation_list_sum']; ?>" readonly /></td>
-                                <td width="100px"><input type="text" class="form-control" onchange="update_sum(this)" style="text-align:right;" name="quotation_list_discount[]" value="<?php echo $quotation_lists[$i]['quotation_list_discount']; ?>" /></td>
+                                <td  style="max-width:100px;"><input type="text" class="form-control" onchange="update_sum(this)" style="text-align:right;" name="quotation_list_qty[]" value="<?php echo number_format($quotation_lists[$i]['quotation_list_qty'],2); ?>" /></td>
+                                <td  style="max-width:100px;"><input type="text" class="form-control" onchange="update_sum(this)" style="text-align:right;" name="quotation_list_price[]" value="<?php echo number_format($quotation_lists[$i]['quotation_list_price'],2); ?>" /></td>
+                                <td  style="max-width:120px;"><input type="text" class="form-control"  style="text-align:right;" name="quotation_list_sum[]" value="<?php echo number_format($quotation_lists[$i]['quotation_list_sum'],2);  ?>" readonly /></td>
+                                <td width="100px"><input type="text" class="form-control" onchange="update_sum(this)" style="text-align:right;" name="quotation_list_discount[]" value="<?php echo number_format($quotation_lists[$i]['quotation_list_discount'],2); ?>" /></td>
                                 <td width="80px">
                                     <select class="form-control" onchange="update_sum(this)" name="quotation_list_discount_type[]">
                                         <option value="0" <?PHP if($quotation_lists[$i]['quotation_list_discount_type'] == 0){?> SELECTED <?PHP } ?> >%</option>
                                         <option value="1" <?PHP if($quotation_lists[$i]['quotation_list_discount_type'] == 1){?> SELECTED <?PHP } ?> >-</option>
                                     </select>
                                 </td>
-                                <td  style="max-width:120px;"><input type="text" class="form-control"  style="text-align:right;" name="quotation_list_total[]" value="<?php echo $quotation_lists[$i]['quotation_list_total']; ?>" readonly /></td>
+                                <td  style="max-width:120px;"><input type="text" class="form-control" style="text-align:right;" name="quotation_list_total[]" value="<?php echo number_format($quotation_lists[$i]['quotation_list_total'],2); ?>" readonly /></td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
@@ -427,7 +413,7 @@
                                 <td colspan="3" align="left" style="vertical-align: middle;">
                                     <span>ราคารวมทั้งสิ้น / Sub total</span>
                                 </td>
-                                <td style="max-width:120px;">
+                                <td>
                                     <input type="text" class="form-control" style="text-align: right;" id="quotation_total" name="quotation_total" value="<?PHP echo number_format($total,2) ;?>"  readonly/>
                                 </td>
                                 <td>
@@ -441,7 +427,7 @@
                                                 <span>จำนวนภาษีมูลค่าเพิ่ม / Vat</span>
                                             </td>
                                             <td style = "padding-left:8px;padding-right:8px;width:72px;">
-                                                <input type="text" class="form-control" style="text-align: right;" onchange="calculateAll()" id="quotation_vat" name="quotation_vat" value="<?PHP echo $vat;?>" />
+                                                <input type="text" class="form-control" onchange="calculateAll()" style="text-align: right;" id="quotation_vat" name="quotation_vat" value="<?PHP echo $vat;?>" />
                                             </td>
                                             <td width="16">
                                             %
@@ -450,7 +436,7 @@
                                     </table>
                                     
                                 </td>
-                                <td style="max-width:120px;">
+                                <td>
                                     <input type="text" class="form-control" style="text-align: right;" id="quotation_vat_price"  name="quotation_vat_price" value="<?PHP echo number_format(($vat/100) * $total,2) ;?>"  readonly/>
                                 </td>
                                 <td>
@@ -460,7 +446,7 @@
                                 <td colspan="3" align="left" style="vertical-align: middle;">
                                     <span>จำนวนเงินรวมทั้งสิ้น / Net Total</span>
                                 </td>
-                                <td style="max-width:120px;">
+                                <td>
                                     <input type="text" class="form-control" style="text-align: right;" id="quotation_vat_net" name="quotation_vat_net" value="<?PHP echo number_format(($vat/100) * $total + $total,2) ;?>" readonly/>
                                 </td>
                                 <td>

@@ -43,6 +43,37 @@ class JobModel extends BaseModel{
     }
 
     
+    function activeJobByID($id){
+        $sql = " UPDATE tb_job SET 
+        job_active = '1', 
+        updateby = '".$data['updateby']."', 
+        lastupdate = '".$data['lastupdate']."' 
+        WHERE job_id = $id 
+        ";
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
+    function inactiveJobByID($id){
+        $sql = " UPDATE tb_job SET 
+        job_active = '0', 
+        updateby = '".$data['updateby']."', 
+        lastupdate = '".$data['lastupdate']."' 
+        WHERE job_id = $id 
+        ";
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
+    
     
 
     function updateJobByID($id,$data = []){
@@ -57,7 +88,7 @@ class JobModel extends BaseModel{
         job_drawing = '".$data['job_drawing']."', 
         job_start = '".$data['job_start']."', 
         job_end = '".$data['job_end']."', 
-        job_status = '".$data['job_status']."' 
+        job_active = '".$data['job_active']."' 
         WHERE job_id = $id 
         ";
 
@@ -84,7 +115,7 @@ class JobModel extends BaseModel{
             job_drawing,
             job_start,
             job_end,
-            job_status
+            job_active
         ) VALUES (
             '".$data['customer_id']."', 
             '".$data['job_code']."', 
@@ -96,7 +127,7 @@ class JobModel extends BaseModel{
             '".$data['job_drawing']."', 
             '".$data['job_start']."', 
             '".$data['job_end']."', 
-            '".$data['job_status']."' 
+            '".$data['job_active']."' 
         ); 
         ";
 

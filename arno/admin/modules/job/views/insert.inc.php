@@ -207,7 +207,7 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Quotation Management</h1>
+        <h1 class="page-header">Job Management</h1>
     </div>
     <div class="col-lg-6" align="right">
        
@@ -219,7 +219,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            เพิ่มใบเสนอราคาสินค้า / Add Quotation 
+            เพิ่มงานจัดการต้นทุน / Add Job 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -234,6 +234,7 @@
                                         <input id="customer_code" name="customer_code" class="form-control" value="<? echo $customer['customer_code'];?>" readonly>
                                         <p class="help-block">Example : A0001.</p>
                                     </div>
+
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="form-group">
@@ -260,7 +261,7 @@
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="form-group">
-                                        <label>ชื่อตามใบเสนอราคา / Full name <font color="#F00"><b>*</b></font></label>
+                                        <label>ชื่อตามงานจัดการต้นทุน / Full name <font color="#F00"><b>*</b></font></label>
                                         <input  id="customer_name" name="customer_name" class="form-control" value="<?php echo $customer['customer_name_en'];?> (<?php echo $customer['customer_name_th'];?>)" >
                                         <p class="help-block">Example : Revel soft.</p>
                                     </div>
@@ -272,28 +273,6 @@
                                         <p class="help-block">Example : 271/55 .</p>
                                     </div>
                                 </div>
-                                
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>ชื่อผู้ติดต่อ / Contact name <font color="#F00"><b>*</b></font></label>
-                                        <input  id="quotation_contact_name" name="quotation_contact_name" class="form-control" value="<?php echo $quotation['quotation_contact_name'];?>" >
-                                        <p class="help-block">Example : ศุภชัย ลิ้มภัครดี.</p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>เบอร์โทรผู้ติดต่อ / Contact telephone <font color="#F00"><b>*</b></font></label>
-                                        <input  id="quotation_contact_tel" name="quotation_contact_tel" class="form-control" value="<?php echo $quotation['quotation_contact_tel'];?>" >
-                                        <p class="help-block">Example : 0610243003.</p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>อีเมล์ผู้ติดต่อ / Contact email <font color="#F00"><b>*</b></font></label>
-                                        <input  id="quotation_contact_email" name="quotation_contact_email" class="form-control" value="<?php echo $quotation['quotation_contact_email'];?>" >
-                                        <p class="help-block">Example : thana.t@revelsoft.co.th.</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="col-lg-1">
@@ -303,42 +282,58 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>วันที่ออกใบเสนอราคา / Quotation Date</label>
-                                        <input type="text" id="quotation_date" name="quotation_date" value="<?PHP echo $first_date;?>"  class="form-control calendar" readonly/>
+                                        <label>หมายเลขงานจัดการต้นทุน / Job code <font color="#F00"><b>*</b></font></label>
+                                        <input id="job_code" name="job_code" class="form-control" value="<?PHP echo $last_code;?>" readonly>
+                                        <p class="help-block">Example : JOB1801001.</p>
+                                    </div>
+                                </div>    
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>ชื่องานงานจัดการต้นทุน / Job name <font color="#F00"><b>*</b></font></label>
+                                        <input id="job_name" name="job_name" class="form-control" value="<?PHP echo $last_code;?>" >
+                                        <p class="help-block">Example : Collar.</p>
+                                    </div>
+                                </div>     
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>ราคาต่อชิ้น / Price/Piece <font color="#F00"><b>*</b></font></label>
+                                        <input id="job_price" name="job_price" class="form-control" value="<?PHP echo $last_code;?>" >
+                                        <p class="help-block">Example : Collar.</p>
+                                    </div>
+                                </div> 
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>ต้นทุนต่อชิ้น / Cost/Piece <font color="#F00"><b>*</b></font></label>
+                                        <input id="job_cost" name="job_cost" class="form-control" value="<?PHP echo $last_code;?>" >
+                                        <p class="help-block">Example : Collar.</p>
+                                    </div>
+                                </div> 
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>ยอดผลิตต่อเดือน / Production/Month <font color="#F00"><b>*</b></font></label>
+                                        <input id="job_production" name="job_production" class="form-control" value="<?PHP echo $last_code;?>" >
+                                        <p class="help-block">Example : Collar.</p>
+                                    </div>
+                                </div> 
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>วันที่เริ่มงาน / Start Date</label>
+                                        <input type="text" id="job_start" name="job_start" value="<?PHP echo $first_date;?>"  class="form-control calendar" readonly/>
                                         <p class="help-block">01-03-2018</p>
                                     </div>
                                 </div>
-
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>หมายเลขใบเสนอราคา / Quotation code <font color="#F00"><b>*</b></font></label>
-                                        <input id="quotation_code" name="quotation_code" class="form-control" value="<?PHP echo $last_code;?>" readonly>
-                                        <p class="help-block">Example : INV1801001.</p>
+                                        <label>วันที่สิ้นสุดงาน / End Date</label>
+                                        <input type="text" id="job_end" name="job_end" value="<?PHP echo $first_date;?>"  class="form-control calendar" readonly/>
+                                        <p class="help-block">01-03-2018</p>
                                     </div>
-                                </div>                              
-
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label>พนักงานขาย / Sale  <font color="#F00"><b>*</b></font> </label>
-                                        <input id="employee_id" type="hidden" name="employee_id" value="<? echo $user["user_id"];?>" />
-                                        <select id="emp_id" class="form-control select" data-live-search="true" onchange="getNewCode();">
-                                            <option value="">Select</option>
-                                            <?php 
-                                            for($i =  0 ; $i < count($users) ; $i++){
-                                            ?>
-                                            <option value="<?php echo $users[$i]['user_id'] ?>" <?PHP if( $users[$i]['user_id'] == $user['user_id']){ ?> SELECTED <?PHP }?> ><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
-                                            <?
-                                            }
-                                            ?>
-                                        </select>
-                                        <p class="help-block">Example : Thana Tepchuleepornsil.</p>
-                                    </div>
-                                </div>
+                                </div>                       
 
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>หมายเหตุ / Remark  <font color="#F00"><b>*</b></font> </label>
-                                        <textarea id="quotation_remark" name="quotation_remark" class="form-control" ><?PHP echo $quotation['quotation_remark'];?></textarea>
+                                        <textarea id="job_remark" name="job_remark" class="form-control" ><?PHP echo $quotation['quotation_remark'];?></textarea>
                                         <p class="help-block">Example : -.</p>
                                     </div>
                                 </div>
@@ -347,128 +342,7 @@
                         </div>
                     </div> 
 
-                     <div>
-                    Our reference :
-                    </div>
-
-                    <table width="100%" class="table table-striped table-bordered table-hover" >
-                        <thead>
-                            <tr>
-                                <th style="text-align:center;">รหัสสินค้า <br>(Product Code)</th>
-                                <th style="text-align:center;">ชื่อสินค้า/หมายเหตุ<br>(Product Name/Remark)</th>
-                                <th style="text-align:center;max-width:100px;">จำนวน<br>(Qty)</th>
-                                <th style="text-align:center;max-width:100px;">ราคาต่อชิ้น<br>(Price)</th>
-                                <th style="text-align:center;max-width:120px;">ราคารวม<br>(Total price)</th>
-                                <th style="text-align:center;" colspan="2">ส่วนลด<br>(Discount)</th>
-                                <th style="text-align:center;max-width:120px;">ราคาสุทธิ<br>(Net price)</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php 
-                            $total = 0;
-                            for($i=0; $i < count($quotation_lists); $i++){
-                            ?>
-                            <tr class="odd gradeX">
-                                <td>
-                                    <input type="hidden" class="form-control" name="quotation_list_id[]" value="<?php echo $quotation_lists[$i]['quotation_list_id']; ?>" />
-                                    <input type="hidden" class="form-control" name="product_id[]" value="<?php echo $quotation_lists[$i]['product_id']; ?>" />
-                                    <select  class="form-control select"  onchange="show_data(this);" data-live-search="true" >
-                                        <option value="">Select</option>
-                                        <?php 
-                                        for($ii =  0 ; $ii < count($products) ; $ii++){
-                                        ?>
-                                        <option <?php if($products[$ii]['product_id'] == $quotation_lists[$i]['product_id']){?> selected <?php }?> value="<?php echo $products[$ii]['product_id'] ?>"><?php echo $products[$ii]['product_code'] ?></option>
-                                        <?
-                                        }
-                                        ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $quotation_lists[$i]['product_name']; ?>" />
-                                    <div>หมายเหตุ.</div>
-                                    <input type="text" class="form-control" name="quotation_list_remark[]" value="<?php echo $quotation_lists[$i]['quotation_list_remark']; ?>" />
-                                </td>
-                                <td style="max-width:100px;"><input type="text" class="form-control" onchange="update_sum(this)" style="text-align:right;" name="quotation_list_qty[]" value="<?php echo $quotation_lists[$i]['quotation_list_qty']; ?>" /></td>
-                                <td style="max-width:100px;"><input type="text" class="form-control" onchange="update_sum(this)" style="text-align:right;" name="quotation_list_price[]" value="<?php echo $quotation_lists[$i]['quotation_list_price']; ?>" /></td>
-                                <td  style="max-width:120px;"><input type="text" class="form-control"  style="text-align:right;" name="quotation_list_sum[]" value="<?php echo $quotation_lists[$i]['quotation_list_sum']; ?>" readonly /></td>
-                                <td width="100px"><input type="text" class="form-control" onchange="update_sum(this)" style="text-align:right;" name="quotation_list_discount[]" value="<?php echo $quotation_lists[$i]['quotation_list_discount']; ?>" /></td>
-                                <td width="80px">
-                                    <select class="form-control" onchange="update_sum(this)" name="quotation_list_discount_type[]">
-                                        <option value="0" <?PHP if($quotation_lists[$i]['quotation_list_discount_type'] == 0){?> SELECTED <?PHP } ?> >%</option>
-                                        <option value="1" <?PHP if($quotation_lists[$i]['quotation_list_discount_type'] == 1){?> SELECTED <?PHP } ?> >-</option>
-                                    </select>
-                                </td>
-                                <td  style="max-width:120px;"><input type="text" class="form-control"  style="text-align:right;" name="quotation_list_total[]" value="<?php echo $quotation_lists[$i]['quotation_list_total']; ?>" readonly /></td>
-                                <td>
-                                    <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <?
-                                $total += $quotation_lists[$i]['quotation_list_total'];
-                            }
-                            ?>
-                        </tbody>
-                        <tfoot>
-                            <tr class="odd gradeX">
-                                <td colspan="8" align="center">
-                                    <a href="javascript:;" onclick="add_row(this);" style="color:red;">
-                                        <i class="fa fa-plus" aria-hidden="true"></i> 
-                                        <span>เพิ่มสินค้า / Add product</span>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr class="odd gradeX">
-                                <td colspan="4" rowspan="3">
-                                    
-                                </td>
-                                <td colspan="3" align="left" style="vertical-align: middle;">
-                                    <span>ราคารวมทั้งสิ้น / Sub total</span>
-                                </td>
-                                <td style="max-width:120px;">
-                                    <input type="text" class="form-control" style="text-align: right;" id="quotation_total" name="quotation_total" value="<?PHP echo number_format($total,2) ;?>"  readonly/>
-                                </td>
-                                <td>
-                                </td>
-                            </tr>
-                            <tr class="odd gradeX">
-                                <td colspan="3" align="left" style="vertical-align: middle;">
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <span>จำนวนภาษีมูลค่าเพิ่ม / Vat</span>
-                                            </td>
-                                            <td style = "padding-left:8px;padding-right:8px;width:72px;">
-                                                <input type="text" class="form-control" style="text-align: right;" onchange="calculateAll()" id="quotation_vat" name="quotation_vat" value="<?PHP echo $vat;?>" />
-                                            </td>
-                                            <td width="16">
-                                            %
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    
-                                </td>
-                                <td style="max-width:120px;">
-                                    <input type="text" class="form-control" style="text-align: right;" id="quotation_vat_price"  name="quotation_vat_price" value="<?PHP echo number_format(($vat/100) * $total,2) ;?>"  readonly/>
-                                </td>
-                                <td>
-                                </td>
-                            </tr>
-                            <tr class="odd gradeX">
-                                <td colspan="3" align="left" style="vertical-align: middle;">
-                                    <span>จำนวนเงินรวมทั้งสิ้น / Net Total</span>
-                                </td>
-                                <td style="max-width:120px;">
-                                    <input type="text" class="form-control" style="text-align: right;" id="quotation_vat_net" name="quotation_vat_net" value="<?PHP echo number_format(($vat/100) * $total + $total,2) ;?>" readonly/>
-                                </td>
-                                <td>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-
+                     
                     <!-- /.row (nested) -->
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
@@ -478,6 +352,7 @@
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     </div>
+                    
                 </form>
             </div>
             <!-- /.panel-body -->

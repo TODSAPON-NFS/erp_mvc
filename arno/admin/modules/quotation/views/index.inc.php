@@ -1,7 +1,7 @@
 <?php
 session_start();
 $user = $_SESSION['user'];
-
+$user_id = $user[0][0];
 require_once('../models/QuotationModel.php');
 require_once('../models/QuotationListModel.php');
 require_once('../models/UserModel.php');
@@ -23,13 +23,19 @@ $notification_id = $_GET['notification'];
 $vat = 7;
 if(!isset($_GET['action'])){
 
-    $quotations = $quotation_model->getQuotationBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $customer_id = $_GET['customer_id'];
+    $keyword = $_GET['keyword'];
+
+    $customers=$customer_model->getCustomerBy();
+    $quotations = $quotation_model->getQuotationBy($date_start,$date_end,$customer_id,$keyword,$user_id);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
-    $user=$user_model->getUserByID($user[0][0]);
+    $user=$user_model->getUserByID($user_id);
     $users=$user_model->getUserBy();
 
     $cus_firstcode = strtoupper($customers[0]['customer_code']);
@@ -332,7 +338,13 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $quotations = $quotation_model->getQuotationBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $customer_id = $_GET['customer_id'];
+    $keyword = $_GET['keyword'];
+
+    $customers=$customer_model->getCustomerBy();
+    $quotations = $quotation_model->getQuotationBy($date_start,$date_end,$customer_id,$keyword,$user_id);
     require_once($path.'view.inc.php');
 
 }

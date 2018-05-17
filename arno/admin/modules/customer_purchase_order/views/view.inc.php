@@ -1,3 +1,25 @@
+<script>
+
+    function search(){
+        var date_start = $("#date_start").val();
+        var date_end = $("#date_end").val();
+        var customer_id = $("#search_customer_id").val();
+        var keyword = $("#keyword").val();
+
+        window.location = "index.php?app=customer_purchase_order&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
+    }
+
+    function changeURL(id){
+        var data = $(id).val();
+        if(data == ""){
+            $("#link").attr("href","?app=customer_purchase_order&action=insert");
+        }else{
+            $("#link").attr("href","?app=customer_purchase_order&action=insert&quotation_id="+data);
+        }
+    }
+
+</script>
+
 <div class="row">
     <div class="col-lg-6">
         <h1 class="page-header">Customer Order Management</h1>
@@ -12,11 +34,88 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                        รายการใบสั่งซื้อสินค้าของลูกค้า / Customer Order List
-                            <a class="btn btn-success " style="float:right;" href="?app=customer_purchase_order&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    รายการใบสั่งซื้อสินค้าของลูกค้า / Customer Order List
+                                </div>
+                                <div class="col-md-3">
+                                    <select id="customer_id" name="customer_id" class="form-control select" data-live-search="true" onchange="changeURL(this);">
+                                        <option value="">None</option>
+                                        <?php 
+                                        for($i =  0 ; $i < count($quotations) ; $i++){
+                                        ?>
+                                        <option value="<?php echo $quotations[$i]['quotation_id'] ?>">
+                                            <?php echo $quotations[$i]['quotation_code'] ?>
+                                            <?php if($quotations[$i]['quotation_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $quotations[$i]['quotation_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($quotations[$i]['quotation_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?>
+                                        </option>
+                                        <?
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <a class="btn btn-success " id="link" style="float:right;" href="?app=customer_purchase_order&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>วันที่รับสั่งซื้อสินค้าของลูกค้า</label>
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <input type="text" id="date_start" name="date_start" value="<?PHP echo $date_start;?>"  class="form-control calendar" readonly/>
+                                            </div>
+                                            <div class="col-md-1" align="center">
+                                                -
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="date_end" name="date_end" value="<?PHP echo $date_end;?>"  class="form-control calendar" readonly/>
+                                            </div>
+                                        </div>
+                                        <p class="help-block">01-01-2018 - 31-12-2018</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>ผู้ซื้อ </label>
+                                        <select id="search_customer_id" name="search_customer_id" class="form-control select" onchange="get_customer_detail()" data-live-search="true">
+                                            <option value="">ทั้งหมด</option>
+                                            <?php 
+                                            for($i =  0 ; $i < count($customers) ; $i++){
+                                            ?>
+                                            <option <?php if($customers[$i]['customer_id'] == $customer_id){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
+                                            <?
+                                            }
+                                            ?>
+                                        </select>
+                                        <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>คำค้น <font color="#F00"><b>*</b></font></label>
+                                        <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >
+                                        <p class="help-block">Example : T001.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search();">Search</button>
+                                    <a href="index.php?app=customer_purchase_order" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
+                                </div>
+                            </div>
+                            <br>
+
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>

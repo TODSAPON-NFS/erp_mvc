@@ -7,27 +7,58 @@ class QuotationModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getQuotationBy(){
-        $sql = " 
-        SELECT quotation_id, 
-        quotation_date, 
-        quotation_rewrite_id,
-        IFNULL((
+    function getQuotationBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = ""){
+        $str_customer = "";
+        $str_date = "";
+        $str_user = "";
+
+        if($date_start != "" && $date_end != ""){
+            $str_date = "AND STR_TO_DATE(quotation_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(quotation_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+        }else if ($date_start != ""){
+            $str_date = "AND STR_TO_DATE(quotation_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+        }else if ($date_end != ""){
+            $str_date = "AND STR_TO_DATE(quotation_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        }
+
+        if($user_id != ""){
+            $str_user = "AND employee_id = '$user_id' ";
+        }
+
+        if($customer_id != ""){
+            $str_customer = "AND tb2.customer_id = '$customer_id' ";
+        }
+
+
+        
+        $sql = "  
+        SELECT quotation_id,  
+        quotation_date,  
+        quotation_rewrite_id, 
+        IFNULL(( 
             SELECT COUNT(*) FROM tb_quotation WHERE quotation_rewrite_id = tb.quotation_id 
-        ),0) as count_rewrite,
-        quotation_rewrite_no,
-        quotation_code, 
+        ),0) as count_rewrite, 
+        quotation_rewrite_no, 
+        quotation_code,  
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 
-        quotation_total,
+        quotation_total, 
         IFNULL(CONCAT(tb2.customer_name_th,' (',tb2.customer_name_th,')' ) ,'-') as customer_name, 
-        quotation_contact_name,
-        quotation_cancelled,
-        quotation_remark 
-        FROM tb_quotation as tb 
-        LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
-        LEFT JOIN tb_customer as tb2 ON tb.customer_id = tb2.customer_id 
-        ORDER BY STR_TO_DATE(quotation_date,'%Y-%m-%d %H:%i:%s') DESC 
+        quotation_contact_name, 
+        quotation_cancelled, 
+        quotation_remark  
+        FROM tb_quotation as tb  
+        LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id  
+        LEFT JOIN tb_customer as tb2 ON tb.customer_id = tb2.customer_id  
+        WHERE ( 
+            CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
+            OR  quotation_contact_name LIKE ('%$keyword%') 
+            OR  quotation_code LIKE ('%$keyword%') 
+        ) 
+        $str_customer 
+        $str_date 
+        $str_user   
+        ORDER BY STR_TO_DATE(quotation_date,'%d-%m-%Y %H:%i:%s') , quotation_code DESC  
          ";
+
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

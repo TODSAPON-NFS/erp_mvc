@@ -37,6 +37,9 @@
     <script>
 
     $(document).ready(function() {
+        $('#dataTables-view').DataTable({
+            responsive: true 
+        });
         $('#dataTables-example').DataTable({
             responsive: true
         });
@@ -89,3 +92,8 @@
     } );
 
     </script>
+    <style>
+        div.dataTables_filter{
+            display: none;
+        }
+    </style>

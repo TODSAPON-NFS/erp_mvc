@@ -7,9 +7,25 @@ class PurchaseRequestModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getPurchaseRequestBy($date_start  = '', $date_end  = '', $status ="Waiting"){
-        $sql = " 
-        SELECT purchase_request_id, 
+    function getPurchaseRequestBy($date_start = "",$date_end = "",$keyword = "",$user_id = ""){
+
+        $str_date = "";
+        $str_user = "";
+
+        if($date_start != "" && $date_end != ""){
+            $str_date = "AND STR_TO_DATE(purchase_request_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(purchase_request_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+        }else if ($date_start != ""){
+            $str_date = "AND STR_TO_DATE(purchase_request_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+        }else if ($date_end != ""){
+            $str_date = "AND STR_TO_DATE(purchase_request_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        }
+
+        if($user_id != ""){
+            $str_user = "AND employee_id = '$user_id' ";
+        }
+
+
+        $sql = " SELECT purchase_request_id, 
         purchase_request_date, 
         purchase_request_rewrite_id,
         IFNULL((
@@ -26,10 +42,16 @@ class PurchaseRequestModel extends BaseModel{
         FROM tb_purchase_request as tb 
         LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
         LEFT JOIN tb_user as tb2 ON tb.purchase_request_accept_by = tb2.user_id 
-        ORDER BY STR_TO_DATE(purchase_request_date,'%Y-%m-%d %H:%i:%s') DESC 
+        WHERE ( 
+            CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
+            OR  CONCAT(tb2.user_name,' ',tb2.user_lastname) LIKE ('%$keyword%') 
+            OR  purchase_request_code LIKE ('%$keyword%') 
+        ) 
+        $str_date 
+        $str_user  
+        ORDER BY STR_TO_DATE(purchase_request_date,'%d-%m-%Y %H:%i:%s') DESC 
          ";
-         /*WHERE STR_TO_DATE(purchase_request_date,'%Y-%m-%d %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') 
-        AND STR_TO_DATE(purchase_request_date,'%Y-%m-%d %H:%i:%s') <= STR_TO_DATE('$date_end','%Y-%m-%d %H:%i:%s')  */
+
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

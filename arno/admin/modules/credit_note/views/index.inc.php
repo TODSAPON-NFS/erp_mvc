@@ -29,7 +29,14 @@ $first_char = "CN";
 
 if(!isset($_GET['action'])){
 
-    $credit_notes = $credit_note_model->getCreditNoteBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $customer_id = $_GET['customer_id'];
+    $keyword = $_GET['keyword'];
+
+    $customers=$customer_model->getCustomerBy();
+
+    $credit_notes = $credit_note_model->getCreditNoteBy($date_start,$date_end,$customer_id,$keyword);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -278,8 +285,14 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $credit_notes = $credit_note_model->getCreditNoteBy();
-    $customer_orders = $credit_note_model->getCustomerOrder();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $customer_id = $_GET['customer_id'];
+    $keyword = $_GET['keyword'];
+
+    $customers=$customer_model->getCustomerBy();
+
+    $credit_notes = $credit_note_model->getCreditNoteBy($date_start,$date_end,$customer_id,$keyword);
     require_once($path.'view.inc.php');
 
 }

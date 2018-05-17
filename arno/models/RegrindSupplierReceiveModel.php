@@ -7,7 +7,29 @@ class RegrindSupplierReceiveModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getRegrindSupplierReceiveBy($date_start  = '', $date_end  = ''){
+    function getRegrindSupplierReceiveBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = ""){
+
+        $str_supplier = "";
+        $str_date = "";
+        $str_user = "";
+
+        if($date_start != "" && $date_end != ""){
+            $str_date = "AND STR_TO_DATE(regrind_supplier_receive_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(regrind_supplier_receive_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+        }else if ($date_start != ""){
+            $str_date = "AND STR_TO_DATE(regrind_supplier_receive_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+        }else if ($date_end != ""){
+            $str_date = "AND STR_TO_DATE(regrind_supplier_receive_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        }
+
+        if($user_id != ""){
+            $str_user = "AND employee_id = '$user_id' ";
+        }
+
+        if($supplier_id != ""){
+            $str_supplier = "AND tb2.supplier_id = '$supplier_id' ";
+        }
+
+
         $sql = " SELECT regrind_supplier_receive_id, 
         regrind_supplier_receive_code, 
         regrind_supplier_receive_date, 
@@ -19,6 +41,14 @@ class RegrindSupplierReceiveModel extends BaseModel{
         FROM tb_regrind_supplier_receive 
         LEFT JOIN tb_user as tb1 ON tb_regrind_supplier_receive.employee_id = tb1.user_id 
         LEFT JOIN tb_supplier as tb2 ON tb_regrind_supplier_receive.supplier_id = tb2.supplier_id 
+        WHERE ( 
+            CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
+            OR  contact_name LIKE ('%$keyword%') 
+            OR  regrind_supplier_receive_code LIKE ('%$keyword%') 
+        ) 
+        $str_supplier 
+        $str_date 
+        $str_user  
         ORDER BY STR_TO_DATE(regrind_supplier_receive_date,'%Y-%m-%d %H:%i:%s') DESC 
          ";
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {

@@ -29,8 +29,14 @@ $vat = 7;
 $first_char = "INV";
 
 if(!isset($_GET['action'])){
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $customer_id = $_GET['customer_id'];
+    $keyword = $_GET['keyword'];
 
-    $invoice_customers = $invoice_customer_model->getInvoiceCustomerBy();
+    $customers=$customer_model->getCustomerBy();
+
+    $invoice_customers = $invoice_customer_model->getInvoiceCustomerBy($date_start,$date_end,$customer_id,$keyword);
     $customer_orders = $invoice_customer_model->getCustomerOrder();
     $customer_purchase_orders = $invoice_customer_model->getCustomerPurchaseOrder();
     require_once($path.'view.inc.php');
@@ -271,8 +277,16 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $invoice_customers = $invoice_customer_model->getInvoiceCustomerBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $customer_id = $_GET['customer_id'];
+    $keyword = $_GET['keyword'];
+
+    $customers=$customer_model->getCustomerBy();
+
+    $invoice_customers = $invoice_customer_model->getInvoiceCustomerBy($date_start,$date_end,$customer_id,$keyword);
     $customer_orders = $invoice_customer_model->getCustomerOrder();
+    $customer_purchase_orders = $invoice_customer_model->getCustomerPurchaseOrder();
     require_once($path.'view.inc.php');
 
 }

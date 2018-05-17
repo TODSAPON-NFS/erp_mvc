@@ -29,7 +29,14 @@ $first_char = "CN";
 
 if(!isset($_GET['action'])){
 
-    $debit_notes = $debit_note_model->getDebitNoteBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $customer_id = $_GET['customer_id'];
+    $keyword = $_GET['keyword'];
+
+    $customers=$customer_model->getCustomerBy();
+
+    $debit_notes = $debit_note_model->getDebitNoteBy($date_start,$date_end,$customer_id,$keyword);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -268,8 +275,14 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $debit_notes = $debit_note_model->getDebitNoteBy();
-    $customer_orders = $debit_note_model->getCustomerOrder();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $customer_id = $_GET['customer_id'];
+    $keyword = $_GET['keyword'];
+
+    $customers=$customer_model->getCustomerBy();
+
+    $debit_notes = $debit_note_model->getDebitNoteBy($date_start,$date_end,$customer_id,$keyword);
     require_once($path.'view.inc.php');
 
 }

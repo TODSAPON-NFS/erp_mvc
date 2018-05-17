@@ -27,7 +27,14 @@ $notification_id = $_GET['notification'];
 $supplier_id = $_GET['supplier_id'];
 if(!isset($_GET['action'])){
 
-    $purchase_orders = $purchase_order_model->getPurchaseOrderBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $supplier_id = $_GET['supplier_id'];
+    $keyword = $_GET['keyword'];
+
+    $suppliers=$supplier_model->getSupplierBy();
+
+    $purchase_orders = $purchase_order_model->getPurchaseOrderBy($date_start,$date_end,$supplier_id,$keyword);
     $supplier_orders = $purchase_order_model->getSupplierOrder();
     require_once($path.'view.inc.php');
 

@@ -26,7 +26,14 @@ $first_char = "RE";
 
 if(!isset($_GET['action'])){
 
-    $official_receipts = $official_receipt_model->getOfficialReceiptBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $customer_id = $_GET['customer_id'];
+    $keyword = $_GET['keyword'];
+
+    $customers=$customer_model->getCustomerBy();
+
+    $official_receipts = $official_receipt_model->getOfficialReceiptBy($date_start,$date_end,$customer_id,$keyword);
     $customer_orders = $official_receipt_model->getCustomerOrder();
     require_once($path.'view.inc.php');
 
@@ -223,7 +230,14 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $official_receipts = $official_receipt_model->getOfficialReceiptBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $customer_id = $_GET['customer_id'];
+    $keyword = $_GET['keyword'];
+
+    $customers=$customer_model->getCustomerBy();
+
+    $official_receipts = $official_receipt_model->getOfficialReceiptBy($date_start,$date_end,$customer_id,$keyword);
     $customer_orders = $official_receipt_model->getCustomerOrder();
     require_once($path.'view.inc.php');
 

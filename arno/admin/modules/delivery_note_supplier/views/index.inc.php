@@ -21,8 +21,13 @@ $delivery_note_supplier_id = $_GET['id'];
 $target_dir = "../upload/delivery_note_supplier/";
 
 if(!isset($_GET['action'])){
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $supplier_id = $_GET['supplier_id'];
+    $keyword = $_GET['keyword'];
 
-    $delivery_note_suppliers = $delivery_note_supplier_model->getDeliveryNoteSupplierBy();
+    $suppliers=$supplier_model->getSupplierBy();
+    $delivery_note_suppliers = $delivery_note_supplier_model->getDeliveryNoteSupplierBy($date_start,$date_end,$supplier_id,$keyword);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -67,7 +72,7 @@ if(!isset($_GET['action'])){
         $check = true;
 
         $data = [];
-        $data['delivery_note_supplier_date'] = date("Y")."-".date("m")."-".date("d");
+        $data['delivery_note_supplier_date'] = $_POST['delivery_note_supplier_date'];
         $data['delivery_note_supplier_code'] = $_POST['delivery_note_supplier_code'];
         $data['contact_name'] = $_POST['contact_name'];
         $data['employee_id'] = $_POST['employee_id'];
@@ -273,8 +278,13 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $delivery_note_suppliers = $delivery_note_supplier_model->getDeliveryNoteSupplierBy();
-    require_once($path.'view.inc.php');
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $supplier_id = $_GET['supplier_id'];
+    $keyword = $_GET['keyword'];
+
+    $suppliers=$supplier_model->getSupplierBy();
+    $delivery_note_suppliers = $delivery_note_supplier_model->getDeliveryNoteSupplierBy($date_start,$date_end,$supplier_id,$keyword);
 
 }
 

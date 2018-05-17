@@ -1,3 +1,14 @@
+<script>
+    function search(){
+        var date_start = $("#date_start").val();
+        var date_end = $("#date_end").val();
+        var customer_id = $("#customer_id").val();
+        var keyword = $("#keyword").val();
+
+        window.location = "index.php?app=delivery_note_customer&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
+    }
+</script>
+
 <div class="row">
     <div class="col-lg-6">
         <h1 class="page-header">Delivery Note Customer Management</h1>
@@ -17,6 +28,61 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>วันที่ออกใบยืม</label>
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <input type="text" id="date_start" name="date_start" value="<?PHP echo $date_start;?>"  class="form-control calendar" readonly/>
+                                            </div>
+                                            <div class="col-md-1" align="center">
+                                                -
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="date_end" name="date_end" value="<?PHP echo $date_end;?>"  class="form-control calendar" readonly/>
+                                            </div>
+                                        </div>
+                                        <p class="help-block">01-01-2018 - 31-12-2018</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>ผู้ซื้อ </label>
+                                        <select id="customer_id" name="customer_id" class="form-control select"  data-live-search="true">
+                                            <option value="">ทั้งหมด</option>
+                                            <?php 
+                                            for($i =  0 ; $i < count($customers) ; $i++){
+                                            ?>
+                                            <option <?php if($customers[$i]['customer_id'] == $customer_id){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
+                                            <?
+                                            }
+                                            ?>
+                                        </select>
+                                        <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>คำค้น <font color="#F00"><b>*</b></font></label>
+                                        <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >
+                                        <p class="help-block">Example : T001.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search();">Search</button>
+                                    <a href="index.php?app=delivery_note_customer" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
+                                </div>
+                            </div>
+                            <br>
+
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>

@@ -21,8 +21,13 @@ $delivery_note_customer_id = $_GET['id'];
 $target_dir = "../upload/delivery_note_customer/";
 
 if(!isset($_GET['action'])){
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $customer_id = $_GET['customer_id'];
+    $keyword = $_GET['keyword'];
 
-    $delivery_note_customers = $delivery_note_customer_model->getDeliveryNoteCustomerBy();
+    $customers=$customer_model->getCustomerBy();
+    $delivery_note_customers = $delivery_note_customer_model->getDeliveryNoteCustomerBy($date_start,$date_end,$customer_id,$keyword);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -67,7 +72,7 @@ if(!isset($_GET['action'])){
         $check = true;
 
         $data = [];
-        $data['delivery_note_customer_date'] = date("Y")."-".date("m")."-".date("d");
+        $data['delivery_note_customer_date'] = $_POST['delivery_note_customer_date'];
         $data['delivery_note_customer_code'] = $_POST['delivery_note_customer_code'];
         $data['contact_name'] = $_POST['contact_name'];
         $data['employee_id'] = $_POST['employee_id'];
@@ -272,8 +277,13 @@ if(!isset($_GET['action'])){
      
     
 }else{
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $customer_id = $_GET['customer_id'];
+    $keyword = $_GET['keyword'];
 
-    $delivery_note_customers = $delivery_note_customer_model->getDeliveryNoteCustomerBy();
+    $customers=$customer_model->getCustomerBy();
+    $delivery_note_customers = $delivery_note_customer_model->getDeliveryNoteCustomerBy($date_start,$date_end,$customer_id,$keyword);
     require_once($path.'view.inc.php');
 
 }

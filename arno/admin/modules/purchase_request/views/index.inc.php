@@ -1,7 +1,7 @@
 <?php
 session_start();
 $user = $_SESSION['user'];
-
+$user_id = $user[0][0];
 require_once('../models/PurchaseRequestModel.php');
 require_once('../models/PurchaseRequestListModel.php');
 require_once('../models/UserModel.php');
@@ -22,7 +22,10 @@ $purchase_request_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 if(!isset($_GET['action'])){
 
-    $purchase_requests = $purchase_request_model->getPurchaseRequestBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $keyword = $_GET['keyword'];
+    $purchase_requests = $purchase_request_model->getPurchaseRequestBy($date_start,$date_end,$keyword,$user_id);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -73,7 +76,7 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'add'){
     if(isset($_POST['purchase_request_code'])){
         $data = [];
-        $data['purchase_request_date'] = date("Y")."-".date("m")."-".date("d");
+        $data['purchase_request_date'] = date("d")."-".date("m")."-".date("Y");
         $data['purchase_request_code'] = $_POST['purchase_request_code'];
         $data['purchase_request_type'] = $_POST['purchase_request_type'];
         $data['purchase_request_accept_status'] = "Waiting";
@@ -287,7 +290,10 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $purchase_requests = $purchase_request_model->getPurchaseRequestBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $keyword = $_GET['keyword'];
+    $purchase_requests = $purchase_request_model->getPurchaseRequestBy($date_start = "",$date_end = "",$keyword = "",$user_id = "");
     require_once($path.'view.inc.php');
 
 }

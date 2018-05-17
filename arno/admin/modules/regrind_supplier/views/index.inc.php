@@ -1,7 +1,7 @@
 <?php
 session_start();
 $user = $_SESSION['user'];
-
+$user_id = $user[0][0];
 require_once('../models/RegrindSupplierModel.php');
 require_once('../models/RegrindSupplierListModel.php');
 require_once('../models/UserModel.php');
@@ -21,8 +21,13 @@ $regrind_supplier_id = $_GET['id'];
 $target_dir = "../upload/regrind_supplier/";
 
 if(!isset($_GET['action'])){
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $supplier_id = $_GET['supplier_id'];
+    $keyword = $_GET['keyword'];
 
-    $regrind_suppliers = $regrind_supplier_model->getRegrindSupplierBy();
+    $suppliers=$supplier_model->getSupplierBy();
+    $regrind_suppliers = $regrind_supplier_model->getRegrindSupplierBy($date_start,$date_end,$supplier_id,$keyword);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -67,7 +72,7 @@ if(!isset($_GET['action'])){
         $check = true;
 
         $data = [];
-        $data['regrind_supplier_date'] = date("Y")."-".date("m")."-".date("d");
+        $data['regrind_supplier_date'] = $_POST['regrind_supplier_receive_date'];
         $data['regrind_supplier_code'] = $_POST['regrind_supplier_code'];
         $data['contact_name'] = $_POST['contact_name'];
         $data['employee_id'] = $_POST['employee_id'];
@@ -282,7 +287,13 @@ if(!isset($_GET['action'])){
 <?PHP
 }else{
 
-    $regrind_suppliers = $regrind_supplier_model->getRegrindSupplierBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $supplier_id = $_GET['supplier_id'];
+    $keyword = $_GET['keyword'];
+
+    $suppliers=$supplier_model->getSupplierBy();
+    $regrind_suppliers = $regrind_supplier_model->getRegrindSupplierBy($date_start,$date_end,$supplier_id,$keyword);
     require_once($path.'view.inc.php');
 
 }

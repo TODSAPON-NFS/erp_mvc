@@ -23,9 +23,18 @@ $supplier_id = $_GET['supplier_id'];
 $target_dir = "../upload/regrind_supplier_receive/";
 
 if(!isset($_GET['action'])){
-    $suppliers = $regrind_supplier_receive_model->getSupplier();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $supplier_id = $_GET['supplier_id'];
+    $keyword = $_GET['keyword'];
+
+    $suppliers=$supplier_model->getSupplierBy();
+
+    $supplier_receives = $regrind_supplier_receive_model->getSupplier();
     $regrind_suppliers = $regrind_supplier_receive_model->getRegrindSupplier();
-    $regrind_supplier_receives = $regrind_supplier_receive_model->getRegrindSupplierReceiveBy();
+
+    $regrind_supplier_receives = $regrind_supplier_receive_model->getRegrindSupplierReceiveBy($date_start,$date_end,$supplier_id,$keyword);
+
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -74,7 +83,7 @@ if(!isset($_GET['action'])){
         $check = true;
 
         $data = [];
-        $data['regrind_supplier_receive_date'] = date("Y")."-".date("m")."-".date("d");
+        $data['regrind_supplier_receive_date'] = $_POST['regrind_supplier_receive_date'];
         $data['regrind_supplier_receive_code'] = $_POST['regrind_supplier_receive_code'];
         $data['contact_name'] = $_POST['contact_name'];
         $data['employee_id'] = $_POST['employee_id'];
@@ -281,8 +290,18 @@ if(!isset($_GET['action'])){
      
     
 }else{
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $supplier_id = $_GET['supplier_id'];
+    $keyword = $_GET['keyword'];
 
-    $regrind_supplier_receives = $regrind_supplier_receive_model->getRegrindSupplierReceiveBy();
+    $suppliers=$supplier_model->getSupplierBy();
+
+    $supplier_receives = $regrind_supplier_receive_model->getSupplier();
+    $regrind_suppliers = $regrind_supplier_receive_model->getRegrindSupplier();
+
+    $regrind_supplier_receives = $regrind_supplier_receive_model->getRegrindSupplierReceiveBy($date_start,$date_end,$supplier_id,$keyword);
+    
     require_once($path.'view.inc.php');
 
 }

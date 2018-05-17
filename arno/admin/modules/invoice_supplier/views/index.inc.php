@@ -33,7 +33,14 @@ $first_char = "RR";
 $stock_group_id = 0;
 if(!isset($_GET['action'])){
 
-    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $supplier_id = $_GET['supplier_id'];
+    $keyword = $_GET['keyword'];
+
+    $suppliers=$supplier_model->getSupplierBy();
+
+    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy($date_start,$date_end,$supplier_id,$keyword);
     $supplier_orders_in = $invoice_supplier_model->getSupplierOrder("ภายในประเทศ");
     $supplier_orders_out = $invoice_supplier_model->getSupplierOrder("ภายนอกประเทศ");
     $purchase_orders_in = $invoice_supplier_model->getPurchaseOrder("ภายในประเทศ");
@@ -319,7 +326,14 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $supplier_id = $_GET['supplier_id'];
+    $keyword = $_GET['keyword'];
+
+    $suppliers=$supplier_model->getSupplierBy();
+
+    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy($date_start,$date_end,$supplier_id,$keyword);
     $supplier_orders_in = $invoice_supplier_model->getSupplierOrder("ภายในประเทศ");
     $supplier_orders_out = $invoice_supplier_model->getSupplierOrder("ภายนอกประเทศ");
     $purchase_orders_in = $invoice_supplier_model->getPurchaseOrder("ภายในประเทศ");

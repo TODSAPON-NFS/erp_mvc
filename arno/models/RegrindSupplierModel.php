@@ -7,7 +7,27 @@ class RegrindSupplierModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getRegrindSupplierBy($date_start  = '', $date_end  = ''){
+    function getRegrindSupplierBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = ""){
+        $str_supplier = "";
+        $str_date = "";
+        $str_user = "";
+
+        if($date_start != "" && $date_end != ""){
+            $str_date = "AND STR_TO_DATE(regrind_supplier_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(regrind_supplier_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+        }else if ($date_start != ""){
+            $str_date = "AND STR_TO_DATE(regrind_supplier_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+        }else if ($date_end != ""){
+            $str_date = "AND STR_TO_DATE(regrind_supplier_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        }
+
+        if($user_id != ""){
+            $str_user = "AND employee_id = '$user_id' ";
+        }
+
+        if($supplier_id != ""){
+            $str_supplier = "AND tb2.supplier_id = '$supplier_id' ";
+        }
+
         $sql = " SELECT regrind_supplier_id, 
         regrind_supplier_code, 
         regrind_supplier_date, 
@@ -16,11 +36,20 @@ class RegrindSupplierModel extends BaseModel{
         regrind_supplier_remark,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 
         IFNULL(CONCAT(tb2.supplier_name_en,' (',tb2.supplier_name_th,')'),'-') as supplier_name 
-        FROM tb_regrind_supplier 
+        FROM tb_regrind_supplier  
         LEFT JOIN tb_user as tb1 ON tb_regrind_supplier.employee_id = tb1.user_id 
         LEFT JOIN tb_supplier as tb2 ON tb_regrind_supplier.supplier_id = tb2.supplier_id 
-        ORDER BY STR_TO_DATE(regrind_supplier_date,'%Y-%m-%d %H:%i:%s') DESC 
+        WHERE ( 
+            CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
+            OR  contact_name LIKE ('%$keyword%') 
+            OR  regrind_supplier_code LIKE ('%$keyword%') 
+        ) 
+        $str_supplier 
+        $str_date 
+        $str_user  
+        ORDER BY STR_TO_DATE(regrind_supplier_date,'%d-%m-%Y %H:%i:%s') , regrind_supplier_code DESC 
          ";
+
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

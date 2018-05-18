@@ -25,8 +25,8 @@ body {
 
 .nav-title{
   padding: 10px 15px;
-  color:#ccc;
-  background-color: #337ab7;
+  /*background-color:#ccc;*/
+  color: #337ab7;
 }
 
 .navbar-top-links {
@@ -84,8 +84,10 @@ body {
 .sidebar ul li {
   border-bottom: 1px solid #e7e7e7;
 }
+
 .sidebar ul li a.active {
-  background-color: #bbb;
+  color:  #337ab7; 
+  background-color: #7abce7;
 }
 .sidebar .arrow {
   float: right;

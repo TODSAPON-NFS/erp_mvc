@@ -108,8 +108,14 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            รายการใบกำกับภาษี / Invoice Customer List
-                <a class="btn btn-success " style="float:right;" href="?app=invoice_customer&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                <div class="row">
+                    <div class="col-md-8">
+                        รายการใบกำกับภาษี / Invoice Customer List
+                    </div>
+                    <div class="col-md-4">
+                        <a class="btn btn-success " style="float:right;" href="?app=invoice_customer&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                    </div>
+                </div>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

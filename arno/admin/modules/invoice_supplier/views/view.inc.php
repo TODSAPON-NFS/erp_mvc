@@ -26,8 +26,14 @@
     <div class="col-lg-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-            รายการใบกำกับภาษีรับเข้าตามผู้ขายในประเทศ
-            <a class="btn btn-success " style="float:right;" href="?app=invoice_supplier&action=insert&sort=ภายในประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                <div class="row">
+                    <div class="col-md-8">
+                        รายการใบกำกับภาษีรับเข้าตามผู้ขายในประเทศ
+                    </div>
+                    <div class="col-md-4">
+                        <a class="btn btn-success " style="float:right;" href="?app=invoice_supplier&action=insert&sort=ภายในประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                    </div>
+                </div>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -100,9 +106,18 @@
     <div class="col-lg-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-            รายการใบกำกับภาษีรับเข้าตามผู้ขายนอกประเทศ
-            <a class="btn btn-success " style="float:right;margin-left:8px;" href="?app=invoice_supplier&action=insert&sort=ภายนอกประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
-            <a class="btn btn-primary " style="float:right;" href="?app=exchange_rate_baht&action=view" ><i class="fa fa-plus" aria-hidden="true"></i> Exchange rate</a>
+                <div class="row">
+                    <div class="col-md-6">
+                        รายการใบกำกับภาษีรับเข้าตามผู้ขายนอกประเทศ
+                    </div>
+                    <div class="col-md-4" align="right">
+                        <a class="btn btn-primary "  href="?app=exchange_rate_baht&action=view" ><i class="fa fa-plus" aria-hidden="true"></i> Exchange rate</a>
+                    </div>
+                    <div class="col-md-2" align="right">
+                        <a class="btn btn-success "  href="?app=invoice_supplier&action=insert&sort=ภายนอกประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                    </div>
+                    
+                </div>
             </div>
 
             <!-- /.panel-heading -->

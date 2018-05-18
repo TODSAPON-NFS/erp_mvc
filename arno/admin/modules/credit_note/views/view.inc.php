@@ -23,8 +23,14 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            รายการใบลดหนี้ / Credit Note List
-                <a class="btn btn-success " style="float:right;" href="?app=credit_note&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                <div class="row">
+                    <div class="col-md-8">
+                        รายการใบลดหนี้ / Credit Note List
+                    </div>
+                    <div class="col-md-4">
+                        <a class="btn btn-success " style="float:right;" href="?app=credit_note&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                    </div>
+                </div>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

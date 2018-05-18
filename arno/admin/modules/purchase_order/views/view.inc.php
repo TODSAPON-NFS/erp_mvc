@@ -72,8 +72,14 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-             รายใบสั่งซื้อ / Purchase Order List
-                <a class="btn btn-success " style="float:right;" href="?app=purchase_order&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                <div class="row">
+                    <div class="col-md-8">
+                        รายใบสั่งซื้อ / Purchase Order List
+                    </div>
+                    <div class="col-md-4">
+                        <a class="btn btn-success " style="float:right;" href="?app=purchase_order&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                    </div>
+                </div>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

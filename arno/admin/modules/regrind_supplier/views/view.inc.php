@@ -22,8 +22,14 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                        รายการใบรีกายร์สินค้าจากผู้ขาย /  Regrind Supplier List
-                            <a class="btn btn-success " style="float:right;" href="?app=regrind_supplier&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    รายการใบรีกายร์สินค้าจากผู้ขาย /  Regrind Supplier List
+                                </div>
+                                <div class="col-md-4">
+                                    <a class="btn btn-success " style="float:right;" href="?app=regrind_supplier&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                                    </div>
+                                </div>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">

@@ -123,6 +123,10 @@ class CustomerModel extends BaseModel{
         credit_day = '".$data['credit_day']."', 
         condition_pay = '".$data['condition_pay']."', 
         pay_limit = '".$data['pay_limit']."' , 
+        account_id = '".$data['account_id']."', 
+        vat_type = '".$data['vat_type']."', 
+        vat = '".$data['vat']."', 
+        currency_id = '".$data['currency_id']."' , 
         customer_logo = '".$data['customer_logo']."' , 
         updateby = '".$data['updateby']."',  
         lastupdate = NOW() 
@@ -160,6 +164,10 @@ class CustomerModel extends BaseModel{
             credit_day, 
             condition_pay,  
             pay_limit,
+            account_id, 
+            vat_type, 
+            vat,  
+            currency_id,
             customer_logo,
             addby,
             adddate
@@ -183,6 +191,10 @@ class CustomerModel extends BaseModel{
             '".$data['credit_day']."', 
             '".$data['condition_pay']."',  
             '".$data['pay_limit']."', 
+            '".$data['account_id']."', 
+            '".$data['vat_type']."', 
+            '".$data['vat']."',  
+            '".$data['currency_id']."', 
             '".$data['customer_logo']."',    
             '".$data['addby']."', 
             NOW()  

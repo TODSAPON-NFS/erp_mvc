@@ -33,6 +33,17 @@ function generateTree($data){
 }
 
 
+
+function deleteTree($account_id){
+        $model_account = new AccountModel;
+        $val = $model_account->getAccountBy($account_id);
+        for($i=0; $i < count($val); $i++){ 
+                deleteTree($val[$i]['account_id']);
+                $model_account->deleteAccountByID($val[$i]['account_id']);
+        }
+}
+
+
 if(!isset($_GET['action'])){    
     $account = $model_account->getAccountByID($account_id);
     $accounts = $model_account->getAccountBy();
@@ -40,7 +51,9 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'delete'){
 
+    deleteTree($account_id);
     $model_account->deleteAccountByID($account_id);
+    
 ?>
     <script>window.location="index.php?app=account&action=view"</script>
 <?php

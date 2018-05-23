@@ -1,21 +1,29 @@
 <?php
 require_once('../models/UserModel.php');
 require_once('../models/CustomerModel.php');
+require_once('../models/AccountModel.php');
+require_once('../models/CurrencyModel.php');
 
 $path = "modules/customer/views/";
 $target_dir = "../upload/customer/";
+
+$currency_model = new CurrencyModel;
 $model_user = new UserModel;
 $model_customer = new customerModel;
-
+$account_model = new AccountModel;
 
 if(!isset($_GET['action'])){
 
     $customer = $model_customer->getCustomerBy();
+    
     require_once($path.'view.inc.php');
+    
 
 }else if ($_GET['action'] == 'insert'){
 
     $user = $model_user->getUserBy();
+    $account = $account_model->getAccountAll();
+    $currency = $currency_model->getCurrencyBy();
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
@@ -23,6 +31,8 @@ if(!isset($_GET['action'])){
     $customer_id = $_GET['id'];
     $customer = $model_customer->getCustomerByID($customer_id);
     $user = $model_user->getUserByID($customer['user_id']);
+    $account = $account_model->getAccountAll();
+    $currency = $currency_model->getCurrencyBy();
 
     require_once($path.'update.inc.php');
 
@@ -64,6 +74,10 @@ if(!isset($_GET['action'])){
         $data['credit_day'] = $_POST['credit_day'];
         $data['condition_pay'] = $_POST['condition_pay'];
         $data['pay_limit'] = $_POST['pay_limit'];
+        $data['account_id'] = $_POST['account_id'];
+        $data['vat_type'] = $_POST['vat_type'];
+        $data['vat'] = $_POST['vat'];
+        $data['currency_id'] = $_POST['currency_id'];
 
         $check = true;
 
@@ -140,6 +154,10 @@ if(!isset($_GET['action'])){
         $data['credit_day'] = $_POST['credit_day'];
         $data['condition_pay'] = $_POST['condition_pay'];
         $data['pay_limit'] = $_POST['pay_limit'];
+        $data['account_id'] = $_POST['account_id'];
+        $data['vat_type'] = $_POST['vat_type'];
+        $data['vat'] = $_POST['vat'];
+        $data['currency_id'] = $_POST['currency_id'];
 
         $check = true;
 

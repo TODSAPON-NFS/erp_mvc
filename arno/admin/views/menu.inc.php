@@ -94,6 +94,7 @@
                                 || $_GET["app"]=='supplier'
                                 || $_GET["app"]=='customer'
                                 || $_GET["app"]=='product'
+                                || $_GET["app"]=='account'
                             ){
                                 echo ' class="active" ';
                             }
@@ -116,6 +117,9 @@
                                 </li>
                                 <li>
                                     <a href="?app=product"><i class="fa  fa-cubes fa-fw" aria-hidden="true"></i> สินค้า (Product)</a>
+                                </li>
+                                <li>
+                                    <a href="?app=account"><i class="fa  fa-cubes fa-fw" aria-hidden="true"></i> ผังบัญชี (Account Stucture)</a>
                                 </li>
                             </ul>
                         </li>
@@ -186,7 +190,7 @@
                             </a>
                             <ul class="collapse">   
                                 <li>
-                                    <a href="?app=quotation"><i class="fa fa-database fa-fw" aria-hidden="true"></i>ใบเสนอราคา (Quotation) </a>
+                                    <a href="?app=quotation"><i class="fa fa-database fa-fw" aria-hidden="true"></i> ใบเสนอราคา (Quotation) </a>
                                 </li>
                                 <li>
                                     <a href="?app=invoice_customer"><i class="fa  fa-file-pdf-o" aria-hidden="true"></i> ใบกำกับภาษี (Customer Invoice)</a>
@@ -223,10 +227,10 @@
                             </a>
                             <ul class="collapse">    
                                 <li>
-                                    <a href="?app=search_product"  ><i class="fa fa-search fa-fw" aria-hidden="true"></i>ค้นหาสินค้า (Search product) </a>
+                                    <a href="?app=search_product"  ><i class="fa fa-search fa-fw" aria-hidden="true"></i> ค้นหาสินค้า (Search product) </a>
                                 </li>
                                 <li>
-                                    <a href="?app=stock_type"  ><i class="fa fa-database fa-fw" aria-hidden="true"></i>คลังสินค้า (Stock) </a>
+                                    <a href="?app=stock_type"  ><i class="fa fa-database fa-fw" aria-hidden="true"></i> คลังสินค้า (Stock) </a>
                                 </li>
                                 <li>
                                     <a href="?app=stock_move"  ><i class="fa fa-share-square" aria-hidden="true"></i> ใบโอนคลังสินค้า (Move Stock)</a>
@@ -259,16 +263,16 @@
                             </a>
                             <ul class="collapse">
                                 <li>
-                                    <a href="?app=report_profit"  ><i class="fa fa-outdent" aria-hidden="true"></i> ผลกำไร - ขาดทุน</a>
+                                    <a href="?app=report_debtor"  ><i class="fa fa-outdent" aria-hidden="true"></i> ลูกหนี้</a>
                                 </li>
                                 <li>
                                     <a href="?app=report_creditor"  ><i class="fa fa-outdent" aria-hidden="true"></i> เจ้าหนี้</a>
                                 </li>
                                 <li>
-                                    <a href="?app=report_debtor"  ><i class="fa fa-outdent" aria-hidden="true"></i> ลูกหนี้</a>
+                                    <a href="?app=report_buy_product"  ><i class="fa fa-outdent" aria-hidden="true"></i> การสั่งซื้อสินค้า</a>
                                 </li>
                                 <li>
-                                    <a href="?app=report_buy_product"  ><i class="fa fa-outdent" aria-hidden="true"></i> การสั่งซื้อสินค้า</a>
+                                    <a href="?app=report_profit"  ><i class="fa fa-outdent" aria-hidden="true"></i> ผลกำไร - ขาดทุน</a>
                                 </li>
                                 <li>
                                     <a href="?app=report_buy_product_by_supplier"  ><i class="fa fa-outdent" aria-hidden="true"></i> การสั่งซื้อสินค้าแยกตามผู้ขาย</a>

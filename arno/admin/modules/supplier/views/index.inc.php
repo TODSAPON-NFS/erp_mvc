@@ -5,7 +5,7 @@ require_once('../models/UserModel.php');
 require_once('../models/SupplierModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/CurrencyModel.php');
-require_once('../models/AccountTypeModel.php');
+require_once('../models/AccountModel.php');
 $path = "modules/supplier/views/";
 $target_dir = "../upload/supplier/";
 $model_user = new UserModel;
@@ -13,13 +13,13 @@ $model_supplier = new SupplierModel;
 
 $notification_model = new NotificationModel;
 $currency_model = new CurrencyModel;
-$account_type_model = new AccountTypeModel;
+$account_model = new AccountModel;
 $supplier_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 
 if(!isset($_GET['action'])){
 
-    $Supplier = $model_supplier->getSupplierBy();
+    $supplier = $model_supplier->getSupplierBy();
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
@@ -27,31 +27,31 @@ if(!isset($_GET['action'])){
         $notification_model->setNotificationSeenByID($notification_id);
     }
     
-    $Supplier = $model_supplier->getSupplierByID($supplier_id);
+    $supplier = $model_supplier->getSupplierByID($supplier_id);
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
 
     $user = $model_user->getUserBy();
     $currency = $currency_model->getCurrencyBy();
-    $account_type = $account_type_model->getAccountTypeBy();
+    $account = $account_model->getAccountAll();
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
 
     
-    $Supplier = $model_supplier->getSupplierByID($supplier_id);
-    $user = $model_user->getUserByID($Supplier['user_id']);
+    $supplier = $model_supplier->getSupplierByID($supplier_id);
+    $user = $model_user->getUserByID($supplier['user_id']);
     $currency = $currency_model->getCurrencyBy();
-    $account_type = $account_type_model->getAccountTypeBy();
+    $account = $account_model->getAccountAll();
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'delete'){
 
-    $Supplier = $model_supplier->getSupplierByID($_GET['id']);
-    if(count($Supplier) > 0){
+    $supplier = $model_supplier->getSupplierByID($_GET['id']);
+    if(count($supplier) > 0){
        
-        $target_file = $target_dir . $Supplier["supplier_logo"];
+        $target_file = $target_dir . $supplier["supplier_logo"];
         if (file_exists($target_file)) {
             unlink($target_file);
         }
@@ -84,7 +84,7 @@ if(!isset($_GET['action'])){
         $data['credit_day'] = $_POST['credit_day'];
         $data['condition_pay'] = $_POST['condition_pay'];
         $data['pay_limit'] = $_POST['pay_limit'];
-        $data['account_type'] = $_POST['account_type'];
+        $data['account_id'] = $_POST['account_id'];
         $data['vat_type'] = $_POST['vat_type'];
         $data['vat'] = $_POST['vat'];
         $data['currency_id'] = $_POST['currency_id'];
@@ -165,7 +165,7 @@ if(!isset($_GET['action'])){
         $data['credit_day'] = $_POST['credit_day'];
         $data['condition_pay'] = $_POST['condition_pay'];
         $data['pay_limit'] = $_POST['pay_limit'];
-        $data['account_type'] = $_POST['account_type'];
+        $data['account_id'] = $_POST['account_id'];
         $data['vat_type'] = $_POST['vat_type'];
         $data['vat'] = $_POST['vat'];
         $data['currency_id'] = $_POST['currency_id'];
@@ -263,7 +263,7 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $Supplier = $model_supplier->getSupplierBy();
+    $supplier = $model_supplier->getSupplierBy();
     require_once($path.'view.inc.php');
 
 }

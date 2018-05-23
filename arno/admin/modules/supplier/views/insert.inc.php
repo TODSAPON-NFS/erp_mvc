@@ -290,12 +290,12 @@
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label>ประเภทบัญชี / Account type </label>
-                            <select id="account_type" name="account_type" class="form-control">
+                            <select id="account_id" name="account_id" class="form-control">
                                 <option value="">เลือก / Select</option>
                                 <?PHP 
-                                    for($i=0; $i < count($account_type) ; $i++){
+                                    for($i=0; $i < count($account) ; $i++){
                                 ?>
-                                    <option value="<?PHP echo $account_type[$i]['account_type_id'];?>"><?PHP echo $account_type[$i]['account_type_name'];?></option>
+                                    <option value="<?PHP echo $account[$i]['account_id'];?>"><?PHP echo $account[$i]['account_code'];?> <?PHP echo $account[$i]['account_name_th'];?></option>
                                 <?PHP
                                     }
                                 ?>

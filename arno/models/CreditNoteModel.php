@@ -37,6 +37,7 @@ class CreditNoteModel extends BaseModel{
         credit_note_total_old,
         credit_note_total,
         credit_note_total_price,
+        credit_note_vat,
         credit_note_vat_price,
         credit_note_net_price,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 

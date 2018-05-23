@@ -55,11 +55,23 @@
 .nav>li>ul>li>a {
     position: relative;
     display: block;
-    padding: 10px 15px;
+    padding: 10px 24px;
     text-decoration: none;
 }
 
 .nav>li>ul{
+    list-style: none;
+    padding:0px;
+}
+
+.nav>li>ul>li>ul>li>a {
+    position: relative;
+    display: block;
+    padding: 10px 48px;
+    text-decoration: none;
+}
+
+.nav>li>ul>li>ul{
     list-style: none;
     padding:0px;
 }

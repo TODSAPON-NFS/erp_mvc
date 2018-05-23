@@ -33,6 +33,7 @@ class InvoiceCustomerModel extends BaseModel{
         invoice_customer_code, 
         invoice_customer_date, 
         invoice_customer_total_price,
+        invoice_customer_vat,
         invoice_customer_vat_price,
         invoice_customer_net_price,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 

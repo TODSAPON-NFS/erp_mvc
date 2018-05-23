@@ -111,24 +111,14 @@
 
     /* ----------------------------------- ระบบรายงาน ---------------------------------------------- */
 
-    else if($_GET['app'] == "report_profit"){
-        //require_once("modules/report_profit/views/index.inc.php");
-    }else if($_GET['app'] == "report_creditor"){
-        //require_once("modules/report_creditor/views/index.inc.php");
-    }else if($_GET['app'] == "report_debtor"){
-        //require_once("modules/report_debtor/views/index.inc.php");
-    }else if($_GET['app'] == "report_buy_product"){
-        //require_once("modules/report_buy_product/views/index.inc.php");
-    }else if($_GET['app'] == "report_buy_product_by_supplier"){
-        //require_once("modules/report_buy_product_by_supplier/views/index.inc.php");
-    }else if($_GET['app'] == "report_sell_product"){
-        //require_once("modules/report_sell_product/views/index.inc.php");
-    }else if($_GET['app'] == "report_sell_product_by_customer"){
-        //require_once("modules/report_sell_product_by_customer/views/index.inc.php");
-    }else if($_GET['app'] == "report_product"){
-        //require_once("modules/report_product/views/index.inc.php");
-    }else if($_GET['app'] == "report_product_by_stock"){
-        //require_once("modules/report_product_by_stock/views/index.inc.php");
+    else if($_GET['app'] == "report_debtor_03"){
+        require_once("modules/report_debtor_03/views/index.inc.php");
+    }else if($_GET['app'] == "report_debtor_06"){
+        require_once("modules/report_debtor_06/views/index.inc.php");
+    }else if($_GET['app'] == "report_debtor_07"){
+        require_once("modules/report_debtor_07/views/index.inc.php");
+    }else if($_GET['app'] == "report_debtor_15"){
+        require_once("modules/report_debtor_15/views/index.inc.php");
     }
 
     /* ----------------------------------- //ระบบรายงาน// ---------------------------------------------- */

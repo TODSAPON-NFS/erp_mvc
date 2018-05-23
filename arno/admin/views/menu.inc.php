@@ -243,16 +243,8 @@
                         
                         <li
                         <?PHP 
-                            if(
-                                $_GET["app"]=='report_profit'
-                                || $_GET["app"]=='report_creditor'
-                                || $_GET["app"]=='report_debtor'
-                                || $_GET["app"]=='report_buy_product'
-                                || $_GET["app"]=='report_buy_product_by_supplier'
-                                || $_GET["app"]=='report_sell_product'
-                                || $_GET["app"]=='report_sell_product_by_customer'
-                                || $_GET["app"]=='report_product'
-                                || $_GET["app"]=='report_product_by_stock'
+                             if(
+                                substr($_GET["app"],0,13) =='report_debtor'
                             ){
                                 echo ' class="active" ';
                             }
@@ -262,39 +254,68 @@
                                 รายงาน <span class="glyphicon arrow"></span>
                             </a>
                             <ul class="collapse">
-                                <li>
-                                    <a href="?app=report_debtor"  ><i class="fa fa-outdent" aria-hidden="true"></i> ลูกหนี้</a>
+                                <li
+                                <?PHP 
+                                    if(
+                                        substr($_GET["app"],0,13) =='report_debtor'
+                                    ){
+                                        echo ' class="active" ';
+                                    }
+                                ?> 
+                                >
+                                    <a href="#" >
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i> ลูกหนี้ <span class="glyphicon arrow"></span>
+                                    </a>
+                                    <ul class="collapse" >
+                                        <li>
+                                            <a href="?app=report_debtor_01" ><i class="fa fa-outdent" aria-hidden="true"></i> รับเงินมัดจำ</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_02" ><i class="fa fa-outdent" aria-hidden="true"></i> ขายเงินสด</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_03" ><i class="fa fa-outdent" aria-hidden="true"></i> ใบสั่งขาย</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_04" ><i class="fa fa-outdent" aria-hidden="true"></i> ขายเงินเชื่อ</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_05" ><i class="fa fa-outdent" aria-hidden="true"></i> รายได้อื่นๆ</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_06" ><i class="fa fa-outdent" aria-hidden="true"></i> ใบวางบิล</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_07" ><i class="fa fa-outdent" aria-hidden="true"></i> ใบลดหนี้/รับคืน</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_08" ><i class="fa fa-outdent" aria-hidden="true"></i> รับชำระหนี้</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_09" ><i class="fa fa-outdent" aria-hidden="true"></i> ลูกหนี้คงค้าง</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_10" ><i class="fa fa-outdent" aria-hidden="true"></i> สถานะลูกหนี้</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_11" ><i class="fa fa-outdent" aria-hidden="true"></i> วิเคราะห์อายุลูกหนี้</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_12" ><i class="fa fa-outdent" aria-hidden="true"></i> รายการเคลื่อนไหวลูกหนี้</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_13" ><i class="fa fa-outdent" aria-hidden="true"></i> ลูกหนี้เกินวงเงิน</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_14" ><i class="fa fa-outdent" aria-hidden="true"></i> รายละเอียดลูกค้า</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_debtor_15" ><i class="fa fa-outdent" aria-hidden="true"></i> ใบเสนอราคา</a>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li>
-                                    <a href="?app=report_creditor"  ><i class="fa fa-outdent" aria-hidden="true"></i> เจ้าหนี้</a>
-                                </li>
-                                <li>
-                                    <a href="?app=report_buy_product"  ><i class="fa fa-outdent" aria-hidden="true"></i> การสั่งซื้อสินค้า</a>
-                                </li>
-                                <li>
-                                    <a href="?app=report_profit"  ><i class="fa fa-outdent" aria-hidden="true"></i> ผลกำไร - ขาดทุน</a>
-                                </li>
-                                <li>
-                                    <a href="?app=report_buy_product_by_supplier"  ><i class="fa fa-outdent" aria-hidden="true"></i> การสั่งซื้อสินค้าแยกตามผู้ขาย</a>
-                                </li>
-                                <li>
-                                    <a href="?app=report_sell_product"  ><i class="fa fa-outdent" aria-hidden="true"></i> การขายสินค้า</a>
-                                </li>
-                                <li>
-                                    <a href="?app=report_sell_product_by_customer"  ><i class="fa fa-outdent" aria-hidden="true"></i> การขายสินค้าแยกตามผู้ซื้อ</a>
-                                </li>
-                                <li>
-                                    <a href="?app=report_product"  ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้าและวัตถุดิบ</a>
-                                </li>
-                                <li>
-                                    <a href="?app=report_product_by_stock"  ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้าและวัตถุดิบแยกตามคลัง</a>
-                                </li>
-
                             </ul>
                         </li>
-
-                        
-
                         <li 
                         <?PHP 
                             if($_GET["app"]=='job'){

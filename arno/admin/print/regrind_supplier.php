@@ -1,4 +1,68 @@
 
+
+    <?PHP 
+    require_once('../../models/RegrindSupplierModel.php');
+    require_once('../../models/RegrindSupplierListModel.php');
+
+    $regrind_supplier_id = $_GET['id'];
+
+    $regrind_supplier_model = new RegrindSupplierModel;
+    $regrind_supplier_list_model = new RegrindSupplierListModel;
+
+    $regrind_supplier = $regrind_supplier_model->getRegrindSupplierViewByID($regrind_supplier_id);
+    $regrind_supplier_lists = $regrind_supplier_list_model->getRegrindSupplierListBy($regrind_supplier_id);
+    
+    ?>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Revel Soft - ERP System</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../../template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../../template/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../../template/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Dropdown CSS -->
+    <link href="../../template/dist/css/bootstrap-select.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../../template/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- DataTables CSS -->
+    <link href="../template/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="../../template/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+
+    
+
+
+    <link rel="stylesheet" href="../../template/dist/css/jquery-ui.css">
+
+
+    <!-- Main CSS -->
+    <link href="../../css/styles.css" rel="stylesheet">
+<style>
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+    font-size: 12;
+}
+
+body , p, table{
+    font-size: 12;
+}
+</style>
 <!-- /.row -->
 <div class="row" >
     <div class="col-lg-12" style="margin-top:32px;">
@@ -144,27 +208,27 @@
                         </tbody>
                     </table>
                     <div class="row" style="padding:0px;">
-                            <div class="col-md-6" align="center">
+                            <div class="col-md-6 col-sm-6 col-xs-6 " align="center">
                             <b>ผู้รับสินค้ารีกายด์</b>
                             </div>
-                            <div class="col-md-6" align="center">
+                            <div class="col-md-6 col-sm-6 col-xs-6" align="center">
                             <b>ผู้ส่งสินค้ารีกายด์</b>
                             </div>
                     </div> 
                     <div class="row">
-                            <div class="col-md-6" align="center">
+                            <div class="col-md-6 col-sm-6 col-xs-6" align="center">
                             <img src="<?PHP echo $regrind_supplier['contact_signature'];?>"  width="72" height="72"/>
                             </div>
-                            <div class="col-md-6" align="center">
+                            <div class="col-md-6 col-sm-6 col-xs-6" align="center">
                             <img src="<?PHP echo $regrind_supplier['user_signature'];?>" width="72" height="72" />
                             </div>
                     </div> 
                     <div class="row">
-                            <div class="col-md-6" align="center">
+                            <div class="col-md-6 col-sm-6 col-xs-6" align="center">
                             <span>...............................................</span><br>
                             <B>(<?PHP echo $regrind_supplier['contact_name']; ?>)</B>
                             </div>
-                            <div class="col-md-6" align="center">
+                            <div class="col-md-6 col-sm-6 col-xs-6" align="center">
                             <span>...............................................</span><br>
                             <b>(<?PHP echo $regrind_supplier['user_name']; ?> <?PHP echo $regrind_supplier['user_lastname']; ?>)</b>
                             </div>
@@ -176,3 +240,8 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+<script src="../../template/vendor/jquery/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../../template/vendor/bootstrap/js/bootstrap.min.js"></script>

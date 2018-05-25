@@ -282,6 +282,56 @@ if(!isset($_GET['action'])){
 
     $regrind_supplier_model->updateContactSignatureByID($regrind_supplier_id,$data);
 
+    $regrind_supplier = $regrind_supplier_model->getRegrindSupplierViewByID($regrind_supplier_id);
+
+    if($regrind_supplier_id > 0 ){
+        /******** setmail ********************************************/
+        require("../controllers/mail/class.phpmailer.php");
+        $mail = new PHPMailer();
+        $body = '
+            We are sent the regrind order : '.$regrind_supplier['regrind_supplier_code'].' to '.$regrind_supplier['contact_name'].' <br>
+            Can you see at <a href="http://localhost/erp_mvc/arno/admin/print/regrind_supplier.php?id='.$regrind_supplier_id.'">Click</a> 
+            <br>
+            <br>
+            <b> Best regards,</b><br><br>
+
+            <b> '.$regrind_supplier['user_name'].' '.$regrind_supplier['user_lastname'].' ('.$regrind_supplier['user_position_name'].')</b><br>
+            <b> Head Office : </b> 2/27 Bangna Complex Office Tower,7th Flr.,Soi Bangna-Trad 25, Bangna-Trad Rd.,<br>
+            Bangna, Bangna, Bangkok 10260, THAILAND, Tel : +662 399 2784  Fax : +662 399 2327 <br>
+            <b> Tax ID :</b> 0105558002033 
+            
+        ';
+        $mail->CharSet = "utf-8";
+        $mail->IsSMTP();
+        $mail->SMTPDebug = 0;
+        $mail->SMTPAuth = true;
+        $mail->Host = "mail.revelsoft.co.th"; // SMTP server
+        $mail->Port = 587; 
+        $mail->Username = "support@revelsoft.co.th"; // account SMTP
+        $mail->Password = "support123456"; //  SMTP
+
+        $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
+        $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");
+        $mail->Subject = "Arno regrind order to ".$regrind_supplier['supplier_name_en'];
+
+        $mail->MsgHTML($body);
+
+        $mail->AddAddress($regrind_supplier['supplier_email'], "Supplier Mail"); //
+        //$mail->AddAddress($set1, $name); // 
+        if(!$mail->Send()) {
+            $result = "Mailer Error: " . $mail->ErrorInfo;
+        }else{
+            $result = "Send regrind complete.";
+        } 
+?>
+        <script>
+            alert("<?php echo $result; ?>");
+            window.location="index.php?app=regrind_supplier&action=print&id=<?php echo $regrind_supplier_id;?>";
+        </script>
+<?PHP
+    }
+    
+
 ?>
     <script>window.location="index.php?app=regrind_supplier&action=detail&id=<?php echo $regrind_supplier_id;?>"</script>
 <?PHP

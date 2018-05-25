@@ -33,11 +33,12 @@ if(!isset($_GET['action'])){
     $date_end = $_GET['date_end'];
     $customer_id = $_GET['customer_id'];
     $keyword = $_GET['keyword'];
+    $status = $_GET['status'];
 
     $customers=$customer_model->getCustomerBy();
 
     $quotations=$quotation_model->getQuotationBy();
-    $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrderBy($date_start,$date_end,$supplier_id,$keyword);
+    $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrderBy($date_start,$date_end,$supplier_id,$status,$keyword);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -546,11 +547,12 @@ if(!isset($_GET['action'])){
     $date_end = $_GET['date_end'];
     $customer_id = $_GET['customer_id'];
     $keyword = $_GET['keyword'];
+    $status = $_GET['status'];
 
     $customers=$customer_model->getCustomerBy();
 
     $quotations=$quotation_model->getQuotationBy();
-    $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrderBy($date_start,$date_end,$supplier_id,$keyword);
+    $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrderBy($date_start,$date_end,$supplier_id,$status,$keyword);
     require_once($path.'view.inc.php');
 
 }

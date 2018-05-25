@@ -36,34 +36,34 @@
                                 </thead>
                                 <tbody>
                                     <?php 
-                                    for($i=0; $i < count($Supplier); $i++){
+                                    for($i=0; $i < count($supplier); $i++){
                                     ?>
                                     <tr class="odd gradeX">
                                         <td><?php echo $i+1; ?></td>
-                                        <td><?php echo $Supplier[$i]['supplier_code']; ?></td>
-                                        <td><?php echo $Supplier[$i]['supplier_name_th']; ?></td>
-                                        <td><?php echo $Supplier[$i]['supplier_name_en']; ?></td>
-                                        <td><?php echo $Supplier[$i]['supplier_domestic']; ?></td>
-                                        <td><?php echo $Supplier[$i]['supplier_tax']; ?></td>
-                                        <td class="center"><?php echo $Supplier[$i]['supplier_tel']; ?></td>
-                                        <td class="center"><?php echo $Supplier[$i]['supplier_email']; ?></td>
+                                        <td><?php echo $supplier[$i]['supplier_code']; ?></td>
+                                        <td><?php echo $supplier[$i]['supplier_name_th']; ?></td>
+                                        <td><?php echo $supplier[$i]['supplier_name_en']; ?></td>
+                                        <td><?php echo $supplier[$i]['supplier_domestic']; ?></td>
+                                        <td><?php echo $supplier[$i]['supplier_tax']; ?></td>
+                                        <td class="center"><?php echo $supplier[$i]['supplier_tel']; ?></td>
+                                        <td class="center"><?php echo $supplier[$i]['supplier_email']; ?></td>
                                         <td>
-                                            <a title="View Detail" href="?app=supplier&action=detail&id=<?php echo $Supplier[$i]['supplier_id'];?>">
+                                            <a title="View Detail" href="?app=supplier&action=detail&id=<?php echo $supplier[$i]['supplier_id'];?>">
                                                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                             </a> 
-                                            <a title="Bank account" href="?app=supplier_account&action=view&id=<?php echo $Supplier[$i]['supplier_id'];?>">
+                                            <a title="Bank account" href="?app=supplier_account&action=view&id=<?php echo $supplier[$i]['supplier_id'];?>">
                                                 <i class="fa fa-university" aria-hidden="true"></i>
                                             </a> 
-                                            <a title="Person contact" href="?app=supplier_contact&action=view&id=<?php echo $Supplier[$i]['supplier_id'];?>">
+                                            <a title="Person contact" href="?app=supplier_contact&action=view&id=<?php echo $supplier[$i]['supplier_id'];?>">
                                                 <i class="fa fa-users" aria-hidden="true"></i>
                                             </a>
-                                            <a title="Logistic type" href="?app=supplier_logistic&action=view&id=<?php echo $Supplier[$i]['supplier_id'];?>">
+                                            <a title="Logistic type" href="?app=supplier_logistic&action=view&id=<?php echo $supplier[$i]['supplier_id'];?>">
                                                 <i class="fa fa-truck" aria-hidden="true"></i>
                                             </a>
-                                            <a title="Update data" href="?app=supplier&action=update&id=<?php echo $Supplier[$i]['supplier_id'];?>">
+                                            <a title="Update data" href="?app=supplier&action=update&id=<?php echo $supplier[$i]['supplier_id'];?>">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             </a> 
-                                            <a title="Delete data" href="?app=supplier&action=delete&id=<?php echo $Supplier[$i]['supplier_id'];?>" onclick="return confirm('You want to delete Supplier : <?php echo $Supplier[$i]['supplier_name']; ?>');" style="color:red;">
+                                            <a title="Delete data" href="?app=supplier&action=delete&id=<?php echo $supplier[$i]['supplier_id'];?>" onclick="return confirm('You want to delete Supplier : <?php echo $supplier[$i]['supplier_name']; ?>');" style="color:red;">
                                                 <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
                                         </td>

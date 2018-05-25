@@ -5,8 +5,8 @@
         var date_end = $("#date_end").val();
         var customer_id = $("#search_customer_id").val();
         var keyword = $("#keyword").val();
-
-        window.location = "index.php?app=customer_purchase_order&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
+        var status = $("#status").val();
+        window.location = "index.php?app=customer_purchase_order&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&status="+status+"&keyword="+keyword;
     }
 
     function changeURL(id){
@@ -62,7 +62,7 @@
                         <div class="panel-body">
 
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>วันที่รับสั่งซื้อสินค้าของลูกค้า</label>
                                         <div class="row">
@@ -79,10 +79,10 @@
                                         <p class="help-block">01-01-2018 - 31-12-2018</p>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>ผู้ซื้อ </label>
-                                        <select id="search_customer_id" name="search_customer_id" class="form-control select" onchange="get_customer_detail()" data-live-search="true">
+                                        <select id="search_customer_id" name="search_customer_id" class="form-control select"   data-live-search="true">
                                             <option value="">ทั้งหมด</option>
                                             <?php 
                                             for($i =  0 ; $i < count($customers) ; $i++){
@@ -95,7 +95,20 @@
                                         <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>แยกตามประเภท </label>
+                                        <select id="status" name="status" class="form-control select" data-live-search="true">
+                                            <option value="">ทั้งหมด</option>
+                                            <option <?php if($status == '1'){?> selected <?php }?> value="1">ยังไม่มีการสั่งสินค้า</option>
+                                            <option <?php if($status == '2'){?> selected <?php }?> value="2">สั่งสินค้าแล้ว</option>
+                                            <option <?php if($status == '3'){?> selected <?php }?> value="3">ส่งสินค้ายังไม่ครบ</option>
+                                            <option <?php if($status == '4'){?> selected <?php }?> value="4">ส่งสินค้าครบแล้ว</option>
+                                        </select>
+                                        <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>คำค้น <font color="#F00"><b>*</b></font></label>
                                         <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >

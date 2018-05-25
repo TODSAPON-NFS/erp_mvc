@@ -7,11 +7,12 @@ class CustomerPurchaseOrderModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getCustomerPurchaseOrderBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = ""){
+    function getCustomerPurchaseOrderBy($date_start = "",$date_end = "",$customer_id = "" , $status = "",$keyword = "",$user_id = ""){
 
         $str_customer = "";
         $str_date = "";
         $str_user = "";
+        $str_status = "";
 
         if($date_start != "" && $date_end != ""){
             $str_date = "AND STR_TO_DATE(customer_purchase_order_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(customer_purchase_order_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
@@ -29,6 +30,47 @@ class CustomerPurchaseOrderModel extends BaseModel{
             $str_customer = "AND tb2.customer_id = '$customer_id' ";
         }
 
+
+        if($status == "1"){
+            $str_status = " AND (
+                    SELECT COUNT(*) 
+                    FROM tb_customer_purchase_order_list
+                    LEFT JOIN tb_customer_purchase_order_list_detail  
+                    ON tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list_detail.customer_purchase_order_list_id 
+                    WHERE IFNULL(tb_customer_purchase_order_list_detail.supplier_id,1) > 0 
+                    AND IFNULL(tb_customer_purchase_order_list_detail.purchase_order_list_id,0) = 0 
+                    AND customer_purchase_order_id = tb.customer_purchase_order_id 
+                    ) > 0";
+        } else if($status == "2"){
+            $str_status = " AND (
+                    SELECT COUNT(*) 
+                    FROM tb_customer_purchase_order_list
+                    LEFT JOIN tb_customer_purchase_order_list_detail  
+                    ON tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list_detail.customer_purchase_order_list_id 
+                    WHERE IFNULL(tb_customer_purchase_order_list_detail.supplier_id,1) > 0 
+                    AND IFNULL(tb_customer_purchase_order_list_detail.purchase_order_list_id,0) = 0 
+                    AND customer_purchase_order_id = tb.customer_purchase_order_id 
+                    ) = 0";
+        } else if($status == "3"){
+            $str_status = "  AND (
+                        SELECT COUNT(tb_customer_purchase_order_list.customer_purchase_order_list_id) 
+                        FROM tb_customer_purchase_order_list  
+                        LEFT JOIN tb_invoice_customer_list ON  tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_invoice_customer_list.customer_purchase_order_list_id  
+                        WHERE customer_purchase_order_id = tb.customer_purchase_order_id
+                        GROUP BY tb_customer_purchase_order_list.customer_purchase_order_id 
+                        HAVING IFNULL(SUM(invoice_customer_list_qty),0) < AVG(customer_purchase_order_list_qty)  
+                    ) > 0 ";
+        }else if($status == "4"){
+            $str_status = "  AND (
+                        SELECT COUNT(tb_customer_purchase_order_list.customer_purchase_order_list_id) 
+                        FROM tb_customer_purchase_order_list  
+                        LEFT JOIN tb_invoice_customer_list ON  tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_invoice_customer_list.customer_purchase_order_list_id  
+                        WHERE customer_purchase_order_id = tb.customer_purchase_order_id
+                        GROUP BY tb_customer_purchase_order_list.customer_purchase_order_id 
+                        HAVING IFNULL(SUM(invoice_customer_list_qty),0) < AVG(customer_purchase_order_list_qty)  
+                    ) = 0 ";
+        }
+
         $sql = " SELECT customer_purchase_order_id, 
         customer_purchase_order_code, 
         customer_purchase_order_date, 
@@ -41,10 +83,10 @@ class CustomerPurchaseOrderModel extends BaseModel{
         customer_purchase_order_delivery_term, 
         IFNULL(CONCAT(tb2.customer_name_en,' (',tb2.customer_name_th,')'),'-') as customer_name, 
         customer_purchase_order_delivery_by 
-        FROM tb_customer_purchase_order 
-        LEFT JOIN tb_user as tb1 ON tb_customer_purchase_order.employee_id = tb1.user_id 
+        FROM tb_customer_purchase_order  as tb 
+        LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
         LEFT JOIN tb_user_position  ON tb1.user_position_id = tb_user_position.user_position_id 
-        LEFT JOIN tb_customer as tb2 ON tb_customer_purchase_order.customer_id = tb2.customer_id 
+        LEFT JOIN tb_customer as tb2 ON tb.customer_id = tb2.customer_id 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
             OR  customer_purchase_order_code LIKE ('%$keyword%') 
@@ -52,6 +94,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         $str_customer 
         $str_date 
         $str_user  
+        $str_status 
         ORDER BY STR_TO_DATE(customer_purchase_order_date,'%Y-%m-%d %H:%i:%s'),customer_purchase_order_code DESC 
          ";
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {

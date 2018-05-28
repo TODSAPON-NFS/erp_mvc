@@ -240,7 +240,6 @@
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
                         '<td>'+
-                            '<input type="hidden" name="regrind_supplier_list_id[]" value="'+ data_buffer[i].regrind_supplier_list_id +'" readonly />'+ 
                             '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'" readonly />'+  
                             '<input type="hidden" name="stock_group_id[]" value="'+ data_buffer[i].stock_group_id +'" readonly />'+    
                             '<input type="hidden" name="invoice_supplier_list_id[]" value="0" />'+  
@@ -299,7 +298,6 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
-                    '<input type="hidden" name="regrind_supplier_list_id[]" value="0" />'+  
                     '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+    
                     '<input type="hidden" name="stock_group_id[]" value="<?PHP $stock_group_id?>" />'+  
                     '<input type="hidden" name="invoice_supplier_list_id[]" value="0" />'+  
@@ -630,7 +628,6 @@
                             ?>
                             <tr class="odd gradeX">
                                 <td>
-                                    <input type="hidden" name="regrind_supplier_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['regrind_supplier_list_id'];?>" />
                                     <input type="hidden" name="purchase_order_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['purchase_order_list_id'];?>" />
                                     <input type="hidden" name="stock_group_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['stock_group_id'];?>" />
                                     <input type="hidden" name="invoice_supplier_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id'];?>" />

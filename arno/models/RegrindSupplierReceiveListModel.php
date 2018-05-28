@@ -11,7 +11,7 @@ class RegrindSupplierReceiveListModel extends BaseModel{
         $sql = " SELECT tb_regrind_supplier_receive_list.product_id, 
         CONCAT(product_code_first,product_code) as product_code, 
         product_name, 
-        regrind_supplier_list_id,   
+        regrind_supplier_receive_id,   
         regrind_supplier_receive_list_id, 
         regrind_supplier_list_id, 
         regrind_supplier_receive_list_qty,
@@ -84,7 +84,21 @@ class RegrindSupplierReceiveListModel extends BaseModel{
     }
 
 
-    function updatePurchaseOrderId($regrind_supplier_receive_list_id,$regrind_supplier_list_id){
+    function updatePurchaseOrderId($regrind_supplier_receive_list_id,$purchase_order_list_id){
+        $sql = " UPDATE tb_regrind_supplier_receive_list 
+            SET purchase_order_list_id = '$purchase_order_list_id' 
+            WHERE regrind_supplier_receive_list_id = '$regrind_supplier_receive_list_id' 
+        ";
+
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
+    function updateRegrindSupplierListId($regrind_supplier_receive_list_id,$regrind_supplier_list_id){
         $sql = " UPDATE tb_regrind_supplier_receive_list 
             SET regrind_supplier_list_id = '$regrind_supplier_list_id' 
             WHERE regrind_supplier_receive_list_id = '$regrind_supplier_receive_list_id' 

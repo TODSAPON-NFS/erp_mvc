@@ -270,6 +270,13 @@ class PurchaseOrderModel extends BaseModel{
                     ON  tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list.customer_purchase_order_list_id
                     WHERE tb_customer_purchase_order_list_detail.purchase_order_list_id = 0   
                     AND tb_customer_purchase_order_list_detail.supplier_id != 0 
+                    UNION 
+                    SELECT DISTINCT product_id 
+                    FROM tb_regrind_supplier_receive 
+                    LEFT JOIN tb_regrind_supplier_receive_list 
+                    ON  tb_regrind_supplier_receive.regrind_supplier_receive_id = tb_regrind_supplier_receive_list.regrind_supplier_receive_id
+                    WHERE tb_regrind_supplier_receive_list.purchase_order_list_id = 0   
+                    AND tb_regrind_supplier_receive.supplier_id != 0 
                 )
                 AND product_supplier_status = 'Active' 
                 GROUP BY tb_product_supplier.supplier_id 
@@ -286,7 +293,7 @@ class PurchaseOrderModel extends BaseModel{
         return $data;
     }
 
-    function generatePurchaseOrderListBySupplierId($supplier_id, $data_pr = [], $data_cpo = [], $data_dn = [], $search = ""){
+    function generatePurchaseOrderListBySupplierId($supplier_id, $data_pr = [], $data_cpo = [], $data_dn = [], $data_srr = [], $search = ""){
 
         $str_pr ='0';
 
@@ -334,6 +341,23 @@ class PurchaseOrderModel extends BaseModel{
         }else{
             $str_dn='0';
         }
+
+
+        $str_srr ='0';
+
+        if(is_array($data_srr)){ 
+            for($i=0; $i < count($data_srr) ;$i++){
+                $str_srr .= $data_srr[$i];
+                if($i + 1 < count($data_srr)){
+                    $str_srr .= ',';
+                }
+            }
+        }else if ($data_srr != ''){
+            $str_srr = $data_srr;
+        }else{
+            $str_srr='0';
+        }
+
 
         $sql_request = "SELECT tb_purchase_request_list.product_id, 
         purchase_request_list_id, 
@@ -416,6 +440,34 @@ class PurchaseOrderModel extends BaseModel{
         //echo $sql_dn."<br><br>";
 
         if ($result = mysqli_query($this->db,$sql_dn, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+
+
+        
+        $sql_customer = "SELECT tb_regrind_supplier_receive_list.product_id, 
+        tb_regrind_supplier_receive_list.regrind_supplier_receive_list_id, 
+        '' as regrind_supplier_receive_list_id,
+        CONCAT(product_code_first,product_code) as product_code, 
+        IFNULL(stock_group_id,(SELECT IFNULL(MIN(stock_group_id),0) FROM tb_stock_group WHERE 1)) as stock_group_id,
+        product_name,  
+        regrind_supplier_receive_list_qty as purchase_order_list_qty, 
+        product_buyprice as purchase_order_list_price, 
+        CONCAT('PO : ',regrind_supplier_receive_code) as purchase_order_list_remark 
+        FROM tb_regrind_supplier_receive 
+        LEFT JOIN tb_regrind_supplier_receive_list ON tb_regrind_supplier_receive.regrind_supplier_receive_id = tb_regrind_supplier_receive_list.regrind_supplier_receive_id
+        LEFT JOIN tb_product ON tb_regrind_supplier_receive_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_product_supplier ON tb_regrind_supplier_receive_list.product_id = tb_product_supplier.product_id 
+        WHERE tb_regrind_supplier_receive.supplier_id = '$supplier_id' 
+        AND purchase_order_list_id = 0 
+        AND regrind_supplier_receive_list_id NOT IN ($str_srr) 
+        AND (product_name LIKE ('%$search%') OR regrind_supplier_receive_code LIKE ('%$search%')) ";
+        if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;

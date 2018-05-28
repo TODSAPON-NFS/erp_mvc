@@ -10,8 +10,7 @@ class InvoiceSupplierListModel extends BaseModel{
     function getInvoiceSupplierListBy($invoice_supplier_id){
         $sql = " SELECT tb_invoice_supplier_list.product_id, 
         CONCAT(product_code_first,product_code) as product_code, 
-        product_name,   
-        invoice_supplier_list_id,  
+        product_name, 
         purchase_order_list_id,
         stock_group_id,
         invoice_supplier_list_product_name, 
@@ -50,7 +49,6 @@ class InvoiceSupplierListModel extends BaseModel{
             invoice_supplier_list_remark,
             stock_group_id,
             purchase_order_list_id,
-            regrind_supplier_list_id,
             invoice_supplier_list_cost,
             addby,
             adddate,
@@ -67,7 +65,6 @@ class InvoiceSupplierListModel extends BaseModel{
             '".$data['invoice_supplier_list_remark']."',
             '".$data['stock_group_id']."', 
             '".$data['purchase_order_list_id']."', 
-            '".$data['regrind_supplier_list_id']."', 
             '".$data['invoice_supplier_list_cost']."',
             '".$data['addby']."', 
             NOW(), 
@@ -204,8 +201,6 @@ class InvoiceSupplierListModel extends BaseModel{
             //echo $sql_delete[$i] . "<br><br>";
             mysqli_query($this->db,$sql_delete[$i], MYSQLI_USE_RESULT);
         }
-
-
 
 
 

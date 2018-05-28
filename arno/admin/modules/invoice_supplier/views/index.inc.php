@@ -150,7 +150,6 @@ if(!isset($_GET['action'])){
             $invoice_supplier_list_total = $_POST['invoice_supplier_list_total'];
             $invoice_supplier_list_remark = $_POST['invoice_supplier_list_remark'];
             $purchase_order_list_id = $_POST['purchase_order_list_id'];
-            $regrind_supplier_list_id = $_POST['regrind_supplier_list_id'];
             $stock_group_id = $_POST['stock_group_id'];
             
             if(is_array($product_id)){
@@ -168,7 +167,7 @@ if(!isset($_GET['action'])){
                     $data_sub['invoice_supplier_list_cost'] = (float)filter_var($invoice_supplier_list_cost[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data_sub['invoice_supplier_list_remark'] = $invoice_supplier_list_remark[$i];
                     $data_sub['purchase_order_list_id'] = $purchase_order_list_id[$i];
-                    $data_sub['regrind_supplier_list_id'] = $regrind_supplier_list_id[$i];
+
                     $data_sub['stock_group_id'] = $stock_group_id[$i];
 
                     //echo "****";
@@ -188,7 +187,6 @@ if(!isset($_GET['action'])){
                 $data_sub['invoice_supplier_list_cost'] = (float)filter_var($invoice_supplier_list_cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['invoice_supplier_list_remark'] = $invoice_supplier_list_remark;
                 $data_sub['purchase_order_list_id'] = $purchase_order_list_id;
-                $data_sub['regrind_supplier_list_id'] = $regrind_supplier_list_id;
                 $data_sub['stock_group_id'] = $stock_group_id;
                 //echo "----";
                 $id = $invoice_supplier_list_model->insertInvoiceSupplierList($data_sub);
@@ -246,7 +244,6 @@ if(!isset($_GET['action'])){
         $invoice_supplier_list_cost = $_POST['invoice_supplier_list_cost'];
         $invoice_supplier_list_remark = $_POST['invoice_supplier_list_remark'];
         $purchase_order_list_id = $_POST['purchase_order_list_id'];
-        $regrind_supplier_list_id = $_POST['regrind_supplier_list_id'];
         $stock_group_id = $_POST['stock_group_id'];
         
         $invoice_supplier_list_model->deleteInvoiceSupplierListByInvoiceSupplierIDNotIN($invoice_supplier_id,$invoice_supplier_list_id);
@@ -268,7 +265,6 @@ if(!isset($_GET['action'])){
 
                 $data_sub['stock_group_id'] = $stock_group_id[$i];
                 $data_sub['purchase_order_list_id'] = $purchase_order_list_id[$i];
-                $data_sub['regrind_supplier_list_id'] = $regrind_supplier_list_id[$i];
     
                 if($invoice_supplier_list_id[$i] != '0' && $invoice_supplier_list_id[$i] != ''){
                     $invoice_supplier_list_model->updateInvoiceSupplierListById($data_sub,$invoice_supplier_list_id[$i]);
@@ -293,7 +289,6 @@ if(!isset($_GET['action'])){
 
             $data_sub['stock_group_id'] = $stock_group_id;
             $data_sub['purchase_order_list_id'] = $purchase_order_list_id;
-            $data_sub['regrind_supplier_list_id'] = $regrind_supplier_list_id;
 
             if($invoice_supplier_list_id != '0' && $invoice_supplier_list_id != ''){
                 $invoice_supplier_list_model->updateInvoiceSupplierListById($data_sub,$invoice_supplier_list_id);

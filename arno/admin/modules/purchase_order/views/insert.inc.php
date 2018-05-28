@@ -146,20 +146,27 @@
         var val1 = document.getElementsByName('purchase_request_list_id[]');
         var val2 = document.getElementsByName('customer_purchase_order_list_detail_id[]');
         var val3 = document.getElementsByName('delivery_note_supplier_list_id[]');
+        var val4 = document.getElementsByName('regrind_supplier_receive_list_id[]');
+
         var purchase_request_list_id = [];
         var customer_purchase_order_list_detail_id = [];
         var delivery_note_supplier_list_id = [];
-        
+        var regrind_supplier_receive_list_id = [];
+
         for(var i = 0 ; i < val1.length ; i++){
             purchase_request_list_id.push(val1[i].value);
         }
 
-        for(var i = 0 ; i < val1.length ; i++){
+        for(var i = 0 ; i < val2.length ; i++){
             customer_purchase_order_list_detail_id.push(val2[i].value);
         }
 
-        for(var i = 0 ; i < val1.length ; i++){
+        for(var i = 0 ; i < val3.length ; i++){
             delivery_note_supplier_list_id.push(val3[i].value);
+        }
+
+        for(var i = 0 ; i < val4.length ; i++){
+            regrind_supplier_receive_list_id.push(val4[i].value);
         }
         
         if(supplier_id != ""){
@@ -169,7 +176,8 @@
                 'supplier_id': supplier_id,
                 'purchase_request_list_id': JSON.stringify(purchase_request_list_id) ,
                 'customer_purchase_order_list_detail_id': JSON.stringify(customer_purchase_order_list_detail_id) ,
-                'delivery_note_supplier_list_id': JSON.stringify(delivery_note_supplier_list_id) 
+                'delivery_note_supplier_list_id': JSON.stringify(delivery_note_supplier_list_id), 
+                'regrind_supplier_receive_list_id': JSON.stringify(regrind_supplier_receive_list_id) 
              }, function( data ) {
                 if(data.length > 0){
                     data_buffer = data;
@@ -218,29 +226,38 @@
         var val1 = document.getElementsByName('purchase_request_list_id[]');
         var val2 = document.getElementsByName('customer_purchase_order_list_detail_id[]');
         var val3 = document.getElementsByName('delivery_note_supplier_list_id[]');
+        var val4 = document.getElementsByName('regrind_supplier_receive_list_id[]');
+
         var purchase_request_list_id = [];
         var customer_purchase_order_list_detail_id = [];
         var delivery_note_supplier_list_id = [];
-        
+        var regrind_supplier_receive_list_id = [];
+
         for(var i = 0 ; i < val1.length ; i++){
             purchase_request_list_id.push(val1[i].value);
         }
 
-        for(var i = 0 ; i < val1.length ; i++){
+        for(var i = 0 ; i < val2.length ; i++){
             customer_purchase_order_list_detail_id.push(val2[i].value);
         }
 
-        for(var i = 0 ; i < val1.length ; i++){
+        for(var i = 0 ; i < val3.length ; i++){
             delivery_note_supplier_list_id.push(val3[i].value);
         }
 
-         $.post( "controllers/getPurchaseOrderListBySupplierID.php", 
-            { 
-                'supplier_id': supplier_id,
-                'purchase_request_list_id': JSON.stringify(purchase_request_list_id) ,
-                'customer_purchase_order_list_detail_id': JSON.stringify(customer_purchase_order_list_detail_id) ,
-                'delivery_note_supplier_list_id': JSON.stringify(delivery_note_supplier_list_id), search : $(id).val() 
-            }, function( data ) {
+        for(var i = 0 ; i < val4.length ; i++){
+            regrind_supplier_receive_list_id.push(val4[i].value);
+        }
+        
+
+        $.post( "controllers/getPurchaseOrderListBySupplierID.php", 
+        { 
+            'supplier_id': supplier_id,
+            'purchase_request_list_id': JSON.stringify(purchase_request_list_id) ,
+            'customer_purchase_order_list_detail_id': JSON.stringify(customer_purchase_order_list_detail_id) ,
+            'delivery_note_supplier_list_id': JSON.stringify(delivery_note_supplier_list_id), 
+            'regrind_supplier_receive_list_id': JSON.stringify(regrind_supplier_receive_list_id) 
+        }, function( data ) {
             var content = "";
             if(data.length > 0){
                 data_buffer = data;
@@ -304,6 +321,10 @@
                     delivery_note_supplier_list_id = data_buffer[i].delivery_note_supplier_list_id;
                 }
 
+                if(data_buffer[i].regrind_supplier_receive_list_id !== undefined){
+                    regrind_supplier_receive_list_id = data_buffer[i].regrind_supplier_receive_list_id;
+                }
+
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
                         '<td>'+
@@ -311,6 +332,7 @@
                             '<input type="hidden" name="customer_purchase_order_list_detail_id[]" value="'+customer_purchase_order_list_detail_id+'" />'+
                             '<input type="hidden" name="purchase_request_list_id[]" value="'+purchase_request_list_id+'" />'+     
                             '<input type="hidden" name="delivery_note_supplier_list_id[]" value="'+delivery_note_supplier_list_id+'" />'+  
+                            '<input type="hidden" name="regrind_supplier_receive_list_id[]" value="'+regrind_supplier_receive_list_id+'" />'+ 
                             '<span>'+data_buffer[i].product_code+'</span>'+
                         '</td>'+
                         '<td>'+
@@ -355,7 +377,8 @@
                     '<input type="hidden" name="product_id[]" value="0" />'+ 
                     '<input type="hidden" name="customer_purchase_order_list_detail_id[]" value="0" />'+ 
                     '<input type="hidden" name="purchase_request_list_id[]" value="0" />'+     
-                    '<input type="hidden" name="delivery_note_supplier_list_id[]" value="0" />'+    
+                    '<input type="hidden" name="delivery_note_supplier_list_id[]" value="0" />'+   
+                    '<input type="hidden" name="regrind_supplier_receive_list_id[]" value="0" />'+   
                     '<select class="form-control select" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td>'+
@@ -546,8 +569,12 @@
                             ?>
                             <tr class="odd gradeX">
                                 <td>
+                                    <input type="hidden" name="purchase_order_list_id[]" value="0"/>
+                                    
                                     <input type="hidden" name="customer_purchase_order_list_detail_id[]" value="<?PHP echo  $purchase_order_lists[$i]['customer_purchase_order_list_detail_id'];?>" />
                                     <input type="hidden" name="purchase_request_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['purchase_request_list_id'];?>" />
+                                    <input type="hidden" name="delivery_note_supplier_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['delivery_note_supplier_list_id'];?>" />
+                                    <input type="hidden" name="regrind_supplier_receive_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['regrind_supplier_receive_list_id'];?>" />
                                    
                                     <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
                                         <option value="">Select</option>

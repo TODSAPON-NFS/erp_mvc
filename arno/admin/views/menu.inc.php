@@ -132,7 +132,6 @@
                                 || $_GET["app"]=='delivery_note_supplier'
                                 || $_GET["app"]=='delivery_note_customer'
                                 || $_GET["app"]=='purchase_request'
-                                || $_GET["app"]=='customer_purchase_order'
                                 || $_GET["app"]=='purchase_order'
                                 || $_GET["app"]=='invoice_supplier'
                             ){
@@ -159,9 +158,7 @@
                                 <li>
                                     <a href="?app=purchase_request"><i class="fa  fa-file" aria-hidden="true"></i> ร้องขอสั่งซื้อสินค้า (PR)</a>
                                 </li>
-                                <li>
-                                    <a href="?app=customer_purchase_order"><i class="fa  fa-map" aria-hidden="true"></i> ใบสั่งซื้อลูกค้า (Customer PO) </a>
-                                </li>
+                                
                                 <li>
                                     <a href="?app=purchase_order"><i class="fa  fa fa-file-powerpoint-o" aria-hidden="true"></i> ใบสั่งซื้อ (PO)</a>
                                 </li>
@@ -175,6 +172,7 @@
                         <?PHP 
                             if(
                                 $_GET["app"]=='quotation'
+                                || $_GET["app"]=='customer_purchase_order'
                                 || $_GET["app"]=='invoice_customer'
                                 || $_GET["app"]=='credit_note'
                                 || $_GET["app"]=='debit_note'
@@ -191,6 +189,9 @@
                             <ul class="collapse">   
                                 <li>
                                     <a href="?app=quotation"><i class="fa fa-database fa-fw" aria-hidden="true"></i> ใบเสนอราคา (Quotation) </a>
+                                </li>
+                                <li>
+                                    <a href="?app=customer_purchase_order"><i class="fa  fa-map" aria-hidden="true"></i> ใบสั่งซื้อลูกค้า (Customer PO) </a>
                                 </li>
                                 <li>
                                     <a href="?app=invoice_customer"><i class="fa  fa-file-pdf-o" aria-hidden="true"></i> ใบกำกับภาษี (Customer Invoice)</a>
@@ -233,7 +234,7 @@
                                     <a href="?app=stock_type"  ><i class="fa fa-database fa-fw" aria-hidden="true"></i> คลังสินค้า (Stock) </a>
                                 </li>
                                 <li>
-                                    <a href="?app=stock_move"  ><i class="fa fa-share-square" aria-hidden="true"></i> ใบโอนคลังสินค้า (Move Stock)</a>
+                                    <a href="?app=stock_move"  ><i class="fa fa-share-square" aria-hidden="true"></i> ใบโอนคลังสินค้า (Transfer Stock)</a>
                                 </li>
                                 <li>
                                     <a href="?app=stock_issue"  ><i class="fa fa-outdent" aria-hidden="true"></i> ใบนำออกสินค้า (Issue Stock)</a>

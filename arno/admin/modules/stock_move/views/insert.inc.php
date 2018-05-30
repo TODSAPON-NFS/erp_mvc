@@ -108,7 +108,7 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Stock Move Management</h1>
+        <h1 class="page-header">Stock Transfer Management</h1>
     </div>
     <div class="col-lg-6" align="right">
        
@@ -120,7 +120,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            เพิ่มใบย้ายคลังสินค้า /  Add Stock Move   
+            เพิ่มใบย้ายคลังสินค้า /  Add Stock Transfer   
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -168,14 +168,14 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>หมายเลขใบย้ายสินค้า / Stock Move Code <font color="#F00"><b>*</b></font></label>
+                                        <label>หมายเลขใบย้ายสินค้า / Stock Transfer Code <font color="#F00"><b>*</b></font></label>
                                         <input id="stock_move_code" name="stock_move_code" class="form-control" value="<?php echo $last_code;?>" readonly>
                                         <p class="help-block">Example : SM1801001.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>วันที่ออกใบย้ายสินค้า / Stock Move Date</label>
+                                        <label>วันที่ออกใบย้ายสินค้า / Stock Transfer Date</label>
                                         <input type="text" id="stock_move_date" name="stock_move_date"  class="form-control calendar" value="<?php echo $first_date;?>" readonly/>
                                         <p class="help-block">31-01-2018</p>
                                     </div>

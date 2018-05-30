@@ -35,10 +35,14 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     รายการใบสั่งซื้อสินค้าของลูกค้า / Customer Order List
                                 </div>
+                                <div class="col-md-2" align="right">
+                                <span><b>สร้างจากใบเสนอราคา : </b></span>
+                                </div>
                                 <div class="col-md-3">
+                                    
                                     <select id="customer_id" name="customer_id" class="form-control select" data-live-search="true" onchange="changeURL(this);">
                                         <option value="">None</option>
                                         <?php 

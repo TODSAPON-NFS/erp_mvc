@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Stock Move Management</h1>
+        <h1 class="page-header">Stock Transfer Management</h1>
     </div>
     <div class="col-lg-6" align="right">
         
@@ -14,7 +14,7 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-md-8">
-                                    รายการใบย้ายคลังสินค้า / Stock Move List
+                                    รายการใบย้ายคลังสินค้า / Stock Transfer List
                                 </div>
                                 <div class="col-md-4">
                                     <a class="btn btn-success " style="float:right;" href="?app=stock_move&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
@@ -27,11 +27,11 @@
                                 <thead>
                                     <tr>
                                         <th style="text-align:center;">ลำดับ <br>No.</th>
-                                        <th style="text-align:center;">วันที่ย้าย <br>Move Date</th>
-                                        <th style="text-align:center;">หมายเลยใบย้าย <br>Move No.</th>
+                                        <th style="text-align:center;">วันที่ย้าย <br>Transfer Date</th>
+                                        <th style="text-align:center;">หมายเลยใบย้าย <br>Transfer No.</th>
                                         <th style="text-align:center;">จากคลัง <br>From stock</th>
                                         <th style="text-align:center;">ไปยังคลัง <br>To stock</th>
-                                        <th style="text-align:center;">ผู้ย้าย <br>Move by</th>
+                                        <th style="text-align:center;">ผู้ย้าย <br>Transfer by</th>
                                         <th style="text-align:center;">หมายเหตุ <br>Remark</th>
                                         <th></th>
                                     </tr>

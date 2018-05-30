@@ -35,6 +35,7 @@ if(!isset($_GET['action'])){
     $users=$user_model->getUserBy();
     $first_code = $first_char.date("y").date("m");
     $last_code = $stock_issue_model->getStockIssueLastID($first_code,3);
+    $first_date = date("d")."-".date("m")."-".date("Y");
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){

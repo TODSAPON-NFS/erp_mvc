@@ -30,8 +30,7 @@ class QuotationModel extends BaseModel{
 
 
         
-        $sql = "  
-        SELECT quotation_id,  
+        $sql = "   SELECT tb.quotation_id,  
         quotation_date,  
         quotation_rewrite_id, 
         IFNULL(( 
@@ -48,14 +47,19 @@ class QuotationModel extends BaseModel{
         FROM tb_quotation as tb  
         LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id  
         LEFT JOIN tb_customer as tb2 ON tb.customer_id = tb2.customer_id  
+        LEFT JOIN tb_quotation_list ON tb.quotation_id =  tb_quotation_list.quotation_id 
+        LEFT JOIN tb_product ON tb_quotation_list.product_id =  tb_product.product_id 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
             OR  quotation_contact_name LIKE ('%$keyword%') 
             OR  quotation_code LIKE ('%$keyword%') 
+            OR  product_name LIKE ('%$keyword%') 
+            OR  product_code LIKE ('%$keyword%') 
         ) 
         $str_customer 
         $str_date 
         $str_user   
+        GROUP BY tb.quotation_id 
         ORDER BY STR_TO_DATE(quotation_date,'%d-%m-%Y %H:%i:%s') , quotation_code DESC  
          ";
 

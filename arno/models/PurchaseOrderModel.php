@@ -234,6 +234,7 @@ class PurchaseOrderModel extends BaseModel{
         if ($data['updateby'] != ""){
             $str = "updateby = '".$data['updateby']."', ";
         }
+        
         $sql = " UPDATE tb_purchase_order SET 
         purchase_order_status = '".$data['purchase_order_status']."', 
         $str 

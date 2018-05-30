@@ -441,7 +441,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>วันที่ออกใบตัดสินค้า / Stock Issue Date</label>
-                                        <input type="text" id="stock_issue_date" name="stock_issue_date"  class="form-control calendar" value="<?php echo $stock_issue['stock_issue_date'];?>" readonly/>
+                                        <input type="text" id="stock_issue_date" name="stock_issue_date"  class="form-control calendar" value="<?php echo $first_date;?>" readonly/>
                                         <p class="help-block">31-01-2018</p>
                                     </div>
                                 </div>

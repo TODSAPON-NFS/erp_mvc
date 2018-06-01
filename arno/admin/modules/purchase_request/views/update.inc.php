@@ -131,7 +131,6 @@
                                     <option value="">Select</option>
                                     <option <?php if($purchase_request['purchase_request_type'] == "Sale"){?> selected <?php }?> >Sale</option>
                                     <option <?php if($purchase_request['purchase_request_type'] == "Use"){?> selected <?php }?> >Use</option>
-                                    <option <?php if($purchase_request['purchase_request_type'] == "Test"){?> selected <?php }?> >Test</option>
                                 </select>
                                 <p class="help-block">Example : Low.</p>
                             </div>

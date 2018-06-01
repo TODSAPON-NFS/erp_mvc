@@ -58,6 +58,18 @@
     
 
 
+    /* ----------------------------------- ระบบสั่งสินค้าทดลอง ---------------------------------------------- */
+    
+    else if($_GET['app'] == "request_standard"){
+        require_once("modules/request_standard/views/index.inc.php");
+    }else if($_GET['app'] == "request_special"){
+        require_once("modules/request_special/views/index.inc.php");
+    }else if($_GET['app'] == "request_regrind"){
+        require_once("modules/request_regrind/views/index.inc.php");
+    }
+
+    /* ----------------------------------- //ระบบสั่งสินค้าทดลอง// ---------------------------------------------- */
+   
 
 
 

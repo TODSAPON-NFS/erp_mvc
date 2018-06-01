@@ -123,7 +123,32 @@
                                 </li>
                             </ul>
                         </li>
-                        
+                        <li 
+                        <?PHP 
+                            if($_GET["app"]=='request_standard'){
+                                echo ' class="active" ';
+                            }else if($_GET["app"]=='request_special'){
+                                echo ' class="active" ';
+                            }else if($_GET["app"]=='request_regrind'){
+                                echo ' class="active" ';
+                            }
+                        ?> 
+                        >
+                            <a href="#" class="nav-title">
+                                สั่งสินค้าทดลอง <span class="glyphicon arrow"></span>
+                            </a>
+                            <ul class="collapse">
+                                <li>
+                                    <a href="?app=request_standard"   ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้ามาตรฐาน (Standard Tool)</a>
+                                </li>
+                                <li>
+                                    <a href="?app=request_special"   ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้าพิเศษ (Special Tool)</a>
+                                </li>
+                                <li>
+                                    <a href="?app=request_regrind"   ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้ารีกายด์ (Regrind Tool)</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li
                         <?PHP 
                             if(

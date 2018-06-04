@@ -40,10 +40,16 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>สำหรับลูกค้า / Customer </label>
-                                <p class="help-block"><?php if($request_special['customer_name_en'] != ''){ echo $request_special['customer_name_en'];?> (<?php echo $request_special['customer_name_th'];?>)<?php } else {?> <?php }?></p>
+                                <p class="help-block"><?php if($request_special['customer_name_en'] != ''){ echo $request_special['customer_name_en'];?> (<?php echo $request_special['customer_name_th'];?>)<?php } else {?> - <?php }?></p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>ผู้ขาย / Supplier </label>
+                                <p class="help-block"><?php if($request_special['supplier_name_en'] != ''){ echo $request_special['supplier_name_en'];?> (<?php echo $request_special['supplier_name_th'];?>)<?php } else {?> - <?php }?></p>
                             </div>
                         </div>
                     </div>

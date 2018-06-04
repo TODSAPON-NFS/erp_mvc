@@ -125,7 +125,9 @@
                         </li>
                         <li 
                         <?PHP 
-                            if($_GET["app"]=='request_standard'){
+                            if($_GET["app"]=='request_test'){
+                                echo ' class="active" ';
+                            }elseif($_GET["app"]=='request_standard'){
                                 echo ' class="active" ';
                             }else if($_GET["app"]=='request_special'){
                                 echo ' class="active" ';
@@ -138,6 +140,9 @@
                                 สั่งสินค้าทดลอง <span class="glyphicon arrow"></span>
                             </a>
                             <ul class="collapse">
+                                <li>
+                                    <a href="?app=request_test"   ><i class="fa fa-outdent" aria-hidden="true"></i> ใบสั่งสินค้าทดลอง (Request Test)</a>
+                                </li>
                                 <li>
                                     <a href="?app=request_standard"   ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้ามาตรฐาน (Standard Tool)</a>
                                 </li>

@@ -171,6 +171,22 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
+                                <label>ผู้ขาย / Supplier </label>
+                                <select id="supplier_id" name="supplier_id" class="form-control"  data-live-search="true">
+                                    <option value="0">Select</option>
+                                    <?php 
+                                    for($i =  0 ; $i < count($suppliers) ; $i++){
+                                    ?>
+                                    <option <?php if($suppliers[$i]['supplier_id'] == $request_special['supplier_id']){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_th'] ?> (<?php echo $suppliers[$i]['supplier_name_en'] ?>)</option>
+                                    <?
+                                    }
+                                    ?>
+                                </select>
+                                <p class="help-block">Example : บริษัท เรเวลซอฟต์ จำกัด (Revel Soft co,ltd).</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
                                 <label>หมายเหตุ / Remark</label>
                                 <input id="request_special_remark" name="request_special_remark" class="form-control" value="<? echo $request_special['request_special_remark'];?>"/>
                                 <p class="help-block">Example : -.</p>

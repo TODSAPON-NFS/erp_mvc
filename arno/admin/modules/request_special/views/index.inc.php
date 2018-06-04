@@ -8,11 +8,13 @@ require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/CustomerModel.php');
+require_once('../models/SupplierModel.php');
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/request_special/views/";
 $user_model = new UserModel;
 $customer_model = new CustomerModel;
+$supplier_model = new SupplierModel;
 $notification_model = new NotificationModel;
 $request_special_model = new RequestSpecialModel;
 $request_special_list_model = new RequestSpecialListModel;
@@ -31,6 +33,7 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'insert'){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
+    $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
     $first_code = $first_char.date("y").date("m");
     $first_date = date("d")."-".date("m")."-".date("Y");
@@ -40,6 +43,7 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'update'){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
+    $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
     $request_special = $request_special_model->getRequestSpecialByID($request_special_id);
     $request_special_lists = $request_special_list_model->getRequestSpecialListBy($request_special_id);
@@ -81,6 +85,7 @@ if(!isset($_GET['action'])){
         $data['request_special_accept_status'] = "Waiting";
         $data['employee_id'] = $_POST['employee_id'];
         $data['customer_id'] = $_POST['customer_id'];
+        $data['supplier_id'] = $_POST['supplier_id'];
         $data['request_special_remark'] = $_POST['request_special_remark'];
         $data['purchase_order_open'] = $_POST['purchase_order_open'];
         
@@ -109,7 +114,7 @@ if(!isset($_GET['action'])){
                     if($request_special_list_id[$i] == 0){
                         $request_special_list_model->insertRequestSpecialList($data);
                     }else{
-                        $request_special_list_model->updatePurchaseRquestListById($data,$request_special_list_id[$i]);
+                        $request_special_list_model->updateRequestSpecialListById($data,$request_special_list_id[$i]);
                     }
                     
                     
@@ -126,7 +131,7 @@ if(!isset($_GET['action'])){
                 if($request_special_list_id == 0){
                     $request_special_list_model->insertRequestSpecialList($data);
                 }else{
-                    $request_special_list_model->updatePurchaseRquestListById($data,$request_special_list_id);
+                    $request_special_list_model->updateRequestSpecialListById($data,$request_special_list_id);
                 }
             }
 ?>
@@ -152,6 +157,7 @@ if(!isset($_GET['action'])){
         $data['request_special_accept_status'] = "Waiting";
         $data['employee_id'] = $_POST['employee_id'];
         $data['customer_id'] = $_POST['customer_id'];
+        $data['supplier_id'] = $_POST['supplier_id'];
         $data['request_special_remark'] = $_POST['request_special_remark'];
         $data['purchase_order_open'] = $_POST['purchase_order_open'];
 
@@ -181,7 +187,7 @@ if(!isset($_GET['action'])){
                 if($request_special_list_id[$i] == 0){
                     $request_special_list_model->insertRequestSpecialList($data);
                 }else{
-                    $request_special_list_model->updatePurchaseRquestListById($data,$request_special_list_id[$i]);
+                    $request_special_list_model->updateRequestSpecialListById($data,$request_special_list_id[$i]);
                 }
                 
                 
@@ -198,7 +204,7 @@ if(!isset($_GET['action'])){
             if($request_special_list_id == 0){
                 $request_special_list_model->insertRequestSpecialList($data);
             }else{
-                $request_special_list_model->updatePurchaseRquestListById($data,$request_special_list_id);
+                $request_special_list_model->updateRequestSpecialListById($data,$request_special_list_id);
             }
         }
 
@@ -232,6 +238,7 @@ if(!isset($_GET['action'])){
         $data['request_special_accept_status'] = "Waiting";
         $data['employee_id'] = $request_special['employee_id'];
         $data['customer_id'] = $request_special['customer_id'];
+        $data['supplier_id'] = $request_special['supplier_id'];
         $data['request_special_rewrite_id'] = $request_special_id;
         $data['request_special_rewrite_no'] = $request_special['request_special_rewrite_no'] + 1;
         $data['request_special_remark'] = $request_special['request_special_remark'];

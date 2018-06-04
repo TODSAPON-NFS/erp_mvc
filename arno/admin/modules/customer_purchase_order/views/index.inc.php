@@ -24,6 +24,8 @@ $product_model = new ProductModel;
 $first_char = "PO";
 $customer_purchase_order_id = $_GET['id'];
 $quotation_id = $_GET['quotation_id'];
+$customer_id = $_GET['customer_id'];
+
 $notification_id = $_GET['notification'];
 $target_dir = "../upload/customer_purchase_order/";
 
@@ -39,6 +41,11 @@ if(!isset($_GET['action'])){
 
     $quotations=$quotation_model->getQuotationBy();
     $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrderBy($date_start,$date_end,$supplier_id,$status,$keyword);
+
+    
+    $customer_orders = $customer_purchase_order_model->getCustomerOrder();
+    
+
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -49,6 +56,12 @@ if(!isset($_GET['action'])){
         $customer_purchase_order = $customer_purchase_order_model->generateCustomerPurchaseOrderByID($quotation_id);
         $customer_purchase_order_lists = $customer_purchase_order_model->generateCustomerPurchaseOrderListBy($quotation_id);
     }
+
+    if($customer_id > 0){
+        $supplier=$customer_model->getCustomerByID($customer_id);
+        $delivery_note_customer_lists = $customer_purchase_order_model->generateDeliveryNoteCustomerListBySupplierId($customer_id);
+    }
+
     $products=$product_model->getProductBy('','','','Active');
     $first_date = date("d")."-".date("m")."-".date("Y");
     $customers=$customer_model->getCustomerBy();
@@ -553,8 +566,12 @@ if(!isset($_GET['action'])){
 
     $quotations=$quotation_model->getQuotationBy();
     $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrderBy($date_start,$date_end,$supplier_id,$status,$keyword);
-    require_once($path.'view.inc.php');
 
+    
+    $customer_orders = $customer_purchase_order_model->getCustomerOrder();
+    
+
+    require_once($path.'view.inc.php');
 }
 
 

@@ -37,6 +37,7 @@ if(!isset($_GET['action'])){
     $first_code = $first_char.date("y").date("m");
     $first_date = date("d")."-".date("m")."-".date("Y");
     $last_code = $delivery_note_customer_model->getDeliveryNoteCustomerLastID($first_code,3);
+
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){

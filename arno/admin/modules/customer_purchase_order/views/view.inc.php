@@ -29,175 +29,225 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    รายการใบสั่งซื้อสินค้าของลูกค้า / Customer Order List
-                                </div>
-                                <div class="col-md-2" align="right">
-                                <span><b>สร้างจากใบเสนอราคา : </b></span>
-                                </div>
-                                <div class="col-md-3">
-                                    
-                                    <select id="customer_id" name="customer_id" class="form-control select" data-live-search="true" onchange="changeURL(this);">
-                                        <option value="">None</option>
-                                        <?php 
-                                        for($i =  0 ; $i < count($quotations) ; $i++){
-                                        ?>
-                                        <option value="<?php echo $quotations[$i]['quotation_id'] ?>">
-                                            <?php echo $quotations[$i]['quotation_code'] ?>
-                                            <?php if($quotations[$i]['quotation_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $quotations[$i]['quotation_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($quotations[$i]['quotation_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?>
-                                        </option>
-                                        <?
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <a class="btn btn-success " id="link" style="float:right;" href="?app=customer_purchase_order&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
 
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>วันที่รับสั่งซื้อสินค้าของลูกค้า</label>
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <input type="text" id="date_start" name="date_start" value="<?PHP echo $date_start;?>"  class="form-control calendar" readonly/>
-                                            </div>
-                                            <div class="col-md-1" align="center">
-                                                -
-                                            </div>
-                                            <div class="col-md-5">
-                                                <input type="text" id="date_end" name="date_end" value="<?PHP echo $date_end;?>"  class="form-control calendar" readonly/>
-                                            </div>
-                                        </div>
-                                        <p class="help-block">01-01-2018 - 31-12-2018</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>ผู้ซื้อ </label>
-                                        <select id="search_customer_id" name="search_customer_id" class="form-control select"   data-live-search="true">
-                                            <option value="">ทั้งหมด</option>
-                                            <?php 
-                                            for($i =  0 ; $i < count($customers) ; $i++){
-                                            ?>
-                                            <option <?php if($customers[$i]['customer_id'] == $customer_id){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
-                                            <?
-                                            }
-                                            ?>
-                                        </select>
-                                        <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>แยกตามประเภท </label>
-                                        <select id="status" name="status" class="form-control select" data-live-search="true">
-                                            <option value="">ทั้งหมด</option>
-                                            <option <?php if($status == '1'){?> selected <?php }?> value="1">ยังไม่มีการสั่งสินค้า</option>
-                                            <option <?php if($status == '2'){?> selected <?php }?> value="2">สั่งสินค้าแล้ว</option>
-                                            <option <?php if($status == '3'){?> selected <?php }?> value="3">ส่งสินค้ายังไม่ครบ</option>
-                                            <option <?php if($status == '4'){?> selected <?php }?> value="4">ส่งสินค้าครบแล้ว</option>
-                                        </select>
-                                        <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>คำค้น <font color="#F00"><b>*</b></font></label>
-                                        <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >
-                                        <p class="help-block">Example : T001.</p>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-4">
-                                </div>
-                                <div class="col-md-4">
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search();">Search</button>
-                                    <a href="index.php?app=customer_purchase_order" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
-                                </div>
-                            </div>
-                            <br>
-
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                <thead>
-                                    <tr>
-                                        <th>ลำดับ<br>No.</th>
-                                        <th>วันที่รับใบสั่งซื้อ<br>PO Date</th>
-                                        <th>หมายเลขใบสั่งซื้อ<br>PO No.</th>
-                                        <th>ลูกค้า<br>Customer</th>
-                                        <th>พนักงาน<br>Employee</th>
-                                        <th>สถานะ<br>Status</th>
-                                        <th>หมายเหตุ<br>Remark</th>
-                                        <th>ใบกำกับภาษี<br>Invoice</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php 
-                                    for($i=0; $i < count($customer_purchase_orders); $i++){
-                                    ?>
-                                    <tr class="odd gradeX">
-                                        <td><?php echo $i+1; ?></td>
-                                        <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_date']; ?></td>
-                                        <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?></td>
-                                        <td><?php echo $customer_purchase_orders[$i]['customer_name']; ?></td>
-                                        <td><?php echo $customer_purchase_orders[$i]['employee_name']; ?></td>
-                                        <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_status']; ?></td>
-                                        <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_remark']; ?></td>
-                                        <td>-</td>
-                                        <td>
-                                            <?
-                                                if($customer_purchase_orders[$i]['customer_purchase_order_file'] != ""){
-                                            ?>
-                                                <a href="../upload/customer_purchase_order/<?php echo $customer_purchase_orders[$i]['customer_purchase_order_file'];?>" target="_blank">
-                                                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                                                </a> 
-                                            <?
-                                                }
-                                            ?>
-                                            <a href="?app=customer_purchase_order&action=detail&id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>">
-                                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                            </a>
-
-                                        <?php if($customer_purchase_orders[$i]['customer_purchase_order_status'] == "Waiting"){ ?>
-                                            <a href="?app=customer_purchase_order&action=update&id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>">
-                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            </a> 
-                                            <a href="?app=customer_purchase_order&action=delete&id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>" onclick="return confirm('You want to delete Customer Purchase Order : <?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?>');" style="color:red;">
-                                                <i class="fa fa-times" aria-hidden="true"></i>
-                                            </a>
-                                        <?php } ?>
-
-                                        </td>
-
-                                    </tr>
-                                   <?
-                                    }
-                                   ?>
-                                </tbody>
-                            </table>
-                           
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            เปิดใบยืมสินค้าของลูกค้าอ้างอิงตามบริษัท / Delivery Note Customer to do
             </div>
-            
-            
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+
+                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th width="64px" >ลำดับ <br>No.</th>
+                            <th>ลูกค้า <br>Customer</th>
+                            <th width="180px" >เปิดใบยืมสินค้าของลูกค้า <br>Open Delivery Note Customer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        for($i=0; $i < count($customer_orders); $i++){
+                        ?>
+                        <tr class="odd gradeX">
+                            <td><?php echo $i+1; ?></td>
+                            <td><?php echo $customer_orders[$i]['customer_name_en']; ?> (<?php echo $customer_orders[$i]['customer_name_th']; ?>)</td>
+                            <td>
+                                <a href="?app=delivery_note_customer&action=insert&customer_id=<?php echo $customer_orders[$i]['customer_id'];?>">
+                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                </a>
+
+                            </td>
+
+                        </tr>
+                        <?
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-6">
+                        รายการใบสั่งซื้อสินค้าของลูกค้า / Customer Order List
+                    </div>
+                    <div class="col-md-2" align="right">
+                    <span><b>สร้างจากใบเสนอราคา : </b></span>
+                    </div>
+                    <div class="col-md-3">
+                        
+                        <select id="customer_id" name="customer_id" class="form-control select" data-live-search="true" onchange="changeURL(this);">
+                            <option value="">None</option>
+                            <?php 
+                            for($i =  0 ; $i < count($quotations) ; $i++){
+                            ?>
+                            <option value="<?php echo $quotations[$i]['quotation_id'] ?>">
+                                <?php echo $quotations[$i]['quotation_code'] ?>
+                                <?php if($quotations[$i]['quotation_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $quotations[$i]['quotation_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($quotations[$i]['quotation_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?>
+                            </option>
+                            <?
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <a class="btn btn-success " id="link" style="float:right;" href="?app=customer_purchase_order&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>วันที่รับสั่งซื้อสินค้าของลูกค้า</label>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" id="date_start" name="date_start" value="<?PHP echo $date_start;?>"  class="form-control calendar" readonly/>
+                                </div>
+                                <div class="col-md-1" align="center">
+                                    -
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" id="date_end" name="date_end" value="<?PHP echo $date_end;?>"  class="form-control calendar" readonly/>
+                                </div>
+                            </div>
+                            <p class="help-block">01-01-2018 - 31-12-2018</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>ผู้ซื้อ </label>
+                            <select id="search_customer_id" name="search_customer_id" class="form-control select"   data-live-search="true">
+                                <option value="">ทั้งหมด</option>
+                                <?php 
+                                for($i =  0 ; $i < count($customers) ; $i++){
+                                ?>
+                                <option <?php if($customers[$i]['customer_id'] == $customer_id){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
+                                <?
+                                }
+                                ?>
+                            </select>
+                            <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>แยกตามประเภท </label>
+                            <select id="status" name="status" class="form-control select" data-live-search="true">
+                                <option value="">ทั้งหมด</option>
+                                <option <?php if($status == '1'){?> selected <?php }?> value="1">ยังไม่มีการสั่งสินค้า</option>
+                                <option <?php if($status == '2'){?> selected <?php }?> value="2">สั่งสินค้าแล้ว</option>
+                                <option <?php if($status == '3'){?> selected <?php }?> value="3">ส่งสินค้ายังไม่ครบ</option>
+                                <option <?php if($status == '4'){?> selected <?php }?> value="4">ส่งสินค้าครบแล้ว</option>
+                            </select>
+                            <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>คำค้น <font color="#F00"><b>*</b></font></label>
+                            <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >
+                            <p class="help-block">Example : T001.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search();">Search</button>
+                        <a href="index.php?app=customer_purchase_order" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
+                    </div>
+                </div>
+                <br>
+
+                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ<br>No.</th>
+                            <th>วันที่รับใบสั่งซื้อ<br>PO Date</th>
+                            <th>หมายเลขใบสั่งซื้อ<br>PO No.</th>
+                            <th>ลูกค้า<br>Customer</th>
+                            <th>พนักงาน<br>Employee</th>
+                            <th>สถานะ<br>Status</th>
+                            <th>หมายเหตุ<br>Remark</th>
+                            <th>ใบกำกับภาษี<br>Invoice</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        for($i=0; $i < count($customer_purchase_orders); $i++){
+                        ?>
+                        <tr class="odd gradeX">
+                            <td><?php echo $i+1; ?></td>
+                            <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_date']; ?></td>
+                            <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?></td>
+                            <td><?php echo $customer_purchase_orders[$i]['customer_name']; ?></td>
+                            <td><?php echo $customer_purchase_orders[$i]['employee_name']; ?></td>
+                            <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_status']; ?></td>
+                            <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_remark']; ?></td>
+                            <td>-</td>
+                            <td>
+                                <?
+                                    if($customer_purchase_orders[$i]['customer_purchase_order_file'] != ""){
+                                ?>
+                                    <a href="../upload/customer_purchase_order/<?php echo $customer_purchase_orders[$i]['customer_purchase_order_file'];?>" target="_blank">
+                                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                    </a> 
+                                <?
+                                    }
+                                ?>
+                                <a href="?app=customer_purchase_order&action=detail&id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>">
+                                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                </a>
+
+                            <?php if($customer_purchase_orders[$i]['customer_purchase_order_status'] == "Waiting"){ ?>
+                                <a href="?app=customer_purchase_order&action=update&id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </a> 
+                                <a href="?app=customer_purchase_order&action=delete&id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>" onclick="return confirm('You want to delete Customer Purchase Order : <?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?>');" style="color:red;">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </a>
+                            <?php } ?>
+
+                            </td>
+
+                        </tr>
+                        <?
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+

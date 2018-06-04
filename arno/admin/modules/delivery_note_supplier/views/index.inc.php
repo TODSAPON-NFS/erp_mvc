@@ -302,7 +302,9 @@ if(!isset($_GET['action'])){
     $keyword = $_GET['keyword'];
 
     $suppliers=$supplier_model->getSupplierBy();
+    $supplier_orders = $delivery_note_supplier_model->getSupplierOrder();
     $delivery_note_suppliers = $delivery_note_supplier_model->getDeliveryNoteSupplierBy($date_start,$date_end,$supplier_id,$keyword);
+    require_once($path.'view.inc.php');
 
 }
 

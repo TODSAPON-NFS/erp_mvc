@@ -148,6 +148,87 @@ class CustomerPurchaseOrderModel extends BaseModel{
 
     }
 
+    function getCustomerOrder(){
+
+        $sql = "SELECT customer_id, customer_name_en , customer_name_th 
+                FROM tb_customer 
+                WHERE customer_id IN ( 
+                    SELECT DISTINCT customer_id 
+                    FROM  tb_delivery_note_customer_list 
+                    LEFT JOIN  tb_customer_purchase_order_list ON tb_delivery_note_customer_list.delivery_note_customer_list_id = tb_customer_purchase_order_list.delivery_note_customer_list_id 
+                    LEFT JOIN tb_delivery_note_customer  ON tb_delivery_note_customer_list.delivery_note_customer_id = tb_delivery_note_customer.delivery_note_customer_id 
+                    GROUP BY tb_delivery_note_customer_list.delivery_note_customer_list_id 
+                    HAVING SUM(IFNULL(delivery_note_customer_list_qty,0)) - SUM(IFNULL(customer_purchase_order_list_qty,0)) > 0 
+                ) 
+                GROUP BY customer_id 
+        ";
+
+        $data = [];
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+        return $data;
+    }
+
+
+    function generateDeliveryNoteCustomerListByCustomerId($customer_id, $data_rt = [], $search = ""){
+
+        $str_rt ='0';
+
+        if(is_array($data_rt)){ 
+            for($i=0; $i < count($data_rt) ;$i++){
+                $str_rt .= $data_rt[$i];
+                if($i + 1 < count($data_rt)){
+                    $str_rt .= ',';
+                }
+            }
+        }else if ($data_rt != ''){
+            $str_rt = $data_rt;
+        }else{
+            $str_rt='0';
+        }
+
+
+
+        $sql_request = "SELECT tb_request_test_list.product_id, 
+        tb_request_test_list.request_test_list_id , 
+        '0' as delivery_note_customer_list_id,
+        CONCAT(product_code_first,product_code) as product_code, 
+        product_name, 
+        request_test_list_qty as delivery_note_customer_list_qty,  
+        CONCAT('RT : ',request_test_code) as delivery_note_customer_list_remark 
+        FROM tb_request_test 
+        LEFT JOIN tb_request_test_list ON tb_request_test.request_test_id = tb_request_test_list.request_test_id 
+        LEFT JOIN tb_delivery_note_customer_list ON tb_request_test_list.request_test_list_id = tb_delivery_note_customer_list.request_test_list_id 
+        LEFT JOIN tb_product ON tb_request_test_list.product_id = tb_product.product_id 
+        WHERE customer_id = '$customer_id' 
+        AND tb_request_test_list.request_test_list_id NOT IN ($str_rt) 
+        AND request_test_code LIKE ('%$search%') 
+        GROUP BY  tb_request_test_list.request_test_list_id 
+        HAVING SUM(IFNULL(request_test_list_qty,0)) - SUM(IFNULL(delivery_note_customer_list_qty,0)) > 0 ";
+
+        $data = [];
+
+        //echo $sql_request."<br><br>";
+
+        if ($result = mysqli_query($this->db,$sql_request, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+
+
+        return $data;
+    }
+
     function generateCustomerPurchaseOrderByID($id){
         $sql = " SELECT * 
         FROM tb_quotation 

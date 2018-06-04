@@ -271,15 +271,10 @@
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td>
-                                    
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
+                                <td colspan="5" align="center">
                                     <a href="javascript:;" onclick="add_row(this);" style="color:red;">
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                        <i class="fa fa-plus" aria-hidden="true"></i> 
+                                        <span>เพิ่มสินค้า / Add product</span>
                                     </a>
                                 </td>
                             </tr>

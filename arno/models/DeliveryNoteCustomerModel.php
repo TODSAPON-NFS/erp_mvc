@@ -62,6 +62,10 @@ class DeliveryNoteCustomerModel extends BaseModel{
 
     }
 
+
+
+
+
     function getDeliveryNoteCustomerByID($id){
         $sql = " SELECT * 
         FROM tb_delivery_note_customer 
@@ -121,7 +125,6 @@ class DeliveryNoteCustomerModel extends BaseModel{
         $sql = " UPDATE tb_delivery_note_customer SET 
         customer_id = '".$data['customer_id']."', 
         employee_id = '".$data['employee_id']."', 
-         
         delivery_note_customer_date = '".$data['delivery_note_customer_date']."', 
         delivery_note_customer_remark = '".$data['delivery_note_customer_remark']."', 
         delivery_note_customer_file = '".$data['delivery_note_customer_file']."', 
@@ -187,12 +190,10 @@ class DeliveryNoteCustomerModel extends BaseModel{
 
 
     function deleteDeliveryNoteCustomerByID($id){
-
         $sql = " DELETE FROM tb_delivery_note_customer WHERE delivery_note_customer_id = '$id' ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
         $sql = " DELETE FROM tb_delivery_note_customer_list WHERE delivery_note_customer_id = '$id' ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
-
     }
 
 

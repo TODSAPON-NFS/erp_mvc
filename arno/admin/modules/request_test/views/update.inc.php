@@ -81,7 +81,8 @@
                 'supplier_id': supplier_id,
                 'request_standard_list_id': JSON.stringify(request_standard_list_id) ,
                 'request_special_list_id': JSON.stringify(request_special_list_id) ,
-                'request_regrind_list_id': JSON.stringify(request_regrind_list_id) 
+                'request_regrind_list_id': JSON.stringify(request_regrind_list_id) ,
+                search : $(id).val() 
              }, function( data ) {
                  
                 if(data.length > 0){
@@ -147,7 +148,8 @@
             'supplier_id': supplier_id,
             'request_standard_list_id': JSON.stringify(request_standard_list_id) ,
             'request_special_list_id': JSON.stringify(request_special_list_id) ,
-            'request_regrind_list_id': JSON.stringify(request_regrind_list_id) 
+            'request_regrind_list_id': JSON.stringify(request_regrind_list_id) ,
+            search : $(id).val() 
         }, function( data ) {
             var content = "";
             

@@ -79,7 +79,165 @@
      }
 
 
-     function add_row(id){
+     function show_request_test(id){
+        var supplier_id = document.getElementById('supplier_id').value;
+        var val1 = document.getElementsByName('request_test_list_id[]');
+
+        var request_test_list_id = []; 
+
+        for(var i = 0 ; i < val1.length ; i++){
+            request_test_list_id.push(val1[i].value);
+        }
+
+        if(supplier_id != ""){
+
+            $.post( "controllers/getDeliveryNoteSupplierListBySupplierID.php", 
+            { 
+                'supplier_id': supplier_id,
+                'request_test_list_id': JSON.stringify(request_test_list_id),
+                search : $(id).val()   
+             }, function( data ) {
+                 
+                if(data.length > 0){
+                    data_buffer = data;
+                    var content = "";
+                    for(var i = 0; i < data.length ; i++){
+
+                        content += '<tr class="odd gradeX">'+
+                                        '<td>'+
+                                            '<input type="checkbox" name="p_id" value="'+data[i].product_id+'" />'+     
+                                        '</td>'+
+                                        '<td>'+
+                                            data[i].product_code+
+                                        '</td>'+
+                                        '<td>'+
+                                            data[i].product_name+
+                                            '<br>Remark : '+
+                                            data[i].delivery_note_supplier_list_remark+
+                                        '</td>'+
+                                        '<td align="right">'+
+                                            data[i].delivery_note_supplier_list_qty +
+                                        '</td>'+
+                                    '</tr>';
+
+                    }
+                    
+                    $('#bodyAdd').html(content);
+                    $('#modalAdd').modal('show');
+
+                }else{
+                    add_row_new(id);
+                }
+                
+            });
+        }else{
+            alert("Please select supplier.");
+        }
+        
+    } 
+
+    function search_pop_like(id){
+        var supplier_id = document.getElementById('supplier_id').value;
+        var val1 = document.getElementsByName('request_test_list_id[]'); 
+
+        var request_test_list_id = []; 
+
+        for(var i = 0 ; i < val1.length ; i++){
+            request_test_list_id.push(val1[i].value);
+        }
+
+        $.post( "controllers/getDeliveryNoteSupplierListBySupplierID.php", 
+        { 
+            'supplier_id': supplier_id,
+            'request_test_list_id': JSON.stringify(request_test_list_id),
+            search : $(id).val()  
+        }, function( data ) {
+            var content = "";
+            
+            if(data.length > 0){
+                data_buffer = data;
+                
+                for(var i = 0; i < data.length ; i++){
+
+                    content += '<tr class="odd gradeX">'+
+                                    '<td>'+
+                                        '<input type="checkbox" name="p_id" value="'+data[i].product_id+'" />'+     
+                                    '</td>'+
+                                    '<td>'+
+                                        data[i].product_code+
+                                    '</td>'+
+                                    '<td>'+
+                                        data[i].product_name+
+                                        '<br>Remark : '+
+                                        data[i].delivery_note_supplier_list_remark+
+                                    '</td>'+
+                                    '<td align="right">'+
+                                        data[i].delivery_note_supplier_list_qty +
+                                    '</td>'+ 
+                                '</tr>';
+
+                }
+            }
+            $('#bodyAdd').html(content);
+        });
+    }
+
+    function add_row(id){
+        $('#modalAdd').modal('hide');
+        var checkbox = document.getElementsByName('p_id');
+        for(var i = 0 ; i < (checkbox.length); i++){
+            if(checkbox[i].checked){
+
+                var index = 0;
+                if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
+                    index = 1;
+                }else{
+                    index = $(id).closest('table').children('tbody').children('tr').length + 1;
+                }
+                var request_test_list_id = 0; 
+
+                if(data_buffer[i].request_test_list_id !== undefined){
+                    request_test_list_id = data_buffer[i].request_test_list_id;
+                } 
+
+                $(id).closest('table').children('tbody').append(
+                    '<tr class="odd gradeX">'+
+                        '<td>'+
+                            '<input type="hidden" name="request_test_list_id[]" value="'+request_test_list_id+'" />'+
+                            '<input type="hidden" name="delivery_note_supplier_list_id[]" value="0" />'+     
+                            '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                        '</td>'+
+                        '<td><input type="text" class="form-control" name="product_name[]" value="'+data_buffer[i].product_name+'" readonly /></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="delivery_note_supplier_list_qty[]" value="'+data_buffer[i].delivery_note_supplier_list_qty+'"  /></td>'+
+                        '<td><input type="text" class="form-control" name="delivery_note_supplier_list_remark[]" value="'+data_buffer[i].delivery_note_supplier_list_remark+'" /></td>'+
+                        '<td>'+
+                            '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
+                                '<i class="fa fa-times" aria-hidden="true"></i>'+
+                            '</a>'+
+                        '</td>'+
+                    '</tr>'
+                );
+
+                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
+                var str = "<option value=''>Select Product</option>";
+                $.each(product_data, function (index, value) {
+                    if(value['product_id'] == data_buffer[i].product_id){
+                        str += "<option value='" + value['product_id'] + "' selected >"+value['product_code']+"</option>";
+                    }else{
+                        str += "<option value='" + value['product_id'] + "'>"+value['product_code']+"</option>";
+                    }
+                });
+                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
+
+                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
+            }
+            
+        }
+    }
+
+
+
+     function add_row_new(id){
          var index = 0;
          if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
             index = 1;
@@ -89,7 +247,7 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
-                    '<input type="hidden" name="customer_delivery_note_supplier_list_id[]" value="0" />'+
+                    '<input type="hidden" name="request_test_list_id[]" value="0" />'+
                     '<input type="hidden" name="delivery_note_supplier_list_id[]" value="0" />'+     
                     '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
@@ -112,7 +270,19 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
+        $('#modalAdd').modal('hide');
     }
+
+    function checkAll(id)
+    {
+        var checkbox = document.getElementById('check_all');
+        if (checkbox.checked == true){
+            $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', true);
+        }else{
+            $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', false);
+        }
+    }
+
 
 </script>
 
@@ -244,6 +414,8 @@
                             ?>
                             <tr class="odd gradeX">
                                 <td>
+                                    <input type="hidden" name="request_test_list_id[]" value="<?php echo $delivery_note_supplier_lists[$i]['request_test_list_id']; ?>" />
+                                    <input type="hidden" name="delivery_note_supplier_list_id[]" value="0" />
                                     <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
                                         <option value="">Select</option>
                                         <?php 
@@ -270,16 +442,52 @@
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td>
-                                    
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <a href="javascript:;" onclick="add_row(this);" style="color:red;">
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                <td colspan="5" align="center">
+                                    <a href="javascript:;" onclick="show_request_test(this);" style="color:red;">
+                                        <i class="fa fa-plus" aria-hidden="true"></i> 
+                                        <span>เพิ่มสินค้า / Add product</span>
                                     </a>
+
+
+                                    <div id="modalAdd" class="modal fade" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog modal-lg " role="document">
+                                            <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">เลือกรายการสินค้า / Choose product</h4>
+                                            </div>
+
+                                            <div  class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-offset-8 col-md-4" align="right">
+                                                    <input type="text" class="form-control" name="search_pop" onchange="search_pop_like(this)" placeholder="Search"/>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <table width="100%" class="table table-striped table-bordered table-hover" >
+                                                <thead>
+                                                    <tr>
+                                                        <th width="24"><input type="checkbox" value="all" id="check_all" onclick="checkAll(this)" /></th>
+                                                        <th style="text-align:center;">รหัสสินค้า <br> (Product Code)</th>
+                                                        <th style="text-align:center;">ชื่อสินค้า <br> (Product Detail)</th>
+                                                        <th style="text-align:center;" width="150">จำนวน <br> (Qty)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="bodyAdd">
+
+                                                </tbody>
+                                            </table>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" onclick="add_row_new(this);">New Row</button>
+                                                <button type="button" class="btn btn-primary" onclick="add_row(this);">Add Product</button>
+                                            </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
                                 </td>
                             </tr>
                         </tfoot>

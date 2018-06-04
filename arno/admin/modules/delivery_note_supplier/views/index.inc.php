@@ -7,6 +7,7 @@ require_once('../models/DeliveryNoteSupplierListModel.php');
 require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
+require_once('../models/ProductSupplierModel.php');
 require_once('../models/SupplierModel.php');
 date_default_timezone_set('asia/bangkok');
 
@@ -16,8 +17,11 @@ $supplier_model = new SupplierModel;
 $delivery_note_supplier_model = new DeliveryNoteSupplierModel;
 $delivery_note_supplier_list_model = new DeliveryNoteSupplierListModel;
 $product_model = new ProductModel;
+$product_supplier_model = new ProductSupplierModel;
 $first_char = "DNS";
 $delivery_note_supplier_id = $_GET['id'];
+$supplier_id = $_GET['supplier_id'];
+
 $target_dir = "../upload/delivery_note_supplier/";
 
 if(!isset($_GET['action'])){
@@ -27,6 +31,7 @@ if(!isset($_GET['action'])){
     $keyword = $_GET['keyword'];
 
     $suppliers=$supplier_model->getSupplierBy();
+    $supplier_orders = $delivery_note_supplier_model->getSupplierOrder();
     $delivery_note_suppliers = $delivery_note_supplier_model->getDeliveryNoteSupplierBy($date_start,$date_end,$supplier_id,$keyword);
     require_once($path.'view.inc.php');
 
@@ -37,6 +42,13 @@ if(!isset($_GET['action'])){
     $first_code = $first_char.date("y").date("m");
     $first_date = date("d")."-".date("m")."-".date("Y");
     $last_code = $delivery_note_supplier_model->getDeliveryNoteSupplierLastID($first_code,3);
+
+    if($supplier_id > 0){
+        $supplier=$supplier_model->getSupplierByID($supplier_id);
+        $products=$product_supplier_model->getProductBySupplierID($supplier_id);
+        $delivery_note_supplier_lists = $delivery_note_supplier_model->generateDeliveryNoteSupplierListBySupplierId($supplier_id);
+    }
+
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
@@ -120,6 +132,7 @@ if(!isset($_GET['action'])){
             if($delivery_note_supplier_id > 0){
 
                 $product_id = $_POST['product_id'];
+                $request_test_list_id = $_POST['request_test_list_id'];
                 $delivery_note_supplier_list_id = $_POST['delivery_note_supplier_list_id'];
                 $delivery_note_supplier_list_qty = $_POST['delivery_note_supplier_list_qty'];
                 $delivery_note_supplier_list_remark = $_POST['delivery_note_supplier_list_remark'];
@@ -130,6 +143,7 @@ if(!isset($_GET['action'])){
                     for($i=0; $i < count($product_id) ; $i++){
                         $data = [];
                         $data['delivery_note_supplier_id'] = $delivery_note_supplier_id;
+                        $data['request_test_list_id'] = $request_test_list_id[$i];
                         $data['product_id'] = $product_id[$i];
                         $data['delivery_note_supplier_list_qty'] = $delivery_note_supplier_list_qty[$i];
                         $data['delivery_note_supplier_list_remark'] = $delivery_note_supplier_list_remark[$i];
@@ -143,6 +157,7 @@ if(!isset($_GET['action'])){
                 }else{
                     $data = [];
                     $data['delivery_note_supplier_id'] = $delivery_note_supplier_id;
+                    $data['request_test_list_id'] = $request_test_list_id;
                     $data['product_id'] = $product_id;
                     $data['delivery_note_supplier_list_qty'] = $delivery_note_supplier_list_qty;
                     $data['delivery_note_supplier_list_remark'] = $delivery_note_supplier_list_remark;
@@ -223,6 +238,7 @@ if(!isset($_GET['action'])){
             $output = $delivery_note_supplier_model->updateDeliveryNoteSupplierByID($delivery_note_supplier_id,$data);
 
             $product_id = $_POST['product_id'];
+            $request_test_list_id = $_POST['request_test_list_id'];
             $delivery_note_supplier_list_id = $_POST['delivery_note_supplier_list_id'];
             $delivery_note_supplier_list_qty = $_POST['delivery_note_supplier_list_qty'];
             $delivery_note_supplier_list_remark = $_POST['delivery_note_supplier_list_remark'];
@@ -233,6 +249,7 @@ if(!isset($_GET['action'])){
                 for($i=0; $i < count($product_id) ; $i++){
                     $data = [];
                     $data['delivery_note_supplier_id'] = $delivery_note_supplier_id;
+                    $data['request_test_list_id'] = $request_test_list_id[$i];
                     $data['product_id'] = $product_id[$i];
                     $data['delivery_note_supplier_list_qty'] = $delivery_note_supplier_list_qty[$i];
                     $data['delivery_note_supplier_list_remark'] = $delivery_note_supplier_list_remark[$i];
@@ -246,6 +263,7 @@ if(!isset($_GET['action'])){
             }else{
                 $data = [];
                 $data['delivery_note_supplier_id'] = $delivery_note_supplier_id;
+                $data['request_test_list_id'] = $request_test_list_id;
                 $data['product_id'] = $product_id;
                 $data['delivery_note_supplier_list_qty'] = $delivery_note_supplier_list_qty;
                 $data['delivery_note_supplier_list_remark'] = $delivery_note_supplier_list_remark;

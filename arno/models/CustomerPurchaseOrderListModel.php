@@ -49,6 +49,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             customer_purchase_order_list_delivery_min, 
             customer_purchase_order_list_delivery_max,
             customer_purchase_order_list_remark,
+            delivery_note_customer_list_id,
             addby,
             adddate,
             updateby,
@@ -64,6 +65,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             '".$data['customer_purchase_order_list_delivery_min']."', 
             '".$data['customer_purchase_order_list_delivery_max']."', 
             '".$data['customer_purchase_order_list_remark']."',  
+            '".$data['delivery_note_customer_list_id']."',  
             '".$data['addby']."', 
             NOW(), 
             '".$data['updateby']."', 
@@ -103,16 +105,38 @@ class CustomerPurchaseOrderListModel extends BaseModel{
         }
     }
 
+    function updateDeliveryNoteCustomerListId($delivery_note_customer_list_id,$customer_purchase_order_list_id){
+        $sql = " UPDATE tb_customer_purchase_order_list 
+            SET delivery_note_customer_list_id = '$delivery_note_customer_list_id' 
+            WHERE customer_purchase_order_list_id = '$customer_purchase_order_list_id' 
+        ";
+
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
     
 
 
     function deleteCustomerPurchaseOrderListByID($id){
+
         $sql = "DELETE FROM tb_customer_purchase_order_list WHERE customer_purchase_order_list_id = '$id' ";
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = " DELETE FROM tb_customer_purchase_order_list_detail WHERE customer_purchase_order_list_id = '$id' ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
     }
 
     function deleteCustomerPurchaseOrderListByCustomerPurchaseOrderID($id){
+        
+        $sql = " DELETE FROM tb_customer_purchase_order_list_detail WHERE customer_purchase_order_list_id IN (SELECT customer_purchase_order_list_id FROM tb_customer_purchase_order_list WHERE customer_purchase_order_id = '$id') ";
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
         $sql = "DELETE FROM tb_customer_purchase_order_list WHERE customer_purchase_order_id = '$id' ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
@@ -133,8 +157,18 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             $str='0';
         }
 
+        $sql = "DELETE  FROM tb_customer_purchase_order_list_detail 
+                        WHERE customer_purchase_order_list_id 
+                        IN ( 
+                                SELECT customer_purchase_order_list_id 
+                                FROM tb_customer_purchase_order_list 
+                                WHERE customer_purchase_order_id = '$id' 
+                                AND customer_purchase_order_list_id NOT IN ($str)
+                        ) ";
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        
         $sql = "DELETE FROM tb_customer_purchase_order_list WHERE customer_purchase_order_id = '$id' AND customer_purchase_order_list_id NOT IN ($str) ";
-     
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
     }

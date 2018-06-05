@@ -176,7 +176,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
     }
 
 
-    function generateDeliveryNoteCustomerListByCustomerId($customer_id, $data_rt = [], $search = ""){
+    function generateCustomerPurchaseOrderListByCustomerId($customer_id, $data_rt = [], $search = ""){
 
         $str_rt ='0';
 
@@ -195,22 +195,22 @@ class CustomerPurchaseOrderModel extends BaseModel{
 
 
 
-        $sql_request = "SELECT tb_request_test_list.product_id, 
-        tb_request_test_list.request_test_list_id , 
-        '0' as delivery_note_customer_list_id,
+        $sql_request = "SELECT tb_delivery_note_customer_list.product_id, 
+        tb_delivery_note_customer_list.delivery_note_customer_list_id , 
+        '0' as customer_purchase_order_list_id,
         CONCAT(product_code_first,product_code) as product_code, 
         product_name, 
-        request_test_list_qty as delivery_note_customer_list_qty,  
-        CONCAT('RT : ',request_test_code) as delivery_note_customer_list_remark 
-        FROM tb_request_test 
-        LEFT JOIN tb_request_test_list ON tb_request_test.request_test_id = tb_request_test_list.request_test_id 
-        LEFT JOIN tb_delivery_note_customer_list ON tb_request_test_list.request_test_list_id = tb_delivery_note_customer_list.request_test_list_id 
-        LEFT JOIN tb_product ON tb_request_test_list.product_id = tb_product.product_id 
-        WHERE customer_id = '$customer_id' 
-        AND tb_request_test_list.request_test_list_id NOT IN ($str_rt) 
-        AND request_test_code LIKE ('%$search%') 
-        GROUP BY  tb_request_test_list.request_test_list_id 
-        HAVING SUM(IFNULL(request_test_list_qty,0)) - SUM(IFNULL(delivery_note_customer_list_qty,0)) > 0 ";
+        SUM(IFNULL(delivery_note_customer_list_qty,0)) - SUM(IFNULL(customer_purchase_order_list_qty,0)) as customer_purchase_order_list_qty,  
+        CONCAT('DN : ',delivery_note_customer_code) as customer_purchase_order_list_remark 
+        FROM tb_delivery_note_customer_list 
+        LEFT JOIN tb_delivery_note_customer ON tb_delivery_note_customer_list.delivery_note_customer_id = tb_delivery_note_customer.delivery_note_customer_id 
+        LEFT JOIN tb_customer_purchase_order_list ON tb_delivery_note_customer_list.delivery_note_customer_list_id = tb_customer_purchase_order_list.delivery_note_customer_list_id 
+        LEFT JOIN tb_product ON tb_delivery_note_customer_list.product_id = tb_product.product_id 
+        WHERE tb_delivery_note_customer.customer_id = '$customer_id' 
+        AND tb_delivery_note_customer_list.delivery_note_customer_list_id NOT IN ($str_rt) 
+        AND delivery_note_customer_code LIKE ('%$search%') 
+        GROUP BY  tb_delivery_note_customer_list.delivery_note_customer_list_id 
+        HAVING SUM(IFNULL(delivery_note_customer_list_qty,0)) - SUM(IFNULL(customer_purchase_order_list_qty,0)) > 0 ";
 
         $data = [];
 
@@ -278,6 +278,8 @@ class CustomerPurchaseOrderModel extends BaseModel{
 
     }
 
+    
+
    
     function updateCustomerPurchaseOrderByID($id,$data = []){
         $sql = " UPDATE tb_customer_purchase_order SET 
@@ -332,7 +334,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         $data['customer_purchase_order_delivery_by']."','".
         $data['customer_purchase_order_date']."','".
         $data['customer_purchase_order_remark']."','".
-        $data['customer_purchase_order_status']."','".
+        $data['customer_purchase_order_status']."','". 
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].
@@ -350,10 +352,15 @@ class CustomerPurchaseOrderModel extends BaseModel{
 
 
     function deleteCustomerPurchaseOrderByID($id){
-        $sql = " DELETE FROM tb_customer_purchase_order WHERE customer_purchase_order_id = '$id' ";
+        $sql = " DELETE FROM tb_customer_purchase_order_list_detail WHERE customer_purchase_order_list_id IN (SELECT customer_purchase_order_list_id FROM tb_customer_purchase_order_list WHERE customer_purchase_order_id = '$id') ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        
         $sql = " DELETE FROM tb_customer_purchase_order_list WHERE customer_purchase_order_id = '$id' ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = " DELETE FROM tb_customer_purchase_order WHERE customer_purchase_order_id = '$id' ";
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        
 
     }
 }

@@ -57,7 +57,7 @@
                             <td><?php echo $i+1; ?></td>
                             <td><?php echo $customer_orders[$i]['customer_name_en']; ?> (<?php echo $customer_orders[$i]['customer_name_th']; ?>)</td>
                             <td>
-                                <a href="?app=delivery_note_customer&action=insert&customer_id=<?php echo $customer_orders[$i]['customer_id'];?>">
+                                <a href="?app=customer_purchase_order&action=insert&customer_id=<?php echo $customer_orders[$i]['customer_id'];?>">
                                     <i class="fa fa-plus-square" aria-hidden="true"></i>
                                 </a>
 

@@ -58,8 +58,8 @@ if(!isset($_GET['action'])){
     }
 
     if($customer_id > 0){
-        $supplier=$customer_model->getCustomerByID($customer_id);
-        $delivery_note_customer_lists = $customer_purchase_order_model->generateDeliveryNoteCustomerListBySupplierId($customer_id);
+        $customer=$customer_model->getCustomerByID($customer_id);
+        $customer_purchase_order_lists = $customer_purchase_order_model->generateCustomerPurchaseOrderListByCustomerId($customer_id);
     }
 
     $products=$product_model->getProductBy('','','','Active');
@@ -152,6 +152,7 @@ if(!isset($_GET['action'])){
             if($customer_purchase_order_id > 0){
 
                 $product_id = $_POST['product_id'];
+                $delivery_note_customer_list_id = $_POST['delivery_note_customer_list_id'];
                 $customer_purchase_order_list_id = $_POST['customer_purchase_order_list_id'];
                 $customer_purchase_order_product_name = $_POST['customer_purchase_order_product_name'];
                 $customer_purchase_order_product_detail = $_POST['customer_purchase_order_product_detail'];
@@ -169,6 +170,7 @@ if(!isset($_GET['action'])){
                         $data = [];
                         $data['customer_purchase_order_id'] = $customer_purchase_order_id;
                         $data['product_id'] = $product_id[$i];
+                        $data['delivery_note_customer_list_id'] = $delivery_note_customer_list_id[$i];
                         $data['customer_purchase_order_product_name'] = $customer_purchase_order_product_name[$i];
                         $data['customer_purchase_order_product_detail'] = $customer_purchase_order_product_detail[$i];
                         $data['customer_purchase_order_list_qty'] = (float)filter_var($customer_purchase_order_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -230,6 +232,7 @@ if(!isset($_GET['action'])){
                     $data = [];
                     $data['customer_purchase_order_id'] = $customer_purchase_order_id;
                     $data['product_id'] = $product_id;
+                    $data['delivery_note_customer_list_id'] = $delivery_note_customer_list_id;
                     $data['customer_purchase_order_product_name'] = $customer_purchase_order_product_name;
                     $data['customer_purchase_order_product_detail'] = $customer_purchase_order_product_detail;
                     $data['customer_purchase_order_list_qty'] = (float)filter_var($customer_purchase_order_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -364,6 +367,7 @@ if(!isset($_GET['action'])){
             
             
             $product_id = $_POST['product_id'];
+            $delivery_note_customer_list_id = $_POST['delivery_note_customer_list_id'];
             $customer_purchase_order_list_id = $_POST['customer_purchase_order_list_id'];
             $customer_purchase_order_product_name = $_POST['customer_purchase_order_product_name'];
             $customer_purchase_order_product_detail = $_POST['customer_purchase_order_product_detail'];
@@ -381,6 +385,7 @@ if(!isset($_GET['action'])){
                     $data = [];
                     $data['customer_purchase_order_id'] = $customer_purchase_order_id;
                     $data['product_id'] = $product_id[$i];
+                    $data['delivery_note_customer_list_id'] = $delivery_note_customer_list_id[$i];
                     $data['customer_purchase_order_product_name'] = $customer_purchase_order_product_name[$i];
                     $data['customer_purchase_order_product_detail'] = $customer_purchase_order_product_detail[$i];
                     $data['customer_purchase_order_list_qty'] = (float)filter_var($customer_purchase_order_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -442,6 +447,7 @@ if(!isset($_GET['action'])){
                 $data = [];
                 $data['customer_purchase_order_id'] = $customer_purchase_order_id;
                 $data['product_id'] = $product_id;
+                $data['delivery_note_customer_list_id'] = $delivery_note_customer_list_id;
                 $data['customer_purchase_order_product_name'] = $customer_purchase_order_product_name;
                 $data['customer_purchase_order_product_detail'] = $customer_purchase_order_product_detail;
                 $data['customer_purchase_order_list_qty'] = (float)filter_var($customer_purchase_order_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -452,7 +458,6 @@ if(!isset($_GET['action'])){
 
                 if($customer_purchase_order_list_id == "" || $customer_purchase_order_list_id == "0"){
                     $customer_purchase_order_list_model->insertCustomerPurchaseOrderList($data);
-                 
                 }else{
                    
                         $customer_purchase_order_list_model->updateCustomerPurchaseOrderListById($data,$customer_purchase_order_list_id);

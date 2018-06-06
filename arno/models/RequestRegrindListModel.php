@@ -105,6 +105,20 @@ class RequestRegrindListModel extends BaseModel{
         }
     }
 
+    function updatePurchaseOrderListId($request_regrind_list_id,$purchase_order_list_id){
+        $sql = " UPDATE tb_request_regrind_list 
+            SET purchase_order_list_id = '$purchase_order_list_id' 
+            WHERE request_regrind_list_id = '$request_regrind_list_id' 
+        ";
+
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
 
     function deleteRequestRegrindListByID($id){
         $sql = "DELETE FROM tb_request_regrind_list WHERE request_regrind_list_id = '$id' ";

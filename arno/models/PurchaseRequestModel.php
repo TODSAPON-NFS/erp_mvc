@@ -81,11 +81,12 @@ class PurchaseRequestModel extends BaseModel{
     }
 
     function getPurchaseRequestViewByID($id){
-        $sql = " SELECT *   
+        $sql = " SELECT * 
         FROM tb_purchase_request 
         LEFT JOIN tb_user ON tb_purchase_request.employee_id = tb_user.user_id 
         LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
         LEFT JOIN tb_customer ON tb_purchase_request.customer_id = tb_customer.customer_id 
+        LEFT JOIN tb_supplier ON tb_purchase_request.supplier_id = tb_supplier.supplier_id 
         WHERE purchase_request_id = '$id' 
         ";
 
@@ -151,6 +152,7 @@ class PurchaseRequestModel extends BaseModel{
         purchase_request_code = '".$data['purchase_request_code']."', 
         purchase_request_type = '".$data['purchase_request_type']."', 
         customer_id = '".$data['customer_id']."', 
+        supplier_id = '".$data['supplier_id']."', 
         employee_id = '".$data['employee_id']."', 
         purchase_request_date = '".$data['purchase_request_date']."', 
         purchase_request_accept_status = 'Waiting', 
@@ -198,6 +200,7 @@ class PurchaseRequestModel extends BaseModel{
             purchase_request_code,
             purchase_request_type,
             customer_id,
+            supplier_id,
             employee_id,
             purchase_request_date,
             purchase_request_remark,
@@ -210,6 +213,7 @@ class PurchaseRequestModel extends BaseModel{
         $data['purchase_request_code']."','".
         $data['purchase_request_type']."','".
         $data['customer_id']."','".
+        $data['supplier_id']."','".
         $data['employee_id']."','".
         $data['purchase_request_date']."','".
         $data['purchase_request_remark']."','".

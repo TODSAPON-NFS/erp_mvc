@@ -8,6 +8,7 @@ require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/CustomerModel.php');
+require_once('../models/SupplierModel.php');
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/purchase_request/views/";
@@ -17,6 +18,7 @@ $notification_model = new NotificationModel;
 $purchase_request_model = new PurchaseRequestModel;
 $purchase_request_list_model = new PurchaseRequestListModel;
 $product_model = new ProductModel;
+$supplier_model = new SupplierModel; 
 $first_char = "PR";
 $purchase_request_id = $_GET['id'];
 $notification_id = $_GET['notification'];
@@ -25,12 +27,15 @@ if(!isset($_GET['action'])){
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $keyword = $_GET['keyword'];
+    $customers=$customer_model->getCustomerBy();
+    $suppliers=$supplier_model->getSupplierBy();
     $purchase_requests = $purchase_request_model->getPurchaseRequestBy($date_start,$date_end,$keyword,$user_id);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
+    $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
     $first_code = $first_char.date("y").date("m");
     $first_date = date("d")."-".date("m")."-".date("Y");
@@ -40,6 +45,7 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'update'){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
+    $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
     $purchase_request = $purchase_request_model->getPurchaseRequestByID($purchase_request_id);
     $purchase_request_lists = $purchase_request_list_model->getPurchaseRequestListBy($purchase_request_id);
@@ -82,6 +88,7 @@ if(!isset($_GET['action'])){
         $data['purchase_request_accept_status'] = "Waiting";
         $data['employee_id'] = $_POST['employee_id'];
         $data['customer_id'] = $_POST['customer_id'];
+        $data['supplier_id'] = $_POST['supplier_id'];
         $data['purchase_request_remark'] = $_POST['purchase_request_remark'];
 
         $purchase_request_id = $purchase_request_model->insertPurchaseRequest($data);
@@ -151,6 +158,7 @@ if(!isset($_GET['action'])){
         $data['purchase_request_accept_status'] = "Waiting";
         $data['employee_id'] = $_POST['employee_id'];
         $data['customer_id'] = $_POST['customer_id'];
+        $data['supplier_id'] = $_POST['supplier_id'];
         $data['purchase_request_remark'] = $_POST['purchase_request_remark'];
 
         $output = $purchase_request_model->updatePurchaseRequestByID($purchase_request_id,$data);

@@ -148,10 +148,17 @@
         var val3 = document.getElementsByName('delivery_note_supplier_list_id[]');
         var val4 = document.getElementsByName('regrind_supplier_receive_list_id[]');
 
+        var val5 = document.getElementsByName('request_standard_list_id[]');
+        var val6 = document.getElementsByName('request_special_list_id[]');
+        var val7 = document.getElementsByName('request_regrind_list_id[]');
+
         var purchase_request_list_id = [];
         var customer_purchase_order_list_detail_id = [];
         var delivery_note_supplier_list_id = [];
         var regrind_supplier_receive_list_id = [];
+        var request_standard_list_id = [];
+        var request_special_list_id = [];
+        var request_regrind_list_id = [];
 
         for(var i = 0 ; i < val1.length ; i++){
             purchase_request_list_id.push(val1[i].value);
@@ -168,16 +175,32 @@
         for(var i = 0 ; i < val4.length ; i++){
             regrind_supplier_receive_list_id.push(val4[i].value);
         }
+
+        for(var i = 0 ; i < val5.length ; i++){
+            request_standard_list_id.push(val5[i].value);
+        }
+
+        for(var i = 0 ; i < val6.length ; i++){
+            request_special_list_id.push(val6[i].value);
+        }
+
+        for(var i = 0 ; i < val7.length ; i++){
+            request_regrind_list_id.push(val7[i].value);
+        }
         
         if(supplier_id != ""){
 
             $.post( "controllers/getPurchaseOrderListBySupplierID.php", 
             { 
+                'type':'<?PHP echo $type;?>',
                 'supplier_id': supplier_id,
                 'purchase_request_list_id': JSON.stringify(purchase_request_list_id) ,
                 'customer_purchase_order_list_detail_id': JSON.stringify(customer_purchase_order_list_detail_id) ,
                 'delivery_note_supplier_list_id': JSON.stringify(delivery_note_supplier_list_id), 
-                'regrind_supplier_receive_list_id': JSON.stringify(regrind_supplier_receive_list_id) 
+                'regrind_supplier_receive_list_id': JSON.stringify(regrind_supplier_receive_list_id),
+                'request_standard_list_id': JSON.stringify(request_standard_list_id),
+                'request_special_list_id': JSON.stringify(request_special_list_id),
+                'request_regrind_list_id': JSON.stringify(request_regrind_list_id)
              }, function( data ) {
                 if(data.length > 0){
                     data_buffer = data;
@@ -212,6 +235,9 @@
                     $('#bodyAdd').html(content);
                     $('#modalAdd').modal('show');
 
+                }else{
+                    //add_row_new(id);
+                    alert("ไม่มีรายการสินค้าที่สามารถเปิดใบสั่งซื้อได้");
                 }
                 
             });
@@ -228,10 +254,17 @@
         var val3 = document.getElementsByName('delivery_note_supplier_list_id[]');
         var val4 = document.getElementsByName('regrind_supplier_receive_list_id[]');
 
+        var val5 = document.getElementsByName('request_standard_list_id[]');
+        var val6 = document.getElementsByName('request_special_list_id[]');
+        var val7 = document.getElementsByName('request_regrind_list_id[]');
+
         var purchase_request_list_id = [];
         var customer_purchase_order_list_detail_id = [];
         var delivery_note_supplier_list_id = [];
         var regrind_supplier_receive_list_id = [];
+        var request_standard_list_id = [];
+        var request_special_list_id = [];
+        var request_regrind_list_id = [];
 
         for(var i = 0 ; i < val1.length ; i++){
             purchase_request_list_id.push(val1[i].value);
@@ -248,15 +281,32 @@
         for(var i = 0 ; i < val4.length ; i++){
             regrind_supplier_receive_list_id.push(val4[i].value);
         }
+
+        for(var i = 0 ; i < val5.length ; i++){
+            request_standard_list_id.push(val5[i].value);
+        }
+
+        for(var i = 0 ; i < val6.length ; i++){
+            request_special_list_id.push(val6[i].value);
+        }
+
+        for(var i = 0 ; i < val7.length ; i++){
+            request_regrind_list_id.push(val7[i].value);
+        }
         
 
         $.post( "controllers/getPurchaseOrderListBySupplierID.php", 
         { 
+            'type':'<?PHP echo $type;?>',
             'supplier_id': supplier_id,
             'purchase_request_list_id': JSON.stringify(purchase_request_list_id) ,
             'customer_purchase_order_list_detail_id': JSON.stringify(customer_purchase_order_list_detail_id) ,
             'delivery_note_supplier_list_id': JSON.stringify(delivery_note_supplier_list_id), 
-            'regrind_supplier_receive_list_id': JSON.stringify(regrind_supplier_receive_list_id) 
+            'regrind_supplier_receive_list_id': JSON.stringify(regrind_supplier_receive_list_id),
+            'request_standard_list_id': JSON.stringify(request_standard_list_id),
+            'request_special_list_id': JSON.stringify(request_special_list_id),
+            'request_regrind_list_id': JSON.stringify(request_regrind_list_id),
+            'search':$(id).val() 
         }, function( data ) {
             var content = "";
             if(data.length > 0){
@@ -308,6 +358,10 @@
                 var customer_purchase_order_list_detail_id = 0;
                 var purchase_request_list_id = 0;
                 var delivery_note_supplier_list_id = 0;
+                var regrind_supplier_receive_list_id = 0;
+                var request_standard_list_id = 0;
+                var request_special_list_id = 0;
+                var request_regrind_list_id = 0;
 
                 if(data_buffer[i].customer_purchase_order_list_detail_id !== undefined){
                     customer_purchase_order_list_detail_id = data_buffer[i].customer_purchase_order_list_detail_id;
@@ -325,6 +379,18 @@
                     regrind_supplier_receive_list_id = data_buffer[i].regrind_supplier_receive_list_id;
                 }
 
+                if(data_buffer[i].request_standard_list_id !== undefined){
+                    request_standard_list_id = data_buffer[i].request_standard_list_id;
+                }
+
+                if(data_buffer[i].request_special_list_id !== undefined){
+                    request_special_list_id = data_buffer[i].request_special_list_id;
+                }
+
+                if(data_buffer[i].request_regrind_list_id !== undefined){
+                    request_regrind_list_id = data_buffer[i].request_regrind_list_id;
+                }
+
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
                         '<td>'+
@@ -333,6 +399,9 @@
                             '<input type="hidden" name="purchase_request_list_id[]" value="'+purchase_request_list_id+'" />'+     
                             '<input type="hidden" name="delivery_note_supplier_list_id[]" value="'+delivery_note_supplier_list_id+'" />'+  
                             '<input type="hidden" name="regrind_supplier_receive_list_id[]" value="'+regrind_supplier_receive_list_id+'" />'+ 
+                            '<input type="hidden" name="request_standard_list_id[]" value="'+request_standard_list_id+'" />'+ 
+                            '<input type="hidden" name="request_special_list_id[]" value="'+request_special_list_id+'" />'+ 
+                            '<input type="hidden" name="request_regrind_list_id[]" value="'+request_regrind_list_id+'" />'+ 
                             '<span>'+data_buffer[i].product_code+'</span>'+
                         '</td>'+
                         '<td>'+
@@ -342,7 +411,7 @@
                         '<input type="text" class="form-control" name="purchase_order_list_remark[]" value="'+data_buffer[i].purchase_order_list_remark+'" />'+
                         '</td>'+
                         '<td><input type="text" class="form-control" name="purchase_order_list_delivery_min[]" readonly /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_qty[]" onchange="update_sum(this);" value="'+data_buffer[i].purchase_order_list_qty+'"/></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_qty[]" onchange="update_sum(this);" readonly value="'+data_buffer[i].purchase_order_list_qty+'"/></td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_price[]" onchange="update_sum(this);" value="'+data_buffer[i].purchase_order_list_price+'"/></td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" value="'+(data_buffer[i].purchase_order_list_qty * data_buffer[i].purchase_order_list_price)+'"/></td>'+
                         
@@ -379,6 +448,9 @@
                     '<input type="hidden" name="purchase_request_list_id[]" value="0" />'+     
                     '<input type="hidden" name="delivery_note_supplier_list_id[]" value="0" />'+   
                     '<input type="hidden" name="regrind_supplier_receive_list_id[]" value="0" />'+   
+                    '<input type="hidden" name="request_standard_list_id[]" value="0" />'+ 
+                    '<input type="hidden" name="request_special_list_id[]" value="0" />'+ 
+                    '<input type="hidden" name="request_regrind_list_id[]" value="0" />'+ 
                     '<select class="form-control select" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td>'+
@@ -575,6 +647,9 @@
                                     <input type="hidden" name="purchase_request_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['purchase_request_list_id'];?>" />
                                     <input type="hidden" name="delivery_note_supplier_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['delivery_note_supplier_list_id'];?>" />
                                     <input type="hidden" name="regrind_supplier_receive_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['regrind_supplier_receive_list_id'];?>" />
+                                    <input type="hidden" name="request_standard_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['request_standard_list_id'];?>" />
+                                    <input type="hidden" name="request_special_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['request_special_list_id'];?>" />
+                                    <input type="hidden" name="request_regrind_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['request_regrind_list_id'];?>" />
                                    
                                     <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
                                         <option value="">Select</option>
@@ -742,6 +817,7 @@
                     <!-- /.row (nested) -->
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
+                            <a href="index.php?app=purchase_order" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>

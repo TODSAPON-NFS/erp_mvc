@@ -7,26 +7,38 @@ require_once('../models/PurchaseOrderListModel.php');
 require_once('../models/CustomerPurchaseOrderListDetailModel.php');
 require_once('../models/PurchaseRequestListModel.php');
 require_once('../models/RegrindSupplierReceiveListModel.php');
+require_once('../models/RequestStandardListModel.php');
+require_once('../models/RequestSpecialListModel.php');
+require_once('../models/RequestRegrindListModel.php');
 require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
+require_once('../models/ProductModel.php');
 require_once('../models/ProductSupplierModel.php');
 require_once('../models/SupplierModel.php');
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/purchase_order/views/";
 $user_model = new UserModel;
+$product_model = new ProductModel;
 $supplier_model = new SupplierModel;
 $notification_model = new NotificationModel;
 $purchase_order_model = new PurchaseOrderModel;
 $purchase_order_list_model = new PurchaseOrderListModel;
 $purchase_request_list_model = new PurchaseRequestListModel;
 $regrind_supplier_receive_list_model = new RegrindSupplierReceiveListModel;
+$request_standard_list_model = new RequestStandardListModel;
+$request_special_list_model = new RequestSpecialListModel;
+$request_regrind_list_model = new RequestRegrindListModel;
 $customer_purchase_order_list_detail_model = new CustomerPurchaseOrderListDetailModel;
 $product_supplier_model = new ProductSupplierModel;
 $first_char = "PO";
 $purchase_order_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $supplier_id = $_GET['supplier_id'];
+$type = strtoupper($_GET['type']);
+
+
+
 if(!isset($_GET['action'])){
 
     $date_start = $_GET['date_start'];
@@ -38,18 +50,26 @@ if(!isset($_GET['action'])){
 
     $purchase_orders = $purchase_order_model->getPurchaseOrderBy($date_start,$date_end,$supplier_id,$keyword);
     $supplier_orders = $purchase_order_model->getSupplierOrder();
+    $supplier_tests = $purchase_order_model->getSupplierTestOrder();
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
     
+    if($type != "STANDARD" && $type != "TEST" && $type != "BLANKED"){
+        $type = "STANDARD";
+    } 
+
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
 
     $first_date = date("d")."-".date("m")."-".date("Y");
+    
+
     if($supplier_id > 0){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
-        $products=$product_supplier_model->getProductBySupplierID($supplier_id);
-        
+        //$products=$product_supplier_model->getProductBySupplierID(/*$supplier_id*/);
+        $products=$product_model->getProductBy('','','','Active');
+
         if($supplier['supplier_domestic'] == "ภายในประเทศ"){
             $first_char = "LP";
         }else{
@@ -60,9 +80,9 @@ if(!isset($_GET['action'])){
         $first_date = date("d")."-".date("m")."-".date("Y");
         $last_code = $purchase_order_model->getPurchaseOrderLastID($first_code,3);
 
-        $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id);
+        $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id,$type);
+        
     }
-   
 
     require_once($path.'insert.inc.php');
 
@@ -73,8 +93,8 @@ if(!isset($_GET['action'])){
     $purchase_order = $purchase_order_model->getPurchaseOrderByID($purchase_order_id);
     $purchase_order_lists = $purchase_order_list_model->getPurchaseOrderListBy($purchase_order_id);
     $supplier=$supplier_model->getSupplierByID($purchase_order['supplier_id']);
-    $products=$product_supplier_model->getProductBySupplierID($purchase_order['supplier_id']);
-   
+    //$products=$product_supplier_model->getProductBySupplierID($purchase_order['supplier_id']);
+    $products=$product_model->getProductBy('','','','Active');
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
@@ -130,6 +150,9 @@ if(!isset($_GET['action'])){
             $customer_purchase_order_list_detail_id = $_POST['customer_purchase_order_list_detail_id'];
             $delivery_note_supplier_list_id = $_POST['delivery_note_supplier_list_id'];
             $regrind_supplier_receive_list_id = $_POST['regrind_supplier_receive_list_id'];
+            $request_standard_list_id = $_POST['request_standard_list_id'];
+            $request_special_list_id = $_POST['request_special_list_id'];
+            $request_regrind_list_id = $_POST['request_regrind_list_id'];
 
             $purchase_order_list_qty = $_POST['purchase_order_list_qty'];
             $purchase_order_list_price = $_POST['purchase_order_list_price'];
@@ -162,6 +185,12 @@ if(!isset($_GET['action'])){
                             $delivery_note_supplier_list_model->updatePurchaseOrderId($delivery_note_supplier_list_id[$i],$id);
                         }else if ($regrind_supplier_receive_list_id[$i] > 0 ){
                             $regrind_supplier_receive_list_model->updatePurchaseOrderId($regrind_supplier_receive_list_id[$i],$id);
+                        }else if ($request_standard_list_id[$i] > 0 ){
+                            $request_standard_list_model->updatePurchaseOrderListId($request_standard_list_id[$i],$id);
+                        }else if ($request_special_list_id[$i] > 0 ){
+                            $request_special_list_model->updatePurchaseOrderListId($request_special_list_id[$i],$id);
+                        }else if ($request_regrind_list_id[$i] > 0 ){
+                            $request_regrind_list_model->updatePurchaseOrderListId($request_regrind_list_id[$i],$id);
                         }
                     }
                 }
@@ -183,10 +212,16 @@ if(!isset($_GET['action'])){
                         $purchase_request_list_model->updatePurchaseOrderId($purchase_request_list_id,$id);
                     }else if ($customer_purchase_order_list_detail_id > 0 ){
                         $customer_purchase_order_list_detail_model->updatePurchaseOrderId($customer_purchase_order_list_detail_id,$id);
-                    }else if ($delivery_note_supplier_list_id[$i] > 0 ){
-                        $delivery_note_supplier_list_model->updatePurchaseOrderId($delivery_note_supplier_list_id[$i],$id);
+                    }else if ($delivery_note_supplier_list_id > 0 ){
+                        $delivery_note_supplier_list_model->updatePurchaseOrderId($delivery_note_supplier_list_id,$id);
                     }else if ($regrind_supplier_receive_list_id > 0 ){
                         $regrind_supplier_receive_list_model->updatePurchaseOrderId($regrind_supplier_receive_list_id,$id);
+                    }else if ($request_standard_list_id > 0 ){
+                        $request_standard_list_model->updatePurchaseOrderListId($request_standard_list_id,$id);
+                    }else if ($request_special_list_id > 0 ){
+                        $request_special_list_model->updatePurchaseOrderListId($request_special_list_id,$id);
+                    }else if ($request_regrind_list_id > 0 ){
+                        $request_regrind_list_model->updatePurchaseOrderListId($request_regrind_list_id,$id);
                     }
                 }
                 $data['purchase_order_status'] = 'New';
@@ -234,6 +269,9 @@ if(!isset($_GET['action'])){
         $customer_purchase_order_list_detail_id = $_POST['customer_purchase_order_list_detail_id'];
         $delivery_note_supplier_list_id = $_POST['delivery_note_supplier_list_id'];
         $regrind_supplier_receive_list_id = $_POST['regrind_supplier_receive_list_id'];
+        $request_standard_list_id = $_POST['request_standard_list_id'];
+        $request_special_list_id = $_POST['request_special_list_id'];
+        $request_regrind_list_id = $_POST['request_regrind_list_id'];
 
         $purchase_order_list_id = $_POST['purchase_order_list_id'];
         $purchase_order_list_qty = $_POST['purchase_order_list_qty'];
@@ -271,6 +309,12 @@ if(!isset($_GET['action'])){
                             $delivery_note_supplier_list_model->updatePurchaseOrderId($delivery_note_supplier_list_id[$i],$id);
                         }else if ($regrind_supplier_receive_list_id[$i] > 0 ){
                             $regrind_supplier_receive_list_model->updatePurchaseOrderId($regrind_supplier_receive_list_id[$i],$id);
+                        }else if ($request_standard_list_id[$i] > 0 ){
+                            $request_standard_list_model->updatePurchaseOrderListId($request_standard_list_id[$i],$id);
+                        }else if ($request_special_list_id[$i] > 0 ){
+                            $request_special_list_model->updatePurchaseOrderListId($request_special_list_id[$i],$id);
+                        }else if ($request_regrind_list_id[$i] > 0 ){
+                            $request_regrind_list_model->updatePurchaseOrderListId($request_regrind_list_id[$i],$id);
                         }
                     }
                 }
@@ -294,14 +338,22 @@ if(!isset($_GET['action'])){
                 $id = $purchase_order_list_model->insertPurchaseOrderList($data_sub);
 
                 if($id > 0){
-                    if($purchase_request_list_id > 0){
-                        $purchase_request_list_model->updatePurchaseOrderId($purchase_request_list_id,$id);
-                    }else if ($customer_purchase_order_list_detail_id > 0 ){
-                        $customer_purchase_order_list_detail_model->updatePurchaseOrderId($customer_purchase_order_list_detail_id,$id);
-                    }else if ($delivery_note_supplier_list_id[$i] > 0 ){
-                        $delivery_note_supplier_list_model->updatePurchaseOrderId($delivery_note_supplier_list_id[$i],$id);
-                    }else if ($regrind_supplier_receive_list_id > 0 ){
-                        $regrind_supplier_receive_list_model->updatePurchaseOrderId($regrind_supplier_receive_list_id,$id);
+                    if($id > 0){
+                        if($purchase_request_list_id > 0){
+                            $purchase_request_list_model->updatePurchaseOrderId($purchase_request_list_id,$id);
+                        }else if ($customer_purchase_order_list_detail_id > 0 ){
+                            $customer_purchase_order_list_detail_model->updatePurchaseOrderId($customer_purchase_order_list_detail_id,$id);
+                        }else if ($delivery_note_supplier_list_id > 0 ){
+                            $delivery_note_supplier_list_model->updatePurchaseOrderId($delivery_note_supplier_list_id,$id);
+                        }else if ($regrind_supplier_receive_list_id > 0 ){
+                            $regrind_supplier_receive_list_model->updatePurchaseOrderId($regrind_supplier_receive_list_id,$id);
+                        }else if ($request_standard_list_id > 0 ){
+                            $request_standard_list_model->updatePurchaseOrderListId($request_standard_list_id,$id);
+                        }else if ($request_special_list_id > 0 ){
+                            $request_special_list_model->updatePurchaseOrderListId($request_special_list_id,$id);
+                        }else if ($request_regrind_list_id > 0 ){
+                            $request_regrind_list_model->updatePurchaseOrderListId($request_regrind_list_id,$id);
+                        }
                     }
                 }
             }
@@ -390,8 +442,14 @@ if(!isset($_GET['action'])){
                         $customer_purchase_order_list_detail_model->updatePurchaseOrderId($purchase_order_lists[$i]['customer_purchase_order_list_detail_id'],$id);
                     }else if ($purchase_order_lists[$i]['delivery_note_supplier_list_id'] > 0 ){
                         $delivery_note_supplier_list_model->updatePurchaseOrderId($purchase_order_lists[$i]['delivery_note_supplier_list_id'],$id);
-                    }else if ($regrind_supplier_receive_list_id[$i] > 0 ){
-                        $regrind_supplier_receive_list_model->updatePurchaseOrderId($regrind_supplier_receive_list_id[$i],$id);
+                    }else if ($purchase_order_lists[$i]['regrind_supplier_receive_list_id'] > 0 ){
+                        $regrind_supplier_receive_list_model->updatePurchaseOrderId($purchase_order_lists[$i]['regrind_supplier_receive_list_id'],$id);
+                    }else if ($purchase_order_lists[$i]['request_standard_list_id'] > 0 ){
+                        $request_standard_list_model->updatePurchaseOrderListId($purchase_order_lists[$i]['request_standard_list_id'],$id);
+                    }else if ($purchase_order_lists[$i]['request_special_list_id'] > 0 ){
+                        $request_special_list_model->updatePurchaseOrderListId($purchase_order_lists[$i]['request_special_list_id'],$id);
+                    }else if ($purchase_order_lists[$i]['request_regrind_list_id'] > 0 ){
+                        $request_regrind_list_model->updatePurchaseOrderListId($purchase_order_lists[$i]['request_regrind_list_id'],$id);
                     }
                 }            
 

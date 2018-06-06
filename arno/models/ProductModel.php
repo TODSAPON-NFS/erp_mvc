@@ -16,6 +16,8 @@ class ProductModel extends BaseModel{
         OR product_status LIKE ('%$product_status%') 
         ORDER BY product_name  
         ";
+
+        //echo $sql;
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

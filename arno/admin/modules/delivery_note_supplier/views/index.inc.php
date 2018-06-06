@@ -45,7 +45,7 @@ if(!isset($_GET['action'])){
 
     if($supplier_id > 0){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
-        $products=$product_supplier_model->getProductBySupplierID($supplier_id);
+        //$products=$product_supplier_model->getProductBySupplierID($supplier_id);
         $delivery_note_supplier_lists = $delivery_note_supplier_model->generateDeliveryNoteSupplierListBySupplierId($supplier_id);
     }
 

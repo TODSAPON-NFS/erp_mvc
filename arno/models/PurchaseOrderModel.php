@@ -251,36 +251,48 @@ class PurchaseOrderModel extends BaseModel{
 
     function getSupplierOrder(){
 
-        $sql = "SELECT tb_product_supplier.supplier_id, supplier_name_en , supplier_name_th 
-                FROM tb_product_supplier LEFT JOIN tb_supplier ON tb_product_supplier.supplier_id = tb_supplier.supplier_id 
-                WHERE product_id IN ( 
-                    SELECT DISTINCT product_id 
+        $sql = "SELECT supplier_id, supplier_name_en , supplier_name_th 
+                FROM tb_supplier 
+                WHERE supplier_id IN ( 
+                    
+                    SELECT DISTINCT tb_delivery_note_supplier.supplier_id 
                     FROM tb_delivery_note_supplier_list 
+                    LEFT JOIN tb_delivery_note_supplier 
+                    ON tb_delivery_note_supplier_list.delivery_note_supplier_id = tb_delivery_note_supplier.delivery_note_supplier_id
                     WHERE purchase_order_list_id = 0 
-                    UNION 
-                    SELECT DISTINCT product_id 
+                    AND request_test_list_id = 0
+
+                    UNION
+
+                    SELECT DISTINCT supplier_id 
                     FROM tb_purchase_request_list 
                     LEFT JOIN tb_purchase_request ON tb_purchase_request_list.purchase_request_id = tb_purchase_request.purchase_request_id
                     WHERE purchase_order_list_id = 0 
                     AND tb_purchase_request.purchase_request_cancelled = 0 
                     AND purchase_request_accept_status = 'Approve' 
+
                     UNION 
-                    SELECT DISTINCT product_id 
+
+                    SELECT DISTINCT supplier_id 
                     FROM tb_customer_purchase_order_list 
                     LEFT JOIN tb_customer_purchase_order_list_detail 
                     ON  tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list.customer_purchase_order_list_id
+                    LEFT JOIN tb_customer_purchase_order
+                    ON tb_customer_purchase_order_list.customer_purchase_order_id = tb_customer_purchase_order.customer_purchase_order_id
                     WHERE tb_customer_purchase_order_list_detail.purchase_order_list_id = 0   
                     AND tb_customer_purchase_order_list_detail.supplier_id != 0 
+
                     UNION 
-                    SELECT DISTINCT product_id 
+
+                    SELECT DISTINCT supplier_id 
                     FROM tb_regrind_supplier_receive 
                     LEFT JOIN tb_regrind_supplier_receive_list 
                     ON  tb_regrind_supplier_receive.regrind_supplier_receive_id = tb_regrind_supplier_receive_list.regrind_supplier_receive_id
                     WHERE tb_regrind_supplier_receive_list.purchase_order_list_id = 0   
                     AND tb_regrind_supplier_receive.supplier_id != 0 
+
                 )
-                AND product_supplier_status = 'Active' 
-                GROUP BY tb_product_supplier.supplier_id 
+                GROUP BY supplier_id 
         ";
         $data = [];
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
@@ -294,188 +306,544 @@ class PurchaseOrderModel extends BaseModel{
         return $data;
     }
 
-    function generatePurchaseOrderListBySupplierId($supplier_id, $data_pr = [], $data_cpo = [], $data_dn = [], $data_srr = [], $search = ""){
+    function getSupplierTestOrder(){
 
-        $str_pr ='0';
+        $sql = "SELECT tb_supplier.supplier_id, supplier_name_en , supplier_name_th 
+                FROM tb_supplier
+                WHERE supplier_id IN ( 
+                    
+                    SELECT DISTINCT tb_delivery_note_supplier.supplier_id 
+                    FROM tb_delivery_note_supplier_list 
+                    LEFT JOIN tb_delivery_note_supplier 
+                    ON tb_delivery_note_supplier_list.delivery_note_supplier_id = tb_delivery_note_supplier.delivery_note_supplier_id
+                    WHERE purchase_order_list_id = 0 
+                    AND request_test_list_id IN (
 
-        if(is_array($data_pr)){ 
-            for($i=0; $i < count($data_pr) ;$i++){
-                $str_pr .= $data_pr[$i];
-                if($i + 1 < count($data_pr)){
-                    $str_pr .= ',';
-                }
+                        SELECT DISTINCT tb_request_test_list.request_test_list_id 
+                        FROM tb_request_test_list 
+                        LEFT JOIN tb_request_standard_list ON tb_request_test_list.request_test_list_id = tb_request_standard_list.request_test_list_id
+                        WHERE IFNULL(tb_request_standard_list.tool_test_result,0) = 1  
+                        
+                        UNION 
+
+                        SELECT DISTINCT tb_request_test_list.request_test_list_id 
+                        FROM tb_request_test_list 
+                        LEFT JOIN tb_request_special_list ON tb_request_test_list.request_test_list_id = tb_request_special_list.request_test_list_id
+                        WHERE IFNULL(tb_request_special_list.tool_test_result,0) = 1  
+                        
+                        UNION 
+
+                        SELECT DISTINCT tb_request_test_list.request_test_list_id 
+                        FROM tb_request_test_list 
+                        LEFT JOIN tb_request_regrind_list ON tb_request_test_list.request_test_list_id = tb_request_regrind_list.request_test_list_id
+                        WHERE IFNULL(tb_request_regrind_list.tool_test_result,0) = 1  
+                        
+                    ) 
+
+                    UNION 
+
+                    SELECT DISTINCT supplier_id 
+                    FROM tb_request_standard_list 
+                    LEFT JOIN tb_request_standard 
+                    ON tb_request_standard_list.request_standard_id = tb_request_standard.request_standard_id 
+                    WHERE purchase_order_list_id = 0 
+                    AND purchase_order_open = 1 
+                    AND request_standard_accept_status = 'Approve' 
+
+                    UNION
+
+                    SELECT DISTINCT supplier_id 
+                    FROM tb_request_special_list 
+                    LEFT JOIN tb_request_special 
+                    ON tb_request_special_list.request_special_id = tb_request_special.request_special_id 
+                    WHERE purchase_order_list_id = 0 
+                    AND purchase_order_open = 1 
+                    AND request_special_accept_status = 'Approve' 
+                    
+                    UNION
+
+                    SELECT DISTINCT supplier_id 
+                    FROM tb_request_regrind_list 
+                    LEFT JOIN tb_request_regrind 
+                    ON tb_request_regrind_list.request_regrind_id = tb_request_regrind.request_regrind_id 
+                    WHERE purchase_order_list_id = 0 
+                    AND purchase_order_open = 1 
+                    AND request_regrind_accept_status = 'Approve' 
+                   
+
+                )
+                GROUP BY supplier_id 
+        ";
+
+       
+        $data = [];
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
             }
-        }else if ($data_pr != ''){
-            $str_pr = $data_pr;
-        }else{
-            $str_pr='0';
+            $result->close();
+            
         }
+        return $data;
+    }
 
 
-        $str_cpo ='0';
-
-        if(is_array($data_cpo)){ 
-            for($i=0; $i < count($data_cpo) ;$i++){
-                $str_cpo .= $data_cpo[$i];
-                if($i + 1 < count($data_cpo)){
-                    $str_cpo .= ',';
-                }
-            }
-        }else if ($data_cpo != ''){
-            $str_cpo = $data_cpo;
-        }else{
-            $str_cpo='0';
-        }
-
-
-        $str_dn ='0';
-
-        if(is_array($data_dn)){ 
-            for($i=0; $i < count($data_dn) ;$i++){
-                $str_dn .= $data_dn[$i];
-                if($i + 1 < count($data_dn)){
-                    $str_dn .= ',';
-                }
-            }
-        }else if ($data_dn != ''){
-            $str_dn = $data_dn;
-        }else{
-            $str_dn='0';
-        }
-
-
-        $str_srr ='0';
-
-        if(is_array($data_srr)){ 
-            for($i=0; $i < count($data_srr) ;$i++){
-                $str_srr .= $data_srr[$i];
-                if($i + 1 < count($data_srr)){
-                    $str_srr .= ',';
-                }
-            }
-        }else if ($data_srr != ''){
-            $str_srr = $data_srr;
-        }else{
-            $str_srr='0';
-        }
-
-
-        $sql_request = "SELECT tb_purchase_request_list.product_id, 
-        purchase_request_list_id, 
-        CONCAT(product_code_first,product_code) as product_code, 
-        product_name, 
-        purchase_request_list_qty as purchase_order_list_qty, 
-        product_buyprice as purchase_order_list_price ,
-        CONCAT('PR : ',purchase_request_code) as purchase_order_list_remark 
-        FROM tb_purchase_request 
-        LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id 
-        LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id 
-        LEFT JOIN tb_product_supplier ON tb_purchase_request_list.product_id = tb_product_supplier.product_id 
-        WHERE supplier_id = '$supplier_id' 
-        AND purchase_order_list_id = 0 
-        AND purchase_request_list_id NOT IN ($str_pr) 
-        AND purchase_request_code LIKE ('%$search%') 
-        AND product_supplier_status = 'Active' ";
+    function generatePurchaseOrderListBySupplierId(
+        $supplier_id /*รหัสผู้ขาย*/, 
+        $type /*ประเภทใบ PO*/, 
+        $data_pr = [] /*purchase request*/, 
+        $data_cpo = [] /*customer purchase order*/, 
+        $data_dn = [] /*delivery note supplier*/, 
+        $data_srr = [] /*supplier regrind recieve*/, 
+        $data_rst = [] /*request standard tool*/, 
+        $data_rspt = [] /*request special tool*/, 
+        $data_rrt = [] /*request regrind tool*/, 
+        $search = "" /*คำค้น*/){
 
         $data = [];
 
-        //echo $sql_request."<br><br>";
+        if($type == "BLANKED"){
 
-        if ($result = mysqli_query($this->db,$sql_request, MYSQLI_USE_RESULT)) {
+        }else if($type == "TEST"){
             
-            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                $data[] = $row;
+            $str_dn ='0';
+
+            if(is_array($data_dn)){ 
+                for($i=0; $i < count($data_dn) ;$i++){
+                    $str_dn .= $data_dn[$i];
+                    if($i + 1 < count($data_dn)){
+                        $str_dn .= ',';
+                    }
+                }
+            }else if ($data_dn != ''){
+                $str_dn = $data_dn;
+            }else{
+                $str_dn='0';
             }
-            $result->close();
-            
-        }
 
-       
 
-        $sql_customer = "SELECT tb_customer_purchase_order_list.product_id, 
-        customer_purchase_order_list_detail_id,
-        CONCAT(product_code_first,product_code) as product_code, 
-        product_name, 
-        (qty) as purchase_order_list_qty, 
-        product_buyprice as purchase_order_list_price ,
-        CONCAT('Customer ',customer_name_th,' PO : ',customer_purchase_order_code) as purchase_order_list_remark 
-        FROM tb_customer_purchase_order 
-        LEFT JOIN tb_customer ON tb_customer_purchase_order.customer_id = tb_customer.customer_id
-        LEFT JOIN tb_customer_purchase_order_list ON tb_customer_purchase_order.customer_purchase_order_id = tb_customer_purchase_order_list.customer_purchase_order_id 
-        LEFT JOIN tb_product ON tb_customer_purchase_order_list.product_id = tb_product.product_id 
-        LEFT JOIN tb_product_supplier ON tb_customer_purchase_order_list.product_id = tb_product_supplier.product_id 
-        LEFT JOIN tb_customer_purchase_order_list_detail ON tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list_detail.customer_purchase_order_list_id 
-        WHERE tb_customer_purchase_order_list_detail.supplier_id = '$supplier_id' 
-        AND tb_customer_purchase_order_list_detail.purchase_order_list_id = 0 
-        AND customer_purchase_order_list_detail_id NOT IN ($str_cpo) 
-        AND customer_purchase_order_code LIKE ('%$search%') 
-        AND product_supplier_status = 'Active' ";
+            $str_rst ='0';
 
-        //echo $sql_customer."<br><br>";
-        if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
-            
-            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                $data[] = $row;
+            if(is_array($data_rst)){ 
+                for($i=0; $i < count($data_rst) ;$i++){
+                    $str_rst .= $data_rst[$i];
+                    if($i + 1 < count($data_rst)){
+                        $str_rst .= ',';
+                    }
+                }
+            }else if ($data_rst != ''){
+                $str_rst = $data_rst;
+            }else{
+                $str_rst='0';
             }
-            $result->close();
-            
-        }
 
-        $sql_dn = "SELECT tb_delivery_note_supplier_list.product_id, 
-        delivery_note_supplier_list_id,
-        CONCAT(product_code_first,product_code) as product_code, 
-        product_name, 
-        (delivery_note_supplier_list_qty) as purchase_order_list_qty, 
-        product_buyprice as purchase_order_list_price ,
-        CONCAT('Supplier DN : ',delivery_note_supplier_code) as purchase_order_list_remark 
-        FROM tb_delivery_note_supplier 
-        LEFT JOIN tb_delivery_note_supplier_list ON tb_delivery_note_supplier.delivery_note_supplier_id = tb_delivery_note_supplier_list.delivery_note_supplier_id 
-        LEFT JOIN tb_product ON tb_delivery_note_supplier_list.product_id = tb_product.product_id 
-        LEFT JOIN tb_product_supplier ON tb_delivery_note_supplier_list.product_id = tb_product_supplier.product_id 
-        WHERE tb_product_supplier.supplier_id = '$supplier_id' 
-        AND purchase_order_list_id = 0 
-        AND delivery_note_supplier_list_id NOT IN ($str_dn) 
-        AND delivery_note_supplier_code LIKE ('%$search%');
-        ";
 
-        //echo $sql_dn."<br><br>";
+            $str_rspt ='0';
 
-        if ($result = mysqli_query($this->db,$sql_dn, MYSQLI_USE_RESULT)) {
-            
-            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                $data[] = $row;
+            if(is_array($data_rspt)){ 
+                for($i=0; $i < count($data_rspt) ;$i++){
+                    $str_rspt .= $data_rspt[$i];
+                    if($i + 1 < count($data_rspt)){
+                        $str_rspt .= ',';
+                    }
+                }
+            }else if ($data_rspt != ''){
+                $str_rspt = $data_rspt;
+            }else{
+                $str_rspt='0';
             }
-            $result->close();
-            
-        }
 
+
+            $str_rrt ='0';
+
+            if(is_array($data_rrt)){ 
+                for($i=0; $i < count($data_rrt) ;$i++){
+                    $str_rrt .= $data_rrt[$i];
+                    if($i + 1 < count($data_rrt)){
+                        $str_rrt .= ',';
+                    }
+                }
+            }else if ($data_rrt != ''){
+                $str_rrt = $data_rrt;
+            }else{
+                $str_rrt='0';
+            }
+
+            $sql_dn = "SELECT tb_delivery_note_supplier_list.product_id, 
+            '0' as purchase_request_list_id,
+            '0' as customer_purchase_order_list_detail_id
+            delivery_note_supplier_list_id,
+            '0' as regrind_supplier_receive_list_id,
+            '0' as request_standard_list_id,
+            '0' as request_special_list_id,
+            '0' as request_regrind_list_id,
+            CONCAT(product_code_first,product_code) as product_code, 
+            product_name, 
+            (delivery_note_supplier_list_qty) as purchase_order_list_qty, 
+            IFNULL(product_buyprice,0) as purchase_order_list_price ,
+            CONCAT('Supplier DN : ',delivery_note_supplier_code) as purchase_order_list_remark 
+            FROM tb_delivery_note_supplier 
+            LEFT JOIN tb_delivery_note_supplier_list ON tb_delivery_note_supplier.delivery_note_supplier_id = tb_delivery_note_supplier_list.delivery_note_supplier_id 
+            LEFT JOIN tb_product ON tb_delivery_note_supplier_list.product_id = tb_product.product_id 
+            LEFT JOIN tb_product_supplier ON tb_delivery_note_supplier_list.product_id = tb_product_supplier.product_id 
+            WHERE tb_delivery_note_supplier.supplier_id = '$supplier_id' 
+            AND purchase_order_list_id = 0 
+            AND request_test_list_id IN (
+                SELECT DISTINCT request_test_list_id 
+                FROM tb_request_standard_list  
+                LEFT JOIN tb_request_standard ON tb_request_standard_list.request_standard_id = tb_request_standard.request_standard_id 
+                WHERE purchase_order_open = 0 
+                AND tool_test_result = 1 
+
+                UNION 
+
+                SELECT DISTINCT request_test_list_id 
+                FROM tb_request_special_list  
+                LEFT JOIN tb_request_special ON tb_request_special_list.request_special_id = tb_request_special.request_special_id 
+                WHERE purchase_order_open = 0 
+                AND tool_test_result = 1 
+
+                UNION 
+
+                SELECT DISTINCT request_test_list_id 
+                FROM tb_request_regrind_list  
+                LEFT JOIN tb_request_regrind ON tb_request_regrind_list.request_regrind_id = tb_request_regrind.request_regrind_id 
+                WHERE purchase_order_open = 0 
+                AND tool_test_result = 1 
+
+            ) 
+            AND delivery_note_supplier_list_id NOT IN ($str_dn) 
+            AND delivery_note_supplier_code LIKE ('%$search%');
+            ";
+
+            //echo $sql_dn."<br><br>";
+
+            if ($result = mysqli_query($this->db,$sql_dn, MYSQLI_USE_RESULT)) {
+                
+                while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close();
+                
+            }
+
+
+            $sql_rspt = "SELECT tb_request_standard_list.product_id, 
+            '0' as purchase_request_list_id,
+            '0' as customer_purchase_order_list_detail_id,
+            '0' as delivery_note_supplier_list_id,
+            '0' as regrind_supplier_receive_list_id,
+            request_standard_list_id,
+            '0' as request_special_list_id,
+            '0' as request_regrind_list_id,
+            CONCAT(product_code_first,product_code) as product_code, 
+            product_name, 
+            (request_standard_list_qty) as purchase_order_list_qty, 
+            IFNULL(product_buyprice,0) as purchase_order_list_price ,
+            CONCAT('Supplier RST : ',request_standard_code) as purchase_order_list_remark 
+            FROM tb_request_standard 
+            LEFT JOIN tb_request_standard_list ON tb_request_standard.request_standard_id = tb_request_standard_list.request_standard_id 
+            LEFT JOIN tb_product ON tb_request_standard_list.product_id = tb_product.product_id 
+            LEFT JOIN tb_product_supplier ON tb_request_standard_list.product_id = tb_product_supplier.product_id 
+            WHERE tb_request_standard.supplier_id = '$supplier_id' 
+            AND purchase_order_list_id = 0 
+            AND tool_test_result = 1 
+            AND request_standard_list_id NOT IN ($str_rspt) 
+            AND request_standard_code LIKE ('%$search%');
+            ";
+
+            //echo $sql_rspt."<br><br>";
+
+            if ($result = mysqli_query($this->db,$sql_rspt, MYSQLI_USE_RESULT)) {
+                
+                while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close();
+                
+            }
+
+
+            $sql_rst = "SELECT tb_request_special_list.product_id, 
+            '0' as purchase_request_list_id,
+            '0' as customer_purchase_order_list_detail_id,
+            '0' as delivery_note_supplier_list_id,
+            '0' as regrind_supplier_receive_list_id,
+            '0' as request_standard_list_id,
+            request_special_list_id,
+            '0' as request_regrind_list_id,
+            CONCAT(product_code_first,product_code) as product_code, 
+            product_name, 
+            (request_special_list_qty) as purchase_order_list_qty, 
+            IFNULL(product_buyprice,0) as purchase_order_list_price ,
+            CONCAT('Supplier RST : ',request_special_code) as purchase_order_list_remark 
+            FROM tb_request_special 
+            LEFT JOIN tb_request_special_list ON tb_request_special.request_special_id = tb_request_special_list.request_special_id 
+            LEFT JOIN tb_product ON tb_request_special_list.product_id = tb_product.product_id 
+            LEFT JOIN tb_product_supplier ON tb_request_special_list.product_id = tb_product_supplier.product_id 
+            WHERE tb_request_special.supplier_id = '$supplier_id' 
+            AND purchase_order_list_id = 0 
+            AND tool_test_result = 1 
+            AND request_special_list_id NOT IN ($str_rst) 
+            AND request_special_code LIKE ('%$search%');
+            ";
+
+            //echo $sql_rst."<br><br>";
+
+            if ($result = mysqli_query($this->db,$sql_rst, MYSQLI_USE_RESULT)) {
+                
+                while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close();
+                
+            }
+
+
+            $sql_rst = "SELECT tb_request_regrind_list.product_id, 
+            '0' as purchase_request_list_id,
+            '0' as customer_purchase_order_list_detail_id,
+            '0' as delivery_note_supplier_list_id,
+            '0' as regrind_supplier_receive_list_id,
+            '0' as request_standard_list_id,
+            '0' as request_special_list_id,
+            request_regrind_list_id,
+            CONCAT(product_code_first,product_code) as product_code, 
+            product_name, 
+            (request_regrind_list_qty) as purchase_order_list_qty, 
+            IFNULL(product_buyprice,0) as purchase_order_list_price ,
+            CONCAT('Supplier RST : ',request_regrind_code) as purchase_order_list_remark 
+            FROM tb_request_regrind 
+            LEFT JOIN tb_request_regrind_list ON tb_request_regrind.request_regrind_id = tb_request_regrind_list.request_regrind_id 
+            LEFT JOIN tb_product ON tb_request_regrind_list.product_id = tb_product.product_id 
+            LEFT JOIN tb_product_supplier ON tb_request_regrind_list.product_id = tb_product_supplier.product_id 
+            WHERE tb_request_regrind.supplier_id = '$supplier_id' 
+            AND purchase_order_list_id = 0 
+            AND tool_test_result = 1 
+            AND request_regrind_list_id NOT IN ($str_rst) 
+            AND request_regrind_code LIKE ('%$search%');
+            ";
+
+            //echo $sql_rst."<br><br>";
+
+            if ($result = mysqli_query($this->db,$sql_rst, MYSQLI_USE_RESULT)) {
+                
+                while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close();
+                
+            }
+
+
+        }else if($type == "STANDARD"){
+            $str_pr ='0';
+
+            if(is_array($data_pr)){ 
+                for($i=0; $i < count($data_pr) ;$i++){
+                    $str_pr .= $data_pr[$i];
+                    if($i + 1 < count($data_pr)){
+                        $str_pr .= ',';
+                    }
+                }
+            }else if ($data_pr != ''){
+                $str_pr = $data_pr;
+            }else{
+                $str_pr='0';
+            }
+
+
+            $str_cpo ='0';
+
+            if(is_array($data_cpo)){ 
+                for($i=0; $i < count($data_cpo) ;$i++){
+                    $str_cpo .= $data_cpo[$i];
+                    if($i + 1 < count($data_cpo)){
+                        $str_cpo .= ',';
+                    }
+                }
+            }else if ($data_cpo != ''){
+                $str_cpo = $data_cpo;
+            }else{
+                $str_cpo='0';
+            }
+
+
+            $str_dn ='0';
+
+            if(is_array($data_dn)){ 
+                for($i=0; $i < count($data_dn) ;$i++){
+                    $str_dn .= $data_dn[$i];
+                    if($i + 1 < count($data_dn)){
+                        $str_dn .= ',';
+                    }
+                }
+            }else if ($data_dn != ''){
+                $str_dn = $data_dn;
+            }else{
+                $str_dn='0';
+            }
+
+
+            $str_srr ='0';
+
+            if(is_array($data_srr)){ 
+                for($i=0; $i < count($data_srr) ;$i++){
+                    $str_srr .= $data_srr[$i];
+                    if($i + 1 < count($data_srr)){
+                        $str_srr .= ',';
+                    }
+                }
+            }else if ($data_srr != ''){
+                $str_srr = $data_srr;
+            }else{
+                $str_srr='0';
+            }
+
+
+            $sql_request = "SELECT tb_purchase_request_list.product_id, 
+            purchase_request_list_id,
+            '0' as customer_purchase_order_list_detail_id,
+            '0' as delivery_note_supplier_list_id,
+            '0' as regrind_supplier_receive_list_id,
+            '0' as request_standard_list_id,
+            '0' as request_special_list_id,
+            '0' as request_regrind_list_id,
+            CONCAT(product_code_first,product_code) as product_code, 
+            product_name, 
+            purchase_request_list_qty as purchase_order_list_qty, 
+            IFNULL(product_buyprice,0) as purchase_order_list_price ,
+            CONCAT('PR : ',purchase_request_code) as purchase_order_list_remark 
+            FROM tb_purchase_request 
+            LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id 
+            LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id 
+            LEFT JOIN tb_product_supplier ON tb_purchase_request_list.product_id = tb_product_supplier.product_id 
+            WHERE tb_purchase_request.supplier_id = '$supplier_id' 
+            AND purchase_order_list_id = 0 
+            AND purchase_request_list_id NOT IN ($str_pr) 
+            AND purchase_request_code LIKE ('%$search%') ";
+
+            
+
+            //echo $sql_request."<br><br>";
+
+            if ($result = mysqli_query($this->db,$sql_request, MYSQLI_USE_RESULT)) {
+                
+                while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close();
+                
+            }
 
         
-        $sql_customer = "SELECT tb_regrind_supplier_receive_list.product_id, 
-        tb_regrind_supplier_receive_list.regrind_supplier_receive_list_id, 
-        '' as regrind_supplier_receive_list_id,
-        CONCAT(product_code_first,product_code) as product_code, 
-        IFNULL(stock_group_id,(SELECT IFNULL(MIN(stock_group_id),0) FROM tb_stock_group WHERE 1)) as stock_group_id,
-        product_name,  
-        regrind_supplier_receive_list_qty as purchase_order_list_qty, 
-        product_buyprice as purchase_order_list_price, 
-        CONCAT('PO : ',regrind_supplier_receive_code) as purchase_order_list_remark 
-        FROM tb_regrind_supplier_receive 
-        LEFT JOIN tb_regrind_supplier_receive_list ON tb_regrind_supplier_receive.regrind_supplier_receive_id = tb_regrind_supplier_receive_list.regrind_supplier_receive_id
-        LEFT JOIN tb_product ON tb_regrind_supplier_receive_list.product_id = tb_product.product_id 
-        LEFT JOIN tb_product_supplier ON tb_regrind_supplier_receive_list.product_id = tb_product_supplier.product_id 
-        WHERE tb_regrind_supplier_receive.supplier_id = '$supplier_id' 
-        AND purchase_order_list_id = 0 
-        AND regrind_supplier_receive_list_id NOT IN ($str_srr) 
-        AND (product_name LIKE ('%$search%') OR regrind_supplier_receive_code LIKE ('%$search%')) ";
-        if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
-            
-            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                $data[] = $row;
+
+            $sql_customer = "SELECT tb_customer_purchase_order_list.product_id, 
+            '0' as purchase_request_list_id,
+            customer_purchase_order_list_detail_id,
+            '0' as delivery_note_supplier_list_id,
+            '0' as regrind_supplier_receive_list_id,
+            '0' as request_standard_list_id,
+            '0' as request_special_list_id,
+            '0' as request_regrind_list_id,
+            CONCAT(product_code_first,product_code) as product_code, 
+            product_name, 
+            (qty) as purchase_order_list_qty, 
+            IFNULL(product_buyprice,0) as purchase_order_list_price ,
+            CONCAT('Customer ',customer_name_th,' PO : ',customer_purchase_order_code) as purchase_order_list_remark 
+            FROM tb_customer_purchase_order 
+            LEFT JOIN tb_customer ON tb_customer_purchase_order.customer_id = tb_customer.customer_id
+            LEFT JOIN tb_customer_purchase_order_list ON tb_customer_purchase_order.customer_purchase_order_id = tb_customer_purchase_order_list.customer_purchase_order_id 
+            LEFT JOIN tb_product ON tb_customer_purchase_order_list.product_id = tb_product.product_id 
+            LEFT JOIN tb_product_supplier ON tb_customer_purchase_order_list.product_id = tb_product_supplier.product_id 
+            LEFT JOIN tb_customer_purchase_order_list_detail ON tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list_detail.customer_purchase_order_list_id 
+            WHERE tb_customer_purchase_order_list_detail.supplier_id = '$supplier_id' 
+            AND tb_customer_purchase_order_list_detail.purchase_order_list_id = 0 
+            AND customer_purchase_order_list_detail_id NOT IN ($str_cpo) 
+            AND customer_purchase_order_code LIKE ('%$search%')  ";
+
+            //echo $sql_customer."<br><br>";
+            if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
+                
+                while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close();
+                
             }
-            $result->close();
+
+            $sql_dn = "SELECT tb_delivery_note_supplier_list.product_id, 
+            '0' as purchase_request_list_id,
+            '0' as customer_purchase_order_list_detail_id,
+            delivery_note_supplier_list_id,
+            '0' as regrind_supplier_receive_list_id,
+            '0' as request_standard_list_id,
+            '0' as request_special_list_id,
+            '0' as request_regrind_list_id,
+            CONCAT(product_code_first,product_code) as product_code, 
+            product_name, 
+            (delivery_note_supplier_list_qty) as purchase_order_list_qty, 
+            IFNULL(product_buyprice,0) as purchase_order_list_price ,
+            CONCAT('Supplier DN : ',delivery_note_supplier_code) as purchase_order_list_remark 
+            FROM tb_delivery_note_supplier 
+            LEFT JOIN tb_delivery_note_supplier_list ON tb_delivery_note_supplier.delivery_note_supplier_id = tb_delivery_note_supplier_list.delivery_note_supplier_id 
+            LEFT JOIN tb_product ON tb_delivery_note_supplier_list.product_id = tb_product.product_id 
+            LEFT JOIN tb_product_supplier ON tb_delivery_note_supplier_list.product_id = tb_product_supplier.product_id 
+            WHERE tb_delivery_note_supplier.supplier_id = '$supplier_id' 
+            AND purchase_order_list_id = 0 
+            AND request_test_list_id = 0 
+            AND delivery_note_supplier_list_id NOT IN ($str_dn) 
+            AND delivery_note_supplier_code LIKE ('%$search%');
+            ";
+
+            //echo $sql_dn."<br><br>";
+
+            if ($result = mysqli_query($this->db,$sql_dn, MYSQLI_USE_RESULT)) {
+                
+                while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close();
+                
+            }
+
+
             
+            $sql_customer = "SELECT tb_regrind_supplier_receive_list.product_id, 
+            '0' as purchase_request_list_id,
+            '0' as customer_purchase_order_list_detail_id,
+            '0' as delivery_note_supplier_list_id,
+            regrind_supplier_receive_list_id,
+            '0' as request_standard_list_id,
+            '0' as request_special_list_id,
+            '0' as request_regrind_list_id,
+            CONCAT(product_code_first,product_code) as product_code, 
+            IFNULL(stock_group_id,(SELECT IFNULL(MIN(stock_group_id),0) FROM tb_stock_group WHERE 1)) as stock_group_id,
+            product_name,  
+            regrind_supplier_receive_list_qty as purchase_order_list_qty, 
+            IFNULL(product_buyprice,0) as purchase_order_list_price, 
+            CONCAT('PO : ',regrind_supplier_receive_code) as purchase_order_list_remark 
+            FROM tb_regrind_supplier_receive 
+            LEFT JOIN tb_regrind_supplier_receive_list ON tb_regrind_supplier_receive.regrind_supplier_receive_id = tb_regrind_supplier_receive_list.regrind_supplier_receive_id
+            LEFT JOIN tb_product ON tb_regrind_supplier_receive_list.product_id = tb_product.product_id 
+            LEFT JOIN tb_product_supplier ON tb_regrind_supplier_receive_list.product_id = tb_product_supplier.product_id 
+            WHERE tb_regrind_supplier_receive.supplier_id = '$supplier_id' 
+            AND purchase_order_list_id = 0 
+            AND regrind_supplier_receive_list_id NOT IN ($str_srr) 
+            AND (product_name LIKE ('%$search%') OR regrind_supplier_receive_code LIKE ('%$search%')) ";
+
+
+            if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
+                
+                while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close();
+                
+            }
         }
+        
 
         return $data;
     }
@@ -545,8 +913,24 @@ class PurchaseOrderModel extends BaseModel{
         $sql = " UPDATE tb_customer_purchase_order_list_detail SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
+        $sql = " UPDATE tb_delivery_note_supplier_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = " UPDATE tb_regrind_supplier_receive_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = " UPDATE tb_request_standard_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = " UPDATE tb_request_special_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = " UPDATE tb_request_regrind_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
         $sql = " DELETE FROM tb_purchase_order WHERE purchase_order_id = '$id' ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        
         $sql = " DELETE FROM tb_purchase_order_list WHERE purchase_order_id = '$id' ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 

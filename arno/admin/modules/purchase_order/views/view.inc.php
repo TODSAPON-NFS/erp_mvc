@@ -21,7 +21,7 @@
 
 <!-- /.row -->
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-6">
         <div class="panel panel-default">
             <div class="panel-heading">
             เปิดใบสั่งซื้ออ้างอิงตามบริษัท / Purchase order to do
@@ -64,6 +64,50 @@
         <!-- /.panel -->
     </div>
     <!-- /.col-lg-12 -->
+
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            เปิดใบสั่งซื้อสินค้าทดลองอ้างอิงตามบริษัท / Test order to do
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+
+                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th width="64px" >ลำดับ <br>No.</th>
+                            <th>ผู้ขาย <br>Supplier</th>
+                            <th width="180px" >เปิดใบสั่งซื้อ <br>Open Test order</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        for($i=0; $i < count($supplier_tests); $i++){
+                        ?>
+                        <tr class="odd gradeX">
+                            <td><?php echo $i+1; ?></td>
+                            <td><?php echo $supplier_tests[$i]['supplier_name_en']; ?> (<?php echo $supplier_tests[$i]['supplier_name_th']; ?>)</td>
+                            <td>
+                                <a href="?app=purchase_order&action=insert&type=test&supplier_id=<?php echo $supplier_tests[$i]['supplier_id'];?>">
+                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                </a>
+
+                            </td>
+
+                        </tr>
+                        <?
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
 </div>
 
 
@@ -77,7 +121,9 @@
                         รายใบสั่งซื้อ / Purchase Order List
                     </div>
                     <div class="col-md-4">
-                        <a class="btn btn-success " style="float:right;" href="?app=purchase_order&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                        <a class="btn btn-warning " style="float:right;margin-left:8px;" href="?app=purchase_order&action=insert&type=test" ><i class="fa fa-plus" aria-hidden="true"></i> Add Test Order</a>
+                        <a class="btn btn-danger " style="float:right;margin-left:8px;" href="?app=purchase_order&action=insert&type=blanked" ><i class="fa fa-plus" aria-hidden="true"></i> Add Blanked Order</a>
+                        <a class="btn btn-success " style="float:right;margin-left:8px;" href="?app=purchase_order&action=insert&type=standard" ><i class="fa fa-plus" aria-hidden="true"></i> Add Standard Order</a>
                     </div>
                 </div>
             </div>

@@ -286,6 +286,7 @@
 
 </script>
 
+    
 <div class="row">
     <div class="col-lg-6">
         <h1 class="page-header">Delivery Note Supplier  Management</h1>

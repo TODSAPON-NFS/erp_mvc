@@ -15,6 +15,10 @@ class PurchaseOrderListModel extends BaseModel{
         IFNULL(purchase_request_list_id,0) as purchase_request_list_id,
         IFNULL(customer_purchase_order_list_detail_id,0) as customer_purchase_order_list_detail_id,
         IFNULL(delivery_note_supplier_list_id,0) as delivery_note_supplier_list_id,
+        IFNULL(regrind_supplier_receive_list_id,0) as regrind_supplier_receive_list_id,
+        IFNULL(request_standard_list_id,0) as request_standard_list_id,
+        IFNULL(request_special_list_id,0) as request_special_list_id,
+        IFNULL(request_regrind_list_id,0) as request_regrind_list_id,
         purchase_order_list_qty, 
         purchase_order_list_price, 
         purchase_order_list_price_sum, 
@@ -30,6 +34,10 @@ class PurchaseOrderListModel extends BaseModel{
         LEFT JOIN tb_purchase_request_list ON tb_purchase_order_list.purchase_order_list_id = tb_purchase_request_list.purchase_order_list_id
         LEFT JOIN tb_customer_purchase_order_list_detail ON tb_purchase_order_list.purchase_order_list_id = tb_customer_purchase_order_list_detail.purchase_order_list_id
         LEFT JOIN tb_delivery_note_supplier_list ON tb_purchase_order_list.purchase_order_list_id = tb_delivery_note_supplier_list.purchase_order_list_id
+        LEFT JOIN tb_regrind_supplier_receive_list ON tb_purchase_order_list.purchase_order_list_id = tb_regrind_supplier_receive_list.purchase_order_list_id
+        LEFT JOIN tb_request_standard_list ON tb_purchase_order_list.purchase_order_list_id = tb_request_standard_list.purchase_order_list_id
+        LEFT JOIN tb_request_special_list ON tb_purchase_order_list.purchase_order_list_id = tb_request_special_list.purchase_order_list_id
+        LEFT JOIN tb_request_regrind_list ON tb_purchase_order_list.purchase_order_list_id = tb_request_regrind_list.purchase_order_list_id
         WHERE purchase_order_id = '$purchase_order_id' 
         ORDER BY tb_purchase_order_list.purchase_order_list_id 
         ";
@@ -175,6 +183,24 @@ class PurchaseOrderListModel extends BaseModel{
      
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
+        $sql = "UPDATE  tb_regrind_supplier_receive_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = "UPDATE  tb_request_standard_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = "UPDATE  tb_request_special_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = "UPDATE  tb_request_regrind_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+
+
+
 
         $sql = "DELETE FROM tb_purchase_order_list WHERE purchase_order_id = '$id' ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
@@ -206,6 +232,22 @@ class PurchaseOrderListModel extends BaseModel{
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT); 
 
         $sql = "UPDATE  tb_delivery_note_supplier_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str)) ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT); 
+
+        $sql = "UPDATE  tb_regrind_supplier_receive_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str)) ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT); 
+
+        $sql = "UPDATE  tb_request_standard_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str)) ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT); 
+
+        $sql = "UPDATE  tb_request_special_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str)) ";
+     
+        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT); 
+
+        $sql = "UPDATE  tb_request_regrind_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str)) ";
      
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT); 
 

@@ -106,6 +106,21 @@ class RequestSpecialListModel extends BaseModel{
     }
 
 
+    function updatePurchaseOrderListId($request_special_list_id,$purchase_order_list_id){
+        $sql = " UPDATE tb_request_special_list 
+            SET purchase_order_list_id = '$purchase_order_list_id' 
+            WHERE request_special_list_id = '$request_special_list_id' 
+        ";
+
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
+
     function deleteRequestSpecialListByID($id){
         $sql = "DELETE FROM tb_request_special_list WHERE request_special_list_id = '$id' ";
         mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);

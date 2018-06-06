@@ -105,6 +105,21 @@ class RequestStandardListModel extends BaseModel{
         }
     }
 
+    
+    function updatePurchaseOrderListId($request_standard_list_id,$purchase_order_list_id){
+        $sql = " UPDATE tb_request_standard_list 
+            SET purchase_order_list_id = '$purchase_order_list_id' 
+            WHERE request_standard_list_id = '$request_standard_list_id' 
+        ";
+
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
 
     function deleteRequestStandardListByID($id){
         $sql = "DELETE FROM tb_request_standard_list WHERE request_standard_list_id = '$id' ";

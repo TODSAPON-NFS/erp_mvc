@@ -1,16 +1,5 @@
 <script>
 
-    var product_data = [
-    <?php for($i = 0 ; $i < count($products) ; $i++ ){?>
-        {
-            product_id:'<?php echo $products[$i]['product_id'];?>',
-            product_code:'<?php echo $products[$i]['product_code'];?>',
-            product_name:'<?php echo $products[$i]['product_name'];?>',
-            product_buyprice:'<?php echo $products[$i]['product_buyprice'];?>'
-        },
-    <?php }?>
-    ];
-
     var data_buffer = [];
     function check(){
 
@@ -49,7 +38,8 @@
     }
 
     function get_supplier_detail(){
-        var supplier_id = document.getElementById('supplier_id').value;
+        var supplier_id = document.getElementById('supplier_select').value;
+        document.getElementById('supplier_id').value = supplier_id;
         $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id }, function( data ) {
             document.getElementById('supplier_code').value = data.supplier_code;
             document.getElementById('supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
@@ -194,6 +184,7 @@
             { 
                 'type':'<?PHP echo $type;?>',
                 'supplier_id': supplier_id,
+                'purchase_request_id':'<?PHP echo $purchase_request_id;?>',
                 'purchase_request_list_id': JSON.stringify(purchase_request_list_id) ,
                 'customer_purchase_order_list_detail_id': JSON.stringify(customer_purchase_order_list_detail_id) ,
                 'delivery_note_supplier_list_id': JSON.stringify(delivery_note_supplier_list_id), 
@@ -298,6 +289,7 @@
         $.post( "controllers/getPurchaseOrderListBySupplierID.php", 
         { 
             'type':'<?PHP echo $type;?>',
+            'purchase_request_id':'<?PHP echo $purchase_request_id;?>',
             'supplier_id': supplier_id,
             'purchase_request_list_id': JSON.stringify(purchase_request_list_id) ,
             'customer_purchase_order_list_detail_id': JSON.stringify(customer_purchase_order_list_detail_id) ,
@@ -423,6 +415,8 @@
                     '</tr>'
                 );
 
+                $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_order_list_delivery_min[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
+
             }
             
         }
@@ -471,15 +465,7 @@
                 '</td>'+
             '</tr>'
         );
-
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
-        var str = "<option value=''>Select Product</option>";
-        $.each(product_data, function (index, value) {
-            str += "<option value='" + value['product_id'] + "'>"+value['product_code']+"</option>";
-        });
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
-
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_order_list_delivery_min[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
     }
 
 
@@ -514,11 +500,8 @@
 </script>
 
 <div class="row">
-    <div class="col-lg-6">
-        <h1 class="page-header">Purchase Order Management</h1>
-    </div>
-    <div class="col-lg-6" align="right">
-       
+    <div class="col-lg-12">
+        <h1 class="page-header">Purchase Order Management <b style="color:red;">[<?PHP echo $type;?>]</b></h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -531,7 +514,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=purchase_order&action=add" >
+                <form role="form" method="post" onsubmit="return check();" action="index.php?app=purchase_order&action=add&type=<?PHP echo $type; ?>" >
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="row">
@@ -545,7 +528,8 @@
                                 <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>ผู้ขาย / Supplier  <font color="#F00"><b>*</b></font> </label>
-                                        <select id="supplier_id" name="supplier_id" class="form-control select" onchange="get_supplier_detail()" data-live-search="true">
+                                        <input type="hidden" id="supplier_id" name="supplier_id" value="<?PHP echo $supplier_id; ?>"/>
+                                            <select id="supplier_select" name="supplier_select" class="form-control select" onchange="get_supplier_detail()" data-live-search="true" <?PHP if($type == "BLANKED"){?> DISABLED <?}?>>
                                             <option value="">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($suppliers) ; $i++){
@@ -650,20 +634,13 @@
                                     <input type="hidden" name="request_standard_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['request_standard_list_id'];?>" />
                                     <input type="hidden" name="request_special_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['request_special_list_id'];?>" />
                                     <input type="hidden" name="request_regrind_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['request_regrind_list_id'];?>" />
-                                   
-                                    <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
-                                        <option value="">Select</option>
-                                        <?php 
-                                        for($ii =  0 ; $ii < count($products) ; $ii++){
-                                        ?>
-                                        <option <?php if($products[$ii]['product_id'] == $purchase_order_lists[$i]['product_id']){?> selected <?php }?> value="<?php echo $products[$ii]['product_id'] ?>"><?php echo $products[$ii]['product_code'] ?></option>
-                                        <?
-                                        }
-                                        ?>
-                                    </select>
+                                    <input type="hidden" name="product_id[]" value="<?PHP echo  $purchase_order_lists[$i]['product_id'];?>" />
+
+                                    <span><?PHP echo  $purchase_order_lists[$i]['product_code'];?></span>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $purchase_order_lists[$i]['product_name']; ?>" />
+                                    <span>Product name : </span>
+                                    <span><?PHP echo  $purchase_order_lists[$i]['product_name'];?></span><br>
                                     <span>Remark.</span>
                                     <input type="text" class="form-control" name="purchase_order_list_remark[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_remark']; ?>" />
                                 </td>
@@ -728,7 +705,6 @@
 
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" onclick="add_row_new(this);">New Row</button>
                                                 <button type="button" class="btn btn-primary" onclick="add_row(this);">Add Product</button>
                                             </div>
                                             </div><!-- /.modal-content -->

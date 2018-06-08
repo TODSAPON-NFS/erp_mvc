@@ -165,7 +165,6 @@ class PurchaseOrderModel extends BaseModel{
         $sql = " UPDATE tb_purchase_order SET 
         supplier_id = '".$data['supplier_id']."', 
         employee_id = '".$data['employee_id']."', 
-        purchase_order_type = '".$data['purchase_order_type']."', 
         purchase_order_code = '".$data['purchase_order_code']."', 
         purchase_order_credit_term = '".$data['purchase_order_credit_term']."', 
         purchase_order_delivery_term = '".$data['purchase_order_delivery_term']."', 
@@ -269,7 +268,9 @@ class PurchaseOrderModel extends BaseModel{
                     LEFT JOIN tb_purchase_request ON tb_purchase_request_list.purchase_request_id = tb_purchase_request.purchase_request_id
                     WHERE purchase_order_list_id = 0 
                     AND tb_purchase_request.purchase_request_cancelled = 0 
+                    AND purchase_request_type IN ('Sale','Use') 
                     AND purchase_request_accept_status = 'Approve' 
+                    
 
                     UNION 
 
@@ -293,6 +294,31 @@ class PurchaseOrderModel extends BaseModel{
 
                 )
                 GROUP BY supplier_id 
+        ";
+        $data = [];
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+        return $data;
+    }
+
+
+    function getSupplierBlankedOrder(){
+
+        $sql = "SELECT  tb_purchase_request.purchase_request_id, purchase_request_code, tb_supplier.supplier_id, supplier_name_en , supplier_name_th 
+                FROM tb_purchase_request
+                LEFT JOIN tb_supplier  ON  tb_purchase_request.supplier_id = tb_supplier.supplier_id 
+                LEFT JOIN tb_purchase_request_list ON  tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id
+                WHERE purchase_order_list_id = 0 
+                AND purchase_request_accept_status = 'Approve' 
+                AND purchase_request_type = 'Sale Blanked' 
+                GROUP BY tb_purchase_request.supplier_id , tb_purchase_request.purchase_request_id 
+                
         ";
         $data = [];
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
@@ -391,6 +417,7 @@ class PurchaseOrderModel extends BaseModel{
 
     function generatePurchaseOrderListBySupplierId(
         $supplier_id /*รหัสผู้ขาย*/, 
+        $purchase_request_id /*รหัสใบร้องขอ*/,
         $type /*ประเภทใบ PO*/, 
         $data_pr = [] /*purchase request*/, 
         $data_cpo = [] /*customer purchase order*/, 
@@ -404,6 +431,63 @@ class PurchaseOrderModel extends BaseModel{
         $data = [];
 
         if($type == "BLANKED"){
+
+            $str_pr ='0';
+
+            if(is_array($data_pr)){ 
+                for($i=0; $i < count($data_pr) ;$i++){
+                    $str_pr .= $data_pr[$i];
+                    if($i + 1 < count($data_pr)){
+                        $str_pr .= ',';
+                    }
+                }
+            }else if ($data_pr != ''){
+                $str_pr = $data_pr;
+            }else{
+                $str_pr='0';
+            }
+
+            
+
+            $sql_request = "SELECT tb_purchase_request_list.product_id, 
+            purchase_request_list_id,
+            '0' as customer_purchase_order_list_detail_id,
+            '0' as delivery_note_supplier_list_id,
+            '0' as regrind_supplier_receive_list_id,
+            '0' as request_standard_list_id,
+            '0' as request_special_list_id,
+            '0' as request_regrind_list_id,
+            CONCAT(product_code_first,product_code) as product_code, 
+            product_name, 
+            purchase_request_list_qty as purchase_order_list_qty, 
+            purchase_request_list_delivery as purchase_order_list_delivery_min, 
+            IFNULL(product_buyprice,0) as purchase_order_list_price ,
+            CONCAT('PR : ',purchase_request_code) as purchase_order_list_remark 
+            FROM tb_purchase_request 
+            LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id 
+            LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id 
+            LEFT JOIN tb_product_supplier ON tb_purchase_request_list.product_id = tb_product_supplier.product_id 
+            WHERE tb_purchase_request.supplier_id = '$supplier_id' 
+            AND tb_purchase_request.purchase_request_id = '$purchase_request_id' 
+            AND purchase_order_list_id = 0  
+            AND purchase_request_list_id NOT IN ($str_pr)  
+            AND purchase_request_code LIKE ('%$search%') 
+            AND purchase_request_type = 'Sale Blanked' 
+            AND purchase_request_accept_status = 'Approve' 
+               ";
+
+            //echo $sql_request."<br><br>";
+            if ($result = mysqli_query($this->db,$sql_request, MYSQLI_USE_RESULT)) {
+                
+                while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close();
+                
+            }
+
+
+
 
         }else if($type == "TEST"){
             
@@ -539,6 +623,7 @@ class PurchaseOrderModel extends BaseModel{
             '0' as request_regrind_list_id,
             CONCAT(product_code_first,product_code) as product_code, 
             product_name, 
+            request_standard_list_delivery as purchase_order_list_delivery_min, 
             (request_standard_list_qty) as purchase_order_list_qty, 
             IFNULL(product_buyprice,0) as purchase_order_list_price ,
             CONCAT('Supplier RST : ',request_standard_code) as purchase_order_list_remark 
@@ -575,6 +660,7 @@ class PurchaseOrderModel extends BaseModel{
             '0' as request_regrind_list_id,
             CONCAT(product_code_first,product_code) as product_code, 
             product_name, 
+            request_special_list_delivery as purchase_order_list_delivery_min, 
             (request_special_list_qty) as purchase_order_list_qty, 
             IFNULL(product_buyprice,0) as purchase_order_list_price ,
             CONCAT('Supplier RST : ',request_special_code) as purchase_order_list_remark 
@@ -611,6 +697,7 @@ class PurchaseOrderModel extends BaseModel{
             request_regrind_list_id,
             CONCAT(product_code_first,product_code) as product_code, 
             product_name, 
+            request_regrind_list_delivery as purchase_order_list_delivery_min, 
             (request_regrind_list_qty) as purchase_order_list_qty, 
             IFNULL(product_buyprice,0) as purchase_order_list_price ,
             CONCAT('Supplier RST : ',request_regrind_code) as purchase_order_list_remark 
@@ -712,6 +799,7 @@ class PurchaseOrderModel extends BaseModel{
             '0' as request_regrind_list_id,
             CONCAT(product_code_first,product_code) as product_code, 
             product_name, 
+            purchase_request_list_delivery as purchase_order_list_delivery_min, 
             purchase_request_list_qty as purchase_order_list_qty, 
             IFNULL(product_buyprice,0) as purchase_order_list_price ,
             CONCAT('PR : ',purchase_request_code) as purchase_order_list_remark 
@@ -722,7 +810,10 @@ class PurchaseOrderModel extends BaseModel{
             WHERE tb_purchase_request.supplier_id = '$supplier_id' 
             AND purchase_order_list_id = 0 
             AND purchase_request_list_id NOT IN ($str_pr) 
-            AND purchase_request_code LIKE ('%$search%') ";
+            AND purchase_request_code LIKE ('%$search%') 
+            AND purchase_request_type IN ('Sale','Use') 
+            AND purchase_request_accept_status = 'Approve' 
+             ";
 
             
 

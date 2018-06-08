@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Purchase Order Management</h1>
+        <h1 class="page-header">Purchase Order Management <b style="color:red;">[<?PHP echo  $purchase_order['purchase_order_type'];?>]</b> </h1>
     </div>
     <div class="col-lg-6" align="right">
        

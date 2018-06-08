@@ -16,6 +16,7 @@ $request_regrind_list_id = json_decode($_POST['request_regrind_list_id'],true);
 $purchase_order_model = new PurchaseOrderModel;
 $supplier = $purchase_order_model->generatePurchaseOrderListBySupplierId(
     $_POST['supplier_id'],
+    $_POST['purchase_request_id'],
     $_POST['type'],
     $purchase_request_list_id , 
     $customer_purchase_order_list_detail_id, 

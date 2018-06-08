@@ -1,16 +1,5 @@
 <script>
 
-    var product_data = [
-    <?php for($i = 0 ; $i < count($products) ; $i++ ){?>
-        {
-            product_id:'<?php echo $products[$i]['product_id'];?>',
-            product_code:'<?php echo $products[$i]['product_code'];?>',
-            product_name:'<?php echo $products[$i]['product_name'];?>',
-            product_buyprice:'<?php echo $products[$i]['product_buyprice'];?>'
-        },
-    <?php }?>
-    ];
-
     var data_buffer = [];
     function check(){
 
@@ -49,7 +38,8 @@
     }
 
     function get_supplier_detail(){
-        var supplier_id = document.getElementById('supplier_id').value;
+        var supplier_id = document.getElementById('supplier_select').value;
+        document.getElementById('supplier_id').value = supplier_id;
         $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id }, function( data ) {
             document.getElementById('supplier_code').value = data.supplier_code;
             document.getElementById('supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
@@ -148,10 +138,17 @@
         var val3 = document.getElementsByName('delivery_note_supplier_list_id[]');
         var val4 = document.getElementsByName('regrind_supplier_receive_list_id[]');
 
+        var val5 = document.getElementsByName('request_standard_list_id[]');
+        var val6 = document.getElementsByName('request_special_list_id[]');
+        var val7 = document.getElementsByName('request_regrind_list_id[]');
+
         var purchase_request_list_id = [];
         var customer_purchase_order_list_detail_id = [];
         var delivery_note_supplier_list_id = [];
         var regrind_supplier_receive_list_id = [];
+        var request_standard_list_id = [];
+        var request_special_list_id = [];
+        var request_regrind_list_id = [];
 
         for(var i = 0 ; i < val1.length ; i++){
             purchase_request_list_id.push(val1[i].value);
@@ -168,16 +165,33 @@
         for(var i = 0 ; i < val4.length ; i++){
             regrind_supplier_receive_list_id.push(val4[i].value);
         }
+
+        for(var i = 0 ; i < val5.length ; i++){
+            request_standard_list_id.push(val5[i].value);
+        }
+
+        for(var i = 0 ; i < val6.length ; i++){
+            request_special_list_id.push(val6[i].value);
+        }
+
+        for(var i = 0 ; i < val7.length ; i++){
+            request_regrind_list_id.push(val7[i].value);
+        }
         
         if(supplier_id != ""){
 
             $.post( "controllers/getPurchaseOrderListBySupplierID.php", 
             { 
+                'type':'<?PHP echo $type;?>',
                 'supplier_id': supplier_id,
+                'purchase_request_id':'<?PHP echo $purchase_request_id;?>',
                 'purchase_request_list_id': JSON.stringify(purchase_request_list_id) ,
                 'customer_purchase_order_list_detail_id': JSON.stringify(customer_purchase_order_list_detail_id) ,
                 'delivery_note_supplier_list_id': JSON.stringify(delivery_note_supplier_list_id), 
-                'regrind_supplier_receive_list_id': JSON.stringify(regrind_supplier_receive_list_id) 
+                'regrind_supplier_receive_list_id': JSON.stringify(regrind_supplier_receive_list_id),
+                'request_standard_list_id': JSON.stringify(request_standard_list_id),
+                'request_special_list_id': JSON.stringify(request_special_list_id),
+                'request_regrind_list_id': JSON.stringify(request_regrind_list_id)
              }, function( data ) {
                 if(data.length > 0){
                     data_buffer = data;
@@ -212,6 +226,9 @@
                     $('#bodyAdd').html(content);
                     $('#modalAdd').modal('show');
 
+                }else{
+                    //add_row_new(id);
+                    alert("ไม่มีรายการสินค้าที่สามารถเปิดใบสั่งซื้อได้");
                 }
                 
             });
@@ -228,10 +245,17 @@
         var val3 = document.getElementsByName('delivery_note_supplier_list_id[]');
         var val4 = document.getElementsByName('regrind_supplier_receive_list_id[]');
 
+        var val5 = document.getElementsByName('request_standard_list_id[]');
+        var val6 = document.getElementsByName('request_special_list_id[]');
+        var val7 = document.getElementsByName('request_regrind_list_id[]');
+
         var purchase_request_list_id = [];
         var customer_purchase_order_list_detail_id = [];
         var delivery_note_supplier_list_id = [];
         var regrind_supplier_receive_list_id = [];
+        var request_standard_list_id = [];
+        var request_special_list_id = [];
+        var request_regrind_list_id = [];
 
         for(var i = 0 ; i < val1.length ; i++){
             purchase_request_list_id.push(val1[i].value);
@@ -248,15 +272,33 @@
         for(var i = 0 ; i < val4.length ; i++){
             regrind_supplier_receive_list_id.push(val4[i].value);
         }
+
+        for(var i = 0 ; i < val5.length ; i++){
+            request_standard_list_id.push(val5[i].value);
+        }
+
+        for(var i = 0 ; i < val6.length ; i++){
+            request_special_list_id.push(val6[i].value);
+        }
+
+        for(var i = 0 ; i < val7.length ; i++){
+            request_regrind_list_id.push(val7[i].value);
+        }
         
 
         $.post( "controllers/getPurchaseOrderListBySupplierID.php", 
         { 
+            'type':'<?PHP echo $type;?>',
+            'purchase_request_id':'<?PHP echo $purchase_request_id;?>',
             'supplier_id': supplier_id,
             'purchase_request_list_id': JSON.stringify(purchase_request_list_id) ,
             'customer_purchase_order_list_detail_id': JSON.stringify(customer_purchase_order_list_detail_id) ,
             'delivery_note_supplier_list_id': JSON.stringify(delivery_note_supplier_list_id), 
-            'regrind_supplier_receive_list_id': JSON.stringify(regrind_supplier_receive_list_id) 
+            'regrind_supplier_receive_list_id': JSON.stringify(regrind_supplier_receive_list_id),
+            'request_standard_list_id': JSON.stringify(request_standard_list_id),
+            'request_special_list_id': JSON.stringify(request_special_list_id),
+            'request_regrind_list_id': JSON.stringify(request_regrind_list_id),
+            'search':$(id).val() 
         }, function( data ) {
             var content = "";
             if(data.length > 0){
@@ -308,6 +350,10 @@
                 var customer_purchase_order_list_detail_id = 0;
                 var purchase_request_list_id = 0;
                 var delivery_note_supplier_list_id = 0;
+                var regrind_supplier_receive_list_id = 0;
+                var request_standard_list_id = 0;
+                var request_special_list_id = 0;
+                var request_regrind_list_id = 0;
 
                 if(data_buffer[i].customer_purchase_order_list_detail_id !== undefined){
                     customer_purchase_order_list_detail_id = data_buffer[i].customer_purchase_order_list_detail_id;
@@ -325,6 +371,18 @@
                     regrind_supplier_receive_list_id = data_buffer[i].regrind_supplier_receive_list_id;
                 }
 
+                if(data_buffer[i].request_standard_list_id !== undefined){
+                    request_standard_list_id = data_buffer[i].request_standard_list_id;
+                }
+
+                if(data_buffer[i].request_special_list_id !== undefined){
+                    request_special_list_id = data_buffer[i].request_special_list_id;
+                }
+
+                if(data_buffer[i].request_regrind_list_id !== undefined){
+                    request_regrind_list_id = data_buffer[i].request_regrind_list_id;
+                }
+
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
                         '<td>'+
@@ -333,6 +391,9 @@
                             '<input type="hidden" name="purchase_request_list_id[]" value="'+purchase_request_list_id+'" />'+     
                             '<input type="hidden" name="delivery_note_supplier_list_id[]" value="'+delivery_note_supplier_list_id+'" />'+  
                             '<input type="hidden" name="regrind_supplier_receive_list_id[]" value="'+regrind_supplier_receive_list_id+'" />'+ 
+                            '<input type="hidden" name="request_standard_list_id[]" value="'+request_standard_list_id+'" />'+ 
+                            '<input type="hidden" name="request_special_list_id[]" value="'+request_special_list_id+'" />'+ 
+                            '<input type="hidden" name="request_regrind_list_id[]" value="'+request_regrind_list_id+'" />'+ 
                             '<span>'+data_buffer[i].product_code+'</span>'+
                         '</td>'+
                         '<td>'+
@@ -342,7 +403,7 @@
                         '<input type="text" class="form-control" name="purchase_order_list_remark[]" value="'+data_buffer[i].purchase_order_list_remark+'" />'+
                         '</td>'+
                         '<td><input type="text" class="form-control" name="purchase_order_list_delivery_min[]" readonly /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_qty[]" onchange="update_sum(this);" value="'+data_buffer[i].purchase_order_list_qty+'"/></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_qty[]" onchange="update_sum(this);" readonly value="'+data_buffer[i].purchase_order_list_qty+'"/></td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_price[]" onchange="update_sum(this);" value="'+data_buffer[i].purchase_order_list_price+'"/></td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" value="'+(data_buffer[i].purchase_order_list_qty * data_buffer[i].purchase_order_list_price)+'"/></td>'+
                         
@@ -353,6 +414,8 @@
                         '</td>'+
                     '</tr>'
                 );
+
+                $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_order_list_delivery_min[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
 
             }
             
@@ -379,6 +442,9 @@
                     '<input type="hidden" name="purchase_request_list_id[]" value="0" />'+     
                     '<input type="hidden" name="delivery_note_supplier_list_id[]" value="0" />'+   
                     '<input type="hidden" name="regrind_supplier_receive_list_id[]" value="0" />'+   
+                    '<input type="hidden" name="request_standard_list_id[]" value="0" />'+ 
+                    '<input type="hidden" name="request_special_list_id[]" value="0" />'+ 
+                    '<input type="hidden" name="request_regrind_list_id[]" value="0" />'+ 
                     '<select class="form-control select" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td>'+
@@ -399,15 +465,7 @@
                 '</td>'+
             '</tr>'
         );
-
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
-        var str = "<option value=''>Select Product</option>";
-        $.each(product_data, function (index, value) {
-            str += "<option value='" + value['product_id'] + "'>"+value['product_code']+"</option>";
-        });
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
-
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_order_list_delivery_min[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
     }
 
 
@@ -442,11 +500,8 @@
 </script>
 
 <div class="row">
-    <div class="col-lg-6">
-        <h1 class="page-header">Purchase Order Management</h1>
-    </div>
-    <div class="col-lg-6" align="right">
-       
+    <div class="col-lg-12">
+        <h1 class="page-header">Purchase Order Management <b style="color:red;">[<?PHP echo $type;?>]</b></h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -459,7 +514,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=purchase_order&action=edit&id=<?php echo $purchase_order_id;?>" >
+                <form role="form" method="post" onsubmit="return check();" action="index.php?app=purchase_order&action=edit&id=<?php echo $purchase_order_id;?>&type=<?PHP echo $type; ?>" >
                     <input type="hidden"  id="purchase_order_id" name="purchase_order_id" value="<?php echo $purchase_order_id; ?>" />
                     <input type="hidden"  id="purchase_order_date" name="purchase_order_date" value="<?php echo $purchase_order['purchase_order_date']; ?>" />
                     <div class="row">
@@ -476,12 +531,13 @@
                                 <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>ผู้ขาย / Supplier  <font color="#F00"><b>*</b></font> </label>
-                                        <select id="supplier_id" name="supplier_id" class="form-control select" onchange="get_supplier_detail()" data-live-search="true">
+                                        <input type="hidden" id="supplier_id" name="supplier_id" value="<?PHP echo $supplier_id; ?>"/>
+                                        <select id="supplier_select" name="supplier_select" class="form-control select" onchange="get_supplier_detail()" data-live-search="true" <?PHP if($type == "BLANKED"){?> DISABLED <?}?>>
                                             <option value="">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($suppliers) ; $i++){
                                             ?>
-                                            <option <?php if($suppliers[$i]['supplier_id'] == $purchase_order['supplier_id']){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
+                                            <option <?php if($suppliers[$i]['supplier_id'] == $supplier['supplier_id']){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
                                             <?
                                             }
                                             ?>
@@ -561,45 +617,41 @@
                                 <th style="text-align:center;" width="120">จำนวน <br> (Qty)</th>
                                 <th style="text-align:center;" width="120">ราคาต่หน่วย <br> (Unit price)</th>
                                 <th style="text-align:center;" width="120">จำนวนเงิน <br> (Amount)</th>
-                                <!--<th>Delivery Max</th>
-                                <th>Remark</th>-->
                                 <th width="24"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php 
-                            $total = 0 ;
+                            $total = 0;
                             for($i=0; $i < count($purchase_order_lists); $i++){
                             ?>
                             <tr class="odd gradeX">
                                 <td>
-                                    <input type="hidden" name="product_id[]" value="<?php echo $purchase_order_lists[$i]['product_id']; ?>"/>
-                                    <input type="hidden" name="purchase_order_list_id[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_id']; ?>"/>
+                                    <input type="hidden" name="purchase_order_list_id[]" value="0"/>
                                     
                                     <input type="hidden" name="customer_purchase_order_list_detail_id[]" value="<?PHP echo  $purchase_order_lists[$i]['customer_purchase_order_list_detail_id'];?>" />
                                     <input type="hidden" name="purchase_request_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['purchase_request_list_id'];?>" />
                                     <input type="hidden" name="delivery_note_supplier_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['delivery_note_supplier_list_id'];?>" />
                                     <input type="hidden" name="regrind_supplier_receive_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['regrind_supplier_receive_list_id'];?>" />
-                                   
-                                    <?PHP echo  $purchase_order_lists[$i]['product_code'];?>
+                                    <input type="hidden" name="request_standard_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['request_standard_list_id'];?>" />
+                                    <input type="hidden" name="request_special_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['request_special_list_id'];?>" />
+                                    <input type="hidden" name="request_regrind_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['request_regrind_list_id'];?>" />
+                                    <input type="hidden" name="product_id[]" value="<?PHP echo  $purchase_order_lists[$i]['product_id'];?>" />
+
+                                    <span><?PHP echo  $purchase_order_lists[$i]['product_code'];?></span>
                                 </td>
                                 <td>
-                                    <span>Product name : </span><span name="product_name[]" ><?php echo $purchase_order_lists[$i]['product_name']; ?></span><br>
-                                    <span>Remark : </span>
-                                    <input type="text" class="form-control " name="purchase_order_list_remark[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_remark']; ?>" />
-                                    <span>Supplier Remark : </span>
-                                    <input type="text" readonly class="form-control"  name="purchase_order_list_supplier_remark[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_supplier_remark']; ?>" />
+                                    <span>Product name : </span>
+                                    <span><?PHP echo  $purchase_order_lists[$i]['product_name'];?></span><br>
+                                    <span>Remark.</span>
+                                    <input type="text" class="form-control" name="purchase_order_list_remark[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_remark']; ?>" />
                                 </td>
                                 <td>
                                     <input type="text" class="form-control calendar" name="purchase_order_list_delivery_min[]" readonly value="<?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']; ?>" />
-                                    <input type="text" readonly class="form-control"  name="purchase_order_list_supplier_delivery_min[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_supplier_delivery_min']; ?>" />
                                 </td>
-                                <td align="right">
-                                    <input type="text" class="form-control" style="text-align: right;" onchange="update_sum(this);" name="purchase_order_list_qty[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_qty']; ?>" />
-                                    <input type="text" readonly class="form-control" style="text-align: right;" onchange="update_sum(this);" name="purchase_order_list_supplier_qty[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_supplier_qty']; ?>" />
-                                </td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;" onchange="update_sum(this);" name="purchase_order_list_price[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_price']; ?>" /></td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;" onchange="update_sum(this);" name="purchase_order_list_price_sum[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_price_sum']; ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="purchase_order_list_qty[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_qty']; ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="purchase_order_list_price[]" value="<?php echo number_format($purchase_order_lists[$i]['purchase_order_list_price'],2); ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="purchase_order_list_price_sum[]" value="<?php echo number_format($purchase_order_lists[$i]['purchase_order_list_qty'] * $purchase_order_lists[$i]['purchase_order_list_price'],2); ?>" /></td>
                                 
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -608,7 +660,7 @@
                                 </td>
                             </tr>
                             <?
-                            $total += $purchase_order_lists[$i]['purchase_order_list_price_sum'];
+                                $total += $purchase_order_lists[$i]['purchase_order_list_qty'] * $purchase_order_lists[$i]['purchase_order_list_price'];
                             }
                             ?>
                         </tbody>
@@ -655,7 +707,6 @@
 
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" onclick="add_row_new(this);">New Row</button>
                                                 <button type="button" class="btn btn-primary" onclick="add_row(this);">Add Product</button>
                                             </div>
                                             </div><!-- /.modal-content -->
@@ -739,7 +790,7 @@
                                 </td>
                             </tr>
                         </tfoot>
-                    </table>
+                    </table>   
 
                     <!-- /.row (nested) -->
                     <div class="row">

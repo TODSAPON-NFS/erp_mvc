@@ -35,6 +35,7 @@ $first_char = "PO";
 $purchase_order_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $supplier_id = $_GET['supplier_id'];
+$purchase_request_id = $_GET['purchase_request_id'];
 $type = strtoupper($_GET['type']);
 
 
@@ -51,6 +52,7 @@ if(!isset($_GET['action'])){
     $purchase_orders = $purchase_order_model->getPurchaseOrderBy($date_start,$date_end,$supplier_id,$keyword);
     $supplier_orders = $purchase_order_model->getSupplierOrder();
     $supplier_tests = $purchase_order_model->getSupplierTestOrder();
+    $supplier_blankeds = $purchase_order_model->getSupplierBlankedOrder();
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -64,6 +66,10 @@ if(!isset($_GET['action'])){
 
     $first_date = date("d")."-".date("m")."-".date("Y");
     
+    if($purchase_request_id > 0){
+        $type = "BLANKED";
+    }
+
 
     if($supplier_id > 0){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
@@ -80,9 +86,11 @@ if(!isset($_GET['action'])){
         $first_date = date("d")."-".date("m")."-".date("Y");
         $last_code = $purchase_order_model->getPurchaseOrderLastID($first_code,3);
 
-        $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id,$type);
+        $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id,$purchase_request_id,$type);
         
     }
+
+
 
     require_once($path.'insert.inc.php');
 
@@ -91,6 +99,7 @@ if(!isset($_GET['action'])){
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
     $purchase_order = $purchase_order_model->getPurchaseOrderByID($purchase_order_id);
+    $type=$purchase_order["purchase_order_type"];
     $purchase_order_lists = $purchase_order_list_model->getPurchaseOrderListBy($purchase_order_id);
     $supplier=$supplier_model->getSupplierByID($purchase_order['supplier_id']);
     //$products=$product_supplier_model->getProductBySupplierID($purchase_order['supplier_id']);
@@ -133,6 +142,7 @@ if(!isset($_GET['action'])){
         $data['purchase_order_date'] = $_POST['purchase_order_date'];
         $data['purchase_order_credit_term'] = $_POST['purchase_order_credit_term'];
         $data['purchase_order_accept_status'] = '';
+        $data['purchase_order_type'] = $type;
         $data['purchase_order_status'] = '';
         $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
         $data['purchase_order_total'] = (float)filter_var($purchase_order_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -407,6 +417,7 @@ if(!isset($_GET['action'])){
             $data['supplier_id'] = $purchase_order['supplier_id'];
             $data['employee_id'] = $purchase_order['employee_id'];
             $data['purchase_order_status'] = 'New';
+            $data['purchase_order_type'] = $purchase_order['purchase_order_type'];
             $data['purchase_order_code'] = $purchase_order['purchase_order_code'];
             $data['purchase_order_date'] = $purchase_order['purchase_order_date'];
             $data['purchase_order_rewrite_id'] = $purchase_order_id;

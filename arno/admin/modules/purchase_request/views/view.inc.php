@@ -27,7 +27,8 @@
                                     รายการใบร้องขอสั่งซื้อสินค้า / Purchase Request List
                                 </div>
                                 <div class="col-md-4">
-                                    <a class="btn btn-success " style="float:right;" href="?app=purchase_request&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                                    <a class="btn btn-danger " style="float:right;margin:0px 8px;" href="?app=purchase_request&action=insert&type=blanked" ><i class="fa fa-plus" aria-hidden="true"></i> Add Blanked Request</a>
+                                    <a class="btn btn-success " style="float:right;margin:0px 8px;" href="?app=purchase_request&action=insert&type=standard" ><i class="fa fa-plus" aria-hidden="true"></i> Add Standard Request</a>
                                 </div>
                             </div>
                         </div>

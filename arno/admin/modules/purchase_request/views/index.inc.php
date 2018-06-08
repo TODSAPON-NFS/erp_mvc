@@ -21,6 +21,8 @@ $product_model = new ProductModel;
 $supplier_model = new SupplierModel; 
 $first_char = "PR";
 $purchase_request_id = $_GET['id'];
+$type = strtoupper($_GET['type']);
+
 $notification_id = $_GET['notification'];
 if(!isset($_GET['action'])){
 
@@ -33,6 +35,10 @@ if(!isset($_GET['action'])){
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
+    if($type == ''){
+        $type = 'STANDARD';
+    }
+
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
     $suppliers=$supplier_model->getSupplierBy();
@@ -49,6 +55,14 @@ if(!isset($_GET['action'])){
     $users=$user_model->getUserBy();
     $purchase_request = $purchase_request_model->getPurchaseRequestByID($purchase_request_id);
     $purchase_request_lists = $purchase_request_list_model->getPurchaseRequestListBy($purchase_request_id);
+
+    $first_date = date("d")."-".date("m")."-".date("Y");
+    
+    if($purchase_request['purchase_request_type'] == "Sale Blanked"){
+        $type = 'BLANKED';
+    }else{
+        $type = 'STANDARD';
+    }
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
@@ -187,8 +201,6 @@ if(!isset($_GET['action'])){
                 }else{
                     $purchase_request_list_model->updatePurchaseRquestListById($data,$purchase_request_list_id[$i]);
                 }
-                
-                
             }
         }else{
             $data = [];
@@ -294,8 +306,6 @@ if(!isset($_GET['action'])){
         <?php
     }
         
-        
-    
 }else{
 
     $date_start = $_GET['date_start'];

@@ -283,7 +283,27 @@ class PurchaseOrderModel extends BaseModel{
                     WHERE tb_customer_purchase_order_list_detail.purchase_order_list_id = 0   
                     AND tb_customer_purchase_order_list_detail.supplier_id != 0 
 
-                    UNION 
+                )
+                GROUP BY supplier_id 
+        ";
+        $data = [];
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+        return $data;
+    }
+
+
+    function getSupplierRegrind(){
+
+        $sql = "SELECT supplier_id, supplier_name_en , supplier_name_th 
+                FROM tb_supplier 
+                WHERE supplier_id IN (                     
 
                     SELECT DISTINCT supplier_id 
                     FROM tb_regrind_supplier_receive 
@@ -556,7 +576,7 @@ class PurchaseOrderModel extends BaseModel{
 
             $sql_dn = "SELECT tb_delivery_note_supplier_list.product_id, 
             '0' as purchase_request_list_id,
-            '0' as customer_purchase_order_list_detail_id
+            '0' as customer_purchase_order_list_detail_id,
             delivery_note_supplier_list_id,
             '0' as regrind_supplier_receive_list_id,
             '0' as request_standard_list_id,
@@ -577,31 +597,31 @@ class PurchaseOrderModel extends BaseModel{
                 SELECT DISTINCT request_test_list_id 
                 FROM tb_request_standard_list  
                 LEFT JOIN tb_request_standard ON tb_request_standard_list.request_standard_id = tb_request_standard.request_standard_id 
-                WHERE purchase_order_open = 0 
-                AND tool_test_result = 1 
+                WHERE (purchase_order_open = 0 
+                AND tool_test_result = 1 ) OR  purchase_order_open = 1
 
                 UNION 
 
                 SELECT DISTINCT request_test_list_id 
                 FROM tb_request_special_list  
                 LEFT JOIN tb_request_special ON tb_request_special_list.request_special_id = tb_request_special.request_special_id 
-                WHERE purchase_order_open = 0 
-                AND tool_test_result = 1 
+                WHERE (purchase_order_open = 0 
+                AND tool_test_result = 1 ) OR  purchase_order_open = 1
 
                 UNION 
 
                 SELECT DISTINCT request_test_list_id 
                 FROM tb_request_regrind_list  
                 LEFT JOIN tb_request_regrind ON tb_request_regrind_list.request_regrind_id = tb_request_regrind.request_regrind_id 
-                WHERE purchase_order_open = 0 
-                AND tool_test_result = 1 
+                WHERE (purchase_order_open = 0 
+                AND tool_test_result = 1 ) OR  purchase_order_open = 1
 
             ) 
             AND delivery_note_supplier_list_id NOT IN ($str_dn) 
             AND delivery_note_supplier_code LIKE ('%$search%');
             ";
 
-            //echo $sql_dn."<br><br>";
+            
 
             if ($result = mysqli_query($this->db,$sql_dn, MYSQLI_USE_RESULT)) {
                 
@@ -633,7 +653,7 @@ class PurchaseOrderModel extends BaseModel{
             LEFT JOIN tb_product_supplier ON tb_request_standard_list.product_id = tb_product_supplier.product_id 
             WHERE tb_request_standard.supplier_id = '$supplier_id' 
             AND purchase_order_list_id = 0 
-            AND tool_test_result = 1 
+            AND purchase_order_open = 1 
             AND request_standard_list_id NOT IN ($str_rspt) 
             AND request_standard_code LIKE ('%$search%');
             ";
@@ -773,21 +793,6 @@ class PurchaseOrderModel extends BaseModel{
             }
 
 
-            $str_srr ='0';
-
-            if(is_array($data_srr)){ 
-                for($i=0; $i < count($data_srr) ;$i++){
-                    $str_srr .= $data_srr[$i];
-                    if($i + 1 < count($data_srr)){
-                        $str_srr .= ',';
-                    }
-                }
-            }else if ($data_srr != ''){
-                $str_srr = $data_srr;
-            }else{
-                $str_srr='0';
-            }
-
 
             $sql_request = "SELECT tb_purchase_request_list.product_id, 
             purchase_request_list_id,
@@ -900,6 +905,25 @@ class PurchaseOrderModel extends BaseModel{
             }
 
 
+        }else if($type == "REGRIND"){
+ 
+            $str_srr ='0';
+
+            if(is_array($data_srr)){ 
+                for($i=0; $i < count($data_srr) ;$i++){
+                    $str_srr .= $data_srr[$i];
+                    if($i + 1 < count($data_srr)){
+                        $str_srr .= ',';
+                    }
+                }
+            }else if ($data_srr != ''){
+                $str_srr = $data_srr;
+            }else{
+                $str_srr='0';
+            }
+
+
+
             
             $sql_customer = "SELECT tb_regrind_supplier_receive_list.product_id, 
             '0' as purchase_request_list_id,
@@ -914,7 +938,7 @@ class PurchaseOrderModel extends BaseModel{
             product_name,  
             regrind_supplier_receive_list_qty as purchase_order_list_qty, 
             IFNULL(product_buyprice,0) as purchase_order_list_price, 
-            CONCAT('PO : ',regrind_supplier_receive_code) as purchase_order_list_remark 
+            CONCAT('RGR : ',regrind_supplier_receive_code) as purchase_order_list_remark 
             FROM tb_regrind_supplier_receive 
             LEFT JOIN tb_regrind_supplier_receive_list ON tb_regrind_supplier_receive.regrind_supplier_receive_id = tb_regrind_supplier_receive_list.regrind_supplier_receive_id
             LEFT JOIN tb_product ON tb_regrind_supplier_receive_list.product_id = tb_product.product_id 
@@ -933,7 +957,7 @@ class PurchaseOrderModel extends BaseModel{
                 $result->close();
                 
             }
-        }
+        }  
         
 
         return $data;

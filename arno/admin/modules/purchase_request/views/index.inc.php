@@ -97,6 +97,7 @@ if(!isset($_GET['action'])){
     if(isset($_POST['purchase_request_code'])){
         $data = [];
         $data['purchase_request_date'] = date("d")."-".date("m")."-".date("Y");
+        $data['purchase_request_alert'] = $_POST['purchase_request_alert'];
         $data['purchase_request_code'] = $_POST['purchase_request_code'];
         $data['purchase_request_type'] = $_POST['purchase_request_type'];
         $data['purchase_request_accept_status'] = "Waiting";
@@ -167,6 +168,7 @@ if(!isset($_GET['action'])){
     if(isset($_POST['purchase_request_code'])){
         $data = [];
         $data['purchase_request_date'] = $_POST['purchase_request_date'];
+        $data['purchase_request_alert'] = $_POST['purchase_request_alert'];
         $data['purchase_request_code'] = $_POST['purchase_request_code'];
         $data['purchase_request_type'] = $_POST['purchase_request_type'];
         $data['purchase_request_accept_status'] = "Waiting";

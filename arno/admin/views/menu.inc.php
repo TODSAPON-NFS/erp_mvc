@@ -271,7 +271,70 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
+
+                        <li
+                        <?PHP 
+                             if(
+                                $_GET["app"] =='other_expense' ||
+                                $_GET["app"] =='credit_purchasing' ||
+                                $_GET["app"] =='journal_general' ||
+                                substr($_GET["app"],0,15) =='journal_special' 
+                            ){
+                                echo ' class="active" ';
+                            }
+                        ?> 
+                        >
+                            <a href="#" class="nav-title">
+                                ระบบบัญชี <span class="glyphicon arrow"></span>
+                            </a>
+                            <ul class="collapse"> 
+                                <li>
+                                    <a href="?app=other_expense"  ><i class="fa fa-outdent" aria-hidden="true"></i> ค่าใช้จ่ายอื่นๆ</a>
+                                </li>
+                                <li>
+                                    <a href="?app=credit_purchasing"  ><i class="fa fa-outdent" aria-hidden="true"></i> ซื้อเงินเชื่อ</a>
+                                </li>
+                                <li>
+                                    <a href="?app=journal_general"  ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันทั่วไป</a>
+                                </li>
+                                <li
+                                <?PHP 
+                                    if(
+                                        substr($_GET["app"],0,15) =='journal_special'
+                                    ){
+                                        echo ' class="active" ';
+                                    }
+                                ?> 
+                                >
+                                    <a href="#" >
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i> สมุดรายวันเฉพาะ <span class="glyphicon arrow"></span>
+                                    </a>
+                                    <ul class="collapse" >
+                                        <li>
+                                            <a href="?app=journal_special_01" ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันซื่อสินค้า</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=journal_special_02" ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันขายสินค้า</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=journal_special_03" ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันรับเงิน</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=journal_special_04" ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันจ่ายเงิน</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=journal_special_05" ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันส่งคืนสินค้าและจำนวนที่ได้ลด</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=journal_special_06" ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันรับคืนสินค้าและจำนวนที่ลดให้</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+
                         <li
                         <?PHP 
                              if(

@@ -122,6 +122,18 @@
     /* ----------------------------------- //ระบบขายสินค้า// ---------------------------------------------- */
    
 
+    /* ----------------------------------- ระบบบัญชี ---------------------------------------------- */
+
+    else if($_GET['app'] == "other_expense"){
+        require_once("modules/other_expense/views/index.inc.php");
+    }else if($_GET['app'] == "credit_purchasing"){
+        require_once("modules/credit_purchasing/views/index.inc.php");
+    }else if($_GET['app'] == "journal_general"){
+        require_once("modules/journal_general/views/index.inc.php");
+    }
+
+    /* ----------------------------------- //ระบบบัญชี// ---------------------------------------------- */
+
 
     /* ----------------------------------- ระบบรายงาน ---------------------------------------------- */
 

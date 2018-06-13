@@ -6,7 +6,13 @@
         <table width="595" heigth="320">
             <tr>
                 <td style="padding:8px;">
-                    <?PHP echo $invoice_customer['invoice_customer_name']; ?> <br>
+                    <?PHP echo $invoice_customer['invoice_customer_name']; 
+                        if( (int)$invoice_customer['customer_branch'] * 1 == 0){
+                            echo " สำนักงานใหญ่";
+                        } else {
+                            echo "สาขา " . ((int)$invoice_customer['customer_branch'] * 1) ;
+                        }
+                    ?>  <br>
                     <?PHP echo $invoice_customer['invoice_customer_address']; ?><br>
                     เลขประจำตัวผู้เสียภาษี / Tax : <?PHP echo $invoice_customer['invoice_customer_tax']; ?>
                 </td>

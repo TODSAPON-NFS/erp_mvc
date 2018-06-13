@@ -246,7 +246,7 @@ class InvoiceSupplierModel extends BaseModel{
         tb2.purchase_order_list_id, 
         '' as regrind_supplier_list_id,
         CONCAT(product_code_first,product_code) as product_code, 
-        IFNULL(stock_group_id,(SELECT IFNULL(MIN(stock_group_id),0) FROM tb_stock_group WHERE 1)) as stock_group_id,
+        IFNULL(tb_customer_purchase_order_list_detail.stock_group_id,(SELECT IFNULL(MIN(stock_group_id),0) FROM tb_stock_group WHERE 1)) as stock_group_id,
         product_name,  
         IFNULL(purchase_order_list_qty 
         - IFNULL((

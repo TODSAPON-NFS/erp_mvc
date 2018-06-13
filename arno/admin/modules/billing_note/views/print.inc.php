@@ -15,7 +15,14 @@
         <table width="595" heigth="320">
             <tr>
                 <td style="padding:8px;">
-                    <?PHP echo $billing_note['billing_note_name']; ?> <br>
+                    <?PHP echo $billing_note['billing_note_name'];  
+                    if( (int)$billing_note['customer_branch'] * 1 == 0){
+                            echo " สำนักงานใหญ่";
+                        } else {
+                            echo "สาขา " . ((int)$billing_note['customer_branch'] * 1) ;
+                        }
+                        
+                        ?> <br>
                     <?PHP echo $billing_note['billing_note_address']; ?><br>
                     เลขประจำตัวผู้เสียภาษี / Tax : <?PHP echo $billing_note['billing_note_tax']; ?>
                 </td>

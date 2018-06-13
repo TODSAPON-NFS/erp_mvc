@@ -16,7 +16,13 @@
         <table width="480" heigth="320">
             <tr>
                 <td style="padding:8px;">
-                    <?PHP echo $official_receipt['official_receipt_name']; ?> <br>
+                    <?PHP echo $official_receipt['official_receipt_name']; 
+                    if( (int)$official_receipt['customer_branch'] * 1 == 0){
+                        echo " สำนักงานใหญ่";
+                    } else {
+                        echo "สาขา " . ((int)$official_receipt['customer_branch'] * 1) ;
+                    }
+                    ?> <br>
                     <?PHP echo $official_receipt['official_receipt_address']; ?><br>
                     เลขประจำตัวผู้เสียภาษี / Tax : <?PHP echo $official_receipt['official_receipt_tax']; ?>
                 </td>

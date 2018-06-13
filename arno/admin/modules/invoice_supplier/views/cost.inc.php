@@ -1,4 +1,46 @@
+<script>
 
+function calculate(id,all_duty){
+    var cost_price_ex_total =  document.getElementsByName("cost_price_ex_total[]");
+    var invoice_supplier_list_id =  document.getElementsByName("invoice_supplier_list_id[]");
+    var invoice_supplier_list_duty_fix =  document.getElementsByName("invoice_supplier_list_duty_fix[]");
+    var invoice_supplier_list_duty_percent = document.getElementsByName("invoice_supplier_list_duty_percent[]");
+    var invoice_supplier_list_duty = document.getElementsByName("invoice_supplier_list_duty[]");
+
+    var sum = 0.0;
+    var total = 0.0;
+    var count = 0;
+    for(var i = 0 ; i < (invoice_supplier_list_duty_fix.length); i++){
+        var duty = 0.0;
+        var ex_total = parseFloat(cost_price_ex_total[i].value.replace(',',''));
+        console.log(invoice_supplier_list_duty_percent[i].value, " ",ex_total );
+        if(invoice_supplier_list_duty_fix[i].checked){
+            duty = (parseFloat(invoice_supplier_list_duty_percent[i].value.replace(',','')) / 100 ) * ex_total;
+            
+            invoice_supplier_list_duty[i].value = duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        }else{
+            count ++;
+            total += ex_total;
+        }
+        sum += duty;
+    }
+
+    all_duty = all_duty - sum;
+
+    for(var i = 0 ; i < (invoice_supplier_list_duty_fix.length); i++){
+        var duty = 0.0;
+        var ex_total = parseFloat(cost_price_ex_total[i].value.replace(',',''));
+        if(!invoice_supplier_list_duty_fix[i].checked){
+            duty = all_duty * ex_total / total;
+            invoice_supplier_list_duty[i].value = duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+            invoice_supplier_list_duty_percent[i].value = (duty/ex_total*100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"); 
+        }
+    }
+
+
+
+}
+</script>
 <div class="row">
     <div class="col-lg-6">
         <h1 class="page-header">Invoice Supplier Management</h1>
@@ -17,7 +59,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=invoice_supplier&action=edit&id=<?php echo $invoice_supplier_id;?>" >
+                <form role="form" method="post" onsubmit="return check();" action="index.php?app=invoice_supplier&action=edit_cost&id=<?php echo $invoice_supplier_id;?>" >
                     <input type="hidden"  id="invoice_supplier_id" name="invoice_supplier_id" value="<?php echo $invoice_supplier_id; ?>" />
                     <input type="hidden"  id="invoice_supplier_date" name="invoice_supplier_date" value="<?php echo $invoice_supplier['invoice_supplier_date']; ?>" />
                     <div class="row">
@@ -177,7 +219,7 @@
                                 $cost_price_ex_total = $cost_qty * $cost_price_ex;
 
 
-                                $cost_price_duty = $cost_price_total / $cost_duty * $invoice_supplier['import_duty'];
+                                $cost_price_duty = $cost_price_ex_total * $invoice_supplier_lists[$i]['invoice_supplier_list_duty_percent']/100;
 
                                 $cost_price_f = $cost_price_total / $cost_duty * $invoice_supplier['freight_in'];
                                 $cost_total = $cost_price_f + $cost_price_duty + $cost_price_ex_total;
@@ -199,7 +241,38 @@
                                 <td align="right"><?php echo  number_format($cost_price_ex,2); ?></td>
                                 <td align="right"><?php echo  number_format($cost_price_total,2); ?></td>
                                 <td align="right"><?php echo  number_format($cost_price_ex_total,2); ?></td>
-                                <td align="right"><?php echo  number_format($cost_price_duty,2); ?></td>
+                                <td align="right">
+                                <input name="cost_price_ex_total[]" type="hidden" class="form-control" value="<?php echo  number_format($cost_price_ex_total ,2); ?>" />    
+                                <input name="invoice_supplier_list_id[]" type="hidden" class="form-control" value="<?php echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id']; ?>" />    
+                                                 
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <span><b>Fix.</b></span>
+                                            </td>
+                                            <td>
+                                                <input name="invoice_supplier_list_duty_fix[]" type="checkbox" value="1" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Percent.</b></span>
+                                            </td>
+                                            <td>
+                                                <input name="invoice_supplier_list_duty_percent[]" type="text" style="text-align:right;" onchange="calculate('<?php echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id']; ?>','<?php echo $invoice_supplier['import_duty'];?>');" class="form-control" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_duty_percent'] ,2); ?>" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span><b>Price.</b></span>
+                                            </td>
+                                            <td>
+                                                <input name="invoice_supplier_list_duty[]" type="text" style="text-align:right;" class="form-control" value="<?php echo  number_format($cost_price_ex_total * $invoice_supplier_lists[$i]['invoice_supplier_list_duty_percent'] / 100,2); ?>"  readonly />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                </td>
                                 <td align="right"><?php echo  number_format($cost_price_f,2); ?></td>
                                 <td align="right"><?php echo  number_format($cost_total,2); ?></td>
                             </tr>
@@ -316,6 +389,8 @@
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="index.php?app=invoice_supplier" class="btn btn-default">Back</a>
+                            <button type="reset" class="btn btn-primary">Reset</button>
+                            <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

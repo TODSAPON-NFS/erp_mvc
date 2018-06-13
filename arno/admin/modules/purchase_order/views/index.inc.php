@@ -33,6 +33,7 @@ $customer_purchase_order_list_detail_model = new CustomerPurchaseOrderListDetail
 $product_supplier_model = new ProductSupplierModel;
 $first_char = "PO";
 $purchase_order_id = $_GET['id'];
+$purchase_order_list_id = $_GET['purchase_order_list_id'];
 $notification_id = $_GET['notification'];
 $supplier_id = $_GET['supplier_id'];
 $purchase_request_id = $_GET['purchase_request_id'];
@@ -53,11 +54,12 @@ if(!isset($_GET['action'])){
     $supplier_orders = $purchase_order_model->getSupplierOrder();
     $supplier_tests = $purchase_order_model->getSupplierTestOrder();
     $supplier_blankeds = $purchase_order_model->getSupplierBlankedOrder();
+    $supplier_regrinds = $purchase_order_model->getSupplierRegrind();
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
     
-    if($type != "STANDARD" && $type != "TEST" && $type != "BLANKED"){
+    if($type != "STANDARD" && $type != "TEST" && $type != "BLANKED" && $type != "REGRIND"){
         $type = "STANDARD";
     } 
 
@@ -513,6 +515,45 @@ if(!isset($_GET['action'])){
     <script>window.history.back();</script>
         <?php
     }
+        
+        
+    
+}else if ($_GET['action'] == 'balance'){
+
+    $purchase_order_lists = $purchase_order_list_model->getPurchaseOrderListBy($purchase_order_id);
+
+    for($i=0; $i < count($purchase_order_lists) ; $i++){
+        if($purchase_order_list_id > 0 ){
+            if($purchase_order_list_id == $purchase_order_lists[$i]['purchase_order_list_id'] ){
+                $data_sub = [];
+                $data_sub['purchase_order_id'] = $purchase_order_id;
+                $data_sub['product_id'] = $purchase_order_lists[$i]['product_id'];
+                $data_sub['purchase_order_list_qty'] = $purchase_order_lists[$i]['purchase_order_list_qty_recieve'];
+                $data_sub['purchase_order_list_price'] = $purchase_order_lists[$i]['purchase_order_list_price'];
+                $data_sub['purchase_order_list_price_sum'] = $purchase_order_lists[$i]['purchase_order_list_price_sum'];
+                $data_sub['purchase_order_list_delivery_min'] = $purchase_order_lists[$i]['purchase_order_list_delivery_min'];
+                $data_sub['purchase_order_list_delivery_max'] = $purchase_order_lists[$i]['purchase_order_list_delivery_max'];
+                $data_sub['purchase_order_list_remark'] = $purchase_order_lists[$i]['purchase_order_list_remark'];
+                $purchase_order_list_model->updatePurchaseOrderListByIdAdmin($data_sub,$purchase_order_lists[$i]['purchase_order_list_id']);
+            }
+        }else{
+            $data_sub = [];
+            $data_sub['purchase_order_id'] = $purchase_order_id;
+            $data_sub['product_id'] = $purchase_order_lists[$i]['product_id'];
+            $data_sub['purchase_order_list_qty'] = $purchase_order_lists[$i]['purchase_order_list_qty_recieve'];
+            $data_sub['purchase_order_list_price'] = $purchase_order_lists[$i]['purchase_order_list_price'];
+            $data_sub['purchase_order_list_price_sum'] = $purchase_order_lists[$i]['purchase_order_list_price_sum'];
+            $data_sub['purchase_order_list_delivery_min'] = $purchase_order_lists[$i]['purchase_order_list_delivery_min'];
+            $data_sub['purchase_order_list_delivery_max'] = $purchase_order_lists[$i]['purchase_order_list_delivery_max'];
+            $data_sub['purchase_order_list_remark'] = $purchase_order_lists[$i]['purchase_order_list_remark'];
+            $purchase_order_list_model->updatePurchaseOrderListByIdAdmin($data_sub,$purchase_order_lists[$i]['purchase_order_list_id']);
+        }
+        
+    } 
+    
+?>
+    <script>window.location="index.php?app=purchase_order&action=detail&id=<?php echo $purchase_order_id;?>"</script>
+<?php 
         
         
     

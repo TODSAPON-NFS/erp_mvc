@@ -279,6 +279,13 @@
                                 <p class="help-block">Example : -.</p>
                             </div>
                         </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>วันที่แจ้งเตือน  / Alert Date</label>
+                                <input type="text" id="purchase_request_alert" name="purchase_request_alert" value="<?PHP echo $purchase_request['purchase_request_alert'];?>"  class="form-control calendar" readonly/>
+                                <p class="help-block">01-03-2018</p>
+                            </div>
+                        </div>
                     </div>
 
                     <table width="100%" class="table table-striped table-bordered table-hover" >

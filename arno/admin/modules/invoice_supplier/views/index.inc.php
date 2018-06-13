@@ -319,6 +319,26 @@ if(!isset($_GET['action'])){
         
         
     
+}else if ($_GET['action'] == 'edit_cost'){
+    
+
+    $invoice_supplier_list_id = $_POST['invoice_supplier_list_id'];
+    $invoice_supplier_list_duty_percent = $_POST['invoice_supplier_list_duty_percent'];
+    
+    if(is_array($invoice_supplier_list_id)){
+        for($i=0; $i < count($invoice_supplier_list_id) ; $i++){
+            $invoice_supplier_list_model->updateDutyPercentListById($invoice_supplier_list_duty_percent[$i],$invoice_supplier_list_id[$i]); 
+        }
+    }else if($invoice_supplier_list_id != ""){
+        
+            $invoice_supplier_list_model->updateDutyPercentListById($invoice_supplier_list_duty_percent,$invoice_supplier_list_id);
+        
+    }
+?>
+        <script>window.location="index.php?app=invoice_supplier&action=cost&id=<?php echo $invoice_supplier_id;?>"</script>
+<?php
+
+    
 }else{
 
     $date_start = $_GET['date_start'];

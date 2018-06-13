@@ -9,6 +9,7 @@ class InvoiceSupplierListModel extends BaseModel{
 
     function getInvoiceSupplierListBy($invoice_supplier_id){
         $sql = " SELECT tb_invoice_supplier_list.product_id, 
+        invoice_supplier_list_id,
         CONCAT(product_code_first,product_code) as product_code, 
         product_name, 
         purchase_order_list_id,
@@ -16,6 +17,7 @@ class InvoiceSupplierListModel extends BaseModel{
         invoice_supplier_list_product_name, 
         invoice_supplier_list_product_detail, 
         invoice_supplier_list_qty, 
+        invoice_supplier_list_duty_percent, 
         invoice_supplier_list_price, 
         invoice_supplier_list_total, 
         invoice_supplier_list_cost, 
@@ -43,6 +45,7 @@ class InvoiceSupplierListModel extends BaseModel{
             product_id,
             invoice_supplier_list_product_name,
             invoice_supplier_list_product_detail,
+            invoice_supplier_list_duty_percent,
             invoice_supplier_list_qty,
             invoice_supplier_list_price, 
             invoice_supplier_list_total,
@@ -59,6 +62,7 @@ class InvoiceSupplierListModel extends BaseModel{
             '".$data['product_id']."', 
             '".$data['invoice_supplier_list_product_name']."', 
             '".$data['invoice_supplier_list_product_detail']."', 
+            '".$data['invoice_supplier_list_duty_percent']."', 
             '".$data['invoice_supplier_list_qty']."', 
             '".$data['invoice_supplier_list_price']."', 
             '".$data['invoice_supplier_list_total']."', 
@@ -137,6 +141,22 @@ class InvoiceSupplierListModel extends BaseModel{
 
             mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
 
+           return true;
+        }else {
+            return false;
+        }
+    }
+
+
+    function updateDutyPercentListById($invoice_supplier_list_duty_percent,$id){
+
+        $sql = " UPDATE tb_invoice_supplier_list 
+            SET invoice_supplier_list_duty_percent = '".$invoice_supplier_list_duty_percent."' 
+            WHERE invoice_supplier_list_id = '$id' 
+        ";
+
+        //echo $sql . "<br><br>";
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;

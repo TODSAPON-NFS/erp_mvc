@@ -149,6 +149,7 @@ class PurchaseRequestModel extends BaseModel{
    
     function updatePurchaseRequestByID($id,$data = []){
         $sql = " UPDATE tb_purchase_request SET 
+        purchase_request_alert = '".$data['purchase_request_alert']."', 
         purchase_request_code = '".$data['purchase_request_code']."', 
         purchase_request_type = '".$data['purchase_request_type']."', 
         customer_id = '".$data['customer_id']."', 
@@ -197,6 +198,7 @@ class PurchaseRequestModel extends BaseModel{
         $sql = " INSERT INTO tb_purchase_request (
             purchase_request_rewrite_id,
             purchase_request_rewrite_no,
+            purchase_request_alert,
             purchase_request_code,
             purchase_request_type,
             customer_id,
@@ -210,6 +212,7 @@ class PurchaseRequestModel extends BaseModel{
         VALUES ('".
         $data['purchase_request_rewrite_id']."','".
         $data['purchase_request_rewrite_no']."','".
+        $data['purchase_request_alert']."','".
         $data['purchase_request_code']."','".
         $data['purchase_request_type']."','".
         $data['customer_id']."','".

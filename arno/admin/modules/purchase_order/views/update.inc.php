@@ -531,7 +531,7 @@
                                 <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>ผู้ขาย / Supplier  <font color="#F00"><b>*</b></font> </label>
-                                        <input type="hidden" id="supplier_id" name="supplier_id" value="<?PHP echo $supplier_id; ?>"/>
+                                        <input type="hidden" id="supplier_id" name="supplier_id" value="<?PHP echo $supplier['supplier_id']; ?>"/>
                                         <select id="supplier_select" name="supplier_select" class="form-control select" onchange="get_supplier_detail()" data-live-search="true" <?PHP if($type == "BLANKED"){?> DISABLED <?}?>>
                                             <option value="">Select</option>
                                             <?php 

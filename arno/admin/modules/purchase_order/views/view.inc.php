@@ -16,53 +16,118 @@
     <!-- /.col-lg-12 -->
 </div>
 
-<!-- /.row -->
-<div class="row">
-    <div class="col-lg-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-            เปิดใบสั่งซื้ออ้างอิงตามบริษัท / Purchase order to do
+<ul class="nav nav-tabs">
+    <li  class="active" ><a data-toggle="tab" class="tabs" href="#standard">Standard Order <?PHP if(count($supplier_orders) > 0){ ?>(<b style="color:red;"><?PHP echo count($supplier_orders); ?></b>)<?PHP } ?></a></li>
+    <li><a class="tabs" data-toggle="tab" href="#blanked">Blanked Order <?PHP if(count($supplier_blankeds) > 0){ ?>(<b style="color:red;"><?PHP echo count($supplier_blankeds); ?></b>)<?PHP } ?> </a></li>
+    <li><a class="tabs" data-toggle="tab" href="#test">Test Order <?PHP if(count($supplier_tests) > 0){ ?>(<b style="color:red;"><?PHP echo count($supplier_tests); ?></b>)<?PHP } ?> </a></li> 
+    <li><a class="tabs" data-toggle="tab" href="#regrind">Regrind Order <?PHP if(count($supplier_regrinds) > 0){ ?>(<b style="color:red;"><?PHP echo count($supplier_regrinds); ?></b>)<?PHP } ?> </a></li> 
+  </ul>
+
+  <div class="tab-content">
+
+    <div id="standard" class="tab-pane fade">
+        <h3>Standard Order</h3>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                    เปิดใบสั่งซื้ออ้างอิงตามบริษัท / Purchase order to do
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+
+                        <table width="100%" class="table table-striped table-bordered table-hover" >
+                            <thead>
+                                <tr>
+                                    <th width="64px" >ลำดับ <br>No.</th>
+                                    <th>ผู้ขาย <br>Supplier</th>
+                                    <th width="180px" >เปิดใบสั่งซื้อ <br>Open purchase order</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                for($i=0; $i < count($supplier_orders); $i++){
+                                ?>
+                                <tr class="odd gradeX">
+                                    <td><?php echo $i+1; ?></td>
+                                    <td><?php echo $supplier_orders[$i]['supplier_name_en']; ?> (<?php echo $supplier_orders[$i]['supplier_name_th']; ?>)</td>
+                                    <td>
+                                        <a href="?app=purchase_order&action=insert&supplier_id=<?php echo $supplier_orders[$i]['supplier_id'];?>">
+                                            <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+                                <?
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
             </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                    <thead>
-                        <tr>
-                            <th width="64px" >ลำดับ <br>No.</th>
-                            <th>ผู้ขาย <br>Supplier</th>
-                            <th width="180px" >เปิดใบสั่งซื้อ <br>Open purchase order</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                        for($i=0; $i < count($supplier_orders); $i++){
-                        ?>
-                        <tr class="odd gradeX">
-                            <td><?php echo $i+1; ?></td>
-                            <td><?php echo $supplier_orders[$i]['supplier_name_en']; ?> (<?php echo $supplier_orders[$i]['supplier_name_th']; ?>)</td>
-                            <td>
-                                <a href="?app=purchase_order&action=insert&supplier_id=<?php echo $supplier_orders[$i]['supplier_id'];?>">
-                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
-                                </a>
-
-                            </td>
-
-                        </tr>
-                        <?
-                        }
-                        ?>
-                    </tbody>
-                </table>
-                
-            </div>
-            <!-- /.panel-body -->
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /.panel -->
-    </div>
-    <!-- /.col-lg-12 -->
 
-    <div class="col-lg-6">
+
+    </div>
+
+    <div id="blanked" class="tab-pane fade">
+        <h3>Blanked Order</h3>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                    เปิดใบสั่งซื้อสินค้าอ้างอิงตามบริษัท / Blanked order to do
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+
+                        <table width="100%" class="table table-striped table-bordered table-hover" >
+                            <thead>
+                                <tr>
+                                    <th width="64px" >ลำดับ <br>No.</th>
+                                    <th>ผู้ขาย <br>Supplier</th>
+                                    <th width="180px" >เปิดใบสั่งซื้อ <br>Open Blanked order</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                for($i=0; $i < count($supplier_blankeds); $i++){
+                                ?>
+                                <tr class="odd gradeX">
+                                    <td><?php echo $i+1; ?></td>
+                                    <td><?php echo $supplier_blankeds[$i]['purchase_request_code']; ?> <?php echo $supplier_blankeds[$i]['supplier_name_en']; ?> (<?php echo $supplier_blankeds[$i]['supplier_name_th']; ?>)</td>
+                                    <td>
+                                        <a href="?app=purchase_order&action=insert&type=blanked&purchase_request_id=<?php echo $supplier_blankeds[$i]['purchase_request_id'];?>&supplier_id=<?php echo $supplier_blankeds[$i]['supplier_id'];?>">
+                                            <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+                                <?
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+    </div>
+
+    <div id="test" class="tab-pane fade in active">
+        <h3>Test Order</h3>
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
@@ -72,7 +137,7 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
 
-                        <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <table width="100%" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th width="64px" >ลำดับ <br>No.</th>
@@ -107,32 +172,37 @@
                 <!-- /.panel -->
             </div>
             <!-- /.col-lg-12 -->
+        </div>
+    </div>
 
+    <div id="regrind" class="tab-pane fade">
+        <h3>Regrind Order</h3>
+        <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                    เปิดใบสั่งซื้อสินค้าทดลองอ้างอิงตามบริษัท / Test order to do
+                    เปิดใบสั่งซื้อสินค้าทดลองอ้างอิงตามบริษัท / Regrind order to do
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
 
-                        <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <table width="100%" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th width="64px" >ลำดับ <br>No.</th>
                                     <th>ผู้ขาย <br>Supplier</th>
-                                    <th width="180px" >เปิดใบสั่งซื้อ <br>Open Test order</th>
+                                    <th width="180px" >เปิดใบสั่งซื้อ <br>Open Regrind order</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php 
-                                for($i=0; $i < count($supplier_blankeds); $i++){
+                                for($i=0; $i < count($supplier_regrinds); $i++){
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $supplier_blankeds[$i]['supplier_name_en']; ?> <?php echo $supplier_blankeds[$i]['supplier_name_en']; ?> (<?php echo $supplier_blankeds[$i]['supplier_name_th']; ?>)</td>
+                                    <td><?php echo $supplier_regrinds[$i]['supplier_name_en']; ?> (<?php echo $supplier_regrinds[$i]['supplier_name_th']; ?>)</td>
                                     <td>
-                                        <a href="?app=purchase_order&action=insert&type=blanked&purchase_request_id=<?php echo $supplier_blankeds[$i]['purchase_request_id'];?>&supplier_id=<?php echo $supplier_blankeds[$i]['supplier_id'];?>">
+                                        <a href="?app=purchase_order&action=insert&type=regrind&supplier_id=<?php echo $supplier_regrinds[$i]['supplier_id'];?>">
                                             <i class="fa fa-plus-square" aria-hidden="true"></i>
                                         </a>
 
@@ -151,10 +221,15 @@
                 <!-- /.panel -->
             </div>
             <!-- /.col-lg-12 -->
-
         </div>
+
     </div>
+
 </div>
+
+
+
+
 
 
 <!-- /.row -->

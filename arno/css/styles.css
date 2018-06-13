@@ -52,6 +52,12 @@
     background-color: #337ab7;
 }
 
+
+.nav>li.active > a.tabs{
+    color:#337ab7 !important; 
+    background-color: #ffffff !important;
+}
+
 .nav>li>ul>li>a {
     position: relative;
     display: block;

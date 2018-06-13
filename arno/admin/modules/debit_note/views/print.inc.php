@@ -14,7 +14,14 @@
         <table width="595" heigth="320">
             <tr>
                 <td style="padding:8px;">
-                    <?PHP echo $debit_note['debit_note_name']; ?> <br>
+                    <?PHP echo $debit_note['debit_note_name']; 
+                    if( (int)$debit_note['customer_branch'] * 1 == 0){
+                        echo " สำนักงานใหญ่";
+                    } else {
+                        echo "สาขา " . ((int)$debit_note['customer_branch'] * 1) ;
+                    }
+                    
+                    ?> <br>
                     <?PHP echo $debit_note['debit_note_address']; ?><br>
                     เลขประจำตัวผู้เสียภาษี / Tax : <?PHP echo $debit_note['debit_note_tax']; ?>
                 </td>

@@ -14,7 +14,13 @@
         <table width="595" heigth="320">
             <tr>
                 <td style="padding:8px;">
-                    <?PHP echo $credit_note['credit_note_name']; ?> <br>
+                    <?PHP echo $credit_note['credit_note_name']; 
+                    if( (int)$credit_note['customer_branch'] * 1 == 0){
+                        echo " สำนักงานใหญ่";
+                    } else {
+                        echo "สาขา " . ((int)$credit_note['customer_branch'] * 1) ;
+                    }
+                    ?> <br>
                     <?PHP echo $credit_note['credit_note_address']; ?><br>
                     เลขประจำตัวผู้เสียภาษี / Tax : <?PHP echo $credit_note['credit_note_tax']; ?>
                 </td>

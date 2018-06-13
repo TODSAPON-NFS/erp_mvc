@@ -381,6 +381,34 @@
 
     }
 
+    function generate_credit_date(){
+        var day = parseInt($('#invoice_customer_due_day').val());
+        var date = $('#invoice_customer_date').val();
+
+        var current_date = new Date();
+        var tomorrow = new Date();
+
+        if(isNaN(day)){
+            $('#invoice_customer_due_day').val(0);
+            day = 0;
+        }else if (date == ""){
+            $('#invoice_customer_date').val(("0" + current_date.getDate() ) .slice(-2) + '-' + ("0" + current_date.getMonth() + 1).slice(-2) + '-' + current_date.getFullYear());
+        }
+
+        if (day > 0){
+            $('#invoice_customer_term').val("เครดิต");
+        }else{
+            $('#invoice_customer_term').val("เงินสด");
+        }
+
+        tomorrow.setDate(current_date.getDate()+day);
+        $('#invoice_customer_due').val(("0" + tomorrow.getDate() ) .slice(-2) + '-' + ("0" + (tomorrow.getMonth()+1) ).slice(-2) + '-' + tomorrow.getFullYear());
+        
+
+    }
+
+
+generate_credit_date();
 </script>
 
 <div class="row">
@@ -461,7 +489,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่ออกใบกำกับภาษี / Date</label>
-                                        <input type="text" id="invoice_customer_date" name="invoice_customer_date" value="<?PHP echo $invoice_customer['invoice_customer_date'];?>"  class="form-control calendar" readonly/>
+                                        <input type="text" id="invoice_customer_date" name="invoice_customer_date" value="<?PHP echo $invoice_customer['invoice_customer_date'];?>" onchange="generate_credit_date();"  class="form-control calendar" readonly/>
                                         <p class="help-block">01-03-2018</p>
                                     </div>
                                 </div>
@@ -473,11 +501,17 @@
                                         <p class="help-block">Example : INV1801001.</p>
                                     </div>
                                 </div>
-                                
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>เครดิต / Credit Day </label>
+                                        <input type="text" id="invoice_customer_due_day" name="invoice_customer_due_day"  class="form-control" value="<?php echo $customer['credit_day'];?>" onchange="generate_credit_date();"/>
+                                        <p class="help-block">01-03-2018 </p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>กำหนดชำระ / Due </label>
-                                        <input type="text" id="invoice_customer_due" name="invoice_customer_due"  class="form-control calendar" value="<?PHP echo $invoice_customer['invoice_customer_due'];?>" readonly/>
+                                        <input type="text" id="invoice_customer_due" name="invoice_customer_due"  class="form-control calendar" value="<?PHP echo $invoice_customer['invoice_customer_due'];?>" onchange="generate_credit_date();" readonly/>
                                         <p class="help-block">01-03-2018 </p>
                                     </div>
                                 </div>

@@ -130,6 +130,10 @@
         require_once("modules/credit_purchasing/views/index.inc.php");
     }else if($_GET['app'] == "journal_general"){
         require_once("modules/journal_general/views/index.inc.php");
+    }else if($_GET['app'] == "journal_special_03"){
+        require_once("modules/journal_cash_receipt/views/index.inc.php");
+    }else if($_GET['app'] == "journal_special_04"){
+        require_once("modules/journal_cash_payment/views/index.inc.php");
     }
 
     /* ----------------------------------- //ระบบบัญชี// ---------------------------------------------- */

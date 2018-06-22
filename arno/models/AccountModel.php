@@ -34,6 +34,20 @@ class AccountModel extends BaseModel{
         }
     }
 
+
+    function getAccountNode(){
+        $sql = "SELECT * FROM tb_account WHERE tb_account.account_type = '0'  ORDER BY account_code ";
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+
+
     function getAccountByID($id){
         $sql = " SELECT 
             tb_account.account_id , 
@@ -63,12 +77,12 @@ class AccountModel extends BaseModel{
 
     function updateAccountByID($id,$data = []){
         $sql = " UPDATE tb_account SET 
-        account_code = '".$data['account_code']."',
-        account_name_th = '".$data['account_name_th']."',
-        account_name_en = '".$data['account_name_en']."',
-        account_control = '".$data['account_control']."',
-        account_level = '".$data['account_level']."',
-        account_group = '".$data['account_group']."',
+        account_code = '".$data['account_code']."', 
+        account_name_th = '".$data['account_name_th']."', 
+        account_name_en = '".$data['account_name_en']."', 
+        account_control = '".$data['account_control']."', 
+        account_level = '".$data['account_level']."', 
+        account_group = '".$data['account_group']."', 
         account_type = '".$data['account_type']."'  
         WHERE account_id = $id 
         ";
@@ -81,6 +95,24 @@ class AccountModel extends BaseModel{
             return false;
         }
     }
+
+
+    function updateBeginByID($id,$data = []){
+        $sql = " UPDATE tb_account SET 
+        account_debit_begin = '".$data['account_debit_begin']."', 
+        account_credit_begin = '".$data['account_credit_begin']."'  
+        WHERE account_id = '$id' 
+        ";
+
+        //echo '<br><br>'.$sql;
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
 
     function insertAccount($data = []){
         $sql = " INSERT INTO tb_account (

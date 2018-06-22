@@ -7,7 +7,7 @@ class InvoiceCustomerModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getInvoiceCustomerBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = ""){
+    function getInvoiceCustomerBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = "",$begin = "0"){
 
         $str_customer = "";
         $str_date = "";
@@ -47,11 +47,14 @@ class InvoiceCustomerModel extends BaseModel{
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
             OR  invoice_customer_code LIKE ('%$keyword%') 
         ) 
+        AND invoice_customer_begin = '$begin' 
         $str_customer 
         $str_date 
         $str_user  
         ORDER BY STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s'),invoice_customer_code DESC 
          ";
+
+         //echo $sql;
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -62,6 +65,9 @@ class InvoiceCustomerModel extends BaseModel{
         }
 
     }
+
+
+
 
     function getInvoiceCustomerByID($id){
         $sql = " SELECT * 
@@ -154,6 +160,7 @@ class InvoiceCustomerModel extends BaseModel{
         invoice_customer_term = '".$data['invoice_customer_term']."', 
         invoice_customer_due = '".$data['invoice_customer_due']."', 
         invoice_customer_close = '".$data['invoice_customer_close']."', 
+        invoice_customer_begin = '".$data['invoice_customer_begin']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
         WHERE invoice_customer_id = $id 
@@ -310,6 +317,7 @@ class InvoiceCustomerModel extends BaseModel{
             invoice_customer_tax,
             invoice_customer_term,
             invoice_customer_due,
+            invoice_customer_begin,  
             addby,
             adddate,
             updateby,
@@ -328,6 +336,7 @@ class InvoiceCustomerModel extends BaseModel{
         $data['invoice_customer_tax']."','".
         $data['invoice_customer_term']."','".
         $data['invoice_customer_due']."','".
+        $data['invoice_customer_begin']."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].

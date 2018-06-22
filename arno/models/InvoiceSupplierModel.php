@@ -7,7 +7,7 @@ class InvoiceSupplierModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getInvoiceSupplierBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = ""){
+    function getInvoiceSupplierBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = "",$begin = '0'){
 
         $str_supplier = "";
         $str_date = "";
@@ -51,6 +51,7 @@ class InvoiceSupplierModel extends BaseModel{
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
             OR  invoice_supplier_code LIKE ('%$keyword%') 
         ) 
+        AND invoice_supplier_begin = '$begin' 
         $str_supplier 
         $str_date 
         $str_user  
@@ -125,6 +126,7 @@ class InvoiceSupplierModel extends BaseModel{
         invoice_supplier_tax = '".$data['invoice_supplier_tax']."', 
         invoice_supplier_term = '".$data['invoice_supplier_term']."', 
         invoice_supplier_due = '".$data['invoice_supplier_due']."',  
+        invoice_supplier_begin = '".$data['invoice_supplier_begin']."', 
         import_duty = '".$data['import_duty']."', 
         freight_in = '".$data['freight_in']."', 
         updateby = '".$data['updateby']."', 
@@ -313,6 +315,7 @@ class InvoiceSupplierModel extends BaseModel{
             invoice_supplier_tax,
             invoice_supplier_term,
             invoice_supplier_due, 
+            invoice_supplier_begin,
             import_duty, 
             freight_in, 
             addby,
@@ -334,7 +337,8 @@ class InvoiceSupplierModel extends BaseModel{
         $data['invoice_supplier_address']."','".
         $data['invoice_supplier_tax']."','".
         $data['invoice_supplier_term']."','".
-        $data['invoice_supplier_due']."','". 
+        $data['invoice_supplier_due']."','".  
+        $data['invoice_supplier_begin']."','". 
         $data['import_duty']."','".
         $data['freight_in']."','".
         $data['addby']."',".

@@ -13,8 +13,6 @@
         require_once("modules/user_position/views/index.inc.php");
     }else if($_GET['app'] == "employee_license"){
         require_once("modules/user_license/views/index.inc.php");
-    }else if($_GET['app'] == "account"){
-        require_once("modules/account/views/index.inc.php");
     }
     
 
@@ -124,7 +122,21 @@
 
     /* ----------------------------------- ระบบบัญชี ---------------------------------------------- */
 
-    else if($_GET['app'] == "other_expense"){
+    else if($_GET['app'] == "account"){
+        require_once("modules/account/views/index.inc.php");
+    }else if($_GET['app'] == "summit_dedit"){
+        require_once("modules/invoice_customer_begin/views/index.inc.php");
+    }else if($_GET['app'] == "summit_credit"){
+        require_once("modules/invoice_supplier_begin/views/index.inc.php");
+    }else if($_GET['app'] == "summit_product"){
+        require_once("modules/summit_product/views/index.inc.php");
+    }else if($_GET['app'] == "summit_check_pre_receipt"){
+        require_once("modules/summit_check_pre_receipt/views/index.inc.php");
+    }else if($_GET['app'] == "summit_check_pre_pay"){
+        require_once("modules/summit_check_pre_pay/views/index.inc.php");
+    }else if($_GET['app'] == "summit_account"){
+        require_once("modules/account_begin/views/index.inc.php");
+    }else if($_GET['app'] == "other_expense"){
         require_once("modules/other_expense/views/index.inc.php");
     }else if($_GET['app'] == "credit_purchasing"){
         require_once("modules/credit_purchasing/views/index.inc.php");

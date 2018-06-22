@@ -525,7 +525,7 @@
                                     <div class="form-group">
                                         <label>หมายเลขรับใบกำกับภาษี / recieve code <font color="#F00"><b>*</b></font></label>
                                         <input id="invoice_supplier_code_gen" name="invoice_supplier_code_gen" class="form-control" value="<?PHP echo $invoice_supplier['invoice_supplier_code_gen'];?>" readonly>
-                                        <p class="help-block">Example : INV1801001.</p>
+                                        <p class="help-block">Example : RR1801001 OR RF1801001.</p>
                                     </div>
                                 </div>
 

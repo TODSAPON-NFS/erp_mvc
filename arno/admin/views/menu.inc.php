@@ -94,7 +94,6 @@
                                 || $_GET["app"]=='supplier'
                                 || $_GET["app"]=='customer'
                                 || $_GET["app"]=='product'
-                                || $_GET["app"]=='account'
                             ){
                                 echo ' class="active" ';
                             }
@@ -118,9 +117,7 @@
                                 <li>
                                     <a href="?app=product"><i class="fa  fa-cubes fa-fw" aria-hidden="true"></i> สินค้า (Product)</a>
                                 </li>
-                                <li>
-                                    <a href="?app=account"><i class="fa  fa-cubes fa-fw" aria-hidden="true"></i> ผังบัญชี (Account Stucture)</a>
-                                </li>
+                                
                             </ul>
                         </li>
                         <li 
@@ -276,10 +273,14 @@
                         <li
                         <?PHP 
                              if(
+                                 
+                                $_GET["app"]=='account' || 
+                                substr($_GET["app"],0,15) =='journal_special' ||
                                 $_GET["app"] =='other_expense' ||
                                 $_GET["app"] =='credit_purchasing' ||
                                 $_GET["app"] =='journal_general' ||
-                                substr($_GET["app"],0,15) =='journal_special' 
+                                substr($_GET["app"],0,15) =='journal_special' ||
+                                substr($_GET["app"],0,7) =='summit_'
                             ){
                                 echo ' class="active" ';
                             }
@@ -289,6 +290,42 @@
                                 ระบบบัญชี <span class="glyphicon arrow"></span>
                             </a>
                             <ul class="collapse"> 
+                                <li>
+                                    <a href="?app=account"><i class="fa  fa-cubes fa-fw" aria-hidden="true"></i> ผังบัญชี (Account Stucture)</a>
+                                </li>
+                                <li
+                                <?PHP 
+                                    if(
+                                        substr($_GET["app"],0,7) =='summit_'
+                                    ){
+                                        echo ' class="active" ';
+                                    }
+                                ?> 
+                                >
+                                    <a href="#" >
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i> บันทึกยอดยกมา <span class="glyphicon arrow"></span>
+                                    </a>
+                                    <ul class="collapse" >
+                                        <li>
+                                            <a href="?app=summit_dedit" ><i class="fa fa-outdent" aria-hidden="true"></i> ลูกหนี้คงค้าง</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=summit_credit" ><i class="fa fa-outdent" aria-hidden="true"></i> เจ้าหนี้คงค้าง</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=summit_product" ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้า/วัตถุดิบ </a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=summit_check_pre_receipt" ><i class="fa fa-outdent" aria-hidden="true"></i> เช็ครับล่วงหน้า </a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=summit_check_pre_pay" ><i class="fa fa-outdent" aria-hidden="true"></i> เช็คจ่ายล่วงหน้า</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=summit_account" ><i class="fa fa-outdent" aria-hidden="true"></i> ยอดบัญชี</a>
+                                        </li>
+                                    </ul>
+                                </li>
                                 <li>
                                     <a href="?app=other_expense"  ><i class="fa fa-outdent" aria-hidden="true"></i> ค่าใช้จ่ายอื่นๆ</a>
                                 </li>

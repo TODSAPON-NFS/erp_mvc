@@ -119,7 +119,6 @@ class CustomerPurchaseOrderModel extends BaseModel{
         WHERE customer_purchase_order_id = '$id' 
         "; 
 
-echo $sql;
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

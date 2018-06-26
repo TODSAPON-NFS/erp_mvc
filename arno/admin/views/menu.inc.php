@@ -112,7 +112,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="?app=customer"><i class="fa fa-users" aria-hidden="true"></i> ลูกค้า (Employee)</a>
+                                    <a href="?app=customer"><i class="fa fa-users" aria-hidden="true"></i> ลูกค้า (Customer)</a>
                                 </li>
                                 <li>
                                     <a href="?app=product"><i class="fa  fa-cubes fa-fw" aria-hidden="true"></i> สินค้า (Product)</a>

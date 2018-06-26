@@ -31,6 +31,8 @@
       
     else if($_GET['app'] == "customer"){
         require_once("modules/customer/views/index.inc.php");
+    }else if($_GET['app'] == "customer_end_users"){
+        require_once("modules/customer_end_user/views/index.inc.php");
     }else if($_GET['app'] == "customer_account"){
         require_once("modules/customer_account/views/index.inc.php");
     }else if($_GET['app'] == "customer_contact"){

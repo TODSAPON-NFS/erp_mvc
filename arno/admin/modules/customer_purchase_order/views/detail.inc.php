@@ -47,6 +47,12 @@
                                         <p class="help-block"><?php echo $customer_purchase_order['customer_tax']?></p>
                                     </div>
                                 </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>ขายให้ / End users   <font color="#F00"><b>*</b></font> </label>
+                                        <p class="help-block"><?php echo $customer_purchase_order['end_user_name'] ?></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-4">

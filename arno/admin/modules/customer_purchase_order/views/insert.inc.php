@@ -572,6 +572,23 @@
                                     </div>
                                 </div>
 
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>ขายให้ / End users  <font color="#F00"><b>*</b></font> </label>
+                                        <select id="end_user_id" name="end_user_id" class="form-control select"  data-live-search="true">
+                                            <option value="0">Select</option>
+                                            <?php 
+                                            for($i =  0 ; $i < count($customers) ; $i++){
+                                            ?>
+                                            <option <?php if($customers[$i]['customer_id'] == $customer_purchase_order['end_user_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
+                                            <?
+                                            }
+                                            ?>
+                                        </select>
+                                        <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <div class="col-lg-2">

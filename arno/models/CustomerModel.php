@@ -7,16 +7,19 @@ class CustomerModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getcustomerBy($customer_code = '',$customer_name_th = '',$customer_name_en = '', $customer_tax = '', $customer_email = '', $customer_tel  = ''){
-        $sql = " SELECT customer_id, customer_code, customer_name_th, customer_name_en , customer_tax , customer_tel, customer_email   
-        FROM tb_customer 
-        WHERE customer_code LIKE ('%$customer_code%') 
-        OR customer_name_th LIKE ('%$customer_name_th%') 
-        OR customer_name_en LIKE ('%$customer_name_en%') 
-        OR customer_tax LIKE ('%$customer_tax%') 
-        OR customer_tel LIKE ('%$customer_tel%') 
-        OR customer_email LIKE ('%$customer_email%') 
-        ORDER BY customer_name_th  
+    function getcustomerBy($keyword = ''){
+        $sql = " SELECT customer_id, customer_code, customer_name_th, customer_name_en , customer_tax , customer_tel, customer_email, 
+        IFNULL( (
+            SELECT customer_name_th FROM tb_customer WHERE customer_id = tb1.customer_id
+        ) ,'-') as end_users    
+        FROM tb_customer as tb1
+        WHERE customer_code LIKE ('%$keyword%') 
+        OR customer_name_th LIKE ('%$keyword%') 
+        OR customer_name_en LIKE ('%$keyword%') 
+        OR customer_tax LIKE ('%$keyword%') 
+        OR customer_tel LIKE ('%$keyword%') 
+        OR customer_email LIKE ('%$keyword%') 
+        ORDER BY customer_code  
         ";
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -26,6 +29,43 @@ class CustomerModel extends BaseModel{
             $result->close();
             return $data;
         }
+
+    }
+
+    function getEndUserByCustomerID($customer_id){
+        $sql = " SELECT customer_id, customer_code, customer_name_th, customer_name_en , customer_tax , customer_tel, customer_email   
+        FROM tb_customer as tb1
+        WHERE customer_end_user = '$customer_id'
+        ORDER BY customer_code  
+        ";
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getCustomerNotEndUserByID($customer_id){
+        $sql = " SELECT customer_id, customer_code, customer_name_th, customer_name_en , customer_tax , customer_tel, customer_email   
+        FROM tb_customer as tb1
+        WHERE customer_end_user = '0' 
+        AND customer_id != '$customer_id' 
+        ORDER BY customer_code  
+        ";
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+
 
     }
 
@@ -60,6 +100,39 @@ class CustomerModel extends BaseModel{
             $result->close();
             return $data;
         }
+
+    }
+
+
+    function deleteEndUserByID($id){
+        $sql = " UPDATE tb_customer SET 
+        customer_end_user = '0' 
+        WHERE customer_id = $id 
+        ";
+
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+
+
+    }
+
+    function insertEndUserByID($customer_id,$id){
+        $sql = " UPDATE tb_customer SET 
+        customer_end_user = '$customer_id' 
+        WHERE customer_id = $id 
+        ";
+
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+
 
     }
 

@@ -103,6 +103,7 @@ if(!isset($_GET['action'])){
     if(isset($_POST['customer_purchase_order_code'])){
         $data = [];
         $data['customer_id'] = $_POST['customer_id'];
+        $data['end_user_id'] = $_POST['end_user_id'];
         $data['employee_id'] = $_POST['employee_id'];
         $data['customer_purchase_order_code'] = $_POST['customer_purchase_order_code'];
         $data['customer_purchase_order_date'] = $_POST['customer_purchase_order_date'];
@@ -313,6 +314,7 @@ if(!isset($_GET['action'])){
     if(isset($_POST['customer_purchase_order_code'])){
         $data = [];
         $data['customer_id'] = $_POST['customer_id'];
+        $data['end_user_id'] = $_POST['end_user_id'];
         $data['employee_id'] = $_POST['employee_id'];
         $data['customer_purchase_order_code'] = $_POST['customer_purchase_order_code'];
         $data['customer_purchase_order_date'] = $_POST['customer_purchase_order_date'];

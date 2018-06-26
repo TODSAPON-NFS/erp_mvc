@@ -109,14 +109,17 @@ class CustomerPurchaseOrderModel extends BaseModel{
     }
 
     function getCustomerPurchaseOrderByID($id){
-        $sql = " SELECT * 
-        FROM tb_customer_purchase_order 
-        LEFT JOIN tb_customer ON tb_customer_purchase_order.customer_id = tb_customer.customer_id 
-        LEFT JOIN tb_user ON tb_customer_purchase_order.employee_id = tb_user.user_id 
-        LEFT JOIN tb_user_position  ON tb_user.user_position_id = tb_user_position.user_position_id 
+        $sql = " SELECT *  , IFNULL((
+            SELECT CONCAT('[',customer_name_en,'] ','[',customer_name_th,']') FROM tb_customer WHERE customer_id = tb1.end_user_id  
+        ),'-') as end_user_name 
+        FROM tb_customer_purchase_order as tb1 
+        LEFT JOIN tb_user ON tb1.employee_id = tb_user.user_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
+        LEFT JOIN tb_customer ON tb1.customer_id = tb_customer.customer_id 
         WHERE customer_purchase_order_id = '$id' 
-        ";
+        "; 
 
+echo $sql;
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -129,13 +132,15 @@ class CustomerPurchaseOrderModel extends BaseModel{
     }
 
     function getCustomerPurchaseOrderViewByID($id){
-        $sql = " SELECT *   
-        FROM tb_customer_purchase_order 
-        LEFT JOIN tb_user ON tb_customer_purchase_order.employee_id = tb_user.user_id 
+        $sql = " SELECT *  , IFNULL((
+            SELECT CONCAT('[',customer_name_en,'] ','[',customer_name_th,']') FROM tb_customer WHERE customer_id = tb1.end_user_id  
+        ),'-') as end_user_name 
+        FROM tb_customer_purchase_order as tb1 
+        LEFT JOIN tb_user ON tb1.employee_id = tb_user.user_id 
         LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
-        LEFT JOIN tb_customer ON tb_customer_purchase_order.customer_id = tb_customer.customer_id 
+        LEFT JOIN tb_customer ON tb1.customer_id = tb_customer.customer_id 
         WHERE customer_purchase_order_id = '$id' 
-        "; 
+        ";
 
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data;
@@ -284,6 +289,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
     function updateCustomerPurchaseOrderByID($id,$data = []){
         $sql = " UPDATE tb_customer_purchase_order SET 
         customer_id = '".$data['customer_id']."', 
+        end_user_id = '".$data['end_user_id']."', 
         employee_id = '".$data['employee_id']."', 
         customer_purchase_order_code = '".$data['customer_purchase_order_code']."', 
         customer_purchase_order_file = '".$data['customer_purchase_order_file']."', 
@@ -311,6 +317,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
     function insertCustomerPurchaseOrder($data = []){
         $sql = " INSERT INTO tb_customer_purchase_order (
             customer_id,
+            end_user_id,
             employee_id,           
             customer_purchase_order_code,
             customer_purchase_order_file,
@@ -326,6 +333,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
             lastupdate) 
         VALUES ('".
         $data['customer_id']."','".
+        $data['end_user_id']."','".
         $data['employee_id']."','".
         $data['customer_purchase_order_code']."','".
         $data['customer_purchase_order_file']."','".

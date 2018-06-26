@@ -14,7 +14,23 @@ $account_model = new AccountModel;
 
 if(!isset($_GET['action'])){
 
-    $customer = $model_customer->getCustomerBy();
+
+    $keyword = $_GET['keyword'];
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 100;
+    
+    $customer = $model_customer->getCustomerBy($keyword);
+
+    $page_max = (int)(count($customer)/$page_size);
+    if(count($customer)%$page_size > 0){
+        $page_max += 1;
+    }
     
     require_once($path.'view.inc.php');
     
@@ -219,7 +235,23 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $customer = $model_customer->getCustomerBy();
+    $keyword = $_GET['keyword'];
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 100;
+    
+    $customer = $model_customer->getCustomerBy($keyword);
+
+    $page_max = (int)(count($customer)/$page_size);
+    if(count($customer)%$page_size > 0){
+        $page_max += 1;
+    }
+    
     require_once($path.'view.inc.php');
 
 }

@@ -193,7 +193,7 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>Customer Picture </label>
-                                    <img class="img-responsive" id="img_logo" src="../upload/customer/<?php echo $customer['customer_logo']; ?>" />
+                                    <img class="img-responsive" id="img_logo" src="../upload/customer/<?php if($customer['customer_logo'] != ''){echo $customer['customer_logo'];}else{echo 'default.png';}  ?>" />
                                 </div>
                             </div>
                         </div>

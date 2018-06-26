@@ -140,7 +140,7 @@ class BillingNoteModel extends BaseModel{
     }
 
 
-    function generateBillingNoteListByCustomerId($invoice_customer_id, $data = [],$search=""){
+    function generateBillingNoteListByCustomerId($customer_id, $data = [],$search=""){
 
         $str ='0';
 
@@ -170,6 +170,7 @@ class BillingNoteModel extends BaseModel{
             FROM tb_billing_note_list 
             GROUP BY invoice_customer_id 
         ) 
+        AND tb_invoice_customer.customer_id = '$customer_id' 
         ORDER BY  STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') ";
 
         //echo $sql_customer;

@@ -326,6 +326,30 @@
                                         </li>
                                     </ul>
                                 </li>
+
+                                <li
+                                <?PHP 
+                                    if(
+                                        substr($_GET["app"],0,7) =='finance_'
+                                    ){
+                                        echo ' class="active" ';
+                                    }
+                                ?> 
+                                >
+                                    <a href="#" >
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i> การเงิน <span class="glyphicon arrow"></span>
+                                    </a>
+                                    <ul class="collapse" >
+                                        <li>
+                                            <a href="?app=finance_debit" ><i class="fa fa-outdent" aria-hidden="true"></i> รับชำระหนี้</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=finance_credit" ><i class="fa fa-outdent" aria-hidden="true"></i> จ่ายชำระหนี้</a>
+                                        </li> 
+                                    </ul>
+                                </li>
+                                
+
                                 <li>
                                     <a href="?app=other_expense"  ><i class="fa fa-outdent" aria-hidden="true"></i> ค่าใช้จ่ายอื่นๆ</a>
                                 </li>

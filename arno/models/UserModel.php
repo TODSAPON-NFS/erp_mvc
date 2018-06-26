@@ -8,6 +8,9 @@ class UserModel extends BaseModel{
     }
 
     function getLogin($username, $password){
+        $username = $this->db->real_escape_string($username);
+        $password = $this->db->real_escape_string($password);
+
         if ($result = mysqli_query($this->db,"SELECT * 
         FROM tb_user LEFT JOIN tb_license ON tb_user.license_id = tb_license.license_id 
         WHERE user_username = '$username' 

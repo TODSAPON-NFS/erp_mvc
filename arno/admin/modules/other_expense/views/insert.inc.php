@@ -448,7 +448,7 @@
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td colspan="74" align="center">
+                                <td colspan="7" align="center">
                                     <a href="javascript:;" onclick="add_row_pay(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> 
                                         <span>เพิ่มรายการจ่ายเงิน / Add pay list</span>

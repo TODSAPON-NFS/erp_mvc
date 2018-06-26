@@ -124,6 +124,10 @@
 
     else if($_GET['app'] == "account"){
         require_once("modules/account/views/index.inc.php");
+    }else if($_GET['app'] == "finance_credit"){
+        require_once("modules/finance_credit/views/index.inc.php");
+    }else if($_GET['app'] == "finance_debit"){
+        require_once("modules/finance_debit/views/index.inc.php");
     }else if($_GET['app'] == "summit_dedit"){
         require_once("modules/invoice_customer_begin/views/index.inc.php");
     }else if($_GET['app'] == "summit_credit"){

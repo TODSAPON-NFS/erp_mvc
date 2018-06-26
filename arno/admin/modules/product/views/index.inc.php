@@ -26,7 +26,29 @@ $product_supplier_id = $_GET['product_supplier_id'];
 $product_customer_id = $_GET['product_customer_id'];
 if(!isset($_GET['action'])){
 
-    $product = $model_product->getProductBy();
+    $supplier_id = $_GET['supplier_id'];
+    $product_category_id = $_GET['product_category_id'];
+    $product_type_id = $_GET['product_type_id'];
+    $keyword = $_GET['keyword'];
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 100;
+    
+    $product_type = $model_product_type->getProductTypeBy();
+    $product_category = $model_product_category->getProductCategoryBy();
+    $suppliers = $model_supplier->getSupplierBy();
+    $product = $model_product->getProductBy($supplier_id,$product_category_id,$product_type_id,$keyword );
+
+    $page_max = (int)(count($product)/$page_size);
+    if(count($product)%$page_size > 0){
+        $page_max += 1;
+    }
+
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -378,7 +400,30 @@ else if ($_GET['action'] == 'add_supplier'){
 
 else{
 
-    $product = $model_product->getProductBy();
+    
+    $supplier_id = $_GET['supplier_id'];
+    $product_category_id = $_GET['product_category_id'];
+    $product_type_id = $_GET['product_type_id'];
+    $keyword = $_GET['keyword'];
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 100;
+    
+    $product_type = $model_product_type->getProductTypeBy();
+    $product_category = $model_product_category->getProductCategoryBy();
+    $suppliers = $model_supplier->getSupplierBy();
+    $product = $model_product->getProductBy($supplier_id,$product_category_id,$product_type_id,$keyword );
+
+    $page_max = (int)(count($product)/$page_size);
+    if(count($product)%$page_size > 0){
+        $page_max += 1;
+    }
+
     require_once($path.'view.inc.php');
 
 }

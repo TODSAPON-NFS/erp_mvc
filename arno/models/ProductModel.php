@@ -7,17 +7,39 @@ class ProductModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getProductBy($product_name = '', $product_code = '', $product_type = '', $product_status  = ''){
+    function getProductBy($supplier_id = '', $product_category_id = '', $product_type_id = '', $keyword  = ''){
+        
+        if($supplier_id != ""){
+            $supplier = "AND supplier_id = '$supplier_id' ";
+        }
+
+
+        
+        if($product_type_id != ""){
+            $product_type = "AND product_type_id = '$product_type_id' ";
+        }
+
+
+
+        if($product_type_id != ""){
+            $product_category = "AND tb_product.product_category_id = '$product_category_id' ";
+        }
+        
+
+        
         $sql = " SELECT product_id, CONCAT(product_code_first,product_code) as product_code, product_drawing, product_name, product_description , product_type, product_status   
         FROM tb_product 
-        WHERE product_name LIKE ('%$product_name%') 
-        OR product_code LIKE ('%$product_code%') 
-        OR product_type LIKE ('%$product_type%') 
-        OR product_status LIKE ('%$product_status%') 
+        LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
+        LEFT JOIN tb_product_type ON tb_product.product_type = tb_product_type.product_type_id 
+        WHERE (product_name LIKE ('%$keyword%') OR product_code LIKE ('%$keyword%') ) 
+        $product_type 
+        $product_category 
+        $supplier 
         ORDER BY product_name  
         ";
 
-        //echo $sql;
+
+
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

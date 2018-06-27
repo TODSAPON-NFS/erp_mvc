@@ -25,5 +25,173 @@ class StockReportModel extends BaseModel{
         }
     }
 
+    function updateCostWhenInsert($stock_group_id, $product_id, $qty, $cost){
+        $stock_qty = 0;
+        $stock_cost = 0.0;
+        
+        $new_qty = 0;
+        $new_cost = 0.0;
+        
+        
+        $str = "SELECT stock_report_qty , stock_report_cost_avg  
+        FROM tb_stock_report
+        WHERE stock_group_id = '$stock_group_id' 
+        AND product_id = '$product_id' ";
+
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            
+            if(count($data) > 0){
+
+
+                $new_qty = $data['stock_report_qty'] + $qty;
+                $new_cost = (($data['stock_report_qty'] * $data['stock_report_cost_avg']) + ($qty * $cost))/$new_qty;
+                 
+    
+                $str = "UPDATE tb_stock_report SET
+                stock_report_qty = '$new_qty' , 
+                stock_report_cost_avg = '$new_cost' 
+                WHERE stock_group_id = '$stock_group_id' 
+                AND product_id = '$product_id' ";
+    
+                if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+                    return true;
+                }else {
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        } 
+    }
+
+    function updateCostWhenUpdate($stock_group_id, $product_id, $qty_old, $cost_old, $qty_new, $cost_new  ){
+        $stock_qty = 0;
+        $stock_cost = 0.0;
+        
+        $new_qty = 0;
+        $new_cost = 0.0;
+        
+        
+        $str = "SELECT stock_report_qty , stock_report_cost_avg  
+        FROM tb_stock_report
+        WHERE stock_group_id = '$stock_group_id' 
+        AND product_id = '$product_id' ";
+
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            
+            if(count($data) > 0){
+
+
+                $new_qty_out = $data['stock_report_qty'] - $qty_old;
+                $new_cost = (($data['stock_report_qty'] * $data['stock_report_cost_avg']) - ($qty_old * $cost_old))/$new_qty_out;
+                 
+                $new_qty = $new_qty_out + $qty_new;
+                $new_cost = (($new_qty_out * $new_cost) + ($qty_new * $cost_new))/$new_qty;
+    
+                $str = "UPDATE tb_stock_report SET
+                stock_report_qty = '$new_qty' , 
+                stock_report_cost_avg = '$new_cost' 
+                WHERE stock_group_id = '$stock_group_id' 
+                AND product_id = '$product_id' ";
+    
+                if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+                    return true;
+                }else {
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }    
+    }
+
+    function updateCostWhenDelete($stock_group_id, $product_id, $qty, $cost){
+        $stock_qty = 0;
+        $stock_cost = 0.0;
+        
+        $new_qty = 0;
+        $new_cost = 0.0;
+        
+        
+        $str = "SELECT stock_report_qty , stock_report_cost_avg  
+        FROM tb_stock_report
+        WHERE stock_group_id = '$stock_group_id' 
+        AND product_id = '$product_id' ";
+
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            
+            if(count($data) > 0){
+                $new_qty = $data['stock_report_qty'] - $qty;
+                $new_cost = (($data['stock_report_qty'] * $data['stock_report_cost_avg']) - ($qty * $cost))/$new_qty;
+                 
+    
+                $str = "UPDATE tb_stock_report SET
+                stock_report_qty = '$new_qty' , 
+                stock_report_cost_avg = '$new_cost' 
+                WHERE stock_group_id = '$stock_group_id' 
+                AND product_id = '$product_id' ";
+    
+                if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+                    return true;
+                }else {
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }
+    }
+
+    function insertStockReportRow($stock_group_id, $product_id){
+
+        $str = "SELECT *  
+        FROM tb_stock_report
+        WHERE stock_group_id = '$stock_group_id' 
+        AND product_id = '$product_id' ";
+
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+
+            
+
+            if(mysqli_num_rows($result) == 0){
+                $sql = " INSERT INTO tb_stock_report (
+                    stock_group_id,
+                    product_id
+                ) 
+                VALUES ('$stock_group_id','$product_id'); 
+                ";
+        
+                //echo $sql;
+                if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+                    return mysqli_insert_id($this->db);
+                }else {
+                    return 0;
+                }
+            }else{
+                $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+                return $row['stock_report_id'];
+            }
+
+        }
+
+    }
+
+
+
 }
 ?>

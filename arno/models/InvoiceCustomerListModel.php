@@ -186,7 +186,7 @@ class InvoiceCustomerListModel extends BaseModel{
             $str='0';
         }
 
-        $sql = "    SELECT invoice_customer_list_id, stock_group_id 
+        $sql = "    SELECT * 
                     FROM  tb_invoice_customer_list 
                     WHERE invoice_customer_id = '$id' 
                     AND invoice_customer_list_id NOT IN ($str) ";   

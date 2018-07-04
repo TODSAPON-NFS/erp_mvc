@@ -50,7 +50,7 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'insert'){
     if($quotation_id > 0){
-        $products=$product_model->getProductBy('','','','Active');
+        $products=$product_model->getProductBy('','','','');
         $quotation = $quotation_model->getQuotationByID($quotation_id);
         $customer = $customer_model->getCustomerByID($quotation["customer_id"]);
         $customer_purchase_order = $customer_purchase_order_model->generateCustomerPurchaseOrderByID($quotation_id);
@@ -62,14 +62,14 @@ if(!isset($_GET['action'])){
         $customer_purchase_order_lists = $customer_purchase_order_model->generateCustomerPurchaseOrderListByCustomerId($customer_id);
     }
 
-    $products=$product_model->getProductBy('','','','Active');
+    $products=$product_model->getProductBy('','','','');
     $first_date = date("d")."-".date("m")."-".date("Y");
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
-    $products=$product_model->getProductBy('','','','Active');
+    $products=$product_model->getProductBy('','','','');
     $customers=$customer_model->getCustomerBy();
     
     $users=$user_model->getUserBy();
@@ -82,7 +82,7 @@ if(!isset($_GET['action'])){
     if($notification_id != ""){
         $notification_model->setNotificationSeenByID($notification_id);
     }
-    $products=$product_model->getProductBy('','','','Active');
+    $products=$product_model->getProductBy('','','','');
     $customers=$customer_model->getCustomerBy();
     
     $users=$user_model->getUserBy();

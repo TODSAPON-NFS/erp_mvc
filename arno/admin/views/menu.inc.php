@@ -138,16 +138,16 @@
                             </a>
                             <ul class="collapse">
                                 <li>
-                                    <a href="?app=request_test"   ><i class="fa fa-outdent" aria-hidden="true"></i> ใบสั่งสินค้าทดลอง (Request Test)</a>
+                                    <a href="?app=request_test"   ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบสั่งสินค้าทดลอง (Request Test)</a>
                                 </li>
                                 <li>
-                                    <a href="?app=request_standard"   ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้ามาตรฐาน (Standard Tool)</a>
+                                    <a href="?app=request_standard"   ><i class="fa  fa-file-o" aria-hidden="true"></i> สินค้ามาตรฐาน (Standard Tool)</a>
                                 </li>
                                 <li>
-                                    <a href="?app=request_special"   ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้าพิเศษ (Special Tool)</a>
+                                    <a href="?app=request_special"   ><i class="fa  fa-file-o" aria-hidden="true"></i> สินค้าพิเศษ (Special Tool)</a>
                                 </li>
                                 <li>
-                                    <a href="?app=request_regrind"   ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้ารีกายด์ (Regrind Tool)</a>
+                                    <a href="?app=request_regrind"   ><i class="fa  fa-file-o" aria-hidden="true"></i> สินค้ารีกายด์ (Regrind Tool)</a>
                                 </li>
                             </ul>
                         </li>
@@ -183,14 +183,14 @@
                                     <a href="?app=delivery_note_customer"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบยืมลูกค้า (Customer DN)</a>
                                 </li>
                                 <li>
-                                    <a href="?app=purchase_request"><i class="fa  fa-file" aria-hidden="true"></i> ร้องขอสั่งซื้อสินค้า (PR)</a>
+                                    <a href="?app=purchase_request"><i class="fa  fa-file-o" aria-hidden="true"></i> ร้องขอสั่งซื้อสินค้า (PR)</a>
                                 </li>
                                 
                                 <li>
-                                    <a href="?app=purchase_order"><i class="fa  fa fa-file-powerpoint-o" aria-hidden="true"></i> ใบสั่งซื้อ (PO)</a>
+                                    <a href="?app=purchase_order"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบสั่งซื้อ (PO)</a>
                                 </li>
                                 <li>
-                                    <a href="?app=invoice_supplier"><i class="fa  fa-file-text-o" aria-hidden="true"></i> ใบรับสินค้า (Supplier Invoice) </a>
+                                    <a href="?app=invoice_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบรับสินค้า (Supplier Invoice) </a>
                                 </li>
                             </ul>
                         </li>
@@ -215,25 +215,25 @@
                             </a>
                             <ul class="collapse">   
                                 <li>
-                                    <a href="?app=quotation"><i class="fa fa-database fa-fw" aria-hidden="true"></i> ใบเสนอราคา (Quotation) </a>
+                                    <a href="?app=quotation"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบเสนอราคา (Quotation) </a>
                                 </li>
                                 <li>
-                                    <a href="?app=customer_purchase_order"><i class="fa  fa-map" aria-hidden="true"></i> ใบสั่งซื้อลูกค้า (Customer PO) </a>
+                                    <a href="?app=customer_purchase_order"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบสั่งซื้อลูกค้า (Customer PO) </a>
                                 </li>
                                 <li>
-                                    <a href="?app=invoice_customer"><i class="fa  fa-file-pdf-o" aria-hidden="true"></i> ใบกำกับภาษี (Customer Invoice)</a>
+                                    <a href="?app=invoice_customer"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบกำกับภาษี (Customer Invoice)</a>
                                 </li>
                                 <li>
-                                    <a href="?app=credit_note"><i class="fa  fa-credit-card" aria-hidden="true"></i> ใบลดหนี้ (Credit Note)</a>
+                                    <a href="?app=credit_note"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบลดหนี้ (Credit Note)</a>
                                 </li>
                                 <li>
-                                    <a href="?app=debit_note"><i class="fa  fa-credit-card-alt" aria-hidden="true"></i> ใบเพิ่มหนี้ (Debit Note)</a>
+                                    <a href="?app=debit_note"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบเพิ่มหนี้ (Debit Note)</a>
                                 </li>
                                 <li>
-                                    <a href="?app=billing_note"><i class="fa  fa-money" aria-hidden="true"></i> ใบวางบิล (Billing Note)</a>
+                                    <a href="?app=billing_note"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบวางบิล (Billing Note)</a>
                                 </li>
                                 <li>
-                                    <a href="?app=official_receipt"><i class="fa  fa-money" aria-hidden="true"></i> ใบเสร็จ (Official Receipt)</a>
+                                    <a href="?app=official_receipt"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบเสร็จ (Official Receipt)</a>
                                 </li>
                             
                             </ul>
@@ -261,10 +261,10 @@
                                     <a href="?app=stock_type"  ><i class="fa fa-database fa-fw" aria-hidden="true"></i> คลังสินค้า (Stock) </a>
                                 </li>
                                 <li>
-                                    <a href="?app=stock_move"  ><i class="fa fa-share-square" aria-hidden="true"></i> ใบโอนคลังสินค้า (Transfer Stock)</a>
+                                    <a href="?app=stock_move"  ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบโอนคลังสินค้า (Transfer Stock)</a>
                                 </li>
                                 <li>
-                                    <a href="?app=stock_issue"  ><i class="fa fa-outdent" aria-hidden="true"></i> ใบนำออกสินค้า (Issue Stock)</a>
+                                    <a href="?app=stock_issue"  ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบนำออกสินค้า (Issue Stock)</a>
                                 </li>
                             </ul>
                         </li>
@@ -280,7 +280,8 @@
                                 $_GET["app"] =='credit_purchasing' ||
                                 $_GET["app"] =='journal_general' ||
                                 substr($_GET["app"],0,15) =='journal_special' ||
-                                substr($_GET["app"],0,7) =='summit_'
+                                substr($_GET["app"],0,7) =='summit_'||
+                                substr($_GET["app"],0,4) =='bank'
                             ){
                                 echo ' class="active" ';
                             }
@@ -303,26 +304,26 @@
                                 ?> 
                                 >
                                     <a href="#" >
-                                        <i class="fa fa-line-chart" aria-hidden="true"></i> บันทึกยอดยกมา <span class="glyphicon arrow"></span>
+                                        <i class="fa fa-floppy-o" aria-hidden="true"></i> บันทึกยอดยกมา <span class="glyphicon arrow"></span>
                                     </a>
                                     <ul class="collapse" >
                                         <li>
-                                            <a href="?app=summit_dedit" ><i class="fa fa-outdent" aria-hidden="true"></i> ลูกหนี้คงค้าง</a>
+                                            <a href="?app=summit_dedit" ><i class="fa  fa-file-o" aria-hidden="true"></i> ลูกหนี้คงค้าง</a>
                                         </li> 
                                         <li>
-                                            <a href="?app=summit_credit" ><i class="fa fa-outdent" aria-hidden="true"></i> เจ้าหนี้คงค้าง</a>
+                                            <a href="?app=summit_credit" ><i class="fa  fa-file-o" aria-hidden="true"></i> เจ้าหนี้คงค้าง</a>
                                         </li> 
                                         <li>
-                                            <a href="?app=summit_product" ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้า/วัตถุดิบ </a>
+                                            <a href="?app=summit_product" ><i class="fa  fa-file-o" aria-hidden="true"></i> สินค้า/วัตถุดิบ </a>
                                         </li>
                                         <li>
-                                            <a href="?app=summit_check_pre_receipt" ><i class="fa fa-outdent" aria-hidden="true"></i> เช็ครับล่วงหน้า </a>
+                                            <a href="?app=summit_check_pre_receipt" ><i class="fa  fa-file-o" aria-hidden="true"></i> เช็ครับล่วงหน้า </a>
                                         </li>
                                         <li>
-                                            <a href="?app=summit_check_pre_pay" ><i class="fa fa-outdent" aria-hidden="true"></i> เช็คจ่ายล่วงหน้า</a>
+                                            <a href="?app=summit_check_pre_pay" ><i class="fa  fa-file-o" aria-hidden="true"></i> เช็คจ่ายล่วงหน้า</a>
                                         </li>
                                         <li>
-                                            <a href="?app=summit_account" ><i class="fa fa-outdent" aria-hidden="true"></i> ยอดบัญชี</a>
+                                            <a href="?app=summit_account" ><i class="fa  fa-file-o" aria-hidden="true"></i> ยอดบัญชี</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -341,23 +342,59 @@
                                     </a>
                                     <ul class="collapse" >
                                         <li>
-                                            <a href="?app=finance_debit" ><i class="fa fa-outdent" aria-hidden="true"></i> รับชำระหนี้</a>
+                                            <a href="?app=finance_debit" ><i class="fa  fa-file-o" aria-hidden="true"></i> รับชำระหนี้</a>
                                         </li> 
                                         <li>
-                                            <a href="?app=finance_credit" ><i class="fa fa-outdent" aria-hidden="true"></i> จ่ายชำระหนี้</a>
+                                            <a href="?app=finance_credit" ><i class="fa  fa-file-o" aria-hidden="true"></i> จ่ายชำระหนี้</a>
+                                        </li> 
+                                    </ul>
+                                </li>
+                                <li
+                                <?PHP 
+                                    if(
+                                        substr($_GET["app"],0,4) =='bank'
+                                    ){
+                                        echo ' class="active" ';
+                                    }
+                                ?> 
+                                >
+                                    <a href="#" >
+                                        <i class="fa fa-university" aria-hidden="true"></i> ธนาคาร <span class="glyphicon arrow"></span>
+                                    </a>
+                                    <ul class="collapse" >
+                                        <li>
+                                            <a href="?app=bank_check_in_deposit" ><i class="fa  fa-file-o" aria-hidden="true"></i> บันทึกเช็คนำฝาก</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=bank_check_in_pass" ><i class="fa  fa-file-o" aria-hidden="true"></i> บันทึกเช็คผ่าน</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=bank_check_in" ><i class="fa  fa-file-o" aria-hidden="true"></i> ทะเบียนเช็ครับ</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=bank_check_out_pass" ><i class="fa  fa-file-o" aria-hidden="true"></i> ผ่านเช็คจ่าย</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=bank_check_out" ><i class="fa  fa-file-o" aria-hidden="true"></i> ทะเบียนเช็คจ่าย</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=bank_account" ><i class="fa  fa-file-o" aria-hidden="true"></i> รายละเอียดบัญชีเงินฝาก</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=bank" ><i class="fa  fa-file-o" aria-hidden="true"></i> รายละเอียดธนาคาร</a>
                                         </li> 
                                     </ul>
                                 </li>
                                 
 
                                 <li>
-                                    <a href="?app=other_expense"  ><i class="fa fa-outdent" aria-hidden="true"></i> ค่าใช้จ่ายอื่นๆ</a>
+                                    <a href="?app=other_expense"  ><i class="fa  fa-file-o" aria-hidden="true"></i> ค่าใช้จ่ายอื่นๆ</a>
                                 </li>
                                 <li>
-                                    <a href="?app=credit_purchasing"  ><i class="fa fa-outdent" aria-hidden="true"></i> ซื้อเงินเชื่อ</a>
+                                    <a href="?app=credit_purchasing"  ><i class="fa  fa-file-o" aria-hidden="true"></i> ซื้อเงินเชื่อ</a>
                                 </li>
                                 <li>
-                                    <a href="?app=journal_general"  ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันทั่วไป</a>
+                                    <a href="?app=journal_general"  ><i class="fa fa-book" aria-hidden="true"></i> สมุดรายวันทั่วไป</a>
                                 </li>
                                 <li
                                 <?PHP 
@@ -369,26 +406,26 @@
                                 ?> 
                                 >
                                     <a href="#" >
-                                        <i class="fa fa-line-chart" aria-hidden="true"></i> สมุดรายวันเฉพาะ <span class="glyphicon arrow"></span>
+                                        <i class="fa fa-book" aria-hidden="true"></i> สมุดรายวันเฉพาะ <span class="glyphicon arrow"></span>
                                     </a>
                                     <ul class="collapse" >
                                         <li>
-                                            <a href="?app=journal_special_01" ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันซื่อสินค้า</a>
+                                            <a href="?app=journal_special_01" ><i class="fa  fa-file-o" aria-hidden="true"></i> สมุดรายวันซื่อสินค้า</a>
                                         </li> 
                                         <li>
-                                            <a href="?app=journal_special_02" ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันขายสินค้า</a>
+                                            <a href="?app=journal_special_02" ><i class="fa  fa-file-o" aria-hidden="true"></i> สมุดรายวันขายสินค้า</a>
                                         </li> 
                                         <li>
-                                            <a href="?app=journal_special_03" ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันรับเงิน</a>
+                                            <a href="?app=journal_special_03" ><i class="fa  fa-file-o" aria-hidden="true"></i> สมุดรายวันรับเงิน</a>
                                         </li>
                                         <li>
-                                            <a href="?app=journal_special_04" ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันจ่ายเงิน</a>
+                                            <a href="?app=journal_special_04" ><i class="fa  fa-file-o" aria-hidden="true"></i> สมุดรายวันจ่ายเงิน</a>
                                         </li>
                                         <li>
-                                            <a href="?app=journal_special_05" ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันส่งคืนสินค้าและจำนวนที่ได้ลด</a>
+                                            <a href="?app=journal_special_05" ><i class="fa  fa-file-o" aria-hidden="true"></i> สมุดรายวันส่งคืนสินค้าและจำนวนที่ได้ลด</a>
                                         </li>
                                         <li>
-                                            <a href="?app=journal_special_06" ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวันรับคืนสินค้าและจำนวนที่ลดให้</a>
+                                            <a href="?app=journal_special_06" ><i class="fa  fa-file-o" aria-hidden="true"></i> สมุดรายวันรับคืนสินค้าและจำนวนที่ลดให้</a>
                                         </li>
                                     </ul>
                                 </li>

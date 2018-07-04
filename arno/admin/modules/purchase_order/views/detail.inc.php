@@ -98,8 +98,9 @@
 								<th style="text-align:center;width:32px;">Item</th>
                                 <th style="text-align:center;">Product Code</th>
                                 <th style="text-align:center;">Product Name / Description</th>
+                                <th style="text-align:center;">Order Qty</th>
                                 <th style="text-align:center;">Recieve</th>
-                                <th style="text-align:center;">Qty</th>
+                                
                                 <th style="text-align:center;">@</th>
                                 <th style="text-align:center;">Amount</th>
                                 <th width="80"></th>
@@ -127,11 +128,12 @@
 								Delivery : <?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']?> - <?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_max']?> <br>
 								Remark : <?php echo $purchase_order_lists[$i]['purchase_order_list_remark']?>
 								</td>
-                                <td align="right"><?php echo number_format($purchase_order_lists[$i]['purchase_order_list_qty_recieve'],0)?></td>
                                 <td align="right"><?php echo number_format($purchase_order_lists[$i]['purchase_order_list_qty'],0)?></td>
+                                <td align="right"><?php echo number_format($purchase_order_lists[$i]['purchase_order_list_qty_recieve'],0)?></td>
+                                
                                 <td align="right"><?php echo number_format($purchase_order_lists[$i]['purchase_order_list_price'],2)?></td>
                                 <td align="right"><?php echo number_format($purchase_order_lists[$i]['purchase_order_list_price_sum'],2)?></td>
-                                <td width="80"><a href="index.php?app=purchase_order&action=balance&id=<?PHP echo $purchase_order_id; ?>&purchase_order_list_id=<?PHP echo $purchase_order_lists[$i]['purchase_order_list_id']; ?>" class="btn btn-danger">Balance</a></td>
+                                <td width="80"><a href="index.php?app=purchase_order&action=balance&id=<?PHP echo $purchase_order_id; ?>&purchase_order_list_id=<?PHP echo $purchase_order_lists[$i]['purchase_order_list_id']; ?>" class="btn btn-danger">Close</a></td>
 								<!--
                                 <td align="center"><?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']?></td>
                                 <td align="center"><?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_max']?></td>
@@ -193,7 +195,7 @@
                             
                         </div>
                         <div class="col-lg-2" align="right">
-                            <a href="index.php?app=purchase_order&action=balance&id=<?PHP echo $purchase_order_id; ?>" class="btn btn-danger">Balance</a>
+                            <a href="index.php?app=purchase_order&action=balance&id=<?PHP echo $purchase_order_id; ?>" class="btn btn-danger">Close</a>
                             <a href="index.php?app=purchase_order" class="btn btn-default">Back</a>
                         </div>
                     <?PHP } ?>

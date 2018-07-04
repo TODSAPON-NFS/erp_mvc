@@ -49,7 +49,7 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'insert'){
     
-    $products=$product_model->getProductBy('','','','Active');
+    $products=$product_model->getProductBy('','','','');
     $suppliers=$supplier_model->getSupplierBy($sort);
     $users=$user_model->getUserBy();
 
@@ -81,7 +81,7 @@ if(!isset($_GET['action'])){
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
-    $products=$product_model->getProductBy('','','','Active');
+    $products=$product_model->getProductBy('','','','');
     
     $users=$user_model->getUserBy();
 

@@ -30,7 +30,7 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'insert'){
     $invoice_customers=$invoice_customer_model->getInvoiceCustomerBy();
-    $products=$product_model->getProductBy('','','','Active');
+    $products=$product_model->getProductBy('','','','');
     $stock_groups=$stock_group_model->getStockGroupBy();
     $users=$user_model->getUserBy();
     $first_code = $first_char.date("y").date("m");
@@ -40,7 +40,7 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'update'){
     $invoice_customers=$invoice_customer_model->getInvoiceCustomerBy();
-    $products=$product_model->getProductBy('','','','Active');
+    $products=$product_model->getProductBy('','','','');
     $stock_groups=$stock_group_model->getStockGroupBy();
     $users=$user_model->getUserBy();
     $stock_issue = $stock_issue_model->getStockIssueByID($stock_issue_id);

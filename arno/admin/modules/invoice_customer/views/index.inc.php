@@ -46,7 +46,7 @@ if(!isset($_GET['action'])){
     $first_date = date("d")."-".date("m")."-".date("Y");
     $last_code = $invoice_customer_model->getInvoiceCustomerLastID($first_code,3);
 
-    $products=$product_model->getProductBy('','','','Active');
+    $products=$product_model->getProductBy('','','','');
     $stock_groups=$stock_group_model->getStockGroupBy();
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
@@ -60,7 +60,7 @@ if(!isset($_GET['action'])){
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
-    $products=$product_model->getProductBy('','','','Active');
+    $products=$product_model->getProductBy('','','','');
     $stock_groups=$stock_group_model->getStockGroupBy();
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();

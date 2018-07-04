@@ -42,7 +42,7 @@ if(!isset($_GET['action'])){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
         $regrind_supplier_receive_lists = $regrind_supplier_receive_model->generateRegrindSupplierReceiveListBySupplierId($supplier_id,[] ,$_POST['search']);
     }
-    $products=$product_model->getProductBy('','','','Active');
+    $products=$product_model->getProductBy('','','','');
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
     $first_code = $first_char.date("y").date("m");
@@ -51,7 +51,7 @@ if(!isset($_GET['action'])){
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
-    $products=$product_model->getProductBy('','','','Active');
+    $products=$product_model->getProductBy('','','','');
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
     $regrind_supplier_receive = $regrind_supplier_receive_model->getRegrindSupplierReceiveByID($regrind_supplier_receive_id);

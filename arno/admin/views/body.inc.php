@@ -142,6 +142,12 @@
         require_once("modules/summit_check_pre_pay/views/index.inc.php");
     }else if($_GET['app'] == "summit_account"){
         require_once("modules/account_begin/views/index.inc.php");
+    }else if($_GET['app'] == "bank"){
+        require_once("modules/bank/views/index.inc.php");
+    }else if($_GET['app'] == "bank_account"){
+        require_once("modules/bank_account/views/index.inc.php");
+    }else if($_GET['app'] == "bank_check_in"){
+        require_once("modules/bank_check_in/views/index.inc.php");
     }else if($_GET['app'] == "other_expense"){
         require_once("modules/other_expense/views/index.inc.php");
     }else if($_GET['app'] == "credit_purchasing"){

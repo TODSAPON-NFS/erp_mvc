@@ -97,7 +97,7 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
         var str = "<option value=''>Select Product</option>";
         $.each(product_data, function (index, value) {
-            str += "<option value='" + value['product_id'] + "'>"+value['product_code']+"</option>";
+            str += "<option value='" + value['product_id'] + "'>"+value['product_code']+" - "+value['product_name']+"</option>";
         });
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 

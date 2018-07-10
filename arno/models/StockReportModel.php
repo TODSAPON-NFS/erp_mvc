@@ -16,7 +16,8 @@ class StockReportModel extends BaseModel{
                     FROM tb_product 
                     LEFT JOIN tb_stock_report ON tb_product.product_id = tb_stock_report.product_id 
                     LEFT JOIN tb_stock_group ON tb_stock_report.stock_group_id = tb_stock_group.stock_group_id  
-                    WHERE ( product_name LIKE ('%$keyword%') OR CONCAT(product_code_first,product_code) LIKE ('%$keyword%') )
+                    LEFT JOIN tb_product_type ON tb_product.product_type = tb_product_type.product_type_id  
+                    WHERE ( product_name LIKE ('%$keyword%') OR product_description LIKE ('%$keyword%') OR CONCAT(product_code_first,product_code) LIKE ('%$keyword%') )
                     $str_stock 
                     GROUP BY  tb_product.product_id, tb_stock_report.stock_group_id 
                     ORDER BY  tb_product.product_id, tb_stock_report.stock_group_id ";

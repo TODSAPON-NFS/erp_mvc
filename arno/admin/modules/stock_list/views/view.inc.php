@@ -45,9 +45,11 @@
                                         <p class="help-block">Example : T001.</p>
                                     </div>
                                 </div>
-                                <div class="col-lg-3" align="left" style="padding-top:24px;">
-                                    <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search();">Search</button>
-                                    <a href="index.php?app=stock_list&action=view&stock_type_id=<?PHP echo $stock_type_id?>&id=<?PHP echo $stock_type_id?>" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
+                                <div class="col-lg-3" align="right" style="padding-top:24px;">
+                                    <a href="?app=stock_group&stock_type_id=<?php echo $stock_type_id;?>" class="btn btn-default">Back</a>
+                                    <a href="index.php?app=stock_list&action=view&stock_type_id=<?PHP echo $stock_type_id?>&id=<?PHP echo $stock_type_id?>" class="btn btn-default" style="margin:0px 4px;">Reset</a>
+                                    <button class="btn btn-primary" style="margin:0px 4px;" onclick="search();">Search</button>
+                                    
                                 </div>
                                 
                             </div>   

@@ -273,41 +273,152 @@ function update_sum(){
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     </div>
-                    <br>
-                    <table width="100%" class="table table-striped table-bordered table-hover" >
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>คลังสินค้า</th>
-                                <th>จำนวน</th>
-                                <th>ราคาต่อชิ้น</th>
-                                <th>ราคารวม</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php 
-                            for($i=0; $i < count($summit_products); $i++){
-                            ?>
-                            <tr class="odd gradeX">
-                                <td><?php echo $i+1; ?></td>
-                                <td><?php echo $summit_products[$i]['stock_group_name']; ?></td>
-                                <td align="right"><?php echo number_format($summit_products[$i]['summit_product_qty'],0); ?></td>
-                                <td align="right"><?php echo number_format($summit_products[$i]['summit_product_cost'],2); ?></td>
-                                <td align="right"><?php echo number_format($summit_products[$i]['summit_product_total'],2); ?></td>
-                                <td>
-                                    <a href="?app=summit_product&action=delete-product&product_id=<?php echo $product_id;?>&summit_product_id=<?php echo $summit_products[$i]['summit_product_id'];?>" onclick="return confirm('You want to delete supplier : <?php echo $summit_products[$i]['supplier_name_en']; ?> (<?php echo $summit_products[$i]['supplier_name_th']; ?>)');" style="color:red;">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <?
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                    
                 </form>
+                <br>
+
+                <div class="row" style="margin:0px;">
+                    <div class="col-sm-6">
+                        <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format(count($summit_products),0);?> entries</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dataTables_paginate paging_simple_numbers" >
+                            <ul class="pagination">
+
+                                <li class="paginate_button previous <?PHP if($page == 0){ ?>disabled<?PHP } ?>" >
+                                    <a href="<?PHP if($page == 0){?>javascript:;<?PHP }else{ ?>index.php?app=summit_product&action=view-product&product_id=<?php echo $product_id?>&page=<?PHP echo $page; }?>">Previous</a>
+                                </li>
+
+                                <?PHP if($page > 0){ ?>
+                                <li class="paginate_button "  >
+                                    <a href="index.php?app=summit_product&action=view-product&product_id=<?php echo $product_id?>&page=1">1</a>
+                                </li>
+                                <li class="paginate_button disabled"   >
+                                    <a href="#">…</a>
+                                </li>
+                                <?PHP } ?>
+
+                                    
+                                <li class="paginate_button active"  >
+                                    <a href="index.php?app=summit_product&action=view-product&product_id=<?php echo $product_id?>&page=<?PHP echo $page+1;?>"><?PHP echo number_format($page + 1);?></a>
+                                </li>
+
+                                <?PHP for($i = $page + 1 ; $i < $page_max && $i <= $page + 5 ; $i++ ){?>
+                                <li class="paginate_button "  >
+                                    <a href="index.php?app=summit_product&action=view-product&product_id=<?php echo $product_id?>&page=<?PHP echo $i + 1;?>"><?PHP echo number_format($i + 1,0);?></a>
+                                </li>
+                                <?PHP } ?>
+                                
+
+
+                                <?PHP if($page < $page_max){ ?>
+                                <li class="paginate_button disabled"   >
+                                    <a href="#">…</a>
+                                </li>
+                                <li class="paginate_button "  >
+                                    <a href="index.php?app=summit_product&action=view-product&product_id=<?php echo $product_id?>&page=<?PHP echo $page_max;?>"><?PHP echo number_format($page_max,0);?></a>
+                                </li>
+                                <?PHP } ?>
+
+                                <li class="paginate_button next <?PHP if($page+1 == $page_max){ ?>disabled<?PHP } ?>"   >
+                                    <a href="<?PHP if($page+1 == $page_max){?>javascript:;<?PHP }else{ ?>index.php?app=summit_product&action=view-product&product_id=<?php echo $product_id?>&page=<?PHP echo $page + 2; }?>" >Next</a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <table width="100%" class="table table-striped table-bordered table-hover" >
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>คลังสินค้า</th>
+                            <th>จำนวน</th>
+                            <th>ราคาต่อชิ้น</th>
+                            <th>ราคารวม</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        for($i=0; $i < count($summit_products); $i++){
+                        ?>
+                        <tr class="odd gradeX">
+                            <td><?php echo $i+1; ?></td>
+                            <td><?php echo $summit_products[$i]['stock_group_name']; ?></td>
+                            <td align="right"><?php echo number_format($summit_products[$i]['summit_product_qty'],0); ?></td>
+                            <td align="right"><?php echo number_format($summit_products[$i]['summit_product_cost'],2); ?></td>
+                            <td align="right"><?php echo number_format($summit_products[$i]['summit_product_total'],2); ?></td>
+                            <td>
+                                <a href="?app=summit_product&action=delete-product&product_id=<?php echo $product_id;?>&summit_product_id=<?php echo $summit_products[$i]['summit_product_id'];?>" onclick="return confirm('You want to delete supplier : <?php echo $summit_products[$i]['supplier_name_en']; ?> (<?php echo $summit_products[$i]['supplier_name_th']; ?>)');" style="color:red;">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <?
+                        }
+                        ?>
+                    </tbody>
+                </table>
+
+                <div class="row" style="margin:0px;">
+                    <div class="col-sm-6">
+                        <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format(count($summit_products),0);?> entries</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dataTables_paginate paging_simple_numbers" >
+                            <ul class="pagination">
+
+                                <li class="paginate_button previous <?PHP if($page == 0){ ?>disabled<?PHP } ?>" >
+                                    <a href="<?PHP if($page == 0){?>javascript:;<?PHP }else{ ?>index.php?app=summit_product&action=view-product&product_id=<?php echo $product_id?>&page=<?PHP echo $page; }?>">Previous</a>
+                                </li>
+
+                                <?PHP if($page > 0){ ?>
+                                <li class="paginate_button "  >
+                                    <a href="index.php?app=summit_product&action=view-product&product_id=<?php echo $product_id?>&page=1">1</a>
+                                </li>
+                                <li class="paginate_button disabled"   >
+                                    <a href="#">…</a>
+                                </li>
+                                <?PHP } ?>
+
+                                    
+                                <li class="paginate_button active"  >
+                                    <a href="index.php?app=summit_product&action=view-product&product_id=<?php echo $product_id?>&page=<?PHP echo $page+1;?>"><?PHP echo number_format($page + 1);?></a>
+                                </li>
+
+                                <?PHP for($i = $page + 1 ; $i < $page_max && $i <= $page + 5 ; $i++ ){?>
+                                <li class="paginate_button "  >
+                                    <a href="index.php?app=summit_product&action=view-product&product_id=<?php echo $product_id?>&page=<?PHP echo $i + 1;?>"><?PHP echo number_format($i + 1,0);?></a>
+                                </li>
+                                <?PHP } ?>
+                                
+
+
+                                <?PHP if($page < $page_max){ ?>
+                                <li class="paginate_button disabled"   >
+                                    <a href="#">…</a>
+                                </li>
+                                <li class="paginate_button "  >
+                                    <a href="index.php?app=summit_product&action=view-product&product_id=<?php echo $product_id?>&page=<?PHP echo $page_max;?>"><?PHP echo number_format($page_max,0);?></a>
+                                </li>
+                                <?PHP } ?>
+
+                                <li class="paginate_button next <?PHP if($page+1 == $page_max){ ?>disabled<?PHP } ?>"   >
+                                    <a href="<?PHP if($page+1 == $page_max){?>javascript:;<?PHP }else{ ?>index.php?app=summit_product&action=view-product&product_id=<?php echo $product_id?>&page=<?PHP echo $page + 2; }?>" >Next</a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                    
+                
             </div>
             <!-- /.panel-body -->
         </div>

@@ -12,6 +12,7 @@ $model_stock_group = new StockGroupModel;
 $model_product = new ProductModel;
 $model_supplier = new SupplierModel;
 $stock_group_id = $_GET['id'];
+$stock_type_id = $_GET['stock_type_id'];
 $stock_group = $model_stock_group->getStockGroupByID($stock_group_id);
 $table_name = $stock_group['table_name'];
 $model_stock->setTableName($table_name);

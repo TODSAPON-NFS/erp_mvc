@@ -364,6 +364,7 @@
                     <!-- /.row (nested) -->
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
+                            <a href="?app=customer" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>

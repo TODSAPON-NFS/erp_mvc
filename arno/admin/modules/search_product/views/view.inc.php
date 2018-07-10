@@ -132,12 +132,13 @@
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Product Code</th>
-                                        <th>Product Name</th>
-                                        <th>Product Type</th>
-                                        <th>Product Status</th>
-                                        <th>From Stock</th>
-                                        <th>Qty</th>
+                                        <th>รหัสสินค้า <br> Product Code</th>
+                                        <th>ชื่อสินค้า <br> Product Name</th>
+                                        <th>รายละเอียดสินค้า <br> Product Description</th>
+                                        <th>ประเภทสินค้า <br> Product Type</th>
+                                        <th>สถานะสินค้า <br> Product Status</th>
+                                        <th>คลังสินค้า <br> Stock</th>
+                                        <th>จำนวน <br> Qty</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -148,7 +149,8 @@
                                         <td><?php echo $i+1; ?></td>
                                         <td><?php echo $stock_list[$i]['product_code']; ?></td>
                                         <td><?php echo $stock_list[$i]['product_name']; ?></td>
-                                        <td><?php echo $stock_list[$i]['product_type']; ?></td>
+                                        <td><?php echo $stock_list[$i]['product_description']; ?></td>
+                                        <td><?php echo $stock_list[$i]['product_type_name']; ?></td>
                                         <td><?php echo $stock_list[$i]['product_status']; ?></td>
                                         <td><?php echo $stock_list[$i]['stock_group_name']; ?></td>
                                         <td><?php echo $stock_list[$i]['stock_report_qty']; ?></td>

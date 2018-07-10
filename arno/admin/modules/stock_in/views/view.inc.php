@@ -34,6 +34,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6" align="left" style="padding-top:24px;">
+                                        <a href="?app=stock_group&stock_type_id=<?php echo $stock_type_id;?>" class="btn btn-default">Back</a>
                                         <button type="submit" class="btn btn-success">Veiw</button>
                                     </div>
                                     

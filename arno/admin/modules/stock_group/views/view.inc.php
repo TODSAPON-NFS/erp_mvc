@@ -15,8 +15,9 @@
                                 <div class="col-md-8">
                                     รายการคลังสินค้า / Stock List
                                 </div>
-                                <div class="col-md-4">
-                                    <a class="btn btn-success " style="float:right;" href="?app=stock_group&action=insert&stock_type_id=<?php echo $stock_type_id;?>" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                                <div class="col-md-4" align="right">
+                                    <a href="?app=stock_type" class="btn btn-default">Back</a>
+                                    <a class="btn btn-success " href="?app=stock_group&action=insert&stock_type_id=<?php echo $stock_type_id;?>" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                                 </div>
                             </div>
                         </div>

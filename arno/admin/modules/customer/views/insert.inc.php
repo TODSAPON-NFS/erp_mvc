@@ -265,6 +265,24 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>พนักงานขาย / Sale </label>
+                                        <select id="sale_id" name="sale_id" class="form-control">
+                                            <option value="">เลือก / Select</option>
+                                            <?PHP 
+                                                for($i=0; $i < count($user) ; $i++){
+                                            ?>
+                                                <option value="<?PHP echo $user[$i]['user_id'];?>" <?PHP if($user[$i]['user_id'] == $customer['sale_id'] ){ ?> SELECTED <? } ?> ><?PHP echo $user[$i]['name'];?>  (<?PHP echo $user[$i]['user_position_name'];?>)</option>
+                                            <?PHP
+                                                }
+                                            ?>
+                                        </select>
+                                        <p class="help-block">Example : 2120-01.</p>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- /.row (nested) -->
                         </div>
                         <div class="col-lg-4">

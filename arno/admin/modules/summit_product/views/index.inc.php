@@ -74,6 +74,32 @@ if(!isset($_GET['action']) || $_GET['action'] == 'view-product'){
     <script>window.location = "?app=summit_product&action=view-stock&stock_group_id=<?PHP echo $stock_group_id?>";</script>
     <?PHP 
 
+}else if($_GET['action'] == 'addgroup-stock'){
+
+    $data = [];
+    $product_id=$_POST['product_id']; 
+    $product_qty= $_POST['product_qty'];
+    $product_price= $_POST['product_price'];
+    $product_price_total= $_POST['product_price_total'];
+
+    for($i=0; $i < count($product_id); $i++){
+        if($product_id[$i] > 0){
+            $data = [];
+            $data['product_id']=$product_id[$i];
+            $data['stock_group_id']=$stock_group_id;
+            $data['summit_product_qty']=(float)filter_var($product_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['summit_product_cost']=(float)filter_var($product_price[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['summit_product_total']=(float)filter_var($product_price_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['addby']=$admin_id;
+            $model_summit_product->insertSummitProduct($data);
+        }
+        
+    }
+    
+    ?>
+    <script>window.location = "?app=summit_product&action=view-stock&stock_group_id=<?PHP echo $stock_group_id?>";</script>
+    <?PHP 
+
 } else if($_GET['action'] == 'delete-stock'){
     
     $model_summit_product->deleteSummitProductByID($summit_product_id);

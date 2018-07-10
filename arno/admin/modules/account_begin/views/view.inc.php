@@ -41,7 +41,14 @@ function setFormat(id){
                         </thead>
                         <tbody>
                             <?php 
+                            $sum_credit = 0;
+                            $sum_debit = 0;
+
+                            
+
                             for($i=0; $i < count($accounts); $i++){
+                                $sum_credit += $accounts[$i]['account_credit_begin'];
+                                $sum_debit += $accounts[$i]['account_debit_begin'];
                             ?>
                             <tr class="odd gradeX" >
                                 <td width="150px" align="center">
@@ -56,6 +63,15 @@ function setFormat(id){
                             }
                         ?>
                         </tbody>
+                        <tfoot>
+                            <tr class="odd gradeX" >
+                                <td colspan="2" align="center">
+                                    ยอดรวม
+                                </td>
+                                <td width="200px" align="right"><?php echo number_format($sum_credit,2); ?></td>
+                                <td width="200px" align="right"><?php echo number_format($sum_debit,2); ?></td>
+                            </tr>
+                        </tfoot>
                     </table>
 
                     <div class="row">

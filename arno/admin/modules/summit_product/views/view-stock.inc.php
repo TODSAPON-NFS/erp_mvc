@@ -1,3 +1,5 @@
+<script src="../plugins/excel/xlsx.core.min.js"></script>  
+<script src="../plugins/excel/xls.core.min.js"></script> 
 <script>
 
 function check(){
@@ -38,6 +40,9 @@ if(product_id.length == 0){
 
 }
 
+function delete_row(id){
+    $(id).closest('tr').remove();
+}
 
 function getStockDetail(){
     var stock_group_id = $('#stock_group_id').val();
@@ -77,6 +82,117 @@ function update_sum(){
 
 
 
+}
+
+
+function ExportToTable(id) {  
+    var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;  
+    /*Checks whether the file is a valid excel file*/  
+    if (regex.test($("#excelfile").val().toLowerCase())) {  
+        var xlsxflag = false; /*Flag for checking whether excel is .xls format or .xlsx format*/  
+        if ($("#excelfile").val().toLowerCase().indexOf(".xlsx") > 0) {  
+            xlsxflag = true;  
+        }  
+        /*Checks whether the browser supports HTML5*/  
+        if (typeof (FileReader) != "undefined") {  
+            var reader = new FileReader();  
+            reader.onload = function (e) {  
+                var data = e.target.result;  
+                /*Converts the excel data in to object*/  
+                if (xlsxflag) {  
+                    var workbook = XLSX.read(data, { type: 'binary' });  
+                }  
+                else {  
+                    var workbook = XLS.read(data, { type: 'binary' });  
+                }  
+                /*Gets all the sheetnames of excel in to a variable*/  
+                var sheet_name_list = workbook.SheetNames;  
+
+                var cnt = 0; /*This is used for restricting the script to consider only first sheet of excel*/  
+                sheet_name_list.forEach(function (y) { /*Iterate through all sheets*/  
+                    /*Convert the cell value to Json*/  
+                    if (xlsxflag) {  
+                        var exceljson = XLSX.utils.sheet_to_json(workbook.Sheets[y]);  
+                    }  
+                    else {  
+                        var exceljson = XLS.utils.sheet_to_row_object_array(workbook.Sheets[y]);  
+                    }  
+                    if (exceljson.length > 0 && cnt == 0) {  
+                        BindTable(exceljson,id);  
+                        cnt++;  
+                    }  
+                });  
+                $('#exceltable').show();  
+            }  
+            if (xlsxflag) {/*If excel file is .xlsx extension than creates a Array Buffer from excel*/  
+                reader.readAsArrayBuffer($("#excelfile")[0].files[0]);  
+            }  
+            else {  
+                reader.readAsBinaryString($("#excelfile")[0].files[0]);  
+            }  
+        }  
+        else {  
+            alert("Sorry! Your browser does not support HTML5!");  
+        }  
+    }  
+    else {  
+        alert("Please upload a valid Excel file!");  
+    }  
+}   
+
+function BindTable(jsondata,id) {
+    $("#bodyAdd").html('');
+    if($('#stock_group_id').val() != ''){
+        
+        for (var i = 0; i < jsondata.length; i++) {  
+            get_product_row(jsondata[i].product_name,jsondata[i].qty,jsondata[i].price);
+        }
+        $("#excelfile").val('');
+        $('#modalAdd').modal('show');
+    }else{
+            alert('Please select stock group.');
+    }  
+    //console.log(jsondata);
+}
+
+function get_product_row(product_name,qty,price){
+    $.post( "controllers/getProductDataByName.php", { 'product_name': $.trim(product_name)}, function( data ) {
+        if(data != null){
+            $("#bodyAdd").append(
+                '<tr class="odd gradeX">'+ 
+                    '<td>'+  
+                        '<input type="hidden" name="product_id[]" value="'+data.product_id+'" />'+
+                        '['+ data.product_code_first + data.product_code +'] ' + data.product_name + ' ('+ data.product_description +')' +
+                    '</td>'+
+                    '<td align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_qty[]" value="'+qty+'" readonly /></td>'+
+                    '<td><input type="text" class="form-control" style="text-align: right;" name="product_price[]"   value="'+price+'" readonly /></td>'+
+                    '<td><input type="text" class="form-control" style="text-align: right;" name="product_price_total[]"  value="'+ ( parseFloat(qty.replace(',','')) * parseFloat(price.replace(',','')) )+'" readonly /></td>'+
+                    '<td>'+
+                        '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
+                            '<i class="fa fa-times" aria-hidden="true"></i>'+
+                        '</a>'+
+                    '</td>'+
+                '</tr>'
+            );
+        }else{
+            $("#bodyAdd").append(
+                '<tr class="odd gradeX" >'+ 
+                    '<td style="background:#888;">'+  
+                        '<input type="hidden" name="product_id[]" value="0" />'+
+                        'ไม่มีสินค้าชื่อ "' + product_name + '" นี้' +
+                    '</td>'+
+                    '<td  style="background:#888;" align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_qty[]" value="'+qty+'" readonly /></td>'+
+                    '<td style="background:#888;" ><input type="text" class="form-control" style="text-align: right;" name="product_price[]"   value="'+price+'" readonly /></td>'+
+                    '<td style="background:#888;" ><input type="text" class="form-control" style="text-align: right;" name="product_price_total[]"  value="'+ ( parseFloat(qty.replace(',','')) * parseFloat(price.replace(',','')) )+'" readonly /></td>'+
+                    '<td style="background:#888;" >'+
+                        '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
+                            '<i class="fa fa-times" aria-hidden="true"></i>'+
+                        '</a>'+
+                    '</td>'+
+                '</tr>'
+            );
+        } 
+    });
 }
 
 </script>
@@ -201,6 +317,15 @@ function update_sum(){
                     </div>
                 </form>
 
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="file" id="excelfile" />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="button" id="viewfile" value="เพิ่มรายการสินค้า" onclick="ExportToTable(this)" /> 
+                    </div>
+                </div> 
+
                 <br>
                 <div class="row" style="margin:0px;">
                     <div class="col-sm-6">
@@ -267,8 +392,8 @@ function update_sum(){
                         </tr>
                     </thead>
                     <tbody>
-                        <?php 
-                        for($i=0; $i < count($summit_products); $i++){
+                        <?php  
+                        for($i=$page * $page_size ; $i < count($summit_products) && $i < $page * $page_size + $page_size; $i++){
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
@@ -349,3 +474,48 @@ function update_sum(){
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+
+<form role="form" method="post"   action="index.php?app=summit_product&action=addgroup-stock&stock_group_id=<?php echo $stock_group_id?>"   enctype="multipart/form-data">
+                
+    <div id="modalAdd" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg " role="document">
+            <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">เลือกรายการสินค้า / Choose product</h4>
+            </div>
+
+            <div  class="modal-body">
+            <div class="row">
+                <div class="col-md-offset-8 col-md-4" align="right">
+                    <input type="text" class="form-control" name="search_pop" onchange="search_pop_like(this)" placeholder="Search"/>
+                </div>
+            </div>
+            <br>
+            <table width="100%"  class="table table-striped table-bordered table-hover" >
+                <thead>
+                    <tr> 
+                        <th style="text-align:center;">ชื่อสินค้า</th>
+                        <th style="text-align:right;" width="100">จำนวน <br> (Qty)</th>
+                        <th style="text-align:right;" width="100">ราคา <br> (Price)</th>
+                        <th style="text-align:right;" width="100">ราคารวม <br> (Total price)</th>
+                        <th> ลบ <br> Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="bodyAdd">
+
+                </tbody>
+            </table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="summit" class="btn btn-primary" > Add </button>
+            </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+</form>

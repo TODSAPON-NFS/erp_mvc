@@ -269,13 +269,32 @@
                                 </div>
                             </div>
                             <!-- /.row (nested) -->
+
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>พนักงานขาย / Sale </label>
+                                        <select id="sale_id" name="sale_id" class="form-control">
+                                            <option value="">เลือก / Select</option>
+                                            <?PHP 
+                                                for($i=0; $i < count($user) ; $i++){
+                                            ?>
+                                                <option value="<?PHP echo $user[$i]['user_id'];?>" <?PHP if($user[$i]['user_id'] == $customer['sale_id'] ){ ?> SELECTED <? } ?> ><?PHP echo $user[$i]['name'];?>   (<?PHP echo $user[$i]['user_position_name'];?>)</option>
+                                            <?PHP
+                                                }
+                                            ?>
+                                        </select>
+                                        <p class="help-block">Example : 2120-01.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>รูปลูกค้า / Customer Picture <font color="#F00"><b>*</b></font></label>
-                                        <img class="img-responsive" id="img_logo" src="../upload/customer/<?php echo $customer['customer_logo']; ?>" />
+                                        <img class="img-responsive" id="img_logo" src="../upload/customer/<?php if($customer['customer_logo'] != ""){echo $customer['customer_logo'];}else{ echo "default.png";} ?>" />
                                     
                                         <input accept=".jpg , .png"   type="file" id="customer_logo" name="customer_logo" onChange="readURL(this);">
                                         <p class="help-block">Example : .jpg or .png </p>

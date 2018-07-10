@@ -95,7 +95,7 @@
                                             }
                                             ?>
                                         </select>
-                                        <p class="help-block">Example : Thana Tepchuleepornsil.</p>
+                                        <p class="help-block">Example : BKK.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-2">

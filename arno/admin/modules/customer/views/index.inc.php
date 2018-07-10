@@ -37,7 +37,7 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'insert' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
 
-    $user = $model_user->getUserBy();
+    $user = $model_user->getUserBy('','sale');
     $account = $account_model->getAccountAll();
     $currency = $currency_model->getCurrencyBy();
     require_once($path.'insert.inc.php');
@@ -46,7 +46,7 @@ if(!isset($_GET['action'])){
 
     $customer_id = $_GET['id'];
     $customer = $model_customer->getCustomerByID($customer_id);
-    $user = $model_user->getUserByID($customer['user_id']);
+    $user = $model_user->getUserBy('','sale');
     $account = $account_model->getAccountAll();
     $currency = $currency_model->getCurrencyBy();
 
@@ -91,6 +91,7 @@ if(!isset($_GET['action'])){
         $data['condition_pay'] = $_POST['condition_pay'];
         $data['pay_limit'] = $_POST['pay_limit'];
         $data['account_id'] = $_POST['account_id'];
+        $data['sale_id'] = $_POST['sale_id'];
         $data['vat_type'] = $_POST['vat_type'];
         $data['vat'] = $_POST['vat'];
         $data['currency_id'] = $_POST['currency_id'];
@@ -171,6 +172,7 @@ if(!isset($_GET['action'])){
         $data['condition_pay'] = $_POST['condition_pay'];
         $data['pay_limit'] = $_POST['pay_limit'];
         $data['account_id'] = $_POST['account_id'];
+        $data['sale_id'] = $_POST['sale_id'];
         $data['vat_type'] = $_POST['vat_type'];
         $data['vat'] = $_POST['vat'];
         $data['currency_id'] = $_POST['currency_id'];

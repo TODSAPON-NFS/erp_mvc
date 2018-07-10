@@ -175,6 +175,25 @@ class CustomerModel extends BaseModel{
 
     }
 
+
+    function updateSaleIDByID($id,$sale_id){
+        $sql = " UPDATE tb_customer SET  
+        sale_id = '".$sale_id."',   
+        lastupdate = NOW() 
+        WHERE customer_id = $id 
+        ";
+
+
+        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+
+
+    }
+
+
     function updateCustomerByID($id,$data = []){
         $sql = " UPDATE tb_customer SET 
         customer_code = '".$data['customer_code']."', 
@@ -197,6 +216,7 @@ class CustomerModel extends BaseModel{
         condition_pay = '".$data['condition_pay']."', 
         pay_limit = '".$data['pay_limit']."' , 
         account_id = '".$data['account_id']."', 
+        sale_id = '".$data['sale_id']."', 
         vat_type = '".$data['vat_type']."', 
         vat = '".$data['vat']."', 
         currency_id = '".$data['currency_id']."' , 
@@ -238,6 +258,7 @@ class CustomerModel extends BaseModel{
             condition_pay,  
             pay_limit,
             account_id, 
+            sale_id, 
             vat_type, 
             vat,  
             currency_id,
@@ -265,6 +286,7 @@ class CustomerModel extends BaseModel{
             '".$data['condition_pay']."',  
             '".$data['pay_limit']."', 
             '".$data['account_id']."', 
+            '".$data['sale_id']."',
             '".$data['vat_type']."', 
             '".$data['vat']."',  
             '".$data['currency_id']."', 

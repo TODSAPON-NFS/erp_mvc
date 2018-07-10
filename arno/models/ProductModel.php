@@ -72,6 +72,23 @@ class ProductModel extends BaseModel{
 
     }
 
+    function getProductDataByName($product_name){
+        $sql = "SELECT * 
+        FROM tb_product 
+        WHERE product_name = '$product_name' 
+        ";
+
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getProductDataByID($product_id,$stock_group_id){
         $sql = "SELECT table_name FROM tb_stock_group WHERE tb_stock_group.stock_group_id = '$stock_group_id'";
         $table_name ="";
@@ -156,6 +173,9 @@ class ProductModel extends BaseModel{
         }
 
     }
+
+
+
 
     
     

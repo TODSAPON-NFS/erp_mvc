@@ -30,9 +30,9 @@ class UserModel extends BaseModel{
         FROM tb_user LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
         LEFT JOIN tb_user_status ON tb_user.user_status_id = tb_user_status.user_status_id 
         WHERE CONCAT(tb_user.user_name,' ',tb_user.user_lastname) LIKE ('%$name%') 
-        OR user_position_name LIKE ('%$position%') 
-        OR user_email LIKE ('%$email%') 
-        OR user_mobile LIKE ('%$mobile%') 
+        AND user_position_name LIKE ('%$position%') 
+        AND user_email LIKE ('%$email%') 
+        AND user_mobile LIKE ('%$mobile%') 
         ORDER BY CONCAT(tb_user.user_name,' ',tb_user.user_lastname) 
         ";
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {

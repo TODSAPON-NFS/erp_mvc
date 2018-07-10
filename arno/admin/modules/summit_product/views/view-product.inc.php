@@ -343,7 +343,7 @@ function update_sum(){
                     </thead>
                     <tbody>
                         <?php 
-                        for($i=0; $i < count($summit_products); $i++){
+                        for($i=$page * $page_size ; $i < count($summit_products) && $i < $page * $page_size + $page_size; $i++){
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>

@@ -1,7 +1,5 @@
 <?php
 session_start();
-$user = $_SESSION['user'];
-$user_id = $user[0][0];
 require_once('../models/RequestRegrindModel.php');
 require_once('../models/RequestRegrindListModel.php');
 require_once('../models/UserModel.php');
@@ -22,15 +20,26 @@ $product_model = new ProductModel;
 $first_char = "RPTR";
 $request_regrind_id = $_GET['id'];
 $notification_id = $_GET['notification'];
-if(!isset($_GET['action'])){
+
+$request_regrind = $request_regrind_model->getRequestRegrindByID($request_regrind_id);
+$employee_id = $request_regrind['employee_id'];
+
+if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_request_page == 'Medium' || $license_request_page == 'High' )){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $keyword = $_GET['keyword'];
-    $request_regrinds = $request_regrind_model->getRequestRegrindBy($date_start,$date_end,$keyword,$user_id);
+
+    if($license_request_page == 'Medium' || $license_request_page == 'High'){
+        $request_regrinds = $request_regrind_model->getRequestRegrindBy($date_start,$date_end,$keyword,'');
+    }else{
+        $request_regrinds = $request_regrind_model->getRequestRegrindBy($date_start,$date_end,$keyword,$admin_id);
+    }
+    
+
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && (($license_request_page == 'Low') || $license_request_page == 'Medium' || $license_request_page == 'High' ) ){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
     $suppliers=$supplier_model->getSupplierBy();
@@ -40,7 +49,7 @@ if(!isset($_GET['action'])){
     $last_code = $request_regrind_model->getRequestRegrindLastID($first_code,3);
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && (($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'Medium' || $license_request_page == 'High') ){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
     $suppliers=$supplier_model->getSupplierBy();
@@ -57,7 +66,7 @@ if(!isset($_GET['action'])){
     $request_regrind_lists = $request_regrind_list_model->getRequestRegrindListBy($request_regrind_id);
     require_once($path.'detail.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && (($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'High') ){
 
     $request_regrind_list_model->deleteRequestRegrindListByRequestRegrindID($request_regrind_id);
     $request_regrinds = $request_regrind_model->deleteRequestRegrindById($request_regrind_id);
@@ -65,19 +74,19 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=request_regrind"</script>
 <?php
 
-}else if ($_GET['action'] == 'cancelled'){
+}else if ($_GET['action'] == 'cancelled' && (($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'Medium' || $license_request_page == 'High') ){
     $request_regrind_model->cancelRequestRegrindById($request_regrind_id);
 ?>
     <script>window.location="index.php?app=request_regrind"</script>
 <?php
 
-}else if ($_GET['action'] == 'uncancelled'){
+}else if ($_GET['action'] == 'uncancelled' && (($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'Medium' || $license_request_page == 'High') ){
     $request_regrind_model->uncancelRequestRegrindById($request_regrind_id);
 ?>
     <script>window.location="index.php?app=request_regrind"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && (( $license_request_page == 'Low' ) || $license_request_page == 'Medium' || $license_request_page == 'High') ){
     if(isset($_POST['request_regrind_code'])){
         $data = [];
         $data['request_regrind_date'] = date("d")."-".date("m")."-".date("Y");
@@ -148,7 +157,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && (($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'Medium' || $license_request_page == 'High') ){
     
     if(isset($_POST['request_regrind_code'])){
         $data = [];
@@ -226,7 +235,7 @@ if(!isset($_GET['action'])){
         
       
     
-}else if ($_GET['action'] == 'rewrite'){
+}else if ($_GET['action'] == 'rewrite' && (($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'Medium' || $license_request_page == 'High') ){
 
         $request_regrind = $request_regrind_model->getRequestRegrindByID($request_regrind_id);
         $request_regrind_lists = $request_regrind_list_model->getRequestRegrindListBy($request_regrind_id);
@@ -302,16 +311,21 @@ if(!isset($_GET['action'])){
         
         
     
-}else{
+}else if($license_request_page == 'Low' || $license_request_page == 'Medium' || $license_request_page == 'High' ){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $keyword = $_GET['keyword'];
-    $request_regrinds = $request_regrind_model->getRequestRegrindBy($date_start = "",$date_end = "",$keyword = "",$user_id = "");
+    if($license_request_page == 'Medium' || $license_request_page == 'High'){
+        $request_regrinds = $request_regrind_model->getRequestRegrindBy($date_start,$date_end,$keyword,'');
+    }else{
+        $request_regrinds = $request_regrind_model->getRequestRegrindBy($date_start,$date_end,$keyword,$admin_id);
+        
+    }
+
     require_once($path.'view.inc.php');
 
 }
-
 
 
 

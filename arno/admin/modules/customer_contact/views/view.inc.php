@@ -177,7 +177,9 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Customer Person Contact.
+                            <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                             <a class="btn btn-success " style="float:right;" href="?app=customer_contact&action=insert&id=<?php  echo $customer_id; ?>" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                            <?PHP } ?>
                             <a href="?app=customer&action=view" class="btn btn-primary" style="float:right;margin-right:8px;">Back</a>
                         </div>
                         <!-- /.panel-heading -->
@@ -206,13 +208,16 @@
                                         <td><?php echo $customer_contact[$i]['customer_contact_email']; ?></td>
                                         <td><?php echo $customer_contact[$i]['customer_contact_detail']; ?></td>
                                         <td>
-                                            
+                                        <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                             <a title="Update data" href="?app=customer_contact&action=update&id=<?php echo $customer_id; ?>&subid=<?php echo $customer_contact[$i]['customer_contact_id'];?>">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             </a> 
+                                        <?PHP } ?>
+                                        <?php if($license_admin_page == "High"){ ?> 
                                             <a title="Delete data" href="?app=customer_contact&action=delete&id=<?php echo $customer_id; ?>&subid=<?php echo $customer_contact[$i]['customer_contact_id'];?>" onclick="return confirm('You want to delete customer contact : <?php echo $customer[$i]['customer_contact_name']; ?>');" style="color:red;">
                                                 <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
+                                        <?PHP } ?>
                                         </td>
                                     </tr>
                                    <?

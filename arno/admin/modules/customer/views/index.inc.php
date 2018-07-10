@@ -35,7 +35,7 @@ if(!isset($_GET['action'])){
     require_once($path.'view.inc.php');
     
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
 
     $user = $model_user->getUserBy();
     $account = $account_model->getAccountAll();
@@ -52,7 +52,7 @@ if(!isset($_GET['action'])){
 
     require_once($path.'update.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ($license_admin_page == 'High') ){
 
     $customer = $model_customer->getCustomerByID($_GET['id']);
     if(count($customer) > 0){
@@ -68,7 +68,7 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=customer"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['customer_code'])){
         $data = [];
         $data['customer_code'] = $_POST['customer_code'];
@@ -148,7 +148,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['customer_code'])){
         $data = [];
         $data['customer_code'] = $_POST['customer_code'];

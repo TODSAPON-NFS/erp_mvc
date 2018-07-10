@@ -40,6 +40,21 @@
                                         <td><?php echo $stock_groups[$i]['stock_group_name']; ?></td>
                                         <td><?php echo $stock_groups[$i]['stock_group_detail']; ?></td>
                                         <td>
+
+                                        <?PHP if ( $license_inventery_page == "Low" || $license_inventery_page == "Medium" || $license_inventery_page == "High" ) { ?>
+                                            <a href="?app=stock_in&action=view&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_groups[$i]['stock_group_id'];?>">
+                                                <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                            </a>
+                                            <a href="?app=stock_out&action=view&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_groups[$i]['stock_group_id'];?>">
+                                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                            </a>
+                                            <a href="?app=stock_list&action=view&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_groups[$i]['stock_group_id'];?>">
+                                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                            </a> 
+                                        <?PHP } ?>
+
+
+                                        <?PHP if ( $license_inventery_page == "Medium" || $license_inventery_page == "High" ) { ?>
                                             <?PHP 
                                                 if($stock_groups[$i]['stock_group_primary'] == '0'){
                                             ?>
@@ -53,21 +68,20 @@
                                             <?PHP
                                                 }
                                             ?>
-                                            <a href="?app=stock_in&action=view&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_groups[$i]['stock_group_id'];?>">
-                                                <i class="fa fa-sign-in" aria-hidden="true"></i>
-                                            </a>
-                                            <a href="?app=stock_out&action=view&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_groups[$i]['stock_group_id'];?>">
-                                                <i class="fa fa-sign-out" aria-hidden="true"></i>
-                                            </a>
-                                            <a href="?app=stock_list&action=view&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_groups[$i]['stock_group_id'];?>">
-                                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                            </a> 
+                                           
                                             <a href="?app=stock_group&action=update&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_groups[$i]['stock_group_id'];?>">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             </a> 
+                                        <?PHP } ?>
+
+
+                                        <?PHP if ( $license_inventery_page == "High" ) { ?>
                                             <a href="?app=stock_group&action=delete&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_groups[$i]['stock_group_id'];?>" onclick="return confirm('You want to delete stock group : <?php echo $stock_group[$i]['stock_group_name']; ?>');" style="color:red;">
                                                 <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
+                                        <?PHP } ?>
+
+
                                         </td>
                                     </tr>
                                    <?

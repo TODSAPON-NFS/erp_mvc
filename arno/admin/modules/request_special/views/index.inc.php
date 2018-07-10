@@ -1,7 +1,5 @@
 <?php
 session_start();
-$user = $_SESSION['user'];
-$user_id = $user[0][0];
 require_once('../models/RequestSpecialModel.php');
 require_once('../models/RequestSpecialListModel.php');
 require_once('../models/UserModel.php');
@@ -22,7 +20,12 @@ $product_model = new ProductModel;
 $first_char = "SPTR";
 $request_special_id = $_GET['id'];
 $notification_id = $_GET['notification'];
-if(!isset($_GET['action'])){
+
+$request_special = $request_special_model->getRequestSpecialByID($request_special_id);
+$employee_id = $request_special['employee_id'];
+
+
+if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_request_page == 'Medium' || $license_request_page == 'High' )){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
@@ -30,7 +33,7 @@ if(!isset($_GET['action'])){
     $request_specials = $request_special_model->getRequestSpecialBy($date_start,$date_end,$keyword,$user_id);
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert'  && (($license_request_page == 'Low') || $license_request_page == 'Medium' || $license_request_page == 'High' ) ){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
     $suppliers=$supplier_model->getSupplierBy();
@@ -40,7 +43,7 @@ if(!isset($_GET['action'])){
     $last_code = $request_special_model->getRequestSpecialLastID($first_code,3);
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && (($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'Medium' || $license_request_page == 'High') ){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
     $suppliers=$supplier_model->getSupplierBy();
@@ -57,7 +60,7 @@ if(!isset($_GET['action'])){
     $request_special_lists = $request_special_list_model->getRequestSpecialListBy($request_special_id);
     require_once($path.'detail.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ( ($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'High') ){
 
     $request_special_list_model->deleteRequestSpecialListByRequestSpecialID($request_special_id);
     $request_specials = $request_special_model->deleteRequestSpecialById($request_special_id);
@@ -65,19 +68,19 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=request_special"</script>
 <?php
 
-}else if ($_GET['action'] == 'cancelled'){
+}else if ($_GET['action'] == 'cancelled' && (($license_request_page == 'Low' && $admin_id == $employee_id ) ||$license_request_page == 'Medium' || $license_request_page == 'High') ){
     $request_special_model->cancelRequestSpecialById($request_special_id);
 ?>
     <script>window.location="index.php?app=request_special"</script>
 <?php
 
-}else if ($_GET['action'] == 'uncancelled'){
+}else if ($_GET['action'] == 'uncancelled' && (($license_request_page == 'Low' && $admin_id == $employee_id ) ||$license_request_page == 'Medium' || $license_request_page == 'High') ){
     $request_special_model->uncancelRequestSpecialById($request_special_id);
 ?>
     <script>window.location="index.php?app=request_special"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && (( $license_request_page == 'Low' ) || $license_request_page == 'Medium' || $license_request_page == 'High') ){
     if(isset($_POST['request_special_code'])){
         $data = [];
         $data['request_special_date'] = date("d")."-".date("m")."-".date("Y");
@@ -148,7 +151,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && (($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'Medium' || $license_request_page == 'High') ){
     
     if(isset($_POST['request_special_code'])){
         $data = [];
@@ -226,7 +229,7 @@ if(!isset($_GET['action'])){
         
       
     
-}else if ($_GET['action'] == 'rewrite'){
+}else if ($_GET['action'] == 'rewrite' && (($license_request_page == 'Low' && $admin_id == $employee_id ) ||$license_request_page == 'Medium' || $license_request_page == 'High') ){
 
         $request_special = $request_special_model->getRequestSpecialByID($request_special_id);
         $request_special_lists = $request_special_list_model->getRequestSpecialListBy($request_special_id);
@@ -302,7 +305,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else{
+}else if($license_request_page == 'Low' || $license_request_page == 'Medium' || $license_request_page == 'High' ){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];

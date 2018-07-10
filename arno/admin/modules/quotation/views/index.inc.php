@@ -21,7 +21,12 @@ $first_char = "";
 $quotation_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $vat = 7;
-if(!isset($_GET['action'])){
+
+
+$quotation = $quotation_model->getQuotationByID($quotation_id);
+$employee_id = $quotation['employee_id'];
+
+if(!isset($_GET['action']) && ( $license_sale_page == "Low" || $license_sale_page == "Medium" || $license_sale_page == "High" )){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
@@ -29,10 +34,18 @@ if(!isset($_GET['action'])){
     $keyword = $_GET['keyword'];
 
     $customers=$customer_model->getCustomerBy();
-    $quotations = $quotation_model->getQuotationBy($date_start,$date_end,$customer_id,$keyword,$user_id);
+    
+    if( $license_sale_page == "Medium" || $license_sale_page == "High" ){
+        $quotations = $quotation_model->getQuotationBy($date_start,$date_end,$customer_id,$keyword);
+    }else{
+        $quotations = $quotation_model->getQuotationBy($date_start,$date_end,$customer_id,$keyword,$user_id);
+    }
+    
+
+
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ( $license_sale_page == "Low" || $license_sale_page == "Medium" || $license_sale_page == "High" )){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
     $user=$user_model->getUserByID($user_id);
@@ -49,7 +62,7 @@ if(!isset($_GET['action'])){
     
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ( ($license_sale_page == "Low" && $admin_id == $employee_id) || $license_sale_page == "Medium" || $license_sale_page == "High" )){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
     
@@ -66,7 +79,7 @@ if(!isset($_GET['action'])){
     $quotation_lists = $quotation_list_model->getQuotationListBy($quotation_id);
     require_once($path.'detail.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ( ($license_sale_page == "Low" && $admin_id == $employee_id)  && $license_sale_page == "High" )){
     $quotations = $quotation_model->deleteQuotationById($quotation_id);
 ?>
     <script>window.location="index.php?app=quotation"</script>
@@ -84,7 +97,7 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=quotation"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ( $license_sale_page == "Low"  || $license_sale_page == "Medium" || $license_sale_page == "High" )){
     if(isset($_POST['quotation_code'])){
         $data = [];
         $data['quotation_date'] = $_POST['quotation_date'];
@@ -167,7 +180,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ( ($license_sale_page == "Low" && $admin_id == $employee_id) || $license_sale_page == "Medium" || $license_sale_page == "High" )){
     
     if(isset($_POST['quotation_code'])){
         $data = [];
@@ -254,7 +267,7 @@ if(!isset($_GET['action'])){
         
       
     
-}else if ($_GET['action'] == 'rewrite'){
+}else if ($_GET['action'] == 'rewrite' && ( ($license_sale_page == "Low" && $admin_id == $employee_id) || $license_sale_page == "Medium" || $license_sale_page == "High" )){
         
     $quotation = $quotation_model->getQuotationByID($quotation_id);
     $quotation_lists = $quotation_list_model->getQuotationListBy($quotation_id);
@@ -336,7 +349,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else{
+}else if ( $license_sale_page == "Low" || $license_sale_page == "Medium" || $license_sale_page == "High" ) {
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
@@ -344,7 +357,13 @@ if(!isset($_GET['action'])){
     $keyword = $_GET['keyword'];
 
     $customers=$customer_model->getCustomerBy();
-    $quotations = $quotation_model->getQuotationBy($date_start,$date_end,$customer_id,$keyword,$user_id);
+
+    if( $license_sale_page == "Medium" || $license_sale_page == "High" ){
+        $quotations = $quotation_model->getQuotationBy($date_start,$date_end,$customer_id,$keyword);
+    }else{
+        $quotations = $quotation_model->getQuotationBy($date_start,$date_end,$customer_id,$keyword,$user_id);
+    }
+
     require_once($path.'view.inc.php');
 
 }

@@ -24,7 +24,7 @@ $customer_id = $_GET['customer_id'];
 $vat = 7;
 $first_char = "BN";
 
-if(!isset($_GET['action'])){
+if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
@@ -37,7 +37,7 @@ if(!isset($_GET['action'])){
     $customer_orders = $billing_note_model->getCustomerOrder();
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     $first_code = $first_char.date("y").date("m");
     $first_date = date("d")."-".date("m")."-".date("Y");
     $last_code = $billing_note_model->getBillingNoteLastID($first_code,3);
@@ -48,7 +48,7 @@ if(!isset($_GET['action'])){
 
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
 
@@ -74,13 +74,13 @@ if(!isset($_GET['action'])){
     $billing_note_lists = $billing_note_list_model->getBillingNoteListBy($billing_note_id);
     require_once($path.'print.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ( $license_sale_page == "High" ) ){
     $billing_note_model->deleteBillingNoteById($billing_note_id);
 ?>
     <script>window.location="index.php?app=billing_note"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     if(isset($_POST['billing_note_code'])){
         $data = [];
         $data['customer_id'] = $_POST['customer_id'];
@@ -146,7 +146,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     
     if(isset($_POST['billing_note_code'])){
         
@@ -231,7 +231,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else{
+}else  if ($license_sale_page == "Medium" || $license_sale_page == "High" ) {
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];

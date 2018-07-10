@@ -1,4 +1,4 @@
-<div class="navbar-header">
+            <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -87,13 +87,20 @@
                             </div>
                             <!-- /input-group -->
                         </li>
+                    <? 
+
+
+
+                    //license_admin_page
+                    if($license_admin_page == "High" || $license_admin_page == "Medium" || $license_admin_page == "Low" ){
+                    ?>
                         <li
                         <?PHP 
                             if(
                                    $_GET["app"]=='employee'
                                 || $_GET["app"]=='supplier'
                                 || $_GET["app"]=='customer'
-                                || $_GET["app"]=='product'
+                                || $_GET["app"]=='product' 
                             ){
                                 echo ' class="active" ';
                             }
@@ -120,6 +127,33 @@
                                 
                             </ul>
                         </li>
+                    <? 
+                    }
+
+
+                    //license_sale_employee_page
+                    if($license_sale_employee_page == "High" || $license_sale_employee_page == "Medium" || $license_sale_employee_page == "Low" ){
+                    ?>
+                        <li
+                        <?PHP 
+                            if(
+                                $_GET["app"]=='sale_employee'
+                            ){
+                                echo ' class="active" ';
+                            }
+                        ?> 
+                        >
+                            <a href="?app=sale_employee" class="nav-title">
+                            ระบบพนักงานขาย
+                            </a>
+                        </li>
+                    <? 
+                    }
+
+                    //	license_request_page
+                    if($license_request_page == "High" || $license_request_page == "Medium" || $license_request_page == "Low" ){
+                    ?>
+
                         <li 
                         <?PHP 
                             if($_GET["app"]=='request_test'){
@@ -134,12 +168,16 @@
                         ?> 
                         >
                             <a href="#" class="nav-title">
-                                สั่งสินค้าทดลอง <span class="glyphicon arrow"></span>
+                                ระบบสั่งสินค้าทดลอง <span class="glyphicon arrow"></span>
                             </a>
                             <ul class="collapse">
+                                <?PHP if($license_request_page == "High" || $license_request_page == "Medium"){ ?>
                                 <li>
                                     <a href="?app=request_test"   ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบสั่งสินค้าทดลอง (Request Test)</a>
                                 </li>
+                                <?PHP } ?>
+
+
                                 <li>
                                     <a href="?app=request_standard"   ><i class="fa  fa-file-o" aria-hidden="true"></i> สินค้ามาตรฐาน (Standard Tool)</a>
                                 </li>
@@ -149,16 +187,85 @@
                                 <li>
                                     <a href="?app=request_regrind"   ><i class="fa  fa-file-o" aria-hidden="true"></i> สินค้ารีกายด์ (Regrind Tool)</a>
                                 </li>
+                               
+
+
                             </ul>
                         </li>
+
+                    <? 
+                    }
+
+
+                    //	license_delivery_note_page
+                    if($license_delivery_note_page == "High" || $license_delivery_note_page == "Medium" || $license_delivery_note_page == "Low" ){
+                    ?>
+
+
+                        <li
+                        <?PHP 
+                            if(
+                                $_GET["app"]=='delivery_note_supplier'
+                                || $_GET["app"]=='delivery_note_customer'
+                            ){
+                                echo ' class="active" ';
+                            }
+                        ?> 
+                        >
+                            <a href="#" class="nav-title">
+                            ระบบใบยืม <span class="glyphicon arrow"></span>
+                            </a>
+                            <ul class="collapse" > 
+                                <li>
+                                    <a href="?app=delivery_note_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบยืมจากผู้ขาย (Supplier DN)</a>
+                                </li>
+                                <li>
+                                    <a href="?app=delivery_note_customer"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบยืมลูกค้า (Customer DN)</a>
+                                </li>
+                            </ul>
+                           
+                        </li>
+                    <? 
+                    }
+
+
+                    //license_regrind_page
+                    if($license_regrind_page == "High" || $license_regrind_page == "Medium" || $license_regrind_page == "Low" ){
+                    ?>
                         <li
                         <?PHP 
                             if(
                                 $_GET["app"]=='regrind_supplier'
-                                || $_GET["app"]=='regrind_supplier_receive'
-                                || $_GET["app"]=='delivery_note_supplier'
-                                || $_GET["app"]=='delivery_note_customer'
-                                || $_GET["app"]=='purchase_request'
+                                || $_GET["app"]=='regrind_supplier_receive' 
+                            ){
+                                echo ' class="active" ';
+                            }
+                        ?> 
+                        >
+                            <a href="#" class="nav-title">
+                            ระบบรีกายร์สินค้า <span class="glyphicon arrow"></span>
+                            </a>
+                            <ul class="collapse" > 
+                                <li>
+                                    <a href="?app=regrind_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบส่งรีกายร์สินค้า (Send Regrind)</a>
+                                </li>
+                                <li>
+                                    <a href="?app=regrind_supplier_receive"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบรับรีกายร์สินค้า (Receive Regrind)</a>
+                                </li>
+                            </ul>
+                        </li>
+                    <? 
+                    }
+
+
+                    //	license_purchase_page
+                    if($license_purchase_page == "High" || $license_purchase_page == "Medium" || $license_purchase_page == "Low" ){
+                    ?>
+                        <li
+                        <?PHP 
+                            if(
+                                  
+                                   $_GET["app"]=='purchase_request'
                                 || $_GET["app"]=='purchase_order'
                                 || $_GET["app"]=='invoice_supplier'
                             ){
@@ -169,32 +276,29 @@
                             <a href="#" class="nav-title">
                             ระบบจัดซื้อ <span class="glyphicon arrow"></span>
                             </a>
-                            <ul class="collapse" > 
-                                <li>
-                                    <a href="?app=regrind_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบส่งรีกายร์สินค้า (Send Regrind)</a>
-                                </li>
-                                <li>
-                                    <a href="?app=regrind_supplier_receive"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบรับรีกายร์สินค้า (Receive Regrind)</a>
-                                </li>
-                                <li>
-                                    <a href="?app=delivery_note_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบยืมจากผู้ขาย (Supplier DN)</a>
-                                </li>
-                                <li>
-                                    <a href="?app=delivery_note_customer"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบยืมลูกค้า (Customer DN)</a>
-                                </li>
+                            <ul class="collapse" >  
+                               
                                 <li>
                                     <a href="?app=purchase_request"><i class="fa  fa-file-o" aria-hidden="true"></i> ร้องขอสั่งซื้อสินค้า (PR)</a>
                                 </li>
                                 
+                                <?PHP if($license_purchase_page == "High" || $license_purchase_page == "Medium"){ ?>
                                 <li>
                                     <a href="?app=purchase_order"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบสั่งซื้อ (PO)</a>
                                 </li>
                                 <li>
                                     <a href="?app=invoice_supplier"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบรับสินค้า (Supplier Invoice) </a>
                                 </li>
+                                <?PHP } ?>
                             </ul>
                         </li>
-                        
+                    <? 
+                    }
+
+
+                    //license_sale_page
+                    if($license_sale_page == "High" || $license_sale_page == "Medium" || $license_sale_page == "Low" ){
+                    ?>
                         <li
                         <?PHP 
                             if(
@@ -214,9 +318,14 @@
                             ระบบขายสินค้า <span class="glyphicon arrow"></span>
                             </a>
                             <ul class="collapse">   
+
+
                                 <li>
                                     <a href="?app=quotation"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบเสนอราคา (Quotation) </a>
                                 </li>
+
+
+                                <?PHP if($license_sale_page == "High" || $license_sale_page == "Medium" ){?>
                                 <li>
                                     <a href="?app=customer_purchase_order"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบสั่งซื้อลูกค้า (Customer PO) </a>
                                 </li>
@@ -235,9 +344,18 @@
                                 <li>
                                     <a href="?app=official_receipt"><i class="fa  fa-file-o" aria-hidden="true"></i> ใบเสร็จ (Official Receipt)</a>
                                 </li>
-                            
+                                <?PHP } ?>
+
+
                             </ul>
                         </li>
+                    <? 
+                    }
+
+
+                    //license_inventery_page
+                    if($license_inventery_page == "High" || $license_inventery_page == "Medium" || $license_inventery_page == "Low" ){
+                    ?>
                         <li
                         <?PHP 
                             if(
@@ -254,21 +372,36 @@
                                 ระบบคลังสินค้า <span class="glyphicon arrow"></span>
                             </a>
                             <ul class="collapse">    
+
                                 <li>
                                     <a href="?app=search_product"  ><i class="fa fa-search fa-fw" aria-hidden="true"></i> ค้นหาสินค้า (Search product) </a>
                                 </li>
+
                                 <li>
                                     <a href="?app=stock_type"  ><i class="fa fa-database fa-fw" aria-hidden="true"></i> คลังสินค้า (Stock) </a>
                                 </li>
+
+
+
+                                <?PHP if($license_inventery_page == "High" || $license_inventery_page == "Medium" ){?>
                                 <li>
                                     <a href="?app=stock_move"  ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบโอนคลังสินค้า (Transfer Stock)</a>
                                 </li>
                                 <li>
                                     <a href="?app=stock_issue"  ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบนำออกสินค้า (Issue Stock)</a>
                                 </li>
+                                <?PHP } ?>
+
+
                             </ul>
                         </li>
+                    <? 
+                    }
 
+
+                    //license_account_page
+                    if($license_account_page == "High" || $license_account_page == "Medium" || $license_account_page == "Low" ){
+                    ?>
 
                         <li
                         <?PHP 
@@ -432,7 +565,13 @@
                             </ul>
                         </li>
 
+                    <? 
+                    }
 
+
+                    //license_account_page
+                    if($license_report_page == "High" || $license_report_page == "Medium" || $license_report_page == "Low" ){
+                    ?>
                         <li
                         <?PHP 
                              if(
@@ -443,7 +582,7 @@
                         ?> 
                         >
                             <a href="#" class="nav-title">
-                                รายงาน <span class="glyphicon arrow"></span>
+                                ระบบรายงาน <span class="glyphicon arrow"></span>
                             </a>
                             <ul class="collapse">
                                 <li
@@ -508,6 +647,12 @@
                                 </li>
                             </ul>
                         </li>
+
+                    <? 
+                    }
+
+                    ?>
+
                         <li 
                         <?PHP 
                             if($_GET["app"]=='job'){

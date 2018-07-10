@@ -70,7 +70,7 @@ class RequestSpecialListModel extends BaseModel{
 
     }
 
-    function updatePurchaseRquestListById($data,$id){
+    function updateRequestSpecialListById($data,$id){
 
         $sql = " UPDATE tb_request_special_list 
             SET product_id = '".$data['product_id']."', 

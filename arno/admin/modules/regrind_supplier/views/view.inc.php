@@ -17,6 +17,8 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
@@ -26,10 +28,13 @@
                                 <div class="col-md-8">
                                     รายการใบรีกายร์สินค้าจากผู้ขาย /  Regrind Supplier List
                                 </div>
+                                <?PHP if($license_regrind_page == "Low" || $license_regrind_page == "Medium" || $license_regrind_page == "High" ) { ?>
                                 <div class="col-md-4">
                                     <a class="btn btn-success " style="float:right;" href="?app=regrind_supplier&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                                     </div>
                                 </div>
+                                <?PHP } ?>
+
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -134,12 +139,20 @@
                                                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                             </a>
 
+
+                                            <?PHP if(($license_regrind_page == "Low" && $admin == $regrind_suppliers[$i]['employee_id']) || $license_regrind_page == "Medium" || $license_regrind_page == "High" ) { ?>
                                             <a href="?app=regrind_supplier&action=update&id=<?php echo $regrind_suppliers[$i]['regrind_supplier_id'];?>">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             </a> 
+                                            <?PHP } ?>
+
+
+                                            <?PHP if(($license_regrind_page == "Low" && $admin == $regrind_suppliers[$i]['employee_id']) ||  $license_regrind_page == "High" ) { ?>
                                             <a href="?app=regrind_supplier&action=delete&id=<?php echo $regrind_suppliers[$i]['regrind_supplier_id'];?>" onclick="return confirm('You want to delete Regrind Supplier : <?php echo $regrind_suppliers[$i]['regrind_supplier_code']; ?>');" style="color:red;">
                                                 <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
+                                            <?PHP } ?>
+
 
                                         </td>
 

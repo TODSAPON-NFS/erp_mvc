@@ -16,7 +16,7 @@ $stock_group_id = $_GET['id'];
 $stock_type_id = $_GET['stock_type_id'];
 
 
-if(!isset($_GET['action'])){
+if(!isset($_GET['action']) && ($license_inventery_page == "Low" || $license_inventery_page == "Medium" || $license_inventery_page == "High" ) ){
 
     $stock_groups = $model_stock_group->getStockGroupBy($stock_type_id);
     require_once($path.'view.inc.php');
@@ -27,14 +27,14 @@ if(!isset($_GET['action'])){
     $stock_types = $model_stock_type->getStockTypeBy();
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ($license_inventery_page == "Medium" || $license_inventery_page == "High" ) ){
    
     $stock_group = $model_stock_group->getStockGroupByID($stock_group_id);
     $users = $model_user->getUserBy();
     $stock_types = $model_stock_type->getStockTypeBy();
     require_once($path.'update.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ($license_inventery_page == "High" )){
 
     $stock_group = $model_stock_group->getStockGroupByID($stock_group_id);
     $model_stock->setTableName($stock_group['table_name']);
@@ -57,7 +57,7 @@ if(!isset($_GET['action'])){
         echo "-";
     }
  
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_inventery_page == "Medium" || $license_inventery_page == "High" ) ){
     if(isset($_POST['stock_group_name'])){
 
         $data = [];
@@ -92,7 +92,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_inventery_page == "Medium" || $license_inventery_page == "High" ) ){
     
     if(isset($_POST['stock_group_name'])){
         $data = [];
@@ -122,7 +122,7 @@ if(!isset($_GET['action'])){
     }
     
                  
-} else {
+} else if ($license_inventery_page == "Low" || $license_inventery_page == "Medium" || $license_inventery_page == "High" ){
 
     $stock_groups = $model_stock_group->getStockGroupBy($stock_type_id);
     require_once($path.'view.inc.php');

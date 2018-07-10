@@ -21,6 +21,7 @@
     <!-- /.col-lg-12 -->
 </div>
 
+<?PHP if($license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?>
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-6">
@@ -30,9 +31,11 @@
                     <div class="col-md-8">
                         รายการใบกำกับภาษีรับเข้าตามผู้ขายในประเทศ
                     </div>
+                    <?PHP if($license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?>
                     <div class="col-md-4">
                         <a class="btn btn-success " style="float:right;" href="?app=invoice_supplier&action=insert&sort=ภายในประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                     </div>
+                    <?PHP } ?>
                 </div>
             </div>
             <!-- /.panel-heading -->
@@ -189,7 +192,7 @@
     <!-- /.col-lg-12 -->
 </div>
 
-
+<?PHP } ?>
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-12">
@@ -284,19 +287,28 @@
                                 <a href="?app=invoice_supplier&action=detail&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                 </a>
+
                                 <?PHP if($invoice_suppliers[$i]['supplier_domestic'] == "ภายนอกประเทศ"){ ?>
                                 <a href="?app=invoice_supplier&action=cost&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
                                     <i class="fa fa-money" aria-hidden="true"></i>
                                 </a>
                                 <?PHP } ?>
 
+
+                                <?PHP if($license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?>
                                 <a href="?app=invoice_supplier&action=update&sort=<?PHP echo $invoice_suppliers[$i]['supplier_domestic'];?>&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
+                                <?PHP } ?>
+
+
+                                <?PHP if( $license_purchase_page == "High"){ ?>
                                 <a href="?app=invoice_supplier&action=delete&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" onclick="return confirm('You want to delete Invoice Supplier : <?php echo $invoice_suppliers[$i]['invoice_supplier_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
-                           
+                                <?PHP } ?>
+
+                                
                             </td>
 
                         </tr>

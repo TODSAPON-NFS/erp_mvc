@@ -9,14 +9,14 @@ if(!isset($_GET['action'])){
     $product_groups = $model_product_group->getProductGroupBy();
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ($license_admin_page == 'High') ){
 
     $model_product_group->deleteProductGroupByID($product_group_id);
 ?>
     <script>window.location="index.php?app=product_group&action=view&id=<?php echo $customer_id;?>"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['product_group_name'])){
         $data = [];
         $data['product_group_name'] = $_POST['product_group_name'];
@@ -35,7 +35,7 @@ if(!isset($_GET['action'])){
                     
         }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['product_group_name'])){
         $data = [];
         $data['product_group_name'] = $_POST['product_group_name'];

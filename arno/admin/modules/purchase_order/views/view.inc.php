@@ -351,6 +351,9 @@
                                 <?php if($purchase_orders[$i]['purchase_order_status'] == "New" || $purchase_orders[$i]['purchase_order_status'] == "Approved"){ ?>
                                     
                                     <?php if($purchase_orders[$i]['purchase_order_cancelled'] == 0){ ?>
+
+
+                                        <?PHP if( $license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?> 
                                         <a href="?app=purchase_order&action=cancelled&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="ยกเลิกใบร้องขอ" onclick="return confirm('You want to cancelled purchase request : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" style="color:#F00;">
                                             <i class="fa fa-ban" aria-hidden="true"></i>
                                         </a>
@@ -360,24 +363,45 @@
                                         <a href="?app=purchase_order&action=update&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="แก้ไขใบร้องขอ">
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                         </a> 
+                                        <?PHP } ?>
+
+
                                     <?php } else if($purchase_orders[$i]['count_rewrite'] == 0) { ?>
 
+
+                                        <?PHP if( $license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?> 
                                         <a href="?app=purchase_order&action=uncancelled&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled purchase request : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" >
                                             <i class="fa fa-undo" aria-hidden="true"></i>
                                         </a>
                                         <a href="?app=purchase_order&action=rewrite&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="เขียนใบร้องขอใหม่" onclick="return confirm('You want to rewrite purchase request : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" style="color:#F00;">
                                             <i class="fa fa-registered" aria-hidden="true"></i>
                                         </a>
+                                        <?PHP } ?>
+
+
+                                        <?PHP if( $license_purchase_page == "High"){ ?> 
                                         <a href="?app=purchase_order&action=delete&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>" onclick="return confirm('You want to delete Purchase Order : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" style="color:red;">
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                         </a>
+                                        <?PHP } ?>
+
+
                                     <?PHP }else{ ?>
+
+                                        <?PHP if( $license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?> 
                                         <a href="?app=purchase_order&action=uncancelled&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled purchase request : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" >
                                             <i class="fa fa-undo" aria-hidden="true"></i>
                                         </a>
+                                        <?PHP } ?>
+
+
+                                        <?PHP if( $license_purchase_page == "High"){ ?> 
                                         <a href="?app=purchase_order&action=delete&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>" onclick="return confirm('You want to delete Purchase Order : <?php echo $purchase_orders[$i]['purchase_order_code']; ?>');" style="color:red;">
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                         </a>
+                                        <?PHP } ?>
+
+                                        
                                     <?PHP } ?>
                                         
                                     

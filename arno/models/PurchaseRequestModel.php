@@ -21,11 +21,12 @@ class PurchaseRequestModel extends BaseModel{
         }
 
         if($user_id != ""){
-            $str_user = "AND employee_id = '$user_id' ";
+            $str_user = "AND tb.employee_id  = '$user_id' ";
         }
 
 
         $sql = " SELECT purchase_request_id, 
+        tb.employee_id , 
         purchase_request_date, 
         purchase_request_rewrite_id,
         IFNULL((

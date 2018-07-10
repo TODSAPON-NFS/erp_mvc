@@ -31,7 +31,7 @@ $sort = $_GET['sort'];
 $vat = 7;
 $first_char = "RR";
 $stock_group_id = 0;
-if(!isset($_GET['action'])){
+if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
@@ -47,7 +47,7 @@ if(!isset($_GET['action'])){
     $purchase_orders_out = $invoice_supplier_model->getPurchaseOrder("ภายนอกประเทศ");
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     $products=$product_model->getProductBy('','','','');
     $suppliers=$supplier_model->getSupplierBy($sort);
@@ -80,7 +80,7 @@ if(!isset($_GET['action'])){
     $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($date_time_function_model->changeDateFormat($invoice_supplier['invoice_supplier_date_recieve']),$supplier['currency_id']);
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     $products=$product_model->getProductBy('','','','');
     
     $users=$user_model->getUserBy();
@@ -106,13 +106,13 @@ if(!isset($_GET['action'])){
     
     require_once($path.'cost.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ( $license_purchase_page == "High" )){
     $invoice_supplier_model->deleteInvoiceSupplierById($invoice_supplier_id);
 ?>
     <script>window.location="index.php?app=invoice_supplier"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     if(isset($_POST['invoice_supplier_code'])){
         $data = [];
         $data['supplier_id'] = $_POST['supplier_id'];
@@ -207,7 +207,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     if(isset($_POST['invoice_supplier_code'])){
         
@@ -319,7 +319,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else if ($_GET['action'] == 'edit_cost'){
+}else if ($_GET['action'] == 'edit_cost' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
 
     $invoice_supplier_list_id = $_POST['invoice_supplier_list_id'];
@@ -339,7 +339,7 @@ if(!isset($_GET['action'])){
 <?php
 
     
-}else{
+}else if ( $license_purchase_page == "Medium" || $license_purchase_page == "High" ){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];

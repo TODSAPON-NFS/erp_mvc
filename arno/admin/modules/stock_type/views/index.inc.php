@@ -13,12 +13,17 @@ $model_stock = new StockModel;
 $model_stock_group = new StockGroupModel;
 $stock_type_id = $_GET['id'];
 
-if(!isset($_GET['action'])){
+if(!isset($_GET['action']) && ($license_inventery_page == "Low" || $license_inventery_page == "Medium" || $license_inventery_page == "High" ) ){
 
-    $stock_types = $model_stock_type->getStockTypeBy();
+    if($license_inventery_page == "Medium" || $license_inventery_page == "High" ){
+        $stock_types = $model_stock_type->getStockTypeBy();
+    }else{
+        $stock_types = $model_stock_type->getStockTypeBy($admin_id);
+    }
+
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ( $license_inventery_page == "Medium" || $license_inventery_page == "High" ) ){
     
     $users=$user_model->getUserBy();
     require_once($path.'insert.inc.php');
@@ -29,7 +34,7 @@ if(!isset($_GET['action'])){
     $stock_type_users = $model_stock_type_user->getStockTypeUserBy($stock_type_id);
     require_once($path.'update.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ($license_inventery_page == "High" ) ){
 
     if($model_stock_type->deleteStockTypeById($stock_type_id)){
     ?>
@@ -39,7 +44,7 @@ if(!isset($_GET['action'])){
 
     }
  
-}else if ($_GET['action'] == 'set_primary'){
+}else if ($_GET['action'] == 'set_primary' && ($license_inventery_page == "Medium" || $license_inventery_page == "High" ) ){
 
     if($model_stock_type->setPrimaryByID($stock_type_id)){
     ?>
@@ -49,7 +54,7 @@ if(!isset($_GET['action'])){
         echo "-";
     }
  
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_inventery_page == "Medium" || $license_inventery_page == "High" ) ){
     if(isset($_POST['stock_type_code'])){
 
         $data = [];
@@ -102,7 +107,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_inventery_page == "Medium" || $license_inventery_page == "High" ) ){
     
     if(isset($_POST['stock_type_code'])){
         $data = [];
@@ -159,9 +164,14 @@ if(!isset($_GET['action'])){
     }
     
                  
-} else {
+} else  if ($license_inventery_page == "Low" || $license_inventery_page == "Medium" || $license_inventery_page == "High" ) {
 
-    $stock_types = $model_stock_type->getStockTypeBy();
+    if($license_inventery_page == "Medium" || $license_inventery_page == "High" ){
+        $stock_types = $model_stock_type->getStockTypeBy();
+    }else{
+        $stock_types = $model_stock_type->getStockTypeBy($admin_id);
+    }
+    
     require_once($path.'view.inc.php');
 
 }

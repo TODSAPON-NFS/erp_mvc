@@ -51,7 +51,7 @@ if(!isset($_GET['action'])){
 
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
 
     $product_group = $model_product_group->getProductGroupBy();
     $product_type = $model_product_type->getProductTypeBy();
@@ -59,7 +59,7 @@ if(!isset($_GET['action'])){
     $product_unit = $model_product_unit->getProductUnitBy();
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
 
     
     $product = $model_product->getProductByID($product_id);
@@ -84,7 +84,7 @@ if(!isset($_GET['action'])){
 
     require_once($path.'update.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ($license_admin_page == 'High') ){
 
     if($product_supplier_id != ''){
         $model_product_supplier->deleteProductSupplierById($product_supplier_id);    
@@ -104,7 +104,7 @@ if(!isset($_GET['action'])){
     }
 
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['product_name'])){
 
         $data = [];
@@ -195,7 +195,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     
     if(isset($_POST['product_name'])){
         $data = [];
@@ -302,7 +302,7 @@ if(!isset($_GET['action'])){
     
 }
 
-else if ($_GET['action'] == 'add_customer'){
+else if ($_GET['action'] == 'add_customer' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['customer_id'])){
         $data = [];
         $data['customer_id'] = $_POST['customer_id'];
@@ -325,7 +325,7 @@ else if ($_GET['action'] == 'add_customer'){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit_customer'){
+}else if ($_GET['action'] == 'edit_customer' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     
     if(isset($_POST['customer_id'])){
         $data = [];
@@ -350,7 +350,7 @@ else if ($_GET['action'] == 'add_customer'){
      
 }
 
-else if ($_GET['action'] == 'add_supplier'){
+else if ($_GET['action'] == 'add_supplier' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['supplier_id'])){
         $data = [];
         $data['supplier_id'] = $_POST['supplier_id'];
@@ -373,7 +373,7 @@ else if ($_GET['action'] == 'add_supplier'){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit_supplier'){
+}else if ($_GET['action'] == 'edit_supplier' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     
     if(isset($_POST['supplier_id'])){
         $data = [];

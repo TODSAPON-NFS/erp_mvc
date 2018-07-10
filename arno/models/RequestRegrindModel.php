@@ -21,11 +21,12 @@ class RequestRegrindModel extends BaseModel{
         }
 
         if($user_id != ""){
-            $str_user = "AND employee_id = '$user_id' ";
+            $str_user = "AND tb.employee_id = '$user_id' ";
         }
 
 
         $sql = " SELECT request_regrind_id, 
+        tb.employee_id,
         request_regrind_date, 
         request_regrind_rewrite_id,
         customer_name_th, customer_name_en,
@@ -54,8 +55,7 @@ class RequestRegrindModel extends BaseModel{
         $str_date 
         $str_user  
         ORDER BY STR_TO_DATE(request_regrind_date,'%d-%m-%Y %H:%i:%s') DESC 
-         ";
-
+         "; 
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

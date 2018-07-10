@@ -23,9 +23,13 @@
                                 <div class="col-md-8">
                                     รายการใบร้องขอสั่งซื้อสินค้าทดลอง / Standard Tool Request  List
                                 </div>
+
+                                <?php if($license_request_page == "Low" || $license_request_page == "Medium" || $license_request_page == "High"){ ?> 
                                 <div class="col-md-4">
                                     <a class="btn btn-success " style="float:right;" href="?app=request_standard&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                                 </div>
+                                <?PHP } ?>
+
                             </div>
                         </div>
                         <!-- /.panel-heading -->
@@ -103,6 +107,8 @@
                                         <?php if($request_standards[$i]['request_standard_accept_status'] == "Waiting"){ ?>
                                             
                                             <?php if($request_standards[$i]['request_standard_cancelled'] == 0){ ?>
+
+                                                <?php if($license_request_page == "Medium" || $license_request_page == "High" ||  ($request_standards[$i]['employee_id'] == $admin_id && $license_request_page == "Low")){ ?> 
                                                 <a href="?app=request_standard&action=cancelled&id=<?php echo $request_standards[$i]['request_standard_id'];?>"  title="ยกเลิกใบร้องขอ" onclick="return confirm('You want to cancelled Standard Tool Request  : <?php echo $request_standards[$i]['request_standard_code']; ?>');" style="color:#F00;">
                                                     <i class="fa fa-ban" aria-hidden="true"></i>
                                                 </a>
@@ -112,24 +118,42 @@
                                                 <a href="?app=request_standard&action=update&id=<?php echo $request_standards[$i]['request_standard_id'];?>"  title="แก้ไขใบร้องขอ">
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a> 
+                                                <?PHP } ?>
+
+
                                             <?php } else if($request_standards[$i]['count_rewrite'] == 0) { ?>
 
+                                                <?php if($license_request_page == "Medium" || $license_request_page == "High" ||  ($request_standards[$i]['employee_id'] == $admin_id && $license_request_page == "Low")){ ?> 
                                                 <a href="?app=request_standard&action=uncancelled&id=<?php echo $request_standards[$i]['request_standard_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled Standard Tool Request  : <?php echo $request_standards[$i]['request_standard_code']; ?>');" >
                                                     <i class="fa fa-undo" aria-hidden="true"></i>
                                                 </a>
                                                 <a href="?app=request_standard&action=rewrite&id=<?php echo $request_standards[$i]['request_standard_id'];?>"  title="เขียนใบร้องขอใหม่" onclick="return confirm('You want to rewrite Standard Tool Request  : <?php echo $request_standards[$i]['request_standard_code']; ?>');" style="color:#F00;">
                                                     <i class="fa fa-registered" aria-hidden="true"></i>
                                                 </a>
+                                                <?PHP } ?>
+
+                                                <?php if($license_request_page == "High" ||  ($request_standards[$i]['employee_id'] == $admin_id && $license_request_page == "Low")){ ?> 
                                                 <a href="?app=request_standard&action=delete&id=<?php echo $request_standards[$i]['request_standard_id'];?>"  title="ลบใบร้องขอ" onclick="return confirm('You want to delete Standard Tool Request  : <?php echo $request_standards[$i]['request_standard_code']; ?>');" style="color:red;">
                                                     <i class="fa fa-times" aria-hidden="true"></i>
                                                 </a>
+                                                <?PHP } ?>
+
+
                                             <?PHP } else { ?> 
+
+                                                <?php if($license_request_page == "Medium" || $license_request_page == "High" ||  ($request_standards[$i]['employee_id'] == $admin_id && $license_request_page == "Low")){ ?> 
                                                 <a href="?app=request_standard&action=uncancelled&id=<?php echo $request_standards[$i]['request_standard_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled Standard Tool Request  : <?php echo $request_standards[$i]['request_standard_code']; ?>');" >
                                                     <i class="fa fa-undo" aria-hidden="true"></i>
                                                 </a>
+                                                <?PHP } ?>
+
+                                                <?php if($license_request_page == "Medium" || $license_request_page == "High" ||  ($request_standards[$i]['employee_id'] == $admin_id && $license_request_page == "Low")){ ?> 
                                                 <a href="?app=request_standard&action=delete&id=<?php echo $request_standards[$i]['request_standard_id'];?>"  title="ลบใบร้องขอ" onclick="return confirm('You want to delete Standard Tool Request  : <?php echo $request_standards[$i]['request_standard_code']; ?>');" style="color:red;">
                                                     <i class="fa fa-times" aria-hidden="true"></i>
                                                 </a>
+                                                <?PHP } ?>
+
+                                                
                                             <?PHP } ?>
                                                 
                                             

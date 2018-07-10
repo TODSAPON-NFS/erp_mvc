@@ -29,7 +29,7 @@ $customer_id = $_GET['customer_id'];
 $notification_id = $_GET['notification'];
 $target_dir = "../upload/customer_purchase_order/";
 
-if(!isset($_GET['action'])){
+if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
@@ -48,7 +48,7 @@ if(!isset($_GET['action'])){
 
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     if($quotation_id > 0){
         $products=$product_model->getProductBy('','','','');
         $quotation = $quotation_model->getQuotationByID($quotation_id);
@@ -68,7 +68,7 @@ if(!isset($_GET['action'])){
     $users=$user_model->getUserBy();
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     $products=$product_model->getProductBy('','','','');
     $customers=$customer_model->getCustomerBy();
     
@@ -91,7 +91,7 @@ if(!isset($_GET['action'])){
     $customer_purchase_order_lists = $customer_purchase_order_list_model->getCustomerPurchaseOrderListBy($customer_purchase_order_id);
     require_once($path.'detail.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ( $license_sale_page == "High" ) ){
 
     $customer_purchase_order_list_model->deleteCustomerPurchaseOrderListByCustomerPurchaseOrderID($customer_purchase_order_id);
     $customer_purchase_orders = $customer_purchase_order_model->deleteCustomerPurchaseOrderById($customer_purchase_order_id);
@@ -99,7 +99,7 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=customer_purchase_order"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     if(isset($_POST['customer_purchase_order_code'])){
         $data = [];
         $data['customer_id'] = $_POST['customer_id'];
@@ -309,7 +309,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     
     if(isset($_POST['customer_purchase_order_code'])){
         $data = [];
@@ -561,7 +561,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else{
+}else if ($license_sale_page == "Medium" || $license_sale_page == "High" ){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];

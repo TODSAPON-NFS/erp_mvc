@@ -13,14 +13,14 @@ if(!isset($_GET['action'])){
 
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ($license_admin_page == 'High') ){
 
     $model_customer->deleteEndUserByID($end_user_id);
 ?>
     <script>window.location="index.php?app=customer_end_users&action=view&customer_id=<?php echo $customer_id;?>"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
         $end_user_id = $_POST['end_user_id'];
         $model_customer->insertEndUserByID($customer_id,$end_user_id);
     ?>

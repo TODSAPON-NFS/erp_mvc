@@ -209,13 +209,18 @@
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                 </a>
 
+
+                                <?PHP if ( $license_sale_page == "Medium" || $license_sale_page == "High" ) { ?>
                                 <a href="?app=invoice_customer&action=update&id=<?php echo $invoice_customers[$i]['invoice_customer_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
+                                <?PHP } ?>
+
+                                <?PHP if ( $license_sale_page == "High" ) { ?>
                                 <a href="?app=invoice_customer&action=delete&id=<?php echo $invoice_customers[$i]['invoice_customer_id'];?>" onclick="return confirm('You want to delete Invoice Customer : <?php echo $invoice_customers[$i]['invoice_customer_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
-                           
+                                <?PHP } ?>
                             </td>
 
                         </tr>

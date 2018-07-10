@@ -2,20 +2,32 @@
 session_start();
 
 require_once('../models/NotificationModel.php');
-$user = $_SESSION['user'];
-//echo "<pre>";
-//print_r($user);
-//echo "</pre>";
+$user_admin = $_SESSION['user'];
+
+$admin_id = $user_admin[0][0];
+$license_admin_page =  $user_admin[0][24];
+$license_sale_employee_page =  $user_admin[0][25]; 
+$license_request_page =  $user_admin[0][26];
+$license_delivery_note_page  =  $user_admin[0][27];
+$license_regrind_page =  $user_admin[0][28];
+$license_purchase_page =  $user_admin[0][29];
+$license_sale_page =  $user_admin[0][30];
+$license_inventery_page =  $user_admin[0][31];
+$license_account_page =  $user_admin[0][32];
+$license_report_page =  $user_admin[0][33];
+$license_manager_page   =  $user_admin[0][34];
+
+
 $model_notification = new NotificationModel;
-$notifications = $model_notification->getNotificationBy($user[0][0]);
-$notifications_new = $model_notification->getNotificationBy($user[0][0],"1");
+$notifications = $model_notification->getNotificationBy($user_admin[0][0]);
+$notifications_new = $model_notification->getNotificationBy($user_admin[0][0],"1");
 
-$notifications_pr = $model_notification->getNotificationByType($user[0][0],'Purchase Request',"1");
-$notifications_po = $model_notification->getNotificationByType($user[0][0],'Purchase Order',"1");
-$notifications_cpo = $model_notification->getNotificationByType($user[0][0],'Customer Order',"1");
-$notifications_ns = $model_notification->getNotificationByType($user[0][0],'Supplier Approve',"1");
+$notifications_pr = $model_notification->getNotificationByType($user_admin[0][0],'Purchase Request',"1");
+$notifications_po = $model_notification->getNotificationByType($user_admin[0][0],'Purchase Order',"1");
+$notifications_cpo = $model_notification->getNotificationByType($user_admin[0][0],'Customer Order',"1");
+$notifications_ns = $model_notification->getNotificationByType($user_admin[0][0],'Supplier Approve',"1");
 
-if(!isset($_SESSION['user'])){
+if($user_admin[0][0] == ""){
 header('Location ../index.php');
 }
 ?>

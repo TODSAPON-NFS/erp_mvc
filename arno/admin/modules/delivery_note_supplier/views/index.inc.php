@@ -24,7 +24,12 @@ $supplier_id = $_GET['supplier_id'];
 
 $target_dir = "../upload/delivery_note_supplier/";
 
-if(!isset($_GET['action'])){
+
+$delivery_note_supplier = $delivery_note_supplier_model->getDeliveryNoteSupplierByID($delivery_note_customer_id);
+$employee_id = $delivery_note_supplier['employee_id'];
+
+
+if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High')){
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $supplier_id = $_GET['supplier_id'];
@@ -32,10 +37,15 @@ if(!isset($_GET['action'])){
 
     $suppliers=$supplier_model->getSupplierBy();
     $supplier_orders = $delivery_note_supplier_model->getSupplierOrder();
-    $delivery_note_suppliers = $delivery_note_supplier_model->getDeliveryNoteSupplierBy($date_start,$date_end,$supplier_id,$keyword);
+
+    if($license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High'){
+        $delivery_note_suppliers = $delivery_note_supplier_model->getDeliveryNoteSupplierBy($date_start,$date_end,$supplier_id,$keyword);
+    }else{
+        $delivery_note_suppliers = $delivery_note_supplier_model->getDeliveryNoteSupplierBy($date_start,$date_end,$supplier_id,$keyword,$admin_id);
+    }
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_delivery_note_page == 'Low' || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High') ){
     $products=$product_model->getProductBy('','','','');
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
@@ -51,7 +61,7 @@ if(!isset($_GET['action'])){
 
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && (( $license_delivery_note_page == 'Low' && $employee_id == $admin_id ) || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High') ){
     $products=$product_model->getProductBy('','','','');
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
@@ -70,7 +80,7 @@ if(!isset($_GET['action'])){
     $delivery_note_supplier_lists = $delivery_note_supplier_list_model->getDeliveryNoteSupplierListBy($delivery_note_supplier_id);
     require_once($path.'print.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ( ( $license_delivery_note_page == 'Low' && $employee_id == $admin_id ) || $license_delivery_note_page == 'High') ){
 
     $delivery_note_supplier_list_model->deleteDeliveryNoteSupplierListByDeliveryNoteSupplierID($delivery_note_supplier_id);
     $delivery_note_suppliers = $delivery_note_supplier_model->deleteDeliveryNoteSupplierById($delivery_note_supplier_id);
@@ -78,7 +88,7 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=delivery_note_supplier"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_delivery_note_page == 'Low' || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High') ){
     if(isset($_POST['delivery_note_supplier_code'])){
   
         $check = true;
@@ -184,7 +194,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && (( $license_delivery_note_page == 'Low' && $employee_id == $admin_id ) || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High') ){
     
     if(isset($_POST['delivery_note_supplier_code'])){
         $data = [];
@@ -294,7 +304,7 @@ if(!isset($_GET['action'])){
         
      
     
-}else{
+}elseif($license_delivery_note_page == 'Low' || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High'){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
@@ -303,7 +313,11 @@ if(!isset($_GET['action'])){
 
     $suppliers=$supplier_model->getSupplierBy();
     $supplier_orders = $delivery_note_supplier_model->getSupplierOrder();
-    $delivery_note_suppliers = $delivery_note_supplier_model->getDeliveryNoteSupplierBy($date_start,$date_end,$supplier_id,$keyword);
+    if($license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High'){
+        $delivery_note_suppliers = $delivery_note_supplier_model->getDeliveryNoteSupplierBy($date_start,$date_end,$supplier_id,$keyword);
+    }else{
+        $delivery_note_suppliers = $delivery_note_supplier_model->getDeliveryNoteSupplierBy($date_start,$date_end,$supplier_id,$keyword,$admin_id);
+    }
     require_once($path.'view.inc.php');
 
 }

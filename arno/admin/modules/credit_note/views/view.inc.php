@@ -123,12 +123,20 @@
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                 </a>
 
+
+                                <?PHP if ( $license_sale_page == "Medium" || $license_sale_page == "High" ) { ?>
                                 <a href="?app=credit_note&action=update&id=<?php echo $credit_notes[$i]['credit_note_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
+                                <?PHP } ?>
+
+
+                                <?PHP if ( $license_sale_page == "High" ) { ?>
                                 <a href="?app=credit_note&action=delete&id=<?php echo $credit_notes[$i]['credit_note_id'];?>" onclick="return confirm('You want to delete Credit Note : <?php echo $credit_notes[$i]['credit_note_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
+                                <?PHP } ?>
+                                
                            
                             </td>
 

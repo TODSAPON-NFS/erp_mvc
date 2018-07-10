@@ -177,7 +177,9 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Supplier Logistic.
+                            <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                             <a class="btn btn-success " style="float:right;" href="?app=supplier_logistic&action=insert&id=<?php  echo $supplier_id; ?>" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                            <?PHP } ?>
                             <a href="?app=supplier&action=view" class="btn btn-primary" style="float:right;margin-right:8px;">Back</a>
                         </div>
                         <!-- /.panel-heading -->
@@ -202,13 +204,16 @@
                                         <td><?php  echo $supplier_logistic[$i]['supplier_logistic_detail']; ?></td>
                                         <td><?php  echo $supplier_logistic[$i]['supplier_logistic_lead_time']; ?></td>
                                         <td>
-                                            
+                                        <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                             <a title="Update data" href="?app=supplier_logistic&action=update&id=<?php  echo $supplier_id; ?>&subid=<?php  echo $supplier_logistic[$i]['supplier_logistic_id'];?>">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             </a> 
+                                        <?PHP } ?>
+                                        <?php if($license_admin_page == "High"){ ?> 
                                             <a title="Delete data" href="?app=supplier_logistic&action=delete&id=<?php  echo $supplier_id; ?>&subid=<?php  echo $supplier_logistic[$i]['supplier_logistic_id'];?>" onclick="return confirm('You want to delete Supplier logistic : <?php  echo $supplier_logistic[$i]['supplier_logistic_name']; ?>');" style="color:red;">
                                                 <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
+                                        <?PHP }?>
                                         </td>
                                     </tr>
                                    <?php 

@@ -21,11 +21,12 @@ class RequestSpecialModel extends BaseModel{
         }
 
         if($user_id != ""){
-            $str_user = "AND employee_id = '$user_id' ";
+            $str_user = "AND tb.employee_id = '$user_id' ";
         }
 
 
         $sql = " SELECT request_special_id, 
+        tb.employee_id,
         request_special_date, 
         request_special_rewrite_id,
         customer_name_th, customer_name_en,

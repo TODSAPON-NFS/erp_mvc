@@ -124,13 +124,19 @@
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                 </a>
 
+
+                                <?PHP if ( $license_sale_page == "Medium" || $license_sale_page == "High" ) { ?>
                                 <a href="?app=debit_note&action=update&id=<?php echo $debit_notes[$i]['debit_note_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
+                                <?PHP } ?>
+
+                                <?PHP if ( $license_sale_page == "High" ) { ?>
                                 <a href="?app=debit_note&action=delete&id=<?php echo $debit_notes[$i]['debit_note_id'];?>" onclick="return confirm('You want to delete Debit Note : <?php echo $debit_notes[$i]['debit_note_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
-                           
+                                <?PHP } ?>
+
                             </td>
 
                         </tr>

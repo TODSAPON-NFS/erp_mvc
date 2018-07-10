@@ -1,12 +1,5 @@
 <?php
-session_start();
-$user = $_SESSION['user'];
-
-/*
-echo "<pre>";
-print_r($user);
-echo "</pre>";
-*/
+session_start(); 
 
 require_once('../models/RequestTestModel.php');
 require_once('../models/RequestTestListModel.php'); 
@@ -46,7 +39,7 @@ if(!isset($_GET['action'])){
     $supplier_orders = $request_test_model->getSupplierOrder();
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_request_page == "Medium" || $license_request_page == "High") ){
     
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
@@ -64,7 +57,7 @@ if(!isset($_GET['action'])){
 
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ($license_request_page == "Medium" || $license_request_page == "High") ){
     
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
@@ -83,7 +76,7 @@ if(!isset($_GET['action'])){
     $request_test_lists = $request_test_list_model->getRequestTestListBy($request_test_id);
     require_once($path.'detail.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ($license_request_page == "High") ){
 
     $request_tests = $request_test_model->deleteRequestTestById($request_test_id);
 ?>
@@ -102,7 +95,7 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=request_test"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_request_page == "Medium" || $license_request_page == "High") ){
     if(isset($_POST['request_test_code'])){
         $data = [];
         $data['supplier_id'] = $_POST['supplier_id'];
@@ -181,7 +174,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_request_page == "Medium" || $license_request_page == "High") ){
 
     if(isset($_POST['request_test_code'])){
 
@@ -277,7 +270,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else if ($_GET['action'] == 'rewrite'){
+}else if ($_GET['action'] == 'rewrite' && ($license_request_page == "Medium" || $license_request_page == "High") ){
         
         if($request_test_id > 0){
             $request_test = $request_test_model->getRequestTestByID($request_test_id);
@@ -329,7 +322,7 @@ if(!isset($_GET['action'])){
         }
     
     
-}else if ($_GET['action'] == 'sending'){
+}else if ($_GET['action'] == 'sending' && ($license_request_page == "Medium" || $license_request_page == "High") ){
     
     if(isset($request_test_id)){
         $data = [];

@@ -39,17 +39,21 @@ class LicenseModel extends BaseModel{
 
     function updateLicenseByID($id,$data = []){
         $sql = " UPDATE tb_license SET 
-        license_name = '".$data['license_name']."', 
-        license_sale_page = '".$data['license_sale_page']."', 
+        license_name = '".$data['license_name']."',  
+        license_admin_page = '".$data['license_admin_page']."', 
+        license_sale_employee_page	 = '".$data['license_sale_employee_page']."', 
+        license_request_page = '".$data['license_request_page']."', 
+        license_delivery_note_page = '".$data['license_delivery_note_page']."', 
+        license_regrind_page = '".$data['license_regrind_page']."', 
         license_purchase_page = '".$data['license_purchase_page']."', 
-        license_manager_page = '".$data['license_manager_page']."', 
+        license_sale_page = '".$data['license_sale_page']."', 
         license_inventery_page = '".$data['license_inventery_page']."', 
         license_account_page = '".$data['license_account_page']."', 
-        license_report_page = '".$data['license_report_page']."'  
+        license_report_page = '".$data['license_report_page']."',  
+        license_manager_page = '".$data['license_manager_page']."'  
         WHERE license_id = $id 
         ";
 
-        //echo $sql;
 
         if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
            return true;
@@ -60,21 +64,31 @@ class LicenseModel extends BaseModel{
 
     function insertLicense($data = []){
         $sql = " INSERT INTO tb_license (
-            license_name,
-            license_sale_page,
-            license_purchase_page,
-            license_manager_page,
-            license_inventery_page,
-            license_account_page,
-            license_report_page
+            license_name ,  
+            license_admin_page , 
+            license_sale_employee_page , 
+            license_request_page , 
+            license_delivery_note_page , 
+            license_regrind_page , 
+            license_purchase_page , 
+            license_sale_page , 
+            license_inventery_page , 
+            license_account_page , 
+            license_report_page ,  
+            license_manager_page  
         ) VALUES (
             '".$data['license_name']."', 
-            '".$data['license_sale_page']."', 
+            '".$data['license_admin_page']."', 
+            '".$data['license_sale_employee_page']."', 
+            '".$data['license_request_page']."', 
+            '".$data['license_delivery_note_page']."', 
+            '".$data['license_regrind_page']."', 
             '".$data['license_purchase_page']."', 
-            '".$data['license_manager_page']."', 
+            '".$data['license_sale_page']."', 
             '".$data['license_inventery_page']."', 
             '".$data['license_account_page']."', 
-            '".$data['license_report_page']."'
+            '".$data['license_report_page']."', 
+            '".$data['license_manager_page']."'
         ); 
         ";
 

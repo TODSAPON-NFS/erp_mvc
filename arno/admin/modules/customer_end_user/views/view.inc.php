@@ -201,7 +201,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-
+            <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                 <form role="form" method="post" onsubmit="return check();" action="index.php?app=customer_end_users&action=add&customer_id=<?PHP echo $customer_id; ?>" enctype="multipart/form-data">                             
                     <div class="row">
                         <div class="col-md-6">
@@ -233,6 +233,7 @@
                         </div>
                     </div>
                 </form>
+            <? } ?>
 
                 <div class="row">
                     <div class="col-sm-6">
@@ -328,9 +329,11 @@
                                     <td class="center"><?php echo $customer_end_users[$i]['customer_tel']; ?></td>
                                     <td class="center"><?php echo $customer_end_users[$i]['customer_email']; ?></td>
                                     <td>
+                                    <?php if($license_admin_page == "High"){ ?> 
                                         <a title="Delete data" href="index.php?app=customer_end_users&customer_id=<?PHP echo $customer_id; ?>&action=delete&id=<?php echo $customer_end_users[$i]['customer_id'];?>" onclick="return confirm('You want to delete customer : <?php echo $customer_end_users[$i]['customer_name']; ?>');" style="color:red;">
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                         </a>
+                                    <?PHP } ?>
                                     </td>
                                 </tr>
                             <?

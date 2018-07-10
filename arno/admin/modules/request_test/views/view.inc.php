@@ -19,6 +19,8 @@
     <!-- /.col-lg-12 -->
 </div>
 
+
+<?php if($license_request_page == "Medium" || $license_request_page == "High"){ ?> 
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-12">
@@ -65,6 +67,9 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+<?PHP } ?>
+
+
 
 
 <!-- /.row -->
@@ -76,9 +81,11 @@
                     <div class="col-md-8">
                         รายใบสั่งสินค้าทดลอง / Request Test List
                     </div>
+                    <?php if($license_request_page == "Medium" || $license_request_page == "High"){ ?> 
                     <div class="col-md-4">
                         <a class="btn btn-success " style="float:right;" href="?app=request_test&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                     </div>
+                    <?PHP } ?>
                 </div>
             </div>
             <!-- /.panel-heading -->
@@ -179,6 +186,8 @@
                                 <?php if($request_tests[$i]['request_test_status'] == "New" || $request_tests[$i]['request_test_status'] == "Approved"){ ?>
                                     
                                     <?php if($request_tests[$i]['request_test_cancelled'] == 0){ ?>
+                                        
+                                        <?php if($license_request_page == "Medium" || $license_request_page == "High"){ ?> 
                                         <a href="?app=request_test&action=cancelled&id=<?php echo $request_tests[$i]['request_test_id'];?>"  title="ยกเลิกใบร้องขอ" onclick="return confirm('You want to cancelled purchase request : <?php echo $request_tests[$i]['request_test_code']; ?>');" style="color:#F00;">
                                             <i class="fa fa-ban" aria-hidden="true"></i>
                                         </a>
@@ -188,24 +197,41 @@
                                         <a href="?app=request_test&action=update&id=<?php echo $request_tests[$i]['request_test_id'];?>"  title="แก้ไขใบร้องขอ">
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                         </a> 
+                                        <?PHP } ?>
+
                                     <?php } else if($request_tests[$i]['count_rewrite'] == 0) { ?>
 
+                                        <?php if($license_request_page == "Medium" || $license_request_page == "High"){ ?> 
                                         <a href="?app=request_test&action=uncancelled&id=<?php echo $request_tests[$i]['request_test_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled purchase request : <?php echo $request_tests[$i]['request_test_code']; ?>');" >
                                             <i class="fa fa-undo" aria-hidden="true"></i>
                                         </a>
                                         <a href="?app=request_test&action=rewrite&id=<?php echo $request_tests[$i]['request_test_id'];?>"  title="เขียนใบร้องขอใหม่" onclick="return confirm('You want to rewrite purchase request : <?php echo $request_tests[$i]['request_test_code']; ?>');" style="color:#F00;">
                                             <i class="fa fa-registered" aria-hidden="true"></i>
                                         </a>
+                                        <?PHP } ?>
+
+                                        <?php if($license_request_page == "High"){ ?> 
                                         <a href="?app=request_test&action=delete&id=<?php echo $request_tests[$i]['request_test_id'];?>" onclick="return confirm('You want to delete Request Test : <?php echo $request_tests[$i]['request_test_code']; ?>');" style="color:red;">
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                         </a>
+                                        <?PHP } ?>
+
+
                                     <?PHP }else{ ?>
+
+                                        <?php if($license_request_page == "Medium" || $license_request_page == "High"){ ?> 
                                         <a href="?app=request_test&action=uncancelled&id=<?php echo $request_tests[$i]['request_test_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled purchase request : <?php echo $request_tests[$i]['request_test_code']; ?>');" >
                                             <i class="fa fa-undo" aria-hidden="true"></i>
                                         </a>
+                                        <?PHP } ?>
+
+                                        <?php if($license_request_page == "High"){ ?> 
                                         <a href="?app=request_test&action=delete&id=<?php echo $request_tests[$i]['request_test_id'];?>" onclick="return confirm('You want to delete Request Test : <?php echo $request_tests[$i]['request_test_code']; ?>');" style="color:red;">
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                         </a>
+                                        <?PHP } ?>
+
+                                        
                                     <?PHP } ?>
                                         
                                     
@@ -227,5 +253,3 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
-            
-            

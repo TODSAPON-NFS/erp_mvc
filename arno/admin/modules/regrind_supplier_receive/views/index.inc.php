@@ -22,7 +22,11 @@ $regrind_supplier_id = $_GET['regrind_supplier_id'];
 $supplier_id = $_GET['supplier_id'];
 $target_dir = "../upload/regrind_supplier_receive/";
 
-if(!isset($_GET['action'])){
+$regrind_supplier_receive = $regrind_supplier_receive_model->getRegrindSupplierReceiveByID($regrind_supplier_receive_id);
+$employee_id = $regrind_supplier_receive['employee_id'];
+
+
+if(!isset($_GET['action']) && ($license_regrind_page == "Low" || $license_regrind_page == "Medium" || $license_regrind_page == "High" ) ){
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $supplier_id = $_GET['supplier_id'];
@@ -30,14 +34,19 @@ if(!isset($_GET['action'])){
 
     $suppliers=$supplier_model->getSupplierBy();
 
-    $supplier_receives = $regrind_supplier_receive_model->getSupplier();
-    $regrind_suppliers = $regrind_supplier_receive_model->getRegrindSupplier();
+    $supplier_receives = $regrind_supplier_receive_model->getSupplier($admin_id);
+    $regrind_suppliers = $regrind_supplier_receive_model->getRegrindSupplier($admin_id);
 
-    $regrind_supplier_receives = $regrind_supplier_receive_model->getRegrindSupplierReceiveBy($date_start,$date_end,$supplier_id,$keyword);
+    if($license_regrind_page == "Medium" || $license_regrind_page == "High" ){
+        $regrind_supplier_receives = $regrind_supplier_receive_model->getRegrindSupplierReceiveBy($date_start,$date_end,$supplier_id,$keyword);
+    }else{
+        $regrind_supplier_receives = $regrind_supplier_receive_model->getRegrindSupplierReceiveBy($date_start,$date_end,$supplier_id,$keyword,$admin_id);
+    }
+    
 
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && (($license_regrind_page == "Low" ) || $license_regrind_page == "Medium" || $license_regrind_page == "High" )){
     if($supplier_id > 0){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
         $regrind_supplier_receive_lists = $regrind_supplier_receive_model->generateRegrindSupplierReceiveListBySupplierId($supplier_id,[] ,$_POST['search']);
@@ -50,7 +59,7 @@ if(!isset($_GET['action'])){
     $last_code = $regrind_supplier_receive_model->getRegrindSupplierReceiveLastID($first_code,3);
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && (($license_regrind_page == "Low" && $admin_id == $employee) || $license_regrind_page == "Medium" || $license_regrind_page == "High" )){
     $products=$product_model->getProductBy('','','','');
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
@@ -69,7 +78,7 @@ if(!isset($_GET['action'])){
     $regrind_supplier_receive_lists = $regrind_supplier_receive_list_model->getRegrindSupplierReceiveListBy($regrind_supplier_receive_id);
     require_once($path.'print.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && (($license_regrind_page == "Low" && $admin_id == $employee) || $license_regrind_page == "High" )){
 
     $regrind_supplier_receive_list_model->deleteRegrindSupplierReceiveListByRegrindSupplierReceiveID($regrind_supplier_receive_id);
     $regrind_supplier_receives = $regrind_supplier_receive_model->deleteRegrindSupplierReceiveById($regrind_supplier_receive_id);
@@ -77,7 +86,7 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=regrind_supplier_receive"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && (($license_regrind_page == "Low") || $license_regrind_page == "Medium" || $license_regrind_page == "High" )){
     if(isset($_POST['regrind_supplier_receive_code'])){
   
         $check = true;
@@ -180,7 +189,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' &&  (($license_regrind_page == "Low" && $admin_id == $employee) || $license_regrind_page == "Medium" || $license_regrind_page == "High" )){
     
     if(isset($_POST['regrind_supplier_receive_code'])){
         $data = [];
@@ -289,7 +298,7 @@ if(!isset($_GET['action'])){
         
      
     
-}else{
+}else if($license_regrind_page == "Low" || $license_regrind_page == "Medium" || $license_regrind_page == "High" ){
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $supplier_id = $_GET['supplier_id'];
@@ -297,10 +306,15 @@ if(!isset($_GET['action'])){
 
     $suppliers=$supplier_model->getSupplierBy();
 
-    $supplier_receives = $regrind_supplier_receive_model->getSupplier();
-    $regrind_suppliers = $regrind_supplier_receive_model->getRegrindSupplier();
+    $supplier_receives = $regrind_supplier_receive_model->getSupplier($admin_id);
+    $regrind_suppliers = $regrind_supplier_receive_model->getRegrindSupplier($admin_id);
+    
 
-    $regrind_supplier_receives = $regrind_supplier_receive_model->getRegrindSupplierReceiveBy($date_start,$date_end,$supplier_id,$keyword);
+    if($license_regrind_page == "Medium" || $license_regrind_page == "High" ){
+        $regrind_supplier_receives = $regrind_supplier_receive_model->getRegrindSupplierReceiveBy($date_start,$date_end,$supplier_id,$keyword);
+    }else{
+        $regrind_supplier_receives = $regrind_supplier_receive_model->getRegrindSupplierReceiveBy($date_start,$date_end,$supplier_id,$keyword,$admin_id);
+    }
     
     require_once($path.'view.inc.php');
 

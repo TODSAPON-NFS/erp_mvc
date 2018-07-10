@@ -44,6 +44,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
+                        <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                             <form role="form" method="post" onsubmit="return check();" <?php if($product_unit_id == ''){ ?>action="index.php?app=product_unit&action=add"<?php }else{?> action="index.php?app=product_unit&action=edit" <?php }?> enctype="multipart/form-data">
                                 <input type="hidden" id="product_unit_id" name="product_unit_id" value="<?php echo $product_unit_id?>"/>
                                 <div class="row">
@@ -70,7 +71,7 @@
                                 </div>
                                 <br>
                             </form>
-
+                        <?PHP }?>
 
 
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -91,13 +92,16 @@
                                         <td><?php echo $product_units[$i]['product_unit_name']; ?></td>
                                         <td><?php echo $product_units[$i]['product_unit_detail']; ?></td>
                                         <td>
-                                            
+                                        <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                             <a title="Update data" href="?app=product_unit&action=update&id=<?php echo $product_units[$i]['product_unit_id'];?>">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             </a> 
+                                        <?PHP } ?>
+                                        <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                             <a title="Delete data" href="?app=product_unit&action=delete&id=<?php echo $product_units[$i]['product_unit_id'];?>" onclick="return confirm('You want to delete customer product unit : <?php echo $product_units[$i]['product_unit_name']; ?>');" style="color:red;">
                                                 <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
+                                        <?PHP } ?>
                                         </td>
                                     </tr>
                                    <?

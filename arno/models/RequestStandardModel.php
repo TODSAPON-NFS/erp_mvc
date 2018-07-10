@@ -21,11 +21,12 @@ class RequestStandardModel extends BaseModel{
         }
 
         if($user_id != ""){
-            $str_user = "AND employee_id = '$user_id' ";
+            $str_user = "AND tb.employee_id = '$user_id' ";
         }
 
 
         $sql = " SELECT request_standard_id, 
+        tb.employee_id , 
         request_standard_date, 
         request_standard_rewrite_id,
         customer_name_th, customer_name_en,

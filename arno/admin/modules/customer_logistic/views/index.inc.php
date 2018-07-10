@@ -14,23 +14,23 @@ if(!isset($_GET['action'])){
     $customer_logistic = $model_customer_logistic->getCustomerLogisticBy($customer_id);
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     $customer = $model_customer->getCustomerByID($customer_id);
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     $customer = $model_customer->getCustomerByID($customer_id);
     $customer_logistic = $model_customer_logistic->getCustomerLogisticByID($customer_logistic_id);
     require_once($path.'update.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete'  && ( $license_admin_page == 'High') ){
 
     $model_customer_logistic->deleteCustomerLogisticByID($customer_logistic_id);
 ?>
     <script>window.location="index.php?app=customer_logistic&action=view&id=<?php echo $customer_id;?>"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['customer_logistic_name'])){
         $data = [];
         $data['customer_id'] = $customer_id;
@@ -52,7 +52,7 @@ if(!isset($_GET['action'])){
                     
         }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['customer_logistic_name'])){
         $data = [];
         $data['customer_id'] = $customer_id;

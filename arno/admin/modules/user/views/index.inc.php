@@ -13,12 +13,13 @@ $license = new LicenseModel;
 $address = new AddressModel;
 $target_dir = "../upload/employee/";
 
+
 if(!isset($_GET['action'])){
 
     $user = $model->getUserBy($_GET['name'],$_GET['position'],$_GET['email']);
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
 
     $user_license = $license->getLicenseBy();
     $user_position = $position->getUserPositionBy();
@@ -26,7 +27,7 @@ if(!isset($_GET['action'])){
     $add_province = $address->getProvinceByID();
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     $user_id = $_GET['id'];
     $user = $model->getUserByID($user_id);
     $user_license = $license->getLicenseBy();
@@ -37,14 +38,14 @@ if(!isset($_GET['action'])){
     $add_district = $address->getDistricByAmphurID($user['user_amphur']);
     require_once($path.'update.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ($license_admin_page == 'High')){
 
     $user = $model->deleteUserById($_GET['id']);
 ?>
     <script>window.location="index.php?app=employee"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_admin_page == 'Medium' || $license_admin_page == 'High')){
     if(isset($_POST['user_code'])){
         $data = [];
         $data['user_code'] = $_POST['user_code'];
@@ -84,7 +85,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_admin_page == 'Medium' || $license_admin_page == 'High')){
     
     if(isset($_POST['user_code'])){
         $data = [];

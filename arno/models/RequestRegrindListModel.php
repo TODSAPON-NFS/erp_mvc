@@ -70,7 +70,7 @@ class RequestRegrindListModel extends BaseModel{
 
     }
 
-    function updatePurchaseRquestListById($data,$id){
+    function updateRequestRegrindListById($data,$id){
 
         $sql = " UPDATE tb_request_regrind_list 
             SET product_id = '".$data['product_id']."', 

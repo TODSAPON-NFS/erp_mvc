@@ -30,14 +30,14 @@ if(!isset($_GET['action'])){
     $supplier = $model_supplier->getSupplierByID($supplier_id);
     require_once($path.'detail.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert'  && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
 
     $user = $model_user->getUserBy();
     $currency = $currency_model->getCurrencyBy();
     $account = $account_model->getAccountAll();
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update'  && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
 
     
     $supplier = $model_supplier->getSupplierByID($supplier_id);
@@ -46,7 +46,7 @@ if(!isset($_GET['action'])){
     $account = $account_model->getAccountAll();
     require_once($path.'update.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete'  && ( $license_admin_page == 'High') ){
 
     $supplier = $model_supplier->getSupplierByID($_GET['id']);
     if(count($supplier) > 0){
@@ -62,7 +62,7 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=supplier"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['supplier_code'])){
         $data = [];
         $data['supplier_code'] = $_POST['supplier_code'];
@@ -143,7 +143,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['supplier_code'])){
         $data = [];
         $data['supplier_code'] = $_POST['supplier_code'];

@@ -21,7 +21,7 @@ class RegrindSupplierModel extends BaseModel{
         }
 
         if($user_id != ""){
-            $str_user = "AND employee_id = '$user_id' ";
+            $str_user = "AND tb_regrind_supplier.employee_id = '$user_id' ";
         }
 
         if($supplier_id != ""){
@@ -29,6 +29,7 @@ class RegrindSupplierModel extends BaseModel{
         }
 
         $sql = " SELECT regrind_supplier_id, 
+        tb_regrind_supplier.employee_id,
         regrind_supplier_code, 
         regrind_supplier_date, 
         regrind_supplier_file,

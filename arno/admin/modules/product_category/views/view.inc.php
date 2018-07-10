@@ -44,6 +44,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
+                        <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                             <form role="form" method="post" onsubmit="return check();" <?php if($product_category_id == ''){ ?>action="index.php?app=product_category&action=add"<?php }else{?> action="index.php?app=product_category&action=edit" <?php }?> enctype="multipart/form-data">
                                 <input type="hidden" id="product_category_id" name="product_category_id" value="<?php echo $product_category_id?>"/>
                                 <div class="row">
@@ -74,7 +75,7 @@
                                 </div>
                                 <br>
                             </form>
-
+                        <?PHP } ?>
 
 
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -95,13 +96,16 @@
                                         <td><?php echo $product_categorys[$i]['product_category_name']; ?></td>
                                         <td><?php if($product_categorys[$i]['stock_event']){ echo "Auto"; }else{ echo "None"; } ?></td>
                                         <td>
-                                            
+                                        <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                             <a title="Update data" href="?app=product_category&action=update&id=<?php echo $product_categorys[$i]['product_category_id'];?>">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             </a> 
+                                        <?PHP } ?>
+                                        <?php if($license_admin_page == "High"){ ?> 
                                             <a title="Delete data" href="?app=product_category&action=delete&id=<?php echo $product_categorys[$i]['product_category_id'];?>" onclick="return confirm('You want to delete customer product Category : <?php echo $product_categorys[$i]['product_category_name']; ?>');" style="color:red;">
                                                 <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
+                                        <?PHP } ?>
                                         </td>
                                     </tr>
                                    <?

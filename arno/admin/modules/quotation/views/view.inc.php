@@ -28,11 +28,14 @@
                                 <div class="col-md-8">
                                     รายการใบเสนอราคาสินค้า / Quotation List
                                 </div>
+                                <?PHP if($license_sale_page == "Low" || $license_sale_page == "Medium" || $license_sale_page == "High"){ ?>
                                 <div class="col-md-4">
                                     <a class="btn btn-success " style="float:right;" href="?app=quotation&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                                 </div>
+                                <?PHP } ?>
                             </div>
                         </div>
+                        
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="row">
@@ -123,6 +126,9 @@
                                             </a>
                                             
                                             <?php if($quotations[$i]['quotation_cancelled'] == 0){ ?>
+
+
+                                                <?PHP if(($license_sale_page == "Low" && $admin_id == $employee_id) || $license_sale_page == "Medium" || $license_sale_page == "High"){ ?>
                                                 <a href="?app=quotation&action=cancelled&id=<?php echo $quotations[$i]['quotation_id'];?>"  title="ยกเลิกใบร้องขอ" onclick="return confirm('You want to cancelled purchase request : <?php echo $quotations[$i]['quotation_code']; ?>');" style="color:#F00;">
                                                     <i class="fa fa-ban" aria-hidden="true"></i>
                                                 </a>
@@ -132,24 +138,44 @@
                                                 <a href="?app=quotation&action=update&id=<?php echo $quotations[$i]['quotation_id'];?>"  title="แก้ไขใบร้องขอ">
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a> 
-                                            <?php } else if($quotations[$i]['count_rewrite'] == 0) { ?>
+                                                <?PHP } ?>
 
+
+                                            <?php } else if($quotations[$i]['count_rewrite'] == 0) { ?>
+                                                
+                                                
+                                                <?PHP if(($license_sale_page == "Low" && $admin_id == $employee_id) || $license_sale_page == "Medium" || $license_sale_page == "High"){ ?>
                                                 <a href="?app=quotation&action=uncancelled&id=<?php echo $quotations[$i]['quotation_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled purchase request : <?php echo $quotations[$i]['quotation_code']; ?>');" >
                                                     <i class="fa fa-undo" aria-hidden="true"></i>
                                                 </a>
                                                 <a href="?app=quotation&action=rewrite&id=<?php echo $quotations[$i]['quotation_id'];?>"  title="เขียนใบร้องขอใหม่" onclick="return confirm('You want to rewrite purchase request : <?php echo $quotations[$i]['quotation_code']; ?>');" style="color:#F00;">
                                                     <i class="fa fa-registered" aria-hidden="true"></i>
                                                 </a>
+                                                <?PHP } ?>
+
+                                                
+                                                <?PHP if(($license_sale_page == "Low" && $admin_id == $employee_id) || $license_sale_page == "High"){ ?>
                                                 <a href="?app=quotation&action=delete&id=<?php echo $quotations[$i]['quotation_id'];?>"  title="ลบใบร้องขอ" onclick="return confirm('You want to delete purchase request : <?php echo $quotations[$i]['quotation_code']; ?>');" style="color:red;">
                                                     <i class="fa fa-times" aria-hidden="true"></i>
                                                 </a>
+                                                <?PHP } ?>
+
+
                                             <?PHP } else { ?> 
+
+                                                <?PHP if(($license_sale_page == "Low" && $admin_id == $employee_id) || $license_sale_page == "Medium" || $license_sale_page == "High"){ ?>
                                                 <a href="?app=quotation&action=uncancelled&id=<?php echo $quotations[$i]['quotation_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled purchase request : <?php echo $quotations[$i]['quotation_code']; ?>');" >
                                                     <i class="fa fa-undo" aria-hidden="true"></i>
                                                 </a>
+                                                <?PHP } ?>
+
+                                                <?PHP if(($license_sale_page == "Low" && $admin_id == $employee_id) || $license_sale_page == "High"){ ?>
                                                 <a href="?app=quotation&action=delete&id=<?php echo $quotations[$i]['quotation_id'];?>"  title="ลบใบร้องขอ" onclick="return confirm('You want to delete purchase request : <?php echo $quotations[$i]['quotation_code']; ?>');" style="color:red;">
                                                     <i class="fa fa-times" aria-hidden="true"></i>
                                                 </a>
+                                                <?PHP } ?>
+
+                                                
                                             <?PHP } ?>
 
                                         </td>

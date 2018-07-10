@@ -20,17 +20,26 @@ $first_char = "DNC";
 $delivery_note_customer_id = $_GET['id'];
 $target_dir = "../upload/delivery_note_customer/";
 
-if(!isset($_GET['action'])){
+$delivery_note_customer = $delivery_note_customer_model->getDeliveryNoteCustomerByID($delivery_note_customer_id);
+$employee_id = $delivery_note_customer['employee_id'];
+
+if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High') ){
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $customer_id = $_GET['customer_id'];
     $keyword = $_GET['keyword'];
 
     $customers=$customer_model->getCustomerBy();
-    $delivery_note_customers = $delivery_note_customer_model->getDeliveryNoteCustomerBy($date_start,$date_end,$customer_id,$keyword);
+
+    if($license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High'){
+        $delivery_note_customers = $delivery_note_customer_model->getDeliveryNoteCustomerBy($date_start,$date_end,$customer_id,$keyword);
+    }else{
+        $delivery_note_customers = $delivery_note_customer_model->getDeliveryNoteCustomerBy($date_start,$date_end,$customer_id,$keyword,$admin_id);
+    }
+
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_delivery_note_page == 'Low' || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High') ){
     $products=$product_model->getProductBy('','','','');
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
@@ -40,7 +49,7 @@ if(!isset($_GET['action'])){
 
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && (( $license_delivery_note_page == 'Low' && $employee_id == $admin_id ) || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High') ){
     $products=$product_model->getProductBy('','','','');
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
@@ -59,7 +68,7 @@ if(!isset($_GET['action'])){
     $delivery_note_customer_lists = $delivery_note_customer_list_model->getDeliveryNoteCustomerListBy($delivery_note_customer_id);
     require_once($path.'print.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ( ( $license_delivery_note_page == 'Low' && $employee_id == $admin_id ) || $license_delivery_note_page == 'High') ){
 
     $delivery_note_customer_list_model->deleteDeliveryNoteCustomerListByDeliveryNoteCustomerID($delivery_note_customer_id);
     $delivery_note_customers = $delivery_note_customer_model->deleteDeliveryNoteCustomerById($delivery_note_customer_id);
@@ -67,7 +76,7 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=delivery_note_customer"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_delivery_note_page == 'Low' || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High') ){
     if(isset($_POST['delivery_note_customer_code'])){
   
         $check = true;
@@ -170,7 +179,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ( ( $license_delivery_note_page == 'Low' && $employee_id == $admin_id ) || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High') ){
     
     if(isset($_POST['delivery_note_customer_code'])){
         $data = [];
@@ -277,14 +286,19 @@ if(!isset($_GET['action'])){
         
      
     
-}else{
+}else if ($license_delivery_note_page == 'Low' || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High') {
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $customer_id = $_GET['customer_id'];
     $keyword = $_GET['keyword'];
 
     $customers=$customer_model->getCustomerBy();
-    $delivery_note_customers = $delivery_note_customer_model->getDeliveryNoteCustomerBy($date_start,$date_end,$customer_id,$keyword);
+    
+    if($license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High'){
+        $delivery_note_customers = $delivery_note_customer_model->getDeliveryNoteCustomerBy($date_start,$date_end,$customer_id,$keyword);
+    }else{
+        $delivery_note_customers = $delivery_note_customer_model->getDeliveryNoteCustomerBy($date_start,$date_end,$customer_id,$keyword,$admin_id);
+    }
     require_once($path.'view.inc.php');
 
 }

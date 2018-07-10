@@ -50,7 +50,15 @@
                                         ?>
 
                                         </td>
+
                                         <td>
+                                        <?PHP if ( $license_inventery_page == "Low" || $license_inventery_page == "Medium" || $license_inventery_page == "High" ) { ?>
+                                            <a href="?app=stock_group&action=view&stock_type_id=<?php echo $stock_types[$i]['stock_type_id'];?>">
+                                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                            </a> 
+                                        <?PHP } ?>
+
+                                        <?PHP if ( $license_inventery_page == "Medium" || $license_inventery_page == "High" ) { ?>
                                             <?PHP 
                                                 if($stock_types[$i]['stock_type_primary'] == '0'){
                                             ?>
@@ -64,15 +72,21 @@
                                             <?PHP
                                                 }
                                             ?>
-                                            <a href="?app=stock_group&action=view&stock_type_id=<?php echo $stock_types[$i]['stock_type_id'];?>">
-                                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                            </a> 
+
                                             <a href="?app=stock_type&action=update&id=<?php echo $stock_types[$i]['stock_type_id'];?>">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             </a> 
+
+                                        <?PHP } ?>
+
+
+                                        <?PHP if ($license_inventery_page == "High" ) { ?>
                                             <a href="?app=stock_type&action=delete&id=<?php echo $stock_types[$i]['stock_type_id'];?>" onclick="return confirm('You want to delete stock group : <?php echo $stock_type[$i]['stock_type_name']; ?>');" style="color:red;">
                                                 <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
+                                        <?PHP } ?>
+
+
                                         </td>
                                     </tr>
                                    <?

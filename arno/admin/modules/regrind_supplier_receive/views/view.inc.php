@@ -20,6 +20,7 @@
 </div>
 
 
+<?PHP if($license_regrind_page == "Low" || $license_regrind_page == "Medium" || $license_regrind_page == "High" ) { ?>
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-12">
@@ -101,7 +102,7 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
-
+<?PHP } ?>
 
             <!-- /.row -->
             <div class="row">
@@ -112,9 +113,11 @@
                                 <div class="col-md-8">
                                     รายการใบรีกายร์สินค้าจากผู้ขาย /  Regrind supplier receive List
                                 </div>
+                                <?PHP if($license_regrind_page == "Low" || $license_regrind_page == "Medium" || $license_regrind_page == "High" ) { ?>
                                 <div class="col-md-4">
                                     <a class="btn btn-success " style="float:right;" href="?app=regrind_supplier_receive&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                                 </div>
+                                <?PHP } ?>
                             </div>
                         </div>
                         <!-- /.panel-heading -->
@@ -221,13 +224,17 @@
                                             <a href="?app=regrind_supplier_receive&action=detail&id=<?php echo $regrind_supplier_receives[$i]['regrind_supplier_receive_id'];?>">
                                                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                             </a>
-
+                                            <?PHP if(($license_regrind_page == "Low" && $admin == $regrind_supplier_receives[$i]['employee_id']) || $license_regrind_page == "Medium" || $license_regrind_page == "High" ) { ?>
                                             <a href="?app=regrind_supplier_receive&action=update&id=<?php echo $regrind_supplier_receives[$i]['regrind_supplier_receive_id'];?>">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             </a> 
+                                            <?PHP } ?>
+
+                                            <?PHP if(($license_regrind_page == "Low" && $admin == $regrind_supplier_receives[$i]['employee_id']) ||  $license_regrind_page == "High" ) { ?>
                                             <a href="?app=regrind_supplier_receive&action=delete&id=<?php echo $regrind_supplier_receives[$i]['regrind_supplier_receive_id'];?>" onclick="return confirm('You want to delete Regrind supplier receive : <?php echo $regrind_supplier_receives[$i]['regrind_supplier_receive_code']; ?>');" style="color:red;">
                                                 <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
+                                            <?PHP } ?>
 
                                         </td>
 

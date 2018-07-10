@@ -22,7 +22,7 @@ class DeliveryNoteSupplierModel extends BaseModel{
         }
 
         if($user_id != ""){
-            $str_user = "AND employee_id = '$user_id' ";
+            $str_user = "AND tb_delivery_note_supplier.employee_id = '$user_id' ";
         }
 
         if($supplier_id != ""){
@@ -31,6 +31,7 @@ class DeliveryNoteSupplierModel extends BaseModel{
 
 
         $sql = " SELECT delivery_note_supplier_id, 
+        tb_delivery_note_supplier.employee_id,
         delivery_note_supplier_code, 
         delivery_note_supplier_date, 
         delivery_note_supplier_file,

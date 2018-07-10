@@ -27,7 +27,7 @@ $customer_id = $_GET['customer_id'];
 $vat = 7;
 $first_char = "CN";
 
-if(!isset($_GET['action'])){
+if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
@@ -39,7 +39,7 @@ if(!isset($_GET['action'])){
     $credit_notes = $credit_note_model->getCreditNoteBy($date_start,$date_end,$customer_id,$keyword);
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     $first_code = $first_char.date("y").date("m");
     $first_date = date("d")."-".date("m")."-".date("Y");
     $last_code = $credit_note_model->getCreditNoteLastID($first_code,3);
@@ -51,7 +51,7 @@ if(!isset($_GET['action'])){
 
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     $products=$product_model->getProductBy('','','','Active');
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
@@ -78,13 +78,13 @@ if(!isset($_GET['action'])){
     $credit_note_lists = $credit_note_list_model->getCreditNoteListBy($credit_note_id);
     require_once($path.'print.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ( $license_sale_page == "High" )){
     $credit_note_model->deleteCreditNoteById($credit_note_id);
 ?>
     <script>window.location="index.php?app=credit_note"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     if(isset($_POST['credit_note_code'])){
         $data = [];
         $data['customer_id'] = $_POST['customer_id'];
@@ -174,7 +174,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     
     if(isset($_POST['credit_note_code'])){
         
@@ -283,7 +283,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else{
+}else if($license_sale_page == "Medium" || $license_sale_page == "High" ){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];

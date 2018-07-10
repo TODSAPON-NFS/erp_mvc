@@ -24,7 +24,7 @@ $customer_id = $_GET['customer_id'];
 $vat = 7;
 $first_char = "RE";
 
-if(!isset($_GET['action'])){
+if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
@@ -37,7 +37,7 @@ if(!isset($_GET['action'])){
     $customer_orders = $official_receipt_model->getCustomerOrder();
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     $first_code = $first_char.date("y").date("m");
     $first_date = date("d")."-".date("m")."-".date("Y");
     $last_code = $official_receipt_model->getOfficialReceiptLastID($first_code,3);
@@ -49,7 +49,7 @@ if(!isset($_GET['action'])){
 
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
 
@@ -75,13 +75,13 @@ if(!isset($_GET['action'])){
     $official_receipt_lists = $official_receipt_list_model->getOfficialReceiptListBy($official_receipt_id);
     require_once($path.'print.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ( $license_sale_page == "High" ) ){
     $official_receipt_model->deleteOfficialReceiptById($official_receipt_id);
 ?>
     <script>window.location="index.php?app=official_receipt"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     if(isset($_POST['official_receipt_code'])){
         $data = [];
         $data['customer_id'] = $_POST['customer_id'];
@@ -145,7 +145,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     
     if(isset($_POST['official_receipt_code'])){
         
@@ -228,7 +228,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else{
+}else  if ($license_sale_page == "Medium" || $license_sale_page == "High" ) {
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];

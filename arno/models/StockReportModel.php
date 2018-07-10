@@ -7,11 +7,17 @@ class StockReportModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getStockReportListBy(){
+    function getStockReportListBy($stock_group_id = '', $keyword = ''){
+
+        if($stock_group_id != ""){
+            $str_stock = " AND tb_stock_report.stock_group_id = '$stock_group_id' ";
+        }
         $sql = "    SELECT * 
                     FROM tb_product 
                     LEFT JOIN tb_stock_report ON tb_product.product_id = tb_stock_report.product_id 
                     LEFT JOIN tb_stock_group ON tb_stock_report.stock_group_id = tb_stock_group.stock_group_id  
+                    WHERE ( product_name LIKE ('%$keyword%') OR CONCAT(product_code_first,product_code) LIKE ('%$keyword%') )
+                    $str_stock 
                     GROUP BY  tb_product.product_id, tb_stock_report.stock_group_id 
                     ORDER BY  tb_product.product_id, tb_stock_report.stock_group_id ";
 

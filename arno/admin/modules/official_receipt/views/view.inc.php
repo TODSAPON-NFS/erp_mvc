@@ -207,12 +207,19 @@
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                 </a>
 
+
+                                <?PHP if ( $license_sale_page == "Medium" || $license_sale_page == "High" ) { ?>
                                 <a href="?app=official_receipt&action=update&id=<?php echo $official_receipts[$i]['official_receipt_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
+                                <?PHP } ?>
+
+                                <?PHP if ( $license_sale_page == "High" ) { ?>
                                 <a href="?app=official_receipt&action=delete&id=<?php echo $official_receipts[$i]['official_receipt_id'];?>" onclick="return confirm('You want to delete Official Receipt : <?php echo $official_receipts[$i]['official_receipt_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
+                                <?PHP } ?>
+                                
                            
                             </td>
 

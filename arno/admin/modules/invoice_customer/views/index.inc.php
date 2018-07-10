@@ -28,7 +28,7 @@ $customer_purchase_order_id = $_GET['customer_purchase_order_id'];
 $vat = 7;
 $first_char = "INV";
 
-if(!isset($_GET['action'])){
+if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_page == "High" )){
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $customer_id = $_GET['customer_id'];
@@ -41,7 +41,7 @@ if(!isset($_GET['action'])){
     $customer_purchase_orders = $invoice_customer_model->getCustomerPurchaseOrder();
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_sale_page == "Medium" || $license_sale_page == "High" )){
     $first_code = $first_char.date("y").date("m");
     $first_date = date("d")."-".date("m")."-".date("Y");
     $last_code = $invoice_customer_model->getInvoiceCustomerLastID($first_code,3);
@@ -59,7 +59,7 @@ if(!isset($_GET['action'])){
 
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ($license_sale_page == "Medium" || $license_sale_page == "High" )){
     $products=$product_model->getProductBy('','','','');
     $stock_groups=$stock_group_model->getStockGroupBy();
     $customers=$customer_model->getCustomerBy();
@@ -85,13 +85,13 @@ if(!isset($_GET['action'])){
     $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy($invoice_customer_id);
     require_once($path.'print.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ( $license_sale_page == "High" )){
     $invoice_customer_model->deleteInvoiceCustomerById($invoice_customer_id);
 ?>
     <script>window.location="index.php?app=invoice_customer"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_sale_page == "Medium" || $license_sale_page == "High" )){
     if(isset($_POST['invoice_customer_code'])){
         $data = [];
         $data['customer_id'] = $_POST['customer_id'];
@@ -175,7 +175,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_sale_page == "Medium" || $license_sale_page == "High" )){
     
     if(isset($_POST['invoice_customer_code'])){
         
@@ -275,7 +275,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else{
+}else if($license_sale_page == "Medium" || $license_sale_page == "High" ){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];

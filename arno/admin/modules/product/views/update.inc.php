@@ -365,6 +365,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
+            <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                 <form role="form" method="post" onsubmit="return check_supplier();" 
                 <?php if($product_supplier_id == ""){ ?>
                     action="index.php?app=product&action=add_supplier&id=<?php echo $product_id?>" 
@@ -431,44 +432,50 @@
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     </div>
-                    <br>
-                    <table width="100%" class="table table-striped table-bordered table-hover" id="tb-product-customer">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>Supplier</th>
-                                <th>Price</th>
-                                <th>Lead Time</th>
-                                <th>Status</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php 
-                            for($i=0; $i < count($product_suppliers); $i++){
-                            ?>
-                            <tr class="odd gradeX">
-                                <td><?php echo $i+1; ?></td>
-                                <td><?php echo $product_suppliers[$i]['supplier_name_en']; ?> (<?php echo $product_suppliers[$i]['supplier_name_th']; ?>) </td>
-                                <td class="center"><?php echo $product_suppliers[$i]['product_buyprice']; ?></td>
-                                <td class="center"><?php echo $product_suppliers[$i]['lead_time']; ?></td>
-                                <td class="center"><?php echo $product_suppliers[$i]['product_supplier_status']; ?></td>
-                                <td>
-                                    <a href="?app=product&action=update&id=<?php echo $product_id;?>&product_supplier_id=<?php echo $product_suppliers[$i]['product_supplier_id'];?>">
-                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                    </a> 
-                                    <a href="?app=product&action=delete&id=<?php echo $product_id;?>&product_supplier_id=<?php echo $product_suppliers[$i]['product_supplier_id'];?>" onclick="return confirm('You want to delete supplier : <?php echo $product_suppliers[$i]['supplier_name_en']; ?> (<?php echo $product_suppliers[$i]['supplier_name_th']; ?>)');" style="color:red;">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <?
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                    
                 </form>
+            <?PHP } ?>
+                <br>
+                <table width="100%" class="table table-striped table-bordered table-hover" id="tb-product-customer">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Supplier</th>
+                            <th>Price</th>
+                            <th>Lead Time</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        for($i=0; $i < count($product_suppliers); $i++){
+                        ?>
+                        <tr class="odd gradeX">
+                            <td><?php echo $i+1; ?></td>
+                            <td><?php echo $product_suppliers[$i]['supplier_name_en']; ?> (<?php echo $product_suppliers[$i]['supplier_name_th']; ?>) </td>
+                            <td class="center"><?php echo $product_suppliers[$i]['product_buyprice']; ?></td>
+                            <td class="center"><?php echo $product_suppliers[$i]['lead_time']; ?></td>
+                            <td class="center"><?php echo $product_suppliers[$i]['product_supplier_status']; ?></td>
+                            <td>
+                            <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
+                                <a href="?app=product&action=update&id=<?php echo $product_id;?>&product_supplier_id=<?php echo $product_suppliers[$i]['product_supplier_id'];?>">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </a> 
+                            <?PHP } ?>
+                            <?php if($license_admin_page == "High"){ ?> 
+                                <a href="?app=product&action=delete&id=<?php echo $product_id;?>&product_supplier_id=<?php echo $product_suppliers[$i]['product_supplier_id'];?>" onclick="return confirm('You want to delete supplier : <?php echo $product_suppliers[$i]['supplier_name_en']; ?> (<?php echo $product_suppliers[$i]['supplier_name_th']; ?>)');" style="color:red;">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </a>
+                            <?PHP }?>
+                            </td>
+                        </tr>
+                        <?
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                    
+                
             </div>
             <!-- /.panel-body -->
         </div>
@@ -488,6 +495,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
+            <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                 <form role="form" method="post" onsubmit="return check_customer();" 
                 <?php if($product_customer_id == ""){ ?>
                     action="index.php?app=product&action=add_customer&id=<?php echo $product_id?>" 
@@ -553,7 +561,9 @@
                             <a href="?app=product&action=update&id=<? echo $product_id;?>" class="btn btn-primary" >Reset</a>
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>
-                    </div>
+                    </div> 
+                </form>
+            <?PHP } ?>
                     <br>
                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example2">
                         <thead>
@@ -577,12 +587,16 @@
                                 <td class="center"><?php echo $product_customers[$i]['safety_stock']; ?></td>
                                 <td class="center"><?php echo $product_customers[$i]['product_status']; ?></td>
                                 <td>
+                                <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                     <a href="?app=product&action=update&id=<?php echo $product_id;?>&product_customer_id=<?php echo $product_customers[$i]['product_customer_id'];?>">
                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                     </a> 
+                                <?PHP } ?>
+                                <?php if($license_admin_page == "High"){ ?> 
                                     <a href="?app=product&action=delete&id=<?php echo $product_id;?>&product_customer_id=<?php echo $product_customers[$i]['product_customer_id'];?>" onclick="return confirm('You want to delete supplier : <?php echo $product_customers[$i]['customer_name_en']; ?> (<?php echo $product_customers[$i]['customer_name_th']; ?>)');" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>
+                                <?PHP } ?>
                                 </td>
                             </tr>
                             <?
@@ -591,7 +605,7 @@
                         </tbody>
                     </table>
                     
-                </form>
+               
             </div>
             <!-- /.panel-body -->
         </div>

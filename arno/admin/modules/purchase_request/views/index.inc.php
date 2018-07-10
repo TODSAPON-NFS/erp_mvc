@@ -24,7 +24,11 @@ $purchase_request_id = $_GET['id'];
 $type = strtoupper($_GET['type']);
 
 $notification_id = $_GET['notification'];
-if(!isset($_GET['action'])){
+
+$purchase_request = $purchase_request_model->getPurchaseRequestByID($purchase_request_id);
+
+$employee_id = $purchase_request["employee_id"];
+if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
@@ -34,7 +38,7 @@ if(!isset($_GET['action'])){
     $purchase_requests = $purchase_request_model->getPurchaseRequestBy($date_start,$date_end,$keyword,$user_id);
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_purchase_page == "Low" || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     if($type == ''){
         $type = 'STANDARD';
     }
@@ -48,7 +52,7 @@ if(!isset($_GET['action'])){
     $last_code = $purchase_request_model->getPurchaseRequestLastID($first_code,3);
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && (($license_purchase_page == "Low" && $admin_id == $employee_id) || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
     $suppliers=$supplier_model->getSupplierBy();
@@ -93,7 +97,7 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=purchase_request"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_purchase_page == "Low" || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     if(isset($_POST['purchase_request_code'])){
         $data = [];
         $data['purchase_request_date'] = date("d")."-".date("m")."-".date("Y");
@@ -163,7 +167,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && (($license_purchase_page == "Low" && $admin_id == $employee_id) || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     if(isset($_POST['purchase_request_code'])){
         $data = [];
@@ -237,7 +241,7 @@ if(!isset($_GET['action'])){
         
       
     
-}else if ($_GET['action'] == 'rewrite'){
+}else if ($_GET['action'] == 'rewrite' && (($license_purchase_page == "Low" && $admin_id == $employee_id) || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
 
         $purchase_request = $purchase_request_model->getPurchaseRequestByID($purchase_request_id);
         $purchase_request_lists = $purchase_request_list_model->getPurchaseRequestListBy($purchase_request_id);
@@ -308,7 +312,7 @@ if(!isset($_GET['action'])){
         <?php
     }
         
-}else{
+}else if($license_purchase_page == "Low" || $license_purchase_page == "Medium" || $license_purchase_page == "High" ){
 
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];

@@ -19,14 +19,14 @@ if(!isset($_GET['action'])){
     }
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete'  && ( $license_admin_page == 'High') ){
 
     $model_customer_holiday->deleteCustomerHolidayByID($customer_holiday_id);
 ?>
     <script>window.location="index.php?app=customer_holiday&action=view&id=<?php echo $customer_id;?>"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['holiday_id'])){
         $data = [];
         $data['holiday_id'] = $_POST['holiday_id'];
@@ -47,7 +47,7 @@ if(!isset($_GET['action'])){
                     
         }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['holiday_id'])){
         $data = [];
         $data['holiday_id'] = $_POST['holiday_id'];
@@ -67,7 +67,7 @@ if(!isset($_GET['action'])){
                     
         }
     
-}else if ($_GET['action'] == 'edit_bill'){
+}else if ($_GET['action'] == 'edit_bill' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['date_bill'])){
         $data = [];
         $data['date_bill'] = $_POST['date_bill'];
@@ -86,7 +86,7 @@ if(!isset($_GET['action'])){
                     
         }
     
-}else if ($_GET['action'] == 'edit_invoice'){
+}else if ($_GET['action'] == 'edit_invoice' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['date_invoice'])){
         $data = [];
         $data['date_invoice'] = $_POST['date_invoice'];

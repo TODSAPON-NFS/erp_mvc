@@ -32,7 +32,9 @@
                                     รายการสินค้า / Product List
                                 </div>
                                 <div class="col-md-4">
+                                <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                     <a class="btn btn-success " style="float:right;" href="?app=product&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                                <?PHP } ?>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +71,7 @@
                                             }
                                             ?>
                                         </select>
-                                        <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
+                                        <p class="help-block">Example : - .</p>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -85,7 +87,7 @@
                                             }
                                             ?>
                                         </select>
-                                        <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
+                                        <p class="help-block">Example : - .</p>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -209,12 +211,16 @@
                                                 <?
                                                     }
                                                 ?>
+                                                <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                                     <a href="?app=product&action=update&id=<?php echo $product[$i]['product_id'];?>">
                                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                     </a> 
+                                                <?PHP } ?>
+                                                <?php if($license_admin_page == "High"){ ?> 
                                                     <a href="?app=product&action=delete&id=<?php echo $product[$i]['product_id'];?>" onclick="return confirm('You want to delete product : <?php echo $product[$i]['product_name']; ?>');" style="color:red;">
                                                         <i class="fa fa-times" aria-hidden="true"></i>
                                                     </a>
+                                                <?PHP } ?>
                                                 </td>
                                             </tr>
                                         <?

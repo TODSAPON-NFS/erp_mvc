@@ -20,7 +20,9 @@
                                     รายการลูกค้า / Customer List
                                 </div>
                                 <div class="col-md-4">
+                                <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                     <a class="btn btn-success " style="float:right;" href="?app=customer&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                                <?PHP } ?>
                                 </div>
                             </div>
                         </div>
@@ -141,6 +143,7 @@
                                                 <td class="center"><?php echo $customer[$i]['customer_tel']; ?></td>
                                                 <td class="center"><?php echo $customer[$i]['customer_email']; ?></td>
                                                 <td>
+                                                <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                                     <a title="View Detail" href="?app=customer&action=detail&id=<?php echo $customer[$i]['customer_id'];?>">
                                                         <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                                     </a> 
@@ -162,9 +165,12 @@
                                                     <a title="Update data" href="?app=customer&action=update&id=<?php echo $customer[$i]['customer_id'];?>">
                                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                     </a> 
+                                                <?PHP }?>
+                                                <?php if($license_admin_page == "High"){ ?> 
                                                     <a title="Delete data" href="?app=customer&action=delete&id=<?php echo $customer[$i]['customer_id'];?>" onclick="return confirm('You want to delete customer : <?php echo $customer[$i]['customer_name']; ?>');" style="color:red;">
                                                         <i class="fa fa-times" aria-hidden="true"></i>
                                                     </a>
+                                                <?PHP }?>
                                                 </td>
                                             </tr>
                                         <?

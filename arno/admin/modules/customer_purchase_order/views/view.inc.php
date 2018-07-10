@@ -225,12 +225,22 @@
                                 </a>
 
                             <?php if($customer_purchase_orders[$i]['customer_purchase_order_status'] == "Waiting"){ ?>
+
+
+                                <?PHP if ( $license_sale_page == "Medium" || $license_sale_page == "High" ) { ?>
                                 <a href="?app=customer_purchase_order&action=update&id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
+                                <?PHP } ?>
+
+
+                                <?PHP if ( $license_sale_page == "High" ) { ?>
                                 <a href="?app=customer_purchase_order&action=delete&id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>" onclick="return confirm('You want to delete Customer Purchase Order : <?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
+                                <?PHP } ?>
+
+                                
                             <?php } ?>
 
                             </td>

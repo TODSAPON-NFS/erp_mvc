@@ -78,7 +78,7 @@ class StockModel extends BaseModel{
 
     }
 
-    function getStockLogListByDate($date_start = '', $date_end = ''){
+    function getStockLogListByDate($date_start = '', $date_end = '', $stock_group_id = '', $keyword = ''){
         $str = " AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%Y-%m-%d %H:%i:%s') ";
 
         $sql_old_in = "SELECT SUM(qty) 
@@ -125,7 +125,7 @@ class StockModel extends BaseModel{
         WHERE tb_product_customer.product_id = tb.product_id 
         AND product_status = 'Active' ";
 
-        $sql = "SELECT product_id,  CONCAT(product_code_first,product_code) as product_code, 
+        $sql = "SELECT tb.product_id,  CONCAT(product_code_first,product_code) as product_code, 
         product_name, product_type, product_status ,
         (IFNULL(($sql_old_in),0) - IFNULL(($sql_old_out),0)) as stock_old,
         IFNULL(($sql_in),0) as stock_in,
@@ -134,12 +134,15 @@ class StockModel extends BaseModel{
         IFNULL(($sql_borrow_out),0) as stock_borrow_out,
         IFNULL(($sql_safety),0) as stock_safety,
         IFNULL(($sql_minimum),0) as stock_minimum 
-        FROM tb_product as  tb
-        WHERE product_status = 'Active' 
+        FROM tb_stock_report 
+        LEFT JOIN tb_product as  tb ON tb_stock_report.product_id = tb.product_id  
+        WHERE stock_group_id = '$stock_group_id' 
+        AND (
+                CONCAT(product_code_first,product_code) LIKE ('%$keyword%') 
+                OR  product_name LIKE ('%$keyword%') 
+        ) 
         ORDER BY CONCAT(product_code_first,product_code) 
-        ";
-
-        //echo $sql;
+        "; 
 
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];

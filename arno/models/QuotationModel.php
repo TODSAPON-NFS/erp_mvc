@@ -21,7 +21,7 @@ class QuotationModel extends BaseModel{
         }
 
         if($user_id != ""){
-            $str_user = "AND employee_id = '$user_id' ";
+            $str_user = "AND tb.employee_id = '$user_id' ";
         }
 
         if($customer_id != ""){
@@ -31,6 +31,7 @@ class QuotationModel extends BaseModel{
 
         
         $sql = "   SELECT tb.quotation_id,  
+        tb.employee_id,
         quotation_date,  
         quotation_rewrite_id, 
         IFNULL(( 

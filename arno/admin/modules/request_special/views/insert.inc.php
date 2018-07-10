@@ -89,7 +89,7 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
         var str = "<option value=''>Select Product</option>";
         $.each(product_data, function (index, value) {
-            str += "<option value='" + value['product_id'] + "'>"+value['product_code']+"</option>";
+            str += "<option value='" + value['product_id'] + "'>"+value['product_code']+" - "+value['product_name']+"</option>";
         });
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
@@ -132,7 +132,7 @@
                                     <?php 
                                     for($i =  0 ; $i < count($users) ; $i++){
                                     ?>
-                                    <option value="<?php echo $users[$i]['user_id']; ?>" <?PHP if( $users[$i]['user_id']== $user_id){?> SELECTED <?PHP } ?>><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
+                                    <option value="<?php echo $users[$i]['user_id']; ?>" <?PHP if( $users[$i]['user_id']== $admin_id){?> SELECTED <?PHP } ?>><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
                                     <?
                                     }
                                     ?>
@@ -158,7 +158,7 @@
                                     <?php 
                                     for($i =  0 ; $i < count($customers) ; $i++){
                                     ?>
-                                    <option <?PHP if($user[0][0] == $users[$i]['user_id']){?> SELECTED <?PHP }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_th'] ?> (<?php echo $customers[$i]['customer_name_en'] ?>)</option>
+                                    <option value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_th'] ?> (<?php echo $customers[$i]['customer_name_en'] ?>)</option>
                                     <?
                                     }
                                     ?>

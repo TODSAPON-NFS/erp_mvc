@@ -23,9 +23,11 @@
                                 <div class="col-md-8">
                                     รายการใบร้องขอสั่งซื้อสินค้าทดลองพิเศษ / Special Tool Request  List
                                 </div>
+                            <?php if($license_request_page == "Low" || $license_request_page == "Medium" || $license_request_page == "High"){ ?> 
                                 <div class="col-md-4">
                                     <a class="btn btn-success " style="float:right;" href="?app=request_special&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                                 </div>
+                            <?PHP } ?>
                             </div>
                         </div>
                         <!-- /.panel-heading -->
@@ -100,9 +102,12 @@
                                                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                             </a>
 
+
+
                                         <?php if($request_specials[$i]['request_special_accept_status'] == "Waiting"){ ?>
                                             
                                             <?php if($request_specials[$i]['request_special_cancelled'] == 0){ ?>
+                                                <?php if($license_request_page == "Medium" || $license_request_page == "High"||  ($request_specials[$i]['employee_id'] == $admin_id && $license_request_page == "Low")){ ?> 
                                                 <a href="?app=request_special&action=cancelled&id=<?php echo $request_specials[$i]['request_special_id'];?>"  title="ยกเลิกใบร้องขอ" onclick="return confirm('You want to cancelled Special Tool Request  : <?php echo $request_specials[$i]['request_special_code']; ?>');" style="color:#F00;">
                                                     <i class="fa fa-ban" aria-hidden="true"></i>
                                                 </a>
@@ -112,28 +117,50 @@
                                                 <a href="?app=request_special&action=update&id=<?php echo $request_specials[$i]['request_special_id'];?>"  title="แก้ไขใบร้องขอ">
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a> 
+                                                <?PHP } ?>
+
                                             <?php } else if($request_specials[$i]['count_rewrite'] == 0) { ?>
 
+
+                                                <?php if($license_request_page == "Medium" || $license_request_page == "High" ||  ($request_specials[$i]['employee_id'] == $admin_id && $license_request_page == "Low")){ ?> 
                                                 <a href="?app=request_special&action=uncancelled&id=<?php echo $request_specials[$i]['request_special_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled Special Tool Request  : <?php echo $request_specials[$i]['request_special_code']; ?>');" >
                                                     <i class="fa fa-undo" aria-hidden="true"></i>
                                                 </a>
                                                 <a href="?app=request_special&action=rewrite&id=<?php echo $request_specials[$i]['request_special_id'];?>"  title="เขียนใบร้องขอใหม่" onclick="return confirm('You want to rewrite Special Tool Request  : <?php echo $request_specials[$i]['request_special_code']; ?>');" style="color:#F00;">
                                                     <i class="fa fa-registered" aria-hidden="true"></i>
                                                 </a>
+                                                <?PHP } ?>
+
+
+                                                <?php if($license_request_page == "High" ||  ($request_specials[$i]['employee_id'] == $admin_id && $license_request_page == "Low")){ ?> 
                                                 <a href="?app=request_special&action=delete&id=<?php echo $request_specials[$i]['request_special_id'];?>"  title="ลบใบร้องขอ" onclick="return confirm('You want to delete Special Tool Request  : <?php echo $request_specials[$i]['request_special_code']; ?>');" style="color:red;">
                                                     <i class="fa fa-times" aria-hidden="true"></i>
                                                 </a>
+                                                <?PHP } ?>
+
+
+
                                             <?PHP } else { ?> 
+
+                                                <?php if($license_request_page == "Medium" || $license_request_page == "High" ||  ($request_specials[$i]['employee_id'] == $admin_id && $license_request_page == "Low")){ ?> 
                                                 <a href="?app=request_special&action=uncancelled&id=<?php echo $request_specials[$i]['request_special_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled Special Tool Request  : <?php echo $request_specials[$i]['request_special_code']; ?>');" >
                                                     <i class="fa fa-undo" aria-hidden="true"></i>
                                                 </a>
+                                                <?PHP } ?>
+
+                                                <?php if($license_request_page == "High" ||  ($request_specials[$i]['employee_id'] == $admin_id && $license_request_page == "Low")){ ?> 
                                                 <a href="?app=request_special&action=delete&id=<?php echo $request_specials[$i]['request_special_id'];?>"  title="ลบใบร้องขอ" onclick="return confirm('You want to delete Special Tool Request  : <?php echo $request_specials[$i]['request_special_code']; ?>');" style="color:red;">
                                                     <i class="fa fa-times" aria-hidden="true"></i>
                                                 </a>
+                                                <?PHP } ?>
+
+
                                             <?PHP } ?>
                                                 
                                             
                                         <?php } ?>
+
+
 
                                         </td>
 

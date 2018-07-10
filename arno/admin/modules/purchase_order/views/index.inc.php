@@ -57,7 +57,7 @@ if(!isset($_GET['action'])){
     $supplier_regrinds = $purchase_order_model->getSupplierRegrind();
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
+}else if ($_GET['action'] == 'insert' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     if($type != "STANDARD" && $type != "TEST" && $type != "BLANKED" && $type != "REGRIND"){
         $type = "STANDARD";
@@ -96,7 +96,7 @@ if(!isset($_GET['action'])){
 
     require_once($path.'insert.inc.php');
 
-}else if ($_GET['action'] == 'update'){
+}else if ($_GET['action'] == 'update' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
@@ -116,7 +116,7 @@ if(!isset($_GET['action'])){
     $purchase_order_lists = $purchase_order_list_model->getPurchaseOrderListBy($purchase_order_id);
     require_once($path.'detail.inc.php');
 
-}else if ($_GET['action'] == 'delete'){
+}else if ($_GET['action'] == 'delete' && ( $license_purchase_page == "High" )){
 
     $purchase_order_list_model->deletePurchaseOrderListByPurchaseOrderID($purchase_order_id);
     $purchase_orders = $purchase_order_model->deletePurchaseOrderById($purchase_order_id);
@@ -124,19 +124,19 @@ if(!isset($_GET['action'])){
     <script>window.location="index.php?app=purchase_order"</script>
 <?php
 
-}else if ($_GET['action'] == 'cancelled'){
+}else if ($_GET['action'] == 'cancelled' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     $purchase_order_model->cancelPurchaseOrderById($purchase_order_id);
 ?>
     <script>window.location="index.php?app=purchase_order"</script>
 <?php
 
-}else if ($_GET['action'] == 'uncancelled'){
+}else if ($_GET['action'] == 'uncancelled' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     $purchase_order_model->uncancelPurchaseOrderById($purchase_order_id);
 ?>
     <script>window.location="index.php?app=purchase_order"</script>
 <?php
 
-}else if ($_GET['action'] == 'add'){
+}else if ($_GET['action'] == 'add' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     if(isset($_POST['purchase_order_code'])){
         $data = [];
         $data['supplier_id'] = $_POST['supplier_id'];
@@ -268,7 +268,7 @@ if(!isset($_GET['action'])){
         <?php
     }
     
-}else if ($_GET['action'] == 'edit'){
+}else if ($_GET['action'] == 'edit' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     if(isset($_POST['purchase_order_code'])){
 
@@ -408,7 +408,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else if ($_GET['action'] == 'rewrite'){
+}else if ($_GET['action'] == 'rewrite' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
         
         if($purchase_order_id > 0){
             $purchase_order = $purchase_order_model->getPurchaseOrderByID($purchase_order_id);
@@ -518,7 +518,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else if ($_GET['action'] == 'balance'){
+}else if ($_GET['action'] == 'balance' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
 
     $purchase_order_lists = $purchase_order_list_model->getPurchaseOrderListBy($purchase_order_id);
 
@@ -557,7 +557,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else if ($_GET['action'] == 'request'){
+}else if ($_GET['action'] == 'request' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     if(isset($purchase_order_id)){
         $data = [];
@@ -593,7 +593,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else if ($_GET['action'] == 'checking'){
+}else if ($_GET['action'] == 'checking' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     if(isset($purchase_order_id)){
         $data = [];
@@ -669,7 +669,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else if ($_GET['action'] == 'sending'){
+}else if ($_GET['action'] == 'sending' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     if(isset($purchase_order_id)){
         $data = [];
@@ -745,7 +745,7 @@ if(!isset($_GET['action'])){
         
         
     
-}else{
+}else if ($license_purchase_page == "Medium" || $license_purchase_page == "High" ){
 
     $purchase_orders = $purchase_order_model->getPurchaseOrderBy();
     $supplier_orders = $purchase_order_model->getSupplierOrder();

@@ -22,7 +22,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
         }
 
         if($user_id != ""){
-            $str_user = "AND employee_id = '$user_id' ";
+            $str_user = "AND tb_regrind_supplier_receive.employee_id  = '$user_id' ";
         }
 
         if($supplier_id != ""){
@@ -31,6 +31,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
 
 
         $sql = " SELECT regrind_supplier_receive_id, 
+        tb_regrind_supplier_receive.employee_id ,
         regrind_supplier_receive_code, 
         regrind_supplier_receive_date, 
         regrind_supplier_receive_file,
@@ -101,7 +102,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
 
     }
 
-    function getRegrindSupplier(){
+    function getRegrindSupplier($employee_id = ""){
 
         $sql = "SELECT tb_regrind_supplier.regrind_supplier_id, regrind_supplier_code, tb_supplier.supplier_id, supplier_name_en , supplier_name_th 
                 FROM tb_regrind_supplier 
@@ -133,7 +134,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
     }
 
 
-    function getSupplier(){
+    function getSupplier($employee_id = ""){
 
         $sql = "SELECT tb_supplier.supplier_id, supplier_name_en , supplier_name_th 
                 FROM tb_supplier 

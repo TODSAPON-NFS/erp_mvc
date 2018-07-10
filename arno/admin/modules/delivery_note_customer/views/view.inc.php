@@ -30,9 +30,13 @@
                     <div class="col-md-8">
                         รายการใบยืมสินค้าสำหรับลูกค้า / Delivery Note Customer List
                     </div>
+
+                    <?php if($license_delivery_note_page == "Low" || $license_delivery_note_page == "Medium" || $license_delivery_note_page == "High"){ ?> 
                     <div class="col-md-4">
                         <a class="btn btn-success " style="float:right;" href="?app=delivery_note_customer&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                     </div>
+                    <?PHP } ?>
+
                 </div>
             </div>
             <!-- /.panel-heading -->
@@ -137,13 +141,19 @@
                                 <a href="?app=delivery_note_customer&action=detail&id=<?php echo $delivery_note_customers[$i]['delivery_note_customer_id'];?>">
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                 </a>
-
+                                
+                                
+                                <?php if(($license_delivery_note_page == "Low" && $admin_id == $delivery_note_customers[$i]['employee_id']) || $license_delivery_note_page == "Medium" || $license_delivery_note_page == "High"){ ?> 
                                 <a href="?app=delivery_note_customer&action=update&id=<?php echo $delivery_note_customers[$i]['delivery_note_customer_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
+                                <?PHP } ?>
+
+                                <?php if(($license_delivery_note_page == "Low" && $admin_id == $delivery_note_customers[$i]['employee_id']) || $license_delivery_note_page == "High"){ ?> 
                                 <a href="?app=delivery_note_customer&action=delete&id=<?php echo $delivery_note_customers[$i]['delivery_note_customer_id'];?>" onclick="return confirm('You want to delete Delivery Note Customer : <?php echo $delivery_note_customers[$i]['delivery_note_customer_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
+                                <?PHP } ?>
 
                             </td>
 

@@ -5,7 +5,36 @@
         var customer_id = $("#customer_id").val();
         var keyword = $("#keyword").val();
 
-        window.location = "index.php?app=bank_check_in&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
+        window.location = "index.php?app=bank_check_pass&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
+    }
+
+    function update_deposit(id,check_id,check_date){
+        var bank = $(id).closest('tr').children('td').children('div').children('select[name="bank_deposit_id"]').val();
+        var check_fee = $(id).closest('tr').children('td').children('input[name="check_fee"]').val();
+        var date = $(id).closest('tr').children('td').children('input[name="check_date_deposit"]').val();
+
+        var str_pass = date.split("-");
+        var str_pay = check_date.split("-");
+
+        var check_date_deposit = new Date (str_pass[1]+'-'+str_pass[0]+'-'+str_pass[2]);
+        var check_date = new Date(str_pay[1]+'-'+str_pay[0]+'-'+str_pay[2]);
+
+        if(bank == ""){
+            alert("กรุณากรอกธนาคารที่นำฝาก");
+            $(id).closest('tr').children('td').children('div').children('input[name="bank_deposit_id"]').first().focus();
+            return false;
+        }else if(date == ""){
+            alert("กรุณากรอกวันที่นำฝากเช็ค");
+            $(id).closest('tr').children('td').children('input[name="check_date_deposit"]').first().focus();
+            return false;
+        }else if (check_date_deposit <  check_date){
+            alert("วันที่นำฝากเช็คต้องมากกว่าหรือเท่ากับ วันที่ออกเช็ค");
+            $(id).closest('tr').children('td').children('input[name="check_date_deposit"]').first().focus();
+            return false;
+        }else{
+            window.location="?app=bank_check_in_deposit&action=deposit&id="+check_id+"&bank_deposit_id="+bank+"&check_fee="+check_fee+"&check_date_deposit="+date;
+        }
+        
     }
 </script>
 
@@ -27,11 +56,8 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-md-8">
-                        รายการเช็ครับ / Check List
-                    </div>
-                    <div class="col-md-4">
-                        <a class="btn btn-success " style="float:right;" href="?app=bank_check_in&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                    <div class="col-md-12">
+                        เช็ครับที่ยังไม่ผ่านรายการ
                     </div>
                 </div>
             </div>
@@ -95,13 +121,15 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
-                            <th>ลำดับ <br>No.</th>
+                            <th>ลำดับ </th>
                             <th>วันที่รับเช็ค </th>
                             <th>หมายเลขเช็ค</th>
                             <th>จำนวนเงิน </th>
                             <th>ผู้สั่งจ่าย</th>
                             <th>วันที่ออกเช็ค</th>
-                            <th>หมายเหตุ <br>Remark</th>
+                            <th>ธนาคารที่นำฝาก </th>
+                            <th>ค่าธรรมเนียม </th>
+                            <th>วันที่ที่นำฝาก </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -109,7 +137,8 @@
                         <?php 
                         for($i=0; $i < count($checks); $i++){
                         ?>
-                        <tr class="odd gradeX" >
+                               
+                        <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
                             <td><?php echo $checks[$i]['check_date_recieve']; ?></td>
                             <td>
@@ -131,26 +160,33 @@
                                 ?>    
                             </td>
                             <td><?php echo $checks[$i]['check_total']; ?></td>
-                            <td><?php if($checks[$i]['customer_name_th'] != ""){echo $checks[$i]['customer_name_th'];}else{echo $checks[$i]['customer_name_en'];} ?></td>
+                            <td><?php if($checks[$i]['customer_name_th'] != ""){echo $checks[$i]['customer_name_th'];}else{echo $checks[$i]['customer_name_en'];} ?> </td>
                             <td><?php echo $checks[$i]['check_date_write']; ?></td>
-                            <td><?php echo $checks[$i]['check_remark']; ?></td>
+                            <td>
+                                <select id="bank_deposit_id" name="bank_deposit_id" class="form-control select" data-live-search="true">
+                                    <option value="">Select</option>
+                                    <?php 
+                                    for($ii =  0 ; $ii < count($accounts) ; $ii++){
+                                    ?>
+                                    <option value="<?php echo $accounts[$ii]['bank_account_id'] ?>"><?php echo $accounts[$ii]['bank_account_name'] ?> </option>
+                                    <?
+                                    }
+                                    ?>
+                                </select>
+                            </td>
 
                             <td>
-                              
-                                <a href="?app=bank_check_in&action=detail&id=<?php echo $checks[$i]['check_id'];?>">
-                                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                </a>
-
-                                <a href="?app=bank_check_in&action=update&id=<?php echo $checks[$i]['check_id'];?>">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </a> 
-                                <a href="?app=bank_check_in&action=delete&id=<?php echo $checks[$i]['check_id'];?>" onclick="return confirm('You want to delete Delivery Note Customer : <?php echo $checks[$i]['check_code']; ?>');" style="color:red;">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                </a>
-
+                                <input type="text" name="check_fee" class="form-control" style="width:80px;" value="0"   />
+                            </td> 
+                            <td> 
+                                <input type="text" name="check_date_deposit" class="form-control calendar" style="width:120px;"  readonly />
+                            </td> 
+                            <td>
+                                <button type="button" class="btn btn-success" onclick="update_deposit(this,'<?PHP echo $checks[$i]['check_id']; ?>','<?PHP echo $checks[$i]['check_date_write']; ?>');" ><i class="fa fa-check" aria-hidden="true"></i> นำฝากเช็ค</button> 
                             </td>
 
                         </tr>
+                        </form>
                         <?
                         }
                         ?>

@@ -7,17 +7,20 @@ class CheckModel extends BaseModel{
         $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
     }
 
-    function getCheckBy($date_start = "",$date_end = "",$customer_id = "",$keyword = ""){
+    function getCheckBy($check_type = "",$date_start = "",$date_end = "",$customer_id = "",$keyword = "",$check_status="",$check_date_deposit = ""){
 
         $str_customer = "";
         $str_date = "";
+        $str_type = "";
+        $str_status = "";
+        $str_deposit = "";
 
         if($date_start != "" && $date_end != ""){
-            $str_date = "AND STR_TO_DATE(check_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(check_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+            $str_date = "AND STR_TO_DATE(check_date_recieve,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(check_date_recieve,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
         }else if ($date_start != ""){
-            $str_date = "AND STR_TO_DATE(check_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+            $str_date = "AND STR_TO_DATE(check_date_recieve,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
         }else if ($date_end != ""){
-            $str_date = "AND STR_TO_DATE(check_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+            $str_date = "AND STR_TO_DATE(check_date_recieve,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
         }
 
 
@@ -25,6 +28,19 @@ class CheckModel extends BaseModel{
             $str_customer = "AND tb2.customer_id = '$customer_id' ";
         }
 
+        if($check_type != ""){
+            $str_type = "AND check_type = '$check_type' ";
+        }
+
+        if($check_status != ""){
+            $str_status  = "AND check_status = '$check_status' ";
+        }
+
+        if($check_date_deposit == "0"){
+            $str_deposit  = "AND check_date_deposit = '' ";
+        } else if($check_date_deposit == "1"){
+            $str_deposit  = "AND check_date_deposit != '' ";
+        }
 
         $sql = " SELECT *
         FROM tb_check 
@@ -32,6 +48,9 @@ class CheckModel extends BaseModel{
         WHERE ( 
              check_code LIKE ('%$keyword%') 
         ) 
+        $str_type
+        $str_status
+        $str_deposit 
         $str_customer 
         $str_date 
         ORDER BY STR_TO_DATE(check_date_recieve,'%d-%m-%Y %H:%i:%s'), check_code DESC 
@@ -100,18 +119,17 @@ class CheckModel extends BaseModel{
 
     }
 
-   
     function updateCheckByID($id,$data = []){
         $sql = " UPDATE tb_check SET 
         check_code = '".$data['check_code']."', 
         check_date_write = '".$data['check_date_write']."', 
         check_date_recieve = '".$data['check_date_recieve']."', 
-        check_date = '".$data['check_date']."', 
+        bank_id = '".$data['bank_id']."', 
+        bank_branch = '".$data['bank_branch']."', 
+        customer_id = '".$data['customer_id']."', 
         check_remark = '".$data['check_remark']."', 
-        check_file = '".$data['check_file']."', 
-        employee_signature = '".$data['employee_signature']."', 
-        contact_name = '".$data['contact_name']."', 
-        contact_signature = '".$data['contact_signature']."', 
+        check_total = '".$data['check_total']."', 
+        check_type = '".$data['check_type']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
         WHERE check_id = $id 
@@ -147,7 +165,7 @@ class CheckModel extends BaseModel{
 
     function updateCheckPassByID($id,$data = []){
         $sql = " UPDATE tb_check SET 
-        check_status = '1', 
+        check_status = '".$data['check_status']."', 
         check_date_pass = '".$data['check_date_pass']."',
         updateby = '".$data['updateby']."', 
         lastupdate = NOW()  
@@ -174,6 +192,7 @@ class CheckModel extends BaseModel{
             customer_id,
             check_remark,
             check_total,
+            check_type,
             addby,
             adddate,
             updateby,
@@ -187,6 +206,7 @@ class CheckModel extends BaseModel{
         $data['customer_id']."','".
         $data['check_remark']."','".
         $data['check_total']."','".
+        $data['check_type']."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].

@@ -2,10 +2,10 @@
     function search(){
         var date_start = $("#date_start").val();
         var date_end = $("#date_end").val();
-        var customer_id = $("#customer_id").val();
+        var supplier_id = $("#supplier_id").val();
         var keyword = $("#keyword").val();
 
-        window.location = "index.php?app=bank_check_in&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
+        window.location = "index.php?app=bank_check_pay&date_start="+date_start+"&date_end="+date_end+"&supplier_id="+supplier_id+"&keyword="+keyword;
     }
 </script>
 
@@ -28,10 +28,10 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-8">
-                        รายการเช็ครับ / Check List
+                        รายการเช็คจ่าย / Check Pay List
                     </div>
                     <div class="col-md-4">
-                        <a class="btn btn-success " style="float:right;" href="?app=bank_check_in&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                        <a class="btn btn-success " style="float:right;" href="?app=bank_check_pay&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>วันที่รับเช็ค</label>
+                            <label>วันที่จ่ายเช็ค</label>
                             <div class="row">
                                 <div class="col-md-5">
                                     <input type="text" id="date_start" name="date_start" value="<?PHP echo $date_start;?>"  class="form-control calendar" readonly/>
@@ -57,13 +57,13 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>ผู้สั่งจ่าย </label>
-                            <select id="customer_id" name="customer_id" class="form-control select"  data-live-search="true">
+                            <label>ผู้ขาย </label>
+                            <select id="supplier_id" name="supplier_id" class="form-control select"  data-live-search="true">
                                 <option value="">ทั้งหมด</option>
                                 <?php 
-                                for($i =  0 ; $i < count($customers) ; $i++){
+                                for($i =  0 ; $i < count($suppliers) ; $i++){
                                 ?>
-                                <option <?php if($customers[$i]['customer_id'] == $customer_id){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
+                                <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
                                 <?
                                 }
                                 ?>
@@ -96,10 +96,10 @@
                     <thead>
                         <tr>
                             <th>ลำดับ <br>No.</th>
-                            <th>วันที่รับเช็ค </th>
+                            <th>วันที่จ่ายเช็ค </th>
                             <th>หมายเลขเช็ค</th>
                             <th>จำนวนเงิน </th>
-                            <th>ผู้สั่งจ่าย</th>
+                            <th>ผู้ขาย</th>
                             <th>วันที่ออกเช็ค</th>
                             <th>หมายเหตุ <br>Remark</th>
                             <th></th>
@@ -109,17 +109,13 @@
                         <?php 
                         for($i=0; $i < count($checks); $i++){
                         ?>
-                        <tr class="odd gradeX" >
+                        <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
-                            <td><?php echo $checks[$i]['check_date_recieve']; ?></td>
+                            <td><?php echo $checks[$i]['check_pay_date']; ?></td>
                             <td>
-                                <?php echo $checks[$i]['check_code']; ?>
-                                <?PHP
-                                if($checks[$i]['check_date_deposit'] == ""){
-                                ?>
-                                    <font color="red">ยังไม่ฝากเช็คเข้าบัญชี</font>
+                                <?php echo $checks[$i]['check_pay_code']; ?>
                                 <?PHP 
-                                } else if($checks[$i]['check_status'] == '0'){
+                                if($checks[$i]['check_pay_status'] == '0'){
                                 ?>
                                     <font color="red">ยังไม่ผ่านเช็ค</font>
                                 <?PHP 
@@ -130,21 +126,21 @@
                                 }
                                 ?>    
                             </td>
-                            <td><?php echo $checks[$i]['check_total']; ?></td>
-                            <td><?php if($checks[$i]['customer_name_th'] != ""){echo $checks[$i]['customer_name_th'];}else{echo $checks[$i]['customer_name_en'];} ?></td>
-                            <td><?php echo $checks[$i]['check_date_write']; ?></td>
-                            <td><?php echo $checks[$i]['check_remark']; ?></td>
+                            <td><?php echo $checks[$i]['check_pay_total']; ?></td>
+                            <td><td><?php if($checks[$i]['supplier_name_th'] != ""){echo $checks[$i]['supplier_name_th'];}else{echo $checks[$i]['supplier_name_en'];} ?> </td></td>
+                            <td><?php echo $checks[$i]['check_pay_date_write']; ?></td>
+                            <td><?php echo $checks[$i]['check_pay_remark']; ?></td>
 
                             <td>
                               
-                                <a href="?app=bank_check_in&action=detail&id=<?php echo $checks[$i]['check_id'];?>">
+                                <a href="?app=bank_check_pay&action=detail&id=<?php echo $checks[$i]['check_pay_id'];?>">
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                 </a>
 
-                                <a href="?app=bank_check_in&action=update&id=<?php echo $checks[$i]['check_id'];?>">
+                                <a href="?app=bank_check_pay&action=update&id=<?php echo $checks[$i]['check_pay_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
-                                <a href="?app=bank_check_in&action=delete&id=<?php echo $checks[$i]['check_id'];?>" onclick="return confirm('You want to delete Delivery Note Customer : <?php echo $checks[$i]['check_code']; ?>');" style="color:red;">
+                                <a href="?app=bank_check_pay&action=delete&id=<?php echo $checks[$i]['check_pay_id'];?>" onclick="return confirm('You want to delete check : <?php echo $checks[$i]['check_pay_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
 

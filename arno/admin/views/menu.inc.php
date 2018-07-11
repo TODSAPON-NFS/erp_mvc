@@ -505,10 +505,10 @@
                                             <a href="?app=bank_check_in" ><i class="fa  fa-file-o" aria-hidden="true"></i> ทะเบียนเช็ครับ</a>
                                         </li> 
                                         <li>
-                                            <a href="?app=bank_check_out_pass" ><i class="fa  fa-file-o" aria-hidden="true"></i> ผ่านเช็คจ่าย</a>
+                                            <a href="?app=bank_check_pay_pass" ><i class="fa  fa-file-o" aria-hidden="true"></i> ผ่านเช็คจ่าย</a>
                                         </li> 
                                         <li>
-                                            <a href="?app=bank_check_out" ><i class="fa  fa-file-o" aria-hidden="true"></i> ทะเบียนเช็คจ่าย</a>
+                                            <a href="?app=bank_check_pay" ><i class="fa  fa-file-o" aria-hidden="true"></i> ทะเบียนเช็คจ่าย</a>
                                         </li> 
                                         <li>
                                             <a href="?app=bank_account" ><i class="fa  fa-file-o" aria-hidden="true"></i> รายละเอียดบัญชีเงินฝาก</a>

@@ -8,7 +8,7 @@ require_once('../models/BankAccountModel.php');
 require_once('../models/CustomerModel.php');
 date_default_timezone_set('asia/bangkok');
 
-$path = "modules/bank_check_in/views/";
+$path = "modules/summit_check_pre_receipt/views/";
 $bank_model = new BankModel;
 $customer_model = new CustomerModel;
 $account_model = new BankAccountModel;
@@ -22,7 +22,7 @@ if(!isset($_GET['action'])){
     $keyword = $_GET['keyword'];
 
     $customers=$customer_model->getCustomerBy();
-    $checks = $check_model->getCheckBy('0',$date_start,$date_end,$customer_id,$keyword);
+    $checks = $check_model->getCheckBy('1',$date_start,$date_end,$customer_id,$keyword);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -53,9 +53,9 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'delete'){
 
-    $checks = $check_model->deleteCheckById($check_id);
+    $checks = $check_model->deleteCheckPayById($check_id);
 ?>
-    <script>window.location="index.php?app=bank_check_in"</script>
+    <script>window.location="index.php?app=summit_check_pre_receipt"</script>
 <?php
 
 }else if ($_GET['action'] == 'add'){
@@ -70,14 +70,14 @@ if(!isset($_GET['action'])){
         $data['customer_id'] = $_POST['customer_id'];
         $data['check_remark'] = $_POST['check_remark'];
         $data['check_total'] = $_POST['check_total'];
-        $data['check_type'] = '0';
+        $data['check_type'] = '1';
         $data['addby'] = $user[0][0];
 
        
         $check_id = $check_model->insertCheck($data);
 
     ?>
-        <script>window.location="index.php?app=bank_check_in&action=update&id=<?php echo $check_id;?>"</script>
+        <script>window.location="index.php?app=summit_check_pre_receipt&action=update&id=<?php echo $check_id;?>"</script>
     <?php
     }else{
     ?>
@@ -97,13 +97,13 @@ if(!isset($_GET['action'])){
         $data['customer_id'] = $_POST['customer_id'];
         $data['check_remark'] = $_POST['check_remark'];
         $data['check_total'] = $_POST['check_total'];
-        $data['check_type'] = '0';
+        $data['check_type'] = '1';
         $data['lastupdate'] = $user[0][0];
 
         $output = $check_model->updateCheckByID($check_id,$data);
 
 ?>
-        <script>window.location="index.php?app=bank_check_in"</script>
+        <script>window.location="index.php?app=summit_check_pre_receipt"</script>
 <?php
 
     }else{
@@ -119,7 +119,7 @@ if(!isset($_GET['action'])){
     $keyword = $_GET['keyword'];
 
     $customers=$customer_model->getCustomerBy();
-    $checks = $check_model->getCheckBy('0',$date_start,$date_end,$customer_id,$keyword);
+    $checks = $check_model->getCheckBy('1',$date_start,$date_end,$customer_id,$keyword);
     require_once($path.'view.inc.php');
 
 }

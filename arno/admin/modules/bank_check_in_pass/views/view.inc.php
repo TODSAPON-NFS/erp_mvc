@@ -5,7 +5,29 @@
         var customer_id = $("#customer_id").val();
         var keyword = $("#keyword").val();
 
-        window.location = "index.php?app=bank_check_in&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
+        window.location = "index.php?app=bank_check_in_pass&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
+    }
+
+    function check(id,check_date){
+        var date = $(id).children('input[name="check_date_pass"]').val();
+
+        var str_pass = date.split("-");
+        var str_pay = check_date.split("-");
+
+        var check_date_pass = new Date (str_pass[1]+'-'+str_pass[0]+'-'+str_pass[2]);
+        var check_date = new Date(str_pay[1]+'-'+str_pay[0]+'-'+str_pay[2]);
+        if(date == ""){
+            alert("กรุณากรอกวันที่ผ่านเช็ค");
+            $(id).children('input[name="check_date_pass"]').first().focus();
+            return false;
+        }else if (check_date_pass <  check_date){
+            alert("วันที่ผ่านเช็คต้องมากกว่าหรือเท่ากับ วันที่ฝากเช็ค");
+            $(id).children('input[name="check_date_pass"]').first().focus();
+            return false;
+        }else{
+            return true;
+        }
+        
     }
 </script>
 
@@ -27,11 +49,8 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-md-8">
-                        รายการเช็ครับ / Check List
-                    </div>
-                    <div class="col-md-4">
-                        <a class="btn btn-success " style="float:right;" href="?app=bank_check_in&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                    <div class="col-md-12">
+                        เช็ครับที่ยังไม่ผ่านรายการ
                     </div>
                 </div>
             </div>
@@ -95,13 +114,14 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
-                            <th>ลำดับ <br>No.</th>
+                            <th>ลำดับ</th>
                             <th>วันที่รับเช็ค </th>
                             <th>หมายเลขเช็ค</th>
                             <th>จำนวนเงิน </th>
                             <th>ผู้สั่งจ่าย</th>
                             <th>วันที่ออกเช็ค</th>
-                            <th>หมายเหตุ <br>Remark</th>
+                            <th>วันที่ฝากเช็ค</th>
+                            <th>หมายเหตุ</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -109,17 +129,13 @@
                         <?php 
                         for($i=0; $i < count($checks); $i++){
                         ?>
-                        <tr class="odd gradeX" >
+                        <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
                             <td><?php echo $checks[$i]['check_date_recieve']; ?></td>
                             <td>
                                 <?php echo $checks[$i]['check_code']; ?>
-                                <?PHP
-                                if($checks[$i]['check_date_deposit'] == ""){
-                                ?>
-                                    <font color="red">ยังไม่ฝากเช็คเข้าบัญชี</font>
                                 <?PHP 
-                                } else if($checks[$i]['check_status'] == '0'){
+                                if($checks[$i]['check_status'] == '0'){
                                 ?>
                                     <font color="red">ยังไม่ผ่านเช็ค</font>
                                 <?PHP 
@@ -131,23 +147,16 @@
                                 ?>    
                             </td>
                             <td><?php echo $checks[$i]['check_total']; ?></td>
-                            <td><?php if($checks[$i]['customer_name_th'] != ""){echo $checks[$i]['customer_name_th'];}else{echo $checks[$i]['customer_name_en'];} ?></td>
+                            <td><?php if($checks[$i]['customer_name_th'] != ""){echo $checks[$i]['customer_name_th'];}else{echo $checks[$i]['customer_name_en'];} ?> </td>
                             <td><?php echo $checks[$i]['check_date_write']; ?></td>
+                            <td><?php echo $checks[$i]['check_date_deposit']; ?></td>
                             <td><?php echo $checks[$i]['check_remark']; ?></td>
 
                             <td>
-                              
-                                <a href="?app=bank_check_in&action=detail&id=<?php echo $checks[$i]['check_id'];?>">
-                                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                </a>
-
-                                <a href="?app=bank_check_in&action=update&id=<?php echo $checks[$i]['check_id'];?>">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </a> 
-                                <a href="?app=bank_check_in&action=delete&id=<?php echo $checks[$i]['check_id'];?>" onclick="return confirm('You want to delete Delivery Note Customer : <?php echo $checks[$i]['check_code']; ?>');" style="color:red;">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                </a>
-
+                                <form role="form" method="post" onsubmit="return check(this,'<?PHP echo $checks[$i]['check_date_deposit']; ?>');" action="?app=bank_check_in_pass&action=pass&id=<?php echo $checks[$i]['check_id'];?>" enctype="multipart/form-data">
+                                    <input type="text" name="check_date_pass" class="form-control calendar" style="width:120px;"  readonly />
+                                    <button type="summit" class="btn btn-success" ><i class="fa fa-check" aria-hidden="true"></i> ผ่านเช็ค</button>
+                                </form>
                             </td>
 
                         </tr>

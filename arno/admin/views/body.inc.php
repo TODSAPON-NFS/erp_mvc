@@ -148,6 +148,14 @@
         require_once("modules/bank_account/views/index.inc.php");
     }else if($_GET['app'] == "bank_check_in"){
         require_once("modules/bank_check_in/views/index.inc.php");
+    }else if($_GET['app'] == "bank_check_in_deposit"){
+        require_once("modules/bank_check_in_deposit/views/index.inc.php");
+    }else if($_GET['app'] == "bank_check_in_pass"){
+        require_once("modules/bank_check_in_pass/views/index.inc.php");
+    }else if($_GET['app'] == "bank_check_pay"){
+        require_once("modules/bank_check_pay/views/index.inc.php");
+    }else if($_GET['app'] == "bank_check_pay_pass"){
+        require_once("modules/bank_check_pay_pass/views/index.inc.php");
     }else if($_GET['app'] == "other_expense"){
         require_once("modules/other_expense/views/index.inc.php");
     }else if($_GET['app'] == "credit_purchasing"){

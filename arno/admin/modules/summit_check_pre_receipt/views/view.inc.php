@@ -5,7 +5,7 @@
         var customer_id = $("#customer_id").val();
         var keyword = $("#keyword").val();
 
-        window.location = "index.php?app=bank_check_in&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
+        window.location = "index.php?app=summit_check_pre_receipt&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
     }
 </script>
 
@@ -28,10 +28,10 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-8">
-                        รายการเช็ครับ / Check List
+                        รายการเช็ครับล่วงหน้ายกยอดมา / Check List
                     </div>
                     <div class="col-md-4">
-                        <a class="btn btn-success " style="float:right;" href="?app=bank_check_in&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                        <a class="btn btn-success " style="float:right;" href="?app=summit_check_pre_receipt&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                     </div>
                 </div>
             </div>
@@ -109,7 +109,7 @@
                         <?php 
                         for($i=0; $i < count($checks); $i++){
                         ?>
-                        <tr class="odd gradeX" >
+                        <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
                             <td><?php echo $checks[$i]['check_date_recieve']; ?></td>
                             <td>
@@ -137,14 +137,14 @@
 
                             <td>
                               
-                                <a href="?app=bank_check_in&action=detail&id=<?php echo $checks[$i]['check_id'];?>">
+                                <a href="?app=summit_check_pre_receipt&action=detail&id=<?php echo $checks[$i]['check_id'];?>">
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                 </a>
 
-                                <a href="?app=bank_check_in&action=update&id=<?php echo $checks[$i]['check_id'];?>">
+                                <a href="?app=summit_check_pre_receipt&action=update&id=<?php echo $checks[$i]['check_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
-                                <a href="?app=bank_check_in&action=delete&id=<?php echo $checks[$i]['check_id'];?>" onclick="return confirm('You want to delete Delivery Note Customer : <?php echo $checks[$i]['check_code']; ?>');" style="color:red;">
+                                <a href="?app=summit_check_pre_receipt&action=delete&id=<?php echo $checks[$i]['check_id'];?>" onclick="return confirm('You want to delete Delivery Note Customer : <?php echo $checks[$i]['check_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
 

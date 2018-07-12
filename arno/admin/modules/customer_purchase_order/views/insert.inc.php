@@ -1,4 +1,5 @@
 <script>
+
     var product_data = [
     <?php for($i = 0 ; $i < count($products) ; $i++ ){?>
         {

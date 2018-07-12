@@ -195,6 +195,19 @@ function get_product_row(product_name,qty,price){
     });
 }
 
+
+function checkAll(id)
+    {
+        var checkbox = document.getElementsByName("check_all");
+
+        if (checkbox[0].checked == true ){
+            $('input[name="check_all"]').prop('checked', true);
+            $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', true);
+        }else{
+            $('input[name="check_all"]').prop('checked', false);
+            $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', false);
+        }
+    }
 </script>
 
 <div class="row">
@@ -379,40 +392,50 @@ function get_product_row(product_name,qty,price){
                         </div>
                     </div>
                 </div>
-
-                <table width="100%" class="table table-striped table-bordered table-hover" >
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>สินค้า</th>
-                            <th>จำนวน</th>
-                            <th>ราคาต่อชิ้น</th>
-                            <th>ราคารวม</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php  
-                        for($i=$page * $page_size ; $i < count($summit_products) && $i < $page * $page_size + $page_size; $i++){
-                        ?>
-                        <tr class="odd gradeX">
-                            <td><?php echo $i+1; ?></td>
-                            <td>[<?php echo $summit_products[$i]['product_code_first'] . $summit_products[$i]['product_code']; ?>] <?php echo $summit_products[$i]['product_name']; ?> [<?php echo $summit_products[$i]['product_description']; ?>] </td>
-                            <td align="right"><?php echo number_format($summit_products[$i]['summit_product_qty'],0); ?></td>
-                            <td align="right"><?php echo number_format($summit_products[$i]['summit_product_cost'],2); ?></td>
-                            <td align="right"><?php echo number_format($summit_products[$i]['summit_product_total'],2); ?></td>
-                            <td>
-                                <a href="?app=summit_product&action=delete-stock&stock_group_id=<?php echo $stock_group_id;?>&summit_product_id=<?php echo $summit_products[$i]['summit_product_id'];?>" onclick="return confirm('You want to delete supplier : <?php echo $summit_products[$i]['supplier_name_en']; ?> (<?php echo $summit_products[$i]['supplier_name_th']; ?>)');" style="color:red;">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <?
-                        }
-                        ?>
-                    </tbody>
-                </table>
-
+                <form role="form" method="post" onsubmit="return confirm('คุณต้องการลบข้อมูลที่เลือกใช่หรือไม่');"   action="?app=summit_product&action=delete-all-stock&stock_group_id=<?php echo $stock_group_id;?>" >
+                    <table width="100%" class="table table-striped table-bordered table-hover" >
+                        <thead>
+                            <tr>
+                                <th> </th>
+                                <th>No.</th>
+                                <th>สินค้า</th>
+                                <th>จำนวน</th>
+                                <th>ราคาต่อชิ้น</th>
+                                <th>ราคารวม</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php  
+                            for($i=$page * $page_size ; $i < count($summit_products) && $i < $page * $page_size + $page_size; $i++){
+                            ?>
+                            <tr class="odd gradeX">
+                                <td><input type="checkbox" name="summit_product_id[]" value="<?php echo $summit_products[$i]['summit_product_id'];?>" /></td>
+                                <td><?php echo $i+1; ?></td>
+                                <td>[<?php echo $summit_products[$i]['product_code_first'] . $summit_products[$i]['product_code']; ?>] <?php echo $summit_products[$i]['product_name']; ?> [<?php echo $summit_products[$i]['product_description']; ?>] </td>
+                                <td align="right"><?php echo number_format($summit_products[$i]['summit_product_qty'],0); ?></td>
+                                <td align="right"><?php echo number_format($summit_products[$i]['summit_product_cost'],2); ?></td>
+                                <td align="right"><?php echo number_format($summit_products[$i]['summit_product_total'],2); ?></td>
+                                <td>
+                                    <a href="?app=summit_product&action=delete-stock&stock_group_id=<?php echo $stock_group_id;?>&summit_product_id=<?php echo $summit_products[$i]['summit_product_id'];?>" onclick="return confirm('You want to delete supplier : <?php echo $summit_products[$i]['supplier_name_en']; ?> (<?php echo $summit_products[$i]['supplier_name_th']; ?>)');" style="color:red;">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <?
+                            }
+                            ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <input type="checkbox" value="all" name="check_all" onclick="checkAll(this)" />
+                                    <button type="summit" class="btn btn-danger">ลบข้อมูล</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </form>
                 <div class="row" style="margin:0px;">
                     <div class="col-sm-6">
                         <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format(count($summit_products),0);?> entries</div>

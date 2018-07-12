@@ -35,6 +35,7 @@ class UserModel extends BaseModel{
         AND user_mobile LIKE ('%$mobile%') 
         ORDER BY CONCAT(tb_user.user_name,' ',tb_user.user_lastname) 
         ";
+
         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

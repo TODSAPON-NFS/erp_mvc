@@ -46,7 +46,7 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $customer_orders[$i]['customer_name_en']; ?> (<?php echo $customer_orders[$i]['customer_name_th']; ?>)</td>
+                                    <td><?php if($customer_orders[$i]['customer_name_en'] != ""){ echo $customer_orders[$i]['customer_name_en']; } else { echo $customer_orders[$i]['customer_name_th'];} ?></td>
                                     <td>
                                         <a href="?app=invoice_customer&action=insert&customer_id=<?php echo $customer_orders[$i]['customer_id'];?>">
                                             <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -77,7 +77,7 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?> (<?php echo $customer_purchase_orders[$i]['customer_name_th']; ?>)</td>
+                                    <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?> (<?php if($customer_purchase_orders[$i]['customer_name_en'] != ""){ echo $customer_purchase_orders[$i]['customer_name_en']; } else { echo $customer_purchase_orders[$i]['customer_name_th'];} ?>)</td>
                                     <td>
                                         <a href="?app=invoice_customer&action=insert&customer_id=<?php echo $customer_purchase_orders[$i]['customer_id'];?>&customer_purchase_order_id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>">
                                             <i class="fa fa-plus-square" aria-hidden="true"></i>

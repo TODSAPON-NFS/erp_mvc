@@ -107,6 +107,16 @@ if(!isset($_GET['action']) || $_GET['action'] == 'view-product'){
     <script>window.location = "?app=summit_product&action=view-stock&stock_group_id=<?PHP echo $stock_group_id?>";</script>
     <?PHP 
 
+}else if($_GET['action'] == 'delete-all-stock'){ 
+    $summit_product_id = $_POST['summit_product_id'];
+
+    for($i=0; $i < count($summit_product_id) ; $i++){
+        $model_summit_product->deleteSummitProductByID($summit_product_id[$i]);
+    }
+    ?>
+    <script>window.location = "?app=summit_product&action=view-stock&stock_group_id=<?PHP echo $stock_group_id?>";</script>
+    <?PHP 
+
 }else{
 
 

@@ -2,6 +2,7 @@
 session_start();
 $user = $_SESSION['user'];
 
+require_once('../functions/NumbertoTextFunction.func.php');
 require_once('../models/InvoiceCustomerModel.php');
 require_once('../models/InvoiceCustomerListModel.php');
 require_once('../models/CustomerPurchaseOrderListModel.php');
@@ -13,6 +14,7 @@ require_once('../models/CustomerModel.php');
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/invoice_customer/views/";
+$number_2_text = new Number2Text;
 $user_model = new UserModel;
 $customer_model = new CustomerModel;
 $notification_model = new NotificationModel;

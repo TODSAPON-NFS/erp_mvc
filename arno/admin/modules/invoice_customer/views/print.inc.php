@@ -127,7 +127,7 @@
             
         <tr class="odd gradeX">
             <td colspan="2" rowspan="3">
-                
+            (<?PHP echo $number_2_text->convert(number_format(($vat/100) * $total + $total,2));?>)
             </td>
             <td colspan="2" align="left" style="vertical-align: middle;">
                 

@@ -69,6 +69,25 @@ class CustomerModel extends BaseModel{
 
     }
 
+
+
+    function getCustomerBySaleID($sale_id){
+        $sql = " SELECT *    
+        FROM tb_customer as tb1
+        WHERE sale_id = '$sale_id'  
+        ORDER BY customer_code  
+        ";
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+
+
     function getCustomerCodeIndexByChar($char){
         $sql = " SELECT IFNULL(MAX(CAST(RIGHT(customer_code,3) AS SIGNED )),0) as customer_code  
         FROM tb_customer 
@@ -192,6 +211,10 @@ class CustomerModel extends BaseModel{
 
 
     }
+
+
+
+
 
 
     function updateCustomerByID($id,$data = []){

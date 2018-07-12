@@ -25,22 +25,23 @@ class ProductModel extends BaseModel{
             $product_category = "AND tb_product.product_category_id = '$product_category_id' ";
         }
         
+        if($keyword != ""){
+            $sts_keyword = " AND (product_name LIKE ('%$keyword%') OR product_code LIKE ('%$keyword%') ) ";
+        }
 
         
         $sql = " SELECT product_id, CONCAT(product_code_first,product_code) as product_code, product_drawing, product_name, product_description , product_type, product_status   
         FROM tb_product 
         LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
         LEFT JOIN tb_product_type ON tb_product.product_type = tb_product_type.product_type_id 
-        WHERE (product_name LIKE ('%$keyword%') OR product_code LIKE ('%$keyword%') ) 
+        WHERE 1 
+        $sts_keyword
         $product_type 
         $product_category 
         $supplier 
         ORDER BY product_name  
-        ";
-
-
-
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        "; 
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) { 
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -48,7 +49,23 @@ class ProductModel extends BaseModel{
             $result->close();
             return $data;
         }
+    }
 
+    function getProduct(){
+        
+        
+        $sql = " SELECT product_id, CONCAT(product_code_first,product_code) as product_code, product_drawing, product_name, product_description   
+        FROM tb_product 
+        ORDER BY product_name  
+        "; 
+        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) { 
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
     }
 
     function getProductByID($id){

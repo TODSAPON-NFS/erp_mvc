@@ -2,17 +2,19 @@
 session_start();
 $user = $_SESSION['user'];
 
+require_once('../models/ProductModel.php');
 require_once('../models/CustomerPurchaseOrderModel.php');
 require_once('../models/CustomerPurchaseOrderListModel.php');
 require_once('../models/CustomerPurchaseOrderListDetailModel.php');
 require_once('../models/QuotationModel.php');
 require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
-require_once('../models/ProductModel.php');
+
 require_once('../models/CustomerModel.php');
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/customer_purchase_order/views/";
+$product_model = new ProductModel;
 $user_model = new UserModel;
 $customer_model = new CustomerModel;
 $quotation_model = new QuotationModel;
@@ -20,7 +22,7 @@ $notification_model = new NotificationModel;
 $customer_purchase_order_model = new CustomerPurchaseOrderModel;
 $customer_purchase_order_list_model = new CustomerPurchaseOrderListModel;
 $customer_purchase_order_list_detail_model = new CustomerPurchaseOrderListDetailModel;
-$product_model = new ProductModel;
+
 $first_char = "PO";
 $customer_purchase_order_id = $_GET['id'];
 $quotation_id = $_GET['quotation_id'];
@@ -46,11 +48,12 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $customer_orders = $customer_purchase_order_model->getCustomerOrder();
     
 
+
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     if($quotation_id > 0){
-        $products=$product_model->getProductBy('','','','');
+        $products=$product_model->getProduct( );
         $quotation = $quotation_model->getQuotationByID($quotation_id);
         $customer = $customer_model->getCustomerByID($quotation["customer_id"]);
         $customer_purchase_order = $customer_purchase_order_model->generateCustomerPurchaseOrderByID($quotation_id);
@@ -62,14 +65,17 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $customer_purchase_order_lists = $customer_purchase_order_model->generateCustomerPurchaseOrderListByCustomerId($customer_id);
     }
 
-    $products=$product_model->getProductBy('','','','');
-    $first_date = date("d")."-".date("m")."-".date("Y");
+    $products=$product_model->getProduct( );
     $customers=$customer_model->getCustomerBy();
+    $first_date = date("d")."-".date("m")."-".date("Y");
+   
     $users=$user_model->getUserBy();
+
+    
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
-    $products=$product_model->getProductBy('','','','');
+    $products=$product_model->getProduct( );
     $customers=$customer_model->getCustomerBy();
     
     $users=$user_model->getUserBy();
@@ -82,7 +88,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     if($notification_id != ""){
         $notification_model->setNotificationSeenByID($notification_id);
     }
-    $products=$product_model->getProductBy('','','','');
+    $products=$product_model->getProduct( );
     $customers=$customer_model->getCustomerBy();
     
     $users=$user_model->getUserBy();

@@ -62,7 +62,7 @@
                     '<input type="hidden" name="journal_cash_payment_list_id[]" value="0" />'+     
                     '<select class="form-control select" type="text" name="account_id[]" data-live-search="true" ></select>'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="journal_cash_payment_list_name[]" /></td>'+
+                '<td><input type="text" class="form-control" name="journal_cash_payment_list_name[]" value="' + document.getElementById("journal_cash_payment_name").value + '" /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_debit[]"  /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_credit[]" /></td>'+
                 '<td>'+
@@ -78,9 +78,11 @@
         $.each(account_data, function (index, value) {
             str += "<option value='" + value['account_id'] + "'>"+value['account_code']+" - " + value['account_name_th'] + "</option>";
         });
+
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
+        
     }
 
 </script>

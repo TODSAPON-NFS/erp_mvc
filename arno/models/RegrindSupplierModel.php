@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class RegrindSupplierModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getRegrindSupplierBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = ""){
@@ -51,7 +53,7 @@ class RegrindSupplierModel extends BaseModel{
         ORDER BY STR_TO_DATE(regrind_supplier_date,'%d-%m-%Y %H:%i:%s') , regrind_supplier_code DESC 
          ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -70,7 +72,7 @@ class RegrindSupplierModel extends BaseModel{
         WHERE regrind_supplier_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -90,7 +92,7 @@ class RegrindSupplierModel extends BaseModel{
         WHERE regrind_supplier_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -108,7 +110,7 @@ class RegrindSupplierModel extends BaseModel{
         WHERE regrind_supplier_code LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['regrind_supplier_lastcode'];
@@ -131,7 +133,7 @@ class RegrindSupplierModel extends BaseModel{
         WHERE regrind_supplier_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -150,7 +152,7 @@ class RegrindSupplierModel extends BaseModel{
 
         //echo $sql;
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -193,8 +195,8 @@ class RegrindSupplierModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -206,9 +208,9 @@ class RegrindSupplierModel extends BaseModel{
     function deleteRegrindSupplierByID($id){
 
         $sql = " DELETE FROM tb_regrind_supplier WHERE regrind_supplier_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
         $sql = " DELETE FROM tb_regrind_supplier_list WHERE regrind_supplier_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 

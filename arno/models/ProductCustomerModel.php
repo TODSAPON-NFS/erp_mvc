@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class ProductCustomerModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getProductCustomerBy($product_id,$customer_name_th = '',$customer_name_en = ''){
@@ -16,7 +18,7 @@ class ProductCustomerModel extends BaseModel{
         ) ORDER BY customer_name_en  
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -33,7 +35,7 @@ class ProductCustomerModel extends BaseModel{
         WHERE product_customer_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -57,7 +59,7 @@ class ProductCustomerModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -91,7 +93,7 @@ class ProductCustomerModel extends BaseModel{
         ";
 
         //echo $sql;
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -102,7 +104,7 @@ class ProductCustomerModel extends BaseModel{
 
     function deleteProductCustomerByID($id){
         $sql = " DELETE FROM tb_product_customer WHERE product_customer_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

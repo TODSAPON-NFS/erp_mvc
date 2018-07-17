@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class RequestStandardListModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getRequestStandardListBy($request_standard_id){
@@ -22,7 +24,7 @@ class RequestStandardListModel extends BaseModel{
         ORDER BY request_standard_list_id 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -62,8 +64,8 @@ class RequestStandardListModel extends BaseModel{
         ); 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -83,7 +85,7 @@ class RequestStandardListModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -98,7 +100,7 @@ class RequestStandardListModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -113,7 +115,7 @@ class RequestStandardListModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -123,13 +125,13 @@ class RequestStandardListModel extends BaseModel{
 
     function deleteRequestStandardListByID($id){
         $sql = "DELETE FROM tb_request_standard_list WHERE request_standard_list_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
     function deleteRequestStandardListByRequestStandardID($id){
         $sql = "DELETE FROM tb_request_standard_list WHERE request_standard_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -149,7 +151,7 @@ class RequestStandardListModel extends BaseModel{
         }
 
         $sql = "DELETE FROM tb_request_standard_list WHERE request_standard_id = '$id' AND request_standard_list_id NOT IN ($str) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

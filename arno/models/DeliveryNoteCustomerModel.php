@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class DeliveryNoteCustomerModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getDeliveryNoteCustomerBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = ""){
@@ -52,7 +54,7 @@ class DeliveryNoteCustomerModel extends BaseModel{
         $str_user  
         ORDER BY STR_TO_DATE(delivery_note_customer_date,'%d-%m-%Y %H:%i:%s'), delivery_note_customer_code DESC 
          ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -75,7 +77,7 @@ class DeliveryNoteCustomerModel extends BaseModel{
         WHERE delivery_note_customer_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -95,7 +97,7 @@ class DeliveryNoteCustomerModel extends BaseModel{
         WHERE delivery_note_customer_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -113,7 +115,7 @@ class DeliveryNoteCustomerModel extends BaseModel{
         WHERE delivery_note_customer_code LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['delivery_note_customer_lastcode'];
@@ -137,7 +139,7 @@ class DeliveryNoteCustomerModel extends BaseModel{
         WHERE delivery_note_customer_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -180,8 +182,8 @@ class DeliveryNoteCustomerModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -192,9 +194,9 @@ class DeliveryNoteCustomerModel extends BaseModel{
 
     function deleteDeliveryNoteCustomerByID($id){
         $sql = " DELETE FROM tb_delivery_note_customer WHERE delivery_note_customer_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
         $sql = " DELETE FROM tb_delivery_note_customer_list WHERE delivery_note_customer_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
     }
 
 

@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class ProductUnitModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getProductUnitBy($product_unit_name = ''){
@@ -13,7 +15,7 @@ class ProductUnitModel extends BaseModel{
         WHERE product_unit_name LIKE ('%$product_unit_name%') 
         ORDER BY product_unit_name  
         ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -30,7 +32,7 @@ class ProductUnitModel extends BaseModel{
         WHERE product_unit_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -49,7 +51,7 @@ class ProductUnitModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -69,7 +71,7 @@ class ProductUnitModel extends BaseModel{
         ";
 
         //echo $sql;
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -80,7 +82,7 @@ class ProductUnitModel extends BaseModel{
 
     function deleteProductUnitByID($id){
         $sql = " DELETE FROM tb_product_unit WHERE product_unit_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

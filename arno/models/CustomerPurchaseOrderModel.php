@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class CustomerPurchaseOrderModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getCustomerPurchaseOrderBy($date_start = "",$date_end = "",$customer_id = "" , $status = "",$keyword = "",$user_id = ""){
@@ -97,7 +99,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         $str_status 
         ORDER BY STR_TO_DATE(customer_purchase_order_date,'%Y-%m-%d %H:%i:%s'),customer_purchase_order_code DESC 
          ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -119,7 +121,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         WHERE customer_purchase_order_id = '$id' 
         "; 
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -141,7 +143,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         WHERE customer_purchase_order_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -168,7 +170,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         ";
 
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -220,7 +222,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
 
         //echo $sql_request."<br><br>";
 
-        if ($result = mysqli_query($this->db,$sql_request, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql_request, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -242,7 +244,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         WHERE quotation_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -271,7 +273,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         ORDER BY quotation_list_id 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -303,7 +305,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         WHERE customer_purchase_order_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -349,8 +351,8 @@ class CustomerPurchaseOrderModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -360,13 +362,13 @@ class CustomerPurchaseOrderModel extends BaseModel{
 
     function deleteCustomerPurchaseOrderByID($id){
         $sql = " DELETE FROM tb_customer_purchase_order_list_detail WHERE customer_purchase_order_list_id IN (SELECT customer_purchase_order_list_id FROM tb_customer_purchase_order_list WHERE customer_purchase_order_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
         
         $sql = " DELETE FROM tb_customer_purchase_order_list WHERE customer_purchase_order_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_customer_purchase_order WHERE customer_purchase_order_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
         
 
     }

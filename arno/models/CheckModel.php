@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class CheckModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getCheckBy($check_type = "",$date_start = "",$date_end = "",$customer_id = "",$keyword = "",$check_status="",$check_date_deposit = ""){
@@ -55,7 +57,7 @@ class CheckModel extends BaseModel{
         $str_date 
         ORDER BY STR_TO_DATE(check_date_recieve,'%d-%m-%Y %H:%i:%s'), check_code DESC 
          ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -76,7 +78,7 @@ class CheckModel extends BaseModel{
         WHERE check_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -93,7 +95,7 @@ class CheckModel extends BaseModel{
         WHERE check_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -111,7 +113,7 @@ class CheckModel extends BaseModel{
         WHERE check_code LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['check_lastcode'];
@@ -135,7 +137,7 @@ class CheckModel extends BaseModel{
         WHERE check_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -154,7 +156,7 @@ class CheckModel extends BaseModel{
         WHERE check_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -172,7 +174,7 @@ class CheckModel extends BaseModel{
         WHERE check_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -213,8 +215,8 @@ class CheckModel extends BaseModel{
         "',NOW()); 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -225,7 +227,7 @@ class CheckModel extends BaseModel{
 
     function deleteCheckByID($id){
         $sql = " DELETE FROM tb_check WHERE check_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
     }
 
 

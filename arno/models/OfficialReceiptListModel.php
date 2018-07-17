@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class OfficialReceiptListModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getOfficialReceiptListBy($official_receipt_id){
@@ -24,7 +26,7 @@ class OfficialReceiptListModel extends BaseModel{
         ORDER BY official_receipt_list_id 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -61,8 +63,8 @@ class OfficialReceiptListModel extends BaseModel{
         ";
 
        // echo $sql . "<br><br>";
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            $id = mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $id = mysqli_insert_id(static::$db);
             return $id; 
         }else {
             return 0;
@@ -82,7 +84,7 @@ class OfficialReceiptListModel extends BaseModel{
         ";
       //echo $sql . "<br><br>";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -94,14 +96,14 @@ class OfficialReceiptListModel extends BaseModel{
 
     function deleteOfficialReceiptListByID($id){
         $sql = "DELETE FROM tb_official_receipt_list WHERE official_receipt_list_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
     function deleteOfficialReceiptListByOfficialReceiptID($id){
 
         $sql = "DELETE FROM tb_official_receipt_list WHERE official_receipt_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -123,7 +125,7 @@ class OfficialReceiptListModel extends BaseModel{
 
         $sql = "DELETE FROM tb_official_receipt_list WHERE official_receipt_id = '$id' AND official_receipt_list_id NOT IN ($str) ";
      
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         
 

@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class AddressModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
    
@@ -12,7 +14,7 @@ class AddressModel extends BaseModel{
     function getProvinceByID($id = ''){
         $sql = " SELECT * FROM tb_province ORDER BY PROVINCE_NAME";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -29,7 +31,7 @@ class AddressModel extends BaseModel{
             $sql = " SELECT * FROM tb_amphur , tb_province WHERE tb_amphur.PROVINCE_ID = tb_province.PROVINCE_ID AND  PROVINCE_NAME = '$id' ";
         }
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -46,7 +48,7 @@ class AddressModel extends BaseModel{
             $sql = " SELECT * FROM tb_district , tb_amphur WHERE tb_district.AMPHUR_ID = tb_amphur.AMPHUR_ID AND  AMPHUR_NAME = '$id' ";
         }
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -63,7 +65,7 @@ class AddressModel extends BaseModel{
             $sql .= " WHERE AMPHUR_NAME = '$id' ";
         }
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;

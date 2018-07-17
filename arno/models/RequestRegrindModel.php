@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class RequestRegrindModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getRequestRegrindBy($date_start = "",$date_end = "",$keyword = "",$user_id = ""){
@@ -56,7 +58,7 @@ class RequestRegrindModel extends BaseModel{
         $str_user  
         ORDER BY STR_TO_DATE(request_regrind_date,'%d-%m-%Y %H:%i:%s') DESC 
          "; 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -73,7 +75,7 @@ class RequestRegrindModel extends BaseModel{
         WHERE request_regrind_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -94,7 +96,7 @@ class RequestRegrindModel extends BaseModel{
         WHERE request_regrind_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -112,7 +114,7 @@ class RequestRegrindModel extends BaseModel{
         WHERE request_regrind_code LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['request_regrind_lastcode'];
@@ -128,7 +130,7 @@ class RequestRegrindModel extends BaseModel{
         WHERE request_regrind_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -143,7 +145,7 @@ class RequestRegrindModel extends BaseModel{
         WHERE request_regrind_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -166,7 +168,7 @@ class RequestRegrindModel extends BaseModel{
         WHERE request_regrind_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -186,7 +188,7 @@ class RequestRegrindModel extends BaseModel{
         WHERE request_regrind_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -226,8 +228,8 @@ class RequestRegrindModel extends BaseModel{
         "NOW()); 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -237,9 +239,9 @@ class RequestRegrindModel extends BaseModel{
 
     function deleteRequestRegrindByID($id){
         $sql = " DELETE FROM tb_request_regrind WHERE request_regrind_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
         $sql = " DELETE FROM tb_request_regrind_list WHERE request_regrind_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

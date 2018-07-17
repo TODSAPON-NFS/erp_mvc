@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class JournalCashReceiptListModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getJournalCashReceiptListBy($journal_cash_receipt_id){
@@ -21,7 +23,7 @@ class JournalCashReceiptListModel extends BaseModel{
         ORDER BY journal_cash_receipt_list_id 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -56,8 +58,8 @@ class JournalCashReceiptListModel extends BaseModel{
             NOW() 
         ); 
         ";
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -75,7 +77,7 @@ class JournalCashReceiptListModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -85,13 +87,13 @@ class JournalCashReceiptListModel extends BaseModel{
 
     function deleteJournalCashReceiptListByID($id){
         $sql = "DELETE FROM tb_journal_cash_receipt_list WHERE journal_cash_receipt_list_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
     function deleteJournalCashReceiptListByJournalCashReceiptID($id){
         $sql = "DELETE FROM tb_journal_cash_receipt_list WHERE journal_cash_receipt_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -117,7 +119,7 @@ class JournalCashReceiptListModel extends BaseModel{
         }
 
         $sql = "DELETE FROM tb_journal_cash_receipt_list WHERE journal_cash_receipt_id = '$id' AND journal_cash_receipt_list_id NOT IN ($str) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

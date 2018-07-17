@@ -683,7 +683,7 @@
                                         <?php 
                                         for($ii =  0 ; $ii < count($products) ; $ii++){
                                         ?>
-                                        <option <?php if($products[$ii]['product_id'] == $customer_purchase_order_lists[$i]['product_id']){?> selected <?php }?> value="<?php echo $products[$ii]['product_id'] ?>"><?php echo $products[$ii]['product_code'] ?></option>
+                                        <option <?php if($products[$ii]['product_id'] == $customer_purchase_order_lists[$i]['product_id']){?> selected <?php }?> value="<?php echo $products[$ii]['product_id'] ?>"><?php echo $products[$ii]['product_code'] ?> - <?php echo $products[$ii]['product_name'] ?></option>
                                         <?
                                         }
                                         ?>

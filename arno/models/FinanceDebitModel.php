@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class FinanceDebitModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getFinanceDebitBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = ""){
@@ -48,7 +50,7 @@ class FinanceDebitModel extends BaseModel{
         $str_user  
         ORDER BY STR_TO_DATE(finance_debit_date,'%d-%m-%Y %H:%i:%s'),finance_debit_code DESC 
          ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -67,7 +69,7 @@ class FinanceDebitModel extends BaseModel{
         WHERE finance_debit_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -87,7 +89,7 @@ class FinanceDebitModel extends BaseModel{
         WHERE finance_debit_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -105,7 +107,7 @@ class FinanceDebitModel extends BaseModel{
         WHERE finance_debit_code LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['finance_debit_lastcode'];
@@ -127,7 +129,7 @@ class FinanceDebitModel extends BaseModel{
                 ) 
         "; 
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -192,7 +194,7 @@ class FinanceDebitModel extends BaseModel{
         //echo $sql_customer;
 
         $data = [];
-        if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql_customer, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -231,7 +233,7 @@ class FinanceDebitModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -292,8 +294,8 @@ class FinanceDebitModel extends BaseModel{
 
 
         //echo $sql;
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -304,13 +306,13 @@ class FinanceDebitModel extends BaseModel{
     function deleteFinanceDebitByID($id){
 
         $sql = " DELETE FROM tb_finance_debit WHERE finance_debit_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_finance_debit_list WHERE finance_debit_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_finance_debit_pay WHERE finance_debit_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 

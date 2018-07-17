@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class InvoiceCustomerModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getInvoiceCustomerBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = "",$begin = "0"){
@@ -55,7 +57,7 @@ class InvoiceCustomerModel extends BaseModel{
          ";
 
          //echo $sql;
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -77,7 +79,7 @@ class InvoiceCustomerModel extends BaseModel{
         WHERE invoice_customer_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -96,7 +98,7 @@ class InvoiceCustomerModel extends BaseModel{
         WHERE tb_invoice_customer.customer_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -116,7 +118,7 @@ class InvoiceCustomerModel extends BaseModel{
         WHERE invoice_customer_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -134,7 +136,7 @@ class InvoiceCustomerModel extends BaseModel{
         WHERE invoice_customer_code LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['invoice_customer_lastcode'];
@@ -166,7 +168,7 @@ class InvoiceCustomerModel extends BaseModel{
         WHERE invoice_customer_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -194,7 +196,7 @@ class InvoiceCustomerModel extends BaseModel{
                 GROUP BY tb_customer_purchase_order.customer_purchase_order_id
         ";
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -225,7 +227,7 @@ class InvoiceCustomerModel extends BaseModel{
                 ) 
         ";
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -290,7 +292,7 @@ class InvoiceCustomerModel extends BaseModel{
 
         //echo $sql_customer;
         $data = [];
-        if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql_customer, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -345,8 +347,8 @@ class InvoiceCustomerModel extends BaseModel{
 
 
         //echo $sql;
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -363,7 +365,7 @@ class InvoiceCustomerModel extends BaseModel{
                 
         $sql_delete=[];
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
         while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
             $sql_delete [] = "
                 CALL delete_stock_customer('".
@@ -380,14 +382,14 @@ class InvoiceCustomerModel extends BaseModel{
         }
  
          for($i = 0 ; $i < count($sql_delete); $i++){
-             mysqli_query($this->db,$sql_delete[$i], MYSQLI_USE_RESULT);
+             mysqli_query(static::$db,$sql_delete[$i], MYSQLI_USE_RESULT);
          }
 
         $sql = " DELETE FROM tb_invoice_customer WHERE invoice_customer_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_invoice_customer_list WHERE invoice_customer_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 

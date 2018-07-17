@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class RequestTestListModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getRequestTestListBy($request_test_id){
@@ -31,7 +33,7 @@ class RequestTestListModel extends BaseModel{
         ORDER BY tb_request_test_list.request_test_list_id 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -70,8 +72,8 @@ class RequestTestListModel extends BaseModel{
         ";
 
         //echo $sql;
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -88,7 +90,7 @@ class RequestTestListModel extends BaseModel{
             WHERE request_test_list_id = '$id'
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -108,7 +110,7 @@ class RequestTestListModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -124,7 +126,7 @@ class RequestTestListModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -135,7 +137,7 @@ class RequestTestListModel extends BaseModel{
 
     function deleteRequestTestListByID($id){
         $sql = "DELETE FROM tb_request_test_list WHERE request_test_list_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -143,17 +145,17 @@ class RequestTestListModel extends BaseModel{
     function deleteRequestTestListByRequestTestID($id){
 
         $sql = " UPDATE tb_request_standard_list SET request_test_list_id = '0' WHERE request_test_list_id (SELECT request_test_list_id FROM tb_request_test_list WHERE request_test_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " UPDATE tb_request_special_list SET request_test_list_id = '0' WHERE request_test_list_id (SELECT request_test_list_id FROM tb_request_test_list WHERE request_test_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " UPDATE tb_request_regrind_list SET request_test_list_id = '0' WHERE request_test_list_id (SELECT request_test_list_id FROM tb_request_test_list WHERE request_test_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
 
         $sql = "DELETE FROM tb_request_test_list WHERE request_test_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         
 
@@ -175,16 +177,16 @@ class RequestTestListModel extends BaseModel{
         }
 
         $sql = "UPDATE  tb_request_standard_list SET request_test_list_id = '0'  WHERE request_test_list_id IN (SELECT request_test_list_id FROM tb_request_test_list WHERE request_test_id = '$id' AND request_test_list_id NOT IN ($str)) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = "UPDATE  tb_request_special_list SET request_test_list_id = '0'  WHERE request_test_list_id IN (SELECT request_test_list_id FROM tb_request_test_list WHERE request_test_id = '$id' AND request_test_list_id NOT IN ($str)) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT); 
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT); 
 
         $sql = "UPDATE  tb_request_regrind_list SET request_test_list_id = '0'  WHERE request_test_list_id IN (SELECT request_test_list_id FROM tb_request_test_list WHERE request_test_id = '$id' AND request_test_list_id NOT IN ($str)) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT); 
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT); 
 
         $sql = "DELETE FROM tb_request_test_list WHERE request_test_id = '$id' AND request_test_list_id NOT IN ($str) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
 
     }

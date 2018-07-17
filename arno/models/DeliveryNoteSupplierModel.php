@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class DeliveryNoteSupplierModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getDeliveryNoteSupplierBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = ""){
@@ -52,7 +54,7 @@ class DeliveryNoteSupplierModel extends BaseModel{
         $str_user  
         ORDER BY STR_TO_DATE(delivery_note_supplier_date,'%d-%m-%Y %H:%i:%s') DESC 
          ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -71,7 +73,7 @@ class DeliveryNoteSupplierModel extends BaseModel{
         WHERE delivery_note_supplier_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -91,7 +93,7 @@ class DeliveryNoteSupplierModel extends BaseModel{
         WHERE delivery_note_supplier_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -109,7 +111,7 @@ class DeliveryNoteSupplierModel extends BaseModel{
         WHERE delivery_note_supplier_code LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['delivery_note_supplier_lastcode'];
@@ -135,7 +137,7 @@ class DeliveryNoteSupplierModel extends BaseModel{
         ";
 
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -187,7 +189,7 @@ class DeliveryNoteSupplierModel extends BaseModel{
 
         //echo $sql_request."<br><br>";
 
-        if ($result = mysqli_query($this->db,$sql_request, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql_request, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -217,7 +219,7 @@ class DeliveryNoteSupplierModel extends BaseModel{
         WHERE delivery_note_supplier_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -260,8 +262,8 @@ class DeliveryNoteSupplierModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -273,9 +275,9 @@ class DeliveryNoteSupplierModel extends BaseModel{
     function deleteDeliveryNoteSupplierByID($id){
 
         $sql = " DELETE FROM tb_delivery_note_supplier WHERE delivery_note_supplier_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
         $sql = " DELETE FROM tb_delivery_note_supplier_list WHERE delivery_note_supplier_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 

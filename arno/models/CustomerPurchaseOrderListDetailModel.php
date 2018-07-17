@@ -4,7 +4,10 @@ require_once("BaseModel.php");
 class CustomerPurchaseOrderListDetailModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+ 
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getCustomerPurchaseOrderListDetailBy($customer_purchase_order_list_id = ""){
@@ -31,7 +34,7 @@ class CustomerPurchaseOrderListDetailModel extends BaseModel{
                     LEFT JOIN tb_stock_type ON tb_1.stock_type_id = tb_stock_type.stock_type_id 
                     WHERE $str ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -44,7 +47,7 @@ class CustomerPurchaseOrderListDetailModel extends BaseModel{
 
     function getCustomerPurchaseOrderListDetailByID($customer_purchase_order_list_detail_id){
         $sql = "  SELECT * FROM tb_customer_purchase_order_list_detail WHERE customer_purchase_order_list_detail_id = $customer_purchase_order_list_detail_id ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $data;
@@ -64,7 +67,9 @@ class CustomerPurchaseOrderListDetailModel extends BaseModel{
         qty = '".$data['qty']."' 
         WHERE customer_purchase_order_list_detail_id = $id 
         ";
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+
+        //echo $sql."<br><br>";
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -86,14 +91,17 @@ class CustomerPurchaseOrderListDetailModel extends BaseModel{
             '".$data['qty']."' 
         ); 
         ";
+        
+        //echo $sql."<br><br>";
 
+        $result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-           return mysqli_insert_id($this->db);
+        echo '<br>Result : '.$result;
+        if ($result) {
+           return mysqli_insert_id(static::$db);
         }else {
             return 0;
-        }
-
+        } 
     }
 
     function updatePurchaseOrderId($customer_purchase_order_list_detail_id,$purchase_order_list_id){
@@ -103,7 +111,7 @@ class CustomerPurchaseOrderListDetailModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -113,7 +121,7 @@ class CustomerPurchaseOrderListDetailModel extends BaseModel{
 
     function deleteCustomerPurchaseOrderListDetailByID($id){
         $sql = " DELETE FROM tb_customer_purchase_order_list_detail WHERE customer_purchase_order_list_detail_id = '$id' ";
-        if(mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)){
+        if(mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)){
             return true;
         }else{
             return false;
@@ -143,7 +151,7 @@ class CustomerPurchaseOrderListDetailModel extends BaseModel{
 
             
         $sql = "DELETE FROM tb_customer_purchase_order_list_detail WHERE customer_purchase_order_list_id = '$id' AND customer_purchase_order_list_detail_id NOT IN ($str) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 

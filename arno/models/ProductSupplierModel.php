@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class ProductSupplierModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getProductSupplierBy($product_id, $supplier_name_th = '', $supplier_name_en = '',$product_supplier_status = '' ){
@@ -19,7 +21,7 @@ class ProductSupplierModel extends BaseModel{
         OR supplier_name_th LIKE ('%$supplier_name_th%')
         ) $str ORDER BY supplier_name_en  
         ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -36,7 +38,7 @@ class ProductSupplierModel extends BaseModel{
         WHERE supplier_id = '$supplier_id' AND product_supplier_status = 'Active' 
         ORDER BY product_name  
         ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -53,7 +55,7 @@ class ProductSupplierModel extends BaseModel{
         WHERE product_supplier_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -76,7 +78,7 @@ class ProductSupplierModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -109,7 +111,7 @@ class ProductSupplierModel extends BaseModel{
         ); 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -120,7 +122,7 @@ class ProductSupplierModel extends BaseModel{
 
     function deleteProductSupplierByID($id){
         $sql = " DELETE FROM tb_product_supplier WHERE product_supplier_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class SupplierAccountModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getSupplierAccountBy($supplier_id, $supplier_account_no = '', $supplier_account_bank = '', $supplier_account_branch = ''){
@@ -17,7 +19,7 @@ class SupplierAccountModel extends BaseModel{
         )
         ORDER BY supplier_account_bank , supplier_account_no
         ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -34,7 +36,7 @@ class SupplierAccountModel extends BaseModel{
         WHERE supplier_account_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -59,7 +61,7 @@ class SupplierAccountModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -91,7 +93,7 @@ class SupplierAccountModel extends BaseModel{
         ";
 
         //echo $sql;
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -102,7 +104,7 @@ class SupplierAccountModel extends BaseModel{
 
     function deleteSupplierAccountByID($id){
         $sql = "DELETE FROM tb_supplier_account WHERE supplier_account_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
     }
     
 }

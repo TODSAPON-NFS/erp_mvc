@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class FinanceCreditModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getFinanceCreditBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = ""){
@@ -48,7 +50,7 @@ class FinanceCreditModel extends BaseModel{
         $str_user  
         ORDER BY STR_TO_DATE(finance_credit_date,'%d-%m-%Y %H:%i:%s'),finance_credit_code DESC 
          ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -67,7 +69,7 @@ class FinanceCreditModel extends BaseModel{
         WHERE finance_credit_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -87,7 +89,7 @@ class FinanceCreditModel extends BaseModel{
         WHERE finance_credit_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -105,7 +107,7 @@ class FinanceCreditModel extends BaseModel{
         WHERE finance_credit_code LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['finance_credit_lastcode'];
@@ -127,7 +129,7 @@ class FinanceCreditModel extends BaseModel{
                 ) 
         "; 
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -186,7 +188,7 @@ class FinanceCreditModel extends BaseModel{
         //echo $sql_supplier;
 
         $data = [];
-        if ($result = mysqli_query($this->db,$sql_supplier, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql_supplier, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -225,7 +227,7 @@ class FinanceCreditModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -286,8 +288,8 @@ class FinanceCreditModel extends BaseModel{
 
 
         //echo $sql;
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -298,13 +300,13 @@ class FinanceCreditModel extends BaseModel{
     function deleteFinanceCreditByID($id){
 
         $sql = " DELETE FROM tb_finance_credit WHERE finance_credit_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_finance_credit_list WHERE finance_credit_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_finance_credit_pay WHERE finance_credit_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 

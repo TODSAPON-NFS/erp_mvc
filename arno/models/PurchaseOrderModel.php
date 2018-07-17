@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class PurchaseOrderModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getPurchaseOrderBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = ""){
@@ -64,7 +66,7 @@ class PurchaseOrderModel extends BaseModel{
          ";
 
     
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -83,7 +85,7 @@ class PurchaseOrderModel extends BaseModel{
         WHERE purchase_order_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -103,7 +105,7 @@ class PurchaseOrderModel extends BaseModel{
         WHERE purchase_order_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -121,7 +123,7 @@ class PurchaseOrderModel extends BaseModel{
         WHERE purchase_order_code LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['purchase_order_lastcode'];
@@ -138,7 +140,7 @@ class PurchaseOrderModel extends BaseModel{
         WHERE purchase_order_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -153,7 +155,7 @@ class PurchaseOrderModel extends BaseModel{
         WHERE purchase_order_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -179,7 +181,7 @@ class PurchaseOrderModel extends BaseModel{
         WHERE purchase_order_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -199,7 +201,7 @@ class PurchaseOrderModel extends BaseModel{
         WHERE purchase_order_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -220,7 +222,7 @@ class PurchaseOrderModel extends BaseModel{
         WHERE purchase_order_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -241,7 +243,7 @@ class PurchaseOrderModel extends BaseModel{
         WHERE purchase_order_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -287,7 +289,7 @@ class PurchaseOrderModel extends BaseModel{
                 GROUP BY supplier_id 
         ";
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -316,7 +318,7 @@ class PurchaseOrderModel extends BaseModel{
                 GROUP BY supplier_id 
         ";
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -341,7 +343,7 @@ class PurchaseOrderModel extends BaseModel{
                 
         ";
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -423,7 +425,7 @@ class PurchaseOrderModel extends BaseModel{
 
        
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -497,7 +499,7 @@ class PurchaseOrderModel extends BaseModel{
                ";
 
             //echo $sql_request."<br><br>";
-            if ($result = mysqli_query($this->db,$sql_request, MYSQLI_USE_RESULT)) {
+            if ($result = mysqli_query(static::$db,$sql_request, MYSQLI_USE_RESULT)) {
                 
                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                     $data[] = $row;
@@ -623,7 +625,7 @@ class PurchaseOrderModel extends BaseModel{
 
             
 
-            if ($result = mysqli_query($this->db,$sql_dn, MYSQLI_USE_RESULT)) {
+            if ($result = mysqli_query(static::$db,$sql_dn, MYSQLI_USE_RESULT)) {
                 
                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                     $data[] = $row;
@@ -660,7 +662,7 @@ class PurchaseOrderModel extends BaseModel{
 
             //echo $sql_rspt."<br><br>";
 
-            if ($result = mysqli_query($this->db,$sql_rspt, MYSQLI_USE_RESULT)) {
+            if ($result = mysqli_query(static::$db,$sql_rspt, MYSQLI_USE_RESULT)) {
                 
                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                     $data[] = $row;
@@ -697,7 +699,7 @@ class PurchaseOrderModel extends BaseModel{
 
             //echo $sql_rst."<br><br>";
 
-            if ($result = mysqli_query($this->db,$sql_rst, MYSQLI_USE_RESULT)) {
+            if ($result = mysqli_query(static::$db,$sql_rst, MYSQLI_USE_RESULT)) {
                 
                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                     $data[] = $row;
@@ -734,7 +736,7 @@ class PurchaseOrderModel extends BaseModel{
 
             //echo $sql_rst."<br><br>";
 
-            if ($result = mysqli_query($this->db,$sql_rst, MYSQLI_USE_RESULT)) {
+            if ($result = mysqli_query(static::$db,$sql_rst, MYSQLI_USE_RESULT)) {
                 
                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                     $data[] = $row;
@@ -824,7 +826,7 @@ class PurchaseOrderModel extends BaseModel{
 
             //echo $sql_request."<br><br>";
 
-            if ($result = mysqli_query($this->db,$sql_request, MYSQLI_USE_RESULT)) {
+            if ($result = mysqli_query(static::$db,$sql_request, MYSQLI_USE_RESULT)) {
                 
                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                     $data[] = $row;
@@ -860,7 +862,7 @@ class PurchaseOrderModel extends BaseModel{
             AND customer_purchase_order_code LIKE ('%$search%')  ";
 
             //echo $sql_customer."<br><br>";
-            if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
+            if ($result = mysqli_query(static::$db,$sql_customer, MYSQLI_USE_RESULT)) {
                 
                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                     $data[] = $row;
@@ -895,7 +897,7 @@ class PurchaseOrderModel extends BaseModel{
 
             //echo $sql_dn."<br><br>";
 
-            if ($result = mysqli_query($this->db,$sql_dn, MYSQLI_USE_RESULT)) {
+            if ($result = mysqli_query(static::$db,$sql_dn, MYSQLI_USE_RESULT)) {
                 
                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                     $data[] = $row;
@@ -949,7 +951,7 @@ class PurchaseOrderModel extends BaseModel{
             AND (product_name LIKE ('%$search%') OR regrind_supplier_receive_code LIKE ('%$search%')) ";
 
 
-            if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
+            if ($result = mysqli_query(static::$db,$sql_customer, MYSQLI_USE_RESULT)) {
                 
                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                     $data[] = $row;
@@ -1011,8 +1013,8 @@ class PurchaseOrderModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -1023,31 +1025,31 @@ class PurchaseOrderModel extends BaseModel{
     function deletePurchaseOrderByID($id){
 
         $sql = " UPDATE tb_purchase_request_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " UPDATE tb_customer_purchase_order_list_detail SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " UPDATE tb_delivery_note_supplier_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " UPDATE tb_regrind_supplier_receive_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " UPDATE tb_request_standard_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " UPDATE tb_request_special_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " UPDATE tb_request_regrind_list SET purchase_order_list_id = '0' WHERE purchase_order_list_id (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_purchase_order WHERE purchase_order_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
         
         $sql = " DELETE FROM tb_purchase_order_list WHERE purchase_order_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

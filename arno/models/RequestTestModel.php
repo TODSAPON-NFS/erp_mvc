@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class RequestTestModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getRequestTestBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = ""){
@@ -55,7 +57,7 @@ class RequestTestModel extends BaseModel{
         ORDER BY STR_TO_DATE(request_test_date,'%d-%m-%Y %H:%i:%s'),request_test_code DESC 
          ";
     
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -74,7 +76,7 @@ class RequestTestModel extends BaseModel{
         WHERE request_test_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -94,7 +96,7 @@ class RequestTestModel extends BaseModel{
         WHERE request_test_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -114,7 +116,7 @@ class RequestTestModel extends BaseModel{
 
         //echo $sql;
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['request_test_lastcode'];
@@ -131,7 +133,7 @@ class RequestTestModel extends BaseModel{
         WHERE request_test_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -146,7 +148,7 @@ class RequestTestModel extends BaseModel{
         WHERE request_test_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -166,7 +168,7 @@ class RequestTestModel extends BaseModel{
         WHERE request_test_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -188,7 +190,7 @@ class RequestTestModel extends BaseModel{
         WHERE request_test_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -225,7 +227,7 @@ class RequestTestModel extends BaseModel{
         ";
 
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -309,7 +311,7 @@ class RequestTestModel extends BaseModel{
 
         //echo $sql_request."<br><br>";
 
-        if ($result = mysqli_query($this->db,$sql_request, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql_request, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -341,7 +343,7 @@ class RequestTestModel extends BaseModel{
        
         //echo $sql_request."<br><br>";
 
-        if ($result = mysqli_query($this->db,$sql_request, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql_request, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -372,7 +374,7 @@ class RequestTestModel extends BaseModel{
 
         //echo $sql_request."<br><br>";
 
-        if ($result = mysqli_query($this->db,$sql_request, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql_request, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -413,8 +415,8 @@ class RequestTestModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -425,19 +427,19 @@ class RequestTestModel extends BaseModel{
     function deleteRequestTestByID($id){
 
         $sql = " UPDATE tb_request_standard_list SET request_test_list_id = '0' WHERE request_test_list_id (SELECT request_test_list_id FROM tb_request_test_list WHERE request_test_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " UPDATE tb_request_special_list SET request_test_list_id = '0' WHERE request_test_list_id (SELECT request_test_list_id FROM tb_request_test_list WHERE request_test_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " UPDATE tb_request_regrind_list SET request_test_list_id = '0' WHERE request_test_list_id (SELECT request_test_list_id FROM tb_request_test_list WHERE request_test_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_request_test WHERE request_test_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_request_test_list WHERE request_test_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class StockMoveModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getStockMoveBy($date_start  = '', $date_end  = ''){
@@ -25,7 +27,7 @@ class StockMoveModel extends BaseModel{
          ";
 
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -54,7 +56,7 @@ class StockMoveModel extends BaseModel{
         WHERE stock_move_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -83,7 +85,7 @@ class StockMoveModel extends BaseModel{
         WHERE stock_move_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -101,7 +103,7 @@ class StockMoveModel extends BaseModel{
         WHERE stock_move_code LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['stock_move_lastcode'];
@@ -123,7 +125,7 @@ class StockMoveModel extends BaseModel{
         WHERE stock_move_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -160,8 +162,8 @@ class StockMoveModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -178,7 +180,7 @@ class StockMoveModel extends BaseModel{
                 WHERE tb_stock_move_list.stock_move_id = '$id' ";   
                      
          $sql_delete=[];
-         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
              while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                  $sql_delete [] = "
                     CALL delete_stock_move('".
@@ -192,16 +194,16 @@ class StockMoveModel extends BaseModel{
          }
  
          for($i = 0 ; $i < count($sql_delete); $i++){
-             mysqli_query($this->db,$sql_delete[$i], MYSQLI_USE_RESULT);
+             mysqli_query(static::$db,$sql_delete[$i], MYSQLI_USE_RESULT);
              //echo $sql_delete[$i]."<br><br>";
          }
  
 
         $sql = " DELETE FROM tb_stock_move_list WHERE stock_move_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_stock_move WHERE stock_move_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 

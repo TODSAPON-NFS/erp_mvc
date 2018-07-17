@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class FinanceDebitListModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getFinanceDebitListBy($finance_debit_id){
@@ -27,7 +29,7 @@ class FinanceDebitListModel extends BaseModel{
         ";
 
         //echo $sql;
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -70,8 +72,8 @@ class FinanceDebitListModel extends BaseModel{
         ";
 
         //echo $sql . "<br><br>";
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            $id = mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $id = mysqli_insert_id(static::$db);
             return $id; 
         }else {
             return 0;
@@ -95,7 +97,7 @@ class FinanceDebitListModel extends BaseModel{
         ";
       // echo $sql . "<br><br>";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -107,14 +109,14 @@ class FinanceDebitListModel extends BaseModel{
 
     function deleteFinanceDebitListByID($id){
         $sql = "DELETE FROM tb_finance_debit_list WHERE finance_debit_list_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
     function deleteFinanceDebitListByFinanceDebitID($id){
 
         $sql = "DELETE FROM tb_finance_debit_list WHERE finance_debit_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -136,7 +138,7 @@ class FinanceDebitListModel extends BaseModel{
 
         $sql = "DELETE FROM tb_finance_debit_list WHERE finance_debit_id = '$id' AND finance_debit_list_id NOT IN ($str) ";
      
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         
 

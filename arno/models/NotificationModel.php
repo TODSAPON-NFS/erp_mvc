@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class NotificationModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getNotificationBy($user_id,$str =''){
@@ -18,7 +20,7 @@ class NotificationModel extends BaseModel{
         ORDER BY STR_TO_DATE(notification_date,'%Y-%m-%d %H:%i:%s') DESC 
          ";
         
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -41,7 +43,7 @@ class NotificationModel extends BaseModel{
         $str
         ORDER BY STR_TO_DATE(notification_date,'%Y-%m-%d %H:%i:%s') DESC 
          ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -59,7 +61,7 @@ class NotificationModel extends BaseModel{
         WHERE notification_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -76,7 +78,7 @@ class NotificationModel extends BaseModel{
             WHERE tb_license.$page IN ($status) 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $str=array();
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $str[] ="INSERT INTO tb_notification 
@@ -89,7 +91,7 @@ class NotificationModel extends BaseModel{
             $result->close();
 
             for($i=0; $i < count($str); $i++){
-                mysqli_query($this->db,$str[$i], MYSQLI_USE_RESULT);
+                mysqli_query(static::$db,$str[$i], MYSQLI_USE_RESULT);
             }
         }
 
@@ -103,7 +105,7 @@ class NotificationModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -119,7 +121,7 @@ class NotificationModel extends BaseModel{
         WHERE notification_url LIKE ('%$url%') 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -131,7 +133,7 @@ class NotificationModel extends BaseModel{
 
     function deleteNotificationByID($id){
         $sql = " DELETE FROM tb_notification WHERE notification_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

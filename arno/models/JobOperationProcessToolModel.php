@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class JobOperationProcessToolModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getJobOperationProcessToolBy($job_operation_process_id){
@@ -14,7 +16,7 @@ class JobOperationProcessToolModel extends BaseModel{
         ORDER BY job_operation_process_tool_toollife 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -52,8 +54,8 @@ class JobOperationProcessToolModel extends BaseModel{
         ); 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -72,7 +74,7 @@ class JobOperationProcessToolModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -87,7 +89,7 @@ class JobOperationProcessToolModel extends BaseModel{
         WHERE job_operation_process_tool_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -102,7 +104,7 @@ class JobOperationProcessToolModel extends BaseModel{
         WHERE job_operation_process_tool_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -112,13 +114,13 @@ class JobOperationProcessToolModel extends BaseModel{
 
     function deleteJobOperationProcessToolByID($id){
         $sql = "DELETE FROM tb_job_operation_process_tool WHERE job_operation_process_tool_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
     function deleteJobOperationProcessToolByQuotationID($id){
         $sql = "DELETE FROM tb_job_operation_process_tool WHERE job_operation_process_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -138,7 +140,7 @@ class JobOperationProcessToolModel extends BaseModel{
         }
 
         $sql = "DELETE FROM tb_job_operation_process_tool WHERE job_operation_process_id = '$id' AND job_operation_process_tool_id NOT IN ($str) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

@@ -5,7 +5,9 @@ class StockModel extends BaseModel{
 
     private $table_name = "";
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function setTableName($table_name = "tb_stock"){
@@ -38,18 +40,18 @@ class StockModel extends BaseModel{
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;  
         ";
             
-        if (mysqli_query($this->db,$sql)) {
+        if (mysqli_query(static::$db,$sql)) {
             $sql = "
                 ALTER TABLE `".$this->table_name."` 
                     ADD PRIMARY KEY (`stock_id`), 
                     ADD KEY `invoice_code` (`invoice_customer_list_id`,`invoice_supplier_list_id`); 
             ";
-            if (mysqli_query($this->db,$sql)) {
+            if (mysqli_query(static::$db,$sql)) {
                 $sql = "
                   ALTER TABLE `".$this->table_name."` 
                     MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'รหัสอ้างอิงคลังสินค้า'; 
                 ";
-                if (mysqli_query($this->db,$sql)) {return true;}
+                if (mysqli_query(static::$db,$sql)) {return true;}
                 else {return false;}
             }else {return false;}
         }else {return false;}
@@ -57,7 +59,7 @@ class StockModel extends BaseModel{
 
     function deleteStockTable(){
         $sql = "DROP TABLE IF EXISTS ".$this->table_name." ;";
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             return true;
         }else {
             return false;
@@ -67,7 +69,7 @@ class StockModel extends BaseModel{
 
     function getStockBy(){
         $sql = "  SELECT * FROM $table_name WHERE 1 ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -144,7 +146,7 @@ class StockModel extends BaseModel{
         ORDER BY CONCAT(product_code_first,product_code) 
         "; 
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -169,7 +171,7 @@ class StockModel extends BaseModel{
         ";
 
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -193,7 +195,7 @@ class StockModel extends BaseModel{
         ORDER BY STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -223,7 +225,7 @@ class StockModel extends BaseModel{
         WHERE stock_id = $id ;
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -264,8 +266,8 @@ class StockModel extends BaseModel{
         ); 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-           return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+           return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -275,7 +277,7 @@ class StockModel extends BaseModel{
 
     function deleteStockByID($id){
         $sql = " DELETE FROM $table_name WHERE stock_id = '$id' ;";
-        if(mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)){
+        if(mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)){
             return true;
         }else{
             return false;

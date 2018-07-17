@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class InvoiceSupplierModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getInvoiceSupplierBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = "",$begin = '0'){
@@ -57,7 +59,7 @@ class InvoiceSupplierModel extends BaseModel{
         $str_user  
         ORDER BY STR_TO_DATE(invoice_supplier_date_recieve,'%Y-%m-%d %H:%i:%s'),invoice_supplier_code DESC 
          ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -76,7 +78,7 @@ class InvoiceSupplierModel extends BaseModel{
         WHERE invoice_supplier_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -96,7 +98,7 @@ class InvoiceSupplierModel extends BaseModel{
         WHERE invoice_supplier_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -134,7 +136,7 @@ class InvoiceSupplierModel extends BaseModel{
         WHERE invoice_supplier_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -164,7 +166,7 @@ class InvoiceSupplierModel extends BaseModel{
 
         //echo $sql;
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -195,7 +197,7 @@ class InvoiceSupplierModel extends BaseModel{
                 AND supplier_domestic = '$type' 
         ";
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -214,7 +216,7 @@ class InvoiceSupplierModel extends BaseModel{
         WHERE invoice_supplier_code_gen LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['invoice_supplier_lastcode'];
@@ -280,7 +282,7 @@ class InvoiceSupplierModel extends BaseModel{
         //echo $sql_customer;
 
         $data = [];
-        if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql_customer, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -349,8 +351,8 @@ class InvoiceSupplierModel extends BaseModel{
 
 
         //echo $sql;
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -366,7 +368,7 @@ class InvoiceSupplierModel extends BaseModel{
                      
          $sql_delete=[];
 
-         if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
              while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                  $sql_delete [] = "
                      CALL delete_stock_supplier('".
@@ -385,15 +387,15 @@ class InvoiceSupplierModel extends BaseModel{
          for($i = 0 ; $i < count($sql_delete); $i++){
 
             //echo $sql_delete[$i] . "<br><br>";
-             mysqli_query($this->db,$sql_delete[$i], MYSQLI_USE_RESULT);
+             mysqli_query(static::$db,$sql_delete[$i], MYSQLI_USE_RESULT);
          }
  
 
         $sql = " DELETE FROM tb_invoice_supplier_list WHERE invoice_supplier_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_invoice_supplier WHERE invoice_supplier_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 

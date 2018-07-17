@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class CreditNoteListModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getCreditNoteListBy($credit_note_id){
@@ -25,7 +27,7 @@ class CreditNoteListModel extends BaseModel{
         ORDER BY credit_note_list_id 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -72,8 +74,8 @@ class CreditNoteListModel extends BaseModel{
         ";
 
        // echo $sql . "<br><br>";
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            $id = mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $id = mysqli_insert_id(static::$db);
             if($data['credit_note_type_id'] == '1'){
                 $sql = "
                     CALL insert_stock_credit('".
@@ -86,7 +88,7 @@ class CreditNoteListModel extends BaseModel{
 
                 //echo $sql . "<br><br>";
 
-                mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+                mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
             }
             return $id; 
         }else {
@@ -113,7 +115,7 @@ class CreditNoteListModel extends BaseModel{
         ";
       // echo $sql . "<br><br>";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             if($data['credit_note_type_id'] == '1'){
                 $sql = "
                     CALL update_stock_credit('".
@@ -126,7 +128,7 @@ class CreditNoteListModel extends BaseModel{
 
                 //echo $sql . "<br><br>";
 
-                mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);                                                        
+                mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);                                                        
             }
             
            return true;
@@ -140,14 +142,14 @@ class CreditNoteListModel extends BaseModel{
 
     function deleteCreditNoteListByID($id){
         $sql = "DELETE FROM tb_credit_note_list WHERE credit_note_list_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
     function deleteCreditNoteListByCreditNoteID($id){
 
         $sql = "DELETE FROM tb_credit_note_list WHERE credit_note_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -172,7 +174,7 @@ class CreditNoteListModel extends BaseModel{
                     AND credit_note_list_id NOT IN ($str) ";   
 
         $sql_delete=[];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $sql_delete [] = "
                     CALL delete_stock_credit_note('".
@@ -185,12 +187,12 @@ class CreditNoteListModel extends BaseModel{
         }
 
         for($i = 0 ; $i < count($sql_delete); $i++){
-            mysqli_query($this->db,$sql_delete[$i], MYSQLI_USE_RESULT);
+            mysqli_query(static::$db,$sql_delete[$i], MYSQLI_USE_RESULT);
         }
 
         $sql = "DELETE FROM tb_credit_note_list WHERE credit_note_id = '$id' AND credit_note_list_id NOT IN ($str) ";
      
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         
 

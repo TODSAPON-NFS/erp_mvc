@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class CustomerPurchaseOrderListModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getCustomerPurchaseOrderListBy($customer_purchase_order_id){
@@ -25,7 +27,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
         ORDER BY customer_purchase_order_list_id 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -73,7 +75,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
         ); 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -98,7 +100,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
         ";
 
         //echo $sql;
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -112,7 +114,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -125,20 +127,20 @@ class CustomerPurchaseOrderListModel extends BaseModel{
     function deleteCustomerPurchaseOrderListByID($id){
 
         $sql = "DELETE FROM tb_customer_purchase_order_list WHERE customer_purchase_order_list_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_customer_purchase_order_list_detail WHERE customer_purchase_order_list_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
     function deleteCustomerPurchaseOrderListByCustomerPurchaseOrderID($id){
         
         $sql = " DELETE FROM tb_customer_purchase_order_list_detail WHERE customer_purchase_order_list_id IN (SELECT customer_purchase_order_list_id FROM tb_customer_purchase_order_list WHERE customer_purchase_order_id = '$id') ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = "DELETE FROM tb_customer_purchase_order_list WHERE customer_purchase_order_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -165,11 +167,11 @@ class CustomerPurchaseOrderListModel extends BaseModel{
                                 WHERE customer_purchase_order_id = '$id' 
                                 AND customer_purchase_order_list_id NOT IN ($str)
                         ) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         
         $sql = "DELETE FROM tb_customer_purchase_order_list WHERE customer_purchase_order_id = '$id' AND customer_purchase_order_list_id NOT IN ($str) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

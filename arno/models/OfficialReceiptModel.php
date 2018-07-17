@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class OfficialReceiptModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getOfficialReceiptBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = ""){
@@ -48,7 +50,7 @@ class OfficialReceiptModel extends BaseModel{
         $str_user  
         ORDER BY STR_TO_DATE(official_receipt_date,'%d-%m-%Y %H:%i:%s'), official_receipt_code DESC 
          ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -67,7 +69,7 @@ class OfficialReceiptModel extends BaseModel{
         WHERE official_receipt_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -87,7 +89,7 @@ class OfficialReceiptModel extends BaseModel{
         WHERE official_receipt_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -105,7 +107,7 @@ class OfficialReceiptModel extends BaseModel{
         WHERE official_receipt_code LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['official_receipt_lastcode'];
@@ -131,7 +133,7 @@ class OfficialReceiptModel extends BaseModel{
         ";
 
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -180,7 +182,7 @@ class OfficialReceiptModel extends BaseModel{
 
 
         $data = [];
-        if ($result = mysqli_query($this->db,$sql_customer, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql_customer, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -213,7 +215,7 @@ class OfficialReceiptModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -262,8 +264,8 @@ class OfficialReceiptModel extends BaseModel{
 
 
         //echo $sql;
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -274,10 +276,10 @@ class OfficialReceiptModel extends BaseModel{
     function deleteOfficialReceiptByID($id){
 
         $sql = " DELETE FROM tb_official_receipt WHERE official_receipt_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_official_receipt_list WHERE official_receipt_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 

@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class OtherExpenseListModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getOtherExpenseListBy($other_expense_id){
@@ -18,7 +20,7 @@ class OtherExpenseListModel extends BaseModel{
         ORDER BY other_expense_list_id 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -51,8 +53,8 @@ class OtherExpenseListModel extends BaseModel{
             NOW() 
         ); 
         ";
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -69,7 +71,7 @@ class OtherExpenseListModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -79,13 +81,13 @@ class OtherExpenseListModel extends BaseModel{
 
     function deleteOtherExpenseListByID($id){
         $sql = "DELETE FROM tb_other_expense_list WHERE other_expense_list_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
     function deleteOtherExpenseListByOtherExpenseID($id){
         $sql = "DELETE FROM tb_other_expense_list WHERE other_expense_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -111,7 +113,7 @@ class OtherExpenseListModel extends BaseModel{
         }
 
         $sql = "DELETE FROM tb_other_expense_list WHERE other_expense_id = '$id' AND other_expense_list_id NOT IN ($str) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

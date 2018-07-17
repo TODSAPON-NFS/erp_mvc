@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class StockReportModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getStockReportListBy($stock_group_id = '', $keyword = ''){
@@ -22,7 +24,7 @@ class StockReportModel extends BaseModel{
                     GROUP BY  tb_product.product_id, tb_stock_report.stock_group_id 
                     ORDER BY  tb_product.product_id, tb_stock_report.stock_group_id ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -45,7 +47,7 @@ class StockReportModel extends BaseModel{
         WHERE stock_group_id = '$stock_group_id' 
         AND product_id = '$product_id' ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -65,7 +67,7 @@ class StockReportModel extends BaseModel{
                 WHERE stock_group_id = '$stock_group_id' 
                 AND product_id = '$product_id' ";
     
-                if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+                if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
                     return true;
                 }else {
                     return false;
@@ -89,7 +91,7 @@ class StockReportModel extends BaseModel{
         WHERE stock_group_id = '$stock_group_id' 
         AND product_id = '$product_id' ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -111,7 +113,7 @@ class StockReportModel extends BaseModel{
                 WHERE stock_group_id = '$stock_group_id' 
                 AND product_id = '$product_id' ";
     
-                if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+                if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
                     return true;
                 }else {
                     return false;
@@ -135,7 +137,7 @@ class StockReportModel extends BaseModel{
         WHERE stock_group_id = '$stock_group_id' 
         AND product_id = '$product_id' ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -153,7 +155,7 @@ class StockReportModel extends BaseModel{
                 WHERE stock_group_id = '$stock_group_id' 
                 AND product_id = '$product_id' ";
     
-                if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+                if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
                     return true;
                 }else {
                     return false;
@@ -171,7 +173,7 @@ class StockReportModel extends BaseModel{
         WHERE stock_group_id = '$stock_group_id' 
         AND product_id = '$product_id' ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
 
             
 
@@ -184,8 +186,8 @@ class StockReportModel extends BaseModel{
                 ";
         
                 //echo $sql;
-                if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-                    return mysqli_insert_id($this->db);
+                if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                    return mysqli_insert_id(static::$db);
                 }else {
                     return 0;
                 }

@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class StockIssueListModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getStockIssueListBy($stock_issue_id){
@@ -21,7 +23,7 @@ class StockIssueListModel extends BaseModel{
         ORDER BY stock_issue_list_id 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -60,9 +62,9 @@ class StockIssueListModel extends BaseModel{
         ";
 
         //echo $sql . "<br><br>";
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
 
-            $id = mysqli_insert_id($this->db);
+            $id = mysqli_insert_id(static::$db);
 
             $sql = "
                 CALL insert_stock_issue('".
@@ -75,7 +77,7 @@ class StockIssueListModel extends BaseModel{
 
             //echo $sql . "<br><br>";
 
-            mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
             return $id; 
         }else {
@@ -99,7 +101,7 @@ class StockIssueListModel extends BaseModel{
         ";
 
         //echo $sql . "<br><br>";
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $sql = "
                 CALL update_stock_issue('".
                 $data['stock_group_id']."','".
@@ -111,7 +113,7 @@ class StockIssueListModel extends BaseModel{
 
             //echo $sql . "<br><br>";
 
-            mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
            return true;
         }else {
@@ -124,7 +126,7 @@ class StockIssueListModel extends BaseModel{
 
     function deleteStockIssueListByID($id){
         $sql = "DELETE FROM tb_stock_issue_list WHERE stock_issue_list_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -132,7 +134,7 @@ class StockIssueListModel extends BaseModel{
 
 
         $sql = "DELETE FROM tb_stock_issue_list WHERE stock_issue_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -158,7 +160,7 @@ class StockIssueListModel extends BaseModel{
                     AND stock_issue_list_id NOT IN ($str) ";   
 
         $sql_delete=[];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $sql_delete [] = "
                     CALL delete_stock_issue('".
@@ -171,7 +173,7 @@ class StockIssueListModel extends BaseModel{
         }
 
         for($i = 0 ; $i < count($sql_delete); $i++){
-            mysqli_query($this->db,$sql_delete[$i], MYSQLI_USE_RESULT);
+            mysqli_query(static::$db,$sql_delete[$i], MYSQLI_USE_RESULT);
         }
 
 
@@ -179,7 +181,7 @@ class StockIssueListModel extends BaseModel{
 
 
         $sql = "DELETE FROM tb_stock_issue_list WHERE stock_issue_id = '$id' AND stock_issue_list_id NOT IN ($str) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         
 

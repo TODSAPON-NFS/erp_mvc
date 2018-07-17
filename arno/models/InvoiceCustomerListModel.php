@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class InvoiceCustomerListModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getInvoiceCustomerListBy($invoice_customer_id){
@@ -25,7 +27,7 @@ class InvoiceCustomerListModel extends BaseModel{
         ORDER BY invoice_customer_list_id 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -72,8 +74,8 @@ class InvoiceCustomerListModel extends BaseModel{
         ";
 
         //echo $sql . "<br><br>";
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            $id = mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $id = mysqli_insert_id(static::$db);
 
             $sql = "
             CALL insert_stock_customer('".
@@ -88,7 +90,7 @@ class InvoiceCustomerListModel extends BaseModel{
 
             //echo $sql . "<br><br>";
 
-            mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
             return $id; 
         }else {
@@ -115,7 +117,7 @@ class InvoiceCustomerListModel extends BaseModel{
         ";
        //echo $sql . "<br><br>";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $sql = "
                 CALL update_stock_customer('".
                 $data['stock_group_id']."','".
@@ -131,7 +133,7 @@ class InvoiceCustomerListModel extends BaseModel{
 
             //echo $sql . "<br><br>";
 
-            mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
            return true;
         }else {
             return false;
@@ -145,7 +147,7 @@ class InvoiceCustomerListModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -156,18 +158,18 @@ class InvoiceCustomerListModel extends BaseModel{
 
     function deleteInvoiceCustomerListByID($id){
         $sql = "DELETE FROM tb_invoice_customer_list WHERE invoice_customer_list_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
     function deleteInvoiceCustomerListByInvoiceCustomerID($id){
 
         $sql = "UPDATE  tb_customer_purchase_order_list SET invoice_customer_list_id = '0'  WHERE invoice_customer_list_id IN (SELECT invoice_customer_list_id FROM tb_invoice_customer_list WHERE invoice_customer_id = '$id') ";     
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
 
         $sql = "DELETE FROM tb_invoice_customer_list WHERE invoice_customer_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -192,7 +194,7 @@ class InvoiceCustomerListModel extends BaseModel{
                     AND invoice_customer_list_id NOT IN ($str) ";   
 
         $sql_delete=[];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $sql_delete [] = "
                     CALL delete_stock_customer('".
@@ -209,12 +211,12 @@ class InvoiceCustomerListModel extends BaseModel{
         }
 
         for($i = 0 ; $i < count($sql_delete); $i++){
-            mysqli_query($this->db,$sql_delete[$i], MYSQLI_USE_RESULT);
+            mysqli_query(static::$db,$sql_delete[$i], MYSQLI_USE_RESULT);
         }
 
         $sql = "DELETE FROM tb_invoice_customer_list WHERE invoice_customer_id = '$id' AND invoice_customer_list_id NOT IN ($str) ";
      
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         
 

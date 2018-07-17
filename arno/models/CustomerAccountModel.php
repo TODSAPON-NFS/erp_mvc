@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class CustomerAccountModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getCustomerAccountBy($customer_id, $customer_account_no = '', $customer_account_bank = '', $customer_account_branch = ''){
@@ -17,7 +19,7 @@ class CustomerAccountModel extends BaseModel{
         )
         ORDER BY customer_account_bank , customer_account_no
         ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -34,7 +36,7 @@ class CustomerAccountModel extends BaseModel{
         WHERE customer_account_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -59,7 +61,7 @@ class CustomerAccountModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -91,7 +93,7 @@ class CustomerAccountModel extends BaseModel{
         ";
 
         //echo $sql;
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -102,7 +104,7 @@ class CustomerAccountModel extends BaseModel{
 
     function deleteCustomerAccountByID($id){
         $sql = "DELETE FROM tb_customer_account WHERE customer_account_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
     }
     
 }

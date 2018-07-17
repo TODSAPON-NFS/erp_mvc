@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class StockGroupModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getStockGroupBy($stock_type_id = ""){
@@ -18,7 +20,7 @@ class StockGroupModel extends BaseModel{
                   FROM tb_stock_group 
                   LEFT JOIN tb_stock_type ON tb_stock_group.stock_type_id = tb_stock_type.stock_type_id 
                   $str ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -31,7 +33,7 @@ class StockGroupModel extends BaseModel{
 
     function getStockGroupByID($stock_group_id){
         $sql = "SELECT * FROM tb_stock_group WHERE stock_group_id = $stock_group_id ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $data;
@@ -42,7 +44,7 @@ class StockGroupModel extends BaseModel{
 
     function getQtyBy($stock_group_id,$product_id){
         $sql = "SELECT * FROM tb_stock_group WHERE stock_group_id = $stock_group_id ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
 
@@ -71,7 +73,7 @@ class StockGroupModel extends BaseModel{
 
             //echo $sql;
 
-            if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+            if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
                
                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                     $data = $row;
@@ -90,7 +92,7 @@ class StockGroupModel extends BaseModel{
         WHERE stock_group_id = $stock_group_id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -105,14 +107,14 @@ class StockGroupModel extends BaseModel{
         WHERE stock_type_id = '$stock_type_id' 
         ";
 
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " UPDATE tb_stock_group SET 
         stock_group_primary = '1'  
         WHERE stock_group_id = '$stock_group_id'  
         ";
         
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -133,7 +135,7 @@ class StockGroupModel extends BaseModel{
         WHERE stock_group_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -164,8 +166,8 @@ class StockGroupModel extends BaseModel{
         ); 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-           return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+           return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -175,7 +177,7 @@ class StockGroupModel extends BaseModel{
 
     function deleteStockGroupByID($id){
         $sql = " DELETE FROM tb_stock_group WHERE stock_group_id = '$id' ";
-        if(mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)){
+        if(mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)){
             return true;
         }else{
             return false;

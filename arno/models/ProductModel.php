@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class ProductModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getProductBy($supplier_id = '', $product_category_id = '', $product_type_id = '', $keyword  = ''){
@@ -41,7 +43,7 @@ class ProductModel extends BaseModel{
         $supplier 
         ORDER BY product_name  
         "; 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) { 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) { 
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -58,7 +60,7 @@ class ProductModel extends BaseModel{
         FROM tb_product 
         ORDER BY product_name  
         "; 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) { 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) { 
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -78,7 +80,7 @@ class ProductModel extends BaseModel{
         WHERE product_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -95,7 +97,7 @@ class ProductModel extends BaseModel{
         WHERE product_name = '$product_name' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -109,7 +111,7 @@ class ProductModel extends BaseModel{
     function getProductDataByID($product_id,$stock_group_id){
         $sql = "SELECT table_name FROM tb_stock_group WHERE tb_stock_group.stock_group_id = '$stock_group_id'";
         $table_name ="";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $table_name = $row['table_name'];
@@ -137,7 +139,7 @@ class ProductModel extends BaseModel{
         //echo $sql;
         
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -152,7 +154,7 @@ class ProductModel extends BaseModel{
     function getProductDataByCode($product_code,$stock_group_id,$qty){
         $sql = "SELECT table_name FROM tb_stock_group WHERE tb_stock_group.stock_group_id = '$stock_group_id'";
         $table_name ="";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $table_name = $row['table_name'];
@@ -180,7 +182,7 @@ class ProductModel extends BaseModel{
         //echo $sql;
         
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -215,7 +217,7 @@ class ProductModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -256,8 +258,8 @@ class ProductModel extends BaseModel{
         ";
 
         //echo $sql;
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -269,7 +271,7 @@ class ProductModel extends BaseModel{
 
     function deleteProductByID($id){
         $sql = " DELETE FROM tb_product WHERE product_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

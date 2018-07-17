@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class RegrindSupplierReceiveModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getRegrindSupplierReceiveBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = ""){
@@ -52,7 +54,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
         $str_user  
         ORDER BY STR_TO_DATE(regrind_supplier_receive_date,'%Y-%m-%d %H:%i:%s') DESC 
          ";
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -71,7 +73,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
         WHERE regrind_supplier_receive_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -91,7 +93,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
         WHERE regrind_supplier_receive_id = '$id' 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
@@ -122,7 +124,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
 
         //echo $sql;
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -153,7 +155,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
                 ) 
         ";
         $data = [];
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -215,7 +217,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
 
         //echo $sql_supplier;
         $data = [];
-        if ($result = mysqli_query($this->db,$sql_supplier, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql_supplier, MYSQLI_USE_RESULT)) {
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -235,7 +237,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
         WHERE regrind_supplier_receive_code LIKE ('$id%') 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
             $result->close();
             return $row['regrind_supplier_receive_lastcode'];
@@ -260,7 +262,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
         WHERE regrind_supplier_receive_id = $id 
         ";
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -303,8 +305,8 @@ class RegrindSupplierReceiveModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -316,9 +318,9 @@ class RegrindSupplierReceiveModel extends BaseModel{
     function deleteRegrindSupplierReceiveByID($id){
 
         $sql = " DELETE FROM tb_regrind_supplier_receive WHERE regrind_supplier_receive_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
         $sql = " DELETE FROM tb_regrind_supplier_receive_list WHERE regrind_supplier_receive_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 

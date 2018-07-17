@@ -518,7 +518,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
             if($output){
     ?>
-            <script>window.location="index.php?app=customer_purchase_order&action=update&id=<?PHP echo $customer_purchase_order_id;?>"</script>
+            <script>//swindow.location="index.php?app=customer_purchase_order&action=update&id=<?PHP echo $customer_purchase_order_id;?>"</script>
     <?php
             }else{
     ?>
@@ -586,7 +586,6 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
     require_once($path.'view.inc.php');
 }
-
 
 
 

@@ -4,7 +4,9 @@ require_once("BaseModel.php");
 class RegrindSupplierListModel extends BaseModel{
 
     function __construct(){
-        $this->db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        if(!static::$db){
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
+        }
     }
 
     function getRegrindSupplierListBy($regrind_supplier_id){
@@ -19,7 +21,7 @@ class RegrindSupplierListModel extends BaseModel{
         ORDER BY regrind_supplier_list_id 
         ";
 
-        if ($result = mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -54,8 +56,8 @@ class RegrindSupplierListModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
-            return mysqli_insert_id($this->db);
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
@@ -72,7 +74,7 @@ class RegrindSupplierListModel extends BaseModel{
         ";
 
 
-        if (mysqli_query($this->db,$sql, MYSQLI_USE_RESULT)) {
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
@@ -82,13 +84,13 @@ class RegrindSupplierListModel extends BaseModel{
 
     function deleteRegrindSupplierListByID($id){
         $sql = "DELETE FROM tb_regrind_supplier_list WHERE regrind_supplier_list_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
     function deleteRegrindSupplierListByRegrindSupplierID($id){
         $sql = "DELETE FROM tb_regrind_supplier_list WHERE regrind_supplier_id = '$id' ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
@@ -114,7 +116,7 @@ class RegrindSupplierListModel extends BaseModel{
         }
 
         $sql = "DELETE FROM tb_regrind_supplier_list WHERE regrind_supplier_id = '$id' AND regrind_supplier_list_id NOT IN ($str) ";
-        mysqli_query($this->db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 }

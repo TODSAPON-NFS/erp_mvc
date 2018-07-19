@@ -5,7 +5,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
 require_once('../../models/ProductModel.php');
 $model_product = new ProductModel;
-$product = $model_product->getProductDataByName($_POST['product_name']);
+$product = $model_product->getProductByCode($_POST['product_code']);
 
 echo json_encode($product);
 ?>

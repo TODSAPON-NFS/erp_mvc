@@ -1,5 +1,4 @@
-<!-- jQuery -->
-    <script src="../template/vendor/jquery/jquery.min.js"></script>
+ 
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../template/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -34,9 +33,15 @@
     <script src="../template/vendor/morrisjs/morris.min.js"></script>
     <script src="../template/data/morris-data.js"></script>
     <?php }?>
+
     <script>
 
+
+
+
     $(document).ready(function() {
+        
+
         $('#dataTables-view').DataTable({
             responsive: true 
         });

@@ -2,6 +2,8 @@
 <script src="../plugins/excel/xls.core.min.js"></script> 
 <script>
 
+var number_error = 0;
+
 function check(){
 
 
@@ -140,13 +142,15 @@ function ExportToTable(id) {
     }  
 }   
 
+
 function BindTable(jsondata,id) {
     $("#bodyAdd").html('');
-    if($('#stock_group_id').val() != ''){
-        
+    number_error = 0;
+    if($('#stock_group_id').val() != ''){ 
         for (var i = 0; i < jsondata.length; i++) {  
-            get_product_row(jsondata[i].product_name,jsondata[i].qty,jsondata[i].price);
+            get_product_row(jsondata[i].product_code,jsondata[i].qty,jsondata[i].price);
         }
+
         $("#excelfile").val('');
         $('#modalAdd').modal('show');
     }else{
@@ -155,14 +159,15 @@ function BindTable(jsondata,id) {
     //console.log(jsondata);
 }
 
-function get_product_row(product_name,qty,price){
-    $.post( "controllers/getProductDataByName.php", { 'product_name': $.trim(product_name)}, function( data ) {
+
+function get_product_row(product_code,qty,price){
+    $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
         if(data != null){
             $("#bodyAdd").append(
-                '<tr class="odd gradeX">'+ 
+                '<tr class="odd gradeX find">'+ 
                     '<td>'+  
                         '<input type="hidden" name="product_id[]" value="'+data.product_id+'" />'+
-                        '['+ data.product_code_first + data.product_code +'] ' + data.product_name + ' ('+ data.product_description +')' +
+                        '['+ data.product_code_first + data.product_code +'] ' + data.product_name +
                     '</td>'+
                     '<td align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_qty[]" value="'+qty+'" readonly /></td>'+
                     '<td><input type="text" class="form-control" style="text-align: right;" name="product_price[]"   value="'+price+'" readonly /></td>'+
@@ -175,15 +180,16 @@ function get_product_row(product_name,qty,price){
                 '</tr>'
             );
         }else{
+            number_error ++;
+            $('.number_error').html(number_error);
             $("#bodyAdd").append(
-                '<tr class="odd gradeX" >'+ 
-                    '<td style="background:#888;">'+  
-                        '<input type="hidden" name="product_id[]" value="0" />'+
-                        'ไม่มีสินค้าชื่อ "' + product_name + '" นี้' +
+                '<tr class="odd gradeX not-find" >'+ 
+                    '<td style="background:#888;">'+   
+                        'ไม่มีสินค้าชื่อ "' +  product_code + '" นี้' +
                     '</td>'+
-                    '<td  style="background:#888;" align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_qty[]" value="'+qty+'" readonly /></td>'+
-                    '<td style="background:#888;" ><input type="text" class="form-control" style="text-align: right;" name="product_price[]"   value="'+price+'" readonly /></td>'+
-                    '<td style="background:#888;" ><input type="text" class="form-control" style="text-align: right;" name="product_price_total[]"  value="'+ ( parseFloat(qty.replace(',','')) * parseFloat(price.replace(',','')) )+'" readonly /></td>'+
+                    '<td style="background:#888;" align="right">'+qty+'</td>'+
+                    '<td style="background:#888;" align="right">'+price+'</td>'+
+                    '<td style="background:#888;" align="right">'+ ( parseFloat(qty.replace(',','')) * parseFloat(price.replace(',','')) )+'</td>'+
                     '<td style="background:#888;" >'+
                         '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                             '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -197,17 +203,44 @@ function get_product_row(product_name,qty,price){
 
 
 function checkAll(id)
-    {
-        var checkbox = document.getElementsByName("check_all");
+{
+    var checkbox = document.getElementsByName("check_all");
 
-        if (checkbox[0].checked == true ){
-            $('input[name="check_all"]').prop('checked', true);
-            $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', true);
-        }else{
-            $('input[name="check_all"]').prop('checked', false);
-            $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', false);
-        }
+    if (checkbox[0].checked == true ){
+        $('input[name="check_all"]').prop('checked', true);
+        $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', true);
+    }else{
+        $('input[name="check_all"]').prop('checked', false);
+        $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', false);
     }
+}
+
+function search_pop_like(id){ 
+    if($(id).is(':checked')){
+        $('tr[class="odd gradeX find"]').hide();
+        console.log("checked");
+    }else{
+        $('tr[class="odd gradeX find"]').show();
+        console.log("unchecked");
+    }
+}
+
+
+function export_error(){
+    $('tr[class="odd gradeX find"]').remove();
+    var d = new Date();
+
+    var downloadLink = document.createElement("a");
+    downloadLink.href = 'data:application/vnd.ms-excel,' + encodeURIComponent($('#tb_import').html());
+    downloadLink.download = "export-error "+d.getFullYear() +"-"+ (d.getMonth() + 1) +"-"+ d.getDate() +".xls";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    //window.open('data:application/vnd.ms-excel,filename=export-error.xls,' + encodeURIComponent($('#tb_import').html()));
+    $('#modalAdd').modal('hide');
+}
+ 
 </script>
 
 <div class="row">
@@ -409,10 +442,11 @@ function checkAll(id)
                             <?php  
                             for($i=$page * $page_size ; $i < count($summit_products) && $i < $page * $page_size + $page_size; $i++){
                             ?>
+                            
                             <tr class="odd gradeX">
                                 <td><input type="checkbox" name="summit_product_id[]" value="<?php echo $summit_products[$i]['summit_product_id'];?>" /></td>
                                 <td><?php echo $i+1; ?></td>
-                                <td>[<?php echo $summit_products[$i]['product_code_first'] . $summit_products[$i]['product_code']; ?>] <?php echo $summit_products[$i]['product_name']; ?> [<?php echo $summit_products[$i]['product_description']; ?>] </td>
+                                <td>[<?php echo $summit_products[$i]['product_code_first'] . $summit_products[$i]['product_code']; ?>] <?php echo $summit_products[$i]['product_name']; ?>  </td>
                                 <td align="right"><?php echo number_format($summit_products[$i]['summit_product_qty'],0); ?></td>
                                 <td align="right"><?php echo number_format($summit_products[$i]['summit_product_cost'],2); ?></td>
                                 <td align="right"><?php echo number_format($summit_products[$i]['summit_product_total'],2); ?></td>
@@ -422,6 +456,7 @@ function checkAll(id)
                                     </a>
                                 </td>
                             </tr>
+
                             <?
                             }
                             ?>
@@ -483,7 +518,6 @@ function checkAll(id)
                                     <a href="<?PHP if($page+1 == $page_max){?>javascript:;<?PHP }else{ ?>index.php?app=summit_product&action=view-stock&stock_group_id=<?php echo $stock_group_id?>&page=<?PHP echo $page + 2; }?>" >Next</a>
                                 </li>
 
-
                             </ul>
                         </div>
                     </div>
@@ -511,30 +545,33 @@ function checkAll(id)
             </div>
 
             <div  class="modal-body">
-            <div class="row">
-                <div class="col-md-offset-8 col-md-4" align="right">
-                    <input type="text" class="form-control" name="search_pop" onchange="search_pop_like(this)" placeholder="Search"/>
+                <div class="row">
+                    <div class="col-md-offset-8 col-md-4" align="right">
+                        <input type="checkbox" id="search_pop" onchange="search_pop_like(this)"  /> แสดงรายการที่มีปัญหาจำนวน <span class="number_error"></span> รายการ
+                    </div>
                 </div>
-            </div>
-            <br>
-            <table width="100%"  class="table table-striped table-bordered table-hover" >
-                <thead>
-                    <tr> 
-                        <th style="text-align:center;">ชื่อสินค้า</th>
-                        <th style="text-align:right;" width="100">จำนวน <br> (Qty)</th>
-                        <th style="text-align:right;" width="100">ราคา <br> (Price)</th>
-                        <th style="text-align:right;" width="100">ราคารวม <br> (Total price)</th>
-                        <th> ลบ <br> Delete</th>
-                    </tr>
-                </thead>
-                <tbody id="bodyAdd">
+                <br>
+                <div id="tb_import">
+                    <table width="100%"  class="table table-striped table-bordered table-hover" >
+                        <thead>
+                            <tr> 
+                                <th style="text-align:center;">ชื่อสินค้า</th>
+                                <th style="text-align:right;" width="100">จำนวน <br> (Qty)</th>
+                                <th style="text-align:right;" width="100">ราคา <br> (Price)</th>
+                                <th style="text-align:right;" width="100">ราคารวม <br> (Total price)</th>
+                                <th> ลบ <br> Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyAdd">
 
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger"  onclick="export_error()" >Export Error (<span class="number_error"></span>)</button>
                 <button type="summit" class="btn btn-primary" > Add </button>
             </div>
             </div><!-- /.modal-content -->

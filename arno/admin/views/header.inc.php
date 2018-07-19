@@ -27,7 +27,6 @@
     <!-- DataTables Responsive CSS -->
     <link href="../template/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
 
-    
 
 
     <link rel="stylesheet" href="../template/dist/css/jquery-ui.css">
@@ -37,6 +36,14 @@
     <link href="../css/styles.css" rel="stylesheet">
 
     
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- JS file -->
+    <script src="../plugins/autocomplete/jquery.easy-autocomplete.min.js"></script> 
+    <!-- CSS file -->
+    <link rel="stylesheet" href="../plugins/autocomplete/easy-autocomplete.min.css"> 
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

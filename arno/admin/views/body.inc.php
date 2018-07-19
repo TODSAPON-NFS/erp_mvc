@@ -62,6 +62,9 @@
     else if($_GET['app'] == "sale_employee"){
         require_once("modules/sale_employee/views/index.inc.php");
     }
+    else if($_GET['app'] == "price_list"){
+        require_once("modules/price_list/views/index.inc.php");
+    }
     /* ----------------------------------- //ระบบพนักงานขาย// ---------------------------------------------- */
 
 

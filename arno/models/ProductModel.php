@@ -32,7 +32,8 @@ class ProductModel extends BaseModel{
         }
 
         
-        $sql = " SELECT product_id, CONCAT(product_code_first,product_code) as product_code, product_drawing, product_name, product_description , product_type, product_status   
+        $sql = " SELECT product_id, CONCAT(product_code_first,product_code) as product_code, product_drawing, product_name, product_description , product_type, product_status ,
+        product_price_1, product_price_2, product_price_3, product_price_4, product_price_5 
         FROM tb_product 
         LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
         LEFT JOIN tb_product_type ON tb_product.product_type = tb_product_type.product_type_id 
@@ -91,10 +92,10 @@ class ProductModel extends BaseModel{
 
     }
 
-    function getProductDataByName($product_name){
+    function getProductByCode($product_code){
         $sql = "SELECT * 
         FROM tb_product 
-        WHERE product_name = '$product_name' 
+        WHERE product_code = '$product_code' 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -213,6 +214,26 @@ class ProductModel extends BaseModel{
         product_logo = '".$data['product_logo']."',
         product_status = '".$data['product_status']."', 
         product_category_id = '".$data['product_category_id']."' 
+        WHERE product_id = $id 
+        ";
+
+
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+
+
+    }
+
+    function updateProductPriceByID($id,$data = []){
+        $sql = " UPDATE tb_product SET 
+        product_price_1 = '".$data['product_price_1']."', 
+        product_price_2 = '".$data['product_price_2']."', 
+        product_price_3 = '".$data['product_price_3']."', 
+        product_price_4 = '".$data['product_price_4']."', 
+        product_price_5 = '".$data['product_price_5']."'  
         WHERE product_id = $id 
         ";
 

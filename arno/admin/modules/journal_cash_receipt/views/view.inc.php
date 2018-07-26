@@ -81,6 +81,7 @@
                             <th>ลำดับ <br>No.</th>
                             <th>วันที่ <br>Journal Cash Receipt Date</th>
                             <th>หมายเลขสมุดรายวันรับเงิน <br>Journal Cash Receipt No.</th>
+                            <th>ชื่อสมุดรายวันรับเงิน <br>Name.</th>
                             <th>ผู้เพิ่มเอกสาร <br>Add by</th>
                             <th>วันที่เพิ่มเอกสาร <br>Add date</th>
                             <th>ผู้แก้ไขเอกสาร <br>Update by</th>

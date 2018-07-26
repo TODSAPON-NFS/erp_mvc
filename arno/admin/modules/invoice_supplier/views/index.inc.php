@@ -11,6 +11,9 @@ require_once('../models/ProductModel.php');
 require_once('../models/SupplierModel.php');
 require_once('../models/ExchangeRateBahtModel.php');
 require_once('../functions/DateTimeFunction.func.php');
+require_once('../models/JournalPurchaseModel.php');
+require_once('../models/JournalPurchaseListModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/invoice_supplier/views/";
@@ -23,6 +26,9 @@ $purchase_order_list_model = new PurchaseOrderListModel;
 $product_model = new ProductModel;
 $exchange_rate_baht_model = new ExchangeRateBahtModel;
 $date_time_function_model = new DateTimeFunction;
+$journal_purchase_model = new JournalPurchaseModel;
+$journal_purchase_list_model = new JournalPurchaseListModel;
+
 $invoice_supplier_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $supplier_id = $_GET['supplier_id'];
@@ -108,6 +114,9 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 
 }else if ($_GET['action'] == 'delete' && ( $license_purchase_page == "High" )){
     $invoice_supplier_model->deleteInvoiceSupplierById($invoice_supplier_id);
+
+    $journal_purchases = $journal_purchase_model->deleteJournalPurchaseByInvoiceSupplierID($invoice_supplier_id);
+
 ?>
     <script>window.location="index.php?app=invoice_supplier"</script>
 <?php
@@ -135,11 +144,47 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         $data['invoice_supplier_due'] = $_POST['invoice_supplier_due']; 
         $data['import_duty'] = (float)filter_var($_POST['import_duty'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['freight_in'] = (float)filter_var($_POST['freight_in'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $data['addby'] = $user[0][0];
+        $data['addby'] = $admin_id;
 
-        $output = $invoice_supplier_model->insertInvoiceSupplier($data);
+        $invoice_supplier_id = $invoice_supplier_model->insertInvoiceSupplier($data);
 
-        if($output > 0){
+        if($invoice_supplier_id > 0){
+
+            $data = [];
+            $first_code = "HP".date("y").date("m");
+            $first_date = date("d")."-".date("m")."-".date("Y");
+            $last_code = $journal_purchase_model->getJournalPurchaseLastID($first_code,3);
+            $data['invoice_supplier_id'] = $invoice_supplier_id;
+            $data['journal_purchase_date'] = $_POST['invoice_supplier_date_recieve'];
+            $data['journal_purchase_code'] = $last_code;
+            $data['journal_purchase_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
+            $data['addby'] = $admin_id;
+    
+    
+            $journal_purchase_id = $journal_purchase_model->insertJournalPurchase($data);
+
+            if($journal_purchase_id > 0){
+
+                $supplier=$supplier_model->getSupplierByID($_POST['supplier_id']);
+                $data = [];
+                $data['journal_purchase_id'] = $journal_purchase_id;
+                $data['account_id'] = $supplier['account_id'];
+                $data['journal_purchase_list_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
+                $data['journal_purchase_list_debit'] = (float)filter_var( $_POST['invoice_supplier_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['journal_purchase_list_credit'] = 0;
+                $journal_purchase_list_model->insertJournalPurchaseList($data);
+
+                if((float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                    $data = [];
+                    $data['journal_purchase_id'] = $journal_purchase_id;
+                    $data['account_id'] = '42';
+                    $data['journal_purchase_list_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
+                    $data['journal_purchase_list_debit'] = (float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data['journal_purchase_list_credit'] = 0;
+                    $journal_purchase_list_model->insertJournalPurchaseList($data);
+                }
+            }
+
             $data = [];
             $product_id = $_POST['product_id'];
             $invoice_supplier_list_product_name = $_POST['invoice_supplier_list_product_name'];
@@ -155,7 +200,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
             if(is_array($product_id)){
                 for($i=0; $i < count($product_id) ; $i++){
                     $data_sub = [];
-                    $data_sub['invoice_supplier_id'] = $output;
+                    $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
                     $data_sub['product_id'] = $product_id[$i];
                     $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
                     
@@ -175,7 +220,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
                 }
             }else if($product_id != ""){
                 $data_sub = [];
-                $data_sub['invoice_supplier_id'] = $output;
+                $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
                 $data_sub['product_id'] = $product_id;
                 $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
                 
@@ -194,7 +239,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
             }
             
 ?>
-        <script>window.location="index.php?app=invoice_supplier&action=update&id=<?php echo $output;?>"</script>
+        <script>window.location="index.php?app=invoice_supplier&action=update&id=<?php echo $invoice_supplier_id;?>"</script>
 <?php
         }else{
 ?>
@@ -229,7 +274,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         $data['invoice_supplier_due'] = $_POST['invoice_supplier_due'];
         $data['import_duty'] = (float)filter_var($_POST['import_duty'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['freight_in'] = (float)filter_var($_POST['freight_in'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $data['addby'] = $user[0][0];
+        $data['addby'] = $admin_id;
 
        
        
@@ -248,6 +293,8 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         
         $invoice_supplier_list_model->deleteInvoiceSupplierListByInvoiceSupplierIDNotIN($invoice_supplier_id,$invoice_supplier_list_id);
         
+
+       
         if(is_array($product_id)){
             for($i=0; $i < count($product_id) ; $i++){
                 $data_sub = [];

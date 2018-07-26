@@ -1,6 +1,8 @@
 <?php
 
 abstract class BaseModel{
+
+    protected $page_url="http://arno-thailand.revelsoft.co.th/admin/";
     public static $db;
     protected $host="localhost";
     

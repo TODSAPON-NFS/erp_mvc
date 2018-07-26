@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Purchase Request Management</h1>
+        <h1 class="page-header">Purchase Request Management [<?PHP echo $purchase_request['purchase_request_accept_status']; ?>]</h1>
     </div>
     <div class="col-lg-6" align="right">
        
@@ -100,7 +100,7 @@
                     <div class="row">
                     <div class="col-lg-offset-8 col-lg-2" align="right">
                         
-                    <?php if(($user[0][24] == "High" || $user[0][25] == "High" ) && $purchase_request['purchase_request_cancelled'] == 0 ){ ?>
+                    <?php if(($license_purchase_page == "High" || $license_manager_page == "High" ) && $purchase_request['purchase_request_cancelled'] == 0 ){ ?>
                         
                             <select id="purchase_request_accept_status" name="purchase_request_accept_status" class="form-control" data-live-search="true" >
                                 <option <?php if($purchase_request['purchase_request_accept_status'] == "Waiting"){?> selected <?php }?> >Waiting</option>
@@ -113,7 +113,7 @@
                         <div class="col-lg-2" align="right">
                             <a href="index.php?app=purchase_request" class="btn btn-default">Back</a>
 
-                            <?php if(($user[0][24] == "High" || $user[0][25] == "High" ) && $purchase_request['purchase_request_cancelled'] == 0 ){ ?>
+                            <?php if(($license_purchase_page== "High" || $license_manager_page == "High" ) && $purchase_request['purchase_request_cancelled'] == 0 ){ ?>
                             <button type="submit" class="btn btn-success">Save</button>
                             <?php } ?>
                             

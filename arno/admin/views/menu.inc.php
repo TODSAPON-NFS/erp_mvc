@@ -315,10 +315,6 @@
                                 $_GET["app"]=='quotation'
                                 || $_GET["app"]=='customer_purchase_order'
                                 || $_GET["app"]=='invoice_customer'
-                                || $_GET["app"]=='credit_note'
-                                || $_GET["app"]=='debit_note'
-                                || $_GET["app"]=='billing_note'
-                                || $_GET["app"]=='official_receipt'
                             ){
                                 echo ' class="active" ';
                             }
@@ -342,18 +338,7 @@
                                 <li>
                                     <a href="?app=invoice_customer" <?PHP if($_GET['app'] == "invoice_customer"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบกำกับภาษี (Customer Invoice)</a>
                                 </li>
-                                <li>
-                                    <a href="?app=credit_note" <?PHP if($_GET['app'] == "credit_note"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบลดหนี้ (Credit Note)</a>
-                                </li>
-                                <li>
-                                    <a href="?app=debit_note" <?PHP if($_GET['app'] == "debit_note"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบเพิ่มหนี้ (Debit Note)</a>
-                                </li>
-                                <li>
-                                    <a href="?app=billing_note" <?PHP if($_GET['app'] == "billing_note"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบวางบิล (Billing Note)</a>
-                                </li>
-                                <li>
-                                    <a href="?app=official_receipt" <?PHP if($_GET['app'] == "official_receipt"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบเสร็จ (Official Receipt)</a>
-                                </li>
+                                
                                 <?PHP } ?>
 
 
@@ -418,6 +403,10 @@
                              if(
                                  
                                 $_GET["app"]=='account' || 
+                                $_GET["app"]=='credit_note' || 
+                                $_GET["app"]=='debit_note' || 
+                                $_GET["app"]=='billing_note' || 
+                                $_GET["app"]=='official_receipt'|| 
                                 substr($_GET["app"],0,15) =='journal_special' ||
                                 $_GET["app"] =='other_expense' ||
                                 $_GET["app"] =='credit_purchasing' ||
@@ -474,6 +463,11 @@
                                 <li
                                 <?PHP 
                                     if(
+                                        $_GET["app"]=='account' || 
+                                        $_GET["app"]=='credit_note' || 
+                                        $_GET["app"]=='debit_note' || 
+                                        $_GET["app"]=='billing_note' || 
+                                        $_GET["app"]=='official_receipt'|| 
                                         substr($_GET["app"],0,7) =='finance_'
                                     ){
                                         echo ' class="active" ';
@@ -490,6 +484,18 @@
                                         <li>
                                             <a href="?app=finance_credit" <?PHP if($_GET['app'] == "finance_credit"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> จ่ายชำระหนี้</a>
                                         </li> 
+                                        <li>
+                                            <a href="?app=credit_note" <?PHP if($_GET['app'] == "credit_note"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบลดหนี้ (Credit Note)</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=debit_note" <?PHP if($_GET['app'] == "debit_note"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบเพิ่มหนี้ (Debit Note)</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=billing_note" <?PHP if($_GET['app'] == "billing_note"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบวางบิล (Billing Note)</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=official_receipt" <?PHP if($_GET['app'] == "official_receipt"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบเสร็จ (Official Receipt)</a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li

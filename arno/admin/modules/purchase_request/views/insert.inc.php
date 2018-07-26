@@ -1,5 +1,31 @@
 <script>
     
+	var options = {
+        url: function(keyword) {
+            return "controllers/getProductByKeyword.php?keyword="+keyword;
+        },
+
+        getValue: function(element) {
+            return element.product_code ;
+        },
+
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+
+        preparePostData: function(data) {
+            data.keyword = $(".example-ajax-post").val();
+            return data;
+        },
+
+        requestDelay: 400
+    };
+	
+	
     function check(){
 
 
@@ -38,12 +64,13 @@
     }
 
     function show_data(id){
-        var product_name = "";
-        var data = product_data.filter(val => val['product_id'] == $(id).val());
-        if(data.length > 0){
-            $(id).closest('tr').children('td').children('input[name="product_name[]"]').val( data[0]['product_name'] );
-        }
-        
+        var product_code = $(id).val();
+        $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
+            if(data != null){
+                $('#order_product_name').val(data.product_name)
+                $('#order_product').val(data.product_id)
+            }
+        }); 
     }
 
     function delete_row(id){
@@ -175,6 +202,9 @@
     }
 
 
+    function set_employee(){
+        $('employee_id').val($('employee_name').val());
+    }
 
 </script>
 
@@ -223,12 +253,13 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>ผู้ร้องขอ / Request by  <font color="#F00"><b>*</b></font> </label>
-                                <select id="employee_id" name="employee_id" class="form-control" >
+                                <input id="employee_id" name="employee_id" type="hidden"  value="<?PHP echo $admin_id;?>" />
+                                <select id="employee_name" name="employee_name" onchange="set_employee();" class="form-control" <?PHP if($license_purchase_page != "Medium" && $license_purchase_page != "High"){ ?> disabled <?PHP } ?> >
                                     <option value="">Select</option>
                                     <?php 
                                     for($i =  0 ; $i < count($users) ; $i++){
                                     ?>
-                                    <option value="<?php echo $users[$i]['user_id'] ?>"><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
+                                    <option <?php if($users[$i]['user_id'] == $admin_id){?> selected <?php }?> value="<?php echo $users[$i]['user_id'] ?>" ><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
                                     <?
                                     }
                                     ?>
@@ -349,17 +380,17 @@
                                                 <div class="row">
                                                     <div class="col-lg-12" align="left">
                                                         <div class="form-group">
-                                                            <label>จำนวนครั้ง / Number</label>
-                                                            <select  class="form-control select" id="order_product" name="order_product" data-live-search="true" >
-                                                                <option value="">Select</option>
-                                                                <?php 
-                                                                for($ii =  0 ; $ii < count($products) ; $ii++){
-                                                                ?>
-                                                                <option <?php if($products[$ii]['product_id'] == $purchase_request_lists[$i]['product_id']){?> selected <?php }?> value="<?php echo $products[$ii]['product_id'] ?>"><?php echo $products[$ii]['product_code'] ?> - <?php echo $products[$ii]['product_name'] ?></option>
-                                                                <?
-                                                                }
-                                                                ?>
-                                                            </select>
+                                                            <label>สินค้า / Product</label>
+															<input type="hidden" id="order_product" name="order_product" class="form-control" value="0" />
+															<div class="row">
+																<div class="col-lg-6">
+																	<input class="example-ajax-post form-control" name="order_product_code" onchange="show_data(this);" placeholder="Product Code" />
+																</div>
+																<div class="col-lg-6">
+																	<input class="form-control" id="order_product_name" name="order_product_name"  placeholder="Product Name" readonly />
+																</div>
+															</div>
+                                
                                                             <p class="help-block">Example : 10.</p>
                                                         </div>
                                                     </div>
@@ -425,3 +456,7 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+<script>
+    $(".example-ajax-post").easyAutocomplete(options);
+</script>

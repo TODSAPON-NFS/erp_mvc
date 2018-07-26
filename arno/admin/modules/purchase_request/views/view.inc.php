@@ -118,7 +118,7 @@
                                             <?php if($purchase_requests[$i]['purchase_request_cancelled'] == 0){ ?>
 
 
-                                                <?PHP if(($license_purchase_page == "Low" && $admin_id == $purchase_requests[$i]['emplpoyye_id']) || $license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?>
+                                                <?PHP if(($license_purchase_page == "Low" && $admin_id == $purchase_requests[$i]['employee_id']) || $license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?>
                                                 <a href="?app=purchase_request&action=cancelled&id=<?php echo $purchase_requests[$i]['purchase_request_id'];?>"  title="ยกเลิกใบร้องขอ" onclick="return confirm('You want to cancelled purchase request : <?php echo $purchase_requests[$i]['purchase_request_code']; ?>');" style="color:#F00;">
                                                     <i class="fa fa-ban" aria-hidden="true"></i>
                                                 </a>
@@ -134,7 +134,7 @@
                                             <?php } else if($purchase_requests[$i]['count_rewrite'] == 0) { ?>
 
 
-                                                <?PHP if(($license_purchase_page == "Low" && $admin_id == $purchase_requests[$i]['emplpoyye_id']) || $license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?>
+                                                <?PHP if(($license_purchase_page == "Low" && $admin_id == $purchase_requests[$i]['employee_id']) || $license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?>
                                                 <a href="?app=purchase_request&action=uncancelled&id=<?php echo $purchase_requests[$i]['purchase_request_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled purchase request : <?php echo $purchase_requests[$i]['purchase_request_code']; ?>');" >
                                                     <i class="fa fa-undo" aria-hidden="true"></i>
                                                 </a>
@@ -143,7 +143,7 @@
                                                 </a>
                                                 <?PHP } ?>
 
-                                                <?PHP if(($license_purchase_page == "Low" && $admin_id == $purchase_requests[$i]['emplpoyye_id']) || $license_purchase_page == "High"){ ?>
+                                                <?PHP if(($license_purchase_page == "Low" && $admin_id == $purchase_requests[$i]['employee_id']) || $license_purchase_page == "High"){ ?>
                                                 <a href="?app=purchase_request&action=delete&id=<?php echo $purchase_requests[$i]['purchase_request_id'];?>"  title="ลบใบร้องขอ" onclick="return confirm('You want to delete purchase request : <?php echo $purchase_requests[$i]['purchase_request_code']; ?>');" style="color:red;">
                                                     <i class="fa fa-times" aria-hidden="true"></i>
                                                 </a>
@@ -152,14 +152,14 @@
                                             <?PHP } else { ?> 
 
 
-                                                <?PHP if(($license_purchase_page == "Low" && $admin_id == $purchase_requests[$i]['emplpoyye_id']) || $license_purchase_page == "Medium" ||  $license_purchase_page == "High"){ ?> 
+                                                <?PHP if(($license_purchase_page == "Low" && $admin_id == $purchase_requests[$i]['employee_id']) || $license_purchase_page == "Medium" ||  $license_purchase_page == "High"){ ?> 
                                                 <a href="?app=purchase_request&action=uncancelled&id=<?php echo $purchase_requests[$i]['purchase_request_id'];?>"  title="เรียกคืนใบร้องขอ" onclick="return confirm('You want to uncancelled purchase request : <?php echo $purchase_requests[$i]['purchase_request_code']; ?>');" >
                                                     <i class="fa fa-undo" aria-hidden="true"></i>
                                                 </a> 
                                                 <?PHP } ?>
 
 
-                                                <?PHP if(($license_purchase_page == "Low" && $admin_id == $purchase_requests[$i]['emplpoyye_id']) || $license_purchase_page == "High"){ ?> 
+                                                <?PHP if(($license_purchase_page == "Low" && $admin_id == $purchase_requests[$i]['employee_id']) || $license_purchase_page == "High"){ ?> 
                                                 <a href="?app=purchase_request&action=delete&id=<?php echo $purchase_requests[$i]['purchase_request_id'];?>"  title="ลบใบร้องขอ" onclick="return confirm('You want to delete purchase request : <?php echo $purchase_requests[$i]['purchase_request_code']; ?>');" style="color:red;">
                                                     <i class="fa fa-times" aria-hidden="true"></i>
                                                 </a>

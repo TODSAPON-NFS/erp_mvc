@@ -3,22 +3,28 @@ session_start();
 
 require_once('../models/NotificationModel.php');
 $user_admin = $_SESSION['user'];
+$notification_id = $_GET['notification'];
 
 $admin_id = $user_admin[0][0];
-$license_admin_page =  $user_admin[0][24];
-$license_sale_employee_page =  $user_admin[0][25]; 
-$license_request_page =  $user_admin[0][26];
-$license_delivery_note_page  =  $user_admin[0][27];
-$license_regrind_page =  $user_admin[0][28];
-$license_purchase_page =  $user_admin[0][29];
-$license_sale_page =  $user_admin[0][30];
-$license_inventery_page =  $user_admin[0][31];
-$license_account_page =  $user_admin[0][32];
-$license_report_page =  $user_admin[0][33];
-$license_manager_page   =  $user_admin[0][34];
+$license_admin_page =  $user_admin[0][26];
+$license_sale_employee_page =  $user_admin[0][27]; 
+$license_request_page =  $user_admin[0][28];
+$license_delivery_note_page  =  $user_admin[0][29];
+$license_regrind_page =  $user_admin[0][30];
+$license_purchase_page =  $user_admin[0][31];
+$license_sale_page =  $user_admin[0][32];
+$license_inventery_page =  $user_admin[0][33];
+$license_account_page =  $user_admin[0][34];
+$license_report_page =  $user_admin[0][35];
+$license_manager_page   =  $user_admin[0][36];
 
 
 $model_notification = new NotificationModel;
+
+if($notification_id != ""){
+    $model_notification->setNotificationSeenByID($notification_id);
+}
+
 $notifications = $model_notification->getNotificationBy($user_admin[0][0]);
 $notifications_new = $model_notification->getNotificationBy($user_admin[0][0],"1");
 
@@ -27,7 +33,7 @@ $notifications_po = $model_notification->getNotificationByType($user_admin[0][0]
 $notifications_cpo = $model_notification->getNotificationByType($user_admin[0][0],'Customer Order',"1");
 $notifications_ns = $model_notification->getNotificationByType($user_admin[0][0],'Supplier Approve',"1");
 
-if($user_admin[0][0] == ""){
+if($user_admin[0][0] === ""){
 header('Location ../index.php');
 }
 ?>

@@ -106,10 +106,10 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['debit_note_due'] = $_POST['debit_note_due'];
         $data['addby'] = $user[0][0];
 
-        $output = $debit_note_model->insertDebitNote($data);
+        $debit_note_id = $debit_note_model->insertDebitNote($data);
 
         
-        if($output > 0){
+        if($debit_note_id > 0){
             $data = [];
             $product_id = $_POST['product_id'];
             $stock_group_id = $_POST['stock_group_id'];
@@ -126,7 +126,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             if(is_array($product_id)){
                 for($i=0; $i < count($product_id) ; $i++){
                     $data_sub = [];
-                    $data_sub['debit_note_id'] = $output;
+                    $data_sub['debit_note_id'] = $debit_note_id;
                     $data_sub['product_id'] = $product_id[$i];
                     $data_sub['stock_group_id'] = $stock_group_id[$i];
                     $data_sub['invoice_customer_list_id'] = $invoice_customer_list_id[$i];
@@ -141,7 +141,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                 }
             }else if($product_id != ""){
                 $data_sub = [];
-                $data_sub['debit_note_id'] = $output;
+                $data_sub['debit_note_id'] = $debit_note_id;
                 $data_sub['product_id'] = $product_id;
                 $data_sub['stock_group_id'] = $stock_group_id;
                 $data_sub['invoice_customer_list_id'] = $invoice_customer_list_id;
@@ -156,7 +156,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             }
 
 ?>
-        <script>window.location="index.php?app=debit_note&action=update&id=<?php echo $output;?>"</script>
+        <script>window.location="index.php?app=debit_note&action=update&id=<?php echo $debit_note_id;?>"</script>
 <?php
         }else{
 ?>

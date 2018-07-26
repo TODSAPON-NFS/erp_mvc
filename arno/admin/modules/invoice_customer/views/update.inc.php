@@ -1,13 +1,28 @@
 <script>
-    var product_data = [
-    <?php for($i = 0 ; $i < count($products) ; $i++ ){?>
-        {
-            product_id:'<?php echo $products[$i]['product_id'];?>',
-            product_code:'<?php echo $products[$i]['product_code'];?>',
-            product_name:'<?php echo $products[$i]['product_name'];?>'
+    var options = {
+        url: function(keyword) {
+            return "controllers/getProductByKeyword.php?keyword="+keyword;
         },
-    <?php }?>
-    ];
+
+        getValue: function(element) {
+            return element.product_code ;
+        },
+
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+
+        preparePostData: function(data) {
+            data.keyword = $(".example-ajax-post").val();
+            return data;
+        },
+
+        requestDelay: 400
+    };
 
     var data_buffer = [];
     function check(){
@@ -85,11 +100,13 @@
      }
 
      function show_data(id){
-        var product_name = "";
-        var data = product_data.filter(val => val['product_id'] == $(id).val());
-        if(data.length > 0){
-            $(id).closest('tr').children('td').children('input[name="product_name[]"]').val( data[0]['product_name'] );
-        }
+        var product_code = $(id).val();
+        $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
+            if(data != null){
+                $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
+                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)
+            }
+        });
         
      }
 
@@ -240,7 +257,8 @@
                         '<td>'+
                             '<input type="hidden" name="invoice_customer_list_id[]" value="0" />'+  
                             '<input type="hidden" name="customer_purchase_order_list_id[]" value="'+ data_buffer[i].customer_purchase_order_list_id +'" readonly />'+     
-                            '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                            '<input type="hidden" name="product_id[]" class="form-control" value="'+ data_buffer[i].product_id +'" />'+
+					        '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="'+ data_buffer[i].product_code +'" />'+ 
                         '</td>'+
                         '<td>'+
                             '<input type="text" class="form-control" name="product_name[]" value="'+ data_buffer[i].product_name +'" readonly />'+
@@ -263,21 +281,7 @@
                     '</tr>'
                 );
 
-                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').empty();
-                var str = "<option value=''>Select Product</option>";
-                $.each(product_data, function (index, value) {
-                    if(value['product_id'] == data_buffer[i].product_id){
-                        str += "<option value='" + value['product_id'] + "' selected >"+value['product_code']+"</option>";
-                    }else{
-                        str += "<option value='" + value['product_id'] + "'>"+value['product_code']+"</option>";
-                    }
-                    
-                });
-
-
-                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').html(str);
-
-                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').selectpicker();
+                $(".example-ajax-post").easyAutocomplete(options);
 
                 var str_stock = "<option value=''>Select Stock</option>";
                 $.each(stock_data, function (index, value) {
@@ -307,7 +311,8 @@
                 '<td>'+
                     '<input type="hidden" name="invoice_customer_list_id[]" value="0" />'+  
                     '<input type="hidden" name="customer_purchase_order_list_id[]" value="0" />'+     
-                    '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                    '<input type="hidden" name="product_id[]" class="form-control" />'+
+                    '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" />'+ 
                 '</td>'+
                 '<td>'+
                     '<input type="text" class="form-control" name="product_name[]" readonly />'+
@@ -330,21 +335,7 @@
             '</tr>'
         );
 
-         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').empty();
-        var str = "<option value=''>Select Product</option>";
-        $.each(product_data, function (index, value) {
-            if(value['product_id'] == data_buffer[i].product_id){
-                str += "<option value='" + value['product_id'] + "' selected >"+value['product_code']+"</option>";
-            }else{
-                str += "<option value='" + value['product_id'] + "'>"+value['product_code']+"</option>";
-            }
-            
-        });
-
-
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').html(str);
-
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="product_id[]"]').selectpicker();
+         $(".example-ajax-post").easyAutocomplete(options);
 
         var str_stock = "<option value=''>Select Stock</option>";
         $.each(stock_data, function (index, value) {
@@ -582,16 +573,8 @@ generate_credit_date();
                                     <input type="hidden" name="customer_purchase_order_list_id[]" value="<?PHP echo  $invoice_customer_lists[$i]['customer_purchase_order_list_id'];?>" />
                                     <input type="hidden" name="invoice_customer_list_id[]" value="<?PHP echo  $invoice_customer_lists[$i]['invoice_customer_list_id'];?>" />
                                    
-                                    <select  class="form-control select" name="product_id[]" onchange="show_data(this);" data-live-search="true" >
-                                        <option value="">Select</option>
-                                        <?php 
-                                        for($ii =  0 ; $ii < count($products) ; $ii++){
-                                        ?>
-                                        <option <?php if($products[$ii]['product_id'] == $invoice_customer_lists[$i]['product_id']){?> selected <?php }?> value="<?php echo $products[$ii]['product_id'] ?>"><?php echo $products[$ii]['product_code'] ?></option>
-                                        <?
-                                        }
-                                        ?>
-                                    </select>
+                                    <input type="hidden" name="product_id[]" class="form-control" value="<?php echo $invoice_customer_lists[$i]['product_id']; ?>" />
+                                    <input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="<?php echo $invoice_customer_lists[$i]['product_code']; ?>"  readonly/>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $invoice_customer_lists[$i]['product_name']; ?>" />
@@ -752,3 +735,7 @@ generate_credit_date();
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+<script>
+$(".example-ajax-post").easyAutocomplete(options);
+</script>

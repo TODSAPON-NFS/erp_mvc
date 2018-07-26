@@ -98,7 +98,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'delete' && ( $license_sale_page == "High" ) ){
-
+    $notification_model->deleteNotificationByTypeID('Customer Purchase Order',$customer_purchase_order_id);
     $customer_purchase_order_list_model->deleteCustomerPurchaseOrderListByCustomerPurchaseOrderID($customer_purchase_order_id);
     $customer_purchase_orders = $customer_purchase_order_model->deleteCustomerPurchaseOrderById($customer_purchase_order_id);
 ?>
@@ -548,7 +548,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
 
         if($output){
-            $notification_model->setNotificationSeenByURL('action=detail&id='.$customer_purchase_order_id);
+            $notification_model->setNotificationSeenByTypeID('Customer Purchase Order',$customer_purchase_order_id);
         
 ?>
         <script>window.location="index.php?app=customer_purchase_order"</script>

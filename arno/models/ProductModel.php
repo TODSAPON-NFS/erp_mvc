@@ -27,6 +27,8 @@ class ProductModel extends BaseModel{
             $product_category = "AND tb_product.product_category_id = '$product_category_id' ";
         }
         
+
+        
         if($keyword != ""){
             $sts_keyword = " AND (product_name LIKE ('%$keyword%') OR product_code LIKE ('%$keyword%') ) ";
         }

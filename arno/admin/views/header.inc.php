@@ -50,3 +50,34 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <script>
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(function() {
+            OneSignal.init({
+            appId: "430c4d4b-cd09-413b-909a-56a3284dc108",
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            console.log("OneSignal User ID:");
+            OneSignal.push(function() {
+                OneSignal.getUserId(function(userId) {
+                    console.log("OneSignal User ID:", userId); 
+                    $.post( "controllers/updatePlayerIDByID.php", { 'user_id':'<?PHP echo $admin_id ?>','user_player_id': userId}, function( data ) {
+                        console.log("result : ",data);
+                        if(data == true){
+                            console.log("Set player id complete.");
+                        }else{
+                            console.log("Set player id fail.");
+                        }   
+                    });
+                });
+            });
+        });
+    
+    </script>

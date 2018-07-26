@@ -75,6 +75,8 @@ if ($_GET['action'] == 'checking'){
 
 
         if($output){
+            $notification_model->setNotification("Purchase Order",$purchase_order_id,"Purchase Order <br>No. ".$purchase_order['purchase_order_code']." has been update from supplier","index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_purchase_page",'Medium');
+            $notification_model->setNotification("Purchase Order",$purchase_order_id,"Purchase Order <br>No. ".$purchase_order['purchase_order_code']."has been update from supplier","index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_purchase_page",'High');  
            
 ?>
         <script>
@@ -132,6 +134,11 @@ if ($_GET['action'] == 'checking'){
 
 
         if($output){
+
+            //$notification_model->setNotificationByUserID("Purchase Order",$purchase_order_id,"Purchase Order <br>No. ".$purchase_order['purchase_order_code']." has been confirm from supplier","index.php?app=purchase_order&action=detail&id=$purchase_order_id",$purchase_order['employee_id']);
+            $notification_model->setNotification("Purchase Order",$purchase_order_id,"Purchase Order <br>No. ".$purchase_order['purchase_order_code']." has been confirm from supplier","index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_purchase_page",'Medium');
+            $notification_model->setNotification("Purchase Order",$purchase_order_id,"Purchase Order <br>No. ".$purchase_order['purchase_order_code']."has been confirm from supplier","index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_purchase_page",'High');  
+        
             
 ?>
         <script>

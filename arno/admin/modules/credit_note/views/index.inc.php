@@ -10,6 +10,10 @@ require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/CustomerModel.php');
 require_once('../models/InvoiceCustomerModel.php');
+
+require_once('../models/JournalSaleReturnModel.php');
+require_once('../models/JournalSaleReturnListModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/credit_note/views/";
@@ -21,6 +25,10 @@ $credit_note_model = new CreditNoteModel;
 $credit_note_list_model = new CreditNoteListModel;
 $customer_purchase_order_list_model = new CustomerPurchaseOrderListModel;
 $product_model = new ProductModel;
+$journal_sale_return_model = new JournalSaleReturnModel;
+$journal_sale_return_list_model = new JournalSaleReturnListModel;
+
+
 $credit_note_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $customer_id = $_GET['customer_id'];
@@ -80,6 +88,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
 }else if ($_GET['action'] == 'delete' && ( $license_sale_page == "High" )){
     $credit_note_model->deleteCreditNoteById($credit_note_id);
+    $journal_sale_return_model->deleteJournalSaleReturnByCreditNoteID($credit_note_id);
 ?>
     <script>window.location="index.php?app=credit_note"</script>
 <?php
@@ -107,10 +116,47 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['credit_note_due'] = $_POST['credit_note_due'];
         $data['addby'] = $user[0][0];
 
-        $output = $credit_note_model->insertCreditNote($data);
+        $credit_note_id = $credit_note_model->insertCreditNote($data);
 
         
-        if($output > 0){
+        if($credit_note_id > 0){
+
+            $data = [];
+            $first_code = "SR".date("y").date("m");
+            $first_date = date("d")."-".date("m")."-".date("Y");
+            $last_code = $journal_sale_return_model->getJournalSaleReturnLastID($first_code,3);
+            $data['credit_note_id'] = $credit_note_id;
+            $data['journal_sale_return_date'] = $_POST['credit_note_date'];
+            $data['journal_sale_return_code'] = $last_code;
+            $data['journal_sale_return_name'] = "รับคืนสินค้าจาก ".$_POST['credit_note_name']." [".$_POST['credit_note_code']."] ";
+            $data['addby'] = $admin_id;
+    
+    
+            $journal_sale_return_id = $journal_sale_return_model->insertJournalSaleReturn($data);
+
+            if($journal_sale_return_id > 0){
+
+                $customer=$customer_model->getCustomerByID($_POST['customer_id']);
+                $data = [];
+                $data['journal_sale_return_id'] = $journal_sale_return_id;
+                $data['account_id'] = $customer['account_id'];
+                $data['journal_sale_return_list_name'] = "รับคืนสินค้าจาก ".$_POST['credit_note_name']." [".$_POST['credit_note_code']."] ";
+                $data['journal_sale_return_list_debit'] = 0;
+                $data['journal_sale_return_list_credit'] = (float)filter_var( $_POST['credit_note_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $journal_sale_return_list_model->insertJournalSaleReturnList($data);
+
+                if((float)filter_var( $_POST['credit_note_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                    $data = [];
+                    $data['journal_sale_return_id'] = $journal_sale_return_id;
+                    $data['account_id'] = '91';
+                    $data['journal_sale_return_list_name'] = "รับคืนสินค้าจาก ".$_POST['credit_note_name']." [".$_POST['credit_note_code']."] ";
+                    $data['journal_sale_return_list_debit'] = 0;
+                    $data['journal_sale_return_list_credit'] = (float)filter_var( $_POST['credit_note_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $journal_sale_return_list_model->insertJournalSaleReturnList($data);
+
+                }
+            }
+
             $data = [];
             $product_id = $_POST['product_id'];
             $stock_group_id = $_POST['stock_group_id'];
@@ -127,7 +173,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             if(is_array($product_id)){
                 for($i=0; $i < count($product_id) ; $i++){
                     $data_sub = [];
-                    $data_sub['credit_note_id'] = $output;
+                    $data_sub['credit_note_id'] = $credit_note_id;
                     $data_sub['credit_note_type_id'] = $_POST['credit_note_type_id'];
                     $data_sub['stock_date'] = $_POST['credit_note_date'];
                     $data_sub['product_id'] = $product_id[$i];
@@ -144,7 +190,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                 }
             }else if($product_id != ""){
                 $data_sub = [];
-                $data_sub['credit_note_id'] = $output;
+                $data_sub['credit_note_id'] = $credit_note_id;
                 $data_sub['credit_note_type_id'] = $_POST['credit_note_type_id'];
                 $data_sub['stock_date'] = $_POST['credit_note_date'];
                 $data_sub['product_id'] = $product_id;
@@ -161,7 +207,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             }
 
 ?>
-        <script>window.location="index.php?app=credit_note&action=update&id=<?php echo $output;?>"</script>
+        <script>window.location="index.php?app=credit_note&action=update&id=<?php echo $credit_note_id;?>"</script>
 <?php
         }else{
 ?>

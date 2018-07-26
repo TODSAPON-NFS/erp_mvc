@@ -18,8 +18,7 @@ $request_special_model = new RequestSpecialModel;
 $request_special_list_model = new RequestSpecialListModel;
 $product_model = new ProductModel;
 $first_char = "SPTR";
-$request_special_id = $_GET['id'];
-$notification_id = $_GET['notification'];
+$request_special_id = $_GET['id']; 
 
 $request_special = $request_special_model->getRequestSpecialByID($request_special_id);
 $employee_id = $request_special['employee_id'];
@@ -52,16 +51,13 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
     $request_special_lists = $request_special_list_model->getRequestSpecialListBy($request_special_id);
     require_once($path.'update.inc.php');
 
-}else if ($_GET['action'] == 'detail'){
-    if($notification_id != ""){
-        $notification_model->setNotificationSeenByID($notification_id);
-    }
+}else if ($_GET['action'] == 'detail'){ 
     $request_special = $request_special_model->getRequestSpecialViewByID($request_special_id);
     $request_special_lists = $request_special_list_model->getRequestSpecialListBy($request_special_id);
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'delete' && ( ($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'High') ){
-
+    $notification_model->deleteNotificationByTypeID('Special Tool Request',$request_special_id);
     $request_special_list_model->deleteRequestSpecialListByRequestSpecialID($request_special_id);
     $request_specials = $request_special_model->deleteRequestSpecialById($request_special_id);
 ?>
@@ -166,7 +162,7 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
 
         $output = $request_special_model->updateRequestSpecialByID($request_special_id,$data);
 
-        $notification_model->setNotification("Special Tool Request ","Special Tool Request  <br>No. ".$data['request_special_code']." ".$data['urgent_status'],"index.php?app=request_special&action=detail&id=$request_special_id","license_manager_page","'High'");
+        $notification_model->setNotification("Special Tool Request","Special Tool Request  <br>No. ".$data['request_special_code']." ".$data['urgent_status'],"index.php?app=request_special&action=detail&id=$request_special_id","license_manager_page","'High'");
         
         $product_id = $_POST['product_id'];
         $request_special_list_id = $_POST['request_special_list_id'];
@@ -286,7 +282,7 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
 
 
         if($output){
-            $notification_model->setNotificationSeenByURL('action=detail&id='.$request_special_id);
+            $notification_model->setNotificationSeenByTypeID('Special Tool Request',$request_special_id);
         
 ?>
         <script>window.location="index.php?app=request_special"</script>

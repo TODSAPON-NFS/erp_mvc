@@ -18,8 +18,7 @@ $request_regrind_model = new RequestRegrindModel;
 $request_regrind_list_model = new RequestRegrindListModel;
 $product_model = new ProductModel;
 $first_char = "RPTR";
-$request_regrind_id = $_GET['id'];
-$notification_id = $_GET['notification'];
+$request_regrind_id = $_GET['id']; 
 
 $request_regrind = $request_regrind_model->getRequestRegrindByID($request_regrind_id);
 $employee_id = $request_regrind['employee_id'];
@@ -58,16 +57,13 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
     $request_regrind_lists = $request_regrind_list_model->getRequestRegrindListBy($request_regrind_id);
     require_once($path.'update.inc.php');
 
-}else if ($_GET['action'] == 'detail'){
-    if($notification_id != ""){
-        $notification_model->setNotificationSeenByID($notification_id);
-    }
+}else if ($_GET['action'] == 'detail'){ 
     $request_regrind = $request_regrind_model->getRequestRegrindViewByID($request_regrind_id);
     $request_regrind_lists = $request_regrind_list_model->getRequestRegrindListBy($request_regrind_id);
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'delete' && (($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'High') ){
-
+    $notification_model->deleteNotificationByTypeID('Regrind Tool Request',$request_regrind_id);
     $request_regrind_list_model->deleteRequestRegrindListByRequestRegrindID($request_regrind_id);
     $request_regrinds = $request_regrind_model->deleteRequestRegrindById($request_regrind_id);
 ?>
@@ -172,7 +168,7 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
 
         $output = $request_regrind_model->updateRequestRegrindByID($request_regrind_id,$data);
 
-        $notification_model->setNotification("Regrind Tool Request ","Regrind Tool Request  <br>No. ".$data['request_regrind_code']." ".$data['urgent_status'],"index.php?app=request_regrind&action=detail&id=$request_regrind_id","license_manager_page","'High'");
+        $notification_model->setNotification("Regrind Tool Request","Regrind Tool Request  <br>No. ".$data['request_regrind_code']." ".$data['urgent_status'],"index.php?app=request_regrind&action=detail&id=$request_regrind_id","license_manager_page","'High'");
         
         $product_id = $_POST['product_id'];
         $request_regrind_list_id = $_POST['request_regrind_list_id'];
@@ -292,7 +288,7 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
 
 
         if($output){
-            $notification_model->setNotificationSeenByURL('action=detail&id='.$request_regrind_id);
+            $notification_model->setNotificationSeenByTypeID('Regrind Tool Request',$request_regrind_id);
         
 ?>
         <script>window.location="index.php?app=request_regrind"</script>

@@ -120,14 +120,6 @@
         require_once("modules/quotation/views/index.inc.php");
     }else if($_GET['app'] == "invoice_customer"){
         require_once("modules/invoice_customer/views/index.inc.php");
-    }else if($_GET['app'] == "credit_note"){
-        require_once("modules/credit_note/views/index.inc.php");
-    }else if($_GET['app'] == "debit_note"){
-        require_once("modules/debit_note/views/index.inc.php");
-    }else if($_GET['app'] == "billing_note"){
-        require_once("modules/billing_note/views/index.inc.php");
-    }else if($_GET['app'] == "official_receipt"){
-        require_once("modules/official_receipt/views/index.inc.php");
     }
     
     /* ----------------------------------- //ระบบขายสินค้า// ---------------------------------------------- */
@@ -135,7 +127,15 @@
 
     /* ----------------------------------- ระบบบัญชี ---------------------------------------------- */
 
-    else if($_GET['app'] == "account"){
+    else if($_GET['app'] == "credit_note"){
+        require_once("modules/credit_note/views/index.inc.php");
+    }else if($_GET['app'] == "debit_note"){
+        require_once("modules/debit_note/views/index.inc.php");
+    }else if($_GET['app'] == "billing_note"){
+        require_once("modules/billing_note/views/index.inc.php");
+    }else if($_GET['app'] == "official_receipt"){
+        require_once("modules/official_receipt/views/index.inc.php");
+    }else if($_GET['app'] == "account"){
         require_once("modules/account/views/index.inc.php");
     }else if($_GET['app'] == "finance_credit"){
         require_once("modules/finance_credit/views/index.inc.php");
@@ -173,10 +173,18 @@
         require_once("modules/credit_purchasing/views/index.inc.php");
     }else if($_GET['app'] == "journal_general"){
         require_once("modules/journal_general/views/index.inc.php");
+    }else if($_GET['app'] == "journal_special_01"){
+        require_once("modules/journal_purchase/views/index.inc.php");
+    }else if($_GET['app'] == "journal_special_02"){
+        require_once("modules/journal_sale/views/index.inc.php");
     }else if($_GET['app'] == "journal_special_03"){
         require_once("modules/journal_cash_receipt/views/index.inc.php");
     }else if($_GET['app'] == "journal_special_04"){
         require_once("modules/journal_cash_payment/views/index.inc.php");
+    }else if($_GET['app'] == "journal_special_05"){
+        require_once("modules/journal_purchase_return/views/index.inc.php");
+    }else if($_GET['app'] == "journal_special_06"){
+        require_once("modules/journal_sale_return/views/index.inc.php");
     }
 
     /* ----------------------------------- //ระบบบัญชี// ---------------------------------------------- */

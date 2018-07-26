@@ -2,7 +2,7 @@
 
 
 <script>
-
+    var customer_type = 0;
     var options = {
         url: function(keyword) {
             return "controllers/getProductByKeyword.php?keyword="+keyword;
@@ -155,9 +155,8 @@
 
     function show_row_from(id){
        
-        var p_id = $(id).closest('tr').children('td').children('div').children('select[name="product_id[]"]');
-
-        if(p_id.length > 0){
+        var p_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]');
+        if(p_id.length > 0){ 
             $.post( "controllers/getSupplierListByProductID.php", { 'product_id': $(p_id[0]).val()}, function( data ) {
 
                 var modelsupp = $(id).closest('tr').children('td').children('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]')
@@ -165,7 +164,13 @@
                 if(modelsupp.length > 0){
                     var content = "<option value=''>Select Product</option>";
                     $.each(data, function (index, value) {
-                        content += "<option value='" + value['supplier_id'] + "'>"+value['supplier_name_th']+"("+value['supplier_name_en']+")</option>";
+                        var name = "";
+                        if(value['supplier_name_th'] != ""){
+                            name = value['supplier_name_th'];
+                        }else{
+                            name = value['supplier_name_en'];
+                        }
+                        content += "<option value='" + value['supplier_id'] + "'>"+name+"</option>";
                     });
                     $(modelsupp[0]).html(content);
                 }
@@ -201,7 +206,11 @@
             });
 
             var modal = $(id).closest('tr').children('td').children('div[name="modalAdd"]');
-            if(modal.length > 0){
+            if(modal.length > 0){  
+                $(id).closest('tr').children('td').children('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]')
+                     .children('div').children('div').children('div').children('input[name="qty[]"]').val($(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_qty[]"]').val());
+                
+    
                 $(modal[0]).modal('show');
             }
         }
@@ -243,10 +252,29 @@
         var product_code = $(id).val();
         $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
             if(data != null){
-                $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
-                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)
+                $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name);
+                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id);
+                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id);
+                
+                $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_qty[]"]').val('1');
+
+
+                if(customer_type == 0){
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_5);
+                }else if(customer_type == 1){
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_4);
+                }else if(customer_type == 2){
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_3);
+                }else if(customer_type == 3){
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_2);
+                }else if(customer_type == 4){
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_1);
+                }
+                
+                update_sum(id);
             }
         });
+        
      }
 
 
@@ -254,6 +282,7 @@
         var customer_id = document.getElementById('customer_id').value;
         if(customer_id != ''){
             $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
+                customer_type = data.customer_type_id;
                 document.getElementById('customer_code').value = data.customer_code;
                 document.getElementById('customer_tax').value = data.customer_tax;
                 document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
@@ -786,7 +815,13 @@
                                                        <?php if($cpold[$ii]['supplier_id'] == 0){
                                                             echo "คลังสินค้า ".$cpold[$ii]['stock_hold_name']." จำนวน ".$cpold[$ii]['qty'] ; 
                                                        }else{
-                                                            echo "ซื้อจาก ".$cpold[$ii]['supplier_name_th']." จำนวน ".$cpold[$ii]['qty']." (".$cpold[$ii]['stock_type_code']." ".$cpold[$ii]['stock_type_name']." -> ".$cpold[$ii]['stock_group_name'].")"; 
+                                                           $name = "";
+                                                           if($cpold[$ii]['supplier_name_th'] != ""){
+                                                                $name = $cpold[$ii]['supplier_name_th'];
+                                                           }else {
+                                                                $name = $cpold[$ii]['supplier_name_en'];
+                                                           }
+                                                            echo "ซื้อจาก ".$name." จำนวน ".$cpold[$ii]['qty']." (".$cpold[$ii]['stock_type_code']." ".$cpold[$ii]['stock_type_name']." -> ".$cpold[$ii]['stock_group_name'].")"; 
                                                        }?>
                                                 </li>
                                         <?PHP }?>

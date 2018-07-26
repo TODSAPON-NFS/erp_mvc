@@ -92,6 +92,7 @@ if(!isset($_GET['action'])){
         $data['pay_limit'] = $_POST['pay_limit'];
         $data['account_id'] = $_POST['account_id'];
         $data['sale_id'] = $_POST['sale_id'];
+        $data['customer_type_id'] = $_POST['customer_type_id'];
         $data['vat_type'] = $_POST['vat_type'];
         $data['vat'] = $_POST['vat'];
         $data['currency_id'] = $_POST['currency_id'];
@@ -173,6 +174,7 @@ if(!isset($_GET['action'])){
         $data['pay_limit'] = $_POST['pay_limit'];
         $data['account_id'] = $_POST['account_id'];
         $data['sale_id'] = $_POST['sale_id'];
+        $data['customer_type_id'] = $_POST['customer_type_id'];
         $data['vat_type'] = $_POST['vat_type'];
         $data['vat'] = $_POST['vat'];
         $data['currency_id'] = $_POST['currency_id'];

@@ -23,8 +23,6 @@ $first_char = "PR";
 $purchase_request_id = $_GET['id'];
 $type = strtoupper($_GET['type']);
 
-$notification_id = $_GET['notification'];
-
 $purchase_request = $purchase_request_model->getPurchaseRequestByID($purchase_request_id);
 
 $employee_id = $purchase_request["employee_id"];
@@ -35,7 +33,14 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
     $keyword = $_GET['keyword'];
     $customers=$customer_model->getCustomerBy();
     $suppliers=$supplier_model->getSupplierBy();
-    $purchase_requests = $purchase_request_model->getPurchaseRequestBy($date_start,$date_end,$keyword,$user_id);
+
+    if($license_purchase_page == "Medium" || $license_purchase_page == "High" ){
+        $purchase_requests = $purchase_request_model->getPurchaseRequestBy($date_start,$date_end,$keyword);
+    }else{
+        $purchase_requests = $purchase_request_model->getPurchaseRequestBy($date_start,$date_end,$keyword,$user_id);
+    }
+    
+
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert' && ($license_purchase_page == "Low" || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
@@ -70,15 +75,13 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
-    if($notification_id != ""){
-        $notification_model->setNotificationSeenByID($notification_id);
-    }
+    
     $purchase_request = $purchase_request_model->getPurchaseRequestViewByID($purchase_request_id);
     $purchase_request_lists = $purchase_request_list_model->getPurchaseRequestListBy($purchase_request_id);
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'delete'){
-
+    $notification_model->deleteNotificationByTypeID('Purchase Request',$purchase_request_id);
     $purchase_request_list_model->deletePurchaseRequestListByPurchaseRequestID($purchase_request_id);
     $purchase_requests = $purchase_request_model->deletePurchaseRequestById($purchase_request_id);
 ?>
@@ -183,8 +186,7 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
 
         $output = $purchase_request_model->updatePurchaseRequestByID($purchase_request_id,$data);
 
-        $notification_model->setNotification("Purchase Request","Purchase Request <br>No. ".$data['purchase_request_code']." ".$data['urgent_status'],"index.php?app=purchase_request&action=detail&id=$purchase_request_id","license_manager_page","'High'");
-        
+       
         $product_id = $_POST['product_id'];
         $purchase_request_list_id = $_POST['purchase_request_list_id'];
         $purchase_request_list_qty = $_POST['purchase_request_list_qty'];
@@ -224,6 +226,8 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
         }
 
         if($output){
+            $notification_model->setNotification("Purchase Request",$purchase_request_id,"Purchase Request <br>No. ".$_POST['purchase_request_code']." ".$data['urgent_status'],"index.php?app=purchase_request&action=detail&id=$purchase_request_id","license_manager_page",'High');
+        
 ?>
         <script>window.location="index.php?app=purchase_request"</script>
 <?php
@@ -287,15 +291,20 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
     if(isset($_POST['purchase_request_accept_status'])){
         $data = [];
         $data['purchase_request_accept_status'] = $_POST['purchase_request_accept_status'];
-        $data['purchase_request_accept_by'] = $user[0][0];
+        $data['purchase_request_accept_by'] = $admin_id;
         $data['purchase_request_status'] = 'Approved';
-        $data['updateby'] = $user[0][0];
+        $data['updateby'] = $admin_id;
 
         $output = $purchase_request_model->updatePurchaseRequestAcceptByID($purchase_request_id,$data);
 
 
         if($output){
-            $notification_model->setNotificationSeenByURL('action=detail&id='.$purchase_request_id);
+            $purchase_request = $purchase_request_model->getPurchaseRequestViewByID($purchase_request_id);
+            $notification_model->setNotificationSeenByTypeID('Purchase Request',$purchase_request_id);
+
+            $notification_model->setNotification("Purchase Request",$purchase_request_id,"Purchase Request <br>No. ".$purchase_request['purchase_request_code']." has ".$purchase_request['purchase_request_accept_status'],"index.php?app=purchase_request&action=detail&id=$purchase_request_id","license_purchase_page",'High');
+            $notification_model->setNotification("Purchase Request",$purchase_request_id,"Purchase Request <br>No. ".$purchase_request['purchase_request_code']." has ".$purchase_request['purchase_request_accept_status'],"index.php?app=purchase_request&action=detail&id=$purchase_request_id","license_purchase_page",'Medium');
+            $notification_model->setNotificationByUserID("Purchase Request",$purchase_request_id,"Purchase Request <br>No. ".$purchase_request['purchase_request_code']." has ".$purchase_request['purchase_request_accept_status'],"index.php?app=purchase_request&action=detail&id=$purchase_request_id",$purchase_request['employee_id']);
         
 ?>
         <script>window.location="index.php?app=purchase_request"</script>
@@ -317,7 +326,11 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $keyword = $_GET['keyword'];
-    $purchase_requests = $purchase_request_model->getPurchaseRequestBy($date_start = "",$date_end = "",$keyword = "",$user_id = "");
+    if($license_purchase_page == "Medium" || $license_purchase_page == "High" ){
+        $purchase_requests = $purchase_request_model->getPurchaseRequestBy($date_start,$date_end,$keyword);
+    }else{
+        $purchase_requests = $purchase_request_model->getPurchaseRequestBy($date_start,$date_end,$keyword,$user_id);
+    }
     require_once($path.'view.inc.php');
 
 }

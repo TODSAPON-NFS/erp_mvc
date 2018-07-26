@@ -374,6 +374,20 @@
                                 <p class="help-block">Example : เงินสด.</p>
                             </div>
                         </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>ประเภทลูกค้า / Customer type </label>
+                                <select id="customer_type_id" name="customer_type_id" class="form-control">
+                                    <option value="">เลือก / Select</option>
+                                    <option <?PHP if($customer['customer_type_id'] == '0'){?>Selected <?PHP }?> value="0" >Low</option>
+                                    <option <?PHP if($customer['customer_type_id'] == '1'){?>Selected <?PHP }?> value="1" >Medium</option>
+                                    <option <?PHP if($customer['customer_type_id'] == '2'){?>Selected <?PHP }?> value="2" >High</option>
+                                    <option <?PHP if($customer['customer_type_id'] == '3'){?>Selected <?PHP }?> value="3" >Dealer</option>
+                                    <option <?PHP if($customer['customer_type_id'] == '4'){?>Selected <?PHP }?> value="4" >Special</option>
+                                </select>
+                                <p class="help-block">Example : Dealer.</p>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">

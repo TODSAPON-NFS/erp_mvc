@@ -81,6 +81,7 @@
                             <th>ลำดับ <br>No.</th>
                             <th>วันที่ <br>Journal Cash Payment Date</th>
                             <th>หมายเลขสมุดรายวันจ่ายเงิน <br>Journal Cash Payment No.</th>
+                            <th>ชื่อสมุดรายวันจ่ายเงิน <br>Name.</th>
                             <th>ผู้เพิ่มเอกสาร <br>Add by</th>
                             <th>วันที่เพิ่มเอกสาร <br>Add date</th>
                             <th>ผู้แก้ไขเอกสาร <br>Update by</th>

@@ -18,8 +18,7 @@ $request_standard_model = new RequestStandardModel;
 $request_standard_list_model = new RequestStandardListModel;
 $product_model = new ProductModel;
 $first_char = "STR";
-$request_standard_id = $_GET['id'];
-$notification_id = $_GET['notification'];
+$request_standard_id = $_GET['id']; 
 
 $request_standard = $request_standard_model->getRequestStandardByID($request_standard_id);
 $employee_id = $request_standard['employee_id'];
@@ -57,16 +56,13 @@ if(!isset($_GET['action'])){
     $request_standard_lists = $request_standard_list_model->getRequestStandardListBy($request_standard_id);
     require_once($path.'update.inc.php');
 
-}else if ($_GET['action'] == 'detail'){
-    if($notification_id != ""){
-        $notification_model->setNotificationSeenByID($notification_id);
-    }
+}else if ($_GET['action'] == 'detail'){ 
     $request_standard = $request_standard_model->getRequestStandardViewByID($request_standard_id);
     $request_standard_lists = $request_standard_list_model->getRequestStandardListBy($request_standard_id);
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'delete' && (($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'High') ){
-
+    $notification_model->deleteNotificationByTypeID('Standard Tool Request',$request_standard_id);
     $request_standard_list_model->deleteRequestStandardListByRequestStandardID($request_standard_id);
     $request_standards = $request_standard_model->deleteRequestStandardById($request_standard_id);
 ?>
@@ -171,7 +167,7 @@ if(!isset($_GET['action'])){
 
         $output = $request_standard_model->updateRequestStandardByID($request_standard_id,$data);
 
-        $notification_model->setNotification("Standard Tool Request ","Standard Tool Request  <br>No. ".$data['request_standard_code']." ".$data['urgent_status'],"index.php?app=request_standard&action=detail&id=$request_standard_id","license_manager_page","'High'");
+        $notification_model->setNotification("Standard Tool Request","Standard Tool Request  <br>No. ".$data['request_standard_code']." ".$data['urgent_status'],"index.php?app=request_standard&action=detail&id=$request_standard_id","license_manager_page","'High'");
         
         $product_id = $_POST['product_id'];
         $request_standard_list_id = $_POST['request_standard_list_id'];
@@ -291,7 +287,7 @@ if(!isset($_GET['action'])){
 
 
         if($output){
-            $notification_model->setNotificationSeenByURL('action=detail&id='.$request_standard_id);
+            $$notification_model->setNotificationSeenByTypeID('Standard Tool Request',$request_standard_id);
         
 ?>
         <script>window.location="index.php?app=request_standard"</script>

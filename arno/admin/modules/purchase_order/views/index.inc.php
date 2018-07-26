@@ -33,8 +33,7 @@ $customer_purchase_order_list_detail_model = new CustomerPurchaseOrderListDetail
 $product_supplier_model = new ProductSupplierModel;
 $first_char = "PO";
 $purchase_order_id = $_GET['id'];
-$purchase_order_list_id = $_GET['purchase_order_list_id'];
-$notification_id = $_GET['notification'];
+$purchase_order_list_id = $_GET['purchase_order_list_id']; 
 $supplier_id = $_GET['supplier_id'];
 $purchase_request_id = $_GET['purchase_request_id'];
 $type = strtoupper($_GET['type']);
@@ -108,16 +107,14 @@ if(!isset($_GET['action'])){
     $products=$product_model->getProductBy('','','','Active');
     require_once($path.'update.inc.php');
 
-}else if ($_GET['action'] == 'detail'){
-    if($notification_id != ""){
-        $notification_model->setNotificationSeenByID($notification_id);
-    }
+}else if ($_GET['action'] == 'detail'){ 
     $purchase_order = $purchase_order_model->getPurchaseOrderViewByID($purchase_order_id);
     $purchase_order_lists = $purchase_order_list_model->getPurchaseOrderListBy($purchase_order_id);
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'delete' && ( $license_purchase_page == "High" )){
 
+    $notification_model->deleteNotificationByTypeID('Purchase Order',$purchase_order_id);
     $purchase_order_list_model->deletePurchaseOrderListByPurchaseOrderID($purchase_order_id);
     $purchase_orders = $purchase_order_model->deletePurchaseOrderById($purchase_order_id);
 ?>
@@ -499,7 +496,14 @@ if(!isset($_GET['action'])){
 
 
         if($output){
-            $notification_model->setNotificationSeenByURL('action=detail&id='.$purchase_order_id);
+
+            $purchase_order = $purchase_order_model->getPurchaseOrderByID($purchase_order_id);
+
+            $notification_model->setNotificationSeenByTypeID('Purchase Order',$purchase_order_id);
+            $notification_model->setNotificationByUserID("Purchase Order",$purchase_order_id,"Purchase Order <br>No. ".$purchase_order['purchase_order_code']." has been request","index.php?app=purchase_order&action=detail&id=$purchase_order_id",$purchase_order['employee_id']);
+            $notification_model->setNotification("Purchase Order",$purchase_order_id,"Purchase Order <br>No. ".$purchase_order['purchase_order_code']." has been request","index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_purchase_page",'Medium');
+            $notification_model->setNotification("Purchase Order",$purchase_order_id,"Purchase Order <br>No. ".$purchase_order['purchase_order_code']." has been request","index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_purchase_page",'High');  
+        
         
 ?>
         <script>window.location="index.php?app=purchase_order&action=detail&id=<?php echo $purchase_order_id;?>"</script>
@@ -567,12 +571,16 @@ if(!isset($_GET['action'])){
         $data['purchase_order_status'] = 'Request';
         
         $data['updateby'] = $user[0][0];
+
 		$purchase_order = $purchase_order_model->getPurchaseOrderByID($purchase_order_id);
 
         $output = $purchase_order_model->updatePurchaseOrderRequestByID($purchase_order_id,$data);
-        $notification_model->setNotification("Purchase Order","Purchase Order <br>No. ".$purchase_order['purchase_order_code']." ".$data['urgent_status'],"index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_manager_page","'High'");
 
         if($output){
+
+            $notification_model->setNotification("Purchase Order",$purchase_order_id,"Purchase Order <br>No. ".$purchase_order['purchase_order_code']." has been request","index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_manager_page",'High');
+            $notification_model->setNotification("Purchase Order",$purchase_order_id,"Purchase Order <br>No. ".$purchase_order['purchase_order_code']." has been request","index.php?app=purchase_order&action=detail&id=$purchase_order_id","license_purchase_page",'High');  
+        
 ?>
         <script>
             alert("Send request complete.");
@@ -614,7 +622,7 @@ if(!isset($_GET['action'])){
             $body = '
                 We are opening the purchase order.
                 Can you please confirm the order details?. 
-                At <a href="http://support.revelsoft.co.th/erp_mvc/arno/supplier/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
+                At <a href="http://arno-thailand.revelsoft.co.th/arno/supplier/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
                 Before I send you a purchase order.
                 <br>
                 <br>
@@ -633,7 +641,7 @@ if(!isset($_GET['action'])){
             $mail->Host = "mail.revelsoft.co.th"; // SMTP server
             $mail->Port = 587; 
             $mail->Username = "support@revelsoft.co.th"; // account SMTP
-            $mail->Password = "support123456"; //  SMTP
+            $mail->Password = "revelsoft1234@"; //  SMTP
 
             $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
             $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");
@@ -690,7 +698,7 @@ if(!isset($_GET['action'])){
             $body = '
                 We are opened the purchase order.
                 Can you confirm the order details?. 
-                At <a href="http://support.revelsoft.co.th/erp_mvc/arno/supplier/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
+                At <a href="http://arno-thailand.revelsoft.co.th/arno/supplier/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
 
                 <br>
                 <br>
@@ -709,7 +717,7 @@ if(!isset($_GET['action'])){
             $mail->Host = "mail.revelsoft.co.th"; // SMTP server
             $mail->Port = 587; 
             $mail->Username = "support@revelsoft.co.th"; // account SMTP
-            $mail->Password = "support123456"; //  SMTP
+            $mail->Password = "revelsoft1234@"; //  SMTP
 
             $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
             $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");

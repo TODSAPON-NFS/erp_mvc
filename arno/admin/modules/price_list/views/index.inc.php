@@ -10,7 +10,7 @@ $model_product_type = new ProductTypeModel;
 $model_product_category = new ProductCategoryModel;
 $model_supplier = new SupplierModel;
 
-if(!isset($_GET['action']) || $_GET['action'] != 'update'){
+if(!isset($_GET['action'])){
 
     $supplier_id = $_GET['supplier_id'];
     $product_category_id = $_GET['product_category_id'];
@@ -37,7 +37,7 @@ if(!isset($_GET['action']) || $_GET['action'] != 'update'){
 
     require_once($path.'view.inc.php');
 
-} else if ($_GET['action'] == 'update' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
+} else if ($_GET['action'] == 'update' && ( $license_sale_employee_page == 'High') ){
 
     $product_id = $_POST['product_id'];
     $product_price_1 = $_POST['product_price_1'];
@@ -58,6 +58,25 @@ if(!isset($_GET['action']) || $_GET['action'] != 'update'){
     
         $model_product->updateProductPriceByID($product_id[$i],$data);
     }
+    
+
+    ?>
+    <script>window.location="index.php?app=price_list"</script>
+    <?php
+
+}else if ($_GET['action'] == 'update-single' && ( $license_sale_employee_page == 'High') ){
+     
+    $data = [];
+    $data['product_id'] = $_POST['product_id'];
+    $data['product_price_1'] = $_POST['product_price_1'];
+    $data['product_price_2'] = $_POST['product_price_2'];
+    $data['product_price_3'] = $_POST['product_price_3'];
+    $data['product_price_4'] = $_POST['product_price_4'];
+    $data['product_price_5'] = $_POST['product_price_5'];
+
+
+    $model_product->updateProductPriceByID($_POST['product_id'],$data);
+ 
     
 
     ?>

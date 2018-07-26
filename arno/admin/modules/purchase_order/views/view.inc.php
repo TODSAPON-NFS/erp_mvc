@@ -25,7 +25,7 @@
 
   <div class="tab-content">
 
-    <div id="standard" class="tab-pane fade">
+    <div id="standard" class="tab-pane fade in active">
         <h3>Standard Order</h3>
         <!-- /.row -->
         <div class="row">
@@ -126,7 +126,7 @@
         </div>
     </div>
 
-    <div id="test" class="tab-pane fade in active">
+    <div id="test" class="tab-pane fade">
         <h3>Test Order</h3>
         <div class="row">
             <div class="col-lg-12">
@@ -238,10 +238,10 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         รายใบสั่งซื้อ / Purchase Order List
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <a class="btn btn-warning " style="float:right;margin-left:8px;" href="?app=purchase_order&action=insert&type=test" ><i class="fa fa-plus" aria-hidden="true"></i> Add Test Order</a>
                         <a class="btn btn-danger " style="float:right;margin-left:8px;" href="?app=purchase_order&action=insert&type=blanked" ><i class="fa fa-plus" aria-hidden="true"></i> Add Blanked Order</a>
                         <a class="btn btn-success " style="float:right;margin-left:8px;" href="?app=purchase_order&action=insert&type=standard" ><i class="fa fa-plus" aria-hidden="true"></i> Add Standard Order</a>

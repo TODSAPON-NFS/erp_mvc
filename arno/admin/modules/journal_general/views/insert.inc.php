@@ -158,8 +158,8 @@
                                     </select>
                                 </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_general_list_name[]" value="<?php echo $journal_general_lists[$i]['journal_general_list_name']; ?>" /></td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_general_list_credit[]" value="<?php echo $journal_general_lists[$i]['journal_general_list_credit']; ?>" /></td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_general_list_debit[]" value="<?php echo $journal_general_lists[$i]['journal_general_list_debit']; ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_general_list_credit[]" value="<?php echo $journal_general_lists[$i]['journal_general_list_credit']; ?>" /></td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>

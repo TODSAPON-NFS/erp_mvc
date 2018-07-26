@@ -178,7 +178,7 @@
 
                     <!-- /.row (nested) -->
                     <div class="row">
-                    <?php if(($user[0][24] == "High" || $user[0][25] == "High" ) && $purchase_order['purchase_order_status'] == 'Request'){ ?>
+                    <?php if(($license_purchase_page == "High" || $license_manager_page == "High" ) && $purchase_order['purchase_order_status'] == 'Request'){ ?>
                         <div class="col-lg-offset-8 col-lg-2" align="right">
                             <select id="purchase_order_accept_status" name="purchase_order_accept_status" class="form-control" data-live-search="true" >
                                 <option <?php if($purchase_order['purchase_order_accept_status'] == "Waitting"){?> selected <?php }?> >Waitting</option>

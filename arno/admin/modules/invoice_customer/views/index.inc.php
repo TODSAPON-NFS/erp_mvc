@@ -11,6 +11,10 @@ require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/StockGroupModel.php');
 require_once('../models/CustomerModel.php');
+
+require_once('../models/JournalSaleModel.php');
+require_once('../models/JournalSaleListModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/invoice_customer/views/";
@@ -23,6 +27,9 @@ $invoice_customer_list_model = new InvoiceCustomerListModel;
 $customer_purchase_order_list_model = new CustomerPurchaseOrderListModel;
 $product_model = new ProductModel;
 $stock_group_model = new StockGroupModel;
+$journal_sale_model = new JournalSaleModel;
+$journal_sale_list_model = new JournalSaleListModel;
+
 $invoice_customer_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $customer_id = $_GET['customer_id'];
@@ -89,6 +96,8 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
 }else if ($_GET['action'] == 'delete' && ( $license_sale_page == "High" )){
     $invoice_customer_model->deleteInvoiceCustomerById($invoice_customer_id);
+    $journal_sale_model->deleteJournalSaleByInvoiceCustomerID($invoice_customer_id);
+
 ?>
     <script>window.location="index.php?app=invoice_customer"</script>
 <?php
@@ -111,11 +120,51 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['invoice_customer_due'] = $_POST['invoice_customer_due'];
         $data['addby'] = $user[0][0];
 
-        $output = $invoice_customer_model->insertInvoiceCustomer($data);
+        $invoice_customer_id = $invoice_customer_model->insertInvoiceCustomer($data);
 
         
 
-        if($output > 0){
+        if($invoice_customer_id > 0){
+
+
+            $data = [];
+            $first_code = "UV".date("y").date("m");
+            $first_date = date("d")."-".date("m")."-".date("Y");
+            $last_code = $journal_sale_model->getJournalSaleLastID($first_code,3);
+            $data['invoice_customer_id'] = $invoice_customer_id;
+            $data['journal_sale_date'] = $_POST['invoice_customer_date'];
+            $data['journal_sale_code'] = $last_code;
+            $data['journal_sale_name'] = "ขายเชื่อจาก ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
+            $data['addby'] = $admin_id;
+    
+    
+            $journal_sale_id = $journal_sale_model->insertJournalSale($data);
+
+            if($journal_sale_id > 0){
+
+                $customer=$customer_model->getCustomerByID($_POST['customer_id']);
+                $data = [];
+                $data['journal_sale_id'] = $journal_sale_id;
+                $data['account_id'] = $customer['account_id'];
+                $data['journal_sale_list_name'] = "ขายเชื่อจาก ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
+                $data['journal_sale_list_debit'] = (float)filter_var( $_POST['invoice_customer_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['journal_sale_list_credit'] = 0;
+                $journal_sale_list_model->insertJournalSaleList($data);
+
+                if((float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                    $data = [];
+                    $data['journal_sale_id'] = $journal_sale_id;
+                    $data['account_id'] = '91';
+                    $data['journal_sale_list_name'] = "ขายเชื่อจาก ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
+                    $data['journal_sale_list_debit'] = (float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data['journal_sale_list_credit'] = 0;
+                    $journal_sale_list_model->insertJournalSaleList($data);
+               
+
+
+                }
+            }
+
             $data = [];
             $product_id = $_POST['product_id'];
             $customer_purchase_order_list_id = $_POST['customer_purchase_order_list_id'];
@@ -132,7 +181,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             if(is_array($product_id)){
                 for($i=0; $i < count($product_id) ; $i++){
                     $data_sub = [];
-                    $data_sub['invoice_customer_id'] = $output;
+                    $data_sub['invoice_customer_id'] = $invoice_customer_id;
                     $data_sub['product_id'] = $product_id[$i];
                     $data_sub['customer_purchase_order_list_id'] = $customer_purchase_order_list_id[$i];
                     $data_sub['stock_group_id'] = $stock_group_id[$i];
@@ -148,7 +197,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                 }
             }else if($product_id != ""){
                 $data_sub = [];
-                $data_sub['invoice_customer_id'] = $output;
+                $data_sub['invoice_customer_id'] = $invoice_customer_id;
                 $data_sub['product_id'] = $product_id;
                 $data_sub['customer_purchase_order_list_id'] = $customer_purchase_order_list_id;
                 $data_sub['stock_group_id'] = $stock_group_id;
@@ -164,7 +213,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             }
             
 ?>
-        <script>window.location="index.php?app=invoice_customer&action=update&id=<?php echo $output;?>"</script>
+        <script>window.location="index.php?app=invoice_customer&action=update&id=<?php echo $invoice_customer_id;?>"</script>
 <?php
         }else{
 ?>

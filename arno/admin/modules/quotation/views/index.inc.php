@@ -79,7 +79,7 @@ if(!isset($_GET['action']) && ( $license_sale_page == "Low" || $license_sale_pag
     $quotation_lists = $quotation_list_model->getQuotationListBy($quotation_id);
     require_once($path.'detail.inc.php');
 
-}else if ($_GET['action'] == 'delete' && ( ($license_sale_page == "Low" && $admin_id == $employee_id)  && $license_sale_page == "High" )){
+}else if ($_GET['action'] == 'delete' && ( ($license_sale_page == "Low" && $admin_id == $employee_id)  ||  $license_sale_page == "High" )){
     $quotations = $quotation_model->deleteQuotationById($quotation_id);
 ?>
     <script>window.location="index.php?app=quotation"</script>

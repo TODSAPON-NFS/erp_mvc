@@ -169,6 +169,29 @@ function export_error(){
 
 }
 
+function show_update(product_id){
+    $.post( "controllers/getProductByID.php", { 'product_id': $.trim(product_id)}, function( data ) {
+        if(data != null){
+            $('#product_id').val(data.product_id);
+            $('#product_code').val(data.product_code);
+            $('#product_name').val(data.product_name);
+            $('#product_price_1').val(data.product_price_1);
+            $('#product_price_2').val(data.product_price_2);
+            $('#product_price_3').val(data.product_price_3);
+            $('#product_price_4').val(data.product_price_4);
+            $('#product_price_5').val(data.product_price_5);
+            $('#modalUpdate').modal('show');
+        }
+    });
+}
+
+function check_number(id){
+    var price = parseFloat($(id).val(  ).replace(',',''));
+    if(isNaN(price)){
+        price = 0.0;
+    }
+    $(id).val( price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+}
 </script>
 <div class="row">
     <div class="col-lg-12">
@@ -347,11 +370,11 @@ function export_error(){
                                     <th>รหัสสินค้า <br>Product Code</th>
                                     <th>ชื่อสินค้า <br>Product Name</th>
                                     <th>รายละเอียด <br> Description</th>
-                                    <th>ราคา 1  <br> Price 1</th>
-                                    <th>ราคา 2  <br> Price 2</th>
-                                    <th>ราคา 3  <br> Price 3</th>
-                                    <th>ราคา 4  <br> Price 4</th>
-                                    <th>ราคา 5  <br> Price 5</th>
+                                    <th>พิเศษ  <br> Special</th>
+                                    <th>ตัวแทน  <br> Dealer</th>
+                                    <th>ใหญ่ <br> Big</th>
+                                    <th>กลาง  <br> Medium</th>
+                                    <th>เล็ก  <br> Small</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -381,6 +404,12 @@ function export_error(){
                                     <?
                                         }
                                     ?>  
+
+                                    <?PHP if($license_sale_employee_page == "High"){ ?>
+                                        <a href="javascript:;" onclick="show_update('<?PHP echo $product[$i]['product_id']; ?>')"  title="แก้ไขราคาสินค้า">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        </a> 
+                                    <?PHP } ?>
                                     </td>
                                 </tr>
                             <?
@@ -497,6 +526,90 @@ function export_error(){
                 <button type="button" class="btn btn-danger"  onclick="export_error()" >Export Error (<span class="number_error"></span>)</button>
                 <button type="summit" class="btn btn-primary" > Update price list </button>
             </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+</form>
+
+<form role="form" method="post"   action="index.php?app=price_list&action=update-single"   enctype="multipart/form-data">
+                
+    <div id="modalUpdate" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg " role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">แก้ไขข้อมูลราคาสินค้า / Change product price list.</h4>
+                </div>
+
+                <div  class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>สินค้า <font color="#F00"><b>*</b></font></label>
+                                <div clas="row">
+                                    <div class="col-md-6">
+                                        <input type="hidden" id="product_id" name="product_id"  value="" />
+                                        <input type="text" id="product_code" name="product_code" class="form-control" value="" readonly/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input  id="product_name" name="product_name" class="form-control" value="" readonly/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table width="100%"  class="table table-striped table-bordered table-hover" >
+                        <tbody id="bodyAdd">
+                            <tr>
+                                <td>
+                                    Price 1
+                                </td>
+                                <td>
+                                    <input id="product_price_1" name="product_price_1" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Price 2
+                                </td>
+                                <td>
+                                    <input id="product_price_2" name="product_price_2" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Price 3
+                                </td>
+                                <td>
+                                    <input id="product_price_3" name="product_price_3" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Price 4
+                                </td>
+                                <td>
+                                    <input id="product_price_4" name="product_price_4" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Price 5
+                                </td>
+                                <td>
+                                    <input id="product_price_5" name="product_price_5" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> 
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+                    <button type="summit" class="btn btn-primary" > Update price list </button>
+                </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

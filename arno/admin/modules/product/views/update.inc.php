@@ -328,7 +328,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>รูปสินค้า / Product Picture <font color="#F00"><b>*</b></font></label>
-                                        <img class="img-responsive" id="img_logo" src="../upload/product/<?php echo $product['product_logo']; ?>" />
+                                        <img class="img-responsive" id="img_logo" src="../upload/product/<?php if($product['product_logo'] != ""){ echo $product['product_logo']; }else{ echo "default.png"; } ?>" />
                                     
                                         <input accept=".jpg , .png"   type="file" id="product_logo" name="product_logo" onChange="readURL_logo(this);">
                                         <p class="help-block">Example : .jpg or .png </p>

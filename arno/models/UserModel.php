@@ -113,6 +113,21 @@ class UserModel extends BaseModel{
 
     }
 
+    function updatePlayerIDByID($id,$user_player_id){
+        $sql = " UPDATE tb_user SET 
+        user_player_id = '".$user_player_id."' 
+        WHERE user_id = $id 
+        ";
+
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+
+
+    }
+
     function insertUser($data = []){
         $sql = " INSERT INTO tb_user (user_code,user_prefix,user_name,user_lastname,user_mobile,user_email,user_username,user_password,user_address,user_province,user_amphur,user_district,user_zipcode,user_position_id,license_id,user_status_id) 
         VALUES ('".$data['user_code']."','".$data['user_prefix']."','".$data['user_name']."','".$data['user_lastname']."','".$data['user_mobile']."','".$data['user_email']."','".$data['user_username']."','".$data['user_password']."','".$data['user_address']."','".$data['user_province']."','".$data['user_amphur']."','".$data['user_district']."','".$data['user_zipcode']."','".$data['user_position_id']."','".$data['license_id']."','".$data['user_status_id']."'); 

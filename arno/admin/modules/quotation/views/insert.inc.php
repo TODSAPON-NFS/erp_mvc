@@ -69,6 +69,21 @@
             if(data != null){
                 $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
                 $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)
+
+                if(customer_type_id == 4){
+                    $(id).closest('tr').children('td').children('input[name="quotation_list_price[]"]').val(data.product_price_1);
+                }else if(customer_type_id == 3){
+                    $(id).closest('tr').children('td').children('input[name="quotation_list_price[]"]').val(data.product_price_2);
+                }else if(customer_type_id == 2){
+                    $(id).closest('tr').children('td').children('input[name="quotation_list_price[]"]').val(data.product_price_3);
+                }else if(customer_type_id == 1){
+                    $(id).closest('tr').children('td').children('input[name="quotation_list_price[]"]').val(data.product_price_4);
+                }else{
+                    $(id).closest('tr').children('td').children('input[name="quotation_list_price[]"]').val(data.product_price_5);
+                }
+
+                update_sum(id);
+                
             }
         });
         
@@ -123,12 +138,14 @@
                 document.getElementById('customer_name').value = data.customer_name_en +' (' + data.customer_name_th +')';
                 document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
                 document.getElementById('customer_tax').value = data.customer_tax ;
-
+                customer_type_id =  data.customer_type_id;
                 getNewCode();
             });
         }
         
     }
+
+    var customer_type_id = 0;
 
     function update_sum(id){
 
@@ -201,11 +218,11 @@
     }
 
     function getNewCode(){
-        var customer_code = document.getElementById('customer_code').value;
-        var emp = $("#emp_id option:selected").text().substring(0, 2).toUpperCase();
-        var first_code = customer_code+"-"+emp+"-<?PHP echo date("y").date("m"); ?>"; 
+        var customer_id = document.getElementById('customer_id').value;
+        var employee_id = document.getElementById('emp_id').value; 
+
         document.getElementById('employee_id').value = document.getElementById('emp_id').value; 
-        $.post( "controllers/getQuotationCodeIndex.php", { 'first_code': first_code }, function( data ) {
+        $.post( "controllers/getQuotationCodeIndex.php", { 'customer_id': customer_id,'employee_id':employee_id }, function( data ) {
             document.getElementById('quotation_code').value = data;
         });
 

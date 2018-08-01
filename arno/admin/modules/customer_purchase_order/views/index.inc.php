@@ -11,6 +11,11 @@ require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 
 require_once('../models/CustomerModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/customer_purchase_order/views/";
@@ -23,7 +28,13 @@ $customer_purchase_order_model = new CustomerPurchaseOrderModel;
 $customer_purchase_order_list_model = new CustomerPurchaseOrderListModel;
 $customer_purchase_order_list_detail_model = new CustomerPurchaseOrderListDetailModel;
 
-$first_char = "PO";
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('15');
+
 $customer_purchase_order_id = $_GET['id'];
 $quotation_id = $_GET['quotation_id'];
 $customer_id = $_GET['customer_id'];
@@ -67,6 +78,27 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
     $products=$product_model->getProduct( );
     $customers=$customer_model->getCustomerBy();
+
+    $user=$user_model->getUserByID($admin_id);
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+    $data['customer_code'] = $customers[0]['customer_code'];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code = $customer_purchase_order_model->getCustomerPurchaseOrderLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    } 
+
     $first_date = date("d")."-".date("m")."-".date("Y");
    
     $users=$user_model->getUserBy();
@@ -112,6 +144,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['end_user_id'] = $_POST['end_user_id'];
         $data['employee_id'] = $_POST['employee_id'];
         $data['customer_purchase_order_code'] = $_POST['customer_purchase_order_code'];
+        $data['customer_purchase_order_code_gen'] = $_POST['customer_purchase_order_code_gen'];
         $data['customer_purchase_order_date'] = $_POST['customer_purchase_order_date'];
         $data['customer_purchase_order_credit_term'] = $_POST['customer_purchase_order_credit_term'];
         $data['customer_purchase_order_delivery_term'] = $_POST['customer_purchase_order_delivery_term'];
@@ -323,6 +356,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['end_user_id'] = $_POST['end_user_id'];
         $data['employee_id'] = $_POST['employee_id'];
         $data['customer_purchase_order_code'] = $_POST['customer_purchase_order_code'];
+        $data['customer_purchase_order_code_gen'] = $_POST['customer_purchase_order_code_gen'];
         $data['customer_purchase_order_date'] = $_POST['customer_purchase_order_date'];
         $data['customer_purchase_order_credit_term'] = $_POST['customer_purchase_order_credit_term'];
         $data['customer_purchase_order_delivery_term'] = $_POST['customer_purchase_order_delivery_term'];

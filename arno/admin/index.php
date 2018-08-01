@@ -6,17 +6,17 @@ $user_admin = $_SESSION['user'];
 $notification_id = $_GET['notification'];
 
 $admin_id = $user_admin[0][0];
-$license_admin_page =  $user_admin[0][26];
-$license_sale_employee_page =  $user_admin[0][27]; 
-$license_request_page =  $user_admin[0][28];
-$license_delivery_note_page  =  $user_admin[0][29];
-$license_regrind_page =  $user_admin[0][30];
-$license_purchase_page =  $user_admin[0][31];
-$license_sale_page =  $user_admin[0][32];
-$license_inventery_page =  $user_admin[0][33];
-$license_account_page =  $user_admin[0][34];
-$license_report_page =  $user_admin[0][35];
-$license_manager_page   =  $user_admin[0][36];
+$license_admin_page =  $user_admin[0][28];
+$license_sale_employee_page =  $user_admin[0][29]; 
+$license_request_page =  $user_admin[0][30];
+$license_delivery_note_page  =  $user_admin[0][31];
+$license_regrind_page =  $user_admin[0][32];
+$license_purchase_page =  $user_admin[0][33];
+$license_sale_page =  $user_admin[0][34];
+$license_inventery_page =  $user_admin[0][35];
+$license_account_page =  $user_admin[0][36];
+$license_report_page =  $user_admin[0][37];
+$license_manager_page   =  $user_admin[0][38];
 
 
 $model_notification = new NotificationModel;

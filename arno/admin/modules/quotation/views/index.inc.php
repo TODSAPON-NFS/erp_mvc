@@ -8,6 +8,10 @@ require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/CustomerModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/quotation/views/";
@@ -17,7 +21,13 @@ $notification_model = new NotificationModel;
 $quotation_model = new QuotationModel;
 $quotation_list_model = new QuotationListModel;
 $product_model = new ProductModel;
-$first_char = "";
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('14');
+
 $quotation_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $vat = 7;
@@ -47,19 +57,29 @@ if(!isset($_GET['action']) && ( $license_sale_page == "Low" || $license_sale_pag
 
 }else if ($_GET['action'] == 'insert' && ( $license_sale_page == "Low" || $license_sale_page == "Medium" || $license_sale_page == "High" )){
     $products=$product_model->getProductBy();
-    $customers=$customer_model->getCustomerBy();
-    $user=$user_model->getUserByID($user_id);
+    $customers=$customer_model->getCustomerBy(); 
     $users=$user_model->getUserBy();
+ 
+    $user=$user_model->getUserByID($admin_id);
 
-    $cus_firstcode = strtoupper($customers[0]['customer_code']);
-    $emp_firstcode = strtoupper(substr($user['user_name'],0,2));
-    $first_code = $cus_firstcode."-".$emp_firstcode."-".date("y").date("m");
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+    $data['customer_code'] = $customers[0]['customer_code'];
 
-    $first_date = date("d")."-".date("m")."-".date("Y");
-
-
-    $last_code = $quotation_model->getQuotationLastID($first_code,3);
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
     
+        if($code[$i]['type'] == "number"){
+            $last_code = $quotation_model->getQuotationLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    } 
+    $first_date = date("d")."-".date("m")."-".date("Y");
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update' && ( ($license_sale_page == "Low" && $admin_id == $employee_id) || $license_sale_page == "Medium" || $license_sale_page == "High" )){

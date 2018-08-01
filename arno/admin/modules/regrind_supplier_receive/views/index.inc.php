@@ -8,6 +8,10 @@ require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/SupplierModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/regrind_supplier_receive/views/";
@@ -16,7 +20,13 @@ $supplier_model = new SupplierModel;
 $regrind_supplier_receive_model = new RegrindSupplierReceiveModel;
 $regrind_supplier_receive_list_model = new RegrindSupplierReceiveListModel;
 $product_model = new ProductModel;
-$first_char = "RGR";
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('8');
+
 $regrind_supplier_receive_id = $_GET['id'];
 $regrind_supplier_id = $_GET['regrind_supplier_id'];
 $supplier_id = $_GET['supplier_id'];
@@ -54,9 +64,26 @@ if(!isset($_GET['action']) && ($license_regrind_page == "Low" || $license_regrin
     $products=$product_model->getProductBy('','','','');
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
-    $first_code = $first_char.date("y").date("m");
+
+    $user=$user_model->getUserByID($admin_id);
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code = $regrind_supplier_receive_model->getRegrindSupplierReceiveLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }  
     $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $regrind_supplier_receive_model->getRegrindSupplierReceiveLastID($first_code,3);
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update' && (($license_regrind_page == "Low" && $admin_id == $employee) || $license_regrind_page == "Medium" || $license_regrind_page == "High" )){

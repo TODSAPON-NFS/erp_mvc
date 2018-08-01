@@ -14,6 +14,9 @@ require_once('../functions/DateTimeFunction.func.php');
 require_once('../models/JournalPurchaseModel.php');
 require_once('../models/JournalPurchaseListModel.php');
 
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/invoice_supplier/views/";
@@ -28,6 +31,12 @@ $exchange_rate_baht_model = new ExchangeRateBahtModel;
 $date_time_function_model = new DateTimeFunction;
 $journal_purchase_model = new JournalPurchaseModel;
 $journal_purchase_list_model = new JournalPurchaseListModel;
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('13');
 
 $invoice_supplier_id = $_GET['id'];
 $notification_id = $_GET['notification'];
@@ -60,27 +69,42 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     $users=$user_model->getUserBy();
 
     if($sort == "ภายในประเทศ"){
-        $first_char = "RR";
+        $paper = $paper_model->getPaperByID('12');
     }else{
-        $first_char = "RF";
+        $paper = $paper_model->getPaperByID('13');
     }
     
     if($supplier_id > 0){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
         $invoice_supplier_lists = $invoice_supplier_model->generateInvoiceSupplierListBySupplierId($supplier_id,"","",$purchase_order_id);
         $suppliers=$supplier_model->getSupplierBy($supplier['supplier_domestic']);
+
         if($supplier['supplier_domestic'] == "ภายในประเทศ"){
-            $first_char = "RR";
+            $paper = $paper_model->getPaperByID('12');
         }else{
-            $first_char = "RF";
+            $paper = $paper_model->getPaperByID('13');
         }
     }
     
+    $user=$user_model->getUserByID($admin_id);
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+    $data['supplier_code'] = $supplier["supplier_code"];
     
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
     
-    $first_code = $first_char.date("y").date("m");
-    $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $invoice_supplier_model->getInvoiceSupplierLastID($first_code,3);
+        if($code[$i]['type'] == "number"){
+            $last_code = $invoice_supplier_model->getInvoiceSupplierLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    } 
    
 
     $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($date_time_function_model->changeDateFormat($invoice_supplier['invoice_supplier_date_recieve']),$supplier['currency_id']);

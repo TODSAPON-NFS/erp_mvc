@@ -9,6 +9,11 @@ require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/ProductSupplierModel.php');
 require_once('../models/SupplierModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/delivery_note_supplier/views/";
@@ -18,7 +23,13 @@ $delivery_note_supplier_model = new DeliveryNoteSupplierModel;
 $delivery_note_supplier_list_model = new DeliveryNoteSupplierListModel;
 $product_model = new ProductModel;
 $product_supplier_model = new ProductSupplierModel;
-$first_char = "DNS";
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('5');
+
 $delivery_note_supplier_id = $_GET['id'];
 $supplier_id = $_GET['supplier_id'];
 
@@ -49,9 +60,25 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
     $products=$product_model->getProductBy('','','','');
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
-    $first_code = $first_char.date("y").date("m");
-    $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $delivery_note_supplier_model->getDeliveryNoteSupplierLastID($first_code,3);
+
+    $user=$user_model->getUserByID($admin_id);
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code = $delivery_note_supplier_model->getDeliveryNoteSupplierLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }  
 
     if($supplier_id > 0){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
@@ -59,6 +86,7 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
         $delivery_note_supplier_lists = $delivery_note_supplier_model->generateDeliveryNoteSupplierListBySupplierId($supplier_id);
     }
 
+    $first_date = date("d")."-".date("m")."-".date("Y");
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update' && (( $license_delivery_note_page == 'Low' && $employee_id == $admin_id ) || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High') ){

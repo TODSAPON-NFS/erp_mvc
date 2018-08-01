@@ -76,7 +76,7 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
         var str = "<option value=''>Select account</option>";
         $.each(account_data, function (index, value) {
-            str += "<option value='" + value['account_id'] + "'>"+value['account_code']+" - " + value['account_name_th'] + "</option>";
+            str += "<option value='" + value['account_id'] + "'>["+value['account_code']+"] " + value['account_name_th'] + "</option>";
         });
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
@@ -151,7 +151,7 @@
                                         <?php 
                                         for($ii =  0 ; $ii < count($accounts) ; $ii++){
                                         ?>
-                                        <option <?php if($accounts[$ii]['account_id'] == $journal_general_lists[$i]['account_id']){?> selected <?php }?> value="<?php echo $accounts[$ii]['account_id'] ?>"><?php echo $accounts[$ii]['account_code'] ?></option>
+                                        <option <?php if($accounts[$ii]['account_id'] == $journal_general_lists[$i]['account_id']){?> selected <?php }?> value="<?php echo $accounts[$ii]['account_id'] ?>">[<?php echo $accounts[$ii]['account_code'] ?>] <?php echo $accounts[$ii]['account_name_th'] ?></option>
                                         <?
                                         }
                                         ?>

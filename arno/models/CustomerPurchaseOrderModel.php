@@ -75,6 +75,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
 
         $sql = " SELECT customer_purchase_order_id, 
         customer_purchase_order_code, 
+        customer_purchase_order_code_gen,
         customer_purchase_order_date, 
         customer_purchase_order_status, 
         customer_purchase_order_file, 
@@ -92,12 +93,13 @@ class CustomerPurchaseOrderModel extends BaseModel{
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
             OR  customer_purchase_order_code LIKE ('%$keyword%') 
+            OR  customer_purchase_order_code_gen LIKE ('%$keyword%') 
         ) 
         $str_customer 
         $str_date 
         $str_user  
         $str_status 
-        ORDER BY STR_TO_DATE(customer_purchase_order_date,'%Y-%m-%d %H:%i:%s'),customer_purchase_order_code DESC 
+        ORDER BY STR_TO_DATE(customer_purchase_order_date,'%Y-%m-%d %H:%i:%s'),customer_purchase_order_code_gen,customer_purchase_order_code DESC 
          ";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -106,6 +108,21 @@ class CustomerPurchaseOrderModel extends BaseModel{
             }
             $result->close();
             return $data;
+        }
+
+    }
+
+    function getCustomerPurchaseOrderLastID($id,$digit){
+
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(customer_purchase_order_code_gen,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  customer_purchase_order_lastcode 
+        FROM tb_customer_purchase_order 
+        WHERE customer_purchase_order_code_gen LIKE ('$id%') 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+            $result->close();
+            return $row['customer_purchase_order_lastcode'];
         }
 
     }
@@ -292,6 +309,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         customer_id = '".$data['customer_id']."', 
         end_user_id = '".$data['end_user_id']."', 
         employee_id = '".$data['employee_id']."', 
+        customer_purchase_order_code_gen = '".$data['customer_purchase_order_code_gen']."', 
         customer_purchase_order_code = '".$data['customer_purchase_order_code']."', 
         customer_purchase_order_file = '".$data['customer_purchase_order_file']."', 
         customer_purchase_order_credit_term = '".$data['customer_purchase_order_credit_term']."', 
@@ -320,6 +338,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
             customer_id,
             end_user_id,
             employee_id,           
+            customer_purchase_order_code_gen,
             customer_purchase_order_code,
             customer_purchase_order_file,
             customer_purchase_order_credit_term,
@@ -336,6 +355,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         $data['customer_id']."','".
         $data['end_user_id']."','".
         $data['employee_id']."','".
+        $data['customer_purchase_order_code_gen']."','".
         $data['customer_purchase_order_code']."','".
         $data['customer_purchase_order_file']."','".
         $data['customer_purchase_order_credit_term']."','".

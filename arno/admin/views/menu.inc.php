@@ -401,8 +401,9 @@
                         <li
                         <?PHP 
                              if(
-                                 
                                 $_GET["app"]=='account' || 
+                                $_GET["app"]=='account_setting' || 
+                                $_GET["app"]=='paper' ||
                                 $_GET["app"]=='credit_note' || 
                                 $_GET["app"]=='debit_note' || 
                                 $_GET["app"]=='billing_note' || 
@@ -422,10 +423,20 @@
                             <a href="#" class="nav-title">
                                 ระบบบัญชี <span class="glyphicon arrow"></span>
                             </a>
-                            <ul class="collapse"> 
+                            <ul class="collapse">  
                                 <li>
                                     <a href="?app=account"><i class="fa  fa-cubes fa-fw" aria-hidden="true"></i> ผังบัญชี (Account Stucture)</a>
                                 </li>
+                                <?PHP 
+                                if($license_account_page == "High" ){
+                                ?>
+                                <li>
+                                    <a href="?app=account_setting" <?PHP if($_GET['app'] == "account_setting"){?> class="active" <?PHP } ?> ><i class="fa  fa-cog fa-fw" aria-hidden="true"></i> กำหนดบัญชีที่ต้องลงรายวัน (Account Setting)</a>
+                                </li>
+                                <li>
+                                    <a href="?app=paper" <?PHP if($_GET['app'] == "paper"){?> class="active" <?PHP } ?> ><i class="fa  fa-cog fa-fw" aria-hidden="true"></i> กำหนดเลขที่เอกสาร (Paper Setting)</a>
+                                </li>
+                                <?PHP } ?>
                                 <li
                                 <?PHP 
                                     if(

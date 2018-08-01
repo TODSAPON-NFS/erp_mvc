@@ -7,6 +7,10 @@ require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/CustomerModel.php');
 require_once('../models/SupplierModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/request_standard/views/";
@@ -17,7 +21,13 @@ $notification_model = new NotificationModel;
 $request_standard_model = new RequestStandardModel;
 $request_standard_list_model = new RequestStandardListModel;
 $product_model = new ProductModel;
-$first_char = "STR";
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('2');
+
 $request_standard_id = $_GET['id']; 
 
 $request_standard = $request_standard_model->getRequestStandardByID($request_standard_id);
@@ -42,9 +52,28 @@ if(!isset($_GET['action'])){
     $customers=$customer_model->getCustomerBy();
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
-    $first_code = $first_char.date("y").date("m");
+
+    $user=$user_model->getUserByID($admin_id);
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code = $request_standard_model->getRequestStandardLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }
+
     $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $request_standard_model->getRequestStandardLastID($first_code,3);
+
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update' && (($license_request_page == 'Low' && $admin_id == $employee_id ) || $license_request_page == 'Medium' || $license_request_page == 'High') ){

@@ -211,7 +211,7 @@ class InvoiceSupplierModel extends BaseModel{
 
     function getInvoiceSupplierLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(RIGHT(invoice_supplier_code_gen,3) AS SIGNED)),0) + 1,$digit,'0' )) AS  invoice_supplier_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(invoice_supplier_code_gen,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  invoice_supplier_lastcode 
         FROM tb_invoice_supplier
         WHERE invoice_supplier_code_gen LIKE ('$id%') 
         ";

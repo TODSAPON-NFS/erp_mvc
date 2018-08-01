@@ -39,13 +39,14 @@
 
     function get_supplier_detail(){
         var supplier_id = document.getElementById('supplier_select').value;
+        var employee_id = document.getElementById('employee_id').value;
         document.getElementById('supplier_id').value = supplier_id;
-        $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id }, function( data ) {
+        $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id}, function( data ) {
             document.getElementById('supplier_code').value = data.supplier_code;
             document.getElementById('supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
         });
 
-        $.post( "controllers/getPurchaseOrderCodeByID.php", { 'supplier_id': supplier_id }, function( data ) {
+        $.post( "controllers/getPurchaseOrderCodeByID.php", { 'supplier_id': supplier_id, 'employee_id':employee_id  }, function( data ) {
             document.getElementById('purchase_order_code').value = data;
         });
 

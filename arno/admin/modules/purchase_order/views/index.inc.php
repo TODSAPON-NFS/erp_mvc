@@ -15,6 +15,10 @@ require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/ProductSupplierModel.php');
 require_once('../models/SupplierModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/purchase_order/views/";
@@ -31,7 +35,15 @@ $request_special_list_model = new RequestSpecialListModel;
 $request_regrind_list_model = new RequestRegrindListModel;
 $customer_purchase_order_list_detail_model = new CustomerPurchaseOrderListDetailModel;
 $product_supplier_model = new ProductSupplierModel;
-$first_char = "PO";
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('10');
+
+
+
 $purchase_order_id = $_GET['id'];
 $purchase_order_list_id = $_GET['purchase_order_list_id']; 
 $supplier_id = $_GET['supplier_id'];
@@ -63,10 +75,7 @@ if(!isset($_GET['action'])){
     } 
 
     $suppliers=$supplier_model->getSupplierBy();
-    $users=$user_model->getUserBy();
-
-    $first_date = date("d")."-".date("m")."-".date("Y");
-    
+    $users=$user_model->getUserBy(); 
     if($purchase_request_id > 0){
         $type = "BLANKED";
     }
@@ -78,18 +87,34 @@ if(!isset($_GET['action'])){
         $products=$product_model->getProductBy('','','','Active');
 
         if($supplier['supplier_domestic'] == "ภายในประเทศ"){
-            $first_char = "LP";
+            $paper = $paper_model->getPaperByID('11');
         }else{
-            $first_char = "PO";
+            $paper = $paper_model->getPaperByID('10');
         }
 
-        $first_code = $first_char.date("y").date("m");
-        $first_date = date("d")."-".date("m")."-".date("Y");
-        $last_code = $purchase_order_model->getPurchaseOrderLastID($first_code,3);
+        $user=$user_model->getUserByID($admin_id);
+        
+        $data = [];
+        $data['year'] = date("Y");
+        $data['month'] = date("m");
+        $data['number'] = "0000000000";
+        $data['employee_name'] = $user["user_name_en"];
+
+        $code = $code_generate->cut2Array($paper['paper_code'],$data);
+        $last_code = "";
+        for($i = 0 ; $i < count($code); $i++){
+        
+            if($code[$i]['type'] == "number"){
+                $last_code = $purchase_order_model->getPurchaseOrderLastID($last_code,$code[$i]['length']);
+            }else{
+                $last_code .= $code[$i]['value'];
+            }   
+        } 
 
         $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id,$purchase_request_id,$type);
         
     }
+    $first_date = date("d")."-".date("m")."-".date("Y");
 
 
 

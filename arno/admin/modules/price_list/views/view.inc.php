@@ -564,7 +564,7 @@ function check_number(id){
                         <tbody id="bodyAdd">
                             <tr>
                                 <td>
-                                    Price 1
+                                พิเศษ / Special		
                                 </td>
                                 <td>
                                     <input id="product_price_1" name="product_price_1" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>
@@ -572,7 +572,7 @@ function check_number(id){
                             </tr>
                             <tr>
                                 <td>
-                                    Price 2
+                                ตัวแทน / Dealer
                                 </td>
                                 <td>
                                     <input id="product_price_2" name="product_price_2" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>
@@ -580,7 +580,7 @@ function check_number(id){
                             </tr>
                             <tr>
                                 <td>
-                                    Price 3
+                                ใหญ่ / Big		
                                 </td>
                                 <td>
                                     <input id="product_price_3" name="product_price_3" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>
@@ -588,7 +588,7 @@ function check_number(id){
                             </tr>
                             <tr>
                                 <td>
-                                    Price 4
+                                กลาง / Medium
                                 </td>
                                 <td>
                                     <input id="product_price_4" name="product_price_4" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>
@@ -596,7 +596,7 @@ function check_number(id){
                             </tr>
                             <tr>
                                 <td>
-                                    Price 5
+                                เล็ก / Small
                                 </td>
                                 <td>
                                     <input id="product_price_5" name="product_price_5" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>

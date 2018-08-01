@@ -106,7 +106,7 @@ class PurchaseRequestModel extends BaseModel{
 
     function getPurchaseRequestLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(RIGHT(purchase_request_code,3) AS SIGNED)),0) + 1,$digit,'0' )) AS  purchase_request_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(purchase_request_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  purchase_request_lastcode 
         FROM tb_purchase_request 
         WHERE purchase_request_code LIKE ('$id%') 
         ";

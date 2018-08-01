@@ -110,7 +110,7 @@ class RequestSpecialModel extends BaseModel{
 
     function getRequestSpecialLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(RIGHT(request_special_code,3) AS SIGNED)),0) + 1,$digit,'0' )) AS  request_special_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(request_special_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  request_special_lastcode 
         FROM tb_request_special 
         WHERE request_special_code LIKE ('$id%') 
         ";

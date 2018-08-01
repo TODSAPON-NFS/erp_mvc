@@ -636,6 +636,13 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
+                                        <label>เลขที่รับเข้าใบสั่งซื้อ / PO Recieve Code <font color="#F00"><b>*</b></font></label>
+                                        <input id="customer_purchase_order_code_gen" name="customer_purchase_order_code_gen" class="form-control" value="<? echo $customer_purchase_order['customer_purchase_order_code_gen'];?>" readonly />
+                                        <p class="help-block">Example : PO1801001.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
                                         <label>เลขที่ใบสั่งซื้อ / PO Code <font color="#F00"><b>*</b></font></label>
                                         <input id="customer_purchase_order_code" name="customer_purchase_order_code" class="form-control" value="<? echo $customer_purchase_order['customer_purchase_order_code'];?>" >
                                         <p class="help-block">Example : PO1801001.</p>

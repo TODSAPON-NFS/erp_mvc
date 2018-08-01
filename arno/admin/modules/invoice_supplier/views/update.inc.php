@@ -82,6 +82,7 @@
 
     function get_supplier_detail(){
         var supplier_id = document.getElementById('supplier_id').value;
+        var employee_id = document.getElementById("employee_id").value;
         $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id }, function( data ) {
             document.getElementById('supplier_code').value = data.supplier_code;
             document.getElementById('invoice_supplier_name').value = data.supplier_name_en +' (' + data.supplier_name_th +')';
@@ -89,7 +90,7 @@
             document.getElementById('invoice_supplier_tax').value = data.supplier_tax ;
         });
 
-        $.post( "controllers/getInvoiceSupplierCodeByID.php", { 'supplier_id': supplier_id }, function( data ) {
+        $.post( "controllers/getInvoiceSupplierCodeByID.php", { 'supplier_id': supplier_id, 'employee_id':employee_id  }, function( data ) {
             //document.getElementById('invoice_supplier_code_gen').value = data;
         });
     }

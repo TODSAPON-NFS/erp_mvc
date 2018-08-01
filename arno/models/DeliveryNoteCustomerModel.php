@@ -110,7 +110,7 @@ class DeliveryNoteCustomerModel extends BaseModel{
 
     function getDeliveryNoteCustomerLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(RIGHT(delivery_note_customer_code,3) AS SIGNED)),0) + 1,$digit,'0' )) AS  delivery_note_customer_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(delivery_note_customer_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  delivery_note_customer_lastcode 
         FROM tb_delivery_note_customer 
         WHERE delivery_note_customer_code LIKE ('$id%') 
         ";

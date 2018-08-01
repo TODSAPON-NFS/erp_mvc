@@ -76,7 +76,7 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
         var str = "<option value=''>Select account</option>";
         $.each(account_data, function (index, value) {
-            str += "<option value='" + value['account_id'] + "'>"+value['account_code']+" - " + value['account_name_th'] + "</option>";
+            str += "<option value='" + value['account_id'] + "'>["+value['account_code']+"] " + + value['account_name_th'] + "</option>";
         });
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 

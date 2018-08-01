@@ -15,6 +15,9 @@ require_once('../models/CustomerModel.php');
 require_once('../models/JournalSaleModel.php');
 require_once('../models/JournalSaleListModel.php');
 
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/invoice_customer/views/";
@@ -30,12 +33,18 @@ $stock_group_model = new StockGroupModel;
 $journal_sale_model = new JournalSaleModel;
 $journal_sale_list_model = new JournalSaleListModel;
 
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('16');
+
 $invoice_customer_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $customer_id = $_GET['customer_id'];
 $customer_purchase_order_id = $_GET['customer_purchase_order_id'];
 $vat = 7;
-$first_char = "INV";
+
 
 if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_page == "High" )){
     $date_start = $_GET['date_start'];
@@ -51,14 +60,34 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert' && ($license_sale_page == "Medium" || $license_sale_page == "High" )){
-    $first_code = $first_char.date("y").date("m");
-    $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $invoice_customer_model->getInvoiceCustomerLastID($first_code,3);
-
+    
     $products=$product_model->getProductBy('','','','');
     $stock_groups=$stock_group_model->getStockGroupBy();
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
+    $user=$user_model->getUserByID($admin_id);
+    
+    $first_date = date("d")."-".date("m")."-".date("Y");
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+    $data['customer_code'] = $customers[0]['customer_code'];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code = $invoice_customer_model->getInvoiceCustomerLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }  
+
+    
     
     if($customer_id > 0){
         $customer=$customer_model->getCustomerByID($customer_id);

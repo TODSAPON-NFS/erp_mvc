@@ -8,6 +8,10 @@ require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/CustomerModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/delivery_note_customer/views/";
@@ -16,7 +20,14 @@ $customer_model = new CustomerModel;
 $delivery_note_customer_model = new DeliveryNoteCustomerModel;
 $delivery_note_customer_list_model = new DeliveryNoteCustomerListModel;
 $product_model = new ProductModel;
-$first_char = "DNC";
+
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('6');
+
 $delivery_note_customer_id = $_GET['id'];
 $target_dir = "../upload/delivery_note_customer/";
 
@@ -43,10 +54,29 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
     $products=$product_model->getProductBy('','','','');
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
-    $first_code = $first_char.date("y").date("m");
-    $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $delivery_note_customer_model->getDeliveryNoteCustomerLastID($first_code,3);
 
+
+    $user=$user_model->getUserByID($admin_id);
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code = $delivery_note_customer_model->getDeliveryNoteCustomerLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    } 
+
+    $first_date = date("d")."-".date("m")."-".date("Y");
+    
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update' && (( $license_delivery_note_page == 'Low' && $employee_id == $admin_id ) || $license_delivery_note_page == 'Medium' || $license_delivery_note_page == 'High') ){

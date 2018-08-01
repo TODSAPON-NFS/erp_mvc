@@ -9,6 +9,10 @@ require_once('../models/RequestRegrindListModel.php');
 require_once('../models/UserModel.php'); 
 require_once('../models/ProductSupplierModel.php');
 require_once('../models/SupplierModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/request_test/views/";
@@ -22,7 +26,12 @@ $user_model = new UserModel;
 $product_supplier_model = new ProductSupplierModel;
 $supplier_model = new SupplierModel; 
 
-$first_char = "RT";
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('1');
+
 $request_test_id = $_GET['id'];
 $supplier_id = $_GET['supplier_id'];
 
@@ -44,9 +53,24 @@ if(!isset($_GET['action'])){
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
 
-    $first_date = date("d")."-".date("m")."-".date("Y");
-    $first_code = $first_char.date("y").date("m");
-    $last_code = $request_test_model->getRequestTestLastID($first_code,3);
+    $user=$user_model->getUserByID($admin_id);
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code = $request_test_model->getRequestTestLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }
 
     if($supplier_id > 0){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
@@ -54,6 +78,7 @@ if(!isset($_GET['action'])){
         $request_test_lists = $request_test_model->generateRequestTestListBySupplierId($supplier_id);
     }
    
+    $first_date = date("d")."-".date("m")."-".date("Y");
 
     require_once($path.'insert.inc.php');
 

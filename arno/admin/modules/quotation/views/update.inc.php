@@ -1,5 +1,6 @@
 <script>
 
+    var customer_type_id = 0;
 	var options = {
         url: function(keyword) {
             return "controllers/getProductByKeyword.php?keyword="+keyword;
@@ -70,6 +71,18 @@
             if(data != null){
                 $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
                 $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)
+                if(customer_type_id == 4){
+                    $(id).closest('tr').children('td').children('input[name="quotation_list_price[]"]').val(data.product_price_1);
+                }else if(customer_type_id == 3){
+                    $(id).closest('tr').children('td').children('input[name="quotation_list_price[]"]').val(data.product_price_2);
+                }else if(customer_type_id == 2){
+                    $(id).closest('tr').children('td').children('input[name="quotation_list_price[]"]').val(data.product_price_3);
+                }else if(customer_type_id == 1){
+                    $(id).closest('tr').children('td').children('input[name="quotation_list_price[]"]').val(data.product_price_4);
+                }else{
+                    $(id).closest('tr').children('td').children('input[name="quotation_list_price[]"]').val(data.product_price_5);
+                }
+                update_sum(id);
             }
         });
         
@@ -124,10 +137,13 @@
                 document.getElementById('customer_name').value = data.customer_name_en +' (' + data.customer_name_th +')';
                 document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
                 document.getElementById('customer_tax').value = data.customer_tax ;
+                customer_type_id =  data.customer_type_id;
             });
         }
         
     }
+
+     
 
     function update_sum(id){
 

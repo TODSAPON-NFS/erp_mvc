@@ -9,6 +9,10 @@ require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/CustomerModel.php');
 require_once('../models/InvoiceCustomerModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/finance_debit/views/";
@@ -20,11 +24,18 @@ $notification_model = new NotificationModel;
 $finance_debit_model = new FinanceDebitModel;
 $finance_debit_list_model = new FinanceDebitListModel;
 $finance_debit_pay_model = new FinanceDebitPayModel;
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('20');
+
+
 $finance_debit_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $customer_id = $_GET['customer_id'];
-$vat = 7;
-$first_char = "PS";
+$vat = 7; 
 
 if(!isset($_GET['action'])){
 
@@ -39,15 +50,32 @@ if(!isset($_GET['action'])){
     $customer_orders = $finance_debit_model->getCustomerOrder();
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
-    $first_code = $first_char.date("y").date("m");
-    $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $finance_debit_model->getFinanceDebitLastID($first_code,3);
+}else if ($_GET['action'] == 'insert'){ 
+
     $customers=$customer_model->getCustomerBy();
     $customer=$customer_model->getCustomerByID($customer_id);
     $finance_debit_lists = $finance_debit_model->generateFinanceDebitListByCustomerId($customer_id);
     $users=$user_model->getUserBy();
    
+    $user=$user_model->getUserByID($admin_id);
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code = $finance_debit_model->getFinanceDebitLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }
+    $first_date = date("d")."-".date("m")."-".date("Y");
 
     require_once($path.'insert.inc.php');
 

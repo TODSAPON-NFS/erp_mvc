@@ -8,6 +8,11 @@ require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/CustomerModel.php');
 require_once('../models/InvoiceCustomerModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/billing_note/views/";
@@ -18,11 +23,18 @@ $invoice_customer_model = new InvoiceCustomerModel;
 $notification_model = new NotificationModel;
 $billing_note_model = new BillingNoteModel;
 $billing_note_list_model = new BillingNoteListModel;
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('19');
+
+
 $billing_note_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $customer_id = $_GET['customer_id'];
-$vat = 7;
-$first_char = "BN";
+$vat = 7; 
 
 if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
 
@@ -38,13 +50,31 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
-    $first_code = $first_char.date("y").date("m");
-    $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $billing_note_model->getBillingNoteLastID($first_code,3);
+ 
     $customers=$customer_model->getCustomerBy();
     $customer=$customer_model->getCustomerByID($customer_id);
     $users=$user_model->getUserBy();
    
+
+    $user=$user_model->getUserByID($admin_id);
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code = $billing_note_model->getBillingNoteLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }
+    $first_date = date("d")."-".date("m")."-".date("Y");
 
     require_once($path.'insert.inc.php');
 

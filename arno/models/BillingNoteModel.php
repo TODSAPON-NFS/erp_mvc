@@ -101,7 +101,7 @@ class BillingNoteModel extends BaseModel{
 
     function getBillingNoteLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(RIGHT(billing_note_code,3) AS SIGNED)),0) + 1,$digit,'0' )) AS  billing_note_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(billing_note_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  billing_note_lastcode 
         FROM tb_billing_note
         WHERE billing_note_code LIKE ('$id%') 
         ";

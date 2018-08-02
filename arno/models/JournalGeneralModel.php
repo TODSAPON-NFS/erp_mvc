@@ -109,7 +109,7 @@ class JournalGeneralModel extends BaseModel{
 
     function getJournalGeneralLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(RIGHT(journal_general_code,$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  journal_general_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(journal_general_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  journal_general_lastcode 
         FROM tb_journal_general 
         WHERE journal_general_code LIKE ('$id%') 
         ";

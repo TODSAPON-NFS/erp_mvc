@@ -103,7 +103,7 @@ class CheckPayModel extends BaseModel{
 
     function getCheckPayLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(RIGHT(check_pay_code,3) AS SIGNED)),0) + 1,$digit,'0' )) AS  check_pay_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(check_pay_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  check_pay_lastcode 
         FROM tb_check_pay 
         WHERE check_pay_code LIKE ('$id%') 
         ";

@@ -40,9 +40,7 @@
         }
 
 
-
     }
-
     
     function delete_row(id){
         $(id).closest('tr').remove();
@@ -76,7 +74,7 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
         var str = "<option value=''>Select account</option>";
         $.each(account_data, function (index, value) {
-            str += "<option value='" + value['account_id'] + "'>["+value['account_code']+"] " + + value['account_name_th'] + "</option>";
+            str += "<option value='" + value['account_id'] + "'>["+value['account_code']+"] "  + value['account_name_th'] + "</option>";
         });
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
@@ -108,7 +106,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขสมุดรายวันรับเงิน / Journal Cash Receipt Code <font color="#F00"><b>*</b></font></label>
-                                <input id="journal_cash_receipt_code" name="journal_cash_receipt_code" class="form-control" value="<?php echo $last_code;?>" readonly>
+                                <input id="journal_cash_receipt_code" name="journal_cash_receipt_code" class="form-control" value="<?php echo $last_code;?>" readonly />
                                 <p class="help-block">Example : JG1801001.</p>
                             </div>
                         </div>

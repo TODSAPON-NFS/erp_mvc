@@ -14,6 +14,9 @@ require_once('../models/InvoiceCustomerModel.php');
 require_once('../models/JournalSaleReturnModel.php');
 require_once('../models/JournalSaleReturnListModel.php');
 
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/credit_note/views/";
@@ -28,12 +31,18 @@ $product_model = new ProductModel;
 $journal_sale_return_model = new JournalSaleReturnModel;
 $journal_sale_return_list_model = new JournalSaleReturnListModel;
 
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('17');
+
+
 
 $credit_note_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $customer_id = $_GET['customer_id'];
-$vat = 7;
-$first_char = "CN";
+$vat = 7; 
 
 if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
 
@@ -48,13 +57,31 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
-    $first_code = $first_char.date("y").date("m");
-    $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $credit_note_model->getCreditNoteLastID($first_code,3);
+
 
     $products=$product_model->getProductBy('','','','Active');
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
+
+    $user=$user_model->getUserByID($admin_id);
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code = $credit_note_model->getCreditNoteLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }
+    $first_date = date("d")."-".date("m")."-".date("Y");
    
 
     require_once($path.'insert.inc.php');

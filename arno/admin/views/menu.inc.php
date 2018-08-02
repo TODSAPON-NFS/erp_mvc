@@ -407,6 +407,8 @@
                                 $_GET["app"]=='credit_note' || 
                                 $_GET["app"]=='debit_note' || 
                                 $_GET["app"]=='billing_note' || 
+                                $_GET["app"]=='finance_debit' || 
+                                $_GET["app"]=='finance_credit' || 
                                 $_GET["app"]=='official_receipt'|| 
                                 substr($_GET["app"],0,15) =='journal_special' ||
                                 $_GET["app"] =='other_expense' ||
@@ -479,7 +481,8 @@
                                         $_GET["app"]=='debit_note' || 
                                         $_GET["app"]=='billing_note' || 
                                         $_GET["app"]=='official_receipt'|| 
-                                        substr($_GET["app"],0,7) =='finance_'
+                                        $_GET["app"]=='finance_debit' || 
+                                        $_GET["app"]=='finance_credit' 
                                     ){
                                         echo ' class="active" ';
                                     }

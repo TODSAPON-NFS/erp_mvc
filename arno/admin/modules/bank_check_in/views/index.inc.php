@@ -6,6 +6,11 @@ require_once('../models/CheckModel.php');
 require_once('../models/BankModel.php');
 require_once('../models/BankAccountModel.php');
 require_once('../models/CustomerModel.php');
+require_once('../models/UserModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/bank_check_in/views/";
@@ -13,6 +18,14 @@ $bank_model = new BankModel;
 $customer_model = new CustomerModel;
 $account_model = new BankAccountModel;
 $check_model = new CheckModel;
+$user_model = new UserModel;
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('23');
+
 $check_id = $_GET['id'];
 
 if(!isset($_GET['action'])){
@@ -30,8 +43,27 @@ if(!isset($_GET['action'])){
     $accounts=$account_model->getBankAccountBy();
     $customers=$customer_model->getCustomerBy();
     $banks=$bank_model->getBankBy();
+
+    $user=$user_model->getUserByID($admin_id);
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+    $data['customer_code'] = $customer["customer_code"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
     
-    $first_date = date("d")."-".date("m")."-".date("Y");
+        if($code[$i]['type'] == "number"){
+            $last_code =  $check_model->getCheckLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }
+    $first_date = date("d")."-".date("m")."-".date("Y"); 
 
     require_once($path.'insert.inc.php');
 

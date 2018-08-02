@@ -5,6 +5,11 @@ require_once('../models/OtherExpenseModel.php');
 require_once('../models/OtherExpenseListModel.php');
 require_once('../models/OtherExpensePayModel.php');
 require_once('../models/SupplierModel.php');
+require_once('../models/UserModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/other_expense/views/"; 
@@ -12,7 +17,14 @@ $supplier_model = new SupplierModel;
 $other_expense_model = new OtherExpenseModel;
 $other_expense_list_model = new OtherExpenseListModel;
 $other_expense_pay_model= new OtherExpensePayModel;
-$first_char = "OE";
+$user_model = new UserModel;
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('25');
+
 $other_expense_id = $_GET['id']; 
 $vat = 7;
 if(!isset($_GET['action'])){
@@ -27,11 +39,28 @@ if(!isset($_GET['action'])){
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){ 
-    $suppliers=$supplier_model->getSupplierBy(); 
-    $first_code = $first_char.date("y").date("m");
+    $suppliers=$supplier_model->getSupplierBy();  
 
+    $user=$user_model->getUserByID($admin_id);
+
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+    $data['customer_code'] = $customer["customer_code"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code =  $other_expense_model->getOtherExpenseLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }
     $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $other_expense_model->getOtherExpenseLastID($first_code,3);
     
     require_once($path.'insert.inc.php');
 

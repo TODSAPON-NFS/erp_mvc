@@ -101,7 +101,7 @@ class OtherExpenseModel extends BaseModel{
 
     function getOtherExpenseLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(RIGHT(other_expense_code,3) AS SIGNED)),0) + 1,$digit,'0' )) AS  other_expense_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(other_expense_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  other_expense_lastcode 
         FROM tb_other_expense 
         WHERE other_expense_code LIKE ('$id%') 
         ";

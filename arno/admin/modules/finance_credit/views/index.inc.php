@@ -9,6 +9,10 @@ require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/SupplierModel.php');
 require_once('../models/InvoiceSupplierModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/finance_credit/views/";
@@ -20,11 +24,18 @@ $notification_model = new NotificationModel;
 $finance_credit_model = new FinanceCreditModel;
 $finance_credit_list_model = new FinanceCreditListModel;
 $finance_credit_pay_model = new FinanceCreditPayModel;
+
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('21');
+
+
 $finance_credit_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 $supplier_id = $_GET['supplier_id'];
-$vat = 7;
-$first_char = "PS";
+$vat = 7; 
 
 if(!isset($_GET['action'])){
 
@@ -39,14 +50,31 @@ if(!isset($_GET['action'])){
     $supplier_orders = $finance_credit_model->getSupplierOrder();
     require_once($path.'view.inc.php');
 
-}else if ($_GET['action'] == 'insert'){
-    $first_code = $first_char.date("y").date("m");
-    $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $finance_credit_model->getFinanceCreditLastID($first_code,3);
+}else if ($_GET['action'] == 'insert'){ 
     $suppliers=$supplier_model->getSupplierBy();
     $supplier=$supplier_model->getSupplierByID($supplier_id);
     $finance_credit_lists = $finance_credit_model->generateFinanceCreditListBySupplierId($supplier_id);
     $users=$user_model->getUserBy();
+
+    $user=$user_model->getUserByID($admin_id);
+    
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code = $finance_credit_model->getFinanceCreditLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }
+    $first_date = date("d")."-".date("m")."-".date("Y");
    
 
     require_once($path.'insert.inc.php');

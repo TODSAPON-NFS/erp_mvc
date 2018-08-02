@@ -488,7 +488,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>หมายเลขใบจ่ายชำระหนี้ / CN code <font color="#F00"><b>*</b></font></label>
-                                        <input id="finance_credit_code" name="finance_credit_code" class="form-control" value="<?php echo $last_code;?>" >
+                                        <input id="finance_credit_code" name="finance_credit_code" class="form-control" value="<?php echo $last_code;?>" readonly />
                                         <p class="help-block">Example : CN1801001.</p>
                                     </div>
                                 </div>

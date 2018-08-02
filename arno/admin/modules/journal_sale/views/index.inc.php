@@ -5,13 +5,25 @@ $user = $_SESSION['user'];
 require_once('../models/JournalSaleModel.php');
 require_once('../models/JournalSaleListModel.php');
 require_once('../models/AccountModel.php');
+
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
+require_once('../models/UserModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/journal_sale/views/";
 $account_model = new AccountModel;
 $journal_sale_model = new JournalSaleModel;
 $journal_sale_list_model = new JournalSaleListModel;
-$first_char = "JG";
+
+$user_model = new UserModel;
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('28');
+
 $journal_sale_id = $_GET['id'];
 $target_dir = "../upload/journal_sale/";
 
@@ -24,9 +36,26 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'insert'){
     $accounts=$account_model->getAccountAll();
-    $first_code = $first_char.date("y").date("m");
-    $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $journal_sale_model->getJournalSaleLastID($first_code,3);
+
+    $user=$user_model->getUserByID($admin_id);
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+    $data['customer_code'] = $customer["customer_code"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code =  $journal_sale_model->getJournalSaleLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }
+    $first_date = date("d")."-".date("m")."-".date("Y");  
 
     require_once($path.'insert.inc.php');
 

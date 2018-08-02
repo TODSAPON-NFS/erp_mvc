@@ -13,6 +13,7 @@ require_once('../models/ExchangeRateBahtModel.php');
 require_once('../functions/DateTimeFunction.func.php');
 require_once('../models/JournalPurchaseModel.php');
 require_once('../models/JournalPurchaseListModel.php');
+require_once('../models/AccountSettingModel.php');
 
 require_once('../functions/CodeGenerateFunction.func.php');
 require_once('../models/PaperModel.php');
@@ -31,6 +32,7 @@ $exchange_rate_baht_model = new ExchangeRateBahtModel;
 $date_time_function_model = new DateTimeFunction;
 $journal_purchase_model = new JournalPurchaseModel;
 $journal_purchase_list_model = new JournalPurchaseListModel;
+$account_setting_model = new AccountSettingModel;
 
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
@@ -175,39 +177,83 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         if($invoice_supplier_id > 0){
 
             $data = [];
-            $first_code = "HP".date("y").date("m");
-            $first_date = date("d")."-".date("m")."-".date("Y");
-            $last_code = $journal_purchase_model->getJournalPurchaseLastID($first_code,3);
+
+            $purchase_paper = $paper_model->getPaperByID('27');
+
+            $user=$user_model->getUserByID($admin_id);
+            $data = [];
+            $data['year'] = date("Y");
+            $data['month'] = date("m");
+            $data['number'] = "0000000000";
+            $data['employee_name'] = $user["user_name_en"];
+            $data['customer_code'] = $customer["customer_code"];
+
+            $code = $code_generate->cut2Array($purchase_paper['paper_code'],$data);
+            $last_code = "";
+            for($i = 0 ; $i < count($code); $i++){
+
+                if($code[$i]['type'] == "number"){
+                    $last_code =  $journal_purchase_model->getJournalPurchaseLastID($last_code,$code[$i]['length']);
+                }else{
+                    $last_code .= $code[$i]['value'];
+                }   
+            }
+            $first_date = date("d")."-".date("m")."-".date("Y"); 
+
+            
+
             $data['invoice_supplier_id'] = $invoice_supplier_id;
             $data['journal_purchase_date'] = $_POST['invoice_supplier_date_recieve'];
             $data['journal_purchase_code'] = $last_code;
             $data['journal_purchase_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
             $data['addby'] = $admin_id;
     
+
     
             $journal_purchase_id = $journal_purchase_model->insertJournalPurchase($data);
 
             if($journal_purchase_id > 0){
+                
+                //account setting id = 10 ภาษีซื้อยังไม่ถึงกำหนด --> [1155-00] ภาษีซื้อ-ยังไม่ถึงกำหนด
+                $account_vat_buy = $account_setting_model->getAccountSettingByID(10);
+                
+                //account setting id = 26 ซื้อสินค้า --> [5130-01] ซื้อ
+                $account_buy = $account_setting_model->getAccountSettingByID(26);
 
                 $supplier=$supplier_model->getSupplierByID($_POST['supplier_id']);
+                
                 $data = [];
                 $data['journal_purchase_id'] = $journal_purchase_id;
-                $data['account_id'] = $supplier['account_id'];
+                $data['account_id'] = $account_buy['account_id'];
                 $data['journal_purchase_list_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
                 $data['journal_purchase_list_debit'] = (float)filter_var( $_POST['invoice_supplier_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['journal_purchase_list_credit'] = 0;
                 $journal_purchase_list_model->insertJournalPurchaseList($data);
 
-                if((float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                if((float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0.0){
                     $data = [];
                     $data['journal_purchase_id'] = $journal_purchase_id;
-                    $data['account_id'] = '42';
+                    $data['account_id'] = $account_vat_buy['account_id'];
                     $data['journal_purchase_list_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
                     $data['journal_purchase_list_debit'] = (float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data['journal_purchase_list_credit'] = 0;
                     $journal_purchase_list_model->insertJournalPurchaseList($data);
                 }
+
+                $data = [];
+                $data['journal_purchase_id'] = $journal_purchase_id;
+                $data['account_id'] = $supplier['account_id'];
+                $data['journal_purchase_list_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
+                $data['journal_purchase_list_debit'] = 0;
+                $data['journal_purchase_list_credit'] = (float)filter_var( $_POST['invoice_supplier_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $journal_purchase_list_model->insertJournalPurchaseList($data);
+
+                
+
+
             }
+
+
 
             $data = [];
             $product_id = $_POST['product_id'];

@@ -109,7 +109,7 @@ class RequestTestModel extends BaseModel{
 
     function getRequestTestLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(request_test_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  request_test_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(request_test_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  request_test_lastcode 
         FROM tb_request_test 
         WHERE request_test_code LIKE ('$id%') 
         ";

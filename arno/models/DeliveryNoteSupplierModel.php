@@ -106,7 +106,7 @@ class DeliveryNoteSupplierModel extends BaseModel{
 
     function getDeliveryNoteSupplierLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(delivery_note_supplier_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  delivery_note_supplier_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(delivery_note_supplier_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  delivery_note_supplier_lastcode 
         FROM tb_delivery_note_supplier 
         WHERE delivery_note_supplier_code LIKE ('$id%') 
         ";

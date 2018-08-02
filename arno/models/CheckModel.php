@@ -108,7 +108,7 @@ class CheckModel extends BaseModel{
 
     function getCheckLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(check_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  check_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(check_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  check_lastcode 
         FROM tb_check 
         WHERE check_code LIKE ('$id%') 
         ";

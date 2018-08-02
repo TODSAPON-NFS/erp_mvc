@@ -232,7 +232,7 @@ class RegrindSupplierReceiveModel extends BaseModel{
 
     function getRegrindSupplierReceiveLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(regrind_supplier_receive_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  regrind_supplier_receive_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(regrind_supplier_receive_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  regrind_supplier_receive_lastcode 
         FROM tb_regrind_supplier_receive 
         WHERE regrind_supplier_receive_code LIKE ('$id%') 
         ";

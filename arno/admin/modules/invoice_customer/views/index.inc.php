@@ -11,6 +11,7 @@ require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/StockGroupModel.php');
 require_once('../models/CustomerModel.php');
+require_once('../models/AccountSettingModel.php');
 
 require_once('../models/JournalSaleModel.php');
 require_once('../models/JournalSaleListModel.php');
@@ -32,6 +33,7 @@ $product_model = new ProductModel;
 $stock_group_model = new StockGroupModel;
 $journal_sale_model = new JournalSaleModel;
 $journal_sale_list_model = new JournalSaleListModel;
+$account_setting_model = new AccountSettingModel;
 
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
@@ -157,13 +159,35 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
 
             $data = [];
-            $first_code = "UV".date("y").date("m");
-            $first_date = date("d")."-".date("m")."-".date("Y");
-            $last_code = $journal_sale_model->getJournalSaleLastID($first_code,3);
+
+            $sale_paper = $paper_model->getPaperByID('28');
+
+            $user=$user_model->getUserByID($admin_id);
+
+            $data = [];
+            $data['year'] = date("Y");
+            $data['month'] = date("m");
+            $data['number'] = "0000000000";
+            $data['employee_name'] = $user["user_name_en"];
+            $data['customer_code'] = $customer["customer_code"];
+
+            $code = $code_generate->cut2Array($sale_paper['paper_code'],$data);
+            $last_code = "";
+            for($i = 0 ; $i < count($code); $i++){
+            
+                if($code[$i]['type'] == "number"){
+                    $last_code =  $journal_sale_model->getJournalSaleLastID($last_code,$code[$i]['length']);
+                }else{
+                    $last_code .= $code[$i]['value'];
+                }   
+            }
+            $first_date = date("d")."-".date("m")."-".date("Y"); 
+
+
             $data['invoice_customer_id'] = $invoice_customer_id;
             $data['journal_sale_date'] = $_POST['invoice_customer_date'];
             $data['journal_sale_code'] = $last_code;
-            $data['journal_sale_name'] = "ขายเชื่อจาก ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
+            $data['journal_sale_name'] = "ขายเชื่อให้ ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
             $data['addby'] = $admin_id;
     
     
@@ -171,26 +195,39 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
             if($journal_sale_id > 0){
 
+                //account setting id = 16 ภาษีขาย-รอเรียกเก็บ --> [2136-00] ภาษีขาย-รอเรียกเก็บ
+                $account_vat_sale = $account_setting_model->getAccountSettingByID(16);
+                
+                //account setting id = 26 ขายเชื่อ --> [4100-01] รายได้-ขายอะไหล่ชิ้นส่วน
+                $account_sale = $account_setting_model->getAccountSettingByID(26);
+
+
+
                 $customer=$customer_model->getCustomerByID($_POST['customer_id']);
                 $data = [];
                 $data['journal_sale_id'] = $journal_sale_id;
                 $data['account_id'] = $customer['account_id'];
-                $data['journal_sale_list_name'] = "ขายเชื่อจาก ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
-                $data['journal_sale_list_debit'] = (float)filter_var( $_POST['invoice_customer_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['journal_sale_list_name'] = "ขายเชื่อให้ ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
+                $data['journal_sale_list_debit'] = (float)filter_var( $_POST['invoice_customer_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['journal_sale_list_credit'] = 0;
                 $journal_sale_list_model->insertJournalSaleList($data);
 
-                if((float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                $data = [];
+                $data['journal_sale_id'] = $journal_sale_id;
+                $data['account_id'] = $account_sale['account_id'];
+                $data['journal_sale_list_name'] = "ขายเชื่อให้ ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
+                $data['journal_sale_list_debit'] = 0;
+                $data['journal_sale_list_credit'] = (float)filter_var( $_POST['invoice_customer_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $journal_sale_list_model->insertJournalSaleList($data);
+
+                if((float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0.0){
                     $data = [];
                     $data['journal_sale_id'] = $journal_sale_id;
-                    $data['account_id'] = '91';
-                    $data['journal_sale_list_name'] = "ขายเชื่อจาก ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
-                    $data['journal_sale_list_debit'] = (float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                    $data['journal_sale_list_credit'] = 0;
+                    $data['account_id'] = $account_vat_sale['account_id'];
+                    $data['journal_sale_list_name'] = "ขายเชื่อให้ ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
+                    $data['journal_sale_list_debit'] = 0;
+                    $data['journal_sale_list_credit'] = (float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $journal_sale_list_model->insertJournalSaleList($data);
-               
-
-
                 }
             }
 

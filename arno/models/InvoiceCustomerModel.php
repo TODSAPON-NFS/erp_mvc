@@ -131,7 +131,7 @@ class InvoiceCustomerModel extends BaseModel{
 
     function getInvoiceCustomerLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(invoice_customer_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  invoice_customer_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(invoice_customer_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  invoice_customer_lastcode 
         FROM tb_invoice_customer
         WHERE invoice_customer_code LIKE ('$id%') 
         ";

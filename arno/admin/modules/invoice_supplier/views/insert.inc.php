@@ -742,7 +742,7 @@
                                                 <span>จำนวนภาษีมูลค่าเพิ่ม / Vat</span>
                                             </td>
                                             <td style = "padding-left:8px;padding-right:8px;width:72px;">
-                                                <input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_vat" name="invoice_supplier_vat" value="<?php echo $supplier['vat'];?>" />
+                                                <input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_vat" name="invoice_supplier_vat" value="<?php echo $supplier['vat'];?>" onchange="calculateAll();"/>
                                             </td>
                                             <td width="16">
                                             %

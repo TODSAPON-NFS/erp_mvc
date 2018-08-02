@@ -102,7 +102,7 @@ class FinanceDebitModel extends BaseModel{
 
     function getFinanceDebitLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(finance_debit_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  finance_debit_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(finance_debit_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  finance_debit_lastcode 
         FROM tb_finance_debit
         WHERE finance_debit_code LIKE ('$id%') 
         ";

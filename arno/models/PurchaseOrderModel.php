@@ -118,7 +118,7 @@ class PurchaseOrderModel extends BaseModel{
 
     function getPurchaseOrderLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(purchase_order_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  purchase_order_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(purchase_order_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  purchase_order_lastcode 
         FROM tb_purchase_order 
         WHERE purchase_order_code LIKE ('$id%') 
         ";

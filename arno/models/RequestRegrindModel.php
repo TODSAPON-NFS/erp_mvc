@@ -109,7 +109,7 @@ class RequestRegrindModel extends BaseModel{
 
     function getRequestRegrindLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(request_regrind_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  request_regrind_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(request_regrind_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  request_regrind_lastcode 
         FROM tb_request_regrind 
         WHERE request_regrind_code LIKE ('$id%') 
         ";

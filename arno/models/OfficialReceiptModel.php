@@ -102,7 +102,7 @@ class OfficialReceiptModel extends BaseModel{
 
     function getOfficialReceiptLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(official_receipt_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  official_receipt_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(official_receipt_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  official_receipt_lastcode 
         FROM tb_official_receipt
         WHERE official_receipt_code LIKE ('$id%') 
         ";

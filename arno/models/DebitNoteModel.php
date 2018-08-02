@@ -108,7 +108,7 @@ class DebitNoteModel extends BaseModel{
 
     function getDebitNoteLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(debit_note_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  debit_note_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(debit_note_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  debit_note_lastcode 
         FROM tb_debit_note
         WHERE debit_note_code LIKE ('$id%') 
         ";

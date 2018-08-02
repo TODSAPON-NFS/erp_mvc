@@ -113,7 +113,7 @@ class CreditNoteModel extends BaseModel{
 
     function getCreditNoteLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(credit_note_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  credit_note_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(credit_note_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  credit_note_lastcode 
         FROM tb_credit_note
         WHERE credit_note_code LIKE ('$id%') 
         ";

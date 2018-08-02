@@ -102,7 +102,7 @@ class FinanceCreditModel extends BaseModel{
 
     function getFinanceCreditLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(finance_credit_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  finance_credit_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(finance_credit_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  finance_credit_lastcode 
         FROM tb_finance_credit
         WHERE finance_credit_code LIKE ('$id%') 
         ";

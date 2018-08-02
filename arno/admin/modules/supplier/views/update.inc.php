@@ -290,7 +290,7 @@
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label>ประเภทบัญชี / Account type </label>
-                            <select id="account_id" name="account_id" class="form-control">
+                            <select id="account_id" name="account_id" class="form-control select" data-live-search="true">
                                 <option value="">เลือก / Select</option>
                                 <?PHP 
                                     for($i=0; $i < count($account) ; $i++){

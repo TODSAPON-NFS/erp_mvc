@@ -32,6 +32,27 @@ if(!isset($_GET['action'])){
     $date_end = $_GET['date_end'];
     $keyword = $_GET['keyword']; 
     $journal_purchases = $journal_purchase_model->getJournalPurchaseBy($date_start,$date_end,$keyword);
+
+    $user=$user_model->getUserByID($admin_id);
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+    $data['customer_code'] = $customer["customer_code"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code =  $journal_purchase_model->getJournalPurchaseLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }
+
+    
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){

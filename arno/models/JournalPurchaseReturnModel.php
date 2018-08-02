@@ -125,7 +125,7 @@ class JournalPurchaseReturnModel extends BaseModel{
 
     function getJournalPurchaseReturnLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(journal_purchase_return_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  journal_purchase_return_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(journal_purchase_return_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  journal_purchase_return_lastcode 
         FROM tb_journal_purchase_return 
         WHERE journal_purchase_return_code LIKE ('$id%') 
         ";

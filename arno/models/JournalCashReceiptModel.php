@@ -109,7 +109,7 @@ class JournalCashReceiptModel extends BaseModel{
 
     function getJournalCashReceiptLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(journal_cash_receipt_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  journal_cash_receipt_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(journal_cash_receipt_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  journal_cash_receipt_lastcode 
         FROM tb_journal_cash_receipt 
         WHERE journal_cash_receipt_code LIKE ('$id%') 
         ";

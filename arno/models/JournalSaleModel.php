@@ -127,7 +127,7 @@ class JournalSaleModel extends BaseModel{
 
     function getJournalSaleLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(journal_sale_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  journal_sale_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(journal_sale_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  journal_sale_lastcode 
         FROM tb_journal_sale 
         WHERE journal_sale_code LIKE ('$id%') 
         ";

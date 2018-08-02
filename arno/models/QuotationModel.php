@@ -116,7 +116,7 @@ class QuotationModel extends BaseModel{
 
     function getQuotationLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(quotation_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  quotation_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(quotation_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  quotation_lastcode 
         FROM tb_quotation 
         WHERE quotation_code LIKE ('$id%') 
         ";

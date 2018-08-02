@@ -109,7 +109,7 @@ class JournalCashPaymentModel extends BaseModel{
 
     function getJournalCashPaymentLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(journal_cash_payment_code,".count($id).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  journal_cash_payment_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(journal_cash_payment_code,".(strlen($id)+1).",$digit) AS SIGNED)),0) + 1,$digit,'0' )) AS  journal_cash_payment_lastcode 
         FROM tb_journal_cash_payment 
         WHERE journal_cash_payment_code LIKE ('$id%') 
         ";

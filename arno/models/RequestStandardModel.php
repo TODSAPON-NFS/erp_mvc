@@ -110,7 +110,7 @@ class RequestStandardModel extends BaseModel{
 
     function getRequestStandardLastID($id,$digit){
 
-        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(request_standard_code,".count($id).",'$digit') AS SIGNED)),0) + 1,'$digit','0' )) AS  request_standard_lastcode 
+        $sql = "SELECT CONCAT('$id' , LPAD(IFNULL(MAX(CAST(SUBSTRING(request_standard_code,".(strlen($id)+1).",'$digit') AS SIGNED)),0) + 1,'$digit','0' )) AS  request_standard_lastcode 
         FROM tb_request_standard 
         WHERE request_standard_code LIKE ('$id%') 
         ";

@@ -11,6 +11,8 @@
     <?php }?>
     ];
 
+    var vat_id ;
+
     function check(){
 
 
@@ -60,10 +62,10 @@
             '<tr class="odd gradeX">'+
                 '<td>'+
                     '<input type="hidden" name="journal_cash_payment_list_id[]" value="0" />'+     
-                    '<select class="form-control select" type="text" name="account_id[]" data-live-search="true" ></select>'+
+                    '<select class="form-control select" type="text" name="account_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td><input type="text" class="form-control" name="journal_cash_payment_list_name[]" value="' + document.getElementById("journal_cash_payment_name").value + '" /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_debit[]"  /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;" onclick="show_vat(this);" name="journal_cash_payment_list_debit[]"  /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_credit[]" /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -76,14 +78,113 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
         var str = "<option value=''>Select account</option>";
         $.each(account_data, function (index, value) {
-            str += "<option value='" + value['account_id'] + "'>["+value['account_code']+"] " + value['account_name_th'] + "</option>";
+            str += "<option value='" + value['account_id'] + "'>["+value['account_code']+"] " +  value['account_name_th'] + "</option>";
         });
-
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
+    }
+
+
+    function show_vat(id){ 
+        vat_id = $(id);
+        var account = $(id).closest('tr').children('td').children('div').children('select[name="account_id[]"] ').val(); 
+        if(account == 40 ){
+            $('#modalAdd').modal('show');
+        }
+    }
+
+
+    function show_data(id){ 
+
+        //ภาษีซื้อ
+        if($(id).val() == 40){
+            var account = $(id).closest('table').children('tbody').children('tr').children('td').children('select[name="account_id[]"] ');
+
+            account = account.filter(word => word.value = 40);
+
+            if(account.length > 1){
+                alert("มีการระบุ [1154-00] ภาษีซื้อ ภายในเอกสารนี้แล้ว");
+                $(id).val(0);
+            }else{ 
+                vat_id = $(id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]');
+                $(id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').prop('readonly', true);
+                $(id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').prop('readonly', true);
+                $('#modalAdd').modal('show');
+            }
+
+        }else if($(id).val() == 241){
+            var account = $(id).closest('table').children('tbody').children('tr').children('td').children('select[name="account_id[]"] ');
+
+            account = account.filter(word => word.value = 241);
+
+            if(account.length > 1){
+                alert("มีการระบุ [5390-02] ภาษีซื้อขอคืนไม่ได้ ภายในเอกสารนี้แล้ว");
+                $(id).val(0);
+            }else{
+                $('#modalAdd').modal('show');
+            }
+
+        }else{
+            $(id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').prop('readonly', false);
+            $(id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').prop('readonly', false);
+        }
         
     }
+
+    function update_vat(){
+        var product_price =  parseFloat($("#product_price").val().replace(',',''));
+        var product_vat =  parseFloat($("#product_vat").val().replace(',',''));
+
+        if(isNaN(product_vat)){
+            product_vat = 0.0;
+        }
+        
+        if(isNaN(product_price)){
+            product_price = 0.0;
+            $("#product_vat").val(0.00);
+        } else{
+            $("#product_vat").val( (product_price * (7/100.0) ).toFixed(2) );
+        }
+
+    }
+
+    function update_vat_non(){
+        var product_price_non =  parseFloat($("#product_price_non").val().replace(',',''));
+        var product_vat_non =  parseFloat($("#product_vat_non").val().replace(',',''));
+
+        if(isNaN(product_vat_non)){
+            product_vat_non = 0.0;
+        }
+        
+        if(isNaN(product_price_non)){
+            product_price_non = 0.0;
+            $("#product_vat_non").val(0.00);
+        } else{
+            $("#product_vat_non").val( (product_price_non * (7/100.0) ).toFixed(2));
+        }
+    }
+
+    function set_vat (id){ 
+        var account = $('select[name="account_id[]"] ');
+        
+
+        account = account.filter(word => word.value = 40);
+
+        if(account.length > 0){
+            console.log(vat_id);
+            if(vat_id[0] == undefined){
+                vat_id.value = $("#product_vat").val();
+            }else{
+                vat_id[0].value = $("#product_vat").val();
+            }
+           
+
+            $('#modalAdd').modal('hide');
+        }
+
+    }
+
 
 </script>
 
@@ -160,8 +261,8 @@
                                     </select>
                                 </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_name[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_cash_payment_list_name']; ?>" /></td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_debit[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_cash_payment_list_debit']; ?>" /></td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_credit[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_cash_payment_list_credit']; ?>" /></td>
+                                    <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_debit[]" <?PHP if ($journal_cash_payment_lists[$i]['account_id'] == 40 ){?> readonly <?PHP } ?> onclick="show_vat(this);" value="<?php echo $journal_cash_payment_lists[$i]['journal_cash_payment_list_debit']; ?>" /></td>
+                                    <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_credit[]" <?PHP if ($journal_cash_payment_lists[$i]['account_id'] == 40 ){?> readonly <?PHP } ?> value="<?php echo $journal_cash_payment_lists[$i]['journal_cash_payment_list_credit']; ?>" /></td>
                                <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
@@ -179,6 +280,85 @@
                                         <i class="fa fa-plus" aria-hidden="true"></i> 
                                         <span>เพิ่มบัญชี / Add account</span>
                                     </a>
+
+                                     <!-- ****************************************************************************************************************** -->
+                                     <div id="modalAdd" class="modal fade" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog modal-lg " role="document">
+                                            <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีซื้อ</h4>
+                                            </div>
+
+                                            <div  class="modal-body">
+                                                <div class="row"> 
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label>เลขที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
+                                                            <input id="invoice_code" name="invoice_code" class="form-control" value="<?php echo $journal_cash_payment_list_invoices['invoice_code']; ?>" >
+                                                            <p class="help-block">Example : -.</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label>วันที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
+                                                            <input id="invoice_date" name="invoice_date" class="form-control calendar" value="<?php echo $journal_cash_payment_list_invoices['invoice_date']; ?>" readonly />
+                                                            <p class="help-block">Example : -.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row"> 
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label>ยื่นภาษีรวมในงวด <font color="#F00"><b>*</b></font> </label>
+                                                            <input id="vat_section" name="vat_section" class="form-control" value="<?php echo $journal_cash_payment_list_invoices['vat_section']; ?>" >
+                                                            <p class="help-block">Example : 08/61.</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label>ยื่นเพิ่มเติม <font color="#F00"><b>*</b></font> </label>
+                                                            <input id="vat_section_add" name="vat_section_add" class="form-control" value="<?php echo $journal_cash_payment_list_invoices['vat_section_add']; ?>" >
+                                                            <p class="help-block">Example : -.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>  
+                                            </div>
+
+                                            <table width="100%" class="table table-striped table-bordered table-hover" >
+                                                <thead>
+                                                    <tr>
+                                                        <th style="text-align:center;" colspan="2">ภาษีซื้อขอคืนได้</th>
+                                                        <th style="text-align:center;" colspan="2">ภาษีซื้อขอคืนไม่ได้</th>
+                                                        <th style="text-align:center;" rowspan="2">มูลค่าสินค้าหรือบริการอัตราศูนย์</th>  
+                                                    </tr>
+                                                    <tr>
+                                                        <th style="text-align:center;" >มูลค่าสินค้า</th>
+                                                        <th style="text-align:center;" >จำนวนภาษี</th>
+                                                        <th style="text-align:center;" >มูลค่าสินค้า</th>
+                                                        <th style="text-align:center;" >จำนวนภาษี</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody> 
+                                                    <tr class="odd gradeX">
+                                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_price" name="product_price" onchange="update_vat()" value="<?php echo $journal_cash_payment_list_invoices['product_price']; ?>" /></td>
+                                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_vat" name="product_vat" readonly value="<?php echo $journal_cash_payment_list_invoices['product_vat']; ?>" /></td>
+                                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_price_non" name="product_price_non" onchange="update_vat_non()" value="<?php echo $journal_cash_payment_list_invoices['product_price_non']; ?>" /></td>
+                                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_vat_non" name="product_vat_non" readonly  value="<?php echo $journal_cash_payment_list_invoices['product_vat_non']; ?>" /></td>
+                                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_non"  name="product_non"  value="<?php echo $journal_cash_payment_list_invoices['product_non']; ?>" /></td>
+                                                    </tr> 
+                                                </tbody> 
+                                            </table> 
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-success" onclick="set_vat(this)" >Save</button>
+                                            </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                    <!-- ****************************************************************************************************************** -->
                                 </td>
                             </tr>
                         </tfoot>

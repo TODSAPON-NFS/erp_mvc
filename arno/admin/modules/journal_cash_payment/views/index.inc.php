@@ -4,6 +4,7 @@ $user = $_SESSION['user'];
 
 require_once('../models/JournalCashPaymentModel.php');
 require_once('../models/JournalCashPaymentListModel.php');
+require_once('../models/JournalCashPaymentListInvoiceModel.php');
 require_once('../models/AccountModel.php');
 require_once('../models/UserModel.php');
 
@@ -16,6 +17,7 @@ $path = "modules/journal_cash_payment/views/";
 $account_model = new AccountModel;
 $journal_cash_payment_model = new JournalCashPaymentModel;
 $journal_cash_payment_list_model = new JournalCashPaymentListModel;
+$journal_cash_payment_list_invoice_model = new JournalCashPaymentListInvoiceModel;
 $user_model = new UserModel;
 
 $code_generate = new CodeGenerate;
@@ -62,6 +64,7 @@ if(!isset($_GET['action'])){
     $accounts=$account_model->getAccountAll();
     $journal_cash_payment = $journal_cash_payment_model->getJournalCashPaymentByID($journal_cash_payment_id);
     $journal_cash_payment_lists = $journal_cash_payment_list_model->getJournalCashPaymentListBy($journal_cash_payment_id);
+    $journal_cash_payment_list_invoices = $journal_cash_payment_list_invoice_model->getJournalCashPaymentListInvoiceBy($journal_cash_payment_id);
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
@@ -76,6 +79,7 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'delete'){
 
+    $journal_cash_payment_list_invoice_model->deleteJournalCashPaymentListInvoiceByJournalCashPaymentID($journal_cash_payment_id);
     $journal_cash_payment_list_model->deleteJournalCashPaymentListByJournalCashPaymentID($journal_cash_payment_id);
     $journal_cash_payments = $journal_cash_payment_model->deleteJournalCashPaymentById($journal_cash_payment_id);
 ?>
@@ -95,6 +99,20 @@ if(!isset($_GET['action'])){
             $journal_cash_payment_id = $journal_cash_payment_model->insertJournalCashPayment($data);
 
             if($journal_cash_payment_id > 0){
+
+                $data = [];
+                $data['journal_cash_payment_id'] = $journal_cash_payment_id;
+                $data['invoice_code'] = $_POST['invoice_code'];
+                $data['invoice_date'] = $_POST['invoice_date'];
+                $data['vat_section'] = $_POST['vat_section'];
+                $data['vat_section_add'] = $_POST['vat_section_add'];
+                $data['product_price'] = $_POST['product_price'];
+                $data['product_vat'] = $_POST['product_vat'];
+                $data['product_price_non'] = $_POST['product_price_non'];
+                $data['product_vat_non'] = $_POST['product_vat_non'];
+                $data['product_non'] = $_POST['product_non'];
+                $journal_cash_payment_list_invoice_model->insertJournalCashPaymentListInvoice($data);
+
 
                 $account_id = $_POST['account_id'];
                 $journal_cash_payment_list_id = $_POST['journal_cash_payment_list_id'];
@@ -116,7 +134,8 @@ if(!isset($_GET['action'])){
                         if ($journal_cash_payment_list_id[$i] != "" && $journal_cash_payment_list_id[$i] != '0'){
                             $journal_cash_payment_list_model->updateJournalCashPaymentListById($data,$journal_cash_payment_list_id[$i]);
                         }else{
-                            $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
+                            $out_id = $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
+                         
                         }
                     }
                 }else{
@@ -160,6 +179,20 @@ if(!isset($_GET['action'])){
 
         $output = $journal_cash_payment_model->updateJournalCashPaymentByID($journal_cash_payment_id,$data);
 
+
+        $data = [];
+        $data['invoice_code'] = $_POST['invoice_code'];
+        $data['invoice_date'] = $_POST['invoice_date'];
+        $data['vat_section'] = $_POST['vat_section'];
+        $data['vat_section_add'] = $_POST['vat_section_add'];
+        $data['product_price'] = $_POST['product_price'];
+        $data['product_vat'] = $_POST['product_vat'];
+        $data['product_price_non'] = $_POST['product_price_non'];
+        $data['product_vat_non'] = $_POST['product_vat_non'];
+        $data['product_non'] = $_POST['product_non'];
+        $journal_cash_payment_list_invoice_model->updateJournalCashPaymentListInvoiceById($data,$journal_cash_payment_id);
+
+        
         $account_id = $_POST['account_id'];
         $journal_cash_payment_list_id = $_POST['journal_cash_payment_list_id'];
         $journal_cash_payment_list_name = $_POST['journal_cash_payment_list_name'];
@@ -169,6 +202,7 @@ if(!isset($_GET['action'])){
         $journal_cash_payment_list_model->deleteJournalCashPaymentListByJournalCashPaymentIDNotIN($journal_cash_payment_id,$journal_cash_payment_list_id);
 
         if(is_array($account_id)){
+
             for($i=0; $i < count($account_id) ; $i++){
                 $data = [];
                 $data['journal_cash_payment_id'] = $journal_cash_payment_id;
@@ -179,8 +213,9 @@ if(!isset($_GET['action'])){
 
                 if ($journal_cash_payment_list_id[$i] != "" && $journal_cash_payment_list_id[$i] != '0'){
                     $journal_cash_payment_list_model->updateJournalCashPaymentListById($data,$journal_cash_payment_list_id[$i]);
+
                 }else{
-                    $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
+                    $out_id = $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
                 }
             }
         }else{

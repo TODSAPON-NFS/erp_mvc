@@ -195,11 +195,11 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
             if($journal_sale_id > 0){
 
-                //account setting id = 16 ภาษีขาย-รอเรียกเก็บ --> [2136-00] ภาษีขาย-รอเรียกเก็บ
-                $account_vat_sale = $account_setting_model->getAccountSettingByID(16);
+                //account setting id = 15 ภาษีขาย --> [2135-00] ภาษีขาย
+                $account_vat_sale = $account_setting_model->getAccountSettingByID(15);
                 
-                //account setting id = 26 ขายเชื่อ --> [4100-01] รายได้-ขายอะไหล่ชิ้นส่วน
-                $account_sale = $account_setting_model->getAccountSettingByID(26);
+                //account setting id = 19 ขายเชื่อ --> [4100-01] รายได้-ขายอะไหล่ชิ้นส่วน
+                $account_sale = $account_setting_model->getAccountSettingByID(19);
 
 
 

@@ -214,7 +214,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 
             if($journal_purchase_id > 0){
                 
-                //account setting id = 10 ภาษีซื้อยังไม่ถึงกำหนด --> [1155-00] ภาษีซื้อ-ยังไม่ถึงกำหนด
+                //account setting id = 9 ภาษีซื้อ  --> [1154-00] ภาษีซื้อ
                 $account_vat_buy = $account_setting_model->getAccountSettingByID(10);
                 
                 //account setting id = 26 ซื้อสินค้า --> [5130-01] ซื้อ

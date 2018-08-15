@@ -99,7 +99,32 @@ function BindTable(jsondata,id) {
 
 function get_product_row(product,i){
     $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product.product_code)}, function( data ) {
+        
+        if (product.product_price_1 == undefined){
+            product.product_price_1 = 0;
+        }
+        if (product.product_price_2 == undefined){
+            product.product_price_2 = 0;
+        }
+        if (product.product_price_3 == undefined){
+            product.product_price_3 = 0;
+        }
+        if (product.product_price_4 == undefined){
+            product.product_price_4 = 0;
+        }
+        if (product.product_price_5 == undefined){
+            product.product_price_5 = 0;
+        }
+        if (product.product_price_6 == undefined){
+            product.product_price_6 = 0;
+        }
+        if (product.product_price_7 == undefined){
+            product.product_price_7 = 0;
+        }
+
         if(data != null){
+            
+
             $("#bodyAdd").append(
                 '<tr class="odd gradeX find">'+ 
                     '<td>'+  
@@ -111,6 +136,8 @@ function get_product_row(product,i){
                     '<td align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_price_3[]" value="'+product.product_price_3+'" readonly /></td>'+
                     '<td align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_price_4[]" value="'+product.product_price_4+'" readonly /></td>'+
                     '<td align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_price_5[]" value="'+product.product_price_5+'" readonly /></td>'+
+                    '<td align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_price_5[]" value="'+product.product_price_6+'" readonly /></td>'+
+                    '<td align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_price_5[]" value="'+product.product_price_7+'" readonly /></td>'+
                     '<td>'+
                         '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                             '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -131,6 +158,8 @@ function get_product_row(product,i){
                     '<td style="background:#888;" align="right">'+product.product_price_3+'</td>'+
                     '<td style="background:#888;" align="right">'+product.product_price_4+'</td>'+
                     '<td style="background:#888;" align="right">'+product.product_price_5+'</td>'+
+                    '<td style="background:#888;" align="right">'+product.product_price_6+'</td>'+
+                    '<td style="background:#888;" align="right">'+product.product_price_7+'</td>'+
                     '<td style="background:#888;" >'+
                         '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                             '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -180,6 +209,8 @@ function show_update(product_id){
             $('#product_price_3').val(data.product_price_3);
             $('#product_price_4').val(data.product_price_4);
             $('#product_price_5').val(data.product_price_5);
+            $('#product_price_6').val(data.product_price_6);
+            $('#product_price_7').val(data.product_price_7);
             $('#modalUpdate').modal('show');
         }
     });
@@ -375,6 +406,8 @@ function check_number(id){
                                     <th>ใหญ่ <br> Big</th>
                                     <th>กลาง  <br> Medium</th>
                                     <th>เล็ก  <br> Small</th>
+                                    <th>-  <br> -</th>
+                                    <th>-  <br> -</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -394,6 +427,8 @@ function check_number(id){
                                     <td align="right"><?php echo number_format($product[$i]['product_price_3'],2); ?></td>
                                     <td align="right"><?php echo number_format($product[$i]['product_price_4'],2); ?></td>
                                     <td align="right"><?php echo number_format($product[$i]['product_price_5'],2); ?></td>
+                                    <td align="right"><?php echo number_format($product[$i]['product_price_6'],2); ?></td>
+                                    <td align="right"><?php echo number_format($product[$i]['product_price_7'],2); ?></td>
                                     <td>
                                     <?
                                         if($product[$i]['product_drawing'] != ""){
@@ -505,11 +540,13 @@ function check_number(id){
                     <thead>
                         <tr> 
                             <th style="text-align:center;">ชื่อสินค้า</th>
-                            <th style="text-align:right;" width="100">ราคา 1  <br> (Price 1)</th>
-                            <th style="text-align:right;" width="100">ราคา 2  <br> (Price 2)</th>
-                            <th style="text-align:right;" width="100">ราคา 3  <br> (Price 3)</th>
-                            <th style="text-align:right;" width="100">ราคา 4  <br> (Price 4)</th>
-                            <th style="text-align:right;" width="100">ราคา 5  <br> (Price 5)</th>
+                            <th>พิเศษ  <br> Special</th>
+                            <th>ตัวแทน  <br> Dealer</th>
+                            <th>ใหญ่ <br> Big</th>
+                            <th>กลาง  <br> Medium</th>
+                            <th>เล็ก  <br> Small</th>
+                            <th>-  <br> -</th>
+                            <th>-  <br> -</th>
                             <th> ลบ <br> Delete</th>
                         </tr>
                     </thead>
@@ -600,6 +637,22 @@ function check_number(id){
                                 </td>
                                 <td>
                                     <input id="product_price_5" name="product_price_5" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                - / -
+                                </td>
+                                <td>
+                                    <input id="product_price_6" name="product_price_6" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                - / -
+                                </td>
+                                <td>
+                                    <input id="product_price_7" name="product_price_7" style="text-align:right;" class="form-control" value="" onchange="check_number(this)"/>
                                 </td>
                             </tr>
                         </tbody>

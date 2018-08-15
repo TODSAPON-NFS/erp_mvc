@@ -35,7 +35,7 @@ class ProductModel extends BaseModel{
 
         
         $sql = " SELECT product_id, CONCAT(product_code_first,product_code) as product_code, product_drawing, product_name, product_description , product_type, product_status ,
-        product_price_1, product_price_2, product_price_3, product_price_4, product_price_5 
+        product_price_1, product_price_2, product_price_3, product_price_4, product_price_5, product_price_6, product_price_7 
         FROM tb_product 
         LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
         LEFT JOIN tb_product_type ON tb_product.product_type = tb_product_type.product_type_id 
@@ -235,7 +235,9 @@ class ProductModel extends BaseModel{
         product_price_2 = '".$data['product_price_2']."', 
         product_price_3 = '".$data['product_price_3']."', 
         product_price_4 = '".$data['product_price_4']."', 
-        product_price_5 = '".$data['product_price_5']."'  
+        product_price_5 = '".$data['product_price_5']."', 
+        product_price_6 = '".$data['product_price_6']."', 
+        product_price_7 = '".$data['product_price_7']."'   
         WHERE product_id = $id 
         ";
 

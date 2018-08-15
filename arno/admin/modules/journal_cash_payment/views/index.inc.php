@@ -4,9 +4,10 @@ $user = $_SESSION['user'];
 
 require_once('../models/JournalCashPaymentModel.php');
 require_once('../models/JournalCashPaymentListModel.php');
-require_once('../models/JournalCashPaymentListInvoiceModel.php');
+require_once('../models/JournalCashPaymentInvoiceModel.php');
 require_once('../models/AccountModel.php');
 require_once('../models/UserModel.php');
+require_once('../models/SupplierModel.php');
 
 require_once('../functions/CodeGenerateFunction.func.php');
 require_once('../models/PaperModel.php');
@@ -17,8 +18,9 @@ $path = "modules/journal_cash_payment/views/";
 $account_model = new AccountModel;
 $journal_cash_payment_model = new JournalCashPaymentModel;
 $journal_cash_payment_list_model = new JournalCashPaymentListModel;
-$journal_cash_payment_list_invoice_model = new JournalCashPaymentListInvoiceModel;
+$journal_cash_payment_invoice_model = new JournalCashPaymentInvoiceModel;
 $user_model = new UserModel;
+$supplier_model = new SupplierModel;
 
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
@@ -38,6 +40,7 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'insert'){
     $accounts=$account_model->getAccountAll();
+    $suppliers=$supplier_model->getSupplierBy();
     $user=$user_model->getUserByID($admin_id);
     $data = [];
     $data['year'] = date("Y");
@@ -62,9 +65,12 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'update'){
     $accounts=$account_model->getAccountAll();
+    $suppliers=$supplier_model->getSupplierBy();
     $journal_cash_payment = $journal_cash_payment_model->getJournalCashPaymentByID($journal_cash_payment_id);
     $journal_cash_payment_lists = $journal_cash_payment_list_model->getJournalCashPaymentListBy($journal_cash_payment_id);
-    $journal_cash_payment_list_invoices = $journal_cash_payment_list_invoice_model->getJournalCashPaymentListInvoiceBy($journal_cash_payment_id);
+    $journal_cash_payment_invoices = $journal_cash_payment_invoice_model->getJournalCashPaymentInvoiceBy($journal_cash_payment_id);
+ 
+    $supplier=$supplier_model->getSupplierByID($journal_cash_payment_invoices['supplier_id'] );
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
@@ -79,7 +85,7 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'delete'){
 
-    $journal_cash_payment_list_invoice_model->deleteJournalCashPaymentListInvoiceByJournalCashPaymentID($journal_cash_payment_id);
+    $journal_cash_payment_invoice_model->deleteJournalCashPaymentInvoiceByJournalCashPaymentID($journal_cash_payment_id);
     $journal_cash_payment_list_model->deleteJournalCashPaymentListByJournalCashPaymentID($journal_cash_payment_id);
     $journal_cash_payments = $journal_cash_payment_model->deleteJournalCashPaymentById($journal_cash_payment_id);
 ?>
@@ -102,6 +108,7 @@ if(!isset($_GET['action'])){
 
                 $data = [];
                 $data['journal_cash_payment_id'] = $journal_cash_payment_id;
+                $data['supplier_id'] = $_POST['supplier_id'];
                 $data['invoice_code'] = $_POST['invoice_code'];
                 $data['invoice_date'] = $_POST['invoice_date'];
                 $data['vat_section'] = $_POST['vat_section'];
@@ -111,7 +118,7 @@ if(!isset($_GET['action'])){
                 $data['product_price_non'] = $_POST['product_price_non'];
                 $data['product_vat_non'] = $_POST['product_vat_non'];
                 $data['product_non'] = $_POST['product_non'];
-                $journal_cash_payment_list_invoice_model->insertJournalCashPaymentListInvoice($data);
+                $journal_cash_payment_invoice_model->insertJournalCashPaymentInvoice($data);
 
 
                 $account_id = $_POST['account_id'];
@@ -181,6 +188,7 @@ if(!isset($_GET['action'])){
 
 
         $data = [];
+        $data['supplier_id'] = $_POST['supplier_id'];
         $data['invoice_code'] = $_POST['invoice_code'];
         $data['invoice_date'] = $_POST['invoice_date'];
         $data['vat_section'] = $_POST['vat_section'];
@@ -190,7 +198,7 @@ if(!isset($_GET['action'])){
         $data['product_price_non'] = $_POST['product_price_non'];
         $data['product_vat_non'] = $_POST['product_vat_non'];
         $data['product_non'] = $_POST['product_non'];
-        $journal_cash_payment_list_invoice_model->updateJournalCashPaymentListInvoiceById($data,$journal_cash_payment_id);
+        $journal_cash_payment_invoice_model->updateJournalCashPaymentInvoiceById($data,$journal_cash_payment_id);
 
         
         $account_id = $_POST['account_id'];

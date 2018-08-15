@@ -45,16 +45,19 @@ if(!isset($_GET['action'])){
     $product_price_3 = $_POST['product_price_3'];
     $product_price_4 = $_POST['product_price_4'];
     $product_price_5 = $_POST['product_price_5'];
-    
+    $product_price_6 = $_POST['product_price_6'];
+    $product_price_7 = $_POST['product_price_7'];
+
     for($i = 0; $i < count($product_id); $i++){
         $data = [];
         $data['product_id'] = $product_id[$i];
-        $data['product_price_1'] = $product_price_1[$i];
-        $data['product_price_2'] = $product_price_2[$i];
-        $data['product_price_3'] = $product_price_3[$i];
-        $data['product_price_4'] = $product_price_4[$i];
-        $data['product_price_5'] = $product_price_5[$i];
-    
+        $data['product_price_1'] = (float)filter_var($product_price_1[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['product_price_2'] = (float)filter_var($product_price_2[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['product_price_3'] = (float)filter_var($product_price_3[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['product_price_4'] = (float)filter_var($product_price_4[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['product_price_5'] = (float)filter_var($product_price_5[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['product_price_6'] = (float)filter_var($product_price_6[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['product_price_7'] = (float)filter_var($product_price_7[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     
         $model_product->updateProductPriceByID($product_id[$i],$data);
     }
@@ -68,12 +71,13 @@ if(!isset($_GET['action'])){
      
     $data = [];
     $data['product_id'] = $_POST['product_id'];
-    $data['product_price_1'] = $_POST['product_price_1'];
-    $data['product_price_2'] = $_POST['product_price_2'];
-    $data['product_price_3'] = $_POST['product_price_3'];
-    $data['product_price_4'] = $_POST['product_price_4'];
-    $data['product_price_5'] = $_POST['product_price_5'];
-
+    $data['product_price_1'] = (float)filter_var($_POST['product_price_1'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $data['product_price_2'] = (float)filter_var($_POST['product_price_2'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $data['product_price_3'] = (float)filter_var($_POST['product_price_3'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $data['product_price_4'] = (float)filter_var($_POST['product_price_4'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $data['product_price_5'] = (float)filter_var($_POST['product_price_5'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $data['product_price_6'] = (float)filter_var($_POST['product_price_6'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $data['product_price_7'] = (float)filter_var($_POST['product_price_7'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
     $model_product->updateProductPriceByID($_POST['product_id'],$data);
  

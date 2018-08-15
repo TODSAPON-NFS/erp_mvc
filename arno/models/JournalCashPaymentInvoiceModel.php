@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseModel.php");
-class JournalCashPaymentListInvoiceModel extends BaseModel{
+class JournalCashPaymentInvoiceModel extends BaseModel{
 
     function __construct(){
         if(!static::$db){
@@ -9,11 +9,11 @@ class JournalCashPaymentListInvoiceModel extends BaseModel{
         }
     }
 
-    function getJournalCashPaymentListInvoiceBy($journal_cash_payment_id){
+    function getJournalCashPaymentInvoiceBy($journal_cash_payment_id){
         $sql = " SELECT *
-        FROM tb_journal_cash_payment_list_invoice  
+        FROM tb_journal_cash_payment_invoice  
         WHERE journal_cash_payment_id = '$journal_cash_payment_id' 
-        ORDER BY journal_cash_payment_list_invoice_id 
+        ORDER BY journal_cash_payment_invoice_id 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -28,9 +28,10 @@ class JournalCashPaymentListInvoiceModel extends BaseModel{
     }
 
 
-    function insertJournalCashPaymentListInvoice($data = []){
-        $sql = " INSERT INTO tb_journal_cash_payment_list_invoice (
+    function insertJournalCashPaymentInvoice($data = []){
+        $sql = " INSERT INTO tb_journal_cash_payment_invoice (
             journal_cash_payment_id,
+            supplier_id,
             invoice_code,
             invoice_date,
             vat_section,
@@ -42,6 +43,7 @@ class JournalCashPaymentListInvoiceModel extends BaseModel{
             product_non
         ) VALUES (
             '".$data['journal_cash_payment_id']."', 
+            '".$data['supplier_id']."', 
             '".$data['invoice_code']."', 
             '".$data['invoice_date']."', 
             '".$data['vat_section']."',
@@ -61,11 +63,12 @@ class JournalCashPaymentListInvoiceModel extends BaseModel{
 
     }
 
-    function updateJournalCashPaymentListInvoiceById($data,$id){
+    function updateJournalCashPaymentInvoiceById($data,$id){
 
-        $sql = " UPDATE tb_journal_cash_payment_list_invoice 
+        $sql = " UPDATE tb_journal_cash_payment_invoice 
             SET invoice_code = '".$data['invoice_code']."', 
             invoice_date = '".$data['invoice_date']."',
+            supplier_id = '".$data['supplier_id']."',
             vat_section = '".$data['vat_section']."',
             vat_section_add = '".$data['vat_section_add']."',
             product_price = '".$data['product_price']."',
@@ -85,14 +88,14 @@ class JournalCashPaymentListInvoiceModel extends BaseModel{
     }
 
 
-    function deleteJournalCashPaymentListInvoiceByID($id){
-        $sql = "DELETE FROM tb_journal_cash_payment_list_invoice WHERE journal_cash_payment_list_invoice_id = '$id' ";
+    function deleteJournalCashPaymentInvoiceByID($id){
+        $sql = "DELETE FROM tb_journal_cash_payment_invoice WHERE journal_cash_payment_invoice_id = '$id' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
-    function deleteJournalCashPaymentListInvoiceByJournalCashPaymentID($id){
-        $sql = "DELETE FROM tb_journal_cash_payment_list_invoice WHERE journal_cash_payment_id = '$id' ";
+    function deleteJournalCashPaymentInvoiceByJournalCashPaymentID($id){
+        $sql = "DELETE FROM tb_journal_cash_payment_invoice WHERE journal_cash_payment_id = '$id' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }

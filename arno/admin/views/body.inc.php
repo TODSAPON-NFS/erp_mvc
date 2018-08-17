@@ -206,6 +206,15 @@
         require_once("modules/report_debtor_15/views/index.inc.php");
     }
 
+
+    else if($_GET['app'] == "report_tax_01"){
+        require_once("modules/report_tax_01/views/index.inc.php");
+    }else if($_GET['app'] == "report_tax_02"){
+        require_once("modules/report_tax_02/views/index.inc.php");
+    }else if($_GET['app'] == "report_tax_03"){
+        require_once("modules/report_tax_03/views/index.inc.php");
+    }
+
     /* ----------------------------------- //ระบบรายงาน// ---------------------------------------------- */
    
 

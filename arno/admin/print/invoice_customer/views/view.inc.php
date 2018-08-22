@@ -1,117 +1,225 @@
 <?PHP 
 
+if( (int)$invoice_customer['customer_branch'] * 1 == 0){
+    $branch = " สำนักงานใหญ่";
+} else {
+    $branch =  "สาขา " . ((int)$invoice_customer['customer_branch'] * 1) ;
+}
 
-$vat_total = 0;
-$net_total = 0;
 for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
-    $html[$page_index] = '<style>
-        div{
-            font-size:10px;
-        }
-        .table, .table thead th, .table tbody td{
-            border: 1px solid black;
-        }
+    $html[$page_index] = '
+<style>
+    div{
+        font-size:10px;
+    }
+    .table, .table thead th, .table tbody td{
+        border: 1px solid black;
+    }
 
-        th{
-            padding:8px 4px;
-            font-size:10px;
-        }
+    th{
+        padding:8px 4px;
+        font-size:10px;
+    }
 
-        td{
-            padding:4px;
-            font-size:10px;
-        }
+    td{
+        padding:4px;
+        font-size:10px;
+    }
 
-    </style>';
-
-    $html[$page_index] .= '
-    <div><b>เดือน/ปีภาษี</b> '.$section_date.' (<b>เริ่มจาก</b> '.$date_start.' <b>ถึง</b> '.$date_end.') </div>
-    <div align="center" style="font-size:14px;color:#00F;"> <b>รายงานภาษีซื้อ</b></div>
-    <table width="100%" border="0" cellspacing="0">
-        <tr>
-            <td align="left" width="120px" ><b>ชื่อสถานประกอบการ </b></td>
-            <td> '.$company['company_name_th'].'</td>
-            <td align="left"  align="left" width="120px" ><b>หน้า</b> '.($page_index + 1).' / '.$page_max.'</td>
-        </tr>
-        <tr>
-            <td align="left" ><b>ที่อยู่สถานประกอบการ</b> </td>
-            <td> '.$company['company_address_1'].' </td>
-            <td ><b>สำนักงาน</b> '.$company['company_branch'].' </td>
-        </tr>
-        <tr>
-            <td align="left" > </td>
-            <td> '.$company['company_address_2'].' </td>
-            <td ></td>
-        </tr>
-        <tr>
-            <td align="left" > </td>
-            <td> '.$company['company_address_3'].' </td>
-            <td ></td>
-        </tr>
-        <tr>
-            <td align="left" ><b>เลขประจำตัวผู้เสียภาษี</b> </td>
-            <td> '.$company['company_tax'].' </td>
-            <td >  </td>
-        </tr>
-    </table> 
-    <br>
-
-    ';
+</style>';
 
     $html[$page_index] .= '
-    <table  width="100%" border="1" cellspacing="0" style="font-size:12px;">
-        <thead>
-            <tr>
-                <th width="48" align="center"> ลำดับ <br>No.</th>
-                <th width="80">วันที่ <br>Date</th>
-                <th>เลขที่ <br>Code.</th>
-                <th>เลขที่ออกใหม่ <br>New code.</th>
-                <th>ผู้ขาย<br>Supplier</th>
-                <th>ผู้ออก<br>Create by</th> 
-                <th>ยอดเงิน<br>Net Price.</th>
-                <th>ภาษีซื้อ<br>Vat.</th> 
-            </tr>
-        </thead>
+    <div style="font-size:10px;padding-left:32px;padding-top:180px;"></div>   
+    <table width="100%" >
+        <tr>
+            <td style="padding:8px;width:120px;" align="center">
+                '.$invoice_customer['customer_code'].'
+            </td>
+            <td style="font-size:14px;padding-right:100px;" align="right">
+                <b>'.($page_index + 1).'/'.$page_max.'</b> 
+            </td> 
+    </table>
+<div>
+    <table width="100%" >
+        <tr>
+            <td style="padding:8px;">
+                '.$invoice_customer['invoice_customer_name'].' '.$branch.'
+                <br>
+                '.$invoice_customer['invoice_customer_address'].'<br>
+                เลขประจำตัวผู้เสียภาษี / Tax : '.$invoice_customer['invoice_customer_tax'].'
+            </td>
+            <td width="160">
+                <table>
+                    <tr>
+                        <td width="60" height="32" valign="middle" align="left">
+                        </td>
+                        <td width="100" height="32" valign="middle" align="right">
+                            '.$invoice_customer['invoice_customer_date'].'
+                        </td>
+                        <td width="60" height="32" valign="middle" align="left">
+                        </td>
+                        <td width="100" height="32" valign="middle" align="right">
+                            '.$invoice_customer['invoice_customer_code'].'
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td width="60" height="32" valign="middle" align="left">
+                        </td>
+
+                        <td width="100" height="32" valign="middle" align="right">
+                            '.$invoice_customer['invoice_customer_term'].'
+                        </td>
+
+                        <td width="60" height="32" valign="middle" align="left">
+                        </td>
+
+                        <td width="100" height="32" valign="middle" align="right">
+                            -
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td width="60" height="32" valign="middle" align="left">
+                        </td>
+                        <td width="100" height="32" valign="middle" align="right">
+                            '.$invoice_customer['invoice_customer_due'].'
+                        </td>
+                        <td width="60" height="32" valign="middle" align="left">
+                        </td>
+                        <td width="100" height="32" valign="middle" align="right">
+                            '.$invoice_customer['user_name'] .' '.$invoice_customer['user_lastname'].'
+                        </td>
+
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div style="height:64px;">
+
+</div>
+
+<div style="height:440px;">
+    <table width="100%" >
 
         <tbody>
-
     ';
  
     
     //count($tax_reports)
-    for($i=$page_index * $lines; $i < count($tax_reports) && $i < $page_index * $lines + $lines; $i++){
-        $vat_total +=  $tax_reports[$i]['invoice_supplier_vat_price'];
-        $net_total +=  $tax_reports[$i]['invoice_supplier_net_price'];
-
+    for($i=$page_index * $lines; $i < count($invoice_customer_lists) && $i < $page_index * $lines + $lines; $i++){ 
+        $total += $invoice_customer_lists[$i]['invoice_customer_list_qty'] * $invoice_customer_lists[$i]['invoice_customer_list_price'];
                 $html[$page_index] .= ' 
-                <tr>
-                    <td align="center">'.($i + 1).'</td>
-                    <td>'.$tax_reports[$i]['invoice_supplier_date'].'</td>
-                    <td>'.$tax_reports[$i]['invoice_supplier_code'].'</td>
-                    <td>'.$tax_reports[$i]['invoice_supplier_code_gen'].'</td>
-                    <td>'.$tax_reports[$i]['supplier_name'].' </td>
-                    <td>'.$tax_reports[$i]['employee_name'].'</td>
-                    <td  align="right" >
-                        '.number_format($tax_reports[$i]['invoice_supplier_net_price'],2).'
+                <tr >
+                    <td valign="top" width="20">
+                        '.($i+1).'.
                     </td>
-                    <td  align="right" >'.number_format($tax_reports[$i]['invoice_supplier_vat_price'],2).'</td>
+
+                    <td valign="top" width="280">
+                        <b>'. $invoice_customer_lists[$i]['product_code'].'</b><br>
+                        <span>Sub name : </span>'. $invoice_customer_lists[$i]['invoice_customer_list_product_name'].'<br>
+                        <span>Detail : </span>'. $invoice_customer_lists[$i]['invoice_customer_list_product_detail'].'<br>
+                        <span>Remark : </span>'. $invoice_customer_lists[$i]['invoice_customer_list_remark'].'<br>
+                    </td>
+
+                    <td valign="top" align="right" width="80">'. $invoice_customer_lists[$i]['invoice_customer_list_qty'].'</td>
+                    <td valign="top" align="right" width="80">'.  number_format($invoice_customer_lists[$i]['invoice_customer_list_price'],2).'</td>
+                    <td valign="top" align="right" width="80">'.  number_format($invoice_customer_lists[$i]['invoice_customer_list_qty'] * $invoice_customer_lists[$i]['invoice_customer_list_price'],2).'</td>
                     
-                </tr> 
+
+                </tr>
                 ';
     }
 
+    if($page_index + 1 == $page_max){
+       $str = $number_2_text->convert(number_format(($vat/100) * $total + $total,2));
+       $vat = number_format($invoice_customer['invoice_customer_vat'],2);
+       $vat_price = number_format(($vat/100) * $total,2);
+       $net_price = number_format(($vat/100) * $total + $total,2);
+       $total_price = number_format($total,2);
+    }
+
+
     $html[$page_index] .= ' 
-            </tbody>
-            <tfoot>
+    </tbody>
+    </table>
+</div>
+                    
+                    
+<table width="100%">
+    <tr>
+        <td width="20">
+        </td>
+
+        <td width="280">
+            
+        </td>
+
+
+        <td width="80" align="right"></td>
+        <td width="80" align="right"></td>
+        <td width="80" align="right"></td>
+        
+
+    </tr>
+        
+    <tr class="odd gradeX">
+        <td colspan="2" align="center">
+        '.$str.'
+        </td>
+        <td colspan="2" align="left" style="vertical-align: middle;">
+            
+        </td>
+        <td style="text-align: right;">
+            '.$total_price.'
+        </td>
+        
+    </tr>
+    <tr class="odd gradeX">
+        <td></td>
+        <td></td>
+        <td colspan="2" align="left" style="vertical-align: middle;">
+            <table>
                 <tr>
-                    <td colspan="6" align="center"> รวม </td>
-                    <td  align="right" >'.number_format($net_total,2).'</td>
-                    <td  align="right" >'.number_format($vat_total,2).'</td>
+                    <td>
+                        
+                    </td>
+                    <td style = "padding-left:8px;padding-right:8px;width:72px;">
+                        
+                    </td>
+                    <td width="16">
+                    
+                    </td>
                 </tr>
-            </tfoot>
-        </table>
+            </table>
+            
+        </td>
+        <td style="text-align: right;">
+            '.$vat_price.'
+        </td>
+        
+    </tr>
+    <tr class="odd gradeX">
+        <td></td>
+        <td></td>
+        <td colspan="2" align="left" style="vertical-align: middle;">
+            
+        </td>
+        <td style="text-align: right;">
+            '.$net_price.'
+        </td>
+        
+    </tr>
+</table>   
     ';
+
 }
 
 ?>

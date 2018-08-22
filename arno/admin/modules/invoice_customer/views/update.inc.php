@@ -723,7 +723,7 @@ generate_credit_date();
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="index.php?app=invoice_customer" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <a href="index.php?app=invoice_customer&action=print&id=<?PHP echo $invoice_customer_id?>" class="btn btn-danger">Print</a>
+                            <a href="print.php?app=invoice_customer&action=pdf&id=<?PHP echo $invoice_customer_id?>" class="btn btn-danger">Print</a>
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     </div>

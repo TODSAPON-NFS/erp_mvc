@@ -1,8 +1,10 @@
 <?PHP 
 
 session_start();
+require_once('../models/CompanyModel.php');
 require_once('../models/InvoiceCustomerModel.php');
 require_once('../models/InvoiceCustomerListModel.php');
+require_once('../functions/NumbertoTextFunction.func.php');
 
 date_default_timezone_set('asia/bangkok');
 $d1=date("d");
@@ -14,6 +16,8 @@ $d6=date("s");
 
 $path = "print/invoice_customer/views/";
 
+$number_2_text = new Number2Text;
+$company_model = new CompanyModel;
 $invoice_customer_model = new InvoiceCustomerModel;
 $invoice_customer_list_model = new InvoiceCustomerListModel;
 
@@ -29,7 +33,7 @@ $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy
 //     $tax_reports[] = $tax_reports[0];
 // }
 
-$lines = 30;
+$lines = 7;
 
 $page_max = (int)(count($invoice_customer_lists) / $lines);
 if(count($invoice_customer_lists) % $lines > 0){

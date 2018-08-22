@@ -1,0 +1,1 @@
+INSERT INTO tb_supplier (supplier_code,supplier_name_en,supplier_tax,supplier_address_1,supplier_address_2,supplier_address_3,supplier_zipcode,supplier_tel,supplier_fax,supplier_domestic,pay_limit,currency_id) VALUES ('

@@ -1,0 +1,1 @@
+INSERT INTO tb_product(product_code,product_name,product_description,product_status) VALUES ('

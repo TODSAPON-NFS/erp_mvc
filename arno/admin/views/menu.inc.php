@@ -111,6 +111,9 @@
                             </a>
                             <ul class="collapse"> 
                                 <li>
+                                    <a href="?app=setting" <?PHP if($_GET['app'] == "setting"){?> class="active" <?PHP } ?> ><i class="fa fa-gears" aria-hidden="true"></i> ตั้งค่าระบบ (System Setting)</a>
+                                </li>
+                                <li>
                                     <a href="?app=employee" <?PHP if($_GET['app'] == "employee"){?> class="active" <?PHP } ?> ><i class="fa fa-user" aria-hidden="true"></i> พนักงาน (Employee)</a>
                                 </li>
 

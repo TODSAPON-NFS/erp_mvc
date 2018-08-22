@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 17, 2018 at 04:33 PM
+-- Generation Time: Aug 20, 2018 at 03:27 PM
 -- Server version: 5.6.34
 -- PHP Version: 5.6.29
 
@@ -2279,10 +2279,15 @@ CREATE TABLE `tb_company` (
   `company_tax` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `company_tel` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `company_fax` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `company_email` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `company_branch` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `company_image` text COLLATE utf8_unicode_ci NOT NULL,
+  `company_image_rectangle` text COLLATE utf8_unicode_ci NOT NULL,
   `company_vat_type` int(11) NOT NULL,
+  `company_email` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `company_email_smtp` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `company_email_port` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `company_email_user` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `company_email_password` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `lastupdate` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `updateby` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -2291,8 +2296,8 @@ CREATE TABLE `tb_company` (
 -- Dumping data for table `tb_company`
 --
 
-INSERT INTO `tb_company` (`company_id`, `company_name_th`, `company_name_en`, `company_address_1`, `company_address_2`, `company_address_3`, `company_tax`, `company_tel`, `company_fax`, `company_email`, `company_branch`, `company_image`, `company_vat_type`, `lastupdate`, `updateby`) VALUES
-(1, 'บริษัท อาร์โน (ประเทศไทย) จำกัด', 'ARNO (THAILAND) CO.,LTD', '2/27 อาคารบางนาคอมเพล็กซ์ ออฟฟิศทาวเวอร์ชั้น 7 ', 'ซอยบางนา-ตราด 25 ถนนบางนา-ตราด  แขวงบางนาเหนือ', ' เขตบางนา กรุงเทพฯ 10260', '0105558002033', '038-989 615', '038-989 614', 'info@arno.co.th', 'สำนักงานใหญ่', '', 2, '', 0);
+INSERT INTO `tb_company` (`company_id`, `company_name_th`, `company_name_en`, `company_address_1`, `company_address_2`, `company_address_3`, `company_tax`, `company_tel`, `company_fax`, `company_branch`, `company_image`, `company_image_rectangle`, `company_vat_type`, `company_email`, `company_email_smtp`, `company_email_port`, `company_email_user`, `company_email_password`, `lastupdate`, `updateby`) VALUES
+(1, 'บริษัท อาร์โน (ประเทศไทย) จำกัด', 'ARNO (THAILAND) CO.,LTD', '2/27 อาคารบางนาคอมเพล็กซ์ ออฟฟิศทาวเวอร์ชั้น 7 ', 'ซอยบางนา-ตราด 25 ถนนบางนา-ตราด  แขวงบางนาเหนือ', ' เขตบางนา กรุงเทพฯ 10260', '0105558002033', '038-989 615', '038-989 614', 'สำนักงานใหญ่', '20-08-2018 03:21:00arno.jpg', '20-08-2018 03:21:00arno-rectangle.jpg', 0, 'info@arno.co.th', '', '', '', '', '2018-08-20 15:21:00', 1);
 
 -- --------------------------------------------------------
 

@@ -34,6 +34,7 @@ class InvoiceSupplierModel extends BaseModel{
         
         $sql = " SELECT invoice_supplier_id, 
         invoice_supplier_code, 
+        invoice_supplier_code_gen,
         invoice_supplier_date, 
         invoice_supplier_date_recieve,  
         invoice_supplier_total_price, 
@@ -52,6 +53,7 @@ class InvoiceSupplierModel extends BaseModel{
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
             OR  invoice_supplier_code LIKE ('%$keyword%') 
+            OR  invoice_supplier_code_gen LIKE ('%$keyword%') 
         ) 
         AND invoice_supplier_begin = '$begin' 
         $str_supplier 
@@ -59,6 +61,8 @@ class InvoiceSupplierModel extends BaseModel{
         $str_user  
         ORDER BY STR_TO_DATE(invoice_supplier_date_recieve,'%Y-%m-%d %H:%i:%s'),invoice_supplier_code DESC 
          ";
+
+         //echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

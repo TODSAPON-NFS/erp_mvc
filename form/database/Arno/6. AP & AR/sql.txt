@@ -1,0 +1,3 @@
+INSERT INTO tb_invoice_supplier (supplier_id, invoice_supplier_date_recieve, invoice_supplier_date, invoice_supplier_code, 	invoice_supplier_code_gen,invoice_supplier_due,invoice_supplier_term,invoice_supplier_begin,invoice_supplier_total_price,invoice_supplier_net_price) VALUES ('
+
+INSERT INTO tb_invoice_customer (customer_id, invoice_customer_date, invoice_customer_code,invoice_customer_due,invoice_customer_term,invoice_customer_begin,invoice_customer_total_price,invoice_customer_net_price) VALUES ('

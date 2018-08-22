@@ -78,7 +78,7 @@ session_start();
                 </a>
             </div>
             <div class="col-md-4 " align="center">
-                <a href="#" class="card card-edit">
+                <a href="partner-chips/" class="card card-edit">
                     <div >
                         <img class="img-responsive" src="uploads/logo/partner-chips.jpg" width="160" alt="Card image cap">
                     </div>

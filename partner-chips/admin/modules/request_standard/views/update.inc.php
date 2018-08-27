@@ -172,7 +172,7 @@
                                     <?php 
                                     for($i =  0 ; $i < count($customers) ; $i++){
                                     ?>
-                                    <option <?php if($customers[$i]['customer_id'] == $request_standard['customer_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_th'] ?> (<?php echo $customers[$i]['customer_name_en'] ?>)</option>
+                                    <option <?php if($customers[$i]['customer_id'] == $request_standard['customer_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?></option>
                                     <?
                                     }
                                     ?>
@@ -188,7 +188,7 @@
                                     <?php 
                                     for($i =  0 ; $i < count($suppliers) ; $i++){
                                     ?>
-                                    <option <?php if($suppliers[$i]['supplier_id'] == $request_standard['supplier_id']){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_th'] ?> (<?php echo $suppliers[$i]['supplier_name_en'] ?>)</option>
+                                    <option <?php if($suppliers[$i]['supplier_id'] == $request_standard['supplier_id']){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?></option>
                                     <?
                                     }
                                     ?>

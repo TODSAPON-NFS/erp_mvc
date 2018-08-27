@@ -42,7 +42,7 @@
         var customer_id = document.getElementById('customer_id').value;
         $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
             document.getElementById('customer_code').value = data.customer_code;
-            document.getElementById('official_receipt_name').value = data.customer_name_en +' (' + data.customer_name_th +')';
+            document.getElementById('official_receipt_name').value = data.customer_name_en  ;
             document.getElementById('official_receipt_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
             document.getElementById('official_receipt_tax').value = data.customer_tax ;
         });
@@ -282,7 +282,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($customers) ; $i++){
                                             ?>
-                                            <option <?php if($customers[$i]['customer_id'] == $official_receipt['customer_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
+                                            <option <?php if($customers[$i]['customer_id'] == $official_receipt['customer_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?>  </option>
                                             <?
                                             }
                                             ?>
@@ -293,7 +293,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ชื่อตามใบเสร็จ / Full name <font color="#F00"><b>*</b></font></label>
-                                        <input  id="official_receipt_name" name="official_receipt_name" class="form-control" value="<?php echo $official_receipt['customer_name_en'];?> (<?php echo $official_receipt['customer_name_th'];?>)" >
+                                        <input  id="official_receipt_name" name="official_receipt_name" class="form-control" value="<?php echo $official_receipt['customer_name_en'];?>  " >
                                         <p class="help-block">Example : Revel soft.</p>
                                     </div>
                                 </div>

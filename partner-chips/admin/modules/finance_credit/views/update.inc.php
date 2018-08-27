@@ -42,7 +42,7 @@
         var supplier_id = document.getElementById('supplier_id').value;
         $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id }, function( data ) {
             document.getElementById('supplier_code').value = data.supplier_code;
-            document.getElementById('finance_credit_name').value = data.supplier_name_en +' (' + data.supplier_name_th +')';
+            document.getElementById('finance_credit_name').value = data.supplier_name_en ;
             document.getElementById('finance_credit_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
             document.getElementById('finance_credit_tax').value = data.supplier_tax ;
         });
@@ -441,7 +441,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($suppliers) ; $i++){
                                             ?>
-                                            <option <?php if($suppliers[$i]['supplier_id'] == $supplier['supplier_id']){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
+                                            <option <?php if($suppliers[$i]['supplier_id'] == $supplier['supplier_id']){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> </option>
                                             <?
                                             }
                                             ?>
@@ -452,7 +452,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ชื่อตามใบจ่ายชำระหนี้ / Full name <font color="#F00"><b>*</b></font></label>
-                                        <input  id="finance_credit_name" name="finance_credit_name" class="form-control" value="<?php echo $supplier['supplier_name_en'];?> (<?php echo $supplier['supplier_name_th'];?>)" >
+                                        <input  id="finance_credit_name" name="finance_credit_name" class="form-control" value="<?php echo $supplier['supplier_name_en'];?>" >
                                         <p class="help-block">Example : Revel soft.</p>
                                     </div>
                                 </div>

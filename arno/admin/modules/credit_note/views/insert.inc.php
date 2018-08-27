@@ -57,7 +57,7 @@
         var customer_id = document.getElementById('customer_id').value;
         $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
             document.getElementById('customer_code').value = data.customer_code;
-            document.getElementById('credit_note_name').value = data.customer_name_en +' (' + data.customer_name_th +')';
+            document.getElementById('credit_note_name').value = data.customer_name_en;
             document.getElementById('credit_note_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
             document.getElementById('credit_note_tax').value = data.customer_tax ;
         });

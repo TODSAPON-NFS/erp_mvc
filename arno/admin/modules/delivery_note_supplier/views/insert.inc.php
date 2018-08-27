@@ -256,7 +256,8 @@
                 '<td>'+
                     '<input type="hidden" name="request_test_list_id[]" value="0" />'+
                     '<input type="hidden" name="delivery_note_supplier_list_id[]" value="0" />'+     
-                    '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                    '<input type="hidden" name="product_id[]" class="form-control" />'+
+                    '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" />'+
                 '</td>'+
                 '<td><input type="text" class="form-control" name="product_name[]" readonly /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="delivery_note_supplier_list_qty[]"  /></td>'+
@@ -269,14 +270,7 @@
             '</tr>'
         );
 
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
-        var str = "<option value=''>Select Product</option>";
-        $.each(product_data, function (index, value) {
-            str += "<option value='" + value['product_id'] + "'>"+value['product_code']+"</option>";
-        });
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
-
-        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
+        $(".example-ajax-post").easyAutocomplete(options);
         $('#modalAdd').modal('hide');
     }
 
@@ -331,7 +325,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($suppliers) ; $i++){
                                             ?>
-                                            <option <?php if($suppliers[$i]['supplier_id'] == $supplier['supplier_id']){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
+                                            <option <?php if($suppliers[$i]['supplier_id'] == $supplier['supplier_id']){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> </option>
                                             <?
                                             }
                                             ?>

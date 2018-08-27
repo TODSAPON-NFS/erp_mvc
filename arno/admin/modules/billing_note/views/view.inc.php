@@ -46,7 +46,7 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $customer_orders[$i]['customer_name_en']; ?> (<?php echo $customer_orders[$i]['customer_name_th']; ?>)</td>
+                                    <td><?php echo $customer_orders[$i]['customer_name_en']; ?></td>
                                     <td>
                                         <a href="?app=billing_note&action=insert&customer_id=<?php echo $customer_orders[$i]['customer_id'];?>">
                                             <i class="fa fa-plus-square" aria-hidden="true"></i>

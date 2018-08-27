@@ -41,7 +41,7 @@
                                 <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>Supplier  <font color="#F00"><b>*</b></font> </label>
-                                        <p class="help-block"><?php echo $purchase_order['supplier_name_en'] ?> (<?php echo $purchase_order['supplier_name_th'] ?>)</p>
+                                        <p class="help-block"><?php echo $purchase_order['supplier_name_en'] ?>  </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">

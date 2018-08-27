@@ -24,7 +24,7 @@
                                                 <div class="col-lg-7 col-sm-7">
                                                     <div class="form-group">
                                                         <label>ลูกค้า / Customer  <font color="#F00"><b>*</b></font> </label>
-                                                        <p class="help-block"><?php echo $delivery_note_customer['customer_name_en'] ?> (<?php echo $delivery_note_customer['customer_name_th'] ?>)</p>
+                                                        <p class="help-block"><?php echo $delivery_note_customer['customer_name_en'] ?> </p>
                                                     </div>
                                                 </div>
                                             </div>

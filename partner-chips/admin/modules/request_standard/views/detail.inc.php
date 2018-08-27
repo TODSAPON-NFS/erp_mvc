@@ -43,13 +43,13 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>สำหรับลูกค้า / Customer </label>
-                                <p class="help-block"><?php if($request_standard['customer_name_en'] != ''){ echo $request_standard['customer_name_en'];?> (<?php echo $request_standard['customer_name_th'];?>)<?php } else {?> - <?php }?></p>
+                                <p class="help-block"><?php echo $request_standard['customer_name_en'];?></p>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>ผู้ขาย / Supplier </label>
-                                <p class="help-block"><?php if($request_standard['supplier_name_en'] != ''){ echo $request_standard['supplier_name_en'];?> (<?php echo $request_standard['supplier_name_th'];?>)<?php } else {?> - <?php }?></p>
+                                <p class="help-block"><?php echo $request_standard['supplier_name_th']; ?></p>
                             </div>
                         </div>
                     </div>

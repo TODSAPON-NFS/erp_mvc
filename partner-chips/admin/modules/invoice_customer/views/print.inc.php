@@ -1,4 +1,4 @@
-<div style="font-size:10px;padding-left:32px;padding-top:220px;">
+<div style="font-size:10px;padding-left:32px;padding-top:180px;">
     <div style="display:block;padding:8;">
         <?PHP echo $invoice_customer['customer_code']; ?>
     </div>

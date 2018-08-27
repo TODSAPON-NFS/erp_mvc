@@ -54,7 +54,7 @@
                                     <?php 
                                     for($i =  0 ; $i < count($currencies) ; $i++){
                                     ?>
-                                    <option <?if($currencies['currency_id'] == $exchange_rate_baht[$i]['currency_id'] ){?> selected <?php } ?> value="<?php echo $currencies[$i]['currency_id'] ?>"><?php echo $currencies[$i]['currency_name_en'] ?> (<?php echo $currencies[$i]['currency_sign'] ?>) </option>
+                                    <option <?if($currencies['currency_id'] == $exchange_rate_baht[$i]['currency_id'] ){?> selected <?php } ?> value="<?php echo $currencies[$i]['currency_id'] ?>"><?PHP echo $currencies[$i]['currency_code'];?> - <?PHP echo $currencies[$i]['currency_name'];?> (<?PHP echo $currencies[$i]['currency_sign'];?>)</option>
                                     <?
                                     }
                                     ?>
@@ -142,7 +142,7 @@
                                     <tr class="odd gradeX">
                                         <td style="text-align:center"><?php echo $i+1; ?></td>
                                         <td style="text-align:center"><?php echo $date_time_function->changeDateFormat($exchange_rate_bahts[$i]['exchange_rate_baht_date']); ?></td>
-                                        <td style="text-align:center"><?php echo $exchange_rate_bahts[$i]['currency_name_en'] ?> (<?php echo $exchange_rate_bahts[$i]['currency_sign'] ?>)</td>
+                                        <td style="text-align:center"><?PHP echo $exchange_rate_bahts[$i]['currency_code'];?> - <?PHP echo $exchange_rate_bahts[$i]['currency_name'];?> (<?PHP echo $exchange_rate_bahts[$i]['currency_sign'];?>)</td>
                                         <td style="text-align:right"><?php echo $exchange_rate_bahts[$i]['exchange_rate_baht_value']; ?></td>
                                         <td>
                                             

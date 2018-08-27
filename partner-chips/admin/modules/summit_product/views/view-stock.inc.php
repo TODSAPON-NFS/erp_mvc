@@ -489,9 +489,25 @@ function getProductDetail(id){
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="7">
+                                <td colspan="4">
                                     <input type="checkbox" value="all" name="check_all" onclick="checkAll(this)" />
                                     <button type="summit" class="btn btn-danger">ลบข้อมูล</button>
+                                </td>
+                                <td align="right">
+                                    <b>มูลค่ารวมทั้งหมด</b>
+                                </td>
+                                <td align="right">
+                                    <b>
+                                    <?PHP
+                                    $total = 0; 
+                                    for($i=0 ; $i < count($summit_products); $i ++){
+                                        $total += $summit_products[$i]['summit_product_total'];
+                                    }
+                                    echo number_format($total,2);
+                                    ?>
+                                    </b>
+                                </td>
+                                <td>
                                 </td>
                             </tr>
                         </tfoot>

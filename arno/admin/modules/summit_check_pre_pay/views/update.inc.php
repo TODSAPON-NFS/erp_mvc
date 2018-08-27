@@ -73,7 +73,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($suppliers) ; $i++){
                                             ?>
-                                            <option <?PHP if($suppliers[$i]['supplier_id'] == $check['supplier_id']){?> SELECTED <?PHP } ?>  value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
+                                            <option <?PHP if($suppliers[$i]['supplier_id'] == $check['supplier_id']){?> SELECTED <?PHP } ?>  value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> </option>
                                             <?
                                             }
                                             ?>

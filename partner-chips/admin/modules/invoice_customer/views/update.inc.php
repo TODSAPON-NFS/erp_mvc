@@ -88,7 +88,7 @@
         var customer_id = document.getElementById('customer_id').value;
         $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
             document.getElementById('customer_code').value = data.customer_code;
-            document.getElementById('invoice_customer_name').value = data.customer_name_en +' (' + data.customer_name_th +')';
+            document.getElementById('invoice_customer_name').value = data.customer_name_en;
             document.getElementById('invoice_customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
             document.getElementById('invoice_customer_tax').value = data.customer_tax ;
         });
@@ -441,7 +441,7 @@ generate_credit_date();
                                             <?php 
                                             for($i =  0 ; $i < count($customers) ; $i++){
                                             ?>
-                                            <option <?php if($customers[$i]['customer_id'] == $customer['customer_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
+                                            <option <?php if($customers[$i]['customer_id'] == $customer['customer_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> </option>
                                             <?
                                             }
                                             ?>
@@ -452,7 +452,7 @@ generate_credit_date();
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ชื่อตามใบกำกับภาษี / Full name <font color="#F00"><b>*</b></font></label>
-                                        <input  id="invoice_customer_name" name="invoice_customer_name" class="form-control" value="<?php echo $customer['customer_name_en'];?> (<?php echo $customer['customer_name_th'];?>)" >
+                                        <input  id="invoice_customer_name" name="invoice_customer_name" class="form-control" value="<?php echo $customer['customer_name_en'];?>" >
                                         <p class="help-block">Example : Revel soft.</p>
                                     </div>
                                 </div>
@@ -723,7 +723,7 @@ generate_credit_date();
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="index.php?app=invoice_customer" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <a href="index.php?app=invoice_customer&action=print&id=<?PHP echo $invoice_customer_id?>" class="btn btn-danger">Print</a>
+                            <a href="print.php?app=invoice_customer&action=pdf&id=<?PHP echo $invoice_customer_id?>" class="btn btn-danger">Print</a>
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     </div>

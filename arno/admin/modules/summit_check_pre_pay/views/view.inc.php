@@ -63,7 +63,7 @@
                                 <?php 
                                 for($i =  0 ; $i < count($suppliers) ; $i++){
                                 ?>
-                                <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
+                                <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> </option>
                                 <?
                                 }
                                 ?>
@@ -127,7 +127,7 @@
                                 ?>    
                             </td>
                             <td><?php echo $checks[$i]['check_pay_total']; ?></td>
-                            <td><td><?php if($checks[$i]['supplier_name_th'] != ""){echo $checks[$i]['supplier_name_th'];}else{echo $checks[$i]['supplier_name_en'];} ?> </td></td>
+                            <td><td><?php echo $checks[$i]['supplier_name_en'];?> </td></td>
                             <td><?php echo $checks[$i]['check_pay_date_write']; ?></td>
                             <td><?php echo $checks[$i]['check_pay_remark']; ?></td>
 

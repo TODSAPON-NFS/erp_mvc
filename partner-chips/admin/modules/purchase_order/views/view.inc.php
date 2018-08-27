@@ -51,7 +51,7 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php if($supplier_orders[$i]['supplier_name_en'] != "" ){ echo $supplier_orders[$i]['supplier_name_en']; }else{ echo $supplier_orders[$i]['supplier_name_th']; } ?></td>
+                                    <td><?php  echo $supplier_orders[$i]['supplier_name_en'];  ?></td>
                                     <td>
                                         <a href="?app=purchase_order&action=insert&supplier_id=<?php echo $supplier_orders[$i]['supplier_id'];?>">
                                             <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -102,7 +102,7 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $supplier_blankeds[$i]['purchase_request_code']; ?> <?php if($supplier_blankeds[$i]['supplier_name_en'] != "" ){ echo $supplier_blankeds[$i]['supplier_name_en']; }else{ echo $supplier_blankeds[$i]['supplier_name_th']; } ?></td>
+                                    <td><?php echo $supplier_blankeds[$i]['purchase_request_code']; ?> <?php  echo $supplier_blankeds[$i]['supplier_name_en'];   ?></td>
                                     <td>
                                         <a href="?app=purchase_order&action=insert&type=blanked&purchase_request_id=<?php echo $supplier_blankeds[$i]['purchase_request_id'];?>&supplier_id=<?php echo $supplier_blankeds[$i]['supplier_id'];?>">
                                             <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -151,7 +151,7 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php if($supplier_tests[$i]['supplier_name_en'] != "" ){ echo $supplier_tests[$i]['supplier_name_en']; }else{ echo $supplier_tests[$i]['supplier_name_th']; } ?></td>
+                                    <td><?php  echo $supplier_tests[$i]['supplier_name_en'];   ?></td>
                                     <td>
                                         <a href="?app=purchase_order&action=insert&type=test&supplier_id=<?php echo $supplier_tests[$i]['supplier_id'];?>">
                                             <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -200,7 +200,7 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php if($supplier_regrinds[$i]['supplier_name_en'] != "" ){ echo $supplier_regrinds[$i]['supplier_name_en']; }else{ echo $supplier_regrinds[$i]['supplier_name_th']; } ?></td>
+                                    <td><?php echo $supplier_regrinds[$i]['supplier_name_en'];   ?></td>
                                     <td>
                                         <a href="?app=purchase_order&action=insert&type=regrind&supplier_id=<?php echo $supplier_regrinds[$i]['supplier_id'];?>">
                                             <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -277,7 +277,7 @@
                                 <?php 
                                 for($i =  0 ; $i < count($suppliers) ; $i++){
                                 ?>
-                                <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
+                                <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> </option>
                                 <?
                                 }
                                 ?>

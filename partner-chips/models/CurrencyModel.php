@@ -10,7 +10,7 @@ class CurrencyModel extends BaseModel{
     }
 
     function getCurrencyBy($name_th = '',$name_en = ''){
-        $sql = "SELECT * FROM tb_currency WHERE  (currency_name_th LIKE ('%$name_th%') OR currency_name_en LIKE ('%$name_en%')) 
+        $sql = "SELECT * FROM tb_currency WHERE  (currency_name LIKE ('%$name_th%') OR currency_country LIKE ('%$name_en%')) 
         ";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -41,9 +41,12 @@ class CurrencyModel extends BaseModel{
 
     function updateCurrencyByID($id,$data = []){
         $sql = " UPDATE tb_currency SET 
-        currency_name_en = '".$data['currency_name_en']."' ,  
-        currency_name_th = '".$data['currency_name_th']."' ,  
+        currency_country = '".$data['currency_country']."' ,  
+        currency_name = '".$data['currency_name']."' ,  
         currency_sign = '".$data['currency_sign']."' ,  
+        currency_code  = '".$data['currency_code']."' ,  
+        currency_thousand  = '".$data['currency_thousand']."' , 
+        currency_decimal  = '".$data['currency_decimal']."' 
         WHERE currency_id = $id 
         ";
 
@@ -58,13 +61,19 @@ class CurrencyModel extends BaseModel{
 
     function insertCurrency($data = []){
         $sql = " INSERT INTO tb_currency (
-            currency_name_en , 
-            currency_name_th , 
-            currency_sign 
+            currency_country , 
+            currency_name , 
+            currency_sign ,
+            currency_code,
+            currency_thousand,
+            currency_decimal
         ) VALUES (
-            '".$data['currency_name_en']."', 
-            '".$data['currency_name_th']."', 
-            '".$data['currency_sign']."' 
+            '".$data['currency_country']."', 
+            '".$data['currency_name']."', 
+            '".$data['currency_sign']."', 
+            '".$data['currency_code']."', 
+            '".$data['currency_thousand']."', 
+            '".$data['currency_decimal']."'
         ); 
         ";
 

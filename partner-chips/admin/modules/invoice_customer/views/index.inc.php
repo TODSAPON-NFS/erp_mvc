@@ -119,12 +119,6 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy($invoice_customer_id);
     require_once($path.'detail.inc.php');
 
-}else if ($_GET['action'] == 'print'){
-    
-    $invoice_customer = $invoice_customer_model->getInvoiceCustomerViewByID($invoice_customer_id);
-    $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy($invoice_customer_id);
-    require_once($path.'print.inc.php');
-
 }else if ($_GET['action'] == 'delete' && ( $license_sale_page == "High" )){
     $invoice_customer_model->deleteInvoiceCustomerById($invoice_customer_id);
     $journal_sale_model->deleteJournalSaleByInvoiceCustomerID($invoice_customer_id);

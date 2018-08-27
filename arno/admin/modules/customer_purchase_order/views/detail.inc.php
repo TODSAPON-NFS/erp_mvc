@@ -32,7 +32,7 @@
                                 <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>ลูกค้า / Customer  <font color="#F00"><b>*</b></font> </label>
-                                        <p class="help-block"><?php echo $customer_purchase_order['customer_name_en'] ?> (<?php echo $customer_purchase_order['customer_name_th'] ?>)</p>
+                                        <p class="help-block"><?php echo $customer_purchase_order['customer_name_en'] ?> </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">

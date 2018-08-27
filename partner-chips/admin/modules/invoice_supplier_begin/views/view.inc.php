@@ -63,7 +63,7 @@
                                 <?php 
                                 for($i =  0 ; $i < count($suppliers) ; $i++){
                                 ?>
-                                <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
+                                <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> </option>
                                 <?
                                 }
                                 ?>
@@ -123,11 +123,7 @@
                             <td>
                                 <a href="?app=summit_credit&action=detail&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                </a>
-
-                                 <a href="index.php?app=summit_credit&action=print&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" >
-                                    <i class="fa fa-print" aria-hidden="true"></i>
-                                </a>
+                                </a> 
 
                                 <a href="?app=summit_credit&action=update&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

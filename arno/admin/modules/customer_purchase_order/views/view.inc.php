@@ -55,7 +55,7 @@
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
-                            <td><?php echo $customer_orders[$i]['customer_name_en']; ?> (<?php echo $customer_orders[$i]['customer_name_th']; ?>)</td>
+                            <td><?php echo $customer_orders[$i]['customer_name_en']; ?> </td>
                             <td>
                                 <a href="?app=customer_purchase_order&action=insert&customer_id=<?php echo $customer_orders[$i]['customer_id'];?>">
                                     <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -141,7 +141,7 @@
                                 <?php 
                                 for($i =  0 ; $i < count($customers) ; $i++){
                                 ?>
-                                <option <?php if($customers[$i]['customer_id'] == $customer_id){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
+                                <option <?php if($customers[$i]['customer_id'] == $customer_id){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?></option>
                                 <?
                                 }
                                 ?>

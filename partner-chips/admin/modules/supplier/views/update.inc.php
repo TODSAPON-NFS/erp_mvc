@@ -330,7 +330,7 @@
                                 <?PHP 
                                     for($i=0; $i < count($currency) ; $i++){
                                 ?>
-                                    <option value="<?PHP echo $currency[$i]['currency_id'];?>" <?PHP if($currency[$i]['currency_id'] == $supplier['currency_id']){?> Selected <?PHP }?>><?PHP echo $currency[$i]['currency_name_en'];?></option>
+                                    <option value="<?PHP echo $currency[$i]['currency_id'];?>" <?PHP if($currency[$i]['currency_id'] == $supplier['currency_id']){?> Selected <?PHP }?>><?PHP echo $currency[$i]['currency_code'];?> - <?PHP echo $currency[$i]['currency_name'];?></option>
                                 <?PHP
                                     }
                                 ?>

@@ -36,7 +36,7 @@
                                 <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>ชื่อตามใบเสนอราคา / Full name</label>
-                                        <p class="help-block"><?php echo $quotation['customer_name_en'];?> (<?php echo $quotation['customer_name_th'];?>)</p>
+                                        <p class="help-block"><?php echo $quotation['customer_name_en'];?>  </p>
                                     </div>
                                 </div>
                                 

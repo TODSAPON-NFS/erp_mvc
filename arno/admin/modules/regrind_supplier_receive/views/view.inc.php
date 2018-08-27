@@ -47,7 +47,7 @@
                                         ?>
                                         <tr class="odd gradeX">
                                             <td><?php echo $i+1; ?></td>
-                                            <td><?php echo $supplier_receives[$i]['supplier_name_en']; ?> (<?php echo $supplier_receives[$i]['supplier_name_th']; ?>)</td>
+                                            <td><?php echo $supplier_receives[$i]['supplier_name_en']; ?>  </td>
                                             <td>
                                                 <a href="?app=regrind_supplier_receive&action=insert&supplier_id=<?php echo $supplier_receives[$i]['supplier_id'];?>">
                                                     <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -77,7 +77,7 @@
                                         ?>
                                         <tr class="odd gradeX">
                                             <td><?php echo $i+1; ?></td>
-                                            <td><?php echo $regrind_suppliers[$i]['regrind_supplier_code']; ?> <?php echo $regrind_suppliers[$i]['supplier_name_en']; ?> (<?php echo $regrind_suppliers[$i]['supplier_name_th']; ?>)</td>
+                                            <td><?php echo $regrind_suppliers[$i]['regrind_supplier_code']; ?> <?php echo $regrind_suppliers[$i]['supplier_name_en']; ?> </td>
                                             <td>
                                                 <a href="?app=regrind_supplier_receive&action=insert&supplier_id=<?php echo $regrind_suppliers[$i]['supplier_id'];?>">
                                                     <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -151,7 +151,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($suppliers) ; $i++){
                                             ?>
-                                            <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
+                                            <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> </option>
                                             <?
                                             }
                                             ?>

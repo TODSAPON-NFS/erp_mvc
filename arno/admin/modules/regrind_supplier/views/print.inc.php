@@ -24,7 +24,7 @@
                                                 <div class="col-lg-7 col-sm-7">
                                                     <div class="form-group">
                                                         <label>ผู้ขาย / Supplier  <font color="#F00"><b>*</b></font> </label>
-                                                        <p class="help-block"><?php echo $regrind_supplier['supplier_name_en'] ?> (<?php echo $regrind_supplier['supplier_name_th'] ?>)</p>
+                                                        <p class="help-block"><?php echo $regrind_supplier['supplier_name_en'] ?> </p>
                                                     </div>
                                                 </div>
                                             </div>

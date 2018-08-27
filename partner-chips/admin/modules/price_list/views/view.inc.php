@@ -6,15 +6,6 @@
 
 var number_error = 0;
 
-function search(){
-    var supplier_id = $("#supplier_id").val();
-    var product_category_id = $("#product_category_id").val();
-    var product_type_id = $("#product_type_id").val();
-    var keyword = $("#keyword").val();
-
-    window.location = "index.php?app=price_list&supplier_id="+supplier_id+"&product_category_id="+product_category_id+"&product_type_id="+product_type_id+"&keyword="+keyword;
-}
-
     
 function ExportToTable(id) {  
     var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;  
@@ -256,75 +247,77 @@ function check_number(id){
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
+                <form role="form" method="get" action="index.php?app=price_list">
+                    <input type="hidden" name="app" value="price_list" />
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>ผู้ขาย / Supplier </label>
+                                <select id="supplier_id" name="supplier_id" class="form-control select"  data-live-search="true">
+                                    <option value="">ทั้งหมด</option>
+                                    <?php 
+                                    for($i =  0 ; $i < count($suppliers) ; $i++){
+                                    ?>
+                                    <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_th'] ?> </option>
+                                    <?
+                                    }
+                                    ?>
+                                </select>
+                                <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>ลักษณะ / Category </label>
+                                <select id="product_category_id" name="product_category_id" class="form-control select"  data-live-search="true">
+                                    <option value="">ทั้งหมด</option>
+                                    <?php 
+                                    for($i =  0 ; $i < count($product_category) ; $i++){
+                                    ?>
+                                    <option <?php if($product_category[$i]['product_category_id'] == $product_category_id){?> selected <?php }?> value="<?php echo $product_category[$i]['product_category_id'] ?>"><?php echo $product_category[$i]['product_category_name'] ?> </option>
+                                    <?
+                                    }
+                                    ?>
+                                </select>
+                                <p class="help-block">Example : - .</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>ประเภท / Type </label>
+                                <select id="product_type_id" name="product_type_id" class="form-control select"  data-live-search="true">
+                                    <option value="">ทั้งหมด</option>
+                                    <?php 
+                                    for($i =  0 ; $i < count($product_type) ; $i++){
+                                    ?>
+                                    <option <?php if($product_type[$i]['product_type_id'] == $product_type_id){?> selected <?php }?> value="<?php echo $product_type[$i]['product_type_id'] ?>"><?php echo $product_type[$i]['product_type_name'] ?> </option>
+                                    <?
+                                    }
+                                    ?>
+                                </select>
+                                <p class="help-block">Example : - .</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>คำค้น <font color="#F00"><b>*</b></font></label>
+                                <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >
+                                <p class="help-block">Example : T001.</p>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>ผู้ขาย / Supplier </label>
-                            <select id="supplier_id" name="supplier_id" class="form-control select"  data-live-search="true">
-                                <option value="">ทั้งหมด</option>
-                                <?php 
-                                for($i =  0 ; $i < count($suppliers) ; $i++){
-                                ?>
-                                <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_th'] ?> </option>
-                                <?
-                                }
-                                ?>
-                            </select>
-                            <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
+                    <div class="row">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary" style="float:right; margin:0px 4px;" type="submit">Search</button>
+                            <a href="index.php?app=price_list" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>ลักษณะ / Category </label>
-                            <select id="product_category_id" name="product_category_id" class="form-control select"  data-live-search="true">
-                                <option value="">ทั้งหมด</option>
-                                <?php 
-                                for($i =  0 ; $i < count($product_category) ; $i++){
-                                ?>
-                                <option <?php if($product_category[$i]['product_category_id'] == $product_category_id){?> selected <?php }?> value="<?php echo $product_category[$i]['product_category_id'] ?>"><?php echo $product_category[$i]['product_category_name'] ?> </option>
-                                <?
-                                }
-                                ?>
-                            </select>
-                            <p class="help-block">Example : - .</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>ประเภท / Type </label>
-                            <select id="product_type_id" name="product_type_id" class="form-control select"  data-live-search="true">
-                                <option value="">ทั้งหมด</option>
-                                <?php 
-                                for($i =  0 ; $i < count($product_type) ; $i++){
-                                ?>
-                                <option <?php if($product_type[$i]['product_type_id'] == $product_type_id){?> selected <?php }?> value="<?php echo $product_type[$i]['product_type_id'] ?>"><?php echo $product_type[$i]['product_type_name'] ?> </option>
-                                <?
-                                }
-                                ?>
-                            </select>
-                            <p class="help-block">Example : - .</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>คำค้น <font color="#F00"><b>*</b></font></label>
-                            <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >
-                            <p class="help-block">Example : T001.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                    </div>
-                    <div class="col-md-4">
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search();">Search</button>
-                        <a href="index.php?app=price_list" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
-                    </div>
-                </div>
+                </form>
 
                 <div class="row">
                     <div class="col-sm-6">

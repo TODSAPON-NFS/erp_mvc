@@ -1,4 +1,5 @@
 <script>
+   var customer_data=[];
     var options = {
         url: function(keyword) {
             return "controllers/getProductByKeyword.php?keyword="+keyword;
@@ -8,6 +9,13 @@
             return element.product_code ;
         },
 
+        template: {
+            type: "description",
+            fields: {
+                description: "product_name"
+            }
+        },
+        
         ajaxSettings: {
             dataType: "json",
             method: "POST",
@@ -23,7 +31,45 @@
 
         requestDelay: 400
     };
+
+    var customer_options = {
+        data:customer_data,
+        getValue: function(element) {
+            return element.customer_code ;
+        },
+        template: {
+            type: "description",
+            fields: {
+                description: "customer_name_en"
+            }
+        },
+        requestDelay: 400
+    };
     
+    function sync_data(){
+        $.post( "controllers/getCustomerBy.php", {}, function( data ) {
+            if(data != null){
+                customer_data = data;
+                customer_options = {
+                    data:customer_data,
+                    getValue: function(element) {
+                        return element.customer_code ;
+                    },
+                    template: {
+                        type: "description",
+                        fields: {
+                            description: "customer_name_en"
+                        }
+                    },
+                    requestDelay: 400
+                };
+
+                $(".find-customer").easyAutocomplete(customer_options);
+            }
+        });
+    }
+
+
     function check(){
 
 
@@ -61,6 +107,15 @@
 
     }
 
+    function set_data(id){
+        var val = customer_data.filter(val => val.customer_code == $(id).val());
+        if(val.length > 0){
+            $(id).closest('tr').children('td').children('input[name="customer_id[]"]').val(val[0].customer_id);
+        }else{
+            $(id).closest('tr').children('td').children('input[name="customer_id[]"]').val(0);
+        }
+    }
+
     function show_data(id){
         var product_code = $(id).val();
         $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
@@ -83,7 +138,7 @@
             '<tr class="odd gradeX">'+
                 '<td>'+
                     '<input type="hidden" class="form-control" name="request_standard_list_id[]" value="0" />'+
-                     '<input type="hidden" name="product_id[]" class="form-control" />'+
+                    '<input type="hidden" name="product_id[]" class="form-control" />'+
 					'<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" />'+ 
 				'</td>'+
                 '<td>'+
@@ -94,6 +149,10 @@
                 '<td><input type="text" class="form-control" style="text-align:right;" name="request_standard_list_qty[]"  value="1"/></td>'+
                 '<td><input type="text" class="form-control" name="request_standard_list_delivery[]" readonly /></td>'+
                 '<td>'+
+                    '<input type="hidden" name="customer_id[]" class="form-control" />'+
+                    '<input class="find-customer form-control" name="customer_name[]" onchange="set_data(this);" placeholder="End user name." value=""  />'+
+                '</td>'+
+                '<td>'+
                     '<input type="checkbox" class="form-control" name="tool_test_result[]"  value="1" />'+
                 '</td>'+
                 '<td>'+
@@ -103,7 +162,7 @@
                 '</td>'+
             '</tr>'
         );
-
+        $(".find-customer").easyAutocomplete(customer_options);
         $(".example-ajax-post").easyAutocomplete(options);
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="request_standard_list_delivery[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
     }
@@ -160,23 +219,7 @@
                         </div>
                     </div>
                     
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>สำหรับลูกค้า / Customer </label>
-                                <select id="customer_id" name="customer_id" class="form-control" >
-                                    <option value="0">Select</option>
-                                    <?php 
-                                    for($i =  0 ; $i < count($customers) ; $i++){
-                                    ?>
-                                    <option value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?></option>
-                                    <?
-                                    }
-                                    ?>
-                                </select>
-                                <p class="help-block">Example : บริษัท เรเวลซอฟต์ จำกัด (Revel Soft co,ltd).</p>
-                            </div>
-                        </div>
+                    <div class="row"> 
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>ผู้ขาย / Supplier </label>
@@ -209,7 +252,8 @@
                                 <th style="text-align:center;">ชื่อสินค้า/หมายเหตุ<br>(Product Name/Remark)</th>
                                 <th style="text-align:center;max-width:100px;">จำนวน<br>(Qty)</th>
                                 <th style="text-align:center;">วันที่ใช้สินค้า<br>(Delivery Min)</th>
-                                <th style="text-align:center;width:100px;">ผลทดสอบ<br>(Result)</th>
+                                <th style="text-align:center;">ลูกค้า<br>(Customer)</th>
+                                <th style="text-align:center;width:100px;">สั่งซื้อ<br>(Order)</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -229,6 +273,10 @@
                                 </td>
                                 <td><input type="text" class="form-control" style="text-align:right;" name="request_standard_list_qty[]" value="<?php echo $request_standard_lists[$i]['request_standard_list_qty']; ?>" /></td>
                                 <td><input type="text" class="form-control calendar" name="request_standard_list_delivery[]" readonly value="<?php echo $request_standard_lists[$i]['request_standard_list_delivery']; ?>" /></td>
+                                <td>
+                                    <input type="hidden" name="customer_id[]" class="form-control" value="<?php echo $request_standard_lists[$i]['customer_id']; ?>"/> 
+                                    <input class="find-customer form-control" name="customer_name[]" onchange="set_data(this);" placeholder="Customer code." value="<?php echo $request_standard_lists[$i]['customer_code']; ?>"  />
+                                </td>
                                 <td><input type="checkbox" class="form-control" name="tool_test_result[]"  value="1" <?php if($request_standard_lists[$i]['tool_test_result'] == '1'){ echo "checked"; } ?> /> </td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -268,3 +316,8 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+<script>
+    $(".example-ajax-post").easyAutocomplete(options); 
+    sync_data();
+</script>

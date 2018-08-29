@@ -110,8 +110,7 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
         $data['request_special_date'] = date("d")."-".date("m")."-".date("Y");
         $data['request_special_code'] = $_POST['request_special_code']; 
         $data['request_special_accept_status'] = "Waiting";
-        $data['employee_id'] = $_POST['employee_id'];
-        $data['customer_id'] = $_POST['customer_id'];
+        $data['employee_id'] = $_POST['employee_id']; 
         $data['supplier_id'] = $_POST['supplier_id'];
         $data['request_special_remark'] = $_POST['request_special_remark'];
         $data['purchase_order_open'] = $_POST['purchase_order_open'];
@@ -120,6 +119,7 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
 
         if($request_special_id > 0){
             $product_id = $_POST['product_id'];
+            $customer_id = $_POST['customer_id'];
             $request_special_list_id = $_POST['request_special_list_id'];
             $request_special_list_qty = $_POST['request_special_list_qty'];
             $request_special_list_delivery_min = $_POST['request_special_list_delivery'];
@@ -133,6 +133,7 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
                     $data = [];
                     $data['request_special_id'] = $request_special_id;
                     $data['product_id'] = $product_id[$i];
+                    $data['customer_id'] = $customer_id[$i];
                     $data['request_special_list_qty'] = $request_special_list_qty[$i];
                     $data['request_special_list_delivery'] = $request_special_list_delivery_min[$i];
                     $data['request_special_list_remark'] = $request_special_list_remark[$i];
@@ -150,6 +151,7 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
                 $data = [];
                 $data['request_special_id'] = $request_special_id;
                 $data['product_id'] = $product_id;
+                $data['customer_id'] = $customer_id;
                 $data['request_special_list_qty'] = $request_special_list_qty;
                 $data['request_special_list_delivery'] = $request_special_list_delivery_min;
                 $data['request_special_list_remark'] = $request_special_list_remark;
@@ -182,8 +184,7 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
         $data['request_special_date'] = $_POST['request_special_date'];
         $data['request_special_code'] = $_POST['request_special_code']; 
         $data['request_special_accept_status'] = "Waiting";
-        $data['employee_id'] = $_POST['employee_id'];
-        $data['customer_id'] = $_POST['customer_id'];
+        $data['employee_id'] = $_POST['employee_id']; 
         $data['supplier_id'] = $_POST['supplier_id'];
         $data['request_special_remark'] = $_POST['request_special_remark'];
         $data['purchase_order_open'] = $_POST['purchase_order_open'];
@@ -193,6 +194,7 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
         $notification_model->setNotification("Special Tool Request","Special Tool Request  <br>No. ".$data['request_special_code']." ".$data['urgent_status'],"index.php?app=request_special&action=detail&id=$request_special_id","license_manager_page","'High'");
         
         $product_id = $_POST['product_id'];
+        $customer_id = $_POST['customer_id'];
         $request_special_list_id = $_POST['request_special_list_id'];
         $request_special_list_qty = $_POST['request_special_list_qty'];
         $request_special_list_delivery_min = $_POST['request_special_list_delivery'];
@@ -206,6 +208,7 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
                 $data = [];
                 $data['request_special_id'] = $request_special_id;
                 $data['product_id'] = $product_id[$i];
+                $data['customer_id'] = $customer_id[$i];
                 $data['request_special_list_qty'] = $request_special_list_qty[$i];
                 $data['request_special_list_delivery'] = $request_special_list_delivery_min[$i];
                 $data['request_special_list_remark'] = $request_special_list_remark[$i];
@@ -223,6 +226,7 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
             $data = [];
             $data['request_special_id'] = $request_special_id;
             $data['product_id'] = $product_id;
+            $data['customer_id'] = $customer_id;
             $data['request_special_list_qty'] = $request_special_list_qty;
             $data['request_special_list_delivery'] = $request_special_list_delivery_min;
             $data['request_special_list_remark'] = $request_special_list_remark;
@@ -263,8 +267,7 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
         $data['request_special_date'] = $request_special['request_special_date'];
         $data['request_special_code'] = $request_special['request_special_code']; 
         $data['request_special_accept_status'] = "Waiting";
-        $data['employee_id'] = $request_special['employee_id'];
-        $data['customer_id'] = $request_special['customer_id'];
+        $data['employee_id'] = $request_special['employee_id']; 
         $data['supplier_id'] = $request_special['supplier_id'];
         $data['request_special_rewrite_id'] = $request_special_id;
         $data['request_special_rewrite_no'] = $request_special['request_special_rewrite_no'] + 1;
@@ -279,7 +282,8 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
                 for($i=0; $i < count($request_special_lists) ; $i++){
                     $data = [];
                     $data['request_special_id'] = $request_special_id;
-                    $data['product_id'] = $request_special_lists[$i]['product_id'];
+                    $data['product_id'] = $request_special_lists[$i]['product_id']; 
+                    $data['customer_id'] = $request_special_lists[$i]['customer_id'];
                     $data['request_special_list_qty'] = $request_special_lists[$i]['request_special_list_qty'];
                     $data['request_special_list_delivery'] = $request_special_lists[$i]['request_special_list_delivery_min'];
                     $data['request_special_list_remark'] = $request_special_lists[$i]['request_special_list_remark'];

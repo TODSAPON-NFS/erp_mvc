@@ -3,11 +3,13 @@ require_once('../models/UserModel.php');
 require_once('../models/CustomerModel.php');
 require_once('../models/AccountModel.php');
 require_once('../models/CurrencyModel.php');
+require_once('../models/CustomerTypeModel.php');
 
 $path = "modules/customer/views/";
 $target_dir = "../upload/customer/";
 
 $currency_model = new CurrencyModel;
+$customer_type_model = new CustomerTypeModel;
 $model_user = new UserModel;
 $model_customer = new customerModel;
 $account_model = new AccountModel;
@@ -16,6 +18,9 @@ if(!isset($_GET['action'])){
 
 
     $keyword = $_GET['keyword'];
+    $keyword_end = $_GET['keyword_end'];
+    $customer_type = $_GET['customer_type'];
+    $end_user = $_GET['end_user'];
 
     if($_GET['page'] == '' || $_GET['page'] == '0'){
         $page = 0;
@@ -25,8 +30,8 @@ if(!isset($_GET['action'])){
 
     $page_size = 100;
     
-    $customer = $model_customer->getCustomerBy($keyword);
-
+    $customer = $model_customer->getCustomerBy($customer_type,$end_user,$keyword,$keyword_end);
+    $customer_types = $customer_type_model->getCustomerTypeBy();
     $page_max = (int)(count($customer)/$page_size);
     if(count($customer)%$page_size > 0){
         $page_max += 1;
@@ -40,15 +45,17 @@ if(!isset($_GET['action'])){
     $user = $model_user->getUserBy('','sale');
     $account = $account_model->getAccountAll();
     $currency = $currency_model->getCurrencyBy();
+    $customer_types = $customer_type_model->getCustomerTypeBy();
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
 
-    $customer_id = $_GET['id'];
-    $customer = $model_customer->getCustomerByID($customer_id);
-    $user = $model_user->getUserBy('','sale');
-    $account = $account_model->getAccountAll();
-    $currency = $currency_model->getCurrencyBy();
+     $customer_id = $_GET['id'];
+     $customer = $model_customer->getCustomerByID($customer_id);
+     $user = $model_user->getUserBy('','sale');
+     $account = $account_model->getAccountAll();
+     $currency = $currency_model->getCurrencyBy();
+     $customer_types = $customer_type_model->getCustomerTypeBy();
 
     require_once($path.'update.inc.php');
 
@@ -240,6 +247,9 @@ if(!isset($_GET['action'])){
 }else{
 
     $keyword = $_GET['keyword'];
+    $keyword_end = $_GET['keyword_end'];
+    $customer_type = $_GET['customer_type'];
+    $end_user = $_GET['end_user'];
 
     if($_GET['page'] == '' || $_GET['page'] == '0'){
         $page = 0;
@@ -249,8 +259,8 @@ if(!isset($_GET['action'])){
 
     $page_size = 100;
     
-    $customer = $model_customer->getCustomerBy($keyword);
-
+    $customer = $model_customer->getCustomerBy($customer_type,$end_user,$keyword,$keyword_end);
+    $customer_types = $customer_type_model->getCustomerTypeBy();
     $page_max = (int)(count($customer)/$page_size);
     if(count($customer)%$page_size > 0){
         $page_max += 1;

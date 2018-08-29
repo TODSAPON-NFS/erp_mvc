@@ -20,6 +20,7 @@ class RequestSpecialListModel extends BaseModel{
         tool_test_result,
         request_test_list_id
         FROM tb_request_special_list LEFT JOIN tb_product ON tb_request_special_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_customer ON tb_request_special_list.customer_id = tb_customer.customer_id 
         WHERE request_special_id = '$request_special_id' 
         ORDER BY request_special_list_id 
         ";
@@ -40,6 +41,7 @@ class RequestSpecialListModel extends BaseModel{
         $sql = " INSERT INTO tb_request_special_list (
             request_special_id,
             product_id,
+            customer_id,
             request_special_list_qty,
             request_special_list_delivery,
             request_special_list_remark, 
@@ -52,6 +54,7 @@ class RequestSpecialListModel extends BaseModel{
         ) VALUES (
             '".$data['request_special_id']."', 
             '".$data['product_id']."', 
+            '".$data['customer_id']."', 
             '".$data['request_special_list_qty']."', 
             '".$data['request_special_list_delivery']."', 
             '".$data['request_special_list_remark']."', 
@@ -76,6 +79,7 @@ class RequestSpecialListModel extends BaseModel{
 
         $sql = " UPDATE tb_request_special_list 
             SET product_id = '".$data['product_id']."', 
+            customer_id = '".$data['customer_id']."', 
             request_special_list_qty = '".$data['request_special_list_qty']."', 
             request_special_list_delivery = '".$data['request_special_list_delivery']."', 
             request_special_list_remark = '".$data['request_special_list_remark']."', 

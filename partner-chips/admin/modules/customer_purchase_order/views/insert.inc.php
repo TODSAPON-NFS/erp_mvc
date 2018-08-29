@@ -1,5 +1,6 @@
 <script>
     var customer_type = 0;
+    var customer_data = [];
     var options = {
         url: function(keyword) {
             return "controllers/getProductByKeyword.php?keyword="+keyword;
@@ -7,6 +8,12 @@
 
         getValue: function(element) {
             return element.product_code ;
+        },
+        template: {
+            type: "description",
+            fields: {
+                description: "product_name"
+            }
         },
 
         ajaxSettings: {
@@ -248,14 +255,18 @@
 
 
                 if(customer_type == 0){
-                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_5);
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_7);
                 }else if(customer_type == 1){
-                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_4);
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_6);
                 }else if(customer_type == 2){
-                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_3);
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_5);
                 }else if(customer_type == 3){
-                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_2);
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_4);
                 }else if(customer_type == 4){
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_3);
+                }else if(customer_type == 5){
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_2);
+                }else if(customer_type == 6){
                     $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_1);
                 }
                 
@@ -265,6 +276,14 @@
         
      }
 
+    function set_data(id){
+        var val = customer_data.filter(val => val.customer_code == $(id).val());
+        if(val.length > 0){
+            $(id).closest('tr').children('td').children('input[name="end_user_id[]"]').val(val[0].customer_id);
+        }else{
+            $(id).closest('tr').children('td').children('input[name="end_user_id[]"]').val(0);
+        }
+    }
 
      function get_customer_detail(){
         var customer_id = document.getElementById('customer_id').value;
@@ -274,6 +293,26 @@
                 document.getElementById('customer_code').value = data.customer_code;
                 document.getElementById('customer_tax').value = data.customer_tax;
                 document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
+               
+            });
+
+            $.post( "controllers/getEndUserByCustomerID.php", { 'customer_id': customer_id }, function( data ) {
+                customer_data = data;
+                var enduser_options = {
+                    data:customer_data,
+                    getValue: function(element) {
+                        return element.customer_code ;
+                    },
+                    template: {
+                        type: "description",
+                        fields: {
+                            description: "customer_name_en"
+                        }
+                    },
+                    requestDelay: 400
+                };
+
+                $(".find-end-user").easyAutocomplete(enduser_options);
             });
         }
         
@@ -414,6 +453,7 @@
     }
 
     function add_row(id){
+        var customer_id = document.getElementById('customer_id').value;
         $('#modalAdd').modal('hide');
         var checkbox = document.getElementsByName('p_id');
         for(var i = 0 ; i < (checkbox.length); i++){
@@ -455,12 +495,33 @@
                         '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
                         '<td></td>'+
                         '<td>'+
+                            '<input type="hidden" name="end_user_id[]" class="form-control" />'+
+                            '<input class="find-end-user form-control" name="end_user_name[]" onchange="set_data(this);" placeholder="End user name." value=""  />'+
+                        '</td>'+
+                        '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
                             '</a>'+
                         '</td>'+
                     '</tr>'
                 );
+
+                var enduser_options = {
+                    data:customer_data,
+
+                    getValue: function(element) {
+                        return element.customer_code ;
+                    },
+                    template: {
+                        type: "description",
+                        fields: {
+                            description: "customer_name_en"
+                        }
+                    },
+                    requestDelay: 400
+                };
+
+                $(".find-end-user").easyAutocomplete(enduser_options);
 
                $(".example-ajax-post").easyAutocomplete(options);
             
@@ -473,6 +534,7 @@
 
     function add_row_new(id){
         var index = 0;
+        var customer_id = document.getElementById('customer_id').value;
          if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
             index = 1;
          }else{
@@ -502,6 +564,10 @@
                 '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
                 '<td></td>'+
                 '<td>'+
+                    '<input type="hidden" name="end_user_id[]" class="form-control" />'+
+                    '<input class="find-end-user form-control" name="end_user_name[]" onchange="set_data(this);" placeholder="End user name." value=""  />'+
+                '</td>'+
+                '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
                     '</a>'+
@@ -509,7 +575,23 @@
             '</tr>'
         );
 
-         $(".example-ajax-post").easyAutocomplete(options);
+        var enduser_options = {
+            data:customer_data,
+
+            getValue: function(element) {
+                return element.customer_code ;
+            },
+            template: {
+                type: "description",
+                fields: {
+                    description: "customer_name_en"
+                }
+            },
+            requestDelay: 400
+        };
+
+        $(".find-end-user").easyAutocomplete(enduser_options);
+        $(".example-ajax-post").easyAutocomplete(options);
     }
 
     function checkAll(id)
@@ -592,24 +674,6 @@
                                         <p class="help-block">Example : IN.</p>
                                     </div>
                                 </div>
-
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label>ขายให้ / End users  <font color="#F00"><b>*</b></font> </label>
-                                        <select id="end_user_id" name="end_user_id" class="form-control select"  data-live-search="true">
-                                            <option value="0">Select</option>
-                                            <?php 
-                                            for($i =  0 ; $i < count($customers) ; $i++){
-                                            ?>
-                                            <option <?php if($customers[$i]['customer_id'] == $customer_purchase_order['end_user_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?></option>
-                                            <?
-                                            }
-                                            ?>
-                                        </select>
-                                        <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -815,7 +879,10 @@
                                 <?PHP */ ?>
 
                                 </td>
-                                
+                                <td>
+                                    <input type="hidden" name="end_user_id[]" class="form-control" />
+                                    <input class="find-end-user form-control" name="end_user_name[]" onchange="set_data(this);" placeholder="End user name." value=""  />
+                                </td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>

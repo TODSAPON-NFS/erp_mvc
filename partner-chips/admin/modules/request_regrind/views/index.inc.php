@@ -116,8 +116,7 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
         $data['request_regrind_date'] = date("d")."-".date("m")."-".date("Y");
         $data['request_regrind_code'] = $_POST['request_regrind_code']; 
         $data['request_regrind_accept_status'] = "Waiting";
-        $data['employee_id'] = $_POST['employee_id'];
-        $data['customer_id'] = $_POST['customer_id'];
+        $data['employee_id'] = $_POST['employee_id']; 
         $data['supplier_id'] = $_POST['supplier_id'];
         $data['request_regrind_remark'] = $_POST['request_regrind_remark'];
         $data['purchase_order_open'] = $_POST['purchase_order_open'];
@@ -126,6 +125,7 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
 
         if($request_regrind_id > 0){
             $product_id = $_POST['product_id'];
+            $customer_id = $_POST['customer_id'];
             $request_regrind_list_id = $_POST['request_regrind_list_id'];
             $request_regrind_list_qty = $_POST['request_regrind_list_qty'];
             $request_regrind_list_delivery_min = $_POST['request_regrind_list_delivery'];
@@ -139,6 +139,7 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
                     $data = [];
                     $data['request_regrind_id'] = $request_regrind_id;
                     $data['product_id'] = $product_id[$i];
+                    $data['customer_id'] = $customer_id[$i];
                     $data['request_regrind_list_qty'] = $request_regrind_list_qty[$i];
                     $data['request_regrind_list_delivery'] = $request_regrind_list_delivery_min[$i];
                     $data['request_regrind_list_remark'] = $request_regrind_list_remark[$i];
@@ -156,6 +157,7 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
                 $data = [];
                 $data['request_regrind_id'] = $request_regrind_id;
                 $data['product_id'] = $product_id;
+                $data['customer_id'] = $customer_id;
                 $data['request_regrind_list_qty'] = $request_regrind_list_qty;
                 $data['request_regrind_list_delivery'] = $request_regrind_list_delivery_min;
                 $data['request_regrind_list_remark'] = $request_regrind_list_remark;
@@ -188,8 +190,7 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
         $data['request_regrind_date'] = $_POST['request_regrind_date'];
         $data['request_regrind_code'] = $_POST['request_regrind_code']; 
         $data['request_regrind_accept_status'] = "Waiting";
-        $data['employee_id'] = $_POST['employee_id'];
-        $data['customer_id'] = $_POST['customer_id'];
+        $data['employee_id'] = $_POST['employee_id']; 
         $data['supplier_id'] = $_POST['supplier_id'];
         $data['request_regrind_remark'] = $_POST['request_regrind_remark'];
         $data['purchase_order_open'] = $_POST['purchase_order_open'];
@@ -199,6 +200,7 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
         $notification_model->setNotification("Regrind Tool Request","Regrind Tool Request  <br>No. ".$data['request_regrind_code']." ".$data['urgent_status'],"index.php?app=request_regrind&action=detail&id=$request_regrind_id","license_manager_page","'High'");
         
         $product_id = $_POST['product_id'];
+        $customer_id = $_POST['customer_id'];
         $request_regrind_list_id = $_POST['request_regrind_list_id'];
         $request_regrind_list_qty = $_POST['request_regrind_list_qty'];
         $request_regrind_list_delivery_min = $_POST['request_regrind_list_delivery'];
@@ -212,6 +214,7 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
                 $data = [];
                 $data['request_regrind_id'] = $request_regrind_id;
                 $data['product_id'] = $product_id[$i];
+                $data['customer_id'] = $customer_id[$i];
                 $data['request_regrind_list_qty'] = $request_regrind_list_qty[$i];
                 $data['request_regrind_list_delivery'] = $request_regrind_list_delivery_min[$i];
                 $data['request_regrind_list_remark'] = $request_regrind_list_remark[$i];
@@ -228,7 +231,8 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
         }else{
             $data = [];
             $data['request_regrind_id'] = $request_regrind_id;
-            $data['product_id'] = $product_id;
+            $data['product_id'] = $product_id; 
+            $data['customer_id'] = $customer_id;
             $data['request_regrind_list_qty'] = $request_regrind_list_qty;
             $data['request_regrind_list_delivery'] = $request_regrind_list_delivery_min;
             $data['request_regrind_list_remark'] = $request_regrind_list_remark;
@@ -269,8 +273,7 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
         $data['request_regrind_date'] = $request_regrind['request_regrind_date'];
         $data['request_regrind_code'] = $request_regrind['request_regrind_code']; 
         $data['request_regrind_accept_status'] = "Waiting";
-        $data['employee_id'] = $request_regrind['employee_id'];
-        $data['customer_id'] = $request_regrind['customer_id'];
+        $data['employee_id'] = $request_regrind['employee_id']; 
         $data['supplier_id'] = $request_regrind['supplier_id'];
         $data['request_regrind_rewrite_id'] = $request_regrind_id;
         $data['request_regrind_rewrite_no'] = $request_regrind['request_regrind_rewrite_no'] + 1;
@@ -286,6 +289,7 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
                     $data = [];
                     $data['request_regrind_id'] = $request_regrind_id;
                     $data['product_id'] = $request_regrind_lists[$i]['product_id'];
+                    $data['customer_id'] = $request_regrind_lists[$i]['customer_id'];
                     $data['request_regrind_list_qty'] = $request_regrind_lists[$i]['request_regrind_list_qty'];
                     $data['request_regrind_list_delivery'] = $request_regrind_lists[$i]['request_regrind_list_delivery_min'];
                     $data['request_regrind_list_remark'] = $request_regrind_lists[$i]['request_regrind_list_remark'];

@@ -10,6 +10,13 @@
             return element.product_code ;
         },
 
+        template: {
+            type: "description",
+            fields: {
+                description: "product_name"
+            }
+        },
+        
         ajaxSettings: {
             dataType: "json",
             method: "POST",

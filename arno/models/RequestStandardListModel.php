@@ -20,6 +20,7 @@ class RequestStandardListModel extends BaseModel{
         tool_test_result,
         request_test_list_id
         FROM tb_request_standard_list LEFT JOIN tb_product ON tb_request_standard_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_customer ON tb_request_standard_list.customer_id = tb_customer.customer_id 
         WHERE request_standard_id = '$request_standard_id' 
         ORDER BY request_standard_list_id 
         ";
@@ -40,6 +41,7 @@ class RequestStandardListModel extends BaseModel{
         $sql = " INSERT INTO tb_request_standard_list (
             request_standard_id,
             product_id,
+            customer_id,
             request_standard_list_qty,
             request_standard_list_delivery,
             request_standard_list_remark, 
@@ -52,6 +54,7 @@ class RequestStandardListModel extends BaseModel{
         ) VALUES (
             '".$data['request_standard_id']."', 
             '".$data['product_id']."', 
+            '".$data['customer_id']."', 
             '".$data['request_standard_list_qty']."', 
             '".$data['request_standard_list_delivery']."', 
             '".$data['request_standard_list_remark']."', 
@@ -76,6 +79,7 @@ class RequestStandardListModel extends BaseModel{
 
         $sql = " UPDATE tb_request_standard_list 
             SET product_id = '".$data['product_id']."', 
+            customer_id = '".$data['customer_id']."', 
             request_standard_list_qty = '".$data['request_standard_list_qty']."', 
             request_standard_list_delivery = '".$data['request_standard_list_delivery']."', 
             request_standard_list_remark = '".$data['request_standard_list_remark']."', 

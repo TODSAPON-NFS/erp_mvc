@@ -141,7 +141,6 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     if(isset($_POST['customer_purchase_order_code'])){
         $data = [];
         $data['customer_id'] = $_POST['customer_id'];
-        $data['end_user_id'] = $_POST['end_user_id'];
         $data['employee_id'] = $_POST['employee_id'];
         $data['customer_purchase_order_code'] = $_POST['customer_purchase_order_code'];
         $data['customer_purchase_order_code_gen'] = $_POST['customer_purchase_order_code_gen'];
@@ -192,6 +191,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             if($customer_purchase_order_id > 0){
 
                 $product_id = $_POST['product_id'];
+                $end_user_id = $_POST['end_user_id'];
                 $delivery_note_customer_list_id = $_POST['delivery_note_customer_list_id'];
                 $customer_purchase_order_list_id = $_POST['customer_purchase_order_list_id'];
                 $customer_purchase_order_product_name = $_POST['customer_purchase_order_product_name'];
@@ -210,6 +210,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                         $data = [];
                         $data['customer_purchase_order_id'] = $customer_purchase_order_id;
                         $data['product_id'] = $product_id[$i];
+                        $data['end_user_id'] = $end_user_id[$i];
                         $data['delivery_note_customer_list_id'] = $delivery_note_customer_list_id[$i];
                         $data['customer_purchase_order_product_name'] = $customer_purchase_order_product_name[$i];
                         $data['customer_purchase_order_product_detail'] = $customer_purchase_order_product_detail[$i];
@@ -272,6 +273,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                     $data = [];
                     $data['customer_purchase_order_id'] = $customer_purchase_order_id;
                     $data['product_id'] = $product_id;
+                    $data['end_user_id'] = $end_user_id;
                     $data['delivery_note_customer_list_id'] = $delivery_note_customer_list_id;
                     $data['customer_purchase_order_product_name'] = $customer_purchase_order_product_name;
                     $data['customer_purchase_order_product_detail'] = $customer_purchase_order_product_detail;
@@ -352,8 +354,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     
     if(isset($_POST['customer_purchase_order_code'])){
         $data = [];
-        $data['customer_id'] = $_POST['customer_id'];
-        $data['end_user_id'] = $_POST['end_user_id'];
+        $data['customer_id'] = $_POST['customer_id']; 
         $data['employee_id'] = $_POST['employee_id'];
         $data['customer_purchase_order_code'] = $_POST['customer_purchase_order_code'];
         $data['customer_purchase_order_code_gen'] = $_POST['customer_purchase_order_code_gen'];
@@ -409,6 +410,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             
             
             $product_id = $_POST['product_id'];
+            $end_user_id = $_POST['end_user_id'];
             $delivery_note_customer_list_id = $_POST['delivery_note_customer_list_id'];
             $customer_purchase_order_list_id = $_POST['customer_purchase_order_list_id'];
             $customer_purchase_order_product_name = $_POST['customer_purchase_order_product_name'];
@@ -427,6 +429,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                     $data = [];
                     $data['customer_purchase_order_id'] = $customer_purchase_order_id;
                     $data['product_id'] = $product_id[$i];
+                    $data['end_user_id'] = $end_user_id[$i];
                     $data['delivery_note_customer_list_id'] = $delivery_note_customer_list_id[$i];
                     $data['customer_purchase_order_product_name'] = $customer_purchase_order_product_name[$i];
                     $data['customer_purchase_order_product_detail'] = $customer_purchase_order_product_detail[$i];
@@ -489,6 +492,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                 $data = [];
                 $data['customer_purchase_order_id'] = $customer_purchase_order_id;
                 $data['product_id'] = $product_id;
+                $data['end_user_id'] = $end_user_id;
                 $data['delivery_note_customer_list_id'] = $delivery_note_customer_list_id;
                 $data['customer_purchase_order_product_name'] = $customer_purchase_order_product_name;
                 $data['customer_purchase_order_product_detail'] = $customer_purchase_order_product_detail;

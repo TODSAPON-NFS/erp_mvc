@@ -1,8 +1,10 @@
 <?PHP 
-
+    if($_GET['app'] == "invoice_customer"){
+        require_once("print/invoice_customer/views/index.inc.php");
+    }
 
 /* ################################################### รายงานเจ้าหนี้ ################################################### */
-    if($_GET['app'] == "report_debtor_01"){
+    else if($_GET['app'] == "report_debtor_01"){
         require_once("print/report_debtor_01/views/index.inc.php");
     } else if($_GET['app'] == "report_debtor_02"){
         require_once("print/report_debtor_02/views/index.inc.php");

@@ -12,7 +12,9 @@ class CustomerPurchaseOrderListModel extends BaseModel{
     function getCustomerPurchaseOrderListBy($customer_purchase_order_id){
         $sql = " SELECT tb_customer_purchase_order_list.product_id, 
         CONCAT(product_code_first,product_code) as product_code, 
-        product_name,   
+        product_name,    
+        end_user_id, 
+        customer_code as end_user_name, 
         customer_purchase_order_product_name, 
         customer_purchase_order_product_detail, 
         customer_purchase_order_list_id,  
@@ -23,6 +25,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
         customer_purchase_order_list_delivery_max, 
         customer_purchase_order_list_remark 
         FROM tb_customer_purchase_order_list LEFT JOIN tb_product ON tb_customer_purchase_order_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_customer ON tb_customer_purchase_order_list.end_user_id = tb_customer.customer_id 
         WHERE customer_purchase_order_id = '$customer_purchase_order_id' 
         ORDER BY customer_purchase_order_list_id 
         ";
@@ -42,6 +45,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
     function insertCustomerPurchaseOrderList($data = []){
         $sql = " INSERT INTO tb_customer_purchase_order_list (
             customer_purchase_order_id,
+            end_user_id,
             product_id,
             customer_purchase_order_product_name, 
             customer_purchase_order_product_detail, 
@@ -58,6 +62,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
             lastupdate
         ) VALUES (
             '".$data['customer_purchase_order_id']."', 
+            '".$data['end_user_id']."', 
             '".$data['product_id']."', 
             '".$data['customer_purchase_order_product_name']."', 
             '".$data['customer_purchase_order_product_detail']."', 
@@ -87,6 +92,7 @@ class CustomerPurchaseOrderListModel extends BaseModel{
 
         $sql = " UPDATE tb_customer_purchase_order_list 
             SET product_id = '".$data['product_id']."', 
+            end_user_id = '".$data['end_user_id']."', 
             customer_purchase_order_product_name = '".$data['customer_purchase_order_product_name']."', 
             customer_purchase_order_product_detail = '".$data['customer_purchase_order_product_detail']."', 
             customer_purchase_order_list_qty = '".$data['customer_purchase_order_list_qty']."', 

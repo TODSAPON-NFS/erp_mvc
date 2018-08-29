@@ -5,6 +5,13 @@
             return "controllers/getProductByKeyword.php?keyword="+keyword;
         },
 
+        template: {
+            type: "description",
+            fields: {
+                description: "product_name"
+            }
+        },
+        
         getValue: function(element) {
             return element.product_code ;
         },

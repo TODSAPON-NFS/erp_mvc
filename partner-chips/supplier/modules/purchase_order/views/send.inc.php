@@ -178,16 +178,7 @@
                             <tr class="odd gradeX">
                                 <td>
                                     <input type="hidden" name="purchase_order_list_id[]"  value="<?php echo $purchase_order_lists[$i]['purchase_order_list_id']; ?>" />
-                                    <select  class="form-control select" disabled onchange="show_data(this);" data-live-search="true" >
-                                        <option value="">Select</option>
-                                        <?php 
-                                        for($ii =  0 ; $ii < count($products) ; $ii++){
-                                        ?>
-                                        <option <?php if($products[$ii]['product_id'] == $purchase_order_lists[$i]['product_id']){?> selected <?php }?> value="<?php echo $products[$ii]['product_id'] ?>"><?php echo $products[$ii]['product_code'] ?></option>
-                                        <?
-                                        }
-                                        ?>
-                                    </select>
+                                    <?PHP  echo $purchase_order_lists[$i]['product_code']; ?>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="product_name" readonly value="<?php echo $purchase_order_lists[$i]['product_name']; ?>" />

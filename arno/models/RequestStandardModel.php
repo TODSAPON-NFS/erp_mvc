@@ -30,8 +30,7 @@ class RequestStandardModel extends BaseModel{
         $sql = " SELECT request_standard_id, 
         tb.employee_id , 
         request_standard_date, 
-        request_standard_rewrite_id,
-        customer_name_th, customer_name_en,
+        request_standard_rewrite_id, 
         supplier_name_th, supplier_name_en, 
         IFNULL((
             SELECT COUNT(*) FROM tb_request_standard WHERE request_standard_rewrite_id = tb.request_standard_id 
@@ -46,8 +45,7 @@ class RequestStandardModel extends BaseModel{
         request_standard_remark 
         FROM tb_request_standard as tb 
         LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
-        LEFT JOIN tb_user as tb2 ON tb.request_standard_accept_by = tb2.user_id 
-        LEFT JOIN tb_customer as tb3 ON tb.customer_id = tb3.customer_id 
+        LEFT JOIN tb_user as tb2 ON tb.request_standard_accept_by = tb2.user_id  
         LEFT JOIN tb_supplier as tb4 ON tb.supplier_id = tb4.supplier_id 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
@@ -91,8 +89,7 @@ class RequestStandardModel extends BaseModel{
         $sql = " SELECT *   
         FROM tb_request_standard 
         LEFT JOIN tb_user ON tb_request_standard.employee_id = tb_user.user_id 
-        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
-        LEFT JOIN tb_customer ON tb_request_standard.customer_id = tb_customer.customer_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id  
         LEFT JOIN tb_supplier ON tb_request_standard.supplier_id = tb_supplier.supplier_id 
         WHERE request_standard_id = '$id' 
         ";
@@ -156,8 +153,7 @@ class RequestStandardModel extends BaseModel{
    
     function updateRequestStandardByID($id,$data = []){
         $sql = " UPDATE tb_request_standard SET 
-        request_standard_code = '".$data['request_standard_code']."',  
-        customer_id = '".$data['customer_id']."', 
+        request_standard_code = '".$data['request_standard_code']."',   
         supplier_id = '".$data['supplier_id']."', 
         employee_id = '".$data['employee_id']."', 
         request_standard_date = '".$data['request_standard_date']."', 
@@ -204,8 +200,7 @@ class RequestStandardModel extends BaseModel{
         $sql = " INSERT INTO tb_request_standard (
             request_standard_rewrite_id,
             request_standard_rewrite_no,
-            request_standard_code, 
-            customer_id,
+            request_standard_code,  
             supplier_id,
             employee_id,
             request_standard_date,
@@ -217,8 +212,7 @@ class RequestStandardModel extends BaseModel{
         VALUES ('".
         $data['request_standard_rewrite_id']."','".
         $data['request_standard_rewrite_no']."','".
-        $data['request_standard_code']."','". 
-        $data['customer_id']."','".
+        $data['request_standard_code']."','".  
         $data['supplier_id']."','".
         $data['employee_id']."','".
         $data['request_standard_date']."','".

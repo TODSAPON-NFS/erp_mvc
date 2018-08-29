@@ -2,15 +2,37 @@
 <script src="../plugins/excel/xls.core.min.js"></script> 
 <script>
 
-    var product_data = [
-    <?php for($i = 0 ; $i < count($products) ; $i++ ){?>
-        {
-            product_id:'<?php echo $products[$i]['product_id'];?>',
-            product_code:'<?php echo $products[$i]['product_code'];?>',
-            product_name:'<?php echo $products[$i]['product_name'];?>'
+    var options = {
+        url: function(keyword) {
+            return "controllers/getProductByKeyword.php?keyword="+keyword;
         },
-    <?php }?>
-    ];
+
+        getValue: function(element) {
+            return element.product_code ;
+        },
+
+        template: {
+            type: "description",
+            fields: {
+                description: "product_name"
+            }
+        },
+        
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+
+        preparePostData: function(data) {
+            data.keyword = $(".example-ajax-post").val();
+            return data;
+        },
+
+        requestDelay: 400
+    };
 
     function check(){
 
@@ -64,18 +86,21 @@
      }
 
 
-     function show_data(id){
-         
-            $.post( "controllers/getProductDataByID.php", { 'product_id': $(id).val(),'stock_group_id':$('#stock_group_id').val() }, function( data ) {
-                $(id).closest('tr').children('td').children('input[name="product_name[]"]').val( data.product_name );
-                $(id).closest('tr').children('td').children('input[name="stock_issue_list_qty[]"]').val( data.product_qty );
-                $(id).closest('tr').children('td').children('input[name="stock_issue_list_price[]"]').val( data.product_price );
-                update_sum(id);
-            });
-         
-       
-        
-     }
+    function show_data(id){
+        var product_code = $(id).val();
+        $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
+            if(data != null){
+                $.post( "controllers/getProductDataByID.php", { 'product_id': data.product_id ,'stock_group_id':$('#stock_group_id').val() }, function( data ) {
+                    $(id).closest('tr').children('td').children('input[name="product_name[]"]').val( data.product_name );
+                    $(id).closest('tr').children('td').children('input[name="stock_issue_list_qty[]"]').val( data.product_qty );
+                    $(id).closest('tr').children('td').children('input[name="stock_issue_list_price[]"]').val( data.product_price );
+                    update_sum(id);
+                });
+            }
+            
+        });
+    
+    }
 
 
      function add_row(id){
@@ -89,7 +114,8 @@
             $(id).closest('table').children('tbody').append(
                 '<tr class="odd gradeX">'+
                     '<td>'+  
-                        '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                        '<input type="hidden" name="product_id[]" class="form-control" />'+
+                        '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" />'+ 
                     '</td>'+
                     '<td>'+
                     '<input type="text" class="form-control" name="product_name[]" readonly />'+
@@ -106,15 +132,7 @@
                     '</td>'+
                 '</tr>'
             );
-
-            $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
-            var str = "<option value=''>Select Product</option>";
-            $.each(product_data, function (index, value) {
-                str += "<option value='" + value['product_id'] + "'>"+value['product_code']+" - "+value['product_name']+"</option>";
-            });
-            $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
-
-            $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
+            $(".example-ajax-post").easyAutocomplete(options);
         }else{
              alert('Please select stock group.');
         }
@@ -246,7 +264,8 @@
                         $(id).closest('table').children('tbody').append(
                             '<tr class="odd gradeX">'+
                                 '<td>'+  
-                                    '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                                    '<input type="hidden" name="product_id[]" value="'+data.product_id+'" class="form-control" />'+
+                                    '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" value="'+data.product_code+'" placeholder="Product Code" />'+ 
                                 '</td>'+
                                 '<td>'+
                                 '<input type="text" class="form-control" name="product_name[]" value="'+data.product_name+'" readonly />'+
@@ -263,20 +282,8 @@
                                 '</td>'+
                             '</tr>'
                         );
-
-                        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
-                        var str = "<option value=''>Select Product</option>";
-                        $.each(product_data, function (index, value) {
-                            if(value['product_code'] == data.product_code){
-                                str += "<option value='" + value['product_id'] + "' selected>"+value['product_code']+" - "+value['product_name']+"</option>";
-                            }else{
-                                str += "<option value='" + value['product_id'] + "' >"+value['product_code']+" - "+value['product_name']+"</option>";
-                            }
-                            
-                        });
-                        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
-
-                        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();  
+                        $(".example-ajax-post").easyAutocomplete(options);
+                         
                         calculateAll();
                     }else{
                         var index = 0;
@@ -288,7 +295,8 @@
                         $(id).closest('table').children('tbody').append(
                             '<tr class="odd gradeX">'+
                                 '<td>'+  
-                                    '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
+                                    '<input type="hidden" name="product_id[]"   class="form-control" />'+
+                                    '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);"   placeholder="Product Code" />'+ 
                                 '</td>'+
                                 '<td>'+
                                 '<input type="text" class="form-control" name="product_name[]" readonly />'+
@@ -305,16 +313,7 @@
                                 '</td>'+
                             '</tr>'
                         );
-
-                        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').empty();
-                        var str = "<option value=''>Select Product</option>";
-                        $.each(product_data, function (index, value) {
-                            str += "<option value='" + value['product_id'] + "'>"+value['product_code']+" - "+value['product_name']+"</option>";
-                        });
-                        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
-
-                        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
-
+                        $(".example-ajax-post").easyAutocomplete(options);
 
                     }
                     

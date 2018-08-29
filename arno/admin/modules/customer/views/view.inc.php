@@ -1,9 +1,4 @@
-<script>
-    function search(){
-        var keyword = $("#keyword").val();
-        window.location = "index.php?app=customer&keyword="+keyword;
-    }
-</script>
+
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Customer Management</h1>
@@ -28,26 +23,63 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>คำค้น <font color="#F00"><b>*</b></font></label>
-                                        <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >
-                                        <p class="help-block">Example : T001.</p>
+                            <form role="form" method="get" action="index.php?app=customer">
+                                <input type="hidden" name="app" value="customer" />
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>กลุ่มลูกค้า <font color="#F00"><b>*</b></font></label>
+                                            <select name="end_user" class="form-control">
+                                                <option value="">Select all</option>
+                                                <option value="0" <?PHP if($end_user == '0'){ ?> SELECTED <?PHP }?> >Dealer</option>
+                                                <option value="1" <?PHP if($end_user == '1'){ ?> SELECTED <?PHP }?> >End user</option>
+                                            </select>
+                                            <p class="help-block">Example : End user.</p>
+                                        </div>
+                                    </div> 
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>ประเภท <font color="#F00"><b>*</b></font></label>
+                                            <select id="customer_type" name="customer_type" class="form-control">
+                                                <option value="">Select all</option>
+                                                <?PHP 
+                                                    for($i=0; $i < count($customer_types) ; $i++){
+                                                ?>
+                                                    <option value="<?PHP echo $customer_types[$i]['customer_type_id'];?>" <?PHP if($customer_types[$i]['customer_type_id'] == $customer_type){?> Selected <?PHP }?>> <?PHP echo $customer_types[$i]['customer_type_name'];?></option>
+                                                <?PHP
+                                                    }
+                                                ?>
+                                            </select>
+                                            <p class="help-block">Example : End user.</p>
+                                        </div>
+                                    </div> 
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>คำค้น (ลูกค้า) <font color="#F00"><b>*</b></font></label>
+                                            <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >
+                                            <p class="help-block">Example : T001.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>คำค้น (บริษัทผู้ดูแล) <font color="#F00"><b>*</b></font></label>
+                                            <input id="keyword_end" name="keyword_end" class="form-control" value="<?PHP echo $keyword_end;?>" >
+                                            <p class="help-block">Example : T001.</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                    </div>
+                                    <div class="col-md-4">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-primary" style="float:right; margin:0px 4px;" type="submit">Search</button>
+                                        <a href="index.php?app=customer" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search();">Search</button>
-                                    <a href="index.php?app=customer" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
-                                </div>
-                            </div>
+                            </form>
 
                             <div class="row">
                                 <div class="col-sm-6">
@@ -121,12 +153,12 @@
                                         <thead>
                                             <tr>
                                                 <th style="text-align:center">ลำดับ <br>No.</th>
-                                                <th style="text-align:center">รหัสลูกค้า <br>Code</th>
-                                                <th style="text-align:center">ชื่อไทย <br>Name thai</th>
+                                                <th style="text-align:center">รหัสลูกค้า <br>Code</th> 
                                                 <th style="text-align:center">ชื่ออังกฤษ <br>Name english</th>
                                                 <th style="text-align:center">เลขผู้เสียภาษี <br>TAX ID</th>
                                                 <th style="text-align:center">โทรศัพท์ <br>Mobile</th>
-                                                <th style="text-align:center">อีเมล์ <br>Email</th>
+                                                <th style="text-align:center">ประเภทลูกค้า <br>Type</th>
+                                                <th style="text-align:center">สิทธิ์การขาย <br>Sales privileges</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -136,12 +168,18 @@
                                             ?>
                                             <tr class="odd gradeX">
                                                 <td><?php echo $i+1; ?></td>
-                                                <td><?php echo $customer[$i]['customer_code']; ?></td>
-                                                <td><?php echo $customer[$i]['customer_name_th']; ?></td>
+                                                <td><?php echo $customer[$i]['customer_code']; ?></td> 
                                                 <td><?php echo $customer[$i]['customer_name_en']; ?></td>
                                                 <td><?php echo $customer[$i]['customer_tax']; ?></td>
                                                 <td class="center"><?php echo $customer[$i]['customer_tel']; ?></td>
-                                                <td class="center"><?php echo $customer[$i]['customer_email']; ?></td>
+                                                <td class="center">
+                                                    <?php echo $customer[$i]['customer_type_name']; ?>
+                                                    
+                                                </td>
+                                                <td class="center">
+                                                    <?php echo $customer[$i]['customer_end_user_name']; ?>
+                                                
+                                                </td>
                                                 <td>
                                                 <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                                     <a title="View Detail" href="?app=customer&action=detail&id=<?php echo $customer[$i]['customer_id'];?>">

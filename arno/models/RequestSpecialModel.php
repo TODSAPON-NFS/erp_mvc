@@ -30,8 +30,7 @@ class RequestSpecialModel extends BaseModel{
         $sql = " SELECT request_special_id, 
         tb.employee_id,
         request_special_date, 
-        request_special_rewrite_id,
-        customer_name_th, customer_name_en,
+        request_special_rewrite_id, 
         supplier_name_th, supplier_name_en, 
         IFNULL((
             SELECT COUNT(*) FROM tb_request_special WHERE request_special_rewrite_id = tb.request_special_id 
@@ -46,8 +45,7 @@ class RequestSpecialModel extends BaseModel{
         request_special_remark 
         FROM tb_request_special as tb 
         LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
-        LEFT JOIN tb_user as tb2 ON tb.request_special_accept_by = tb2.user_id 
-        LEFT JOIN tb_customer as tb3 ON tb.customer_id = tb3.customer_id 
+        LEFT JOIN tb_user as tb2 ON tb.request_special_accept_by = tb2.user_id  
         LEFT JOIN tb_supplier as tb4 ON tb.supplier_id = tb4.supplier_id 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
@@ -91,8 +89,7 @@ class RequestSpecialModel extends BaseModel{
         $sql = " SELECT *   
         FROM tb_request_special 
         LEFT JOIN tb_user ON tb_request_special.employee_id = tb_user.user_id 
-        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
-        LEFT JOIN tb_customer ON tb_request_special.customer_id = tb_customer.customer_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id  
         LEFT JOIN tb_supplier ON tb_request_special.supplier_id = tb_supplier.supplier_id 
         WHERE request_special_id = '$id' 
         ";
@@ -156,8 +153,7 @@ class RequestSpecialModel extends BaseModel{
    
     function updateRequestSpecialByID($id,$data = []){
         $sql = " UPDATE tb_request_special SET 
-        request_special_code = '".$data['request_special_code']."',  
-        customer_id = '".$data['customer_id']."', 
+        request_special_code = '".$data['request_special_code']."',   
         supplier_id = '".$data['supplier_id']."', 
         employee_id = '".$data['employee_id']."', 
         request_special_date = '".$data['request_special_date']."', 
@@ -204,8 +200,7 @@ class RequestSpecialModel extends BaseModel{
         $sql = " INSERT INTO tb_request_special (
             request_special_rewrite_id,
             request_special_rewrite_no,
-            request_special_code, 
-            customer_id,
+            request_special_code,  
             supplier_id,
             employee_id,
             request_special_date,
@@ -217,8 +212,7 @@ class RequestSpecialModel extends BaseModel{
         VALUES ('".
         $data['request_special_rewrite_id']."','".
         $data['request_special_rewrite_no']."','".
-        $data['request_special_code']."','". 
-        $data['customer_id']."','".
+        $data['request_special_code']."','".  
         $data['supplier_id']."','".
         $data['employee_id']."','".
         $data['request_special_date']."','".

@@ -3,6 +3,7 @@
 
 <script>
     var customer_type = 0;
+    var customer_data = [];
     var options = {
         url: function(keyword) {
             return "controllers/getProductByKeyword.php?keyword="+keyword;
@@ -10,6 +11,12 @@
 
         getValue: function(element) {
             return element.product_code ;
+        },
+        template: {
+            type: "description",
+            fields: {
+                description: "product_name"
+            }
         },
 
         ajaxSettings: {
@@ -242,11 +249,19 @@
         $(id).closest('li').remove();
     }
 
-     function delete_row(id){
+    function delete_row(id){
         $(id).closest('tr').remove();
-     }
+    }
 
 
+    function set_data(id){
+        var val = customer_data.filter(val => val.customer_code == $(id).val());
+        if(val.length > 0){
+            $(id).closest('tr').children('td').children('input[name="end_user_id[]"]').val(val[0].customer_id);
+        }else{
+            $(id).closest('tr').children('td').children('input[name="end_user_id[]"]').val(0);
+        }
+    }
 
      function show_data(id){
         var product_code = $(id).val();
@@ -287,7 +302,28 @@
                 document.getElementById('customer_tax').value = data.customer_tax;
                 document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
             });
+
+            $.post( "controllers/getEndUserByCustomerID.php", { 'customer_id': customer_id }, function( data ) {
+                customer_data = data;
+                var enduser_options = {
+                    data:customer_data,
+                    getValue: function(element) {
+                        return element.customer_code ;
+                    },
+                    template: {
+                        type: "description",
+                        fields: {
+                            description: "customer_name_en"
+                        }
+                    },
+                    requestDelay: 400
+                };
+
+                $(".find-end-user").easyAutocomplete(enduser_options);
+            });
         }
+
+
         
     }
 
@@ -467,12 +503,32 @@
                         '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
                         '<td></td>'+
                         '<td>'+
+                            '<input type="hidden" name="end_user_id[]" class="form-control" />'+
+                            '<input class="find-end-user form-control" name="end_user_name[]" onchange="set_data(this);" placeholder="End user name." value=""  />'+
+                        '</td>'+
+                        '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
                             '</a>'+
                         '</td>'+
                     '</tr>'
                 ); 
+                var enduser_options = {
+                    data:customer_data,
+
+                    getValue: function(element) {
+                        return element.customer_code ;
+                    },
+                    template: {
+                        type: "description",
+                        fields: {
+                            description: "customer_name_en"
+                        }
+                    },
+                    requestDelay: 400
+                };
+
+                $(".find-end-user").easyAutocomplete(enduser_options);
                 $(".example-ajax-post").easyAutocomplete(options);
 
             }
@@ -513,12 +569,32 @@
                 '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
                 '<td></td>'+
                 '<td>'+
+                    '<input type="hidden" name="end_user_id[]" class="form-control" />'+
+                    '<input class="find-end-user form-control" name="end_user_name[]" onchange="set_data(this);" placeholder="End user name." value=""  />'+
+                '</td>'+
+                '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
                     '</a>'+
                 '</td>'+
             '</tr>'
         );
+        var enduser_options = {
+            data:customer_data,
+
+            getValue: function(element) {
+                return element.customer_code ;
+            },
+            template: {
+                type: "description",
+                fields: {
+                    description: "customer_name_en"
+                }
+            },
+            requestDelay: 400
+        };
+
+        $(".find-end-user").easyAutocomplete(enduser_options);
         $(".example-ajax-post").easyAutocomplete(options);
  
         $('#modalAdd').modal('hide');
@@ -568,7 +644,7 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label>รหัสลูกค้า / Customer Code <font color="#F00"></font></label>
-                                        <input id="customer_code" name="customer_code" class="form-control" value="<? echo $customer['customer_code'];?>" readonly>
+                                        <input id="customer_code" name="customer_code" class="form-control" value="<?php echo $customer['customer_code'];?>" readonly>
                                         <p class="help-block">Example : A0001.</p>
                                     </div>
                                 </div>
@@ -581,7 +657,7 @@
                                             for($i =  0 ; $i < count($customers) ; $i++){
                                             ?>
                                             <option <?php if($customers[$i]['customer_id'] == $customer_purchase_order['customer_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?></option>
-                                            <?
+                                            <?php
                                             }
                                             ?>
                                         </select>
@@ -591,14 +667,14 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ที่อยู่ / Address <font color="#F00"></font></label>
-                                        <textarea  id="customer_address" name="customer_address" class="form-control" rows="7" readonly><? echo $customer['customer_address_1'] ."\n". $customer['customer_address_2'] ."\n". $customer['customer_address_3'];?></textarea >
+                                        <textarea  id="customer_address" name="customer_address" class="form-control" rows="7" readonly><?php echo $customer['customer_address_1'] ."\n". $customer['customer_address_2'] ."\n". $customer['customer_address_3'];?></textarea >
                                         <p class="help-block">Example : IN.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>หมายเลขผู้เสียภาษี / Tax. <font color="#F00"></font></label>
-                                        <input id="customer_tax" name="customer_tax" class="form-control" value="<? echo $customer['customer_tax'];?>" readonly>
+                                        <input id="customer_tax" name="customer_tax" class="form-control" value="<?php echo $customer['customer_tax'];?>" readonly>
                                         <p class="help-block">Example : 0305559003597.</p>
                                     </div>
                                 </div>
@@ -608,23 +684,6 @@
                                         <label>หมายเหตุ / Remark <font color="#F00"></font></label>
                                         <textarea  id="customer_purchase_order_remark" name="customer_purchase_order_remark" class="form-control" rows="7" ><? echo $customer_purchase_order['customer_purchase_order_remark'];?></textarea >
                                         <p class="help-block">Example : IN.</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label>ขายให้ / End users  <font color="#F00"><b>*</b></font> </label>
-                                        <select id="end_user_id" name="end_user_id" class="form-control select" data-live-search="true">
-                                            <option value="0">Select</option>
-                                            <?php 
-                                            for($i =  0 ; $i < count($customers) ; $i++){
-                                            ?>
-                                            <option <?php if($customers[$i]['customer_id'] == $customer_purchase_order['end_user_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?></option>
-                                            <?
-                                            }
-                                            ?>
-                                        </select>
-                                        <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
                                     </div>
                                 </div>
 
@@ -708,6 +767,7 @@
                                 <th style="text-align:center;" width="96">ราคา <br>(@)</th>
                                 <th style="text-align:center;" width="96">ราคารวม <br>(Amount)</th>
                                 <th style="text-align:center;">การสั่งซื้อ<br>(From)</th>
+                                <th style="text-align:center;">ขายให้<br>Sale to</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -838,6 +898,10 @@
 
 
                                 </td>
+                                <td>
+                                    <input type="hidden" name="end_user_id[]" class="form-control" value="<?php echo $customer_purchase_order_lists[$i]['end_user_id']; ?>"/> 
+                                    <input class="find-end-user form-control" name="end_user_name[]" onchange="set_data(this);" placeholder="End user name." value="<?php echo $customer_purchase_order_lists[$i]['end_user_name']; ?>"  />
+                                </td>
                                 
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -919,5 +983,6 @@
 </div>
 
 <script>
+    get_customer_detail();
     $(".example-ajax-post").easyAutocomplete(options);
 </script>

@@ -9,20 +9,44 @@ class CustomerModel extends BaseModel{
         }
     }
 
-    function getcustomerBy($keyword = ''){
-        $sql = " SELECT customer_id, customer_code, customer_name_th, customer_name_en , customer_tax , customer_tel, customer_email, 
-        IFNULL( (
-            SELECT customer_name_th FROM tb_customer WHERE customer_id = tb1.customer_id
-        ) ,'-') as end_users    
-        FROM tb_customer as tb1
-        WHERE customer_code LIKE ('%$keyword%') 
-        OR customer_name_th LIKE ('%$keyword%') 
-        OR customer_name_en LIKE ('%$keyword%') 
-        OR customer_tax LIKE ('%$keyword%') 
-        OR customer_tel LIKE ('%$keyword%') 
-        OR customer_email LIKE ('%$keyword%') 
-        ORDER BY customer_code  
-        ";
+    function getcustomerBy($customer_type = '',$end_user = '',$keyword = '',$keyword_end = ''){
+
+        if($customer_type != ""){
+            $str_type = " AND tb1.customer_type_id = '$customer_type' ";
+        }
+
+        if($end_user == "0"){
+            $str_end = "AND tb1.customer_end_user = '0'"; 
+            
+        }else if($end_user == "1"){
+            $str_end = "AND tb1.customer_end_user > '0'"; 
+            
+        }
+
+        $sql = " SELECT tb1.customer_id, tb1.customer_code, tb1.customer_name_th, tb1.customer_name_en , tb1.customer_tax , tb1.customer_tel, tb1.customer_email, customer_type_name, tb2.customer_name_en as customer_end_user_name 
+        FROM tb_customer as tb1 
+        LEFT JOIN tb_customer as tb2 ON tb1.customer_end_user = tb2.customer_id 
+        LEFT JOIN tb_customer_type ON tb1.customer_type_id = tb_customer_type.customer_type_id 
+        WHERE ( 
+            tb1.customer_code LIKE ('%$keyword%') 
+            OR tb1.customer_name_th LIKE ('%$keyword%') 
+            OR tb1.customer_name_en LIKE ('%$keyword%') 
+            OR tb1.customer_tax LIKE ('%$keyword%') 
+            OR tb1.customer_tel LIKE ('%$keyword%') 
+            OR tb1.customer_email LIKE ('%$keyword%') 
+        ) AND ( 
+            tb2.customer_code LIKE ('%$keyword_end%') 
+            OR IFNULL(tb2.customer_name_th,'') LIKE ('%$keyword_end%') 
+            OR IFNULL(tb2.customer_name_en,'') LIKE ('%$keyword_end%') 
+            OR IFNULL(tb2.customer_tax,'') LIKE ('%$keyword_end%') 
+            OR IFNULL(tb2.customer_tel,'') LIKE ('%$keyword_end%') 
+            OR IFNULL(tb2.customer_email,'') LIKE ('%$keyword_end%') 
+        )
+        $str_type 
+        $str_end  
+        ORDER BY tb1.customer_code  
+        "; 
+
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

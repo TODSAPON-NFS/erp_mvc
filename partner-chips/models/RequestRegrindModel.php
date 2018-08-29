@@ -30,8 +30,7 @@ class RequestRegrindModel extends BaseModel{
         $sql = " SELECT request_regrind_id, 
         tb.employee_id,
         request_regrind_date, 
-        request_regrind_rewrite_id,
-        customer_name_th, customer_name_en,
+        request_regrind_rewrite_id, 
         supplier_name_th, supplier_name_en, 
         IFNULL((
             SELECT COUNT(*) FROM tb_request_regrind WHERE request_regrind_rewrite_id = tb.request_regrind_id 
@@ -46,8 +45,7 @@ class RequestRegrindModel extends BaseModel{
         request_regrind_remark 
         FROM tb_request_regrind as tb 
         LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
-        LEFT JOIN tb_user as tb2 ON tb.request_regrind_accept_by = tb2.user_id 
-        LEFT JOIN tb_customer as tb3 ON tb.customer_id = tb3.customer_id 
+        LEFT JOIN tb_user as tb2 ON tb.request_regrind_accept_by = tb2.user_id  
         LEFT JOIN tb_supplier as tb4 ON tb.supplier_id = tb4.supplier_id 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
@@ -90,8 +88,7 @@ class RequestRegrindModel extends BaseModel{
         $sql = " SELECT *   
         FROM tb_request_regrind 
         LEFT JOIN tb_user ON tb_request_regrind.employee_id = tb_user.user_id 
-        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
-        LEFT JOIN tb_customer ON tb_request_regrind.customer_id = tb_customer.customer_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id  
         LEFT JOIN tb_supplier ON tb_request_regrind.supplier_id = tb_supplier.supplier_id 
         WHERE request_regrind_id = '$id' 
         ";
@@ -156,7 +153,6 @@ class RequestRegrindModel extends BaseModel{
     function updateRequestRegrindByID($id,$data = []){
         $sql = " UPDATE tb_request_regrind SET 
         request_regrind_code = '".$data['request_regrind_code']."',  
-        customer_id = '".$data['customer_id']."', 
         employee_id = '".$data['employee_id']."', 
         supplier_id = '".$data['supplier_id']."', 
         request_regrind_date = '".$data['request_regrind_date']."', 
@@ -204,7 +200,6 @@ class RequestRegrindModel extends BaseModel{
             request_regrind_rewrite_id,
             request_regrind_rewrite_no,
             request_regrind_code, 
-            customer_id,
             supplier_id,
             employee_id,
             request_regrind_date,
@@ -217,7 +212,6 @@ class RequestRegrindModel extends BaseModel{
         $data['request_regrind_rewrite_id']."','".
         $data['request_regrind_rewrite_no']."','".
         $data['request_regrind_code']."','". 
-        $data['customer_id']."','".
         $data['supplier_id']."','".
         $data['employee_id']."','".
         $data['request_regrind_date']."','".

@@ -31,7 +31,16 @@
             document.getElementById("employee_id").focus();
             return false;
         }else{
-            return true;
+            var total = parseFloat($('#finance_debit_total').val().toString().replace(new RegExp(',', 'g'),''));
+            var paid = parseFloat($('#finance_debit_pay').val().toString().replace(new RegExp(',', 'g'),''));
+
+            if (total == paid){
+                return true;
+            }else if(confirm("เอกสารหมายเลข "+finance_debit_code+" ฉบับนี้ยังไม่สมบูรณ์เนื่องจากจำนวนเงินที่รับจริง ไม่ตรงกับจำนวนเงินที่ต้องรับ")){
+                return true;
+            }else{
+                return false;
+            }
         }
 
 

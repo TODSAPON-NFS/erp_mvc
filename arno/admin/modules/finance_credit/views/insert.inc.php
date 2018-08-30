@@ -31,7 +31,16 @@
             document.getElementById("employee_id").focus();
             return false;
         }else{
-            return true;
+            var total = parseFloat($('#finance_credit_total').val().toString().replace(new RegExp(',', 'g'),''));
+            var paid = parseFloat($('#finance_credit_pay').val().toString().replace(new RegExp(',', 'g'),''));
+
+            if (total == paid){
+                return true;
+            }else if(confirm("เอกสารหมายเลข "+finance_credit_code+" ฉบับนี้ยังไม่สมบูรณ์เนื่องจากจำนวนเงินที่จ่ายจริง ไม่ตรงกับจำนวนเงินที่ต้องจ่าย")){
+                return true;
+            }else{
+                return false;
+            }
         }
 
 
@@ -191,7 +200,7 @@
                             data_buffer[i].finance_credit_list_due + 
                         '</td>'+
                         '<td align="right">'+
-                            '<input type="text" class="form-control" name="finance_credit_list_billing[]" />'+
+                            '<input type="text" class="form-control" name="finance_credit_list_recieve[]"  value="'+data_buffer[i].finance_credit_list_recieve+'"  readonly />'+
                         '</td>'+
                         '<td align="right">'+
                             '<input type="text" class="form-control" name="finance_credit_list_receipt[]" />'+
@@ -524,7 +533,7 @@
                                 <th style="text-align:center;">หมายใบกำกับภาษี <br> (Invoice Number)</th>
                                 <th style="text-align:center;" width="150">วันที่ออก <br> (Date)</th>
                                 <th style="text-align:center;" width="150">กำหนดชำระ <br> (Due Date)</th>
-                                <th style="text-align:center;" >ใบรับวางบิล <br> (Billing Note)</th>
+                                <th style="text-align:center;" >ใบรับสินค้าเข้า <br> (RR/RF)</th>
                                 <th style="text-align:center;" >เลขที่ใบเสร็จ <br> (Receipt)</th>
                                 <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount) </th>
                                 <th style="text-align:center;" width="150">ชำระแล้ว <br> (Paid)</th>
@@ -552,7 +561,7 @@
                                     <?PHP echo  $finance_credit_lists[$i]['finance_credit_list_due'];?>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" name="finance_credit_list_billing[]" />
+                                    <input type="text" class="form-control" name="finance_credit_list_recieve[]"  value="<?PHP echo  $finance_credit_lists[$i]['finance_credit_list_recieve'];?>" readonly />
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="finance_credit_list_receipt[]" />

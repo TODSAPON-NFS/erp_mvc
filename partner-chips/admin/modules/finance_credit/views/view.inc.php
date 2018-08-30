@@ -150,9 +150,10 @@
                             <th width="150">วันที่ออกใบจ่ายชำระหนี้ <br>Finance Credit Date</th>
                             <th width="150">หมายเลขใบจ่ายชำระหนี้ <br>Finance Credit Code.</th>
                             <th>ผู้ขาย <br>Supplier</th>
-                            <th width="150" > ผู้ออก<br>Create by</th>
-                            <th>หมายเหตุ <br>Remark</th>
-							
+                            <th width="150" > ผู้ออก<br>Create by</th> 
+                            <th width="100" > จำนวนเงินรวม<br>Total</th>
+                            <th width="100" > ยอดจ่ายจริง<br>Paid</th>
+                            <th width="100" > สถานะ<br>Status</th>  
                             <th width="64"></th>
                         </tr>
                     </thead>
@@ -164,8 +165,17 @@
                             <td><?php echo $i+1; ?></td>
                             <td><?php echo $finance_credits[$i]['finance_credit_date']; ?></td>
                             <td><?php echo $finance_credits[$i]['finance_credit_code']; ?></td>
+                            <td align="right" ><?PHP echo number_format($finance_credits[$i]['finance_credit_total'],2); ?></td>
+                            <td align="right" ><?PHP echo number_format($finance_credits[$i]['finance_credit_pay'],2); ?></td>
                             <td><?php echo $finance_credits[$i]['supplier_name']; ?> </td>
                             <td><?php echo $finance_credits[$i]['employee_name']; ?></td>
+                            <td>
+                                <?PHP if($finance_credits[$i]['finance_credit_total'] == $finance_credits[$i]['finance_credit_pay']){ ?>
+                                    <b>จ่ายครบแล้ว</b>
+                                <?PHP }else{ ?>
+                                    <font color="red"><b>ยังจ่ายไม่ครบ</b></font>
+                                <?PHP } ?>
+                            </td>
                             <td><?php echo $finance_credits[$i]['finance_credit_remark']; ?></td>
 
                             <td>
@@ -173,7 +183,7 @@
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                 </a>
 
-                                 <a href="index.php?app=finance_credit&action=print&id=<?PHP echo $finance_credits[$i]['finance_credit_id'];?>" >
+                                 <a href="print.php?app=finance_credit&action=pdf&id=<?PHP echo $finance_credits[$i]['finance_credit_id'];?>" target="blank">
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                 </a>
 

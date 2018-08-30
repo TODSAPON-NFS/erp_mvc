@@ -31,7 +31,17 @@
             document.getElementById("employee_id").focus();
             return false;
         }else{
-            return true;
+            var total = parseFloat($('#finance_credit_total').val().toString().replace(new RegExp(',', 'g'),''));
+            var paid = parseFloat($('#finance_credit_pay').val().toString().replace(new RegExp(',', 'g'),''));
+
+            if (total == paid){
+                return true;
+            }else if(confirm("เอกสารหมายเลข "+finance_credit_code+" ฉบับนี้ยังไม่สมบูรณ์เนื่องจากจำนวนเงินที่จ่ายจริง ไม่ตรงกับจำนวนเงินที่ต้องจ่าย")){
+                return true;
+            }else{
+                return false;
+            }
+            
         }
 
 

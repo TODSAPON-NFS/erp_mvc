@@ -150,9 +150,10 @@
                             <th width="150">วันที่ออกใบรับชำระหนี้ <br>Finance Debit Date</th>
                             <th width="150">หมายเลขใบรับชำระหนี้ <br>Finance Debit Code.</th>
                             <th>ผู้ซื้อ <br>Customer</th>
-                            <th width="150" > ผู้ออก<br>Create by</th>
-                            <th>หมายเหตุ <br>Remark</th>
-							
+                            <th width="150" > ผู้ออก<br>Create by</th> 
+                            <th width="100" > จำนวนเงินรวม<br>Total</th>
+                            <th width="100" > ยอดรับจริง<br>Charged</th>
+                            <th width="100" > สถานะ<br>Status</th>  
                             <th width="64"></th>
                         </tr>
                     </thead>
@@ -166,14 +167,22 @@
                             <td><?php echo $finance_debits[$i]['finance_debit_code']; ?></td>
                             <td><?php echo $finance_debits[$i]['customer_name']; ?> </td>
                             <td><?php echo $finance_debits[$i]['employee_name']; ?></td>
-                            <td><?php echo $finance_debits[$i]['finance_debit_remark']; ?></td>
-
+                            <td align="right" ><?PHP echo number_format($finance_debits[$i]['finance_debit_total'],2); ?></td>
+                            <td align="right" ><?PHP echo number_format($finance_debits[$i]['finance_debit_pay'],2); ?></td>
+                            <td>
+                                <?PHP if($finance_debits[$i]['finance_debit_total'] == $finance_debits[$i]['finance_debit_pay']){ ?>
+                                    <b>รับครบแล้ว</b>
+                                <?PHP }else{ ?>
+                                    <font color="red"><b>ยังรับไม่ครบ</b></font>
+                                <?PHP } ?>
+                            </td>
+                             
                             <td>
                                 <a href="?app=finance_debit&action=detail&id=<?php echo $finance_debits[$i]['finance_debit_id'];?>">
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                 </a>
 
-                                 <a href="index.php?app=finance_debit&action=print&id=<?PHP echo $finance_debits[$i]['finance_debit_id'];?>" >
+                                 <a href="print.php?app=finance_debit&action=pdf&id=<?PHP echo $finance_debits[$i]['finance_debit_id'];?>" target="blank" >
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                 </a>
 

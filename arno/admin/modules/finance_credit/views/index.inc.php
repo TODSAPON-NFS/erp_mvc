@@ -139,6 +139,8 @@ if(!isset($_GET['action'])){
         if($finance_credit_id > 0){
             $data = [];
             $invoice_supplier_id = $_POST['invoice_supplier_id'];
+            $finance_credit_list_recieve = $_POST['finance_credit_list_recieve'];
+            $finance_credit_list_receipt = $_POST['finance_credit_list_receipt'];
             $finance_credit_list_amount = $_POST['finance_credit_list_amount'];
             $finance_credit_list_paid = $_POST['finance_credit_list_paid'];
             $finance_credit_list_balance = $_POST['finance_credit_list_balance'];
@@ -150,6 +152,9 @@ if(!isset($_GET['action'])){
                     $data_sub = [];
                     $data_sub['finance_credit_id'] = $finance_credit_id;
                     $data_sub['invoice_supplier_id'] = $invoice_supplier_id[$i];
+                    $data_sub['finance_credit_list_recieve'] = $finance_credit_list_recieve[$i];
+                    $data_sub['finance_credit_list_receipt'] = $finance_credit_list_receipt[$i];
+
                     $data_sub['finance_credit_list_amount'] = (float)filter_var($finance_credit_list_amount[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data_sub['finance_credit_list_paid'] = (float)filter_var($finance_credit_list_paid[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data_sub['finance_credit_list_balance'] = (float)filter_var($finance_credit_list_balance[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -161,6 +166,8 @@ if(!isset($_GET['action'])){
                 $data_sub = [];
                 $data_sub['finance_credit_id'] = $finance_credit_id;
                 $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
+                $data_sub['finance_credit_list_recieve'] = $finance_credit_list_recieve;
+                $data_sub['finance_credit_list_receipt'] = $finance_credit_list_receipt;
                 $data_sub['finance_credit_list_amount'] = (float)filter_var($finance_credit_list_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['finance_credit_list_paid'] = (float)filter_var($finance_credit_list_paid, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['finance_credit_list_balance'] = (float)filter_var($finance_credit_list_balance, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -257,6 +264,8 @@ if(!isset($_GET['action'])){
 
 
         $invoice_supplier_id = $_POST['invoice_supplier_id'];
+        $finance_credit_list_recieve = $_POST['finance_credit_list_recieve'];
+        $finance_credit_list_receipt = $_POST['finance_credit_list_receipt'];
         $finance_credit_list_amount = $_POST['finance_credit_list_amount'];
         $finance_credit_list_paid = $_POST['finance_credit_list_paid'];
         $finance_credit_list_balance = $_POST['finance_credit_list_balance'];
@@ -272,6 +281,8 @@ if(!isset($_GET['action'])){
                 $data_sub = [];
                 $data_sub['finance_credit_id'] = $finance_credit_id;
                 $data_sub['invoice_supplier_id'] = $invoice_supplier_id[$i];
+                $data_sub['finance_credit_list_recieve'] = $finance_credit_list_recieve[$i];
+                $data_sub['finance_credit_list_receipt'] = $finance_credit_list_receipt[$i];
                 $data_sub['finance_credit_list_amount'] = (float)filter_var($finance_credit_list_amount[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['finance_credit_list_paid'] = (float)filter_var($finance_credit_list_paid[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['finance_credit_list_balance'] = (float)filter_var($finance_credit_list_balance[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -288,6 +299,8 @@ if(!isset($_GET['action'])){
             $data_sub = [];
             $data_sub['finance_credit_id'] = $finance_credit_id;
             $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
+            $data_sub['finance_credit_list_recieve'] = $finance_credit_list_recieve;
+            $data_sub['finance_credit_list_receipt'] = $finance_credit_list_receipt;
             $data_sub['finance_credit_list_amount'] = (float)filter_var($finance_credit_list_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data_sub['finance_credit_list_paid'] = (float)filter_var($finance_credit_list_paid, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data_sub['finance_credit_list_balance'] = (float)filter_var($finance_credit_list_balance, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);

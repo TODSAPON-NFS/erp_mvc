@@ -19,7 +19,10 @@ class FinanceDebitListModel extends BaseModel{
         '0' as finance_debit_list_paid, 
         invoice_customer_net_price as finance_debit_list_amount, 
         invoice_customer_date as finance_debit_list_date, 
-        invoice_customer_due as finance_debit_list_due, 
+        invoice_customer_due as finance_debit_list_due,  
+        finance_debit_list_amount,
+        finance_debit_list_paid,
+        finance_debit_list_balance,
         finance_debit_list_remark 
         FROM tb_finance_debit_list 
         LEFT JOIN tb_billing_note_list ON tb_finance_debit_list.billing_note_list_id = tb_billing_note_list.billing_note_list_id 

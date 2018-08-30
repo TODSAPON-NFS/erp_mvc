@@ -141,6 +141,10 @@
         require_once("modules/account/views/index.inc.php");
     }else if($_GET['app'] == "account_setting"){
         require_once("modules/account_setting/views/index.inc.php");
+    }else if($_GET['app'] == "finance_debit_account"){
+        require_once("modules/finance_debit_account/views/index.inc.php");
+    }else if($_GET['app'] == "finance_credit_account"){
+        require_once("modules/finance_credit_account/views/index.inc.php");
     }else if($_GET['app'] == "paper"){
         require_once("modules/paper/views/index.inc.php");
     }else if($_GET['app'] == "finance_credit"){

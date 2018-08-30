@@ -203,7 +203,7 @@
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                 </a>
 
-                                 <a href="index.php?app=official_receipt&action=print&id=<?PHP echo $official_receipts[$i]['official_receipt_id'];?>" >
+                                 <a href="print.php?app=official_receipt&action=pdf&id=<?PHP echo $official_receipts[$i]['official_receipt_id'];?>" target="blank" >
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                 </a>
 

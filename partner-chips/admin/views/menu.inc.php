@@ -5,7 +5,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Partner Chips ERP</a>
+                <a class="navbar-brand" href="index.php">Arno Thailand ERP</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -412,6 +412,8 @@
                                 $_GET["app"]=='billing_note' || 
                                 $_GET["app"]=='finance_debit' || 
                                 $_GET["app"]=='finance_credit' || 
+                                $_GET["app"]=='finance_debit_account' || 
+                                $_GET["app"]=='finance_credit_account' || 
                                 $_GET["app"]=='official_receipt'|| 
                                 substr($_GET["app"],0,15) =='journal_special' ||
                                 $_GET["app"] =='other_expense' ||
@@ -440,6 +442,12 @@
                                 </li>
                                 <li>
                                     <a href="?app=paper" <?PHP if($_GET['app'] == "paper"){?> class="active" <?PHP } ?> ><i class="fa  fa-cog fa-fw" aria-hidden="true"></i> กำหนดเลขที่เอกสาร (Paper Setting)</a>
+                                </li>
+                                <li>
+                                    <a href="?app=finance_debit_account" <?PHP if($_GET['app'] == "finance_debit_account"){?> class="active" <?PHP } ?> ><i class="fa  fa-cog fa-fw" aria-hidden="true"></i> กำหนดวิธีการรับชำระหนี้ (Charge Setting)</a>
+                                </li>
+                                <li>
+                                    <a href="?app=finance_credit_account" <?PHP if($_GET['app'] == "finance_credit_account"){?> class="active" <?PHP } ?> ><i class="fa  fa-cog fa-fw" aria-hidden="true"></i> กำหนดวิธีการจ่ายชำระหนี้ (Payment Setting)</a>
                                 </li>
                                 <?PHP } ?>
                                 <li

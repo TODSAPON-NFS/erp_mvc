@@ -1,6 +1,12 @@
 <?PHP 
     if($_GET['app'] == "invoice_customer"){
         require_once("print/invoice_customer/views/index.inc.php");
+    }else if($_GET['app'] == "official_receipt"){
+        require_once("print/official_receipt/views/index.inc.php");
+    }else if($_GET['app'] == "finance_debit"){
+        require_once("print/finance_debit/views/index.inc.php");
+    }else if($_GET['app'] == "finance_credit"){
+        require_once("print/finance_credit/views/index.inc.php");
     }
 
 /* ################################################### รายงานเจ้าหนี้ ################################################### */

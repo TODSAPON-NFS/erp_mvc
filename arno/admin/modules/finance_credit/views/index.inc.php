@@ -5,6 +5,9 @@ require_once('../functions/NumbertoTextFunction.func.php');
 require_once('../models/FinanceCreditModel.php');
 require_once('../models/FinanceCreditListModel.php');
 require_once('../models/FinanceCreditPayModel.php');
+require_once('../models/FinanceCreditAccountModel.php');
+require_once('../models/BankAccountModel.php');
+require_once('../models/AccountModel.php');
 require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/SupplierModel.php');
@@ -24,6 +27,9 @@ $notification_model = new NotificationModel;
 $finance_credit_model = new FinanceCreditModel;
 $finance_credit_list_model = new FinanceCreditListModel;
 $finance_credit_pay_model = new FinanceCreditPayModel;
+$finance_credit_account_model = new FinanceCreditAccountModel;
+$bank_account_model = new BankAccountModel;
+$account_model = new AccountModel;
 
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
@@ -52,6 +58,10 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'insert'){ 
     $suppliers=$supplier_model->getSupplierBy();
+    $finance_credit_accounts=$finance_credit_account_model->getFinanceCreditAccountNoJoinBy();
+    $bank_accounts=$bank_account_model->getBankAccountBy();
+    $accounts=$account_model->getAccountAll();
+
     $supplier=$supplier_model->getSupplierByID($supplier_id);
     $finance_credit_lists = $finance_credit_model->generateFinanceCreditListBySupplierId($supplier_id);
     $users=$user_model->getUserBy();
@@ -82,6 +92,9 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'update'){
 
     $suppliers=$supplier_model->getSupplierBy();
+    $finance_credit_accounts=$finance_credit_account_model->getFinanceCreditAccountNoJoinBy();
+    $bank_accounts=$bank_account_model->getBankAccountBy();
+    $accounts=$account_model->getAccountAll();
     $users=$user_model->getUserBy();
 
     $finance_credit = $finance_credit_model->getFinanceCreditByID($finance_credit_id);
@@ -177,9 +190,12 @@ if(!isset($_GET['action'])){
             }
 
             $finance_credit_pay_id = $_POST['finance_credit_pay_id'];
+            $finance_credit_account_id = $_POST['finance_credit_account_id'];
             $finance_credit_pay_by = $_POST['finance_credit_pay_by'];
             $finance_credit_pay_date = $_POST['finance_credit_pay_date']; 
+            $bank_account_id = $_POST['bank_account_id'];
             $finance_credit_pay_bank = $_POST['finance_credit_pay_bank'];
+            $account_id = $_POST['account_id'];
             $finance_credit_pay_value = $_POST['finance_credit_pay_value'];
             $finance_credit_pay_balance = $_POST['finance_credit_pay_balance'];
             $finance_credit_pay_total = $_POST['finance_credit_pay_total'];
@@ -192,9 +208,12 @@ if(!isset($_GET['action'])){
                 for($i=0; $i < count($finance_credit_pay_id) ; $i++){
                     $data = [];
                     $data['finance_credit_id'] = $finance_credit_id;
+                    $data['finance_credit_account_id'] = $finance_credit_account_id[$i];
                     $data['finance_credit_pay_by'] = $finance_credit_pay_by[$i];
                     $data['finance_credit_pay_date'] = $finance_credit_pay_date[$i];
+                    $data['bank_account_id'] = $bank_account_id[$i];
                     $data['finance_credit_pay_bank'] = $finance_credit_pay_bank[$i];
+                    $data['account_id'] = $account_id[$i];
                     $data['finance_credit_pay_value'] = (float)filter_var($finance_credit_pay_value[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data['finance_credit_pay_balance'] = (float)filter_var($finance_credit_pay_balance[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data['finance_credit_pay_total'] = (float)filter_var($finance_credit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -208,9 +227,12 @@ if(!isset($_GET['action'])){
             }else{
                 $data = [];
                 $data['finance_credit_id'] = $finance_credit_id;
+                $data['finance_credit_account_id'] = $finance_credit_account_id;
                 $data['finance_credit_pay_by'] = $finance_credit_pay_by;
                 $data['finance_credit_pay_date'] = $finance_credit_pay_date;
+                $data['bank_account_id'] = $bank_account_id;
                 $data['finance_credit_pay_bank'] = $finance_credit_pay_bank;
+                $data['account_id'] = $account_id;
                 $data['finance_credit_pay_value'] = (float)filter_var($finance_credit_pay_value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['finance_credit_pay_balance'] = (float)filter_var($finance_credit_pay_balance, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['finance_credit_pay_total'] = (float)filter_var($finance_credit_pay_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -314,9 +336,12 @@ if(!isset($_GET['action'])){
         }
 
         $finance_credit_pay_id = $_POST['finance_credit_pay_id'];
+        $finance_credit_account_id = $_POST['finance_credit_account_id'];
         $finance_credit_pay_by = $_POST['finance_credit_pay_by'];
         $finance_credit_pay_date = $_POST['finance_credit_pay_date']; 
+        $bank_account_id = $_POST['bank_account_id'];
         $finance_credit_pay_bank = $_POST['finance_credit_pay_bank'];
+        $account_id = $_POST['account_id'];
         $finance_credit_pay_value = $_POST['finance_credit_pay_value'];
         $finance_credit_pay_balance = $_POST['finance_credit_pay_balance'];
         $finance_credit_pay_total = $_POST['finance_credit_pay_total'];
@@ -329,9 +354,12 @@ if(!isset($_GET['action'])){
             for($i=0; $i < count($finance_credit_pay_id) ; $i++){
                 $data = [];
                 $data['finance_credit_id'] = $finance_credit_id;
+                $data['finance_credit_account_id'] = $finance_credit_account_id[$i];
                 $data['finance_credit_pay_by'] = $finance_credit_pay_by[$i];
                 $data['finance_credit_pay_date'] = $finance_credit_pay_date[$i];
+                $data['bank_account_id'] = $bank_account_id[$i];
                 $data['finance_credit_pay_bank'] = $finance_credit_pay_bank[$i];
+                $data['account_id'] = $account_id[$i];
                 $data['finance_credit_pay_value'] = (float)filter_var($finance_credit_pay_value[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['finance_credit_pay_balance'] = (float)filter_var($finance_credit_pay_balance[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['finance_credit_pay_total'] = (float)filter_var($finance_credit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -345,9 +373,12 @@ if(!isset($_GET['action'])){
         }else{
             $data = [];
             $data['finance_credit_id'] = $finance_credit_id;
+            $data['finance_credit_account_id'] = $finance_credit_account_id;
             $data['finance_credit_pay_by'] = $finance_credit_pay_by;
             $data['finance_credit_pay_date'] = $finance_credit_pay_date;
+            $data['bank_account_id'] = $bank_account_id;
             $data['finance_credit_pay_bank'] = $finance_credit_pay_bank;
+            $data['account_id'] = $account_id;
             $data['finance_credit_pay_value'] = (float)filter_var($finance_credit_pay_value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data['finance_credit_pay_balance'] = (float)filter_var($finance_credit_pay_balance, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data['finance_credit_pay_total'] = (float)filter_var($finance_credit_pay_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);

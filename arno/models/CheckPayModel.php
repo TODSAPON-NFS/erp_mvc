@@ -128,8 +128,8 @@ class CheckPayModel extends BaseModel{
         check_pay_type = '".$data['check_pay_type']."',  
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE check_id = $id 
-        ";
+        WHERE check_pay_id = $id 
+        "; 
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;

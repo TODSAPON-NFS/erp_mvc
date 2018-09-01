@@ -32,7 +32,7 @@ if(!isset($_GET['action'])){
         $data['finance_credit_account_cheque'] = $_POST['finance_credit_account_cheque'];
         $data['finance_credit_account_id'] = $_POST['finance_credit_account_id'];
         $data['account_id'] = $_POST['account_id']; 
-
+        $data['bank_account_id'] = $_POST['bank_account_id']; 
             $id = $model_finance_credit_account->insertFinanceCreditAccount($data);
             if($id > 0){
     ?>
@@ -54,7 +54,7 @@ if(!isset($_GET['action'])){
         $data['finance_credit_account_cheque'] = $_POST['finance_credit_account_cheque'];
         $data['finance_credit_account_id'] = $_POST['finance_credit_account_id'];
         $data['account_id'] = $_POST['account_id']; 
-
+        $data['bank_account_id'] = $_POST['bank_account_id']; 
             
         $id = $model_finance_credit_account->updateFinanceCreditAccountByID($_POST['finance_credit_account_id'],$data);
         if($id > 0){

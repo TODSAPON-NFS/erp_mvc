@@ -5,6 +5,13 @@
         url: function(keyword) {
             return "controllers/getProductByKeyword.php?keyword="+keyword;
         },
+        
+        list: {
+            maxNumberOfElements: 10,
+            match: {
+                enabled: true
+            }
+        },
 
         getValue: function(element) {
             return element.product_code ;
@@ -169,7 +176,7 @@
                 if(modelsupp.length > 0){
                     var content = "<option value=''>Select Product</option>";
                     $.each(data, function (index, value) {
-                        content += "<option value='" + value['supplier_id'] + "'>"+value['supplier_name_th']+"("+value['supplier_name_en']+")</option>";
+                        content += "<option value='" + value['supplier_id'] + "'>"+value['supplier_name_en']+"</option>";
                     });
                     $(modelsupp[0]).html(content);
                 }
@@ -239,8 +246,16 @@
 
      function delete_row(id){
         $(id).closest('tr').remove();
+        update_line(id);
      }
 
+
+    function update_line(id){
+        var td_number = $('table[name="tb_list"]').children('tbody').children('tr').children('td:first-child');
+        for(var i = 0; i < td_number.length ;i++){
+            td_number[i].innerHTML = (i+1);
+        }
+    }
 
 
      function show_data(id){
@@ -473,6 +488,7 @@
 
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
+                        '<td style="text-align:center;width:80px;" ></td>'+
                         '<td>'+
                             '<input type="hidden" class="form-control" name="delivery_note_customer_list_id[]" value="'+delivery_note_customer_list_id+'" readonly />'+
                             '<input type="hidden" class="form-control" name="customer_purchase_order_list_id[]" value="0" readonly />'+
@@ -505,7 +521,7 @@
                         '</td>'+
                     '</tr>'
                 );
-
+                
                 var enduser_options = {
                     data:customer_data,
 
@@ -523,8 +539,8 @@
 
                 $(".find-end-user").easyAutocomplete(enduser_options);
 
-               $(".example-ajax-post").easyAutocomplete(options);
-            
+                $(".example-ajax-post").easyAutocomplete(options);
+                update_line(id);
             }
             
         }
@@ -542,6 +558,7 @@
          }
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
+                '<td style="text-align:center;width:80px;" ></td>'+
                 '<td>'+
                     '<input type="hidden" class="form-control" name="delivery_note_customer_list_id[]" value="0" readonly />'+
                     '<input type="hidden" class="form-control" name="customer_purchase_order_list_id[]" value="0" readonly />'+
@@ -592,6 +609,7 @@
 
         $(".find-end-user").easyAutocomplete(enduser_options);
         $(".example-ajax-post").easyAutocomplete(options);
+        update_line(id);
     }
 
     function checkAll(id)
@@ -745,15 +763,17 @@
                     <div>
                     Our reference :
                     </div>
-                    <table width="100%" class="table table-striped table-bordered table-hover" >
+                    <table name="tb_list" width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
+                                <th style="text-align:center;">ลำดับ <br>(์No)</th>
                                 <th style="text-align:center;">รหัสสินค้า <br>(Product Code)</th>
                                 <th style="text-align:center;">ชื่อสินค้า <br>(Product Name)</th>
                                 <th style="text-align:center;" width="96">จำนวน <br>(Qty)</th>
                                 <th style="text-align:center;" width="96">ราคา <br>(@)</th>
                                 <th style="text-align:center;" width="96">ราคารวม <br>(Amount)</th>
                                 <th style="text-align:center;">การสั่งซื้อ<br>(From)</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -762,6 +782,7 @@
                             for($i=0; $i < count($customer_purchase_order_lists); $i++){
                             ?>
                             <tr class="odd gradeX">
+                                <td style="text-align:center;width:80px;" ></td>
                                 <td>
                                     <input type="hidden" name="delivery_note_customer_list_id[]" value="<? echo $customer_purchase_order_lists[$i]['delivery_note_customer_list_id'] ?>" />
                                     <input type="hidden" name="customer_purchase_order_list_id[]" value="<? echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_id'] ?>" />
@@ -895,7 +916,7 @@
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td colspan="7" align="center">
+                                <td colspan="9" align="center">
                                     <a href="javascript:;" onclick="show_delivery_note(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> 
                                         <span>เพิ่มสินค้า / Add product</span>

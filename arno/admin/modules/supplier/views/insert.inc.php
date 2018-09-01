@@ -80,7 +80,7 @@
 
         reader.readAsDataURL(input.files[0]);
         }else{
-            $('#img_logo').attr('src', '../upload/Supplier/default.png');
+            $('#img_logo').attr('src', '../upload/supplier/default.png');
         }
     }
 
@@ -127,7 +127,7 @@
                             <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>รหัสผู้จำหน่าย / Supplier code<font color="#F00"><b>*</b></font></label>
-                                    <input id="supplier_code" name="supplier_code" readonly="true" class="form-control">
+                                    <input id="supplier_code" name="supplier_code"   class="form-control">
                                     <p class="help-block">Example : R001.</p>
                                 </div>
                             </div>

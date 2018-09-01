@@ -28,6 +28,23 @@ class FinanceCreditAccountModel extends BaseModel{
 
     }
 
+    function getFinanceCreditAccountNoJoinBy($keyword = ''){
+        $sql = " SELECT *   
+        FROM tb_finance_credit_account  
+        WHERE finance_credit_account_name LIKE ('%$keyword%') OR finance_credit_account_code LIKE ('%$keyword%')
+        ORDER BY finance_credit_account_code  
+        ";
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getFinanceCreditAccountByID($id){
         $sql = " SELECT * 
         FROM tb_finance_credit_account  

@@ -257,7 +257,7 @@
                             ?>
                             <tr class="odd gradeX">
                                 <td>
-                                    <input type="hidden" name="journal_cash_payment_list_id[]" value="0" />
+                                    <input type="hidden" name="journal_cash_payment_list_id[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_cash_payment_list_id']; ?>" />
                                     <select  class="form-control select" name="account_id[]" onchange="show_data(this);" data-live-search="true" >
                                         <option value="">Select</option>
                                         <?php 

@@ -59,7 +59,22 @@ class JournalCashPaymentModel extends BaseModel{
     }
 
 
+    function getJournalCashPaymentByFinanceCreditID($id){
+        $sql = " SELECT * 
+        FROM tb_journal_cash_payment 
+        WHERE finance_credit_id = '$id' 
+        ";
 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
 
 
     function getJournalCashPaymentByID($id){
@@ -146,6 +161,7 @@ class JournalCashPaymentModel extends BaseModel{
 
     function insertJournalCashPayment($data = []){
         $sql = " INSERT INTO tb_journal_cash_payment (
+            finance_credit_id,
             journal_cash_payment_code, 
             journal_cash_payment_date,
             journal_cash_payment_name,
@@ -154,6 +170,7 @@ class JournalCashPaymentModel extends BaseModel{
             updateby, 
             lastupdate) 
         VALUES ('".
+        $data['finance_credit_id']."','".
         $data['journal_cash_payment_code']."','".
         $data['journal_cash_payment_date']."','".
         $data['journal_cash_payment_name']."','".
@@ -173,6 +190,15 @@ class JournalCashPaymentModel extends BaseModel{
     }
 
 
+    function deleteJournalCashPaymentByFinanceCreditID($finance_credit_id){
+        
+        $sql = " DELETE FROM tb_journal_cash_payment_list WHERE journal_cash_payment_id IN (SELECT journal_cash_payment_id FROM tb_journal_cash_payment WHERE finance_credit_id = '$finance_credit_id') ";
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = " DELETE FROM tb_journal_cash_payment WHERE finance_credit_id = '$finance_credit_id' ";
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+        
+    }
 
     function deleteJournalCashPaymentByID($id){
         $sql = " DELETE FROM tb_journal_cash_payment WHERE journal_cash_payment_id = '$id' ";

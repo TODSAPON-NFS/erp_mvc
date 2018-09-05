@@ -50,6 +50,14 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $keyword = $_GET['keyword'];
     $status = $_GET['status'];
 
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+
     $customers=$customer_model->getCustomerBy();
 
     $quotations=$quotation_model->getQuotationBy();
@@ -58,6 +66,11 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     
     $customer_orders = $customer_purchase_order_model->getCustomerOrder();
     
+
+    $page_max = (int)(count($customer_purchase_orders)/$page_size);
+    if(count($customer_purchase_orders)%$page_size > 0){
+        $page_max += 1;
+    }
 
 
     require_once($path.'view.inc.php');
@@ -637,6 +650,14 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $keyword = $_GET['keyword'];
     $status = $_GET['status'];
 
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+
     $customers=$customer_model->getCustomerBy();
 
     $quotations=$quotation_model->getQuotationBy();
@@ -645,6 +666,10 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     
     $customer_orders = $customer_purchase_order_model->getCustomerOrder();
     
+    $page_max = (int)(count($customer_purchase_orders)/$page_size);
+    if(count($customer_purchase_orders)%$page_size > 0){
+        $page_max += 1;
+    }
 
     require_once($path.'view.inc.php');
 }

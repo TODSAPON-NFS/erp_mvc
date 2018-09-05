@@ -84,6 +84,23 @@ class CheckPayModel extends BaseModel{
 
     }
 
+    function getCheckPayByCode($check_pay_code){
+        $sql = " SELECT * 
+        FROM tb_check_pay 
+        WHERE check_pay_code = '$check_pay_code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getCheckPayViewByID($id){
         $sql = " SELECT *   
         FROM tb_check_pay 

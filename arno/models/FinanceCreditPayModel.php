@@ -11,6 +11,7 @@ class FinanceCreditPayModel extends BaseModel{
 
     function getFinanceCreditPayBy($finance_credit_id){
         $sql = " SELECT 
+        check_pay_id,
         finance_credit_pay_id, 
         finance_credit_account_id,
         finance_credit_pay_by,
@@ -47,6 +48,7 @@ class FinanceCreditPayModel extends BaseModel{
             bank_account_id,
             finance_credit_pay_bank,
             account_id,
+            check_pay_id,
             finance_credit_pay_value,
             finance_credit_pay_balance,
             finance_credit_pay_total,
@@ -62,6 +64,7 @@ class FinanceCreditPayModel extends BaseModel{
             '".$data['bank_account_id']."', 
             '".$data['finance_credit_pay_bank']."', 
             '".$data['account_id']."', 
+            '".$data['check_pay_id']."', 
             '".$data['finance_credit_pay_value']."', 
             '".$data['finance_credit_pay_balance']."', 
             '".$data['finance_credit_pay_total']."', 
@@ -90,6 +93,7 @@ class FinanceCreditPayModel extends BaseModel{
             bank_account_id = '".$data['bank_account_id']."',
             finance_credit_pay_bank = '".$data['finance_credit_pay_bank']."',
             account_id = '".$data['account_id']."',
+            check_pay_id = '".$data['check_pay_id']."',
             finance_credit_pay_value = '".$data['finance_credit_pay_value']."',
             finance_credit_pay_balance = '".$data['finance_credit_pay_balance']."',
             finance_credit_pay_total = '".$data['finance_credit_pay_total']."'     

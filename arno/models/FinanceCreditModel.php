@@ -36,8 +36,9 @@ class FinanceCreditModel extends BaseModel{
         finance_credit_date, 
         finance_credit_date_pay, 
         finance_credit_total,
+        finance_credit_pay,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name,  
-        IFNULL(CONCAT(tb2.supplier_name_en,' (',tb2.supplier_name_th,')'),'-') as supplier_name  
+        IFNULL(tb2.supplier_name_en,'-') as supplier_name  
         FROM tb_finance_credit 
         LEFT JOIN tb_user as tb1 ON tb_finance_credit.employee_id = tb1.user_id 
         LEFT JOIN tb_supplier as tb2 ON tb_finance_credit.supplier_id = tb2.supplier_id 
@@ -48,7 +49,7 @@ class FinanceCreditModel extends BaseModel{
         $str_supplier 
         $str_date 
         $str_user  
-        ORDER BY STR_TO_DATE(finance_credit_date,'%d-%m-%Y %H:%i:%s'),finance_credit_code DESC 
+        ORDER BY finance_credit_code ASC 
          ";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -182,7 +183,7 @@ class FinanceCreditModel extends BaseModel{
             invoice_supplier_due LIKE ('%$search%') OR 
             invoice_supplier_code LIKE ('%$search%') 
         ) 
-        ORDER BY  STR_TO_DATE(invoice_supplier_date,'%d-%m-%Y %H:%i:%s') ";
+        ORDER BY  invoice_supplier_code ";
 
         //echo $sql_supplier;
 

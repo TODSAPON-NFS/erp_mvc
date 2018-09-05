@@ -28,6 +28,23 @@ class FinanceDebitAccountModel extends BaseModel{
 
     }
 
+    function getFinanceDebitAccountNoJoinBy($keyword = ''){
+        $sql = " SELECT *   
+        FROM tb_finance_debit_account  
+        WHERE finance_debit_account_name LIKE ('%$keyword%') OR finance_debit_account_code LIKE ('%$keyword%')
+        ORDER BY finance_debit_account_code  
+        ";
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getFinanceDebitAccountByID($id){
         $sql = " SELECT *
         FROM tb_finance_debit_account  
@@ -44,6 +61,8 @@ class FinanceDebitAccountModel extends BaseModel{
         }
 
     }
+
+    
 
     function updateFinanceDebitAccountByID($id,$data = []){
         $sql = " UPDATE tb_finance_debit_account SET     

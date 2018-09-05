@@ -63,14 +63,11 @@
     }
 
 
-    function calculateAll(){
+     function calculateAll(){
 
-        var val = document.getElementsByName('invoice_customer_list_total[]');
-        var total = 0.0;
-        
-        for(var i = 0 ; i < val.length ; i++){
-            
-            total += parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),''));
+        var total = parseFloat($('#invoice_customer_total_price').val().toString().replace(new RegExp(',', 'g'),''));
+        if(isNaN(total)){
+            total = 0.0;
         }
 
         $('#invoice_customer_total_price').val(total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );

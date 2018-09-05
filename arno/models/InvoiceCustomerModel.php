@@ -168,6 +168,8 @@ class InvoiceCustomerModel extends BaseModel{
         WHERE invoice_customer_id = $id 
         ";
 
+        //echo $sql;
+
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {

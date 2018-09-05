@@ -59,6 +59,8 @@ if(!isset($_GET['action'])){
             $last_code .= $code[$i]['value'];
         }   
     }
+
+    
     $first_date = date("d")."-".date("m")."-".date("Y");   
 
     require_once($path.'insert.inc.php');

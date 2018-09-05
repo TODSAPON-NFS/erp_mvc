@@ -1,4 +1,61 @@
 <script>
+
+    var options = {
+        url: function(keyword) {
+            return "controllers/getChequePayByKeyword.php?keyword="+keyword;
+        },
+
+        getValue: function(element) {
+            return element.check_pay_code ;
+        },
+
+        template: {
+            type: "description",
+            fields: {
+                description: "bank_account_name"
+            }
+        },
+        
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+
+        preparePostData: function(data) {
+            data.keyword = $(".example-ajax-post").val();
+            return data;
+        },
+
+        requestDelay: 400
+    };
+
+    var bank_account_data = [
+    <?php for($i = 0 ; $i < count($bank_accounts) ; $i++ ){?>
+        {
+            bank_account_id:'<?php echo $bank_accounts[$i]['bank_account_id'];?>',
+            bank_account_code:'<?php echo $bank_accounts[$i]['bank_account_code'];?>',
+            bank_account_name:'<?php echo $bank_accounts[$i]['bank_account_name'];?>',
+            account_id:'<?php echo $bank_accounts[$i]['account_id'];?>'
+        },
+    <?php }?>
+    ];
+
+    var finance_credit_account_data = [
+    <?php for($i = 0 ; $i < count($finance_credit_accounts) ; $i++ ){?>
+        {
+            finance_credit_account_id:'<?php echo $finance_credit_accounts[$i]['finance_credit_account_id'];?>',
+            finance_credit_account_code:'<?php echo $finance_credit_accounts[$i]['finance_credit_account_code'];?>',
+            finance_credit_account_name:'<?php echo $finance_credit_accounts[$i]['finance_credit_account_name'];?>',
+            finance_credit_account_cheque:'<?php echo $finance_credit_accounts[$i]['finance_credit_account_cheque'];?>',
+            bank_account_id:'<?php echo $finance_credit_accounts[$i]['bank_account_id'];?>',
+            account_id:'<?php echo $finance_credit_accounts[$i]['account_id'];?>'
+        },
+    <?php }?>
+    ];
+
     var total_old = 0.0;
     var data_buffer = [];
     function check(){
@@ -41,11 +98,68 @@
             }else{
                 return false;
             }
-            
         }
 
 
 
+    }
+
+
+    function generate_code(id){
+        var payment = $(id).val();
+        var finance_credit_account = finance_credit_account_data.filter(val => val.finance_credit_account_id == payment );
+
+        
+        if(finance_credit_account.length > 0){
+            $(id).closest('tr').children('td').children('input[name="finance_credit_account_cheque[]"]').val(finance_credit_account[0].finance_credit_account_cheque);
+            if(finance_credit_account[0].finance_credit_account_cheque == 1){
+                $.post( "controllers/getChequePayCodeIndex.php", {  }, function( data ) { 
+                    $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(data);
+                    $(id).closest('tr').children('td').children('div').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(data);
+                    $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').easyAutocomplete(options);
+                }); 
+            }else{ 
+                $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(finance_credit_account[0].finance_credit_account_code); 
+                $(id).closest('tr').children('td').children('div').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(finance_credit_account[0].finance_credit_account_code); 
+                
+                $(id).closest('tr').children('td').children('div').children('div').children('div').children('select[name="bank_account_id[]"]').val(finance_credit_account[0].bank_account_id);
+                
+                $(id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(finance_credit_account[0].account_id);
+                $('.select').selectpicker('refresh');
+
+                var bank_account = bank_account_data.filter(val => val.bank_account_id == finance_credit_account[0].bank_account_id );
+                if(bank_account.length > 0){
+                    $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val(bank_account[0].bank_account_name);
+                }else{
+                    $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val('')
+                }
+
+            }
+        }
+
+    }
+
+    function get_bank_account_name (id){ 
+        var bank_account_id = $(id).val();
+        var bank_account = bank_account_data.filter(val => val.bank_account_id == bank_account_id );
+
+        
+        var payment = $(id).closest('tr').children('td').children('div').children('div').children('select[name="finance_credit_account_id[]"]').val();
+        var finance_credit_account = finance_credit_account_data.filter(val => val.finance_credit_account_id == payment );
+
+        if(bank_account.length > 0){
+            $(id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(bank_account[0].account_id);
+            $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val(bank_account[0].bank_account_name)
+        }else{
+            $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val('')
+            $(id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(bank_account[0].account_id);
+        }
+    }
+
+    function get_cheque_id(id){
+        $.post( "controllers/getChequePayByCode.php", { 'check_pay_code': $(id).val() }, function( data ) {
+            $(id).closest('tr').children('td').children('input[name="check_pay_id[]"]').val(data.check_pay_id);
+        });
     }
 
     function get_supplier_detail(){
@@ -61,6 +175,7 @@
     
     function delete_row(id){
         $(id).closest('tr').remove();
+        calculateAll();
      }
 
 
@@ -90,10 +205,10 @@
                                             '<input type="checkbox" name="p_id" value="'+data[i].invoice_supplier_id+'" />'+     
                                         '</td>'+
                                         '<td>'+
-                                            data[i].invoice_supplier_code+
+                                            data[i].invoice_supplier_code +
                                         '</td>'+
                                         '<td>'+
-                                            data[i].finance_credit_list_date+
+                                            data[i].finance_credit_list_date +
                                         '</td>'+
                                         '<td align="right">'+
                                             data[i].finance_credit_list_due +
@@ -105,7 +220,7 @@
                                             data[i].finance_credit_list_paid +
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].finance_credit_list_amount - data[i].finance_credit_list_paid) +
+                                            (data[i].finance_credit_list_amount - data[i].finance_credit_list_paid) + 
                                         '</td>'+
                                     '</tr>';
 
@@ -191,7 +306,7 @@
                         '<td>'+  
                             '<input type="hidden" name="finance_credit_list_id[]" value="0" />'+
                             '<input type="hidden" name="invoice_supplier_id[]" value="'+data_buffer[i].invoice_supplier_id+'" />'+
-                            '<input type="text" class="form-control" value="'+data_buffer[i].invoice_supplier_code+'" readonly />'+ 
+                            '<input type="text" class="form-control"  value="'+data_buffer[i].invoice_supplier_code+'" readonly />'+ 
                             '<input type="text" class="form-control" name="finance_credit_list_remark[]" />'+
                         '</td>'+
                         '<td align="center">'+
@@ -201,7 +316,7 @@
                             data_buffer[i].finance_credit_list_due + 
                         '</td>'+
                         '<td align="right">'+
-                            '<input type="text" class="form-control" name="finance_credit_list_recieve[]" value="'+data_buffer[i].finance_credit_list_recieve+'" readonly />'+
+                            '<input type="text" class="form-control" name="finance_credit_list_recieve[]"  value="'+data_buffer[i].finance_credit_list_recieve+'"  readonly />'+
                         '</td>'+
                         '<td align="right">'+
                             '<input type="text" class="form-control" name="finance_credit_list_receipt[]" />'+
@@ -280,14 +395,37 @@
          }
          $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
-                '<td style="max-width:150px;" >'+
-                    '<input type="hidden" name="finance_credit_pay_id[]" value="0" />'+  
-                    '<input type="text" class="form-control"  name="finance_credit_pay_by[]"  />'+
+                '<td >'+
+                    '<input type="hidden" class="form-control" name="finance_credit_pay_id[]" value="0" />'+ 
+                    '<input type="hidden" class="form-control" name="check_pay_id[]" value="0" />'+ 
+                    '<input type="hidden" class="form-control" name="finance_credit_account_cheque[]" value="0" />'+ 
+                    '<div class="row">'+ 
+                        '<div class="col-md-6">'+ 
+                            '<select  name="finance_credit_account_id[]" onchange="generate_code(this);" class="form-control select" data-live-search="true">'+ 
+                                '<option value="">Select</option>'+ 
+                            '</select>'+ 
+                        '</div>'+ 
+                        '<div class="col-md-6">'+ 
+                            '<input type="text" class="form-control" name="finance_credit_pay_by[]" value="" onchange="get_cheque_id(this)" />'+ 
+                        '</div>'+ 
+                    '</div> '+ 
                 '</td>'+ 
-                '<td  style="max-width:150px;" >' +
+                '<td  style="max-width:100px;" >' +
                 '<input type="text" class="form-control calendar"  name="finance_credit_pay_date[]"  readonly/>'+
                 '</td>'+ 
-                '<td  style="max-width:150px;" ><input type="text" class="form-control" name="finance_credit_pay_bank[]"   /></td>'+
+                '<td >'+
+                    '<div class="row">'+
+                        '<div class="col-md-6">'+
+                            '<input type="hidden" name="account_id[]"  value="0" />'+
+                            '<select  name="bank_account_id[]" onchange="get_bank_account_name(this);" class="form-control select" data-live-search="true">'+
+                                '<option value="">Select</option> '+
+                            '</select>'+
+                        '</div>'+
+                        '<div class="col-md-6">'+
+                            '<input type="text" class="form-control" name="finance_credit_pay_bank[]" value="" />'+
+                        '</div>'+
+                    '</div>'+
+                '</td>'+
                 '<td  style="max-width:100px;" ><input type="text" style="text-align:right;" class="form-control" name="finance_credit_pay_value[]"   onchange="calculatePay()" /></td>'+
                 '<td  style="max-width:100px;" ><input type="text" style="text-align:right;" class="form-control" name="finance_credit_pay_balance[]"  onchange="calculatePay()"  /></td>'+
                 '<td  style="max-width:100px;" ><input type="text" style="text-align:right;" class="form-control" name="finance_credit_pay_total[]" onchange="calculatePay()"   /></td>'+
@@ -300,9 +438,31 @@
             '</tr>'
         );
 
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="finance_credit_account_id[]"]').empty();
+        var str = "<option value=''>เลือกวิธีการจ่ายเงิน</option>";
+        $.each(finance_credit_account_data, function (index, value) {
+            str += "<option value='" + value['finance_credit_account_id'] + "'>["+value['finance_credit_account_code']+"] " +  value['finance_credit_account_name'] + "</option>";
+        });
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="finance_credit_account_id[]"]').html(str);
+
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="finance_credit_account_id[]"]').selectpicker();
+
+
+
+
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="bank_account_id[]"]').empty();
+        var str = "<option value=''>เลือกบัญชีธนาคาร</option>";
+        $.each(bank_account_data, function (index, value) {
+            str += "<option value='" + value['bank_account_id'] + "'>["+value['bank_account_code']+"] " +  value['bank_account_name'] + "</option>";
+        });
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="bank_account_id[]"]').html(str);
+
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="bank_account_id[]"]').selectpicker();
+
+
+
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="finance_credit_pay_date[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
                 
-
     }
 
     function calculateAll(){
@@ -677,21 +837,56 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
+                        <?php 
                             $total = 0;
                             for($i=0; $i < count($finance_credit_pays); $i++){
                             ?>
                             <tr class="odd gradeX">
                                 <td>
                                     <input type="hidden" class="form-control" name="finance_credit_pay_id[]" value="<?php echo $finance_credit_pays[$i]['finance_credit_pay_id']; ?>" />
-                                    <input type="text" class="form-control" name="finance_credit_pay_by[]" value="<?php echo $finance_credit_pays[$i]['finance_credit_pay_by']; ?>" />
+                                    <input type="hidden" class="form-control" name="check_pay_id[]" value="<?php echo $finance_credit_pays[$i]['check_pay_id']; ?>" />
+                                    <input type="hidden" class="form-control" name="finance_credit_account_cheque[]" value="<?php echo $finance_credit_pays[$i]['finance_credit_account_cheque']; ?>" />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <select  name="finance_credit_account_id[]" onchange="generate_code(this);" class="form-control select" data-live-search="true">
+                                                <option value="">Select</option>
+                                                <?php 
+                                                for($ii =  0 ; $ii < count($finance_credit_accounts) ; $ii++){
+                                                ?>
+                                                <option <?PHP if($finance_credit_pays[$i]['finance_credit_account_id'] == $finance_credit_accounts[$ii]['finance_credit_account_id']){?> SELECTED <?PHP }?> value="<?php echo $finance_credit_accounts[$ii]['finance_credit_account_id'] ?>">[<?php echo $finance_credit_accounts[$ii]['finance_credit_account_code'] ?>] <?php echo $finance_credit_accounts[$ii]['finance_credit_account_name'] ?> </option>
+                                                <?
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" name="finance_credit_pay_by[]" value="<?php echo $finance_credit_pays[$i]['finance_credit_pay_by']; ?>" onchange="get_cheque_id(this)" />
+                                        </div>
+                                    </div> 
                                 </td>
                                 <td>
                                     <input type="text" class="form-control calendar" name="finance_credit_pay_date[]" value="<?php echo $finance_credit_pays[$i]['finance_credit_pay_date']; ?>" readonly/>
                                 </td> 
                                 <td>
-                                    <input type="text" class="form-control" name="finance_credit_pay_bank[]" value="<?php echo $finance_credit_pays[$i]['finance_credit_pay_bank']; ?>" />
-                                </td>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="hidden" name="account_id[]"  value="<?php echo $finance_credit_pays[$i]['account_id']; ?>" />
+                                            <select  name="bank_account_id[]" onchange="get_bank_account_name(this);" class="form-control select" data-live-search="true">
+                                                <option value="">Select</option>
+                                                <?php 
+                                                for($ii =  0 ; $ii < count($bank_accounts) ; $ii++){
+                                                ?>
+                                                <option <?PHP if($finance_credit_pays[$i]['bank_account_id'] == $bank_accounts[$ii]['bank_account_id']){?> SELECTED <?PHP }?> value="<?php echo $bank_accounts[$ii]['bank_account_id'] ?>">[<?php echo $bank_accounts[$ii]['bank_account_code'] ?>] <?php echo $bank_accounts[$ii]['bank_account_name'] ?> </option>
+                                                <?
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" name="finance_credit_pay_bank[]" value="<?php echo $finance_credit_pays[$i]['finance_credit_pay_bank']; ?>" />
+                                        </div>
+                                    </div>
+                                </td> 
                                 <td  style="max-width:120px;"><input type="text" class="form-control"  style="text-align:right;" name="finance_credit_pay_value[]" value="<?php echo number_format($finance_credit_pays[$i]['finance_credit_pay_value'],2); ?>"  onchange="calculatePay()" /></td>
                                 <td  style="max-width:120px;"><input type="text" class="form-control"  style="text-align:right;" name="finance_credit_pay_balance[]" value="<?php echo number_format($finance_credit_pays[$i]['finance_credit_pay_balance'],2); ?>"  onchange="calculatePay()" /></td>
                                 <td  style="max-width:120px;"><input type="text" class="form-control"  style="text-align:right;" name="finance_credit_pay_total[]" value="<?php echo number_format($finance_credit_pays[$i]['finance_credit_pay_total'],2); ?>"  onchange="calculatePay()"  /></td>

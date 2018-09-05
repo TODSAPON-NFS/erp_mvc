@@ -293,7 +293,7 @@
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="index.php?app=delivery_note_customer" class="btn btn-default">Back</a>
-                            <a href="index.php?app=delivery_note_customer&action=print&id=<?PHP echo $delivery_note_customer_id?>" class="btn btn-danger">Print</a>
+                            <a href="print.php?app=delivery_note_customer&action=pdf&id=<?PHP echo $delivery_note_customers[$i]['delivery_note_customer_id'];?>" target="blank" class="btn btn-danger">Print</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             
                             <button type="submit" class="btn btn-success">Save</button>

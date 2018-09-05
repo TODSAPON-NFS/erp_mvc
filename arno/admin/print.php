@@ -1,5 +1,7 @@
 <?PHP 
-    if($_GET['app'] == "invoice_customer"){
+    if($_GET['app'] == "delivery_note_customer"){
+        require_once("print/delivery_note_customer/views/index.inc.php");
+    }elseif($_GET['app'] == "invoice_customer"){
         require_once("print/invoice_customer/views/index.inc.php");
     }else if($_GET['app'] == "official_receipt"){
         require_once("print/official_receipt/views/index.inc.php");

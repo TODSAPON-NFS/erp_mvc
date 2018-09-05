@@ -111,8 +111,9 @@
 
         
         if(finance_credit_account.length > 0){
+            $(id).closest('tr').children('td').children('input[name="finance_credit_account_cheque[]"]').val(finance_credit_account[0].finance_credit_account_cheque);
             if(finance_credit_account[0].finance_credit_account_cheque == 1){
-                $.post( "controllers/getChequeCodeIndex.php", {  }, function( data ) { 
+                $.post( "controllers/getChequePayCodeIndex.php", {  }, function( data ) { 
                     $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(data);
                     $(id).closest('tr').children('td').children('div').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(data);
                     $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').easyAutocomplete(options);
@@ -120,8 +121,19 @@
             }else{ 
                 $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(finance_credit_account[0].finance_credit_account_code); 
                 $(id).closest('tr').children('td').children('div').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(finance_credit_account[0].finance_credit_account_code); 
+                
                 $(id).closest('tr').children('td').children('div').children('div').children('div').children('select[name="bank_account_id[]"]').val(finance_credit_account[0].bank_account_id);
+                
                 $(id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(finance_credit_account[0].account_id);
+                $('.select').selectpicker('refresh');
+
+                var bank_account = bank_account_data.filter(val => val.bank_account_id == finance_credit_account[0].bank_account_id );
+                if(bank_account.length > 0){
+                    $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val(bank_account[0].bank_account_name);
+                }else{
+                    $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val('')
+                }
+
             }
         }
 
@@ -139,8 +151,17 @@
             $(id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(bank_account[0].account_id);
             $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val(bank_account[0].bank_account_name)
         }else{
-            $(id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(finance_credit_account[0].account_id);
+            $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val('')
+            $(id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(bank_account[0].account_id);
         }
+    }
+
+    function get_cheque_id(id){
+
+        $.post( "controllers/getChequePayByCode.php", { 'check_pay_code': $(id).val() }, function( data ) {
+            $(id).closest('tr').children('td').children('input[name="check_pay_id[]"]').val(data.check_pay_id);
+        });
+
     }
 
     function get_supplier_detail(){
@@ -156,6 +177,7 @@
     
     function delete_row(id){
         $(id).closest('tr').remove();
+        calculateAll();
      }
 
 
@@ -185,10 +207,10 @@
                                             '<input type="checkbox" name="p_id" value="'+data[i].invoice_supplier_id+'" />'+     
                                         '</td>'+
                                         '<td>'+
-                                            data[i].invoice_supplier_code+
+                                            data[i].invoice_supplier_code +
                                         '</td>'+
                                         '<td>'+
-                                            data[i].finance_credit_list_date+
+                                            data[i].finance_credit_list_date +
                                         '</td>'+
                                         '<td align="right">'+
                                             data[i].finance_credit_list_due +
@@ -200,7 +222,7 @@
                                             data[i].finance_credit_list_paid +
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].finance_credit_list_amount - data[i].finance_credit_list_paid) +
+                                            (data[i].finance_credit_list_amount - data[i].finance_credit_list_paid) + 
                                         '</td>'+
                                     '</tr>';
 
@@ -377,6 +399,8 @@
             '<tr class="odd gradeX">'+
                 '<td >'+
                     '<input type="hidden" class="form-control" name="finance_credit_pay_id[]" value="0" />'+ 
+                    '<input type="hidden" class="form-control" name="check_pay_id[]" value="0" />'+ 
+                    '<input type="hidden" class="form-control" name="finance_credit_account_cheque[]" value="0" />'+ 
                     '<div class="row">'+ 
                         '<div class="col-md-6">'+ 
                             '<select  name="finance_credit_account_id[]" onchange="generate_code(this);" class="form-control select" data-live-search="true">'+ 
@@ -384,7 +408,7 @@
                             '</select>'+ 
                         '</div>'+ 
                         '<div class="col-md-6">'+ 
-                            '<input type="text" class="form-control" name="finance_credit_pay_by[]" value="" />'+ 
+                            '<input type="text" class="form-control" name="finance_credit_pay_by[]" value="" onchange="get_cheque_id(this)" />'+ 
                         '</div>'+ 
                     '</div> '+ 
                 '</td>'+ 
@@ -650,7 +674,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($users) ; $i++){
                                             ?>
-                                            <option <?PHP if($user[0][0] == $users[$i]['user_id']){?> SELECTED <?PHP }?> value="<?php echo $users[$i]['user_id'] ?>"><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
+                                            <option <?PHP if($admin_id == $users[$i]['user_id']){?> SELECTED <?PHP }?> value="<?php echo $users[$i]['user_id'] ?>"><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
                                             <?
                                             }
                                             ?>
@@ -822,6 +846,8 @@
                             <tr class="odd gradeX">
                                 <td>
                                     <input type="hidden" class="form-control" name="finance_credit_pay_id[]" value="<?php echo $finance_credit_pays[$i]['finance_credit_pay_id']; ?>" />
+                                    <input type="hidden" class="form-control" name="check_pay_id[]" value="<?php echo $finance_credit_pays[$i]['check_pay_id']; ?>" />
+                                    <input type="hidden" class="form-control" name="finance_credit_account_cheque[]" value="<?php echo $finance_credit_pays[$i]['finance_credit_account_cheque']; ?>" />
                                     <div class="row">
                                         <div class="col-md-6">
                                             <select  name="finance_credit_account_id[]" onchange="generate_code(this);" class="form-control select" data-live-search="true">
@@ -836,7 +862,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control" name="finance_credit_pay_by[]" value="<?php echo $finance_credit_pays[$i]['finance_credit_pay_by']; ?>" />
+                                            <input type="text" class="form-control" name="finance_credit_pay_by[]" value="<?php echo $finance_credit_pays[$i]['finance_credit_pay_by']; ?>"   onchange="get_cheque_id(this)" />
                                         </div>
                                     </div> 
                                 </td>
@@ -852,7 +878,7 @@
                                                 <?php 
                                                 for($ii =  0 ; $ii < count($bank_accounts) ; $ii++){
                                                 ?>
-                                                <option <?PHP if($finance_credit_pays[$i]['bank_account_id'] == $bank_accounts[$ii]['bank_account_id']){?> SELECTED <?PHP }?> value="<?php echo $bank_accounts[$ii]['bank_account_id'] ?>">[<?php echo $bank_accounts[$ii]['bank_account_code'] ?>] <?php echo $bank_accounts[$ii]['bank_account_name_th'] ?> </option>
+                                                <option <?PHP if($finance_credit_pays[$i]['bank_account_id'] == $bank_accounts[$ii]['bank_account_id']){?> SELECTED <?PHP }?> value="<?php echo $bank_accounts[$ii]['bank_account_id'] ?>">[<?php echo $bank_accounts[$ii]['bank_account_code'] ?>] <?php echo $bank_accounts[$ii]['bank_account_name'] ?> </option>
                                                 <?
                                                 }
                                                 ?>

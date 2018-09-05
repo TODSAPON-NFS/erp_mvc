@@ -68,6 +68,22 @@ class CheckModel extends BaseModel{
 
     }
 
+    function getCheckByCode($check_code){
+        $sql = " SELECT * 
+        FROM tb_check 
+        WHERE check_code = '$check_code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
 
 
 

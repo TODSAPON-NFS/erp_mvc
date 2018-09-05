@@ -1,6 +1,6 @@
 <?php  
 
-require_once('../../models/CheckPayModel.php');
+require_once('../../models/CheckModel.php');
 require_once('../../models/BankModel.php');
 require_once('../../models/BankAccountModel.php');
 require_once('../../models/SupplierModel.php');
@@ -12,14 +12,14 @@ date_default_timezone_set('asia/bangkok');
 
 $supplier_model = new SupplierModel;
 $account_model = new BankAccountModel;
-$check_model = new CheckPayModel;
+$check_model = new CheckModel;
 $user_model = new UserModel;
 
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
 
 // 9 = key ของ purchase request ใน tb_paper
-$paper = $paper_model->getPaperByID('24');
+$paper = $paper_model->getPaperByID('23');
 
 $accounts=$account_model->getBankAccountBy();
 $suppliers=$supplier_model->getSupplierBy(); 
@@ -38,7 +38,7 @@ $last_code = "";
 for($i = 0 ; $i < count($code); $i++){
 
     if($code[$i]['type'] == "number"){
-        $last_code =  $check_model->getCheckPayLastID($last_code,$code[$i]['length']);
+        $last_code =  $check_model->getCheckLastID($last_code,$code[$i]['length']);
     }else{
         $last_code .= $code[$i]['value'];
     }   

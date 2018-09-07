@@ -1,5 +1,5 @@
 <script>
-
+    var row_update_id ;
     var options = {
         url: function(keyword) {
             return "controllers/getChequeByKeyword.php?keyword="+keyword;
@@ -116,6 +116,7 @@
                     $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_debit_pay_by[]"]').val(data);
                     $(id).closest('tr').children('td').children('div').children('div').children('div').children('input[name="finance_debit_pay_by[]"]').val(data);
                     $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_debit_pay_by[]"]').easyAutocomplete(options);
+                    get_cheque_data(id,data);
                 }); 
             }else{ 
                 $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_debit_pay_by[]"]').val(finance_debit_account[0].finance_debit_account_code); 
@@ -155,14 +156,6 @@
         }
     }
 
-    function get_cheque_id(id){
-
-        $.post( "controllers/getChequeByCode.php", { 'check_code': $(id).val() }, function( data ) {
-            $(id).closest('tr').children('td').children('input[name="check_id[]"]').val(data.check_id);
-        });
-
-    }
-
 
     function get_customer_detail(){
         var customer_id = document.getElementById('customer_id').value;
@@ -178,6 +171,7 @@
     function delete_row(id){
         $(id).closest('tr').remove();
         calculateAll();
+        calculatePay();
      }
 
 
@@ -571,10 +565,6 @@
         document.getElementById('finance_debit_pay').value = finance_debit_pay.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") ;
 
     }
-
-
-
-
 
 </script>
 
@@ -981,3 +971,308 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+
+
+<script>
+
+function get_cheque_id(id){
+    
+    get_cheque_data(id,$(id).val());
+   
+}
+
+
+
+function get_cheque_data(id,code){
+    row_update_id = id;
+    $.post( "controllers/getChequeByCode.php", { 'check_code': code }, function( data ) {
+        console.log(data);
+        if(data !== null){
+
+            $(id).closest('tr').children('td').children('input[name="check_id[]"]').val(data.check_id);
+
+            $('#check_code').val(data.check_code);  
+            $('#check_id').val(data.check_id);
+            $('#check_date_write').val(data.check_date_write); 
+            $('#check_date_recieve').val(data.check_date_recieve); 
+            
+            $('#cheque_customer_id').val(data.customer_id);
+            $('#bank_id').val(data.bank_id);
+            $('#bank_branch').val(data.bank_branch);
+            $('#check_date').val(data.check_date);
+            $('#check_total').val(data.check_total);
+            $('#check_remark').val(data.check_remark);
+
+            $('#cheque_submit').html('Update Cheque');
+            $('#action').val('edit');
+            $('#cheque_delete').show();
+
+            $('.select').selectpicker('refresh');
+            $('#modalCheque').modal('show');
+
+        }else{ 
+            $('#check_id').val('0');
+            $('#check_code').val(code);  
+            $('#check_date_write').val($('#finance_debit_date').val()); 
+            $('#check_date_recieve').val($('#check_date_recieve').val());
+            $('#cheque_customer_id').val($('#customer_id').val());
+            $('#bank_id').val();
+            $('#bank_branch').val();
+            $('#check_date').val($('#finance_debit_date').val());
+            $('#check_total').val($('#finance_debit_total').val());
+            $('#check_remark').val("จ่ายหนี้ให้ " + $('#finance_debit_name').val());
+
+            $('#check_submit').html('Add Cheque');
+            $('#action').val('add');
+            $('#cheque_delete').hide();
+
+            $('.select').selectpicker('refresh');
+            $('#modalCheque').modal('show');
+        }
+        
+    });
+}
+
+function delete_check(){
+    var check_id = document.getElementById("check_id").value; 
+    $.post( "controllers/deleteCheque.php", 
+        { 
+            'check_id':check_id 
+        }, 
+        function( data ) {
+            console.log(data);
+            if(data == true){
+                $(row_update_id).closest('tr').children('td').children('input[name="check_id[]"]').val(0);
+                $(row_update_id).closest('tr').children('td').children('input[name="finance_debit_pay_by[]"]').val('');
+                $('#modalCheque').modal('hide');
+            }else{
+                alert("Can not delete check payment. Please contact administrator");
+            }
+        }
+    );
+}
+
+function check_post(){
+    var check_code = document.getElementById("check_code").value;
+    var check_date_write = document.getElementById("check_date_write").value;
+    var check_date_recieve = document.getElementById("check_date_recieve").value;
+    var bank_id = document.getElementById("bank_id").value;
+    var bank_branch = document.getElementById("bank_branch").value;
+    var customer_id = document.getElementById("cheque_customer_id").value;
+    var check_remark = document.getElementById("check_remark").value;
+    var check_total = document.getElementById("check_total").value; 
+    var action = document.getElementById("action").value; 
+    var check_id = document.getElementById("check_id").value; 
+    var lastupdate = '<?PHP echo $admin_id?>';
+    var addby = '<?PHP echo $admin_id?>';
+
+    check_code = $.trim(check_code);
+    check_date_write = $.trim(check_date_write);
+    check_date_recieve = $.trim(check_date_recieve);
+    bank_id = $.trim(bank_id);
+    bank_branch = $.trim(bank_branch);
+    customer_id = $.trim(customer_id);
+    check_remark = $.trim(check_remark);
+    check_total = $.trim(check_total);
+    check_id = $.trim(check_id); 
+
+    if(check_code.length == 0){
+        alert("Please input cheque pay code");
+        document.getElementById("check_code").focus();
+        return false;
+    }else if(bank_id.length == 0){
+        alert("Please input bank");
+        document.getElementById("bank_id").focus();
+        return false;
+    }else if(customer_id.length == 0){
+        alert("Please input customer");
+        document.getElementById("customer_id").focus();
+        return false;
+    }else{ 
+        if(action == 'edit'){
+            $.post( "controllers/updateCheque.php", 
+                    { 
+                        'check_id':check_id,
+                        'check_code': check_code ,
+                        'check_date_write': check_date_write ,
+                        'check_date_recieve': check_date_recieve ,
+                        'bank_id': bank_id ,
+                        'bank_branch': bank_branch ,
+                        'customer_id': customer_id ,
+                        'check_remark': check_remark ,
+                        'check_total': check_total ,
+                        'addby':addby
+                    }, 
+                    function( data ) {
+                        if(data !== null){
+                            $(row_update_id).closest('tr').children('td').children('input[name="check_id[]"]').val(data.check_id);
+                            $(row_update_id).closest('tr').children('td').children('input[name="finance_debit_pay_total[]"]').val(data.check_total);
+                            $(row_update_id).closest('tr').children('td').children('input[name="finance_debit_pay_date[]"]').val(data.check_date_recieve);
+                            $(row_update_id).closest('tr').children('td').children('div').children('div').children('div').children('select[name="bank_account_id[]"]').val(data.bank_account_id);
+                            var bank_account = bank_account_data.filter(val => val.bank_account_id == data.bank_account_id ); 
+
+                            if(bank_account.length > 0){
+                                $(row_update_id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(bank_account[0].account_id);
+                                $(row_update_id).closest('tr').children('td').children('div').children('div').children('input[name="finance_debit_pay_bank[]"]').val(bank_account[0].bank_account_name)
+                            }
+
+                            calculatePay();
+                            $('.select').selectpicker('refresh');
+                            $('#modalCheque').modal('hide');
+                        }else{
+                            alert("Can not update check payment. Please contact administrator");
+                        }
+                    }
+            );
+        } else if (action == 'add') {
+            $.post( "controllers/insertCheque.php", 
+                    { 
+                        'check_code': check_code ,
+                        'check_date_write': check_date_write ,
+                        'check_date_recieve': check_date_recieve ,
+                        'bank_id': bank_id ,
+                        'bank_branch': bank_branch ,
+                        'customer_id': customer_id ,
+                        'check_remark': check_remark ,
+                        'check_total': check_total ,
+                        'addby':addby
+                    }, 
+                    function( data ) {
+                        console.log(data);
+                        if(data !== null){
+                            console.log($(row_update_id).closest('tr').children('td').children('input[name="check_id[]"]'));
+                            $(row_update_id).closest('tr').children('td').children('input[name="check_id[]"]').val(data.check_id);
+                            $(row_update_id).closest('tr').children('td').children('input[name="finance_debit_pay_total[]"]').val(data.check_total);
+                            $(row_update_id).closest('tr').children('td').children('input[name="finance_debit_pay_date[]"]').val(data.check_date_recieve);
+                            $(row_update_id).closest('tr').children('td').children('div').children('div').children('div').children('select[name="bank_account_id[]"]').val(data.bank_account_id); 
+                            var bank_account = bank_account_data.filter(val => val.bank_account_id == data.bank_account_id ); 
+
+                            if(bank_account.length > 0){
+                                $(row_update_id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(bank_account[0].account_id);
+                                $(row_update_id).closest('tr').children('td').children('div').children('div').children('input[name="finance_debit_pay_bank[]"]').val(bank_account[0].bank_account_name)
+                            }
+                            calculatePay();
+                            $('.select').selectpicker('refresh');
+                            $('#modalCheque').modal('hide');
+                        }else{
+                            alert("Can not add check payment. Please contact administrator");
+                        }
+                    }
+            );
+        }else{
+            alert("System error. Please contact administrator");
+        }
+
+    }
+}
+</script>
+
+<form  >
+<div id="modalCheque" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg " role="document">
+        <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">สร้างเช็คจ่าย / Add Cheque Payment</h4>
+        </div>
+
+        <div  class="modal-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>วันที่เช็ค</label>
+                                <input id="check_date_write" name="check_date_write" class="form-control calendar" type="text" value="" readonly />
+                                <p class="help-block">01-06-2018 </p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>เลขที่เช็ค <font color="#F00"><b>*</b></font></label>
+                                <input id="check_code" name="check_code" class="form-control" type="text" value="<?php echo $last_code;?>" >
+                                <p class="help-block">Example : QR4411555.</p>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>ผู้สั่งจ่าย <font color="#F00"><b>*</b></font> </label>
+                                <select id="cheque_customer_id" name="cheque_customer_id" class="form-control select"  data-live-search="true">
+                                    <option value="">Select</option>
+                                    <?php 
+                                    for($i =  0 ; $i < count($customers) ; $i++){
+                                    ?>
+                                    <option  value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
+                                    <?
+                                    }
+                                    ?>
+                                </select>
+                                <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>ธนาคาร <font color="#F00"><b>*</b></font> </label>
+                                <select id="bank_id" name="bank_id" class="form-control select" data-live-search="true">
+                                    <option value="">Select</option>
+                                    <?php 
+                                    for($i =  0 ; $i < count($banks) ; $i++){
+                                    ?>
+                                    <option value="<?php echo $banks[$i]['bank_id'] ?>"><?php echo $banks[$i]['bank_name'] ?> </option>
+                                    <?
+                                    }
+                                    ?>
+                                </select>
+                                <p class="help-block">Example : BKK.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>สาขา</label>
+                                <input type="text" id="bank_branch" name="bank_branch"  class="form-control" />
+                                <p class="help-block">- </p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>วันรับที่เช็ค</label>
+                                <input id="check_date_recieve" name="check_date_recieve" class="form-control calendar" value="" readonly>
+                                <p class="help-block">01-06-2018 </p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>จำนวนเงิน</label>
+                                <input id="check_total" name="check_total" class="form-control " value="" >
+                                <p class="help-block">80000 </p>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>หมายเหตุุ</label>
+                                <input id="check_remark" name="check_remark" class="form-control" type="text" value="" />
+                                <p class="help-block">- </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+
+        <div class="modal-footer">
+            <input type="hidden" id="check_id" name="check_id" value="" />
+            <input type="hidden" id="action" name="action" value="" />
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" id="cheque_delete" class="btn btn-danger" onclick="delete_check();" >Delete Cheque</button>
+            <button type="button" id="cheque_submit" class="btn btn-primary" onclick="check_post();" >Add Cheque</button>
+        </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</form>

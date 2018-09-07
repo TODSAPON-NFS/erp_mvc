@@ -7,6 +7,7 @@ require_once('../models/FinanceDebitListModel.php');
 require_once('../models/FinanceDebitPayModel.php');
 require_once('../models/FinanceDebitAccountModel.php');
 require_once('../models/BankAccountModel.php');
+require_once('../models/BankModel.php');
 require_once('../models/AccountModel.php');
 require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
@@ -37,6 +38,7 @@ $finance_debit_list_model = new FinanceDebitListModel;
 $finance_debit_pay_model = new FinanceDebitPayModel;
 $finance_debit_account_model = new FinanceDebitAccountModel;
 $bank_account_model = new BankAccountModel;
+$bank_model = new BankModel;
 $account_model = new AccountModel;
 $check_model = new CheckModel;
 
@@ -91,6 +93,7 @@ if(!isset($_GET['action'])){
 
     $finance_debit_accounts=$finance_debit_account_model->getFinanceDebitAccountNoJoinBy();
     $bank_accounts=$bank_account_model->getBankAccountBy();
+    $banks=$bank_model->getBankBy();
     $accounts=$account_model->getAccountAll();
 
     $customer=$customer_model->getCustomerByID($customer_id);
@@ -124,6 +127,7 @@ if(!isset($_GET['action'])){
     $customers=$customer_model->getCustomerBy();
     $finance_debit_accounts=$finance_debit_account_model->getFinanceDebitAccountNoJoinBy();
     $bank_accounts=$bank_account_model->getBankAccountBy();
+    $banks=$bank_model->getBankBy();
     $accounts=$account_model->getAccountAll();
     $users=$user_model->getUserBy();
 

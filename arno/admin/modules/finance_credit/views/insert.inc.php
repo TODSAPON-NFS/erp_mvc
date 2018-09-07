@@ -1,5 +1,5 @@
 <script>
-
+    var row_update_id ;
     var options = {
         url: function(keyword) {
             return "controllers/getChequePayByKeyword.php?keyword="+keyword;
@@ -105,6 +105,24 @@
     }
 
 
+    function get_bank_account_name (id){ 
+        var bank_account_id = $(id).val();
+        var bank_account = bank_account_data.filter(val => val.bank_account_id == bank_account_id );
+
+        
+        var payment = $(id).closest('tr').children('td').children('div').children('div').children('select[name="finance_credit_account_id[]"]').val();
+        var finance_credit_account = finance_credit_account_data.filter(val => val.finance_credit_account_id == payment );
+
+        if(bank_account.length > 0){
+            $(id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(bank_account[0].account_id);
+            $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val(bank_account[0].bank_account_name)
+        }else{
+            $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val('')
+            $(id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(bank_account[0].account_id);
+        }
+    }
+
+    
     function generate_code(id){
         var payment = $(id).val();
         var finance_credit_account = finance_credit_account_data.filter(val => val.finance_credit_account_id == payment );
@@ -117,6 +135,7 @@
                     $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(data);
                     $(id).closest('tr').children('td').children('div').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(data);
                     $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').easyAutocomplete(options);
+                    get_cheque_data(id,data);
                 }); 
             }else{ 
                 $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(finance_credit_account[0].finance_credit_account_code); 
@@ -139,31 +158,6 @@
 
     }
 
-    function get_bank_account_name (id){ 
-        var bank_account_id = $(id).val();
-        var bank_account = bank_account_data.filter(val => val.bank_account_id == bank_account_id );
-
-        
-        var payment = $(id).closest('tr').children('td').children('div').children('div').children('select[name="finance_credit_account_id[]"]').val();
-        var finance_credit_account = finance_credit_account_data.filter(val => val.finance_credit_account_id == payment );
-
-        if(bank_account.length > 0){
-            $(id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(bank_account[0].account_id);
-            $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val(bank_account[0].bank_account_name)
-        }else{
-            $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val('')
-            $(id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(bank_account[0].account_id);
-        }
-    }
-
-    function get_cheque_id(id){
-
-        $.post( "controllers/getChequePayByCode.php", { 'check_pay_code': $(id).val() }, function( data ) {
-            $(id).closest('tr').children('td').children('input[name="check_pay_id[]"]').val(data.check_pay_id);
-        });
-
-    }
-
     function get_supplier_detail(){
         var supplier_id = document.getElementById('supplier_id').value;
         $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id }, function( data ) {
@@ -178,9 +172,8 @@
     function delete_row(id){
         $(id).closest('tr').remove();
         calculateAll();
+        calculatePay();
      }
-
-
 
 
     function show_invoice_supplier(id){
@@ -979,3 +972,292 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+
+<script>
+    
+    function get_cheque_id(id){
+        
+        get_cheque_data(id,$(id).val());
+       
+    }
+
+
+
+    function get_cheque_data(id,code){
+        row_update_id = id;
+        $.post( "controllers/getChequePayByCode.php", { 'check_pay_code': code }, function( data ) {
+            console.log(data);
+            if(data !== null){
+
+                $(id).closest('tr').children('td').children('input[name="check_pay_id[]"]').val(data.check_pay_id);
+                
+                $('#check_pay_id').val(data.check_pay_id);
+                $('#check_pay_date_write').val(data.check_pay_date_write); 
+                $('#check_pay_code').val(data.check_pay_code);  
+                $('#cheque_supplier_id').val(data.supplier_id);
+                $('#bank_account_id').val(data.bank_account_id);
+                $('#check_pay_date').val(data.check_pay_date);
+                $('#check_pay_total').val(data.check_pay_total);
+                $('#check_pay_remark').val(data.check_pay_remark);
+
+                $('#cheque_submit').html('Update Cheque');
+                $('#action').val('edit');
+                $('#cheque_delete').show();
+
+                $('.select').selectpicker('refresh');
+                $('#modalCheque').modal('show');
+
+            }else{ 
+                $('#check_pay_id').val('0');
+                $('#check_pay_date_write').val($('#finance_credit_date').val()); 
+                $('#check_pay_code').val(code);  
+                $('#cheque_supplier_id').val($('#supplier_id').val());
+                $('#bank_account_id').val();
+                $('#check_pay_date').val($('#finance_credit_date').val());
+                $('#check_pay_total').val($('#finance_credit_total').val());
+                $('#check_pay_remark').val("จ่ายหนี้ให้ " + $('#finance_credit_name').val());
+
+                $('#check_submit').html('Add Cheque');
+                $('#action').val('add');
+                $('#cheque_delete').hide();
+
+                $('.select').selectpicker('refresh');
+                $('#modalCheque').modal('show');
+            }
+            
+        });
+    }
+
+    function delete_check(){
+        var check_pay_id = document.getElementById("check_pay_id").value; 
+        $.post( "controllers/deleteChequePay.php", 
+            { 
+                'check_pay_id':check_pay_id 
+            }, 
+            function( data ) {
+                console.log(data);
+                if(data == true){
+                    $(row_update_id).closest('tr').children('td').children('input[name="check_pay_id[]"]').val(0);
+                    $(row_update_id).closest('tr').children('td').children('input[name="finance_credit_pay_by[]"]').val('');
+                    $('#modalCheque').modal('hide');
+                }else{
+                    alert("Can not delete check payment. Please contact administrator");
+                }
+            }
+        );
+    }
+
+    function check_post(){
+        var check_pay_code = document.getElementById("check_pay_code").value;
+        var check_pay_date_write = document.getElementById("check_pay_date_write").value;
+        var check_pay_date = document.getElementById("check_pay_date").value;
+        var bank_account_id = document.getElementById("bank_account_id").value;
+        var supplier_id = document.getElementById("cheque_supplier_id").value;
+        var check_pay_remark = document.getElementById("check_pay_remark").value;
+        var check_pay_total = document.getElementById("check_pay_total").value; 
+        var action = document.getElementById("action").value; 
+        var check_pay_id = document.getElementById("check_pay_id").value; 
+        var lastupdate = '<?PHP echo $admin_id?>';
+        var addby = '<?PHP echo $admin_id?>';
+
+        check_pay_code = $.trim(check_pay_code);
+        check_pay_date_write = $.trim(check_pay_date_write);
+        check_pay_date = $.trim(check_pay_date);
+        bank_account_id = $.trim(bank_account_id);
+        supplier_id = $.trim(supplier_id);
+        check_pay_remark = $.trim(check_pay_remark);
+        check_pay_total = $.trim(check_pay_total);
+        check_pay_id = $.trim(check_pay_id); 
+
+        if(check_pay_code.length == 0){
+            alert("Please input cheque pay code");
+            document.getElementById("check_pay_code").focus();
+            return false;
+        }else if(bank_account_id.length == 0){
+            alert("Please input bank account");
+            document.getElementById("bank_account_id").focus();
+            return false;
+        }else if(supplier_id.length == 0){
+            alert("Please input supplier");
+            document.getElementById("supplier_id").focus();
+            return false;
+        }else{ 
+            if(action == 'edit'){
+                $.post( "controllers/updateChequePay.php", 
+                        { 
+                            'check_pay_id':check_pay_id,
+                            'check_pay_code': check_pay_code ,
+                            'check_pay_date_write': check_pay_date_write ,
+                            'check_pay_date': check_pay_date ,
+                            'bank_account_id': bank_account_id ,
+                            'supplier_id': supplier_id ,
+                            'check_pay_remark': check_pay_remark ,
+                            'check_pay_total': check_pay_total ,
+                            'addby':addby
+                        }, 
+                        function( data ) {
+                            if(data !== null){
+                                $(row_update_id).closest('tr').children('td').children('input[name="check_pay_id[]"]').val(data.check_pay_id);
+                                $(row_update_id).closest('tr').children('td').children('input[name="finance_credit_pay_total[]"]').val(data.check_pay_total);
+                                $(row_update_id).closest('tr').children('td').children('input[name="finance_credit_pay_date[]"]').val(data.check_pay_date);
+                                $(row_update_id).closest('tr').children('td').children('div').children('div').children('div').children('select[name="bank_account_id[]"]').val(data.bank_account_id);
+                                var bank_account = bank_account_data.filter(val => val.bank_account_id == data.bank_account_id ); 
+
+                                if(bank_account.length > 0){
+                                    $(row_update_id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(bank_account[0].account_id);
+                                    $(row_update_id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val(bank_account[0].bank_account_name)
+                                }
+
+                                calculatePay();
+                                $('.select').selectpicker('refresh');
+                                $('#modalCheque').modal('hide');
+                            }else{
+                                alert("Can not update check payment. Please contact administrator");
+                            }
+                        }
+                );
+            } else if (action == 'add') {
+                $.post( "controllers/insertChequePay.php", 
+                        { 
+                            'check_pay_code': check_pay_code ,
+                            'check_pay_date_write': check_pay_date_write ,
+                            'check_pay_date': check_pay_date ,
+                            'bank_account_id': bank_account_id ,
+                            'supplier_id': supplier_id ,
+                            'check_pay_remark': check_pay_remark ,
+                            'check_pay_total': check_pay_total ,
+                            'addby':addby
+                        }, 
+                        function( data ) {
+                            console.log(data);
+                            if(data !== null){
+                                console.log($(row_update_id).closest('tr').children('td').children('input[name="check_pay_id[]"]'));
+                                $(row_update_id).closest('tr').children('td').children('input[name="check_pay_id[]"]').val(data.check_pay_id);
+                                $(row_update_id).closest('tr').children('td').children('input[name="finance_credit_pay_total[]"]').val(data.check_pay_total);
+                                $(row_update_id).closest('tr').children('td').children('input[name="finance_credit_pay_date[]"]').val(data.check_pay_date);
+                                $(row_update_id).closest('tr').children('td').children('div').children('div').children('div').children('select[name="bank_account_id[]"]').val(data.bank_account_id); 
+                                var bank_account = bank_account_data.filter(val => val.bank_account_id == data.bank_account_id ); 
+
+                                if(bank_account.length > 0){
+                                    $(row_update_id).closest('tr').children('td').children('div').children('div').children('input[name="account_id[]"]').val(bank_account[0].account_id);
+                                    $(row_update_id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_bank[]"]').val(bank_account[0].bank_account_name)
+                                }
+                                calculatePay();
+                                $('.select').selectpicker('refresh');
+                                $('#modalCheque').modal('hide');
+                            }else{
+                                alert("Can not add check payment. Please contact administrator");
+                            }
+                        }
+                );
+            }else{
+                alert("System error. Please contact administrator");
+            }
+
+        }
+    }
+</script>
+
+<form  >
+    <div id="modalCheque" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg " role="document">
+            <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">สร้างเช็คจ่าย / Add Cheque Payment</h4>
+            </div>
+
+            <div  class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>วันที่เช็ค</label>
+                                    <input id="check_pay_date_write" name="check_pay_date_write" class="form-control calendar" type="text" value="" readonly />
+                                    <p class="help-block">01-06-2018 </p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>เลขที่เช็ค <font color="#F00"><b>*</b></font></label>
+                                    <input id="check_pay_code" name="check_pay_code" class="form-control" type="text"  readonly />
+                                    <p class="help-block">Example : QP4411555.</p>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>ผู้ขาย <font color="#F00"><b>*</b></font> </label>
+                                    <select id="cheque_supplier_id" name="cheque_supplier_id" class="form-control select"  data-live-search="true">
+                                        <option value="">Select</option>
+                                        <?php 
+                                        for($i =  0 ; $i < count($suppliers) ; $i++){
+                                        ?>
+                                        <option  value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
+                                        <?
+                                        }
+                                        ?>
+                                    </select>
+                                    <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>จ่ายจากบัญชี <font color="#F00"><b>*</b></font> </label>
+                                    <select id="bank_account_id" name="bank_account_id" class="form-control select" data-live-search="true">
+                                        <option value="">Select</option>
+                                        <?php 
+                                        for($i =  0 ; $i < count($bank_accounts) ; $i++){
+                                        ?>
+                                        <option value="<?php echo $bank_accounts[$i]['bank_account_id'] ?>"><?php echo $bank_accounts[$i]['bank_account_name'] ?> </option>
+                                        <?
+                                        }
+                                        ?>
+                                    </select>
+                                    <p class="help-block">Example : BKK.</p>
+                                </div>
+                            </div> 
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>วันจ่ายที่เช็ค</label>
+                                    <input id="check_pay_date" name="check_pay_date" class="form-control calendar" value="" readonly>
+                                    <p class="help-block">01-06-2018 </p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>จำนวนเงิน</label>
+                                    <input id="check_pay_total" name="check_pay_total" class="form-control " value="" >
+                                    <p class="help-block">80000 </p>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>หมายเหตุุ</label>
+                                    <input id="check_pay_remark" name="check_pay_remark" class="form-control" type="text" value="" />
+                                    <p class="help-block">- </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="modal-footer">
+                <input type="hidden" id="check_pay_id" name="check_pay_id" value="" />
+                <input type="hidden" id="action" name="action" value="" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="cheque_delete" class="btn btn-danger" onclick="delete_check();" >Delete Cheque</button>
+                <button type="button" id="cheque_submit" class="btn btn-primary" onclick="check_post();" >Add Cheque</button>
+            </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</form>
+

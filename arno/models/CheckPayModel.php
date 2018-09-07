@@ -218,7 +218,11 @@ class CheckPayModel extends BaseModel{
 
     function deleteCheckPayByID($id){
         $sql = " DELETE FROM tb_check_pay WHERE check_pay_id = '$id' ";
-        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+        if ( mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 

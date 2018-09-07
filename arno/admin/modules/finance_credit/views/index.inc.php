@@ -7,6 +7,7 @@ require_once('../models/FinanceCreditListModel.php');
 require_once('../models/FinanceCreditPayModel.php');
 require_once('../models/FinanceCreditAccountModel.php');
 require_once('../models/BankAccountModel.php');
+require_once('../models/BankModel.php');
 require_once('../models/AccountModel.php');
 require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
@@ -35,6 +36,7 @@ $finance_credit_list_model = new FinanceCreditListModel;
 $finance_credit_pay_model = new FinanceCreditPayModel;
 $finance_credit_account_model = new FinanceCreditAccountModel;
 $bank_account_model = new BankAccountModel;
+$bank_model = new BankModel;
 $account_model = new AccountModel;
 $check_model = new CheckPayModel;
 
@@ -88,6 +90,7 @@ if(!isset($_GET['action'])){
     $suppliers=$supplier_model->getSupplierBy();
     $finance_credit_accounts=$finance_credit_account_model->getFinanceCreditAccountNoJoinBy();
     $bank_accounts=$bank_account_model->getBankAccountBy();
+    $banks=$bank_model->getBankBy();
     $accounts=$account_model->getAccountAll();
 
     $supplier=$supplier_model->getSupplierByID($supplier_id);

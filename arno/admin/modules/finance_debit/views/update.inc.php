@@ -685,7 +685,7 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th style="text-align:center;">หมายใบกำกับภาษี <br> (Invoice Number)</th>
+                                <th style="text-align:center;"  width="150">หมายใบกำกับภาษี <br> (Invoice Number)</th>
                                 <th style="text-align:center;" width="150">วันที่ออก <br> (Date)</th>
                                 <th style="text-align:center;" width="150">กำหนดชำระ <br> (Due Date)</th>
                                 <th style="text-align:center;" >ใบรับวางบิล <br> (Billing Note)</th>

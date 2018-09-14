@@ -32,6 +32,7 @@ class JournalCashPaymentInvoiceModel extends BaseModel{
         $sql = " INSERT INTO tb_journal_cash_payment_invoice (
             journal_cash_payment_id,
             supplier_id,
+            supplier_name,
             invoice_code,
             invoice_date,
             vat_section,
@@ -44,6 +45,7 @@ class JournalCashPaymentInvoiceModel extends BaseModel{
         ) VALUES (
             '".$data['journal_cash_payment_id']."', 
             '".$data['supplier_id']."', 
+            '".$data['supplier_name']."', 
             '".$data['invoice_code']."', 
             '".$data['invoice_date']."', 
             '".$data['vat_section']."',
@@ -69,6 +71,7 @@ class JournalCashPaymentInvoiceModel extends BaseModel{
             SET invoice_code = '".$data['invoice_code']."', 
             invoice_date = '".$data['invoice_date']."',
             supplier_id = '".$data['supplier_id']."',
+            supplier_name = '".$data['supplier_name']."',
             vat_section = '".$data['vat_section']."',
             vat_section_add = '".$data['vat_section_add']."',
             product_price = '".$data['product_price']."',

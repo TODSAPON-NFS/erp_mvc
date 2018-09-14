@@ -1,6 +1,4 @@
 
-
-
 <script>
     var customer_type = 0;
     var customer_data = [];
@@ -170,7 +168,8 @@
     function show_row_from(id){
        
         var p_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]');
-        if(p_id.length > 0){ 
+
+        if(p_id.length > 0){
             $.post( "controllers/getSupplierListByProductID.php", { 'product_id': $(p_id[0]).val()}, function( data ) {
 
                 var modelsupp = $(id).closest('tr').children('td').children('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]')
@@ -178,8 +177,7 @@
                 if(modelsupp.length > 0){
                     var content = "<option value=''>Select Product</option>";
                     $.each(data, function (index, value) {
-                        name = value['supplier_name_en'];
-                        content += "<option value='" + value['supplier_id'] + "'>"+name+"</option>";
+                        content += "<option value='" + value['supplier_id'] + "'>"+value['supplier_name_en']+"</option>";
                     });
                     $(modelsupp[0]).html(content);
                 }
@@ -215,11 +213,7 @@
             });
 
             var modal = $(id).closest('tr').children('td').children('div[name="modalAdd"]');
-            if(modal.length > 0){  
-                $(id).closest('tr').children('td').children('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]')
-                     .children('div').children('div').children('div').children('input[name="qty[]"]').val($(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_qty[]"]').val());
-                
-    
+            if(modal.length > 0){
                 $(modal[0]).modal('show');
             }
         }
@@ -251,10 +245,11 @@
         $(id).closest('li').remove();
     }
 
-    function delete_row(id){
+     function delete_row(id){
         $(id).closest('tr').remove();
         update_line(id);
-    }
+     }
+
 
     function update_line(id){
         var td_number = $('table[name="tb_list"]').children('tbody').children('tr').children('td:first-child');
@@ -263,15 +258,6 @@
         }
     }
 
-
-    function set_data(id){
-        var val = customer_data.filter(val => val.customer_code == $(id).val());
-        if(val.length > 0){
-            $(id).closest('tr').children('td').children('input[name="end_user_id[]"]').val(val[0].customer_id);
-        }else{
-            $(id).closest('tr').children('td').children('input[name="end_user_id[]"]').val(0);
-        }
-    }
 
      function show_data(id){
         var product_code = $(id).val();
@@ -285,14 +271,18 @@
 
 
                 if(customer_type == 0){
-                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_5);
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_7);
                 }else if(customer_type == 1){
-                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_4);
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_6);
                 }else if(customer_type == 2){
-                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_3);
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_5);
                 }else if(customer_type == 3){
-                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_2);
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_4);
                 }else if(customer_type == 4){
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_3);
+                }else if(customer_type == 5){
+                    $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_2);
+                }else if(customer_type == 6){
                     $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_price[]"]').val(data.product_price_1);
                 }
                 
@@ -302,6 +292,14 @@
         
      }
 
+    function set_data(id){
+        var val = customer_data.filter(val => val.customer_code == $(id).val());
+        if(val.length > 0){
+            $(id).closest('tr').children('td').children('input[name="end_user_id[]"]').val(val[0].customer_id);
+        }else{
+            $(id).closest('tr').children('td').children('input[name="end_user_id[]"]').val(0);
+        }
+    }
 
      function get_customer_detail(){
         var customer_id = document.getElementById('customer_id').value;
@@ -311,6 +309,7 @@
                 document.getElementById('customer_code').value = data.customer_code;
                 document.getElementById('customer_tax').value = data.customer_tax;
                 document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
+               
             });
 
             $.post( "controllers/getEndUserByCustomerID.php", { 'customer_id': customer_id }, function( data ) {
@@ -332,8 +331,6 @@
                 $(".find-end-user").easyAutocomplete(enduser_options);
             });
         }
-
-
         
     }
 
@@ -472,6 +469,7 @@
     }
 
     function add_row(id){
+        var customer_id = document.getElementById('customer_id').value;
         $('#modalAdd').modal('hide');
         var checkbox = document.getElementsByName('p_id');
         for(var i = 0 ; i < (checkbox.length); i++){
@@ -523,7 +521,8 @@
                             '</a>'+
                         '</td>'+
                     '</tr>'
-                ); 
+                );
+                
                 var enduser_options = {
                     data:customer_data,
 
@@ -540,8 +539,10 @@
                 };
 
                 $(".find-end-user").easyAutocomplete(enduser_options);
+
                 $(".example-ajax-post").easyAutocomplete(options);
                 update_line(id);
+                calculateAll();
             }
             
         }
@@ -551,6 +552,7 @@
 
     function add_row_new(id){
         var index = 0;
+        var customer_id = document.getElementById('customer_id').value;
          if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
             index = 1;
          }else{
@@ -591,6 +593,7 @@
                 '</td>'+
             '</tr>'
         );
+
         var enduser_options = {
             data:customer_data,
 
@@ -608,9 +611,8 @@
 
         $(".find-end-user").easyAutocomplete(enduser_options);
         $(".example-ajax-post").easyAutocomplete(options);
- 
-        $('#modalAdd').modal('hide');
         update_line(id);
+        calculateAll();
     }
 
     function checkAll(id)
@@ -623,8 +625,22 @@
         }
     }
 
-    
+    function calculateAll(){
 
+        var val = document.getElementsByName('customer_purchase_order_list_price_sum[]');
+        var total = 0.0;
+
+        for(var i = 0 ; i < val.length ; i++){
+            
+            total += parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),''));
+        }
+
+        $('#customer_purchase_order_total').val(total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+
+        $('#customer_purchase_order_vat_price').val((total * ($('#customer_purchase_order_vat').val()/100.0)).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#customer_purchase_order_vat_net').val((total * ($('#customer_purchase_order_vat').val()/100.0) + total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+
+    }
 
 </script>
 
@@ -788,10 +804,13 @@
                         </thead>
                         <tbody>
                             <?php 
+                            $total = 0;
                             for($i=0; $i < count($customer_purchase_order_lists); $i++){
+                                $total += $customer_purchase_order_lists[$i]['customer_purchase_order_list_price_sum'];
+                                
                             ?>
                             <tr class="odd gradeX">
-                                <td style="text-align:center;width:80px;" ></td>
+                                <td style="text-align:center;width:80px;" ><?PHP echo $i+1; ?></td>
                                 <td>
                                     <input type="hidden" name="delivery_note_customer_list_id[]" value="<? echo $customer_purchase_order_lists[$i]['delivery_note_customer_list_id'] ?>" />
                                     <input type="hidden" name="customer_purchase_order_list_id[]" value="<? echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_id'] ?>" />
@@ -926,7 +945,7 @@
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
-                            <td colspan="9" align="center">
+                                <td colspan="9" align="center">
                                     <a href="javascript:;" onclick="show_delivery_note(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> 
                                         <span>เพิ่มสินค้า / Add product</span>
@@ -971,6 +990,52 @@
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
                                     </div><!-- /.modal -->
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td colspan="2" rowspan="3">
+                                    
+                                </td>
+                                <td colspan="3" align="left" style="vertical-align: middle;">
+                                    <span>ราคารวมทั้งสิ้น / Sub total</span>
+                                </td>
+                                <td style="max-width:120px;">
+                                    <input type="text" class="form-control" style="text-align: right;" id="customer_purchase_order_total" name="customer_purchase_order_total" value="<?PHP echo number_format($total,2) ;?>"  readonly/>
+                                </td>
+                                <td colspan="3">
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td colspan="3" align="left" style="vertical-align: middle;">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <span>จำนวนภาษีมูลค่าเพิ่ม / Vat</span>
+                                            </td>
+                                            <td style = "padding-left:8px;padding-right:8px;width:72px;">
+                                                <input type="text" class="form-control" style="text-align: right;" onchange="calculateAll()" id="customer_purchase_order_vat" name="customer_purchase_order_vat" value="7" />
+                                            </td>
+                                            <td width="16">
+                                            %
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                </td>
+                                <td style="max-width:120px;">
+                                    <input type="text" class="form-control" style="text-align: right;" id="customer_purchase_order_vat_price"  name="customer_purchase_order_vat_price" value="<?PHP echo number_format(($vat/100) * $total,2) ;?>"  readonly/>
+                                </td>
+                                <td colspan="3">
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td colspan="3" align="left" style="vertical-align: middle;">
+                                    <span>จำนวนเงินรวมทั้งสิ้น / Net Total</span>
+                                </td>
+                                <td style="max-width:120px;">
+                                    <input type="text" class="form-control" style="text-align: right;" id="customer_purchase_order_vat_net" name="customer_purchase_order_vat_net" value="<?PHP echo number_format(($vat/100) * $total + $total,2) ;?>" readonly/>
+                                </td>
+                                <td colspan="3"> 
                                 </td>
                             </tr>
                         </tfoot>

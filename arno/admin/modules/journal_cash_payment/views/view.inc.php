@@ -10,7 +10,7 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Journal Cash Payment Management</h1>
+        <h1 class="page-header">Journal Payment Management</h1>
     </div>
     <div class="col-lg-6" align="right">
         
@@ -27,7 +27,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-8">
-                        รายการสมุดรายวันจ่ายเงิน / Journal Cash Payment List
+                        รายการสมุดรายวันจ่ายเงิน / Journal Payment List
                     </div>
                     <div class="col-md-4">
                         <a class="btn btn-success " style="float:right;" href="?app=journal_special_04&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>

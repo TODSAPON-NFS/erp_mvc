@@ -136,7 +136,10 @@ if(!isset($_GET['action'])){
                 }
 
     ?>
-            <script>window.location="index.php?app=journal_special_03&action=update&id=<?php echo $journal_cash_receipt_id;?>"</script>
+            <script>
+            //window.location="index.php?app=journal_special_03&action=update&id=<?php echo $journal_cash_receipt_id;?>";
+            window.location="index.php?app=journal_special_03&action=insert";
+            </script>
     <?php
             }else{
     ?>

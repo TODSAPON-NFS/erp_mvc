@@ -111,6 +111,7 @@ if(!isset($_GET['action'])){
                 $data = [];
                 $data['journal_cash_payment_id'] = $journal_cash_payment_id;
                 $data['supplier_id'] = $_POST['supplier_id'];
+                $data['supplier_name'] = $_POST['supplier_name'];
                 $data['invoice_code'] = $_POST['invoice_code'];
                 $data['invoice_date'] = $_POST['invoice_date'];
                 $data['vat_section'] = $_POST['vat_section'];
@@ -191,6 +192,7 @@ if(!isset($_GET['action'])){
 
         $data = [];
         $data['supplier_id'] = $_POST['supplier_id'];
+        $data['supplier_name'] = $_POST['supplier_name'];
         $data['invoice_code'] = $_POST['invoice_code'];
         $data['invoice_date'] = $_POST['invoice_date'];
         $data['vat_section'] = $_POST['vat_section'];

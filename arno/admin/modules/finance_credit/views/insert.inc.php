@@ -203,6 +203,9 @@
                                             data[i].invoice_supplier_code +
                                         '</td>'+
                                         '<td>'+
+                                            data[i].finance_credit_list_recieve +
+                                        '</td>'+
+                                        '<td>'+
                                             data[i].finance_credit_list_date +
                                         '</td>'+
                                         '<td align="right">'+
@@ -256,10 +259,13 @@
                                         '<input type="checkbox" name="p_id" value="'+data[i].invoice_supplier_id+'" />'+     
                                     '</td>'+
                                     '<td>'+
-                                        data[i].invoice_supplier_code+
+                                        data[i].invoice_supplier_code +
                                     '</td>'+
                                     '<td>'+
-                                        data[i].finance_credit_list_date+
+                                        data[i].finance_credit_list_recieve +
+                                    '</td>'+
+                                    '<td>'+
+                                        data[i].finance_credit_list_date +
                                     '</td>'+
                                     '<td align="right">'+
                                         data[i].finance_credit_list_due +
@@ -320,10 +326,10 @@
                             '<input type="text" class="form-control" name="finance_credit_list_amount[]" style="text-align:right" onchange="update_sum(this);" value="'+data_buffer[i].finance_credit_list_amount+'" />'+
                         '</td>'+
                         '<td align="right">'+
-                        '<input type="text" class="form-control" name="finance_credit_list_paid[]" style="text-align:right" onchange="update_sum(this);" value="'+data_buffer[i].finance_credit_list_paid+'" />'+
+                        '<input type="text" class="form-control" name="finance_credit_list_paid[]" style="text-align:right" onchange="update_sum(this);" value="'+data_buffer[i].finance_credit_list_paid+'" readonly />'+
                         '</td>'+
                         '<td align="right">'+
-                        '<input type="text" class="form-control" name="finance_credit_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="'+(data_buffer[i].finance_credit_list_amount - data_buffer[i].finance_credit_list_paid)+'" readonly />'+
+                        '<input type="text" class="form-control" name="finance_credit_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="'+(data_buffer[i].finance_credit_list_amount - data_buffer[i].finance_credit_list_paid)+'"  />'+
                         '</td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -653,7 +659,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>หมายเลขใบจ่ายชำระหนี้ / CN code <font color="#F00"><b>*</b></font></label>
-                                        <input id="finance_credit_code" name="finance_credit_code" class="form-control" value="<?php echo $last_code;?>" readonly />
+                                        <input id="finance_credit_code" name="finance_credit_code" class="form-control" value="<?php echo $last_code;?>"  />
                                         <p class="help-block">Example : CN1801001.</p>
                                     </div>
                                 </div>
@@ -686,7 +692,7 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th style="text-align:center;">หมายใบกำกับภาษี <br> (Invoice Number)</th>
+                                <th style="text-align:center;" width="150" >หมายใบกำกับภาษี <br> (Invoice Number)</th>
                                 <th style="text-align:center;" width="150">วันที่ออก <br> (Date)</th>
                                 <th style="text-align:center;" width="150">กำหนดชำระ <br> (Due Date)</th>
                                 <th style="text-align:center;" >ใบรับสินค้าเข้า <br> (RR/RF)</th>
@@ -726,10 +732,10 @@
                                     <input type="text" class="form-control" name="finance_credit_list_amount[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($finance_credit_lists[$i]['finance_credit_list_amount'],2);?>" />
                                 </td>
                                 <td  align="right">
-                                    <input type="text" class="form-control" name="finance_credit_list_paid[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($finance_credit_lists[$i]['finance_credit_list_paid'],2);?>" />
+                                    <input type="text" class="form-control" name="finance_credit_list_paid[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($finance_credit_lists[$i]['finance_credit_list_paid'],2);?>" readonly/>
                                 </td>
                                 <td align="right">
-                                    <input type="text" class="form-control" name="finance_credit_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($finance_credit_lists[$i]['finance_credit_list_amount'] - $finance_credit_lists[$i]['finance_credit_list_paid'],2);?>" readonly/>
+                                    <input type="text" class="form-control" name="finance_credit_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($finance_credit_lists[$i]['finance_credit_list_amount'] - $finance_credit_lists[$i]['finance_credit_list_paid'],2);?>" />
                                 </td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -771,12 +777,13 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="24"><input type="checkbox" value="all" id="check_all" onclick="checkAll(this)" /></th>
-                                                        <th style="text-align:center;">รหัสใบกำกับภาษี <br> (Invoice Number)</th>
+                                                        <th style="text-align:center;" idth="150">รหัสใบกำกับภาษี <br> (Invoice Number)</th>
+                                                        <th style="text-align:center;" idth="150">รหัสใบรับสินค้า <br> (RR / RF)</th>
                                                         <th style="text-align:center;">วันที่ออก <br> (Date)</th>
-                                                        <th style="text-align:center;" width="150">กำหนดชำระ <br> (Due Date)</th>
-                                                        <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount) </th>
-                                                        <th style="text-align:center;" width="150">ชำระแล้ว <br> (Paid)</th>
-                                                        <th style="text-align:center;" width="150">ยอดชำระคงเหลือ <br> (Balance)</th>
+                                                        <th style="text-align:center;" width="120">กำหนดชำระ <br> (Due Date)</th>
+                                                        <th style="text-align:center;" width="120">จำนวนเงิน <br> (Amount) </th>
+                                                        <th style="text-align:center;" width="120">ชำระแล้ว <br> (Paid)</th>
+                                                        <th style="text-align:center;" width="120">ยอดชำระคงเหลือ <br> (Balance)</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="bodyAdd">

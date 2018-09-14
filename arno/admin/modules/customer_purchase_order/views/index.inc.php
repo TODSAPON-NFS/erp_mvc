@@ -28,6 +28,7 @@ $customer_purchase_order_model = new CustomerPurchaseOrderModel;
 $customer_purchase_order_list_model = new CustomerPurchaseOrderListModel;
 $customer_purchase_order_list_detail_model = new CustomerPurchaseOrderListDetailModel;
 
+$vat = 7;
 
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;

@@ -58,6 +58,26 @@ class JournalCashPaymentModel extends BaseModel{
 
     }
 
+    function getJournalCashPaymentByKeyword(){
+       
+        $sql = " SELECT journal_cash_payment_id, 
+        journal_cash_payment_code,  
+        journal_cash_payment_name 
+        FROM tb_journal_cash_payment  
+        WHERE journal_cash_payment_code LIKE ('%$keyword%')  OR  journal_cash_payment_name LIKE ('%$keyword%') 
+        ORDER BY journal_cash_payment_code DESC 
+         ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+
 
     function getJournalCashPaymentByFinanceCreditID($id){
         $sql = " SELECT * 

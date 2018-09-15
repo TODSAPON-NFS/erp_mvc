@@ -111,8 +111,8 @@ if(!isset($_GET['action'])){
                         $data['journal_general_id'] = $journal_general_id;
                         $data['account_id'] = $account_id[$i];
                         $data['journal_general_list_name'] = $journal_general_list_name[$i];
-                        $data['journal_general_list_debit'] = $journal_general_list_debit[$i];
-                        $data['journal_general_list_credit'] = $journal_general_list_credit[$i];
+                        $data['journal_general_list_debit'] = (float)filter_var($journal_general_list_debit[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                        $data['journal_general_list_credit'] = (float)filter_var($journal_general_list_credit[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
                         if ($journal_general_list_id[$i] != "" && $journal_general_list_id[$i] != '0'){
                             $journal_general_list_model->updateJournalGeneralListById($data,$journal_general_list_id[$i]);
@@ -125,8 +125,8 @@ if(!isset($_GET['action'])){
                     $data['journal_general_id'] = $journal_general_id;
                     $data['account_id'] = $account_id;
                     $data['journal_general_list_name'] = $journal_general_list_name;
-                    $data['journal_general_list_debit'] = $journal_general_list_debit;
-                    $data['journal_general_list_credit'] = $journal_general_list_credit;
+                    $data['journal_general_list_debit'] = (float)filter_var($journal_general_list_debit, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data['journal_general_list_credit'] = (float)filter_var($journal_general_list_credit, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
                     if ($journal_general_list_id != "" && $journal_general_list_id != '0'){
                         $journal_general_list_model->updateJournalGeneralListById($data,$journal_general_list_id);
@@ -175,8 +175,8 @@ if(!isset($_GET['action'])){
                 $data['journal_general_id'] = $journal_general_id;
                 $data['account_id'] = $account_id[$i];
                 $data['journal_general_list_name'] = $journal_general_list_name[$i];
-                $data['journal_general_list_debit'] = $journal_general_list_debit[$i];
-                $data['journal_general_list_credit'] = $journal_general_list_credit[$i];
+                $data['journal_general_list_debit'] = (float)filter_var($journal_general_list_debit[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['journal_general_list_credit'] = (float)filter_var($journal_general_list_credit[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
                 if ($journal_general_list_id[$i] != "" && $journal_general_list_id[$i] != '0'){
                     $journal_general_list_model->updateJournalGeneralListById($data,$journal_general_list_id[$i]);
@@ -189,8 +189,8 @@ if(!isset($_GET['action'])){
             $data['journal_general_id'] = $journal_general_id;
             $data['account_id'] = $account_id;
             $data['journal_general_list_name'] = $journal_general_list_name;
-            $data['journal_general_list_debit'] = $journal_general_list_debit;
-            $data['journal_general_list_credit'] = $journal_general_list_credit;
+            $data['journal_general_list_debit'] = (float)filter_var($journal_general_list_debit, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['journal_general_list_credit'] = (float)filter_var($journal_general_list_credit, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
             if ($journal_general_list_id != "" && $journal_general_list_id != '0'){
                 $journal_general_list_model->updateJournalGeneralListById($data,$journal_general_list_id);

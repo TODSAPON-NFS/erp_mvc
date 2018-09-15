@@ -59,6 +59,7 @@ if(!isset($_GET['action'])){
             $last_code .= $code[$i]['value'];
         }   
     }
+    
 
     
     $first_date = date("d")."-".date("m")."-".date("Y");   
@@ -114,13 +115,13 @@ if(!isset($_GET['action'])){
                 $data['supplier_name'] = $_POST['supplier_name'];
                 $data['invoice_code'] = $_POST['invoice_code'];
                 $data['invoice_date'] = $_POST['invoice_date'];
-                $data['vat_section'] = $_POST['vat_section'];
-                $data['vat_section_add'] = $_POST['vat_section_add'];
-                $data['product_price'] = $_POST['product_price'];
-                $data['product_vat'] = $_POST['product_vat'];
-                $data['product_price_non'] = $_POST['product_price_non'];
-                $data['product_vat_non'] = $_POST['product_vat_non'];
-                $data['product_non'] = $_POST['product_non'];
+                $data['vat_section'] = (float)filter_var($_POST['vat_section'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['vat_section_add'] = (float)filter_var($_POST['vat_section_add'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['product_price'] = (float)filter_var($_POST['product_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['product_vat'] = (float)filter_var($_POST['product_vat'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['product_price_non'] = (float)filter_var($_POST['product_price_non'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['product_vat_non'] = (float)filter_var($_POST['product_vat_non'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['product_non'] = (float)filter_var($_POST['product_non'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $journal_cash_payment_invoice_model->insertJournalCashPaymentInvoice($data);
 
 
@@ -138,8 +139,8 @@ if(!isset($_GET['action'])){
                         $data['journal_cash_payment_id'] = $journal_cash_payment_id;
                         $data['account_id'] = $account_id[$i];
                         $data['journal_cash_payment_list_name'] = $journal_cash_payment_list_name[$i];
-                        $data['journal_cash_payment_list_debit'] = $journal_cash_payment_list_debit[$i];
-                        $data['journal_cash_payment_list_credit'] = $journal_cash_payment_list_credit[$i];
+                        $data['journal_cash_payment_list_debit'] = (float)filter_var($journal_cash_payment_list_debit[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                        $data['journal_cash_payment_list_credit'] = (float)filter_var($journal_cash_payment_list_credit[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
                         if ($journal_cash_payment_list_id[$i] != "" && $journal_cash_payment_list_id[$i] != '0'){
                             $journal_cash_payment_list_model->updateJournalCashPaymentListById($data,$journal_cash_payment_list_id[$i]);
@@ -153,8 +154,8 @@ if(!isset($_GET['action'])){
                     $data['journal_cash_payment_id'] = $journal_cash_payment_id;
                     $data['account_id'] = $account_id;
                     $data['journal_cash_payment_list_name'] = $journal_cash_payment_list_name;
-                    $data['journal_cash_payment_list_debit'] = $journal_cash_payment_list_debit;
-                    $data['journal_cash_payment_list_credit'] = $journal_cash_payment_list_credit;
+                    $data['journal_cash_payment_list_debit'] = (float)filter_var($journal_cash_payment_list_debit, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data['journal_cash_payment_list_credit'] = (float)filter_var($journal_cash_payment_list_credit, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
                     if ($journal_cash_payment_list_id != "" && $journal_cash_payment_list_id != '0'){
                         $journal_cash_payment_list_model->updateJournalCashPaymentListById($data,$journal_cash_payment_list_id);
@@ -195,13 +196,13 @@ if(!isset($_GET['action'])){
         $data['supplier_name'] = $_POST['supplier_name'];
         $data['invoice_code'] = $_POST['invoice_code'];
         $data['invoice_date'] = $_POST['invoice_date'];
-        $data['vat_section'] = $_POST['vat_section'];
-        $data['vat_section_add'] = $_POST['vat_section_add'];
-        $data['product_price'] = $_POST['product_price'];
-        $data['product_vat'] = $_POST['product_vat'];
-        $data['product_price_non'] = $_POST['product_price_non'];
-        $data['product_vat_non'] = $_POST['product_vat_non'];
-        $data['product_non'] = $_POST['product_non'];
+        $data['vat_section'] = (float)filter_var($_POST['vat_section'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['vat_section_add'] = (float)filter_var($_POST['vat_section_add'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['product_price'] = (float)filter_var($_POST['product_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['product_vat'] = (float)filter_var($_POST['product_vat'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['product_price_non'] = (float)filter_var($_POST['product_price_non'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['product_vat_non'] = (float)filter_var($_POST['product_vat_non'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['product_non'] = (float)filter_var($_POST['product_non'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $journal_cash_payment_invoice_model->updateJournalCashPaymentInvoiceById($data,$journal_cash_payment_id);
 
         
@@ -220,8 +221,8 @@ if(!isset($_GET['action'])){
                 $data['journal_cash_payment_id'] = $journal_cash_payment_id;
                 $data['account_id'] = $account_id[$i];
                 $data['journal_cash_payment_list_name'] = $journal_cash_payment_list_name[$i];
-                $data['journal_cash_payment_list_debit'] = $journal_cash_payment_list_debit[$i];
-                $data['journal_cash_payment_list_credit'] = $journal_cash_payment_list_credit[$i];
+                $data['journal_cash_payment_list_debit'] = (float)filter_var($journal_cash_payment_list_debit[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['journal_cash_payment_list_credit'] = (float)filter_var($journal_cash_payment_list_credit[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
                 if ($journal_cash_payment_list_id[$i] != "" && $journal_cash_payment_list_id[$i] != '0'){
                     $journal_cash_payment_list_model->updateJournalCashPaymentListById($data,$journal_cash_payment_list_id[$i]);
@@ -235,8 +236,8 @@ if(!isset($_GET['action'])){
             $data['journal_cash_payment_id'] = $journal_cash_payment_id;
             $data['account_id'] = $account_id;
             $data['journal_cash_payment_list_name'] = $journal_cash_payment_list_name;
-            $data['journal_cash_payment_list_debit'] = $journal_cash_payment_list_debit;
-            $data['journal_cash_payment_list_credit'] = $journal_cash_payment_list_credit;
+            $data['journal_cash_payment_list_debit'] = (float)filter_var($journal_cash_payment_list_debit, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['journal_cash_payment_list_credit'] = (float)filter_var($journal_cash_payment_list_credit, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
             if ($journal_cash_payment_list_id != "" && $journal_cash_payment_list_id != '0'){
                 $journal_cash_payment_list_model->updateJournalCashPaymentListById($data,$journal_cash_payment_list_id);

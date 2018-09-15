@@ -191,7 +191,7 @@
                                         <?php 
                                         for($ii =  0 ; $ii < count($accounts) ; $ii++){
                                         ?>
-                                        <option <?php if($accounts[$ii]['account_id'] == $journal_general_lists[$i]['account_id']){?> selected <?php }?> value="<?php echo $accounts[$ii]['account_id'] ?>"><?php echo $accounts[$ii]['account_code'] ?></option>
+                                        <option <?php if($accounts[$ii]['account_id'] == $journal_general_lists[$i]['account_id']){?> selected <?php }?> value="<?php echo $accounts[$ii]['account_id'] ?>">[<?php echo $accounts[$ii]['account_code'] ?>] <?php echo $accounts[$ii]['account_name_th'] ?></option>
                                         <?
                                         }
                                         ?>

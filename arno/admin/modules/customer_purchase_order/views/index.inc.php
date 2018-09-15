@@ -62,7 +62,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $customers=$customer_model->getCustomerBy();
 
     $quotations=$quotation_model->getQuotationBy();
-    $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrderBy($date_start,$date_end,$supplier_id,$status,$keyword);
+    $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrderBy($date_start,$date_end,$customer_id,$status,$keyword);
 
     
     $customer_orders = $customer_purchase_order_model->getCustomerOrder();
@@ -662,7 +662,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $customers=$customer_model->getCustomerBy();
 
     $quotations=$quotation_model->getQuotationBy();
-    $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrderBy($date_start,$date_end,$supplier_id,$status,$keyword);
+    $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrderBy($date_start,$date_end,$customer_id,$status,$keyword);
 
     
     $customer_orders = $customer_purchase_order_model->getCustomerOrder();

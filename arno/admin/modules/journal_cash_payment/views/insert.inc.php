@@ -1,5 +1,46 @@
 <script>
 
+    var options = {
+        url: function(keyword) {
+            return "controllers/getJournalCashPaymentByKeyword.php?keyword="+keyword;
+        },
+
+        list: {
+            maxNumberOfElements: 10,
+            match: {
+                enabled: true
+            }
+        },
+
+        getValue: function(element) {
+            return element.journal_cash_payment_code ;
+        },
+
+        template: {
+            type: "description",
+            fields: {
+                description: "journal_cash_payment_name"
+            }
+        },
+        
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+
+        preparePostData: function(data) {
+            data.keyword = $(".example-ajax-post").val();
+            return data;
+        },
+
+        requestDelay: 400
+    };
+
+    
+
     var account_data = [
     <?php for($i = 0 ; $i < count($accounts) ; $i++ ){?>
         {
@@ -229,6 +270,8 @@
 
     }
 
+    
+
 </script>
 
 <div class="row">
@@ -245,7 +288,21 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            เพิ่มสมุดรายวันจ่ายเงิน /  Add Journal Payment   
+                <div class="row">
+                    <div class="col-lg-8">
+                    เพิ่มสมุดรายวันจ่ายเงิน /  Add Journal Payment   
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <input class="example-ajax-post form-control" name="journal_code" id="journal_code"/> 
+                            </div>
+                            <div class="col-lg-4">
+                                <button class="btn btn-success " ><i class="fa fa-plus" aria-hidden="true"></i> Copy form.</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -301,7 +358,7 @@
                                         <?php 
                                         for($ii =  0 ; $ii < count($accounts) ; $ii++){
                                         ?>
-                                        <option <?php if($accounts[$ii]['account_id'] == $journal_cash_payment_lists[$i]['account_id']){?> selected <?php }?> value="<?php echo $accounts[$ii]['account_id'] ?>"><?php echo $accounts[$ii]['account_code'] ?></option>
+                                        <option <?php if($accounts[$ii]['account_id'] == $journal_cash_payment_lists[$i]['account_id']){?> selected <?php }?> value="<?php echo $accounts[$ii]['account_id'] ?>">[<?php echo $accounts[$ii]['account_code'] ?>] <?php echo $accounts[$ii]['account_name_th'] ?></option>
                                         <?
                                         }
                                         ?>
@@ -482,3 +539,7 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+<script>
+    $(".example-ajax-post").easyAutocomplete(options);
+</script>

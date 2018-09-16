@@ -527,7 +527,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>หมายเลขรับใบกำกับภาษี / recieve code <font color="#F00"><b>*</b></font></label>
-                                        <input id="invoice_supplier_code_gen" name="invoice_supplier_code_gen" class="form-control" value="<?php echo $last_code;?>" readonly>
+                                        <input id="invoice_supplier_code_gen" name="invoice_supplier_code_gen" class="form-control" value="<?php echo $last_code;?>" >
                                         <p class="help-block">Example : RR1801001 OR RF1801001.</p>
                                     </div>
                                 </div>

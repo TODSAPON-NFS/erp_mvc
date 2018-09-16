@@ -279,6 +279,7 @@ if(!isset($_GET['action'])){
     <?php
         }else{
             $user = $model_product->updateProductByID($_POST['product_id'],$data);
+
             if($user){
     ?>
             <script>window.location="index.php?app=product"</script>

@@ -380,9 +380,9 @@
 
         balance = amount-paid;
 
-        $(id).closest('tr').children('td').children('input[name="finance_credit_list_amount[]"]').val( amount.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $(id).closest('tr').children('td').children('input[name="finance_credit_list_amount[]"]').val( amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
         $(id).closest('tr').children('td').children('input[name="finance_credit_list_paid[]"]').val( paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $(id).closest('tr').children('td').children('input[name="finance_credit_list_balance[]"]').val( sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        //$(id).closest('tr').children('td').children('input[name="finance_credit_list_balance[]"]').val( balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
 
         calculateAll();
 
@@ -737,7 +737,7 @@
                                     <input type="text" class="form-control" name="finance_credit_list_paid[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($finance_credit_lists[$i]['finance_credit_list_paid'],2);?>" readonly />
                                 </td>
                                 <td align="right">
-                                    <input type="text" class="form-control" name="finance_credit_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($finance_credit_lists[$i]['finance_credit_list_amount'] - $finance_credit_lists[$i]['finance_credit_list_paid'],2);?>" />
+                                    <input type="text" class="form-control" name="finance_credit_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($finance_credit_lists[$i]['finance_credit_list_balance'],2);?>" />
                                 </td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -746,7 +746,7 @@
                                 </td>
                             </tr>
                             <?
-                                $total += $finance_credit_lists[$i]['finance_credit_list_amount'] - $finance_credit_lists[$i]['finance_credit_list_paid'];
+                                $total += $finance_credit_lists[$i]['finance_credit_list_balance'];
                             }
                             ?>
                         </tbody>

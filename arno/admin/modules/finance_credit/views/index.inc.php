@@ -221,29 +221,11 @@ if(!isset($_GET['action'])){
 
             /* -------------------------------- สร้างสมุดรายวันจ่ายชำระเงิน ---------------------------------------*/
             $supplier=$supplier_model->getSupplierByID($_POST['supplier_id']);
-            $user=$user_model->getUserByID($admin_id);
-            $data = [];
-            $data['year'] = date("Y");
-            $data['month'] = date("m");
-            $data['number'] = "0000000000";
-            $data['employee_name'] = $user["user_name_en"];
-            $data['customer_code'] = $customer["customer_code"];
-        
-            $code = $code_generate->cut2Array($paper['paper_code'],$data);
-            $last_code = "";
-            for($i = 0 ; $i < count($code); $i++){
-            
-                if($code[$i]['type'] == "number"){
-                    $last_code = $journal_cash_payment_model->getJournalCashPaymentLastID($last_code,$code[$i]['length']);
-                }else{
-                    $last_code .= $code[$i]['value'];
-                }   
-            }
 
             $data = [];
             $data['finance_credit_id'] = $finance_credit_id;
             $data['journal_cash_payment_date'] = $_POST['finance_credit_date'];
-            $data['journal_cash_payment_code'] = $last_code;
+            $data['journal_cash_payment_code'] = $_POST['finance_credit_code'];
             $data['journal_cash_payment_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
             $data['addby'] = $user[0][0];
 
@@ -453,38 +435,19 @@ if(!isset($_GET['action'])){
         $supplier=$supplier_model->getSupplierByID($_POST['supplier_id']);
 
         $journal_cash_payment = $journal_cash_payment_model->getJournalCashPaymentByFinanceCreditID($finance_credit_id);
-
         
-        if($journal_cash_payment['journal_cash_payment_id'] == 0){ 
-            $user=$user_model->getUserByID($admin_id);
-            $data = [];
-            $data['year'] = date("Y");
-            $data['month'] = date("m");
-            $data['number'] = "0000000000";
-            $data['employee_name'] = $user["user_name_en"];
-            $data['customer_code'] = $customer["customer_code"];
+        $data = [];
+        $data['finance_credit_id'] = $finance_credit_id;
+        $data['journal_cash_payment_date'] = $_POST['finance_credit_date'];
+        $data['journal_cash_payment_code'] = $_POST['finance_credit_code'];
+        $data['journal_cash_payment_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
+        $data['addby'] = $admin_id;
         
-            $code = $code_generate->cut2Array($paper['paper_code'],$data);
-            $last_code = "";
-            for($i = 0 ; $i < count($code); $i++){
-            
-                if($code[$i]['type'] == "number"){
-                    $last_code = $journal_cash_payment_model->getJournalCashPaymentLastID($last_code,$code[$i]['length']);
-                }else{
-                    $last_code .= $code[$i]['value'];
-                }   
-            }
-
-            $data = [];
-            $data['finance_credit_id'] = $finance_credit_id;
-            $data['journal_cash_payment_date'] = $_POST['finance_credit_date'];
-            $data['journal_cash_payment_code'] = $last_code;
-            $data['journal_cash_payment_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
-            $data['addby'] = $user[0][0];
-
+        if($journal_cash_payment['journal_cash_payment_id'] == 0 || $journal_cash_payment['journal_cash_payment_id'] == ''){ 
             $journal_cash_payment_id = $journal_cash_payment_model->insertJournalCashPayment($data);
         }else{
             $journal_cash_payment_id = $journal_cash_payment['journal_cash_payment_id'];  
+            $journal_cash_payment_model->updateJournalCashPaymentByID($journal_cash_payment_id,$data);
         }
          
         

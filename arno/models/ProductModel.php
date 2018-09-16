@@ -12,13 +12,13 @@ class ProductModel extends BaseModel{
     function getProductBy($supplier_id = '', $product_category_id = '', $product_type_id = '', $keyword  = ''){
         
         if($supplier_id != ""){
-            $supplier = "AND supplier_id = '$supplier_id' ";
+            $supplier = "AND tb_product_supplier.supplier_id = '$supplier_id' ";
         }
 
 
         
         if($product_type_id != ""){
-            $product_type = "AND product_type_id = '$product_type_id' ";
+            $product_type = "AND tb_product_type.product_type_id = '$product_type_id' ";
         }
 
 
@@ -34,18 +34,19 @@ class ProductModel extends BaseModel{
         }
 
         
-        $sql = " SELECT product_id, CONCAT(product_code_first,product_code) as product_code, product_drawing, product_name, product_description , product_type, product_status ,
+        $sql = " SELECT tb_product.product_id, CONCAT(product_code_first,product_code) as product_code, product_drawing, product_name, product_description , product_type, product_status ,
         product_price_1, product_price_2, product_price_3, product_price_4, product_price_5, product_price_6, product_price_7 
         FROM tb_product 
         LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
-        LEFT JOIN tb_product_type ON tb_product.product_type = tb_product_type.product_type_id 
+        LEFT JOIN tb_product_type ON tb_product.product_type = tb_product_type.product_type_id  
         WHERE 1 
         $sts_keyword
         $product_type 
-        $product_category 
-        $supplier 
+        $product_category  
+        GROUP BY tb_product.product_id
         ORDER BY product_name  
         "; 
+
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) { 
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -219,6 +220,7 @@ class ProductModel extends BaseModel{
         WHERE product_id = $id 
         ";
 
+        //echo $sql;
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;

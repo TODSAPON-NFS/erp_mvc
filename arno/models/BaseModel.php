@@ -2,17 +2,17 @@
 
 abstract class BaseModel{
 
-    protected $page_url="http://arno-thailand.revelsoft.co.th/admin/";
+    protected $page_url="http://arno-thailand.revelsoft.co.th/arno/admin/";
     public static $db;
     protected $host="localhost";
     
-    protected $username="root";
-    //protected $username="revelsof_erp";
+    //protected $username="root";
+    protected $username="revelsof_erp";
     
     protected $password="root123456";
 
-    protected $db_name="revelsoft_erp";
-    //protected $db_name="revelsof_erp";
+    //protected $db_name="revelsoft_erp";
+    protected $db_name="revelsof_erp";
 
     function __construct(){
         static::$db = mysqli_connect($host, $username, $password, $db_name);

@@ -137,7 +137,7 @@ if(!isset($_GET['action'])){
                 }
 
     ?>
-            <script>window.location="index.php?app=journal_general&action=update&id=<?php echo $journal_general_id;?>"</script>
+            <script>window.location="index.php?app=journal_general&action=insert"</script>
     <?php
             }else{
     ?>
@@ -202,7 +202,7 @@ if(!isset($_GET['action'])){
         
         if($output){
     ?>
-            <script>window.location="index.php?app=journal_general"</script>
+            <script>window.location="index.php?app=journal_general&action=insert"</script>
     <?php
         }
     

@@ -559,7 +559,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>รหัสใบสั่งซื้อสินค้า / Purchase Order Code <font color="#F00"><b>*</b></font></label>
-                                        <input id="purchase_order_code" name="purchase_order_code" class="form-control" value="<?php echo $last_code;?>" readonly>
+                                        <input id="purchase_order_code" name="purchase_order_code" class="form-control" value="<?php echo $last_code;?>" >
                                         <p class="help-block">Example : PO1801001.</p>
                                     </div>
                                 </div>

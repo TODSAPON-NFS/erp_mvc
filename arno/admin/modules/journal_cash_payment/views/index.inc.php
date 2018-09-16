@@ -115,7 +115,7 @@ if(!isset($_GET['action'])){
                 $data['supplier_name'] = $_POST['supplier_name'];
                 $data['invoice_code'] = $_POST['invoice_code'];
                 $data['invoice_date'] = $_POST['invoice_date'];
-                $data['vat_section'] = (float)filter_var($_POST['vat_section'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['vat_section'] = $_POST['vat_section'];
                 $data['vat_section_add'] = (float)filter_var($_POST['vat_section_add'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['product_price'] = (float)filter_var($_POST['product_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['product_vat'] = (float)filter_var($_POST['product_vat'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -166,7 +166,7 @@ if(!isset($_GET['action'])){
                 }
 
     ?>
-            <script>window.location="index.php?app=journal_special_04&action=update&id=<?php echo $journal_cash_payment_id;?>"</script>
+            <script>window.location="index.php?app=journal_special_04&action=insert"</script>
     <?php
             }else{
     ?>
@@ -196,7 +196,7 @@ if(!isset($_GET['action'])){
         $data['supplier_name'] = $_POST['supplier_name'];
         $data['invoice_code'] = $_POST['invoice_code'];
         $data['invoice_date'] = $_POST['invoice_date'];
-        $data['vat_section'] = (float)filter_var($_POST['vat_section'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['vat_section'] = $_POST['vat_section'];
         $data['vat_section_add'] = (float)filter_var($_POST['vat_section_add'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['product_price'] = (float)filter_var($_POST['product_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['product_vat'] = (float)filter_var($_POST['product_vat'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -249,7 +249,7 @@ if(!isset($_GET['action'])){
         
         if($output){
     ?>
-            <script>window.location="index.php?app=journal_special_04"</script>
+            <script>window.location="index.php?app=journal_special_04&action=insert"</script>
     <?php
         }
     

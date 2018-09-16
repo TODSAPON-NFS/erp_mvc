@@ -18,6 +18,8 @@ class FinanceCreditListModel extends BaseModel{
         finance_credit_list_receipt, 
         '0' as finance_credit_list_paid, 
         invoice_supplier_net_price as finance_credit_list_amount, 
+        finance_credit_list_paid,
+        finance_credit_list_balance ,
         invoice_supplier_date as finance_credit_list_date, 
         invoice_supplier_due as finance_credit_list_due, 
         finance_credit_list_remark 

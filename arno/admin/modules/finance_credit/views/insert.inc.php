@@ -378,9 +378,9 @@
 
         balance = amount-paid;
 
-        $(id).closest('tr').children('td').children('input[name="finance_credit_list_amount[]"]').val( amount.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $(id).closest('tr').children('td').children('input[name="finance_credit_list_amount[]"]').val( amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
         $(id).closest('tr').children('td').children('input[name="finance_credit_list_paid[]"]').val( paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $(id).closest('tr').children('td').children('input[name="finance_credit_list_balance[]"]').val( sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        //$(id).closest('tr').children('td').children('input[name="finance_credit_list_balance[]"]').val( balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
 
         calculateAll();
 

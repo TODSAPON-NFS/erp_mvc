@@ -193,13 +193,12 @@ class JournalCashPaymentModel extends BaseModel{
         $data['finance_credit_id']."','".
         $data['journal_cash_payment_code']."','".
         $data['journal_cash_payment_date']."','".
-        $data['journal_cash_payment_name']."','".
+        static::$db->real_escape_string($data['journal_cash_payment_name'])."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].
         "',NOW()); 
         ";
-
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             return mysqli_insert_id(static::$db);

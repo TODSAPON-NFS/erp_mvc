@@ -197,6 +197,8 @@
                                     <th width="180">หมายเลขใบจ่ายชำระหนี้ <br>Finance Credit Code.</th>
                                     <th>ผู้ขาย <br>Supplier</th>
                                     <th width="150" > ผู้ออก<br>Create by</th> 
+                                    <th width="150" > สมุดรายวันจ่าย<br>Journal Payment</th> 
+                                    
                                     <th width="120" > จำนวนเงินรวม<br>Total</th>
                                     <th width="120" > ยอดจ่ายจริง<br>Paid</th>
                                     <th width="120" > สถานะ<br>Status</th>  
@@ -217,6 +219,13 @@
                                     <td><?php echo $finance_credits[$i]['finance_credit_code']; ?></td>
                                     <td><?php echo $finance_credits[$i]['supplier_name']; ?> </td>
                                     <td><?php echo $finance_credits[$i]['employee_name']; ?></td>
+                                    <td>
+                                        <?PHP if($finance_credits[$i]['journal_cash_payment_id'] > 0){ ?>
+                                        <a target="blank" href="?app=journal_special_04&action=update&id=<?php echo $finance_credits[$i]['journal_cash_payment_id'];?>"><?php echo $finance_credits[$i]['journal_cash_payment_code']; ?></a>
+                                        <?PHP }else{ ?>
+                                        -
+                                        <?PHP }?>
+                                    </td>
                                     <td align="right" ><?PHP echo number_format($finance_credits[$i]['finance_credit_total'],2); ?></td>
                                     <td align="right" ><?PHP echo number_format($finance_credits[$i]['finance_credit_pay'],2); ?></td>
                                     <td>
@@ -254,7 +263,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="5"> </td>
+                                    <td colspan="6"> </td>
                                     <td align="right" ><?PHP echo number_format($finance_credit_total,2); ?></td>
                                     <td align="right" ><?PHP echo number_format($finance_credit_pay,2); ?></td>
                                     <td colspan="2"> </td> 

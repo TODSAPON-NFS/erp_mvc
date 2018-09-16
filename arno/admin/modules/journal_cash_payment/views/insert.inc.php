@@ -56,7 +56,6 @@
 
     function check(){
 
-
         var journal_cash_payment_code = document.getElementById("journal_cash_payment_code").value;
         var journal_cash_payment_date = document.getElementById("journal_cash_payment_date").value;
         var journal_cash_payment_name = document.getElementById("journal_cash_payment_name").value;
@@ -87,8 +86,6 @@
         }else{
             return true;
         }
-
-
 
     }
 

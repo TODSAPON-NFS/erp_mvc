@@ -233,7 +233,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($product_group) ; $i++){
                                             ?>
-                                            <option <?if($product['product_group'] == $product_group[$i]['product_group_name'] ){?> selected <?php } ?> value="<?php echo $product_group[$i]['product_group_name'] ?>"><?php echo $product_group[$i]['product_group_name'] ?></option>
+                                            <option <?if($product['product_group'] == $product_group[$i]['product_group_id'] ){?> selected <?php } ?> value="<?php echo $product_group[$i]['product_group_id'] ?>"><?php echo $product_group[$i]['product_group_name'] ?></option>
                                             <?
                                             }
                                             ?>
@@ -251,7 +251,7 @@
                                         <?php 
                                         for($i =  0 ; $i < count($product_type) ; $i++){
                                         ?>
-                                        <option <?if($product['product_type'] == $product_type[$i]['product_type_name'] ){?> selected <?php } ?> value="<?php echo $product_type[$i]['product_type_name'] ?>"><?php echo $product_type[$i]['product_type_name'] ?></option>
+                                        <option <?if($product['product_type'] == $product_type[$i]['product_type_id'] ){?> selected <?php } ?> value="<?php echo $product_type[$i]['product_type_id'] ?>"><?php echo $product_type[$i]['product_type_name'] ?></option>
                                         <?
                                         }
                                         ?>
@@ -282,7 +282,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($product_unit) ; $i++){
                                             ?>
-                                            <option <?if($product['product_unit'] == $product_unit[$i]['product_unit_name'] ){?> selected <?php } ?> value="<?php echo $product_unit[$i]['product_unit_name'] ?>"><?php echo $product_unit[$i]['product_unit_name'] ?></option>
+                                            <option <?if($product['product_unit'] == $product_unit[$i]['product_unit_id'] ){?> selected <?php } ?> value="<?php echo $product_unit[$i]['product_unit_id'] ?>"><?php echo $product_unit[$i]['product_unit_name'] ?></option>
                                             <?
                                             }
                                             ?>
@@ -384,7 +384,7 @@
                                     <?php 
                                     for($i =  0 ; $i < count($supplier) ; $i++){
                                     ?>
-                                    <option <?if($supplier['supplier_id'] == $product_supplier[$i]['supplier_id'] ){?> selected <?php } ?> value="<?php echo $supplier[$i]['supplier_id'] ?>"><?php echo $supplier[$i]['supplier_name_en'] ?> (<?php echo $supplier[$i]['supplier_name_th'] ?>) </option>
+                                    <option <?if($supplier[$i]['supplier_id'] == $product_supplier['supplier_id'] ){?> selected <?php } ?> value="<?php echo $supplier[$i]['supplier_id'] ?>"><?php echo $supplier[$i]['supplier_name_en'] ?> </option>
                                     <?
                                     }
                                     ?>
@@ -452,7 +452,7 @@
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
-                            <td><?php echo $product_suppliers[$i]['supplier_name_en']; ?> (<?php echo $product_suppliers[$i]['supplier_name_th']; ?>) </td>
+                            <td><?php echo $product_suppliers[$i]['supplier_name_en']; ?></td>
                             <td class="center"><?php echo $product_suppliers[$i]['product_buyprice']; ?></td>
                             <td class="center"><?php echo $product_suppliers[$i]['lead_time']; ?></td>
                             <td class="center"><?php echo $product_suppliers[$i]['product_supplier_status']; ?></td>

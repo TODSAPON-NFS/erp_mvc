@@ -29,8 +29,7 @@ if(isset($_POST['check_code'])){
     $output = $check_model->updateCheckByID($check_id,$data);
 
     if($output){
-        $check = $check_model->getCheckByID($check_id);
-        
+        $check = $check_model->getCheckViewByID($check_id);
     }
     
     echo json_encode($check);

@@ -28,7 +28,7 @@ if(isset($_POST['check_pay_code'])){
     $output = $check_model->updateCheckPayByID($check_pay_id,$data);
 
     if($output){
-        $check_pay = $check_model->getCheckPayByID($check_pay_id);
+        $check_pay = $check_model->getCheckPayViewByID($check_pay_id);
         
     }
     

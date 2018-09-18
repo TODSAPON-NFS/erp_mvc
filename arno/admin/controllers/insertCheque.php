@@ -26,7 +26,7 @@ if(isset($_POST['check_code'])){
     $check_id = $check_model->insertCheck($data);
 
     if($check_id > 0){
-        $check = $check_model->getCheckByID($check_id);
+        $check = $check_model->getCheckViewByID($check_id);
         
     }
     

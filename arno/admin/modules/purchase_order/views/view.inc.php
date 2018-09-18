@@ -21,7 +21,7 @@
     <li><a class="tabs" data-toggle="tab" href="#blanked">Blanked Order <?PHP if(count($supplier_blankeds) > 0){ ?>(<b style="color:red;"><?PHP echo count($supplier_blankeds); ?></b>)<?PHP } ?> </a></li>
     <li><a class="tabs" data-toggle="tab" href="#test">Test Order <?PHP if(count($supplier_tests) > 0){ ?>(<b style="color:red;"><?PHP echo count($supplier_tests); ?></b>)<?PHP } ?> </a></li> 
     <li><a class="tabs" data-toggle="tab" href="#regrind">Regrind Order <?PHP if(count($supplier_regrinds) > 0){ ?>(<b style="color:red;"><?PHP echo count($supplier_regrinds); ?></b>)<?PHP } ?> </a></li> 
-  </ul>
+</ul>
 
   <div class="tab-content">
 

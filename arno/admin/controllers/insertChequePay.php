@@ -25,7 +25,7 @@ if(isset($_POST['check_pay_code'])){
     $check_pay_id = $check_model->insertCheckPay($data);
 
     if($check_pay_id > 0){
-        $check_pay = $check_model->getCheckPayByID($check_pay_id);
+        $check_pay = $check_model->getCheckPayViewByID($check_pay_id);
         
     }
     

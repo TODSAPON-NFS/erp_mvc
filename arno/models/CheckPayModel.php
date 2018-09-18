@@ -104,6 +104,7 @@ class CheckPayModel extends BaseModel{
     function getCheckPayViewByID($id){
         $sql = " SELECT *   
         FROM tb_check_pay 
+        LEFT JOIN tb_bank_account ON tb_check_pay.bank_account_id = tb_bank_account.bank_account_id  
         WHERE check_pay_id = '$id' 
         ";
 
@@ -111,6 +112,25 @@ class CheckPayModel extends BaseModel{
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getCheckPayViewListByjournalID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_cash_payment_list 
+        LEFT JOIN tb_check_pay ON tb_journal_cash_payment_list.journal_cheque_pay_id = tb_check_pay.check_pay_id
+        LEFT JOIN tb_bank_account ON tb_check_pay.bank_account_id = tb_bank_account.bank_account_id
+        WHERE journal_cash_payment_id = '$id' AND tb_journal_cash_payment_list.journal_cheque_pay_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
             }
             $result->close();
             return $data;

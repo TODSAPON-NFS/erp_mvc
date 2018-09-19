@@ -382,7 +382,16 @@
                                             <input type="hidden" name="journal_invoice_supplier_id[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_invoice_supplier_id']; ?>" /> 
                                             <input type="hidden" name="journal_cash_payment_list_id[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_cash_payment_list_id']; ?>" />
 
-                                            <select  class="form-control select" name="account_id[]" data-live-search="true"  onchange="get_account_type(this);" >
+                                            <select  class="form-control select" name="account_id[]" data-live-search="true"  onchange="get_account_type(this);" 
+                                                <?PHP if(
+                                                    $journal_cash_payment_lists[$i]['journal_cheque_id'] > 0 ||
+                                                    $journal_cash_payment_lists[$i]['journal_cheque_pay_id'] > 0 ||
+                                                    $journal_cash_payment_lists[$i]['journal_invoice_customer_id'] > 0 ||
+                                                    $journal_cash_payment_lists[$i]['journal_invoice_supplier_id'] > 0 
+                                                ){ ?>
+                                                disabled
+                                                <?PHP } ?>
+                                             >
                                                 <option value="">Select</option>
                                                 <?php 
                                                 for($ii =  0 ; $ii < count($accounts) ; $ii++){
@@ -394,8 +403,26 @@
                                             </select>
                                         </td>
                                         <td align="right"><input type="text" class="form-control" name="journal_cash_payment_list_name[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_cash_payment_list_name']; ?>" /></td>
-                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_debit[]"  onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'],2); ?>"  onclick="edit_credit(this)" /></td>
-                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_credit[]" onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'],2); ?>" /></td>
+                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_debit[]"  onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'],2); ?>"  onclick="edit_credit(this)" 
+                                            <?PHP if(
+                                                    $journal_cash_payment_lists[$i]['journal_cheque_id'] > 0 ||
+                                                    $journal_cash_payment_lists[$i]['journal_cheque_pay_id'] > 0 ||
+                                                    $journal_cash_payment_lists[$i]['journal_invoice_customer_id'] > 0 ||
+                                                    $journal_cash_payment_lists[$i]['journal_invoice_supplier_id'] > 0 
+                                                ){ ?>
+                                                readonly
+                                            <?PHP } ?>
+                                        /></td>
+                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_credit[]" onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'],2); ?>" 
+                                            <?PHP if(
+                                                    $journal_cash_payment_lists[$i]['journal_cheque_id'] > 0 ||
+                                                    $journal_cash_payment_lists[$i]['journal_cheque_pay_id'] > 0 ||
+                                                    $journal_cash_payment_lists[$i]['journal_invoice_customer_id'] > 0 ||
+                                                    $journal_cash_payment_lists[$i]['journal_invoice_supplier_id'] > 0 
+                                                ){ ?>
+                                                readonly
+                                            <?PHP } ?>
+                                        /></td>
                                         <td>
                                             <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                                 <i class="fa fa-times" aria-hidden="true"></i>

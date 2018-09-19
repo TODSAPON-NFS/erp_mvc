@@ -374,6 +374,12 @@ function delete_invoice_supplier(){
         function( data ) {
             console.log(data);
             if(data == true){
+                var journal_invoice_supplier_id = $('#tb_journal').children('tbody').children('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]');   
+                for(var i = 0; i < journal_invoice_supplier_id.length ;i++){
+                    if(journal_invoice_supplier_id[i].value == invoice_supplier_id){
+                        $(journal_invoice_supplier_id[i]).closest('tr').remove();
+                    }
+                }
                 $(row_invoice_supplier_update_id).closest('tr').remove();
                 $('#modalInvoiceSupplier').modal('hide');
                 calculateInvoiceSupplierAll();

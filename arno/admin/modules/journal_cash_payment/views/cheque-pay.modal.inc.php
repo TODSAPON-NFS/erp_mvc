@@ -274,6 +274,12 @@ function delete_check_pay(){
         function( data ) {
             console.log(data);
             if(data == true){
+                var journal_cheque_pay_id = $('#tb_journal').children('tbody').children('tr').children('td').children('input[name="journal_cheque_pay_id[]"]');   
+                for(var i = 0; i < journal_cheque_pay_id.length ;i++){
+                    if(journal_cheque_pay_id[i].value == check_pay_id){
+                        $(journal_cheque_pay_id[i]).closest('tr').remove();
+                    }
+                }
                 $(row_cheque_pay_update_id).closest('tr').remove();
                 $('#modalChequePay').modal('hide');
             }else{

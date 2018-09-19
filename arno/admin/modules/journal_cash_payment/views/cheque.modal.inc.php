@@ -285,6 +285,12 @@ function delete_check(){
         function( data ) {
             console.log(data);
             if(data == true){
+                var journal_cheque_id = $('#tb_journal').children('tbody').children('tr').children('td').children('input[name="journal_cheque_id[]"]');   
+                for(var i = 0; i < journal_cheque_id.length ;i++){
+                    if(journal_cheque_id[i].value == check_id){ 
+                        $(journal_cheque_id[i]).closest('tr').remove();
+                    }
+                } 
                 $(row_cheque_update_id).closest('tr').remove();
                 $('#modalCheque').modal('hide');
             }else{

@@ -80,7 +80,7 @@
 
                 <div class="row" style="margin:0px;">
                     <div class="col-sm-6">
-                        <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format(count($journal_cash_payments),0);?> entries</div>
+                        <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format(count($journal_specials),0);?> entries</div>
                     </div>
                     <div class="col-sm-6">
                         <div class="dataTables_paginate paging_simple_numbers" >
@@ -147,31 +147,31 @@
                     </thead>
                     <tbody>
                         <?php  
-                        for($i=$page * $page_size ; $i < count($journal_cash_payments) && $i < $page * $page_size + $page_size; $i++){
+                        for($i=$page * $page_size ; $i < count($journal_specials) && $i < $page * $page_size + $page_size; $i++){
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
-                            <td><?php echo $journal_cash_payments[$i]['journal_cash_payment_date']; ?></td>
-                            <td><?php echo $journal_cash_payments[$i]['journal_cash_payment_code']; ?></td>
-                            <td><?php echo $journal_cash_payments[$i]['journal_cash_payment_name']; ?></td>
-                            <td><?php echo $journal_cash_payments[$i]['add_name']; ?></td>
-                            <td><?php echo $journal_cash_payments[$i]['adddate']; ?></td>
-                            <td><?php echo $journal_cash_payments[$i]['update_name']; ?></td>
-                            <td><?php echo $journal_cash_payments[$i]['lastupdate']; ?></td>
+                            <td><?php echo $journal_specials[$i]['journal_special_date']; ?></td>
+                            <td><?php echo $journal_specials[$i]['journal_special_code']; ?></td>
+                            <td><?php echo $journal_specials[$i]['journal_special_name']; ?></td>
+                            <td><?php echo $journal_specials[$i]['add_name']; ?></td>
+                            <td><?php echo $journal_specials[$i]['adddate']; ?></td>
+                            <td><?php echo $journal_specials[$i]['update_name']; ?></td>
+                            <td><?php echo $journal_specials[$i]['lastupdate']; ?></td>
                             <td>
 
-                                <a href="index.php?app=journal_special_04&action=print&id=<?PHP echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>" >
+                                <a href="index.php?app=journal_special_04&action=print&id=<?PHP echo $journal_specials[$i]['journal_special_id'];?>" >
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                 </a>
 
-                                <a href="?app=journal_special_04&action=detail&id=<?php echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>">
+                                <a href="?app=journal_special_04&action=detail&id=<?php echo $journal_specials[$i]['journal_special_id'];?>">
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                 </a>
 
-                                <a href="?app=journal_special_04&action=update&id=<?php echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>">
+                                <a href="?app=journal_special_04&action=update&id=<?php echo $journal_specials[$i]['journal_special_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
-                                <a href="?app=journal_special_04&action=delete&id=<?php echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>" onclick="return confirm('You want to delete Journal Cash Payment : <?php echo $journal_cash_payments[$i]['journal_cash_payment_code']; ?>');" style="color:red;">
+                                <a href="?app=journal_special_04&action=delete&id=<?php echo $journal_specials[$i]['journal_special_id'];?>" onclick="return confirm('You want to delete Journal Cash Payment : <?php echo $journal_specials[$i]['journal_special_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
 
@@ -186,7 +186,7 @@
 
                 <div class="row" style="margin:0px;">
                     <div class="col-sm-6">
-                        <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format(count($journal_cash_payments),0);?> entries</div>
+                        <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format(count($journal_specials),0);?> entries</div>
                     </div>
                     <div class="col-sm-6">
                         <div class="dataTables_paginate paging_simple_numbers" >

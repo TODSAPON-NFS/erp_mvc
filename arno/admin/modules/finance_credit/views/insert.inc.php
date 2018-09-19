@@ -2,7 +2,7 @@
     var row_update_id ;
     var options = {
         url: function(keyword) {
-            return "controllers/getChequePayByKeyword.php?keyword="+keyword;
+            return "controllers/getChequePayByKeyword.php?journal_id=6&keyword="+keyword;
         },
 
         getValue: function(element) {

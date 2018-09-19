@@ -1,7 +1,7 @@
 <?php
 
 require_once("BaseModel.php");
-class JournalCashPaymentListModel extends BaseModel{
+class JournalSpecialListModel extends BaseModel{
 
     function __construct(){
         if(!static::$db){
@@ -9,22 +9,22 @@ class JournalCashPaymentListModel extends BaseModel{
         }
     }
 
-    function getJournalCashPaymentListBy($journal_cash_payment_id){
+    function getJournalSpecialListBy($journal_special_id){
         $sql = " SELECT 
-        journal_cash_payment_list_id, 
-        journal_cash_payment_list_name,
-        journal_cash_payment_list_debit,
-        journal_cash_payment_list_credit, 
-        tb_journal_cash_payment_list.account_id, 
-        tb_journal_cash_payment_list.journal_cheque_id, 
-        tb_journal_cash_payment_list.journal_cheque_pay_id, 
-        tb_journal_cash_payment_list.journal_invoice_customer_id, 
-        tb_journal_cash_payment_list.journal_invoice_supplier_id, 
+        journal_special_list_id, 
+        journal_special_list_name,
+        journal_special_list_debit,
+        journal_special_list_credit, 
+        tb_journal_special_list.account_id, 
+        tb_journal_special_list.journal_cheque_id, 
+        tb_journal_special_list.journal_cheque_pay_id, 
+        tb_journal_special_list.journal_invoice_customer_id, 
+        tb_journal_special_list.journal_invoice_supplier_id, 
         account_name_th,  
         account_name_en 
-        FROM tb_journal_cash_payment_list LEFT JOIN tb_account ON tb_journal_cash_payment_list.account_id = tb_account.account_id 
-        WHERE journal_cash_payment_id = '$journal_cash_payment_id' 
-        ORDER BY journal_cash_payment_list_id 
+        FROM tb_journal_special_list LEFT JOIN tb_account ON tb_journal_special_list.account_id = tb_account.account_id 
+        WHERE journal_special_id = '$journal_special_id' 
+        ORDER BY journal_special_list_id 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -38,23 +38,23 @@ class JournalCashPaymentListModel extends BaseModel{
 
     }
 
-    function getJournalCashPaymentListByFinanceCreditPayId($journal_cash_payment_id,$finance_credit_pay_id){
+    function getJournalSpecialListByFinanceCreditPayId($journal_special_id,$finance_credit_pay_id){
         $sql = " SELECT 
-        journal_cash_payment_list_id, 
-        journal_cash_payment_list_name,
-        journal_cash_payment_list_debit,
-        journal_cash_payment_list_credit, 
-        tb_journal_cash_payment_list.account_id, 
-        tb_journal_cash_payment_list.journal_cheque_id, 
-        tb_journal_cash_payment_list.journal_cheque_pay_id, 
-        tb_journal_cash_payment_list.journal_invoice_customer_id, 
-        tb_journal_cash_payment_list.journal_invoice_supplier_id, 
+        journal_special_list_id, 
+        journal_special_list_name,
+        journal_special_list_debit,
+        journal_special_list_credit, 
+        tb_journal_special_list.account_id, 
+        tb_journal_special_list.journal_cheque_id, 
+        tb_journal_special_list.journal_cheque_pay_id, 
+        tb_journal_special_list.journal_invoice_customer_id, 
+        tb_journal_special_list.journal_invoice_supplier_id, 
         finance_credit_pay_id,
         account_name_th,  
         account_name_en 
-        FROM tb_journal_cash_payment_list LEFT JOIN tb_account ON tb_journal_cash_payment_list.account_id = tb_account.account_id 
-        WHERE journal_cash_payment_id = '$journal_cash_payment_id' AND tb_journal_cash_payment_list.finance_credit_pay_id = '$finance_credit_pay_id' 
-        ORDER BY journal_cash_payment_list_id 
+        FROM tb_journal_special_list LEFT JOIN tb_account ON tb_journal_special_list.account_id = tb_account.account_id 
+        WHERE journal_special_id = '$journal_special_id' AND tb_journal_special_list.finance_credit_pay_id = '$finance_credit_pay_id' 
+        ORDER BY journal_special_list_id 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -68,34 +68,36 @@ class JournalCashPaymentListModel extends BaseModel{
 
     }
 
-    function insertJournalCashPaymentList($data = []){
+    function insertJournalSpecialList($data = []){
 
-        $sql = " INSERT INTO tb_journal_cash_payment_list (
-            journal_cash_payment_id,
+        $sql = " INSERT INTO tb_journal_special_list (
+            journal_special_id,
             finance_credit_pay_id,
+            finance_debiit_pay_id,
             journal_cheque_id,
             journal_cheque_pay_id,
             journal_invoice_customer_id,
             journal_invoice_supplier_id,
             account_id,
-            journal_cash_payment_list_name,
-            journal_cash_payment_list_debit,
-            journal_cash_payment_list_credit,
+            journal_special_list_name,
+            journal_special_list_debit,
+            journal_special_list_credit,
             addby,
             adddate,
             updateby,
             lastupdate
         ) VALUES (
-            '".$data['journal_cash_payment_id']."', 
+            '".$data['journal_special_id']."', 
             '".$data['finance_credit_pay_id']."', 
+            '".$data['finance_debiit_pay_id']."', 
             '".$data['journal_cheque_id']."', 
             '".$data['journal_cheque_pay_id']."', 
             '".$data['journal_invoice_customer_id']."', 
             '".$data['journal_invoice_supplier_id']."', 
             '".$data['account_id']."', 
-            '".static::$db->real_escape_string($data['journal_cash_payment_list_name'])."', 
-            '".$data['journal_cash_payment_list_debit']."',
-            '".$data['journal_cash_payment_list_credit']."',
+            '".static::$db->real_escape_string($data['journal_special_list_name'])."', 
+            '".$data['journal_special_list_debit']."',
+            '".$data['journal_special_list_credit']."',
             '".$data['addby']."', 
             NOW(), 
             '".$data['updateby']."', 
@@ -112,18 +114,18 @@ class JournalCashPaymentListModel extends BaseModel{
 
     }
 
-    function updateJournalCashPaymentListById($data,$id){
+    function updateJournalSpecialListById($data,$id){
 
-        $sql = " UPDATE tb_journal_cash_payment_list 
+        $sql = " UPDATE tb_journal_special_list 
             SET account_id = '".$data['account_id']."',  
             journal_cheque_id = '".$data['journal_cheque_id']."',
             journal_cheque_pay_id = '".$data['journal_cheque_pay_id']."',
             journal_invoice_customer_id = '".$data['journal_invoice_customer_id']."',
             journal_invoice_supplier_id = '".$data['journal_invoice_supplier_id']."',
-            journal_cash_payment_list_name = '".static::$db->real_escape_string($data['journal_cash_payment_list_name'])."',
-            journal_cash_payment_list_debit = '".$data['journal_cash_payment_list_debit']."',
-            journal_cash_payment_list_credit = '".$data['journal_cash_payment_list_credit']."' 
-            WHERE journal_cash_payment_list_id = '$id' 
+            journal_special_list_name = '".static::$db->real_escape_string($data['journal_special_list_name'])."',
+            journal_special_list_debit = '".$data['journal_special_list_debit']."',
+            journal_special_list_credit = '".$data['journal_special_list_credit']."' 
+            WHERE journal_special_list_id = '$id' 
         ";
 
 
@@ -136,19 +138,19 @@ class JournalCashPaymentListModel extends BaseModel{
 
 
 
-    function deleteJournalCashPaymentListByID($id){
-        $sql = "DELETE FROM tb_journal_cash_payment_list WHERE journal_cash_payment_list_id = '$id' ";
+    function deleteJournalSpecialListByID($id){
+        $sql = "DELETE FROM tb_journal_special_list WHERE journal_special_list_id = '$id' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
-    function deleteJournalCashPaymentListByJournalCashPaymentID($id){
-        $sql = "DELETE FROM tb_journal_cash_payment_list WHERE journal_cash_payment_id = '$id' ";
+    function deleteJournalSpecialListByJournalSpecialID($id){
+        $sql = "DELETE FROM tb_journal_special_list WHERE journal_special_id = '$id' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
 
-    function deleteJournalCashPaymentListByFinanceCreditListIDNotIn($journal_cash_payment_id,$data){
+    function deleteJournalSpecialListByFinanceCreditListIDNotIn($journal_special_id,$data){
         $str ='';
         if(is_array($data)){ 
             for($i=0; $i < count($data) ;$i++){
@@ -169,12 +171,12 @@ class JournalCashPaymentListModel extends BaseModel{
             $str='0';
         }
 
-        $sql = "DELETE FROM tb_journal_cash_payment_list 
-                WHERE journal_cash_payment_id = '$journal_cash_payment_id' AND finance_credit_pay_id NOT IN ( $str ) AND finance_credit_pay_id NOT IN ('-1','-2') ";
+        $sql = "DELETE FROM tb_journal_special_list 
+                WHERE journal_special_id = '$journal_special_id' AND finance_credit_pay_id NOT IN ( $str ) AND finance_credit_pay_id NOT IN ('-1','-2') ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
     }
 
-    function deleteJournalCashPaymentListByJournalCashPaymentIDNotIN($id,$data){
+    function deleteJournalSpecialListByJournalSpecialIDNotIN($id,$data){
         $str ='';
         if(is_array($data)){ 
             for($i=0; $i < count($data) ;$i++){
@@ -195,7 +197,7 @@ class JournalCashPaymentListModel extends BaseModel{
             $str='0';
         }
 
-        $sql = "DELETE FROM tb_journal_cash_payment_list WHERE journal_cash_payment_id = '$id' AND journal_cash_payment_list_id NOT IN ($str) ";
+        $sql = "DELETE FROM tb_journal_special_list WHERE journal_special_id = '$id' AND journal_special_list_id NOT IN ($str) ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }

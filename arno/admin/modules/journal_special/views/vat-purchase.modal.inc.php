@@ -233,9 +233,9 @@ function edit_invoice_supplier_row(id,journal_id){
         }else{ 
             $('#invoice_supplier_id').val('0'); 
             $('#invoice_supplier_code').val(''); 
-            $('#invoice_supplier_date').val($('#journal_cash_payment_date').val()); 
+            $('#invoice_supplier_date').val($('#journal_special_date').val()); 
             $('#invoice_supplier_code_gen').val(''); 
-            $('#invoice_supplier_date_recieve').val($('#journal_cash_payment_date').val()); 
+            $('#invoice_supplier_date_recieve').val($('#journal_special_date').val()); 
             $('#supplier_code').val(''); 
             $('#vat_supplier_id').val('0'); 
             $('#invoice_supplier_name').val(''); 
@@ -248,7 +248,7 @@ function edit_invoice_supplier_row(id,journal_id){
             $('#invoice_supplier_total_price_non').val('0'); 
             $('#invoice_supplier_vat_price_non').val('0');
             $('#invoice_supplier_total_non').val('0');
-            $('#invoice_supplier_description').val($('#journal_cash_payment_name').val());
+            $('#invoice_supplier_description').val($('#journal_special_name').val());
             $('#invoice_supplier_remark').val('');
 
             $('#invoice_supplier_submit').html('Add Invoice');
@@ -266,9 +266,9 @@ function add_invoice_supplier_row(id,journal_id){
     
     $('#invoice_supplier_id').val('0'); 
     $('#invoice_supplier_code').val(''); 
-    $('#invoice_supplier_date').val($('#journal_cash_payment_date').val()); 
+    $('#invoice_supplier_date').val($('#journal_special_date').val()); 
     $('#invoice_supplier_code_gen').val(''); 
-    $('#invoice_supplier_date_recieve').val($('#journal_cash_payment_date').val()); 
+    $('#invoice_supplier_date_recieve').val($('#journal_special_date').val()); 
     $('#supplier_code').val(''); 
     $('#vat_supplier_id').val('0'); 
     $('#invoice_supplier_name').val(''); 
@@ -281,7 +281,7 @@ function add_invoice_supplier_row(id,journal_id){
     $('#invoice_supplier_total_price_non').val('0'); 
     $('#invoice_supplier_vat_price_non').val('0');
     $('#invoice_supplier_total_non').val('0');
-    $('#invoice_supplier_description').val($('#journal_cash_payment_name').val());
+    $('#invoice_supplier_description').val($('#journal_special_name').val());
     $('#invoice_supplier_remark').val('');
 
     $('#invoice_supplier_submit').html('Add Invoice');
@@ -336,9 +336,9 @@ function get_invoice_supplier_data(id,code){
         }else{ 
             $('#invoice_supplier_id').val('0'); 
             $('#invoice_supplier_code').val(code); 
-            $('#invoice_supplier_date').val($('#journal_cash_payment_date').val()); 
+            $('#invoice_supplier_date').val($('#journal_special_date').val()); 
             $('#invoice_supplier_code_gen').val(''); 
-            $('#invoice_supplier_date_recieve').val($('#journal_cash_payment_date').val()); 
+            $('#invoice_supplier_date_recieve').val($('#journal_special_date').val()); 
             $('#supplier_code').val(''); 
             $('#vat_supplier_id').val('0'); 
             $('#invoice_supplier_name').val(''); 
@@ -351,7 +351,7 @@ function get_invoice_supplier_data(id,code){
             $('#invoice_supplier_total_price_non').val('0'); 
             $('#invoice_supplier_vat_price_non').val('0');
             $('#invoice_supplier_total_non').val('0');
-            $('#invoice_supplier_description').val($('#journal_cash_payment_name').val());
+            $('#invoice_supplier_description').val($('#journal_special_name').val());
             $('#invoice_supplier_remark').val('');
 
             $('#invoice_supplier_submit').html('Add Invoice');
@@ -591,12 +591,12 @@ function set_invoice_supplier_row(data){
                             '<input type="hidden" name="journal_cheque_pay_id[]" value="0" />'+  
                             '<input type="hidden" name="journal_invoice_customer_id[]" value="0" />'+  
                             '<input type="hidden" name="journal_invoice_supplier_id[]" value="'+data.invoice_supplier_id+'" />'+   
-                            '<input type="hidden" name="journal_cash_payment_list_id[]" value="0" />'+      
+                            '<input type="hidden" name="journal_special_list_id[]" value="0" />'+      
                             '<select class="form-control select" type="text" name="account_id[]" onchange="show_data(this);" data-live-search="true" disabled ></select>'+
                         '</td>'+
-                        '<td><input type="text" class="form-control" name="journal_cash_payment_list_name[]" value="' + data.invoice_supplier_description + '" /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" onchange="val_format(this);" name="journal_cash_payment_list_debit[]" value="'+ invoice_supplier_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'"  readonly/></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" onchange="val_format(this);" name="journal_cash_payment_list_credit[]" readonly/></td>'+
+                        '<td><input type="text" class="form-control" name="journal_special_list_name[]" value="' + data.invoice_supplier_description + '" /></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" onchange="val_format(this);" name="journal_special_list_debit[]" value="'+ invoice_supplier_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'"  readonly/></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" onchange="val_format(this);" name="journal_special_list_credit[]" readonly/></td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -621,15 +621,15 @@ function set_invoice_supplier_row(data){
 
             }else{
                 $(row_journal_id).prop("disabled","true");
-                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').prop("readonly","true");
-                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').prop("readonly","true");
+                $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_debit[]"]').prop("readonly","true");
+                $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_credit[]"]').prop("readonly","true");
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_cheque_id[]"]').val('0');
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_cheque_pay_id[]"]').val('0');
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]').val('0');
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]').val(data.invoice_supplier_id);
-                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.invoice_supplier_description);
-                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(invoice_supplier_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
-                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val('0');
+                $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_name[]"]').val(data.invoice_supplier_description);
+                $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_debit[]"]').val(invoice_supplier_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
+                $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_credit[]"]').val('0');
                 $('.select').selectpicker();
             }
 
@@ -654,15 +654,15 @@ function set_invoice_supplier_row(data){
         if(row_journal_id != null){
             
             $(row_journal_id).prop("disabled","true");
-            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').prop("readonly","true");
-            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').prop("readonly","true");
+            $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_debit[]"]').prop("readonly","true");
+            $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_credit[]"]').prop("readonly","true");
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_cheque_id[]"]').val('0');
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_cheque_pay_id[]"]').val('0');
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]').val('0');
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]').val(data.invoice_supplier_id);
-            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.invoice_supplier_description);
-            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(invoice_supplier_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
-            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val('0');
+            $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_name[]"]').val(data.invoice_supplier_description);
+            $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_debit[]"]').val(invoice_supplier_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
+            $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_credit[]"]').val('0');
             $('.select').selectpicker();
         }else{
             var journal_invoice_supplier_id = $('#tb_journal').children('tbody').children('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]');   
@@ -670,15 +670,15 @@ function set_invoice_supplier_row(data){
                 if(journal_invoice_supplier_id[i].value == data.invoice_supplier_id){
                     row_journal_id = $(journal_invoice_supplier_id[i]).closest('tr').children('td').children('div').children('select[name="account_id[]"]');
                     $(row_journal_id).prop("disabled","true");
-                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').prop("readonly","true");
-                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').prop("readonly","true");
+                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_debit[]"]').prop("readonly","true");
+                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_credit[]"]').prop("readonly","true");
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_cheque_id[]"]').val('0');
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_cheque_pay_id[]"]').val('0');
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]').val('0');
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]').val(data.invoice_supplier_id);
-                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.invoice_supplier_description);
-                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(invoice_supplier_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
-                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val('0');
+                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_name[]"]').val(data.invoice_supplier_description);
+                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_debit[]"]').val(invoice_supplier_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
+                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_special_list_credit[]"]').val('0');
                     $('.select').selectpicker();
                 }
             }

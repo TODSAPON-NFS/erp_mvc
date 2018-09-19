@@ -190,7 +190,7 @@
     }else if($_GET['app'] == "journal_special_03"){
         require_once("modules/journal_cash_receipt/views/index.inc.php");
     }else if($_GET['app'] == "journal_special_04"){
-        require_once("modules/journal_cash_payment/views/index.inc.php");
+        require_once("modules/journal_special/views/index.inc.php");
     }else if($_GET['app'] == "journal_special_05"){
         require_once("modules/journal_purchase_return/views/index.inc.php");
     }else if($_GET['app'] == "journal_special_06"){

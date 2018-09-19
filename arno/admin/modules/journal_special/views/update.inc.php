@@ -7,7 +7,7 @@
 
     var options = {
         url: function(keyword) {
-            return "controllers/getJournalCashPaymentByKeyword.php?keyword="+keyword;
+            return "controllers/getJournalSpecialByKeyword.php?journal_id=6&keyword="+keyword;
         },
 
         list: {
@@ -18,13 +18,13 @@
         },
 
         getValue: function(element) {
-            return element.journal_cash_payment_code ;
+            return element.journal_special_code ;
         },
 
         template: {
             type: "description",
             fields: {
-                description: "journal_cash_payment_name"
+                description: "journal_special_name"
             }
         },
         
@@ -61,29 +61,29 @@
 
     function check(){
 
-        var journal_cash_payment_code = document.getElementById("journal_cash_payment_code").value;
-        var journal_cash_payment_date = document.getElementById("journal_cash_payment_date").value;
-        var journal_cash_payment_name = document.getElementById("journal_cash_payment_name").value;
+        var journal_special_code = document.getElementById("journal_special_code").value;
+        var journal_special_date = document.getElementById("journal_special_date").value;
+        var journal_special_name = document.getElementById("journal_special_name").value;
         
-        var debit_total = parseFloat($('#journal_cash_payment_list_debit').val( ).toString().replace(new RegExp(',', 'g'),''));
-        var credit_total = parseFloat($('#journal_cash_payment_list_credit').val( ).toString().replace(new RegExp(',', 'g'),''));
+        var debit_total = parseFloat($('#journal_special_list_debit').val( ).toString().replace(new RegExp(',', 'g'),''));
+        var credit_total = parseFloat($('#journal_special_list_credit').val( ).toString().replace(new RegExp(',', 'g'),''));
 
-        journal_cash_payment_code = $.trim(journal_cash_payment_code);
-        journal_cash_payment_date = $.trim(journal_cash_payment_date);
-        journal_cash_payment_name = $.trim(journal_cash_payment_name);
+        journal_special_code = $.trim(journal_special_code);
+        journal_special_date = $.trim(journal_special_date);
+        journal_special_name = $.trim(journal_special_name);
         
 
-        if(journal_cash_payment_code.length == 0){
+        if(journal_special_code.length == 0){
             alert("Please input Journal Payment code");
-            document.getElementById("journal_cash_payment_code").focus();
+            document.getElementById("journal_special_code").focus();
             return false;
-        }else if(journal_cash_payment_date.length == 0){
+        }else if(journal_special_date.length == 0){
             alert("Please input Journal Payment date");
-            document.getElementById("journal_cash_payment_date").focus();
+            document.getElementById("journal_special_date").focus();
             return false;
-        }else if(journal_cash_payment_name.length == 0){
-            alert("Please input journal_cash_payment name");
-            document.getElementById("journal_cash_payment_name").focus();
+        }else if(journal_special_name.length == 0){
+            alert("Please input journal_special name");
+            document.getElementById("journal_special_name").focus();
             return false;
         }else if (debit_total != credit_total){
             alert("Can not save data. \nBecause credit value and debit value not match. "); 
@@ -155,9 +155,9 @@
                     '<input type="hidden" name="journal_invoice_supplier_id[]" value="0" />'+     
                     '<select class="form-control select" type="text" name="account_id[]"  data-live-search="true" onchange="get_account_type(this);"  ></select>'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="journal_cash_payment_list_name[]" value="' + document.getElementById("journal_cash_payment_name").value + '" /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;"  value="0" onchange="val_format(this);" name="journal_cash_payment_list_debit[]" onclick="edit_credit(this)"  /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" onchange="val_format(this);" name="journal_cash_payment_list_credit[]" /></td>'+
+                '<td><input type="text" class="form-control" name="journal_special_list_name[]" value="' + document.getElementById("journal_special_name").value + '" /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;"  value="0" onchange="val_format(this);" name="journal_special_list_debit[]" onclick="edit_credit(this)"  /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" onchange="val_format(this);" name="journal_special_list_credit[]" /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -188,8 +188,8 @@
 
 
     function calculateAll(){
-        var debit = document.getElementsByName('journal_cash_payment_list_debit[]');
-        var credit = document.getElementsByName('journal_cash_payment_list_credit[]');
+        var debit = document.getElementsByName('journal_special_list_debit[]');
+        var credit = document.getElementsByName('journal_special_list_credit[]');
         var debit_total = 0.0;
         var credit_total = 0.0;
 
@@ -203,8 +203,8 @@
             credit_total += parseFloat(credit[i].value.toString().replace(new RegExp(',', 'g'),''));
         } 
 
-        $('#journal_cash_payment_list_debit').val((debit_total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $('#journal_cash_payment_list_credit').val((credit_total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#journal_special_list_debit').val((debit_total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#journal_special_list_credit').val((credit_total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
 
     }
 
@@ -317,26 +317,26 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=journal_special_04&action=edit&id=<?PHP echo $journal_cash_payment_id; ?>" enctype="multipart/form-data">
+                <form role="form" method="post" onsubmit="return check();" action="index.php?app=journal_special_04&action=edit&id=<?PHP echo $journal_special_id; ?>" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขสมุดรายวันจ่ายเงิน / Journal Payment Code <font color="#F00"><b>*</b></font></label>
-                                <input id="journal_cash_payment_code" name="journal_cash_payment_code" class="form-control" value="<?php echo $journal_cash_payment['journal_cash_payment_code'];?>" readonly>
+                                <input id="journal_special_code" name="journal_special_code" class="form-control" value="<?php echo $journal_special['journal_special_code'];?>" readonly>
                                 <p class="help-block">Example : JG1801001.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>วันที่ออกสมุดรายวันจ่ายเงิน / Journal Payment Date</label>
-                                <input type="text" id="journal_cash_payment_date" name="journal_cash_payment_date"  class="form-control calendar" value="<?php echo $journal_cash_payment['journal_cash_payment_date'];?>" readonly/>
+                                <input type="text" id="journal_special_date" name="journal_special_date"  class="form-control calendar" value="<?php echo $journal_special['journal_special_date'];?>" readonly/>
                                 <p class="help-block">31/01/2018</p>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label>หัวข้อสมุดรายวันจ่ายเงิน / Journal Payment Name</label>
-                                <input type="text" id="journal_cash_payment_name" name="journal_cash_payment_name"  class="form-control" value="<?php echo $journal_cash_payment['journal_cash_payment_name'];?>" />
+                                <input type="text" id="journal_special_name" name="journal_special_name"  class="form-control" value="<?php echo $journal_special['journal_special_name'];?>" />
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -367,27 +367,27 @@
                                 </thead>
                                 <tbody>
                                 <?php 
-                                    $journal_cash_payment_list_debit = 0;
-                                    $journal_cash_payment_list_credit = 0;
-                                    for($i=0; $i < count($journal_cash_payment_lists); $i++){
-                                        $journal_cash_payment_list_debit += $journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'];
-                                        $journal_cash_payment_list_credit += $journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'];
+                                    $journal_special_list_debit = 0;
+                                    $journal_special_list_credit = 0;
+                                    for($i=0; $i < count($journal_special_lists); $i++){
+                                        $journal_special_list_debit += $journal_special_lists[$i]['journal_special_list_debit'];
+                                        $journal_special_list_credit += $journal_special_lists[$i]['journal_special_list_credit'];
                                     ?>
                                     <tr class="odd gradeX">
                                         <td>
 
-                                            <input type="hidden" name="journal_cheque_id[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_cheque_id']; ?>" /> 
-                                            <input type="hidden" name="journal_cheque_pay_id[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_cheque_pay_id']; ?>" /> 
-                                            <input type="hidden" name="journal_invoice_customer_id[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_invoice_customer_id']; ?>" />
-                                            <input type="hidden" name="journal_invoice_supplier_id[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_invoice_supplier_id']; ?>" /> 
-                                            <input type="hidden" name="journal_cash_payment_list_id[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_cash_payment_list_id']; ?>" />
+                                            <input type="hidden" name="journal_cheque_id[]" value="<?php echo $journal_special_lists[$i]['journal_cheque_id']; ?>" /> 
+                                            <input type="hidden" name="journal_cheque_pay_id[]" value="<?php echo $journal_special_lists[$i]['journal_cheque_pay_id']; ?>" /> 
+                                            <input type="hidden" name="journal_invoice_customer_id[]" value="<?php echo $journal_special_lists[$i]['journal_invoice_customer_id']; ?>" />
+                                            <input type="hidden" name="journal_invoice_supplier_id[]" value="<?php echo $journal_special_lists[$i]['journal_invoice_supplier_id']; ?>" /> 
+                                            <input type="hidden" name="journal_special_list_id[]" value="<?php echo $journal_special_lists[$i]['journal_special_list_id']; ?>" />
 
                                             <select  class="form-control select" name="account_id[]" data-live-search="true"  onchange="get_account_type(this);" 
                                                 <?PHP if(
-                                                    $journal_cash_payment_lists[$i]['journal_cheque_id'] > 0 ||
-                                                    $journal_cash_payment_lists[$i]['journal_cheque_pay_id'] > 0 ||
-                                                    $journal_cash_payment_lists[$i]['journal_invoice_customer_id'] > 0 ||
-                                                    $journal_cash_payment_lists[$i]['journal_invoice_supplier_id'] > 0 
+                                                    $journal_special_lists[$i]['journal_cheque_id'] > 0 ||
+                                                    $journal_special_lists[$i]['journal_cheque_pay_id'] > 0 ||
+                                                    $journal_special_lists[$i]['journal_invoice_customer_id'] > 0 ||
+                                                    $journal_special_lists[$i]['journal_invoice_supplier_id'] > 0 
                                                 ){ ?>
                                                 disabled
                                                 <?PHP } ?>
@@ -396,29 +396,29 @@
                                                 <?php 
                                                 for($ii =  0 ; $ii < count($accounts) ; $ii++){
                                                 ?>
-                                                <option <?php if($accounts[$ii]['account_id'] == $journal_cash_payment_lists[$i]['account_id']){?> selected <?php }?> value="<?php echo $accounts[$ii]['account_id'] ?>">[<?php echo $accounts[$ii]['account_code'] ?>] <?php echo $accounts[$ii]['account_name_th'] ?></option>
+                                                <option <?php if($accounts[$ii]['account_id'] == $journal_special_lists[$i]['account_id']){?> selected <?php }?> value="<?php echo $accounts[$ii]['account_id'] ?>">[<?php echo $accounts[$ii]['account_code'] ?>] <?php echo $accounts[$ii]['account_name_th'] ?></option>
                                                 <?
                                                 }
                                                 ?>
                                             </select>
                                         </td>
-                                        <td align="right"><input type="text" class="form-control" name="journal_cash_payment_list_name[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_cash_payment_list_name']; ?>" /></td>
-                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_debit[]"  onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'],2); ?>"  onclick="edit_credit(this)" 
+                                        <td align="right"><input type="text" class="form-control" name="journal_special_list_name[]" value="<?php echo $journal_special_lists[$i]['journal_special_list_name']; ?>" /></td>
+                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_special_list_debit[]"  onchange="val_format(this);" value="<?php echo number_format($journal_special_lists[$i]['journal_special_list_debit'],2); ?>"  onclick="edit_credit(this)" 
                                             <?PHP if(
-                                                    $journal_cash_payment_lists[$i]['journal_cheque_id'] > 0 ||
-                                                    $journal_cash_payment_lists[$i]['journal_cheque_pay_id'] > 0 ||
-                                                    $journal_cash_payment_lists[$i]['journal_invoice_customer_id'] > 0 ||
-                                                    $journal_cash_payment_lists[$i]['journal_invoice_supplier_id'] > 0 
+                                                    $journal_special_lists[$i]['journal_cheque_id'] > 0 ||
+                                                    $journal_special_lists[$i]['journal_cheque_pay_id'] > 0 ||
+                                                    $journal_special_lists[$i]['journal_invoice_customer_id'] > 0 ||
+                                                    $journal_special_lists[$i]['journal_invoice_supplier_id'] > 0 
                                                 ){ ?>
                                                 readonly
                                             <?PHP } ?>
                                         /></td>
-                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_credit[]" onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'],2); ?>" 
+                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_special_list_credit[]" onchange="val_format(this);" value="<?php echo number_format($journal_special_lists[$i]['journal_special_list_credit'],2); ?>" 
                                             <?PHP if(
-                                                    $journal_cash_payment_lists[$i]['journal_cheque_id'] > 0 ||
-                                                    $journal_cash_payment_lists[$i]['journal_cheque_pay_id'] > 0 ||
-                                                    $journal_cash_payment_lists[$i]['journal_invoice_customer_id'] > 0 ||
-                                                    $journal_cash_payment_lists[$i]['journal_invoice_supplier_id'] > 0 
+                                                    $journal_special_lists[$i]['journal_cheque_id'] > 0 ||
+                                                    $journal_special_lists[$i]['journal_cheque_pay_id'] > 0 ||
+                                                    $journal_special_lists[$i]['journal_invoice_customer_id'] > 0 ||
+                                                    $journal_special_lists[$i]['journal_invoice_supplier_id'] > 0 
                                                 ){ ?>
                                                 readonly
                                             <?PHP } ?>
@@ -456,14 +456,14 @@
                                                             <div class="col-lg-6">
                                                                 <div class="form-group">
                                                                     <label>เลขที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
-                                                                    <input id="invoice_code" name="invoice_code" class="form-control" value="<?php echo $journal_cash_payment_invoices['invoice_code']; ?>" >
+                                                                    <input id="invoice_code" name="invoice_code" class="form-control" value="<?php echo $journal_special_invoices['invoice_code']; ?>" >
                                                                     <p class="help-block">Example : -.</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-6">
                                                                 <div class="form-group">
                                                                     <label>วันที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
-                                                                    <input id="invoice_date" name="invoice_date" class="form-control calendar" value="<?php echo $journal_cash_payment_invoices['invoice_date']; ?>" readonly />
+                                                                    <input id="invoice_date" name="invoice_date" class="form-control calendar" value="<?php echo $journal_special_invoices['invoice_date']; ?>" readonly />
                                                                     <p class="help-block">Example : -.</p>
                                                                 </div>
                                                             </div>
@@ -489,7 +489,7 @@
                                                                         }
                                                                         ?>
                                                                     </select>
-                                                                    <input id="supplier_name" name="supplier_name" value="<?php echo $journal_cash_payment_invoices['supplier_name']; ?>" class="form-control" />
+                                                                    <input id="supplier_name" name="supplier_name" value="<?php echo $journal_special_invoices['supplier_name']; ?>" class="form-control" />
                                                                     <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
                                                                 </div>
                                                             </div>
@@ -512,14 +512,14 @@
                                                             <div class="col-lg-6">
                                                                 <div class="form-group">
                                                                     <label>ยื่นภาษีรวมในงวด <font color="#F00"><b>*</b></font> </label>
-                                                                    <input id="vat_section" name="vat_section" class="form-control" value="<?php echo $journal_cash_payment_invoices['vat_section']; ?>" >
+                                                                    <input id="vat_section" name="vat_section" class="form-control" value="<?php echo $journal_special_invoices['vat_section']; ?>" >
                                                                     <p class="help-block">Example : 08/61.</p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-6">
                                                                 <div class="form-group">
                                                                     <label>ยื่นเพิ่มเติม <font color="#F00"><b>*</b></font> </label>
-                                                                    <input id="vat_section_add" name="vat_section_add" class="form-control" value="<?php echo $journal_cash_payment_invoices['vat_section_add']; ?>" >
+                                                                    <input id="vat_section_add" name="vat_section_add" class="form-control" value="<?php echo $journal_special_invoices['vat_section_add']; ?>" >
                                                                     <p class="help-block">Example : -.</p>
                                                                 </div>
                                                             </div>
@@ -542,11 +542,11 @@
                                                         </thead>
                                                         <tbody> 
                                                             <tr class="odd gradeX">
-                                                                <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_price" name="product_price" onchange="update_vat()" value="<?php echo $journal_cash_payment_invoices['product_price']; ?>" /></td>
-                                                                <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_vat" name="product_vat" readonly value="<?php echo $journal_cash_payment_invoices['product_vat']; ?>" /></td>
-                                                                <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_price_non" name="product_price_non" onchange="update_vat_non()" value="<?php echo $journal_cash_payment_invoices['product_price_non']; ?>" /></td>
-                                                                <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_vat_non" name="product_vat_non" readonly  value="<?php echo $journal_cash_payment_invoices['product_vat_non']; ?>" /></td>
-                                                                <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_non"  name="product_non"  value="<?php echo $journal_cash_payment_invoices['product_non']; ?>" /></td>
+                                                                <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_price" name="product_price" onchange="update_vat()" value="<?php echo $journal_special_invoices['product_price']; ?>" /></td>
+                                                                <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_vat" name="product_vat" readonly value="<?php echo $journal_special_invoices['product_vat']; ?>" /></td>
+                                                                <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_price_non" name="product_price_non" onchange="update_vat_non()" value="<?php echo $journal_special_invoices['product_price_non']; ?>" /></td>
+                                                                <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_vat_non" name="product_vat_non" readonly  value="<?php echo $journal_special_invoices['product_vat_non']; ?>" /></td>
+                                                                <td align="right"><input type="text" class="form-control" style="text-align: right;" id="product_non"  name="product_non"  value="<?php echo $journal_special_invoices['product_non']; ?>" /></td>
                                                             </tr> 
                                                         </tbody> 
                                                     </table> 
@@ -562,10 +562,10 @@
 
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" style="text-align: right;" id="journal_cash_payment_list_debit" value="<?php echo number_format($journal_cash_payment_list_debit,2); ?>" readonly />
+                                            <input type="text" class="form-control" style="text-align: right;" id="journal_special_list_debit" value="<?php echo number_format($journal_special_list_debit,2); ?>" readonly />
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" style="text-align: right;" id="journal_cash_payment_list_credit" value="<?php echo number_format($journal_cash_payment_list_credit,2); ?>" readonly />
+                                            <input type="text" class="form-control" style="text-align: right;" id="journal_special_list_credit" value="<?php echo number_format($journal_special_list_credit,2); ?>" readonly />
                                         </td>
                                         <td>
                                         </td>

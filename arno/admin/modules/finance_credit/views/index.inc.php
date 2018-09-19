@@ -317,7 +317,7 @@ if(!isset($_GET['action'])){
                     $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
                     $data['journal_cash_payment_list_debit'] = 0;
                     $data['journal_cash_payment_list_credit'] = (float)filter_var($finance_credit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-
+                    $data['journal_cheque_pay_id'] = $check_pay_id[$i];
                     $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
                     /* ----------------------------------- สิ้นสุด Debit ในสมุดรายวันจ่ายชำระเงิน ---------------------------------------*/
  
@@ -536,7 +536,7 @@ if(!isset($_GET['action'])){
                     $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
                     $data['journal_cash_payment_list_debit'] = 0;
                     $data['journal_cash_payment_list_credit'] = (float)filter_var($finance_credit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-
+                    $data['journal_cheque_pay_id'] = $check_pay_id[$i];
                     $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
                     /* ----------------------------------- สิ้นสุด Debit ในสมุดรายวันจ่ายชำระเงิน ---------------------------------------*/
 
@@ -590,7 +590,7 @@ if(!isset($_GET['action'])){
                     $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
                     $data['journal_cash_payment_list_debit'] = 0;
                     $data['journal_cash_payment_list_credit'] = (float)filter_var($finance_credit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-
+                    $data['journal_cheque_pay_id'] = $check_pay_id;
                     $journal_cash_payment_list_cash = $journal_cash_payment_list_model->getJournalCashPaymentListByFinanceCreditPayId($journal_cash_payment_id, $finance_credit_pay_id[$i]);
 
                     $journal_cash_payment_list_model->updateJournalCashPaymentListById($data,$journal_cash_payment_list_cash['journal_cash_payment_list_id'] );

@@ -56,10 +56,26 @@ $journal_cash_payment_id = $_GET['id'];
 $target_dir = "../upload/journal_cash_payment/";
 
 if(!isset($_GET['action'])){
+
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $keyword = $_GET['keyword']; 
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+
     $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy($date_start,$date_end,$keyword);
+
+    $page_max = (int)(count($journal_cash_payments)/$page_size);
+    if(count($journal_cash_payments)%$page_size > 0){
+        $page_max += 1;
+    }
+
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -87,10 +103,14 @@ if(!isset($_GET['action'])){
             $last_code .= $code[$i]['value'];
         }   
     }
-    
-
-    
     $first_date = date("d")."-".date("m")."-".date("Y");   
+
+
+    if($journal_cash_payment_id > 0){
+       
+        $journal_cash_payment = $journal_cash_payment_model->getJournalCashPaymentByID($journal_cash_payment_id);
+        $journal_cash_payment_lists = $journal_cash_payment_list_model->getJournalCashPaymentListBy($journal_cash_payment_id);
+    }
 
     require_once($path.'insert.inc.php');
 
@@ -109,9 +129,8 @@ if(!isset($_GET['action'])){
 
     $journal_cash_payment = $journal_cash_payment_model->getJournalCashPaymentByID($journal_cash_payment_id);
     $journal_cash_payment_lists = $journal_cash_payment_list_model->getJournalCashPaymentListBy($journal_cash_payment_id);
-    $journal_cash_payment_invoices = $journal_cash_payment_invoice_model->getJournalCashPaymentInvoiceBy($journal_cash_payment_id);
+    //$journal_cash_payment_invoices = $journal_cash_payment_invoice_model->getJournalCashPaymentInvoiceBy($journal_cash_payment_id);
  
-    $supplier=$supplier_model->getSupplierByID($journal_cash_payment_invoices['supplier_id'] );
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
@@ -297,7 +316,22 @@ if(!isset($_GET['action'])){
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $keyword = $_GET['keyword']; 
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+
     $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy($date_start,$date_end,$keyword);
+
+    $page_max = (int)(count($journal_cash_payments)/$page_size);
+    if(count($journal_cash_payments)%$page_size > 0){
+        $page_max += 1;
+    }
+
     require_once($path.'view.inc.php');
 
 

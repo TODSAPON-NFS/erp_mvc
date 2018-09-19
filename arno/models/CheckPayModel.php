@@ -160,7 +160,7 @@ class CheckPayModel extends BaseModel{
         check_pay_date = '".$data['check_pay_date']."', 
         bank_account_id = '".$data['bank_account_id']."', 
         supplier_id = '".$data['supplier_id']."', 
-        check_pay_remark = '".$data['check_pay_remark']."', 
+        check_pay_remark = '".static::$db->real_escape_string($data['check_pay_remark'])."', 
         check_pay_total = '".$data['check_pay_total']."', 
         check_pay_type = '".$data['check_pay_type']."',  
         updateby = '".$data['updateby']."', 
@@ -217,7 +217,7 @@ class CheckPayModel extends BaseModel{
         $data['check_pay_date']."','".
         $data['bank_account_id']."','".
         $data['supplier_id']."','".
-        $data['check_pay_remark']."','".
+        static::$db->real_escape_string($data['check_pay_remark'])."','".
         $data['check_pay_total']."','".
         $data['check_pay_type']."','". 
         $data['addby']."',".

@@ -1,5 +1,5 @@
 <script>
-
+    var row_journal_id = null;
     var cheque_account = '<?PHP echo $account_setting['cheque_account']['account_id']; ?>';
     var cheque_pay_account = '<?PHP echo $account_setting['cheque_pay_account']['account_id']; ?>';
     var vat_purchase_account = '<?PHP echo $account_setting['vat_purchase_account']['account_id']; ?>';
@@ -153,10 +153,10 @@
                     '<input type="hidden" name="journal_cheque_pay_id[]" value="0" />'+  
                     '<input type="hidden" name="journal_invoice_customer_id[]" value="0" />'+  
                     '<input type="hidden" name="journal_invoice_supplier_id[]" value="0" />'+     
-                    '<select class="form-control select" type="text" name="account_id[]"  data-live-search="true" ></select>'+
+                    '<select class="form-control select" type="text" name="account_id[]"  data-live-search="true" onchange="get_account_type(this);"  ></select>'+
                 '</td>'+
                 '<td><input type="text" class="form-control" name="journal_cash_payment_list_name[]" value="' + document.getElementById("journal_cash_payment_name").value + '" /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;"  value="0" onchange="val_format(this);" name="journal_cash_payment_list_debit[]"  /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;"  value="0" onchange="val_format(this);" name="journal_cash_payment_list_debit[]" onclick="edit_credit(this)"  /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" onchange="val_format(this);" name="journal_cash_payment_list_credit[]" /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -175,7 +175,6 @@
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
     }
-
     
 
     function val_format(id){
@@ -186,6 +185,7 @@
         $(id).val( val.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") ); 
         calculateAll();
     }
+
 
     function calculateAll(){
         var debit = document.getElementsByName('journal_cash_payment_list_debit[]');
@@ -208,17 +208,128 @@
 
     }
 
-    
+    function get_account_type(id){
+        var account_id = $(id).val(); 
+        console.log('cheque_account',cheque_account);
+        console.log('cheque_pay_account',cheque_pay_account);
+        console.log('vat_purchase_account',vat_purchase_account);
+        console.log('vat_sale_account',vat_sale_account);
+ 
+        if(account_id == cheque_account){
+            var journal_cheque_id = $(id).closest('tr').children('td').children('input[name="journal_cheque_id[]"]');
+            if(journal_cheque_id[0].value == 0){ 
+                add_cheque_row($('#add_cheque_row'),id);
+            } 
+        }else if (account_id == cheque_pay_account){
+            var journal_cheque_pay_id = $(id).closest('tr').children('td').children('input[name="journal_cheque_pay_id[]"]');
+            if(journal_cheque_pay_id[0].value == 0){ 
+                add_cheque_pay_row($('#add_cheque_pay_row'),id);
+            } 
+        }else if (account_id == vat_purchase_account){
+            var journal_invoice_supplier_id = $(id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]'); 
+            if(journal_invoice_supplier_id[0].value == 0){ 
+                add_invoice_supplier_row($('#add_invoice_supplier_row'),id);
+            } 
+        }else if (account_id == vat_sale_account){
+            /*
+            var journal_invoice_customer_id = $(id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]');
+            if(journal_invoice_customer_id[0].value == 0){ 
+                add_invoice_customer_row($('#add_invoice_customer_row'),id);
+            } 
+            */
+        }else {
+
+        }
+    }
+
+    function edit_credit(id){
+        id =  $(id).closest('tr').children('td').children('div').children('select[name="account_id[]"]');
+        console.log("edit_credit Acount id : ",id[0]);
+        var account_id = $(id).val(); 
+        if(account_id == cheque_account){
+            var journal_cheque_id = $(id).closest('tr').children('td').children('input[name="journal_cheque_id[]"]');
+            if(journal_cheque_id[0].value == 0){ 
+                add_cheque_row($('#add_cheque_row'),id[0]);
+            } else{
+                var check_id = $('#tb_cheque').children('tbody').children('tr').children('td').children('input[name="check_id[]"]');   
+                for(var i = 0; i < check_id.length ;i++){
+                    if(check_id[i].value == journal_cheque_id[0].value){ 
+                        edit_cheque_row(check_id[i],id[0]);
+                    }
+                }
+            }
+        }else if (account_id == cheque_pay_account){
+            var journal_cheque_pay_id = $(id[0]).closest('tr').children('td').children('input[name="journal_cheque_pay_id[]"]');
+            if(journal_cheque_pay_id[0].value == 0){ 
+                add_cheque_pay_row($('#add_cheque_pay_row'),id[0]);
+            } else{
+                var check_pay_id = $('#tb_cheque_pay').children('tbody').children('tr').children('td').children('input[name="check_pay_id[]"]');   
+                for(var i = 0; i < check_pay_id.length ;i++){
+                    if(check_pay_id[i].value == journal_cheque_pay_id[0].value){
+                        $(check_pay_id[i]).closest('tr').remove();
+                        edit_cheque_pay_row(check_pay_id[i],id[0]);
+                    }
+                }
+            }
+        }else if (account_id == vat_purchase_account){
+            var journal_invoice_supplier_id = $(id[0]).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]'); 
+            if(journal_invoice_supplier_id[0].value == 0){ 
+                add_invoice_supplier_row($('#add_invoice_supplier_row'),id[0]);
+            } else{
+                var invoice_supplier_id = $('#tb_invoice_supplier').children('tbody').children('tr').children('td').children('input[name="invoice_supplier_id[]"]');   
+                for(var i = 0; i < invoice_supplier_id.length ;i++){
+                    if(invoice_supplier_id[i].value == journal_invoice_supplier_id[0].value){
+                        edit_invoice_supplier_row(invoice_supplier_id[i],id[0]);
+                    }
+                }
+            }
+        }else if (account_id == vat_sale_account){
+            /*
+            var journal_invoice_customer_id = $(id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]');
+            if(journal_invoice_customer_id[0].value == 0){ 
+                add_invoice_customer_row($('#add_invoice_customer_row'),id);
+            } else{
+                
+            }
+            */
+        }else {
+
+        }
+    }
+
+
+    function copy_journal(){
+        find_journal_code("copy");
+    }
+
+    function edit_journal(){
+        find_journal_code("edit");
+    }
+
+
+    function find_journal_code(type){
+        var code = $('#journal_code').val();
+        $.post( "controllers/getJournalByCode.php", { 'journal_cash_payment_code': code }, function( data ) {  
+            if(data !== null){ 
+                if(type == "copy"){
+                    console.log("Copy ",data);
+                    window.location = "?app=journal_special_04&action=insert&id="+data.journal_cash_payment_id;
+                } else if(type == "edit"){
+                    console.log("Edit ", data);
+                    window.location = "?app=journal_special_04&action=update&id="+data.journal_cash_payment_id;
+                }
+            }else{  
+                alert("Can not find journal payment : "+ code );
+            } 
+        });
+    } 
 
 </script>
 
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <h1 class="page-header">Journal Payment  Management</h1>
-    </div>
-    <div class="col-lg-6" align="right">
-       
-    </div>
+    </div> 
     <!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
@@ -230,15 +341,21 @@
                     <div class="col-lg-8">
                     เพิ่มสมุดรายวันจ่ายเงิน /  Add Journal Payment   
                     </div>
-                    <div class="col-lg-4">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <input class="example-ajax-post form-control" name="journal_code" id="journal_code"/> 
-                            </div>
-                            <div class="col-lg-4">
-                                <button class="btn btn-success " ><i class="fa fa-plus" aria-hidden="true"></i> Copy form.</button>
-                            </div>
-                        </div>
+                    <div class="col-lg-4">  
+                        <table width="100%">
+                            <tr>
+                                <td style="padding-left:4px;">
+                                    <input class="example-ajax-post form-control" name="journal_code" id="journal_code" onchange=""/> 
+                                </td>
+                                <td style="padding-left:4px;width:100px;">
+                                    <button class="btn btn-success " onclick="copy_journal();" ><i class="fa fa-plus" aria-hidden="true"></i> Copy journal.</button>
+                                </td>
+                                <td style="padding-left:4px;width:100px;">
+                                    <button class="btn btn-warning " onclick="edit_journal();" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit journal.</button>
+                                </td>
+                            </tr>
+                        </table> 
+                             
                     </div>
                 </div>
             </div>
@@ -263,7 +380,7 @@
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label>หัวข้อสมุดรายวันจ่ายเงิน / Journal Payment Name</label>
-                                <input type="text" id="journal_cash_payment_name" name="journal_cash_payment_name"  class="form-control" value="" />
+                                <input type="text" id="journal_cash_payment_name" name="journal_cash_payment_name"  class="form-control" value="<?php echo $journal_cash_payment['journal_cash_payment_name'];?>" />
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -308,7 +425,7 @@
                                             <input type="hidden" name="journal_invoice_customer_id[]" value="0" />
                                             <input type="hidden" name="journal_invoice_supplier_id[]" value="0" /> 
                                             <input type="hidden" name="journal_cash_payment_list_id[]" value="0" />
-                                            <select  class="form-control select" name="account_id[]" data-live-search="true" >
+                                            <select  class="form-control select" name="account_id[]" data-live-search="true" onchange="get_account_type(this);"  >
                                                 <option value="">Select</option>
                                                 <?php 
                                                 for($ii =  0 ; $ii < count($accounts) ; $ii++){
@@ -320,7 +437,7 @@
                                             </select>
                                         </td>
                                         <td align="right"><input type="text" class="form-control"  name="journal_cash_payment_list_name[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_cash_payment_list_name']; ?>" /></td>
-                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_debit[]" onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'],2); ?>" /></td>
+                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_debit[]" onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'],2); ?>"  onclick="edit_credit(this)" /></td>
                                         <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_credit[]" onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'],2); ?>" /></td>
                                         <td>
                                             <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -366,7 +483,7 @@
 
                         <div id="vat_purchase" class="tab-pane fade">
                             <h3>ภาษีซื้อ</h3>
-                            <?PHP require_once($path.'vat-purechase.inc.php'); ?>  
+                            <?PHP require_once($path.'vat-purchase.inc.php'); ?>  
                         </div>
 
                         <div id="vat_sale" class="tab-pane fade">
@@ -381,7 +498,7 @@
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="index.php?app=journal_special_04" class="btn btn-default">Back</a>
-                            <button type="reset" class="btn btn-primary">Reset</button>
+                            <a href="index.php?app=journal_special_04&action=insert" class="btn btn-primary">Reset</a>
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     </div> 
@@ -395,7 +512,23 @@
 </div>
 
 
+<!-- ************************************************** Cheque Modal  *********************************** -->
+<?PHP require_once($path.'cheque.modal.inc.php'); ?>
+<!-- ************************************************** End Cheque Modal  *********************************** -->
 
+
+<!-- ************************************************** Cheque Modal  *********************************** -->
+<?PHP require_once($path.'cheque-pay.modal.inc.php'); ?>
+<!-- ************************************************** End Cheque Modal  *********************************** -->
+
+
+<!-- ************************************************** Cheque Modal  *********************************** -->
+<?PHP require_once($path.'vat-purchase.modal.inc.php'); ?>
+<!-- ************************************************** End Cheque Modal  *********************************** -->
+
+<!-- ************************************************** Cheque Modal  *********************************** -->
+<?PHP require_once($path.'vat-sale.modal.inc.php'); ?>
+<!-- ************************************************** End Cheque Modal  *********************************** -->
 
 <script>
     $(".example-ajax-post").easyAutocomplete(options);

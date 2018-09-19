@@ -114,6 +114,23 @@ class JournalCashPaymentModel extends BaseModel{
 
     }
 
+    function getJournalCashPaymentByCode($journal_cash_payment_code){
+        $sql = " SELECT * 
+        FROM tb_journal_cash_payment 
+        WHERE journal_cash_payment_code = '$journal_cash_payment_code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getJournalCashPaymentViewByID($id){
         $sql = " SELECT journal_cash_payment_id, 
         journal_cash_payment_code, 
@@ -162,7 +179,7 @@ class JournalCashPaymentModel extends BaseModel{
         $sql = " UPDATE tb_journal_cash_payment SET 
         journal_cash_payment_code = '".$data['journal_cash_payment_code']."', 
         journal_cash_payment_date = '".$data['journal_cash_payment_date']."', 
-        journal_cash_payment_name = '".$data['journal_cash_payment_name']."', 
+        journal_cash_payment_name = '".static::$db->real_escape_string($data['journal_cash_payment_name']). "', 
         updateby = '".$data['updateby']."', 
         lastupdate = NOW()  
         WHERE journal_cash_payment_id = $id 

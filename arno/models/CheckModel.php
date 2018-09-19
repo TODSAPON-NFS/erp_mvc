@@ -166,9 +166,9 @@ class CheckModel extends BaseModel{
         check_date_write = '".$data['check_date_write']."', 
         check_date_recieve = '".$data['check_date_recieve']."', 
         bank_id = '".$data['bank_id']."', 
-        bank_branch = '".$data['bank_branch']."', 
+        bank_branch = '".static::$db->real_escape_string($data['bank_branch'])."', 
         customer_id = '".$data['customer_id']."', 
-        check_remark = '".$data['check_remark']."', 
+        check_remark = '".static::$db->real_escape_string($data['check_remark'])."', 
         check_total = '".$data['check_total']."', 
         check_type = '".$data['check_type']."', 
         updateby = '".$data['updateby']."', 
@@ -244,9 +244,9 @@ class CheckModel extends BaseModel{
         $data['check_date_write']."','".
         $data['check_date_recieve']."','".
         $data['bank_id']."','".
-        $data['bank_branch']."','".
+        static::$db->real_escape_string($data['bank_branch'])."','".
         $data['customer_id']."','".
-        $data['check_remark']."','".
+        static::$db->real_escape_string($data['check_remark'])."','".
         $data['check_total']."','".
         $data['check_type']."','".
         $data['addby']."',".

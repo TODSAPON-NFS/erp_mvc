@@ -44,7 +44,7 @@ class JournalCashPaymentModel extends BaseModel{
             OR  journal_cash_payment_name LIKE ('%$keyword%') 
         ) 
         $str_date 
-        ORDER BY STR_TO_DATE(journal_cash_payment_date,'%d-%m-%Y %H:%i:%s'), journal_cash_payment_code DESC 
+        ORDER BY  journal_cash_payment_code DESC 
          ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

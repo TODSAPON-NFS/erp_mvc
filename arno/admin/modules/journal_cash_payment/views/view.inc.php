@@ -159,22 +159,12 @@
                             <td><?php echo $journal_cash_payments[$i]['update_name']; ?></td>
                             <td><?php echo $journal_cash_payments[$i]['lastupdate']; ?></td>
                             <td>
-
-                                <a href="index.php?app=journal_special_04&action=print&id=<?PHP echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>" >
-                                    <i class="fa fa-print" aria-hidden="true"></i>
-                                </a>
-
-                                <a href="?app=journal_special_04&action=detail&id=<?php echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>">
-                                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                </a>
-
                                 <a href="?app=journal_special_04&action=update&id=<?php echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
                                 <a href="?app=journal_special_04&action=delete&id=<?php echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>" onclick="return confirm('You want to delete Journal Cash Payment : <?php echo $journal_cash_payments[$i]['journal_cash_payment_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
-                                </a>
-
+                                </a> 
                             </td>
 
                         </tr>

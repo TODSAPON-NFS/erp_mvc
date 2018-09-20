@@ -11,7 +11,7 @@ abstract class BaseModel{
     
     protected $password="root123456";
 
-    protected $db_name="revelsoft_erp";
+    protected $db_name="revelsoft_erp_arno";
     //protected $db_name="revelsof_erp";
 
     function __construct(){

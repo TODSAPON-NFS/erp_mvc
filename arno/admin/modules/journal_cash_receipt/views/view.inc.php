@@ -103,14 +103,7 @@
                             <td><?php echo $journal_cash_receipts[$i]['update_name']; ?></td>
                             <td><?php echo $journal_cash_receipts[$i]['lastupdate']; ?></td>
                             <td>
-
-                                <a href="index.php?app=journal_special_03&action=print&id=<?PHP echo $journal_cash_receipts[$i]['journal_cash_receipt_id'];?>" >
-                                    <i class="fa fa-print" aria-hidden="true"></i>
-                                </a>
-
-                                <a href="?app=journal_special_03&action=detail&id=<?php echo $journal_cash_receipts[$i]['journal_cash_receipt_id'];?>">
-                                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                </a>
+ 
 
                                 <a href="?app=journal_special_03&action=update&id=<?php echo $journal_cash_receipts[$i]['journal_cash_receipt_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

@@ -156,8 +156,8 @@
                     '<select class="form-control select" type="text" name="account_id[]"  data-live-search="true" onchange="get_account_type(this);"  ></select>'+
                 '</td>'+
                 '<td><input type="text" class="form-control" name="journal_cash_payment_list_name[]" value="' + document.getElementById("journal_cash_payment_name").value + '" /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;"  value="0" onchange="val_format(this);" name="journal_cash_payment_list_debit[]" onclick="edit_credit(this)"  /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" onchange="val_format(this);" name="journal_cash_payment_list_credit[]" /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;"  value="0" onchange="val_format(this);" name="journal_cash_payment_list_debit[]" onclick="edit_credit(this)" /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" onchange="val_format(this);" name="journal_cash_payment_list_credit[]" onclick="edit_credit(this)" /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -413,7 +413,7 @@
                                                 readonly
                                             <?PHP } ?>
                                         /></td>
-                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_credit[]" onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'],2); ?>" 
+                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_credit[]" onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'],2); ?>"  onclick="edit_credit(this)" 
                                             <?PHP if(
                                                     $journal_cash_payment_lists[$i]['journal_cheque_id'] > 0 ||
                                                     $journal_cash_payment_lists[$i]['journal_cheque_pay_id'] > 0 ||

@@ -160,7 +160,8 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'add'){
     if(isset($_POST['finance_credit_code'])){
-
+        $journal_cash_payment_list_debit = 0;
+        $journal_cash_payment_list_credit = 0;
         /* -------------------------------- เพิ่มใบจ่ายชำระเงิน ---------------------------------------*/
         $data = [];
         $data['supplier_id'] = $_POST['supplier_id'];
@@ -235,14 +236,23 @@ if(!isset($_GET['action'])){
             /* -------------------------------- สิ้นสุดสร้างสมุดรายวันจ่ายชำระเงิน ---------------------------------------*/
 
 
-            /* -------------------------------------- Credit เจ้าหนี้การค้า ------------------------------------------*/
+            /* -------------------------------------- Debit เจ้าหนี้การค้า ------------------------------------------*/
+                $val = (float)filter_var($_POST['finance_credit_pay'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                if($val >= 0){
+                    $journal_cash_payment_list_debit = $val;
+                    $journal_cash_payment_list_credit = 0;
+                    
+                }else{
+                    $journal_cash_payment_list_debit = 0;
+                    $journal_cash_payment_list_credit = abs($val);
+                }
                 $data = [];
                 $data['journal_cash_payment_id'] = $journal_cash_payment_id;
                 $data['finance_credit_pay_id'] = -2;
                 $data['account_id'] = $supplier['account_id'];
                 $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
-                $data['journal_cash_payment_list_debit'] = (float)filter_var($_POST['finance_credit_pay'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                $data['journal_cash_payment_list_credit'] = 0;
+                $data['journal_cash_payment_list_debit'] = $journal_cash_payment_list_debit;
+                $data['journal_cash_payment_list_credit'] = $journal_cash_payment_list_credit;
 
                 $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
             /* ----------------------------------- สิ้นสุด Credit เจ้าหนี้การค้า ---------------------------------------*/
@@ -310,8 +320,18 @@ if(!isset($_GET['action'])){
                     /* -------------------------------- สิ้นสุดเพิ่มรายการจ่ายชำระเงิน ที่ละรายการ ---------------------------------------*/
 
 
-                    /* -------------------------------------- Debit ในสมุดรายวันจ่ายชำระเงิน ------------------------------------------*/
+                    /* -------------------------------------- Credit ในสมุดรายวันจ่ายชำระเงิน ------------------------------------------*/
                     $account_setting['cheque_pay_account'] = $account_setting_model->getAccountSettingByID(13); //ดึงข้อมูลเช็คจ่ายล่วงหน้า
+                    $val = (float)filter_var($finance_credit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    if($val >= 0){
+                        $journal_cash_payment_list_debit = 0;
+                        $journal_cash_payment_list_credit = $val;
+                        
+                    }else{
+                        $journal_cash_payment_list_debit = abs($val);
+                        $journal_cash_payment_list_credit = 0;
+                    }
+
                     $data = [];
                     $data['journal_cash_payment_id'] = $journal_cash_payment_id;
                     $data['finance_credit_pay_id'] = $finance_credit_pay_id[$i];
@@ -321,8 +341,8 @@ if(!isset($_GET['action'])){
                         $data['account_id'] = $account_id[$i];
                     } 
                     $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
-                    $data['journal_cash_payment_list_debit'] = 0;
-                    $data['journal_cash_payment_list_credit'] = (float)filter_var($finance_credit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data['journal_cash_payment_list_debit'] = $journal_cash_payment_list_debit;
+                    $data['journal_cash_payment_list_credit'] = $journal_cash_payment_list_credit;
                     $data['journal_cheque_pay_id'] = $check_pay_id[$i];
                     $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
                     /* ----------------------------------- สิ้นสุด Debit ในสมุดรายวันจ่ายชำระเงิน ---------------------------------------*/
@@ -333,16 +353,25 @@ if(!isset($_GET['action'])){
                 /* -------------------------------------- Debit เงินสดในสมุดรายวันจ่ายชำระเงิน ------------------------------------------*/
                 $cash = (float)filter_var($_POST['finance_credit_cash'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-                if($cash > 0){
+                if($cash != 0){
                     //account setting id = 3 เงินสด 
                     $account_pays = $account_setting_model->getAccountSettingByID(3);
+                    $val = $cash;
+                    if($val >= 0){
+                        $journal_cash_payment_list_debit = 0;
+                        $journal_cash_payment_list_credit = $val;
+                        
+                    }else{
+                        $journal_cash_payment_list_debit = abs($val);
+                        $journal_cash_payment_list_credit = 0;
+                    }
                     $data = [];
                     $data['journal_cash_payment_id'] = $journal_cash_payment_id;
                     $data['finance_credit_pay_id'] = -1;
                     $data['account_id'] = $account_pays['account_id'];
                     $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
-                    $data['journal_cash_payment_list_debit'] = 0;
-                    $data['journal_cash_payment_list_credit'] = $cash;
+                    $data['journal_cash_payment_list_debit'] = $journal_cash_payment_list_debit;
+                    $data['journal_cash_payment_list_credit'] = $journal_cash_payment_list_credit;
 
                     $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
                 }
@@ -372,7 +401,8 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'edit'){
     
     if(isset($_POST['finance_credit_code'])){
-        
+        $journal_cash_payment_list_debit = 0;
+        $journal_cash_payment_list_credit = 0;
         /* -------------------------------- อัพเดทใบจ่ายชำระเงิน ---------------------------------------*/
         $data = [];
         $data['supplier_id'] = $_POST['supplier_id'];
@@ -459,27 +489,45 @@ if(!isset($_GET['action'])){
         
         /* -------------------------------- สิ้นสุด เพิ่มหรืออัพเดท สมุดรายวันจ่ายชำระเงิน ---------------------------------------*/
 
-        /* -------------------------------------- Credit เจ้าหนี้การค้า ------------------------------------------*/
+        /* -------------------------------------- Debit เจ้าหนี้การค้า ------------------------------------------*/
             
         $journal_cash_payment_list_cash = $journal_cash_payment_list_model->getJournalCashPaymentListByFinanceCreditPayId($journal_cash_payment_id,-2);
         if($journal_cash_payment_list_cash['journal_cash_payment_list_id'] > 0){
+            $val = (float)filter_var($_POST['finance_credit_pay'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            if($val >= 0){
+                $journal_cash_payment_list_debit = $val;
+                $journal_cash_payment_list_credit = 0;
+                
+            }else{
+                $journal_cash_payment_list_debit = 0;
+                $journal_cash_payment_list_credit = abs($val);
+            }
             $data = [];
             $data['journal_cash_payment_id'] = $journal_cash_payment_id;
             $data['finance_credit_pay_id'] = $journal_cash_payment_list_cash['finance_credit_pay_id'];
             $data['account_id'] = $supplier['account_id'];
             $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
-            $data['journal_cash_payment_list_debit'] = (float)filter_var($_POST['finance_credit_pay'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-            $data['journal_cash_payment_list_credit'] = 0;
+            $data['journal_cash_payment_list_debit'] = $journal_cash_payment_list_debit;
+            $data['journal_cash_payment_list_credit'] = $journal_cash_payment_list_credit;
 
             $journal_cash_payment_list_model->updateJournalCashPaymentListById($data,$journal_cash_payment_list_cash['journal_cash_payment_list_id']);
         }else{
+            $val = (float)filter_var($_POST['finance_credit_pay'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            if($val >= 0){
+                $journal_cash_payment_list_debit = $val;
+                $journal_cash_payment_list_credit = 0;
+                
+            }else{
+                $journal_cash_payment_list_debit = 0;
+                $journal_cash_payment_list_credit = abs($val);
+            }
             $data = [];
             $data['journal_cash_payment_id'] = $journal_cash_payment_id;
-            $data['finance_credit_pay_id'] = $finance_credit_pay_id[$i];
+            $data['finance_credit_pay_id'] = -2;
             $data['account_id'] = $supplier['account_id'];
             $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
-            $data['journal_cash_payment_list_debit'] = (float)filter_var($_POST['finance_credit_pay'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-            $data['journal_cash_payment_list_credit'] = 0;
+            $data['journal_cash_payment_list_debit'] = $journal_cash_payment_list_debit;
+            $data['journal_cash_payment_list_credit'] = $journal_cash_payment_list_credit;
 
             $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
         }
@@ -504,11 +552,11 @@ if(!isset($_GET['action'])){
           $journal_cash_payment_list_model->deleteJournalCashPaymentListByFinanceCreditListIDNotIn($finance_credit_id,$finance_credit_pay_id);
   
           if(is_array($finance_credit_pay_id)){
-   
+            
 
             for($i=0; $i < count($finance_credit_pay_id) ; $i++){
 
-
+                
                 
 
                 if($finance_credit_pay_id[$i] == 0){
@@ -534,22 +582,7 @@ if(!isset($_GET['action'])){
                     /* -------------------------------------- สิ้นสุดเพิ่ม Cheque จ่ายล่วงหน้า ------------------------------------------*/
 
 
-                    /* -------------------------------------- Debit ในสมุดรายวันจ่ายชำระเงิน ------------------------------------------*/
-                    $account_setting['cheque_pay_account'] = $account_setting_model->getAccountSettingByID(13); //ดึงข้อมูลเช็คจ่ายล่วงหน้า
-                    $data = [];
-                    $data['journal_cash_payment_id'] = $journal_cash_payment_id;
-                    $data['finance_credit_pay_id'] = $finance_credit_pay_id[$i];
-                    if($check_pay_id[$i] > 0){
-                        $data['account_id'] = $account_setting['cheque_pay_account']['account_id'];
-                    }else{
-                        $data['account_id'] = $account_id[$i];
-                    } 
-                    $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
-                    $data['journal_cash_payment_list_debit'] = 0;
-                    $data['journal_cash_payment_list_credit'] = (float)filter_var($finance_credit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                    $data['journal_cheque_pay_id'] = $check_pay_id[$i];
-                    $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
-                    /* ----------------------------------- สิ้นสุด Debit ในสมุดรายวันจ่ายชำระเงิน ---------------------------------------*/
+                    
 
                     /* -------------------------------- เพิ่มหรืออัพเดทรายการจ่ายชำระเงิน ที่ละรายการ ---------------------------------------*/
                     $data = [];
@@ -566,7 +599,34 @@ if(!isset($_GET['action'])){
                     $data['updateby'] = $user[0][0];
                     $data['check_pay_id'] = $check_pay_id[$i];
 
-                    $finance_credit_pay_model->insertFinanceCreditPay($data);
+                    $finance_credit_pay_id[$i] = $finance_credit_pay_model->insertFinanceCreditPay($data);
+
+                    /* -------------------------------------- Credit ในสมุดรายวันจ่ายชำระเงิน ------------------------------------------*/
+                    $account_setting['cheque_pay_account'] = $account_setting_model->getAccountSettingByID(13); //ดึงข้อมูลเช็คจ่ายล่วงหน้า
+                    $val = (float)filter_var($finance_credit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    if($val >= 0){
+                        $journal_cash_payment_list_debit = 0;
+                        $journal_cash_payment_list_credit = $val;
+                        
+                    }else{
+                        $journal_cash_payment_list_debit = abs($val);
+                        $journal_cash_payment_list_credit = 0;
+                    }
+
+                    $data = [];
+                    $data['journal_cash_payment_id'] = $journal_cash_payment_id;
+                    $data['finance_credit_pay_id'] = $finance_credit_pay_id[$i];
+                    if($check_pay_id[$i] > 0){
+                        $data['account_id'] = $account_setting['cheque_pay_account']['account_id'];
+                    }else{
+                        $data['account_id'] = $account_id[$i];
+                    } 
+                    $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
+                    $data['journal_cash_payment_list_debit'] = $journal_cash_payment_list_debit;
+                    $data['journal_cash_payment_list_credit'] = $journal_cash_payment_list_credit;
+                    $data['journal_cheque_pay_id'] = $check_pay_id[$i];
+                    $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
+                    /* ----------------------------------- สิ้นสุด Credit ในสมุดรายวันจ่ายชำระเงิน ---------------------------------------*/
 
                      
 
@@ -593,24 +653,6 @@ if(!isset($_GET['action'])){
 
                     /* -------------------------------------- สิ้นสุดเพิ่ม Cheque จ่ายล่วงหน้า ------------------------------------------*/
 
-                    /* -------------------------------------- Debit ในสมุดรายวันจ่ายชำระเงิน ------------------------------------------*/
-                    $account_setting['cheque_pay_account'] = $account_setting_model->getAccountSettingByID(13); //ดึงข้อมูลเช็คจ่ายล่วงหน้า
-                    $data = [];
-                    $data['journal_cash_payment_id'] = $journal_cash_payment_id;
-                    $data['finance_credit_pay_id'] = $finance_credit_pay_id[$i];
-                    if($check_pay_id[$i] > 0){
-                        $data['account_id'] = $account_setting['cheque_pay_account']['account_id'];
-                    }else{
-                        $data['account_id'] = $account_id[$i];
-                    } 
-                    $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
-                    $data['journal_cash_payment_list_debit'] = 0;
-                    $data['journal_cash_payment_list_credit'] = (float)filter_var($finance_credit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                    $data['journal_cheque_pay_id'] = $check_pay_id[$i];
-                    $journal_cash_payment_list_cash = $journal_cash_payment_list_model->getJournalCashPaymentListByFinanceCreditPayId($journal_cash_payment_id, $finance_credit_pay_id[$i]);
-
-                    $journal_cash_payment_list_model->updateJournalCashPaymentListById($data,$journal_cash_payment_list_cash['journal_cash_payment_list_id'] );
-                    /* ----------------------------------- สิ้นสุด Debit ในสมุดรายวันจ่ายชำระเงิน ---------------------------------------*/
 
                     /* -------------------------------- เพิ่มหรืออัพเดทรายการจ่ายชำระเงิน ที่ละรายการ ---------------------------------------*/
                     $data = [];
@@ -628,6 +670,45 @@ if(!isset($_GET['action'])){
                     $data['check_pay_id'] = $check_pay_id[$i]; 
 
                     $finance_credit_pay_model->updateFinanceCreditPayById($data,$finance_credit_pay_id[$i]);
+
+
+
+                    /* -------------------------------------- Debit ในสมุดรายวันจ่ายชำระเงิน ------------------------------------------*/
+                    $account_setting['cheque_pay_account'] = $account_setting_model->getAccountSettingByID(13); //ดึงข้อมูลเช็คจ่ายล่วงหน้า
+                    $val = (float)filter_var($finance_credit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    if($val >= 0){
+                        $journal_cash_payment_list_debit = 0;
+                        $journal_cash_payment_list_credit = $val;
+                        
+                    }else{
+                        $journal_cash_payment_list_debit = abs($val);
+                        $journal_cash_payment_list_credit = 0;
+                    }
+                    $data = [];
+                    $data['journal_cash_payment_id'] = $journal_cash_payment_id;
+                    $data['finance_credit_pay_id'] = $finance_credit_pay_id[$i];
+                    if($check_pay_id[$i] > 0){
+                        $data['account_id'] = $account_setting['cheque_pay_account']['account_id'];
+                    }else{
+                        $data['account_id'] = $account_id[$i];
+                    } 
+                    $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
+                    $data['journal_cash_payment_list_debit'] = $journal_cash_payment_list_debit;
+                    $data['journal_cash_payment_list_credit'] = $journal_cash_payment_list_credit;
+                    $data['journal_cheque_pay_id'] = $check_pay_id[$i];
+                    $journal_cash_payment_list_cash = $journal_cash_payment_list_model->getJournalCashPaymentListByFinanceCreditPayId($journal_cash_payment_id, $finance_credit_pay_id[$i]);
+
+                    if($journal_cash_payment_list_cash['journal_cash_payment_list_id'] > 0){
+                        $journal_cash_payment_list_model->updateJournalCashPaymentListById($data,$journal_cash_payment_list_cash['journal_cash_payment_list_id'] );
+                    }else{
+                        $journal_cash_payment_list_model->insertJournalCashPaymentList($data);
+                    }
+                    
+                    /* ----------------------------------- สิ้นสุด Debit ในสมุดรายวันจ่ายชำระเงิน ---------------------------------------*/
+
+
+
+                    
                 }
 
                 /* -------------------------------- สิ้นสุดเพิ่มหรืออัพเดทรายการจ่ายชำระเงิน ที่ละรายการ ---------------------------------------*/
@@ -639,17 +720,26 @@ if(!isset($_GET['action'])){
         /* -------------------------------------- เพิ่มหรืออัพเดท Debit เงินสดในสมุดรายวันจ่ายชำระเงิน ------------------------------------------*/
         $cash = (float)filter_var($_POST['finance_credit_cash'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-        if($cash > 0){
+        if($cash != 0){
 
                 //account setting id = 3 เงินสด 
                 $account_pays = $account_setting_model->getAccountSettingByID(3);
+                $val = $cash;
+                if($val >= 0){
+                    $journal_cash_payment_list_debit = 0;
+                    $journal_cash_payment_list_credit = $val;
+                    
+                }else{
+                    $journal_cash_payment_list_debit = abs($val);
+                    $journal_cash_payment_list_credit = 0;
+                }
                 $data = [];
                 $data['journal_cash_payment_id'] = $journal_cash_payment_id;
                 $data['finance_credit_pay_id'] = -1;
                 $data['account_id'] = $account_pays['account_id'];
                 $data['journal_cash_payment_list_name'] = "จ่ายหนี้ให้ " . $_POST['finance_credit_name'];
-                $data['journal_cash_payment_list_debit'] = 0;
-                $data['journal_cash_payment_list_credit'] = $cash;
+                $data['journal_cash_payment_list_debit'] = $journal_cash_payment_list_debit;
+                $data['journal_cash_payment_list_credit'] = $journal_cash_payment_list_credit;
 
                 $journal_cash_payment_list_cash = $journal_cash_payment_list_model->getJournalCashPaymentListByFinanceCreditPayId($journal_cash_payment_id,-1);
                 if($journal_cash_payment_list_cash['journal_cash_payment_list_id'] > 0){

@@ -31,7 +31,21 @@ if(!isset($_GET['action'])){
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $keyword = $_GET['keyword']; 
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+    
     $journal_cash_receipts = $journal_cash_receipt_model->getJournalCashReceiptBy($date_start,$date_end,$keyword);
+
+    $page_max = (int)(count($journal_cash_receipts)/$page_size);
+    if(count($journal_cash_receipts)%$page_size > 0){
+        $page_max += 1;
+    }
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -218,7 +232,21 @@ if(!isset($_GET['action'])){
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $keyword = $_GET['keyword']; 
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+    
     $journal_cash_receipts = $journal_cash_receipt_model->getJournalCashReceiptBy($date_start,$date_end,$keyword);
+
+    $page_max = (int)(count($journal_cash_receipts)/$page_size);
+    if(count($journal_cash_receipts)%$page_size > 0){
+        $page_max += 1;
+    }
     require_once($path.'view.inc.php');
 
 

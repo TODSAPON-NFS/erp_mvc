@@ -46,7 +46,8 @@ class InvoiceSupplierModel extends BaseModel{
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 
         invoice_supplier_term, 
         invoice_supplier_due, 
-        IFNULL(CONCAT(tb2.supplier_name_en,' (',tb2.supplier_name_th,')'),'-') as supplier_name  
+        invoice_supplier_name,
+        IFNULL(tb2.supplier_name_en,'-') as supplier_name  
         FROM tb_invoice_supplier 
         LEFT JOIN tb_user as tb1 ON tb_invoice_supplier.employee_id = tb1.user_id 
         LEFT JOIN tb_supplier as tb2 ON tb_invoice_supplier.supplier_id = tb2.supplier_id 
@@ -77,9 +78,24 @@ class InvoiceSupplierModel extends BaseModel{
     function getInvoiceSupplierByID($id){
         $sql = " SELECT * 
         FROM tb_invoice_supplier 
-        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
-        LEFT JOIN tb_user ON tb_invoice_supplier.employee_id = tb_user.user_id 
         WHERE invoice_supplier_id = '$id' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getInvoiceSupplierByCode($invoice_supplier_code){
+        $sql = " SELECT * 
+        FROM tb_invoice_supplier  
+        WHERE invoice_supplier_code = '$invoice_supplier_code' 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -113,6 +129,27 @@ class InvoiceSupplierModel extends BaseModel{
 
     }
 
+    function getInvoiceSupplierViewListByjournalID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_cash_payment_list 
+        LEFT JOIN tb_invoice_supplier ON tb_journal_cash_payment_list.journal_invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id
+        LEFT JOIN tb_user ON tb_invoice_supplier.employee_id = tb_user.user_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
+        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
+        WHERE journal_cash_payment_id = '$id' AND tb_journal_cash_payment_list.journal_invoice_supplier_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
 
    
     function updateInvoiceSupplierByID($id,$data = []){
@@ -135,6 +172,11 @@ class InvoiceSupplierModel extends BaseModel{
         invoice_supplier_begin = '".$data['invoice_supplier_begin']."', 
         import_duty = '".$data['import_duty']."', 
         freight_in = '".$data['freight_in']."', 
+        invoice_supplier_total_price_non = '".$data['invoice_supplier_total_price_non']."', 
+        invoice_supplier_vat_price_non = '".$data['invoice_supplier_vat_price_non']."', 
+        invoice_supplier_total_non = '".$data['invoice_supplier_total_non']."', 
+        invoice_supplier_description = '".static::$db->real_escape_string($data['invoice_supplier_description'])."', 
+        invoice_supplier_remark = '".static::$db->real_escape_string($data['invoice_supplier_remark'])."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
         WHERE invoice_supplier_id = $id 
@@ -324,6 +366,13 @@ class InvoiceSupplierModel extends BaseModel{
             invoice_supplier_begin,
             import_duty, 
             freight_in, 
+            vat_section,
+            vat_section_add,
+            invoice_supplier_total_price_non,
+            invoice_supplier_vat_price_non,
+            invoice_supplier_total_non,
+            invoice_supplier_description,
+            invoice_supplier_remark,
             addby,
             adddate,
             updateby,
@@ -347,6 +396,13 @@ class InvoiceSupplierModel extends BaseModel{
         $data['invoice_supplier_begin']."','". 
         $data['import_duty']."','".
         $data['freight_in']."','".
+        $data['vat_section']."','".
+        $data['vat_section_add']."','".
+        $data['invoice_supplier_total_price_non']."','".
+        $data['invoice_supplier_vat_price_non']."','".
+        $data['invoice_supplier_total_non']."','".
+        static::$db->real_escape_string($data['invoice_supplier_description'])."','".
+        static::$db->real_escape_string($data['invoice_supplier_remark'])."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].
@@ -399,7 +455,13 @@ class InvoiceSupplierModel extends BaseModel{
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_invoice_supplier WHERE invoice_supplier_id = '$id' ";
-        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+        if(mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)){
+            return true;
+        }else{
+            return false;
+        }
+
+
 
     }
 

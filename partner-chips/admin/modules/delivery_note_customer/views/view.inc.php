@@ -133,7 +133,7 @@
                                     }
                                 ?>
 
-                                <a href="index.php?app=delivery_note_customer&action=print&id=<?PHP echo $delivery_note_customers[$i]['delivery_note_customer_id'];?>" >
+                                <a href="print.php?app=delivery_note_customer&action=pdf&id=<?PHP echo $delivery_note_customers[$i]['delivery_note_customer_id'];?>" target="blank" >
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                 </a>
                                 

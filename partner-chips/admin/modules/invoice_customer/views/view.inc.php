@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-md-6">
                         <div style="font-size:18px;padding: 8px 0px;">แยกตามใบสั่งซื้อ</div>
-                        <table width="100%" class="table table-striped table-bordered table-hover" >
+                        <table width="100%" class="table table-scroll table-striped table-bordered table-hover" >
                             <thead>
                                 <tr>
                                     <th width="64px" >No.</th>

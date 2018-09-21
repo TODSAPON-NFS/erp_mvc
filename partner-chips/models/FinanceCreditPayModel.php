@@ -11,10 +11,14 @@ class FinanceCreditPayModel extends BaseModel{
 
     function getFinanceCreditPayBy($finance_credit_id){
         $sql = " SELECT 
+        check_pay_id,
         finance_credit_pay_id, 
+        finance_credit_account_id,
         finance_credit_pay_by,
         finance_credit_pay_date,
+        bank_account_id,
         finance_credit_pay_bank,
+        account_id,
         finance_credit_pay_value,
         finance_credit_pay_balance,
         finance_credit_pay_total
@@ -38,9 +42,13 @@ class FinanceCreditPayModel extends BaseModel{
     function insertFinanceCreditPay($data = []){
         $sql = " INSERT INTO tb_finance_credit_pay (
             finance_credit_id, 
+            finance_credit_account_id,
             finance_credit_pay_by,
             finance_credit_pay_date,
+            bank_account_id,
             finance_credit_pay_bank,
+            account_id,
+            check_pay_id,
             finance_credit_pay_value,
             finance_credit_pay_balance,
             finance_credit_pay_total,
@@ -50,9 +58,13 @@ class FinanceCreditPayModel extends BaseModel{
             lastupdate
         ) VALUES (
             '".$data['finance_credit_id']."', 
+            '".$data['finance_credit_account_id']."', 
             '".$data['finance_credit_pay_by']."', 
             '".$data['finance_credit_pay_date']."', 
+            '".$data['bank_account_id']."', 
             '".$data['finance_credit_pay_bank']."', 
+            '".$data['account_id']."', 
+            '".$data['check_pay_id']."', 
             '".$data['finance_credit_pay_value']."', 
             '".$data['finance_credit_pay_balance']."', 
             '".$data['finance_credit_pay_total']."', 
@@ -75,9 +87,13 @@ class FinanceCreditPayModel extends BaseModel{
     function updateFinanceCreditPayById($data,$id){
 
         $sql = " UPDATE tb_finance_credit_pay 
-            SET finance_credit_pay_by = '".$data['finance_credit_pay_by']."', 
+            SET finance_credit_account_id = '".$data['finance_credit_account_id']."',
+            finance_credit_pay_by = '".$data['finance_credit_pay_by']."', 
             finance_credit_pay_date = '".$data['finance_credit_pay_date']."',
+            bank_account_id = '".$data['bank_account_id']."',
             finance_credit_pay_bank = '".$data['finance_credit_pay_bank']."',
+            account_id = '".$data['account_id']."',
+            check_pay_id = '".$data['check_pay_id']."',
             finance_credit_pay_value = '".$data['finance_credit_pay_value']."',
             finance_credit_pay_balance = '".$data['finance_credit_pay_balance']."',
             finance_credit_pay_total = '".$data['finance_credit_pay_total']."'     

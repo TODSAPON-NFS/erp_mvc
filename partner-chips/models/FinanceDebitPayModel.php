@@ -11,10 +11,14 @@ class FinanceDebitPayModel extends BaseModel{
 
     function getFinanceDebitPayBy($finance_debit_id){
         $sql = " SELECT 
+        check_id,
         finance_debit_pay_id, 
+        finance_debit_account_id,
         finance_debit_pay_by,
         finance_debit_pay_date,
+        bank_account_id,
         finance_debit_pay_bank,
+        account_id,
         finance_debit_pay_value,
         finance_debit_pay_balance,
         finance_debit_pay_total
@@ -38,9 +42,13 @@ class FinanceDebitPayModel extends BaseModel{
     function insertFinanceDebitPay($data = []){
         $sql = " INSERT INTO tb_finance_debit_pay (
             finance_debit_id, 
+            finance_debit_account_id,
             finance_debit_pay_by,
             finance_debit_pay_date,
+            bank_account_id,
             finance_debit_pay_bank,
+            account_id,
+            check_id,
             finance_debit_pay_value,
             finance_debit_pay_balance,
             finance_debit_pay_total,
@@ -50,9 +58,13 @@ class FinanceDebitPayModel extends BaseModel{
             lastupdate
         ) VALUES (
             '".$data['finance_debit_id']."', 
+            '".$data['finance_debit_account_id']."', 
             '".$data['finance_debit_pay_by']."', 
             '".$data['finance_debit_pay_date']."', 
+            '".$data['bank_account_id']."', 
             '".$data['finance_debit_pay_bank']."', 
+            '".$data['account_id']."', 
+            '".$data['check_id']."', 
             '".$data['finance_debit_pay_value']."', 
             '".$data['finance_debit_pay_balance']."', 
             '".$data['finance_debit_pay_total']."', 
@@ -75,9 +87,13 @@ class FinanceDebitPayModel extends BaseModel{
     function updateFinanceDebitPayById($data,$id){
 
         $sql = " UPDATE tb_finance_debit_pay 
-            SET finance_debit_pay_by = '".$data['finance_debit_pay_by']."', 
+            SET finance_debit_account_id = '".$data['finance_debit_account_id']."',
+            finance_debit_pay_by = '".$data['finance_debit_pay_by']."', 
             finance_debit_pay_date = '".$data['finance_debit_pay_date']."',
+            bank_account_id = '".$data['bank_account_id']."',
             finance_debit_pay_bank = '".$data['finance_debit_pay_bank']."',
+            account_id = '".$data['account_id']."',
+            check_id = '".$data['check_id']."',
             finance_debit_pay_value = '".$data['finance_debit_pay_value']."',
             finance_debit_pay_balance = '".$data['finance_debit_pay_balance']."',
             finance_debit_pay_total = '".$data['finance_debit_pay_total']."'     

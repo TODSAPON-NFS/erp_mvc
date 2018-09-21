@@ -24,8 +24,21 @@ if(!isset($_GET['action'])){
     $supplier_id = $_GET['supplier_id'];
     $keyword = $_GET['keyword'];
 
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+
     $suppliers=$supplier_model->getSupplierBy();
     $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy($date_start,$date_end,$supplier_id,$keyword,'','1');  
+
+    $page_max = (int)(count($invoice_suppliers)/$page_size);
+    if(count($invoice_suppliers)%$page_size > 0){
+        $page_max += 1;
+    }
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -162,8 +175,21 @@ if(!isset($_GET['action'])){
     $supplier_id = $_GET['supplier_id'];
     $keyword = $_GET['keyword'];
 
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+
     $suppliers=$supplier_model->getSupplierBy();
-    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy($date_start,$date_end,$supplier_id,$keyword,'','1');    
+    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy($date_start,$date_end,$supplier_id,$keyword,'','1');  
+
+    $page_max = (int)(count($invoice_suppliers)/$page_size);
+    if(count($invoice_suppliers)%$page_size > 0){
+        $page_max += 1;
+    }
     require_once($path.'view.inc.php');
 
 }

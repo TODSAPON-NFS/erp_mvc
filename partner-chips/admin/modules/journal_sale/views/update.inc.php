@@ -17,7 +17,9 @@
         var journal_sale_code = document.getElementById("journal_sale_code").value;
         var journal_sale_date = document.getElementById("journal_sale_date").value;
         var journal_sale_name = document.getElementById("journal_sale_name").value;
-        
+        var debit_total = parseFloat($('#journal_sale_list_debit').val( ).toString().replace(new RegExp(',', 'g'),''));
+        var credit_total = parseFloat($('#journal_sale_list_credit').val( ).toString().replace(new RegExp(',', 'g'),''));
+
         journal_sale_code = $.trim(journal_sale_code);
         journal_sale_date = $.trim(journal_sale_date);
         journal_sale_name = $.trim(journal_sale_name);
@@ -34,6 +36,9 @@
         }else if(journal_sale_name.length == 0){
             alert("Please input journal_sale name");
             document.getElementById("journal_sale_name").focus();
+            return false;
+        }else if (debit_total != credit_total){
+            alert("Can not save data. \nBecause credit value and debit value not match. "); 
             return false;
         }else{
             return true;
@@ -63,8 +68,8 @@
                     '<select class="form-control select" type="text" name="account_id[]" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td><input type="text" class="form-control" name="journal_sale_list_name[]" value="' + document.getElementById("journal_sale_name").value + '" /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_sale_list_debit[]"  /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_sale_list_credit[]" /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;" onchange="val_format(this);" name="journal_sale_list_debit[]"  /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;" onchange="val_format(this);" name="journal_sale_list_credit[]" /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -83,6 +88,36 @@
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
         
+    }
+
+    function val_format(id){
+        var val =  parseFloat($(id).val().replace(',',''));  
+        if(isNaN(val)){
+            val = 0;
+        }
+        $(id).val( val.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") ); 
+        calculateAll();
+    }
+
+    function calculateAll(){
+        var debit = document.getElementsByName('journal_sale_list_debit[]');
+        var credit = document.getElementsByName('journal_sale_list_credit[]');
+        var debit_total = 0.0;
+        var credit_total = 0.0;
+
+        for(var i = 0 ; i < debit.length ; i++){
+            
+            debit_total += parseFloat(debit[i].value.toString().replace(new RegExp(',', 'g'),''));
+        }
+
+        for(var i = 0 ; i < credit.length ; i++){
+            
+            credit_total += parseFloat(credit[i].value.toString().replace(new RegExp(',', 'g'),''));
+        } 
+
+        $('#journal_sale_list_debit').val((debit_total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#journal_sale_list_credit').val((credit_total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+
     }
 
 </script>
@@ -142,8 +177,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
+                        <?php 
+                            $journal_sale_list_debit = 0;
+                            $journal_sale_list_credit = 0;
                             for($i=0; $i < count($journal_sale_lists); $i++){
+                                $journal_sale_list_debit += $journal_sale_lists[$i]['journal_sale_list_debit'];
+                                $journal_sale_list_credit += $journal_sale_lists[$i]['journal_sale_list_credit'];
                             ?>
                             <tr class="odd gradeX">
                                 <td>
@@ -159,9 +198,9 @@
                                         ?>
                                     </select>
                                 </td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_sale_list_name[]" value="<?php echo $journal_sale_lists[$i]['journal_sale_list_name']; ?>" /></td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_sale_list_debit[]" value="<?php echo $journal_sale_lists[$i]['journal_sale_list_debit']; ?>" /></td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_sale_list_credit[]" value="<?php echo $journal_sale_lists[$i]['journal_sale_list_credit']; ?>" /></td>
+                                <td align="right"><input type="text" class="form-control"  name="journal_sale_list_name[]" value="<?php echo $journal_sale_lists[$i]['journal_sale_list_name']; ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_sale_list_debit[]" onchange="val_format(this);" value="<?php echo $journal_sale_lists[$i]['journal_sale_list_debit']; ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_sale_list_credit[]" onchange="val_format(this);" value="<?php echo $journal_sale_lists[$i]['journal_sale_list_credit']; ?>" /></td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
@@ -174,11 +213,19 @@
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td colspan="5" align="center">
+                                <td colspan="2" align="center">
                                     <a href="javascript:;" onclick="add_row(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> 
                                         <span>เพิ่มบัญชี / Add account</span>
                                     </a>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" style="text-align: right;" id="journal_sale_list_debit" value="<?php echo number_format($journal_sale_list_debit,2); ?>" readonly />
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" style="text-align: right;" id="journal_sale_list_credit" value="<?php echo number_format($journal_sale_list_credit,2); ?>" readonly />
+                                </td>
+                                <td>
                                 </td>
                             </tr>
                         </tfoot>

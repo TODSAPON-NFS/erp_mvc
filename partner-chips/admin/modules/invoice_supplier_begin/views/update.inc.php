@@ -65,17 +65,14 @@
 
     function calculateAll(){
 
-        var val = document.getElementsByName('invoice_supplier_list_total[]');
-        var total = 0.0;
-        
-        for(var i = 0 ; i < val.length ; i++){
-            
-            total += parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),''));
-        }
+            var total = parseFloat($('#invoice_supplier_total_price').val().toString().replace(new RegExp(',', 'g'),''));
+            if(isNaN(total)){
+                total = 0.0;
+            }
 
-        $('#invoice_supplier_total_price').val(total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $('#invoice_supplier_vat_price').val((total * ($('#invoice_supplier_vat').val()/100.0)).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $('#invoice_supplier_net_price').val((total * ($('#invoice_supplier_vat').val()/100.0) + total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+            $('#invoice_supplier_total_price').val(total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+            $('#invoice_supplier_vat_price').val((total * ($('#invoice_supplier_vat').val()/100.0)).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+            $('#invoice_supplier_net_price').val((total * ($('#invoice_supplier_vat').val()/100.0) + total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
 
     }
 

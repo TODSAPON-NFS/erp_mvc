@@ -31,16 +31,20 @@ class FinanceCreditModel extends BaseModel{
             $str_supplier = "AND tb2.supplier_id = '$supplier_id' ";
         }
 
-        $sql = " SELECT finance_credit_id, 
+        $sql = " SELECT tb.finance_credit_id, 
+        IFNULL (journal_cash_payment_code, '-') as journal_cash_payment_code,
+        IFNULL (journal_cash_payment_id, '0') as journal_cash_payment_id,
         finance_credit_code, 
         finance_credit_date, 
         finance_credit_date_pay, 
         finance_credit_total,
+        finance_credit_pay,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name,  
-        IFNULL(CONCAT(tb2.supplier_name_en,' (',tb2.supplier_name_th,')'),'-') as supplier_name  
-        FROM tb_finance_credit 
-        LEFT JOIN tb_user as tb1 ON tb_finance_credit.employee_id = tb1.user_id 
-        LEFT JOIN tb_supplier as tb2 ON tb_finance_credit.supplier_id = tb2.supplier_id 
+        IFNULL(tb2.supplier_name_en,'-') as supplier_name  
+        FROM tb_finance_credit as tb 
+        LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
+        LEFT JOIN tb_supplier as tb2 ON tb.supplier_id = tb2.supplier_id 
+        LEFT JOIN tb_journal_cash_payment ON tb_journal_cash_payment.finance_credit_id = tb.finance_credit_id 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
             OR  finance_credit_code LIKE ('%$keyword%') 
@@ -48,7 +52,7 @@ class FinanceCreditModel extends BaseModel{
         $str_supplier 
         $str_date 
         $str_user  
-        ORDER BY STR_TO_DATE(finance_credit_date,'%d-%m-%Y %H:%i:%s'),finance_credit_code DESC 
+        ORDER BY finance_credit_code ASC 
          ";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -123,7 +127,6 @@ class FinanceCreditModel extends BaseModel{
                     SELECT DISTINCT supplier_id 
                     FROM tb_invoice_supplier
                     LEFT JOIN tb_finance_credit_list ON tb_invoice_supplier.invoice_supplier_id = tb_finance_credit_list.invoice_supplier_id 
-                    WHERE supplier_id = '$supplier_id' 
                     GROUP BY tb_invoice_supplier.invoice_supplier_id 
                     HAVING MAX(IFNULL(tb_invoice_supplier.invoice_supplier_net_price,0)) > SUM(IFNULL(finance_credit_list_balance,0)) 
                 ) 
@@ -162,7 +165,7 @@ class FinanceCreditModel extends BaseModel{
         $sql_supplier = "SELECT invoice_supplier_id, 
         invoice_supplier_code,
         '0' as finance_credit_list_paid, 
-        '' as finance_credit_list_billing,
+        invoice_supplier_code_gen as finance_credit_list_recieve,
         '' as finance_credit_list_receipt,
         invoice_supplier_net_price as finance_credit_list_amount, 
         invoice_supplier_date as finance_credit_list_date, 
@@ -175,15 +178,14 @@ class FinanceCreditModel extends BaseModel{
             LEFT JOIN tb_finance_credit_list ON tb_invoice_supplier.invoice_supplier_id = tb_finance_credit_list.invoice_supplier_id 
             WHERE supplier_id = '$supplier_id' 
             GROUP BY tb_invoice_supplier.invoice_supplier_id 
-            HAVING MAX(IFNULL(tb_invoice_supplier.invoice_supplier_net_price,0)) > SUM(IFNULL(finance_credit_list_balance,0)) 
+            HAVING MAX(IFNULL(tb_invoice_supplier.invoice_supplier_net_price,0)) - SUM(IFNULL(finance_credit_list_balance,0)) != 0 
         ) 
         AND supplier_id = '$supplier_id' 
         AND (
-            invoice_supplier_date LIKE ('%$search%') OR
-            invoice_supplier_due LIKE ('%$search%') OR 
-            invoice_supplier_code LIKE ('%$search%') 
+            invoice_supplier_code LIKE ('%$search%') OR 
+            invoice_supplier_code_gen LIKE ('%$search%') 
         ) 
-        ORDER BY  STR_TO_DATE(invoice_supplier_date,'%d-%m-%Y %H:%i:%s') ";
+        ORDER BY  invoice_supplier_code ";
 
         //echo $sql_supplier;
 

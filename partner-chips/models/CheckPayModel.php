@@ -84,9 +84,27 @@ class CheckPayModel extends BaseModel{
 
     }
 
+    function getCheckPayByCode($check_pay_code){
+        $sql = " SELECT * 
+        FROM tb_check_pay 
+        WHERE check_pay_code = '$check_pay_code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getCheckPayViewByID($id){
         $sql = " SELECT *   
         FROM tb_check_pay 
+        LEFT JOIN tb_bank_account ON tb_check_pay.bank_account_id = tb_bank_account.bank_account_id  
         WHERE check_pay_id = '$id' 
         ";
 
@@ -94,6 +112,25 @@ class CheckPayModel extends BaseModel{
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getCheckPayViewListByjournalID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_cash_payment_list 
+        LEFT JOIN tb_check_pay ON tb_journal_cash_payment_list.journal_cheque_pay_id = tb_check_pay.check_pay_id
+        LEFT JOIN tb_bank_account ON tb_check_pay.bank_account_id = tb_bank_account.bank_account_id
+        WHERE journal_cash_payment_id = '$id' AND tb_journal_cash_payment_list.journal_cheque_pay_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
             }
             $result->close();
             return $data;
@@ -123,13 +160,13 @@ class CheckPayModel extends BaseModel{
         check_pay_date = '".$data['check_pay_date']."', 
         bank_account_id = '".$data['bank_account_id']."', 
         supplier_id = '".$data['supplier_id']."', 
-        check_pay_remark = '".$data['check_pay_remark']."', 
+        check_pay_remark = '".static::$db->real_escape_string($data['check_pay_remark'])."', 
         check_pay_total = '".$data['check_pay_total']."', 
         check_pay_type = '".$data['check_pay_type']."',  
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE check_id = $id 
-        ";
+        WHERE check_pay_id = $id 
+        "; 
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
@@ -180,7 +217,7 @@ class CheckPayModel extends BaseModel{
         $data['check_pay_date']."','".
         $data['bank_account_id']."','".
         $data['supplier_id']."','".
-        $data['check_pay_remark']."','".
+        static::$db->real_escape_string($data['check_pay_remark'])."','".
         $data['check_pay_total']."','".
         $data['check_pay_type']."','". 
         $data['addby']."',".
@@ -201,7 +238,11 @@ class CheckPayModel extends BaseModel{
 
     function deleteCheckPayByID($id){
         $sql = " DELETE FROM tb_check_pay WHERE check_pay_id = '$id' ";
-        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+        if ( mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 

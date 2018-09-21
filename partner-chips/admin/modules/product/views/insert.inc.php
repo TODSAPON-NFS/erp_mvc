@@ -171,7 +171,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($product_group) ; $i++){
                                             ?>
-                                            <option value="<?php echo $product_group[$i]['product_group_name'] ?>"><?php echo $product_group[$i]['product_group_name'] ?></option>
+                                            <option value="<?php echo $product_group[$i]['product_group_id'] ?>"><?php echo $product_group[$i]['product_group_name'] ?></option>
                                             <?
                                             }
                                             ?>
@@ -189,7 +189,7 @@
                                             <?php 
                                                 for($i =  0 ; $i < count($product_type) ; $i++){
                                             ?>
-                                            <option  value="<?php echo $product_type[$i]['product_type_name'] ?>"><?php echo $product_type[$i]['product_type_name'] ?></option>
+                                            <option  value="<?php echo $product_type[$i]['product_type_id'] ?>"><?php echo $product_type[$i]['product_type_name'] ?></option>
                                             <?
                                                 }
                                             ?>
@@ -219,7 +219,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($product_unit) ; $i++){
                                             ?>
-                                            <option value="<?php echo $product_unit[$i]['product_unit_name'] ?>"><?php echo $product_unit[$i]['product_unit_name'] ?></option>
+                                            <option value="<?php echo $product_unit[$i]['product_unit_id'] ?>"><?php echo $product_unit[$i]['product_unit_name'] ?></option>
                                             <?
                                             }
                                             ?>

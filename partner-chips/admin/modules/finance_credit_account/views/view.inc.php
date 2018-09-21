@@ -51,7 +51,7 @@
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                             <label>ชื่อวิธีการจ่ายชำระหนี้<font color="#F00"><b>*</b></font></label>
-                                            <input id="finance_credit_account_name" name="finance_credit_account_name"  class="form-control" value="<? echo $finance_credit_account['finance_credit_account_title'];?>">
+                                            <input id="finance_credit_account_name" name="finance_credit_account_name"  class="form-control" value="<? echo $finance_credit_account['finance_credit_account_name'];?>">
                                             <p class="help-block">Example : เช็ครับ (Cheque).</p>
                                         </div>
                                     </div>
@@ -84,8 +84,8 @@
                                     
                                     <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label>ประเภทบัญชี </label>
-                                            <select id="account_id" name="account_id" class="form-control" class="form-control select" data-live-search="true" >
+                                            <label>ประเภทบัญชี  </label>
+                                            <select id="account_id" name="account_id"  class="form-control select" data-live-search="true" >
                                                 <option value="">เลือก / Select</option>
                                                 <?PHP 
                                                     for($i=0; $i < count($account) ; $i++){
@@ -131,9 +131,9 @@
                                         <td><?php echo $i+1; ?></td>
                                         <td><?php echo $finance_credit_accounts[$i]['finance_credit_account_code']; ?></td>
                                         <td><?php echo $finance_credit_accounts[$i]['finance_credit_account_name']; ?></td>
-                                        <td><?php echo $finance_credit_accounts[$i]['finance_credit_account_cheque']; ?></td>
-                                        <td>[<?php echo $finance_credit_accounts[$i]['bank_account_code']; ?>]  <?php echo $finance_credit_accounts[$i]['bank_account_name']; ?></td> 
-                                        <td><?php echo $finance_credit_accounts[$i]['account_name_th']; ?></td>
+                                        <td><?PHP if($finance_credit_accounts[$i]['finance_credit_account_cheque'] == "0"){ ?> ไม่ใช่ <?PHP } else { ?> ใช่ <?PHP } ?></td>
+                                        <td><?PHP if($finance_credit_accounts[$i]['bank_account_code'] != ""){ ?>[<?php echo $finance_credit_accounts[$i]['bank_account_code']; ?>] <?PHP } ?> <?php echo $finance_credit_accounts[$i]['bank_account_name']; ?></td> 
+                                        <td><?PHP if($finance_credit_accounts[$i]['account_code'] != ""){ ?>[<?php echo $finance_credit_accounts[$i]['account_code']; ?>] <?PHP } ?><?php echo $finance_credit_accounts[$i]['account_name_th']; ?></td>
                                         <td>
                                             
                                             <a title="Update data" href="?app=finance_credit_account&action=update&id=<?php echo $finance_credit_accounts[$i]['finance_credit_account_id'];?>">

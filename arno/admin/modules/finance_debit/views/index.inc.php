@@ -331,10 +331,12 @@ if(!isset($_GET['action'])){
                     $data = [];
                     $data['journal_cash_receipt_id'] = $journal_cash_receipt_id;
                     $data['finance_debit_pay_id'] = $finance_debit_pay_id[$i];
+                    
                     $data['account_id'] = $account_id[$i];
                     $data['journal_cash_receipt_list_name'] = "รับชำระหนี้ให้ " . $_POST['finance_debit_name'];
                     $data['journal_cash_receipt_list_debit'] = (float)filter_var($finance_debit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data['journal_cash_receipt_list_credit'] = 0;
+                    $data['journal_cheque_id'] = $check_pay_id[$i];
 
                     $journal_cash_receipt_list_model->insertJournalCashReceiptList($data);
                     /* ----------------------------------- สิ้นสุด Debit ในสมุดรายวันรับชำระเงิน ---------------------------------------*/
@@ -574,7 +576,7 @@ if(!isset($_GET['action'])){
                     $data['journal_cash_receipt_list_name'] = "รับชำระหนี้ให้ " . $_POST['finance_debit_name'];
                     $data['journal_cash_receipt_list_debit'] =  (float)filter_var($finance_debit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data['journal_cash_receipt_list_credit'] =0;
-
+                    $data['journal_cheque_id'] = $check_pay_id[$i];
                     $journal_cash_receipt_list_model->insertJournalCashReceiptList($data);
                     /* ----------------------------------- สิ้นสุด Debit ในสมุดรายวันรับชำระเงิน ---------------------------------------*/
 
@@ -628,7 +630,7 @@ if(!isset($_GET['action'])){
                     $data['journal_cash_receipt_list_name'] = "รับชำระหนี้ให้ " . $_POST['finance_debit_name'];
                     $data['journal_cash_receipt_list_debit'] = (float)filter_var($finance_debit_pay_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data['journal_cash_receipt_list_credit'] = 0;
-
+                    $data['journal_cheque_id'] = $check_pay_id[$i];
                     $journal_cash_receipt_list_cash = $journal_cash_receipt_list_model->getJournalCashReceiptListByFinanceDebitPayId($journal_cash_receipt_id, $finance_debit_pay_id[$i]);
 
                     $journal_cash_receipt_list_model->updateJournalCashReceiptListById($data,$journal_cash_receipt_list_cash['journal_cash_receipt_list_id'] );

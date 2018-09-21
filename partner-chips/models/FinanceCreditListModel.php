@@ -14,10 +14,12 @@ class FinanceCreditListModel extends BaseModel{
         finance_credit_list_id,  
         tb_finance_credit_list.invoice_supplier_id,
         invoice_supplier_code, 
-        finance_credit_list_billing, 
+        finance_credit_list_recieve, 
         finance_credit_list_receipt, 
         '0' as finance_credit_list_paid, 
         invoice_supplier_net_price as finance_credit_list_amount, 
+        finance_credit_list_paid,
+        finance_credit_list_balance ,
         invoice_supplier_date as finance_credit_list_date, 
         invoice_supplier_due as finance_credit_list_due, 
         finance_credit_list_remark 
@@ -42,7 +44,7 @@ class FinanceCreditListModel extends BaseModel{
         $sql = " INSERT INTO tb_finance_credit_list (
             finance_credit_id,
             invoice_supplier_id,
-            finance_credit_list_billing,
+            finance_credit_list_recieve,
             finance_credit_list_receipt,
             finance_credit_list_amount,
             finance_credit_list_paid,
@@ -55,7 +57,7 @@ class FinanceCreditListModel extends BaseModel{
         ) VALUES (
             '".$data['finance_credit_id']."', 
             '".$data['invoice_supplier_id']."', 
-            '".$data['finance_credit_list_billing']."',
+            '".$data['finance_credit_list_recieve']."',
             '".$data['finance_credit_list_receipt']."',
             '".$data['finance_credit_list_amount']."',
             '".$data['finance_credit_list_paid']."',
@@ -84,7 +86,7 @@ class FinanceCreditListModel extends BaseModel{
 
         $sql = " UPDATE tb_finance_credit_list 
             SET invoice_supplier_id = '".$data['invoice_supplier_id']."', 
-            finance_credit_list_billing = '".$data['finance_credit_list_billing']."', 
+            finance_credit_list_recieve = '".$data['finance_credit_list_recieve']."', 
             finance_credit_list_receipt = '".$data['finance_credit_list_receipt']."', 
             finance_credit_list_amount = '".$data['finance_credit_list_amount']."', 
             finance_credit_list_paid = '".$data['finance_credit_list_paid']."',

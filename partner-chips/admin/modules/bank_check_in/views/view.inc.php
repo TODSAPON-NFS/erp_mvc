@@ -130,7 +130,7 @@
                                 }
                                 ?>    
                             </td>
-                            <td><?php echo $checks[$i]['check_total']; ?></td>
+                            <td align="right" ><?php echo number_format($checks[$i]['check_total'],2); ?></td>
                             <td><?php if($checks[$i]['customer_name_th'] != ""){echo $checks[$i]['customer_name_th'];}else{echo $checks[$i]['customer_name_en'];} ?></td>
                             <td><?php echo $checks[$i]['check_date_write']; ?></td>
                             <td><?php echo $checks[$i]['check_remark']; ?></td>

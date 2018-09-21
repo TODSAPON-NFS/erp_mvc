@@ -68,6 +68,22 @@ class CheckModel extends BaseModel{
 
     }
 
+    function getCheckByCode($check_code){
+        $sql = " SELECT * 
+        FROM tb_check 
+        WHERE check_code = '$check_code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
 
 
 
@@ -89,9 +105,11 @@ class CheckModel extends BaseModel{
 
     }
 
+
     function getCheckViewByID($id){
         $sql = " SELECT *   
         FROM tb_check 
+        LEFT JOIN tb_bank ON tb_check.bank_id = tb_bank.bank_id
         WHERE check_id = '$id' 
         ";
 
@@ -105,6 +123,26 @@ class CheckModel extends BaseModel{
         }
 
     }
+
+    function getCheckViewListByjournalID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_cash_payment_list 
+        LEFT JOIN tb_check ON tb_journal_cash_payment_list.journal_cheque_id = tb_check.check_id
+        LEFT JOIN tb_bank ON tb_check.bank_id = tb_bank.bank_id
+        WHERE journal_cash_payment_id = '$id' AND tb_journal_cash_payment_list.journal_cheque_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
 
     function getCheckLastID($id,$digit){
 
@@ -121,15 +159,16 @@ class CheckModel extends BaseModel{
 
     }
 
+
     function updateCheckByID($id,$data = []){
         $sql = " UPDATE tb_check SET 
         check_code = '".$data['check_code']."', 
         check_date_write = '".$data['check_date_write']."', 
         check_date_recieve = '".$data['check_date_recieve']."', 
         bank_id = '".$data['bank_id']."', 
-        bank_branch = '".$data['bank_branch']."', 
+        bank_branch = '".static::$db->real_escape_string($data['bank_branch'])."', 
         customer_id = '".$data['customer_id']."', 
-        check_remark = '".$data['check_remark']."', 
+        check_remark = '".static::$db->real_escape_string($data['check_remark'])."', 
         check_total = '".$data['check_total']."', 
         check_type = '".$data['check_type']."', 
         updateby = '".$data['updateby']."', 
@@ -145,6 +184,7 @@ class CheckModel extends BaseModel{
 
 
     }
+    
 
     function updateCheckDepositByID($id,$data = []){
         $sql = " UPDATE tb_check SET 
@@ -204,9 +244,9 @@ class CheckModel extends BaseModel{
         $data['check_date_write']."','".
         $data['check_date_recieve']."','".
         $data['bank_id']."','".
-        $data['bank_branch']."','".
+        static::$db->real_escape_string($data['bank_branch'])."','".
         $data['customer_id']."','".
-        $data['check_remark']."','".
+        static::$db->real_escape_string($data['check_remark'])."','".
         $data['check_total']."','".
         $data['check_type']."','".
         $data['addby']."',".
@@ -227,7 +267,11 @@ class CheckModel extends BaseModel{
 
     function deleteCheckByID($id){
         $sql = " DELETE FROM tb_check WHERE check_id = '$id' ";
-        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+        if(mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 

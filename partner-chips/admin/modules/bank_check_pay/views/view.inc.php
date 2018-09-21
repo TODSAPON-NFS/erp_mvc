@@ -101,7 +101,7 @@
                             <th>จำนวนเงิน </th>
                             <th>ผู้ขาย</th>
                             <th>วันที่ออกเช็ค</th>
-                            <th>หมายเหตุ <br>Remark</th>
+                            <th>หมายเหตุ</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -126,8 +126,8 @@
                                 }
                                 ?>    
                             </td>
-                            <td><?php echo $checks[$i]['check_pay_total']; ?></td>
-                            <td><td><?php if($checks[$i]['supplier_name_th'] != ""){echo $checks[$i]['supplier_name_th'];}else{echo $checks[$i]['supplier_name_en'];} ?> </td></td>
+                            <td align="right"><?php echo number_format($checks[$i]['check_pay_total'],2); ?></td>
+                            <td><?php echo $checks[$i]['supplier_name_en']; ?> </td></td>
                             <td><?php echo $checks[$i]['check_pay_date_write']; ?></td>
                             <td><?php echo $checks[$i]['check_pay_remark']; ?></td>
 

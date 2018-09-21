@@ -102,15 +102,7 @@
                             <td><?php echo $journal_generals[$i]['adddate']; ?></td>
                             <td><?php echo $journal_generals[$i]['update_name']; ?></td>
                             <td><?php echo $journal_generals[$i]['lastupdate']; ?></td>
-                            <td>
-
-                                <a href="index.php?app=journal_general&action=print&id=<?PHP echo $journal_generals[$i]['journal_general_id'];?>" >
-                                    <i class="fa fa-print" aria-hidden="true"></i>
-                                </a>
-
-                                <a href="?app=journal_general&action=detail&id=<?php echo $journal_generals[$i]['journal_general_id'];?>">
-                                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                </a>
+                            <td> 
 
                                 <a href="?app=journal_general&action=update&id=<?php echo $journal_generals[$i]['journal_general_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

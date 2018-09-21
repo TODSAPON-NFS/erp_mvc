@@ -97,7 +97,7 @@ if(!isset($_GET['action'])){
         $data['bank_account_id'] = $_POST['bank_account_id'];
         $data['supplier_id'] = $_POST['supplier_id'];
         $data['check_pay_remark'] = $_POST['check_pay_remark'];
-        $data['check_pay_total'] = $_POST['check_pay_total']; 
+        $data['check_pay_total'] = (float)filter_var($_POST['check_pay_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION); 
         $data['check_type'] = '0';
         $data['addby'] = $admin_id;
 
@@ -123,7 +123,7 @@ if(!isset($_GET['action'])){
         $data['bank_account_id'] = $_POST['bank_account_id'];
         $data['supplier_id'] = $_POST['supplier_id'];
         $data['check_pay_remark'] = $_POST['check_pay_remark'];
-        $data['check_pay_total'] = $_POST['check_pay_total']; 
+        $data['check_pay_total'] =(float)filter_var($_POST['check_pay_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION); 
         $data['check_type'] = '0';
         $data['lastupdate'] = $admin_id;
 

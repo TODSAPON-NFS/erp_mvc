@@ -36,8 +36,9 @@ class FinanceDebitModel extends BaseModel{
         finance_debit_date, 
         finance_debit_date_pay, 
         finance_debit_total,
+        finance_debit_pay, 
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name,  
-        IFNULL(CONCAT(tb2.customer_name_en,' (',tb2.customer_name_th,')'),'-') as customer_name  
+        IFNULL( tb2.customer_name_en ,'-') as customer_name  
         FROM tb_finance_debit 
         LEFT JOIN tb_user as tb1 ON tb_finance_debit.employee_id = tb1.user_id 
         LEFT JOIN tb_customer as tb2 ON tb_finance_debit.customer_id = tb2.customer_id 
@@ -48,7 +49,7 @@ class FinanceDebitModel extends BaseModel{
         $str_customer 
         $str_date 
         $str_user  
-        ORDER BY STR_TO_DATE(finance_debit_date,'%d-%m-%Y %H:%i:%s'),finance_debit_code DESC 
+        ORDER BY finance_debit_code ASC 
          ";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -189,7 +190,7 @@ class FinanceDebitModel extends BaseModel{
             invoice_customer_due LIKE ('%$search%') OR 
             invoice_customer_code LIKE ('%$search%') 
         ) 
-        ORDER BY  STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') ";
+        ORDER BY  invoice_customer_code ";
 
         //echo $sql_customer;
 

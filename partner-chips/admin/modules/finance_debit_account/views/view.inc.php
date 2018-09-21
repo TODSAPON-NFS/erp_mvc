@@ -7,11 +7,11 @@
         finance_debit_account_name = $.trim(finance_debit_account_name);
         
        if(finance_debit_account_code.length == 0){
-            alert("Please input payment code");
+            alert("Please input Received code");
             document.getElementById("finance_debit_account_code").focus();
             return false;
         }else  if(finance_debit_account_name.length == 0){
-            alert("Please input payment name");
+            alert("Please input Received name");
             document.getElementById("finance_debit_account_name").focus();
             return false;
         }else{
@@ -23,7 +23,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Payment Setting</h1>
+        <h1 class="page-header">Received Setting</h1>
     </div>
    
     <!-- /.col-lg-12 -->
@@ -34,7 +34,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                        กำหนดวิธีการรับชำระหนี้ / Payment Setting
+                        กำหนดวิธีการรับชำระหนี้ / Received Setting
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -51,7 +51,7 @@
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                             <label>ชื่อวิธีการรับชำระหนี้<font color="#F00"><b>*</b></font></label>
-                                            <input id="finance_debit_account_name" name="finance_debit_account_name"  class="form-control" value="<? echo $finance_debit_account['finance_debit_account_title'];?>">
+                                            <input id="finance_debit_account_name" name="finance_debit_account_name"  class="form-control" value="<? echo $finance_debit_account['finance_debit_account_name'];?>">
                                             <p class="help-block">Example : เช็ครับ (Cheque).</p>
                                         </div>
                                     </div>
@@ -85,7 +85,7 @@
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label>ประเภทบัญชี </label>
-                                            <select id="account_id" name="account_id" class="form-control" class="form-control select" data-live-search="true" >
+                                            <select id="account_id" name="account_id"  class="form-control select" data-live-search="true" >
                                                 <option value="">เลือก / Select</option>
                                                 <?PHP 
                                                     for($i=0; $i < count($account) ; $i++){
@@ -131,9 +131,9 @@
                                         <td><?php echo $i+1; ?></td>
                                         <td><?php echo $finance_debit_accounts[$i]['finance_debit_account_code']; ?></td>
                                         <td><?php echo $finance_debit_accounts[$i]['finance_debit_account_name']; ?></td>
-                                        <td><?php echo $finance_debit_accounts[$i]['finance_debit_account_cheque']; ?></td>
-                                        <td>[<?php echo $finance_debit_accounts[$i]['bank_account_code']; ?>]  <?php echo $finance_debit_accounts[$i]['bank_account_name']; ?></td> 
-                                        <td><?php echo $finance_debit_accounts[$i]['account_name_th']; ?></td>
+                                        <td><?PHP if($finance_debit_accounts[$i]['finance_debit_account_cheque'] == "0"){ ?> ไม่ใช่ <?PHP } else { ?> ใช่ <?PHP } ?></td>
+                                        <td><?PHP if($finance_debit_accounts[$i]['bank_account_code'] != ""){ ?>[<?php echo $finance_debit_accounts[$i]['bank_account_code']; ?>] <?PHP } ?> <?php echo $finance_debit_accounts[$i]['bank_account_name']; ?></td> 
+                                        <td><?PHP if($finance_debit_accounts[$i]['account_code'] != ""){ ?>[<?php echo $finance_debit_accounts[$i]['account_code']; ?>] <?PHP } ?> <?php echo $finance_debit_accounts[$i]['account_name_th']; ?></td>
                                         <td>
                                             
                                             <a title="Update data" href="?app=finance_debit_account&action=update&id=<?php echo $finance_debit_accounts[$i]['finance_debit_account_id'];?>">

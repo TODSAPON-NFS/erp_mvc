@@ -44,7 +44,7 @@ class JournalCashReceiptModel extends BaseModel{
             OR  journal_cash_receipt_name LIKE ('%$keyword%') 
         ) 
         $str_date 
-        ORDER BY STR_TO_DATE(journal_cash_receipt_date,'%d-%m-%Y %H:%i:%s'), journal_cash_receipt_code DESC 
+        ORDER BY journal_cash_receipt_code DESC 
          ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

@@ -5,6 +5,13 @@
         url: function(keyword) {
             return "controllers/getProductByKeyword.php?keyword="+keyword;
         },
+        
+        list: {
+            maxNumberOfElements: 10,
+            match: {
+                enabled: true
+            }
+        },
 
         getValue: function(element) {
             return element.product_code ;
@@ -169,7 +176,7 @@
                 if(modelsupp.length > 0){
                     var content = "<option value=''>Select Product</option>";
                     $.each(data, function (index, value) {
-                        content += "<option value='" + value['supplier_id'] + "'>"+value['supplier_name_th']+"("+value['supplier_name_en']+")</option>";
+                        content += "<option value='" + value['supplier_id'] + "'>"+value['supplier_name_en']+"</option>";
                     });
                     $(modelsupp[0]).html(content);
                 }
@@ -239,8 +246,16 @@
 
      function delete_row(id){
         $(id).closest('tr').remove();
+        update_line(id);
      }
 
+
+    function update_line(id){
+        var td_number = $('table[name="tb_list"]').children('tbody').children('tr').children('td:first-child');
+        for(var i = 0; i < td_number.length ;i++){
+            td_number[i].innerHTML = (i+1);
+        }
+    }
 
 
      function show_data(id){
@@ -473,6 +488,7 @@
 
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
+                        '<td style="text-align:center;width:80px;" ></td>'+
                         '<td>'+
                             '<input type="hidden" class="form-control" name="delivery_note_customer_list_id[]" value="'+delivery_note_customer_list_id+'" readonly />'+
                             '<input type="hidden" class="form-control" name="customer_purchase_order_list_id[]" value="0" readonly />'+
@@ -505,7 +521,7 @@
                         '</td>'+
                     '</tr>'
                 );
-
+                
                 var enduser_options = {
                     data:customer_data,
 
@@ -523,8 +539,9 @@
 
                 $(".find-end-user").easyAutocomplete(enduser_options);
 
-               $(".example-ajax-post").easyAutocomplete(options);
-            
+                $(".example-ajax-post").easyAutocomplete(options);
+                update_line(id);
+                calculateAll();
             }
             
         }
@@ -542,6 +559,7 @@
          }
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
+                '<td style="text-align:center;width:80px;" ></td>'+
                 '<td>'+
                     '<input type="hidden" class="form-control" name="delivery_note_customer_list_id[]" value="0" readonly />'+
                     '<input type="hidden" class="form-control" name="customer_purchase_order_list_id[]" value="0" readonly />'+
@@ -592,6 +610,8 @@
 
         $(".find-end-user").easyAutocomplete(enduser_options);
         $(".example-ajax-post").easyAutocomplete(options);
+        update_line(id);
+        calculateAll();
     }
 
     function checkAll(id)
@@ -604,6 +624,22 @@
         }
     }
 
+    function calculateAll(){
+
+        var val = document.getElementsByName('customer_purchase_order_list_price_sum[]');
+        var total = 0.0;
+
+        for(var i = 0 ; i < val.length ; i++){
+            
+            total += parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),''));
+        }
+
+        $('#customer_purchase_order_total').val(total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+
+        $('#customer_purchase_order_vat_price').val((total * ($('#customer_purchase_order_vat').val()/100.0)).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#customer_purchase_order_vat_net').val((total * ($('#customer_purchase_order_vat').val()/100.0) + total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+
+    }
 
 </script>
 
@@ -745,9 +781,10 @@
                     <div>
                     Our reference :
                     </div>
-                    <table width="100%" class="table table-striped table-bordered table-hover" >
+                    <table name="tb_list" width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
+                                <th style="text-align:center;">ลำดับ <br>(์No)</th>
                                 <th style="text-align:center;">รหัสสินค้า <br>(Product Code)</th>
                                 <th style="text-align:center;">ชื่อสินค้า <br>(Product Name)</th>
                                 <th style="text-align:center;" width="96">จำนวน <br>(Qty)</th>
@@ -755,13 +792,18 @@
                                 <th style="text-align:center;" width="96">ราคารวม <br>(Amount)</th>
                                 <th style="text-align:center;">การสั่งซื้อ<br>(From)</th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php 
+                            $total = 0;
                             for($i=0; $i < count($customer_purchase_order_lists); $i++){
+                                $total += $customer_purchase_order_lists[$i]['customer_purchase_order_list_price_sum'];
+                                
                             ?>
                             <tr class="odd gradeX">
+                                <td style="text-align:center;width:80px;" ></td>
                                 <td>
                                     <input type="hidden" name="delivery_note_customer_list_id[]" value="<? echo $customer_purchase_order_lists[$i]['delivery_note_customer_list_id'] ?>" />
                                     <input type="hidden" name="customer_purchase_order_list_id[]" value="<? echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_id'] ?>" />
@@ -789,13 +831,11 @@
 
                                     <div name="modalAdd" class="modal fade" tabindex="-1" role="dialog">
                                         <div class="modal-dialog modal-lg " role="document">
-                                            <div class="modal-content">
-
+                                            <div class="modal-content"> 
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                     <h4 class="modal-title">เลือกการสั่งซื้อ / Choose from</h4>
                                                 </div>
-
                                                 <div  class="modal-body" name="modelBody">
                                                     <div class="row">
                                                         <div class="col-lg-4">
@@ -895,7 +935,7 @@
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td colspan="7" align="center">
+                                <td colspan="9" align="center">
                                     <a href="javascript:;" onclick="show_delivery_note(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> 
                                         <span>เพิ่มสินค้า / Add product</span>
@@ -940,6 +980,52 @@
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
                                     </div><!-- /.modal -->
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td colspan="2" rowspan="3">
+                                    
+                                </td>
+                                <td colspan="3" align="left" style="vertical-align: middle;">
+                                    <span>ราคารวมทั้งสิ้น / Sub total</span>
+                                </td>
+                                <td style="max-width:120px;">
+                                    <input type="text" class="form-control" style="text-align: right;" id="customer_purchase_order_total" name="customer_purchase_order_total" value="<?PHP echo number_format($total,2) ;?>"  readonly/>
+                                </td>
+                                <td colspan="3">
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td colspan="3" align="left" style="vertical-align: middle;">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <span>จำนวนภาษีมูลค่าเพิ่ม / Vat</span>
+                                            </td>
+                                            <td style = "padding-left:8px;padding-right:8px;width:72px;">
+                                                <input type="text" class="form-control" style="text-align: right;" onchange="calculateAll()" id="customer_purchase_order_vat" name="customer_purchase_order_vat" value="7" />
+                                            </td>
+                                            <td width="16">
+                                            %
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                </td>
+                                <td style="max-width:120px;">
+                                    <input type="text" class="form-control" style="text-align: right;" id="customer_purchase_order_vat_price"  name="customer_purchase_order_vat_price" value="<?PHP echo number_format(($vat/100) * $total,2) ;?>"  readonly/>
+                                </td>
+                                <td colspan="3">
+                                </td>
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td colspan="3" align="left" style="vertical-align: middle;">
+                                    <span>จำนวนเงินรวมทั้งสิ้น / Net Total</span>
+                                </td>
+                                <td style="max-width:120px;">
+                                    <input type="text" class="form-control" style="text-align: right;" id="customer_purchase_order_vat_net" name="customer_purchase_order_vat_net" value="<?PHP echo number_format(($vat/100) * $total + $total,2) ;?>" readonly/>
+                                </td>
+                                <td colspan="3"> 
                                 </td>
                             </tr>
                         </tfoot>

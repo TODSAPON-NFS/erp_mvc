@@ -114,14 +114,7 @@
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
 
-<!--
-                                <a href="index.php?app=journal_special_01&action=print&id=<?PHP echo $journal_purchases[$i]['journal_purchase_id'];?>" >
-                                    <i class="fa fa-print" aria-hidden="true"></i>
-                                </a>
-                                <a href="?app=journal_special_01&action=detail&id=<?php echo $journal_purchases[$i]['journal_purchase_id'];?>">
-                                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                </a>
-
+<!-- 
                                 <a href="?app=journal_special_01&action=delete&id=<?php echo $journal_purchases[$i]['journal_purchase_id'];?>" onclick="return confirm('You want to delete Journal Purchase : <?php echo $journal_purchases[$i]['journal_purchase_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>

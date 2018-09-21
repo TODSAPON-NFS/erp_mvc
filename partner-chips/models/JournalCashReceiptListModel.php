@@ -34,6 +34,32 @@ class JournalCashReceiptListModel extends BaseModel{
 
     }
 
+    function getJournalCashReceiptListByFinanceDebitPayId($journal_cash_receipt_id,$finance_debit_pay_id){
+        $sql = " SELECT 
+        journal_cash_receipt_list_id, 
+        journal_cash_receipt_list_name,
+        journal_cash_receipt_list_debit,
+        journal_cash_receipt_list_credit, 
+        tb_journal_cash_receipt_list.account_id, 
+        finance_debit_pay_id,
+        account_name_th,  
+        account_name_en 
+        FROM tb_journal_cash_receipt_list LEFT JOIN tb_account ON tb_journal_cash_receipt_list.account_id = tb_account.account_id 
+        WHERE journal_cash_receipt_id = '$journal_cash_receipt_id' AND tb_journal_cash_receipt_list.finance_debit_pay_id = '$finance_debit_pay_id' 
+        ORDER BY journal_cash_receipt_list_id 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data ;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data  = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
 
     function insertJournalCashReceiptList($data = []){
         $sql = " INSERT INTO tb_journal_cash_receipt_list (
@@ -42,6 +68,7 @@ class JournalCashReceiptListModel extends BaseModel{
             journal_cash_receipt_list_name,
             journal_cash_receipt_list_debit,
             journal_cash_receipt_list_credit,
+            finance_debit_pay_id,
             addby,
             adddate,
             updateby,
@@ -52,6 +79,7 @@ class JournalCashReceiptListModel extends BaseModel{
             '".$data['journal_cash_receipt_list_name']."', 
             '".$data['journal_cash_receipt_list_debit']."',
             '".$data['journal_cash_receipt_list_credit']."',
+            '".$data['finance_debit_pay_id']."',
             '".$data['addby']."', 
             NOW(), 
             '".$data['updateby']."', 
@@ -95,6 +123,32 @@ class JournalCashReceiptListModel extends BaseModel{
         $sql = "DELETE FROM tb_journal_cash_receipt_list WHERE journal_cash_receipt_id = '$id' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
+    }
+
+    function deleteJournalCashReceiptListByFinanceDebitListIDNotIn($journal_cash_receipt_id,$data){
+        $str ='';
+        if(is_array($data)){ 
+            for($i=0; $i < count($data) ;$i++){
+                if($data[$i] != ""){
+                    $str .= $data[$i];
+                    if($i + 1 < count($data)){
+                        $str .= ',';
+                    }
+                }
+            }
+        }else if ($data != ''){
+            $str = $data;
+        }else{
+            $str='0';
+        }
+
+        if( $str==''){
+            $str='0';
+        }
+
+        $sql = "DELETE FROM tb_journal_cash_receipt_list 
+                WHERE journal_cash_receipt_id = '$journal_cash_receipt_id' AND finance_debit_pay_id NOT IN ( $str ) AND finance_debit_pay_id NOT IN ('-1','-2') ";
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
     }
 
     function deleteJournalCashReceiptListByJournalCashReceiptIDNotIN($id,$data){

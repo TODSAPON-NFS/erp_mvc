@@ -44,7 +44,7 @@ class JournalCashReceiptModel extends BaseModel{
             OR  journal_cash_receipt_name LIKE ('%$keyword%') 
         ) 
         $str_date 
-        ORDER BY STR_TO_DATE(journal_cash_receipt_date,'%d-%m-%Y %H:%i:%s'), journal_cash_receipt_code DESC 
+        ORDER BY journal_cash_receipt_code DESC 
          ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -59,7 +59,22 @@ class JournalCashReceiptModel extends BaseModel{
     }
 
 
+    function getJournalCashReceiptByFinanceDebitID($id){
+        $sql = " SELECT * 
+        FROM tb_journal_cash_receipt 
+        WHERE finance_debit_id = '$id' 
+        ";
 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
 
 
     function getJournalCashReceiptByID($id){
@@ -148,6 +163,7 @@ class JournalCashReceiptModel extends BaseModel{
 
     function insertJournalCashReceipt($data = []){
         $sql = " INSERT INTO tb_journal_cash_receipt (
+            finance_debit_id,
             journal_cash_receipt_code, 
             journal_cash_receipt_date,
             journal_cash_receipt_name,
@@ -156,6 +172,7 @@ class JournalCashReceiptModel extends BaseModel{
             updateby, 
             lastupdate) 
         VALUES ('".
+        $data['finance_debit_id']."','".
         $data['journal_cash_receipt_code']."','".
         $data['journal_cash_receipt_date']."','".
         $data['journal_cash_receipt_name']."','".
@@ -172,6 +189,16 @@ class JournalCashReceiptModel extends BaseModel{
             return 0;
         }
 
+    }
+
+    function deleteJournalCashReceiptByFinanceDebitID($finance_debit_id){
+        
+        $sql = " DELETE FROM tb_journal_cash_receipt_list WHERE journal_cash_receipt_id IN (SELECT journal_cash_receipt_id FROM tb_journal_cash_receipt WHERE finance_debit_id = '$finance_debit_id') ";
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = " DELETE FROM tb_journal_cash_receipt WHERE finance_debit_id = '$finance_debit_id' ";
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+        
     }
 
 

@@ -31,7 +31,21 @@ if(!isset($_GET['action'])){
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $keyword = $_GET['keyword']; 
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+    
     $journal_cash_receipts = $journal_cash_receipt_model->getJournalCashReceiptBy($date_start,$date_end,$keyword);
+
+    $page_max = (int)(count($journal_cash_receipts)/$page_size);
+    if(count($journal_cash_receipts)%$page_size > 0){
+        $page_max += 1;
+    }
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -110,8 +124,8 @@ if(!isset($_GET['action'])){
                         $data['journal_cash_receipt_id'] = $journal_cash_receipt_id;
                         $data['account_id'] = $account_id[$i];
                         $data['journal_cash_receipt_list_name'] = $journal_cash_receipt_list_name[$i];
-                        $data['journal_cash_receipt_list_debit'] = $journal_cash_receipt_list_debit[$i];
-                        $data['journal_cash_receipt_list_credit'] = $journal_cash_receipt_list_credit[$i];
+                        $data['journal_cash_receipt_list_debit'] = (float)filter_var($journal_cash_receipt_list_debit[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                        $data['journal_cash_receipt_list_credit'] = (float)filter_var($journal_cash_receipt_list_credit[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
                         if ($journal_cash_receipt_list_id[$i] != "" && $journal_cash_receipt_list_id[$i] != '0'){
                             $journal_cash_receipt_list_model->updateJournalCashReceiptListById($data,$journal_cash_receipt_list_id[$i]);
@@ -124,8 +138,8 @@ if(!isset($_GET['action'])){
                     $data['journal_cash_receipt_id'] = $journal_cash_receipt_id;
                     $data['account_id'] = $account_id;
                     $data['journal_cash_receipt_list_name'] = $journal_cash_receipt_list_name;
-                    $data['journal_cash_receipt_list_debit'] = $journal_cash_receipt_list_debit;
-                    $data['journal_cash_receipt_list_credit'] = $journal_cash_receipt_list_credit;
+                    $data['journal_cash_receipt_list_debit'] = (float)filter_var($journal_cash_receipt_list_debit, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data['journal_cash_receipt_list_credit'] = (float)filter_var($journal_cash_receipt_list_credit, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
                     if ($journal_cash_receipt_list_id != "" && $journal_cash_receipt_list_id != '0'){
                         $journal_cash_receipt_list_model->updateJournalCashReceiptListById($data,$journal_cash_receipt_list_id);
@@ -136,7 +150,10 @@ if(!isset($_GET['action'])){
                 }
 
     ?>
-            <script>window.location="index.php?app=journal_special_03&action=update&id=<?php echo $journal_cash_receipt_id;?>"</script>
+            <script>
+            //window.location="index.php?app=journal_special_03&action=update&id=<?php echo $journal_cash_receipt_id;?>";
+            window.location="index.php?app=journal_special_03&action=insert";
+            </script>
     <?php
             }else{
     ?>
@@ -174,8 +191,8 @@ if(!isset($_GET['action'])){
                 $data['journal_cash_receipt_id'] = $journal_cash_receipt_id;
                 $data['account_id'] = $account_id[$i];
                 $data['journal_cash_receipt_list_name'] = $journal_cash_receipt_list_name[$i];
-                $data['journal_cash_receipt_list_debit'] = $journal_cash_receipt_list_debit[$i];
-                $data['journal_cash_receipt_list_credit'] = $journal_cash_receipt_list_credit[$i];
+                $data['journal_cash_receipt_list_debit'] = (float)filter_var($journal_cash_receipt_list_debit[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['journal_cash_receipt_list_credit'] = (float)filter_var($journal_cash_receipt_list_credit[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
                 if ($journal_cash_receipt_list_id[$i] != "" && $journal_cash_receipt_list_id[$i] != '0'){
                     $journal_cash_receipt_list_model->updateJournalCashReceiptListById($data,$journal_cash_receipt_list_id[$i]);
@@ -188,8 +205,8 @@ if(!isset($_GET['action'])){
             $data['journal_cash_receipt_id'] = $journal_cash_receipt_id;
             $data['account_id'] = $account_id;
             $data['journal_cash_receipt_list_name'] = $journal_cash_receipt_list_name;
-            $data['journal_cash_receipt_list_debit'] = $journal_cash_receipt_list_debit;
-            $data['journal_cash_receipt_list_credit'] = $journal_cash_receipt_list_credit;
+            $data['journal_cash_receipt_list_debit'] = (float)filter_var($journal_cash_receipt_list_debit, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['journal_cash_receipt_list_credit'] = (float)filter_var($journal_cash_receipt_list_credit, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
             if ($journal_cash_receipt_list_id != "" && $journal_cash_receipt_list_id != '0'){
                 $journal_cash_receipt_list_model->updateJournalCashReceiptListById($data,$journal_cash_receipt_list_id);
@@ -215,7 +232,21 @@ if(!isset($_GET['action'])){
     $date_start = $_GET['date_start'];
     $date_end = $_GET['date_end'];
     $keyword = $_GET['keyword']; 
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+    
     $journal_cash_receipts = $journal_cash_receipt_model->getJournalCashReceiptBy($date_start,$date_end,$keyword);
+
+    $page_max = (int)(count($journal_cash_receipts)/$page_size);
+    if(count($journal_cash_receipts)%$page_size > 0){
+        $page_max += 1;
+    }
     require_once($path.'view.inc.php');
 
 

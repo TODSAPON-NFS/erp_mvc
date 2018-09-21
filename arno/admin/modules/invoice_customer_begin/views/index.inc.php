@@ -24,8 +24,22 @@ if(!isset($_GET['action'])){
     $customer_id = $_GET['customer_id'];
     $keyword = $_GET['keyword'];
 
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+
     $customers=$customer_model->getCustomerBy();
     $invoice_customers = $invoice_customer_model->getInvoiceCustomerBy($date_start,$date_end,$customer_id,$keyword,'','1');  
+
+    $page_max = (int)(count($invoice_customers)/$page_size);
+    if(count($invoice_customers)%$page_size > 0){
+        $page_max += 1;
+    }
+
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -156,8 +170,22 @@ if(!isset($_GET['action'])){
     $customer_id = $_GET['customer_id'];
     $keyword = $_GET['keyword'];
 
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+
     $customers=$customer_model->getCustomerBy();
-    $invoice_customers = $invoice_customer_model->getInvoiceCustomerBy($date_start,$date_end,$customer_id,$keyword,'','1');    
+    $invoice_customers = $invoice_customer_model->getInvoiceCustomerBy($date_start,$date_end,$customer_id,$keyword,'','1');  
+
+    $page_max = (int)(count($invoice_customers)/$page_size);
+    if(count($invoice_customers)%$page_size > 0){
+        $page_max += 1;
+    }
+
     require_once($path.'view.inc.php');
 
 }

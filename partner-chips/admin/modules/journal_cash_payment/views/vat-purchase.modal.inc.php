@@ -530,6 +530,16 @@ function set_invoice_supplier_row(data){
     var invoice_supplier_vat_price = parseFloat(data.invoice_supplier_vat_price);
     var invoice_supplier_total_price_non = parseFloat(data.invoice_supplier_total_price_non);
     var invoice_supplier_vat_price_non = parseFloat(data.invoice_supplier_vat_price_non);
+
+    var invoice_supplier_vat_price_credit = 0 ;
+    var invoice_supplier_vat_price_debit = 0 ;
+
+    if(invoice_supplier_vat_price >= 0){
+        invoice_supplier_vat_price_debit = invoice_supplier_vat_price
+    }else{
+        invoice_supplier_vat_price_credit = Math.abs(invoice_supplier_vat_price);
+    }
+
     if(row_invoice_supplier_add_id != null){
         
 
@@ -595,8 +605,8 @@ function set_invoice_supplier_row(data){
                             '<select class="form-control select" type="text" name="account_id[]" onchange="show_data(this);" data-live-search="true" disabled ></select>'+
                         '</td>'+
                         '<td><input type="text" class="form-control" name="journal_cash_payment_list_name[]" value="' + data.invoice_supplier_description + '" /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" onchange="val_format(this);" name="journal_cash_payment_list_debit[]" value="'+ invoice_supplier_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'"  readonly/></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" onchange="val_format(this);" name="journal_cash_payment_list_credit[]" readonly/></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" onclick="edit_credit(this);"  onchange="val_format(this);" name="journal_cash_payment_list_debit[]" value="'+ invoice_supplier_vat_price_debit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'"  readonly/></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" onclick="edit_credit(this);"  onchange="val_format(this);" name="journal_cash_payment_list_credit[]" value="'+ invoice_supplier_vat_price_credit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly/></td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -628,8 +638,8 @@ function set_invoice_supplier_row(data){
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]').val('0');
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]').val(data.invoice_supplier_id);
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.invoice_supplier_description);
-                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(invoice_supplier_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
-                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val('0');
+                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(invoice_supplier_vat_price_debit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
+                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val(invoice_supplier_vat_price_credit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                 $('.select').selectpicker();
             }
 
@@ -661,8 +671,8 @@ function set_invoice_supplier_row(data){
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]').val('0');
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]').val(data.invoice_supplier_id);
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.invoice_supplier_description);
-            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(invoice_supplier_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
-            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val('0');
+            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(invoice_supplier_vat_price_debit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
+            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val(invoice_supplier_vat_price_credit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
             $('.select').selectpicker();
         }else{
             var journal_invoice_supplier_id = $('#tb_journal').children('tbody').children('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]');   
@@ -677,8 +687,8 @@ function set_invoice_supplier_row(data){
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]').val('0');
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]').val(data.invoice_supplier_id);
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.invoice_supplier_description);
-                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(invoice_supplier_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
-                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val('0');
+                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(invoice_supplier_vat_price_debit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
+                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val(invoice_supplier_vat_price_credit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                     $('.select').selectpicker();
                 }
             }

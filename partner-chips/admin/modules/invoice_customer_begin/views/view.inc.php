@@ -79,9 +79,10 @@
                             <button class="btn btn-primary" style="float:right; margin:0px 4px;" type="submit">Search</button>
                             <a href="index.php?app=invoice_customer" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
                         </div>
-                    </div>
-                </div>
+                    </div> 
+                </form>
                 <br>
+
                 <div class="row" style="margin:0px;">
                     <div class="col-sm-6">
                         <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format(count($invoice_customers),0);?> entries</div>

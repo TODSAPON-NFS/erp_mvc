@@ -446,8 +446,8 @@ function set_cheque_row(data){
                             '<select class="form-control select" type="text" name="account_id[]" onchange="show_data(this);" data-live-search="true" disabled ></select>'+
                         '</td>'+
                         '<td><input type="text" class="form-control" name="journal_cash_payment_list_name[]" value="' + data.check_remark + '" /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" onclick="show_vat(this);" onchange="val_format(this);" name="journal_cash_payment_list_debit[]" value="'+ check_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'"  readonly/></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" onchange="val_format(this);" name="journal_cash_payment_list_credit[]" readonly/></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" onclick="edit_credit(this);" onchange="val_format(this);" name="journal_cash_payment_list_debit[]" value="'+ check_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'"  readonly/></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" onclick="edit_credit(this);" value="0" onchange="val_format(this);" name="journal_cash_payment_list_credit[]" readonly/></td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+

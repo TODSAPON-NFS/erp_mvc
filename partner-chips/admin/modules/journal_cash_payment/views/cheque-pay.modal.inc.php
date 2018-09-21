@@ -431,8 +431,8 @@ function set_cheque_pay_row(data){
                             '<select class="form-control select" type="text" name="account_id[]" onchange="show_data(this);" data-live-search="true" disabled ></select>'+
                         '</td>'+
                         '<td><input type="text" class="form-control" name="journal_cash_payment_list_name[]" value="' + data.check_pay_remark + '" /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" onclick="show_vat(this);" onchange="val_format(this);" name="journal_cash_payment_list_debit[]" value="'+ check_pay_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'"  readonly/></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" value="0" onchange="val_format(this);" name="journal_cash_payment_list_credit[]" readonly/></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" onclick="edit_credit(this);" value="0" onchange="val_format(this);" name="journal_cash_payment_list_debit[]"   readonly/></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" onclick="edit_credit(this);" value="'+ check_pay_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" onchange="val_format(this);" name="journal_cash_payment_list_credit[]" readonly/></td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -464,8 +464,8 @@ function set_cheque_pay_row(data){
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]').val('0');
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]').val('0');
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.check_pay_remark);
-                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(check_pay_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
-                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val('0');
+                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val('0');
+                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val(check_pay_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                 $('.select').selectpicker();
             }
 
@@ -491,8 +491,8 @@ function set_cheque_pay_row(data){
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]').val('0');
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]').val('0');
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.check_pay_remark);
-            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(check_pay_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
-            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val('0');
+            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val('0');
+            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val(check_pay_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
             $('.select').selectpicker();
         }else{
             var journal_cheque_pay_id = $('#tb_journal').children('tbody').children('tr').children('td').children('input[name="journal_cheque_pay_id[]"]');   
@@ -507,8 +507,8 @@ function set_cheque_pay_row(data){
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]').val('0');
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]').val('0');
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.check_pay_remark);
-                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(check_pay_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
-                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val('0');
+                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val('0');
+                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val(check_pay_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                     $('.select').selectpicker();
                 }
             }

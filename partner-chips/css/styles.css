@@ -1,4 +1,6 @@
-
+body {
+    background-color: #f2fff1 !important;
+}
 
 .panel-heading{
    min-height: 60px;
@@ -37,6 +39,10 @@
 .divider{
     
     margin: 0px !important;
+}
+
+.navbar-default{
+    background-color: #f2fff1 !important;
 }
 
 .nav>li:active > a:hover{

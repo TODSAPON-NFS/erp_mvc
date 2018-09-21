@@ -338,10 +338,10 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-6">
                     เพิ่มสมุดรายวันจ่ายเงิน /  Add Journal Payment   
                     </div>
-                    <div class="col-lg-4">  
+                    <div class="col-lg-6">  
                         <table width="100%">
                             <tr>
                                 <td style="padding-left:4px;">
@@ -438,7 +438,7 @@
                                         </td>
                                         <td align="right"><input type="text" class="form-control"  name="journal_cash_payment_list_name[]" value="<?php echo $journal_cash_payment_lists[$i]['journal_cash_payment_list_name']; ?>" /></td>
                                         <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_debit[]" onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'],2); ?>"  onclick="edit_credit(this)" /></td>
-                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_credit[]" onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'],2); ?>" /></td>
+                                        <td align="right"><input type="text" class="form-control" style="text-align: right;" name="journal_cash_payment_list_credit[]" onchange="val_format(this);" value="<?php echo number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'],2); ?>" onclick="edit_credit(this)" /></td>
                                         <td>
                                             <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                                 <i class="fa fa-times" aria-hidden="true"></i>

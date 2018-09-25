@@ -100,7 +100,7 @@
                     <div class="row">
                     <div class="col-lg-offset-8 col-lg-2" align="right">
                         
-                    <?php if(($user[0][24] == "High" || $user[0][25] == "High" ) && $request_standard['request_standard_cancelled'] == 0 ){ ?>
+                    <?php if(($license_request_page == "High" || $license_manager_page == "High" ) && $request_standard['request_standard_cancelled'] == 0 ){ ?>
                         
                             <select id="request_standard_accept_status" name="request_standard_accept_status" class="form-control" data-live-search="true" >
                                 <option <?php if($request_standard['request_standard_accept_status'] == "Waiting"){?> selected <?php }?> >Waiting</option>
@@ -113,7 +113,7 @@
                         <div class="col-lg-2" align="right">
                             <a href="index.php?app=request_standard" class="btn btn-default">Back</a>
 
-                            <?php if(($user[0][24] == "High" || $user[0][25] == "High" ) && $request_standard['request_standard_cancelled'] == 0 ){ ?>
+                            <?php if(($license_request_page == "High" || $license_manager_page == "High" ) && $request_standard['request_standard_cancelled'] == 0 ){ ?>
                             <button type="submit" class="btn btn-success">Save</button>
                             <?php } ?>
                             

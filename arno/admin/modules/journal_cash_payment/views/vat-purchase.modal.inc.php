@@ -234,7 +234,7 @@ function edit_invoice_supplier_row(id,journal_id){
             $('#invoice_supplier_id').val('0'); 
             $('#invoice_supplier_code').val(''); 
             $('#invoice_supplier_date').val($('#journal_cash_payment_date').val()); 
-            $('#invoice_supplier_code_gen').val(''); 
+            $('#invoice_supplier_code_gen').val($('#journal_cash_payment_code').val()); 
             $('#invoice_supplier_date_recieve').val($('#journal_cash_payment_date').val()); 
             $('#supplier_code').val(''); 
             $('#vat_supplier_id').val('0'); 
@@ -267,7 +267,7 @@ function add_invoice_supplier_row(id,journal_id){
     $('#invoice_supplier_id').val('0'); 
     $('#invoice_supplier_code').val(''); 
     $('#invoice_supplier_date').val($('#journal_cash_payment_date').val()); 
-    $('#invoice_supplier_code_gen').val(''); 
+    $('#invoice_supplier_code_gen').val($('#journal_cash_payment_code').val()); 
     $('#invoice_supplier_date_recieve').val($('#journal_cash_payment_date').val()); 
     $('#supplier_code').val(''); 
     $('#vat_supplier_id').val('0'); 
@@ -337,7 +337,7 @@ function get_invoice_supplier_data(id,code){
             $('#invoice_supplier_id').val('0'); 
             $('#invoice_supplier_code').val(code); 
             $('#invoice_supplier_date').val($('#journal_cash_payment_date').val()); 
-            $('#invoice_supplier_code_gen').val(''); 
+            $('#invoice_supplier_code_gen').val($('#journal_cash_payment_code').val()); 
             $('#invoice_supplier_date_recieve').val($('#journal_cash_payment_date').val()); 
             $('#supplier_code').val(''); 
             $('#vat_supplier_id').val('0'); 

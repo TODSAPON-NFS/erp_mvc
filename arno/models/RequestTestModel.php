@@ -226,6 +226,8 @@ class RequestTestModel extends BaseModel{
                 GROUP BY supplier_id 
         ";
 
+        //echo $sql;
+
         $data = [];
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             

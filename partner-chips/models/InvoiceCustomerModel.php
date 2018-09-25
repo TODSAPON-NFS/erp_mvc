@@ -171,19 +171,27 @@ class InvoiceCustomerModel extends BaseModel{
         $sql = " UPDATE tb_invoice_customer SET 
         customer_id = '".$data['customer_id']."', 
         employee_id = '".$data['employee_id']."', 
-        invoice_customer_code = '".$data['invoice_customer_code']."', 
+        invoice_customer_code = '".static::$db->real_escape_string($data['invoice_customer_code'])."', 
         invoice_customer_total_price = '".$data['invoice_customer_total_price']."', 
         invoice_customer_vat = '".$data['invoice_customer_vat']."', 
         invoice_customer_vat_price = '".$data['invoice_customer_vat_price']."', 
         invoice_customer_net_price = '".$data['invoice_customer_net_price']."', 
-        invoice_customer_date = '".$data['invoice_customer_date']."', 
-        invoice_customer_name = '".$data['invoice_customer_name']."', 
-        invoice_customer_address = '".$data['invoice_customer_address']."', 
-        invoice_customer_tax = '".$data['invoice_customer_tax']."', 
-        invoice_customer_term = '".$data['invoice_customer_term']."', 
-        invoice_customer_due = '".$data['invoice_customer_due']."', 
+        invoice_customer_date = '".static::$db->real_escape_string($data['invoice_customer_date'])."', 
+        invoice_customer_name = '".static::$db->real_escape_string($data['invoice_customer_name'])."', 
+        invoice_customer_address = '".static::$db->real_escape_string($data['invoice_customer_address'])."', 
+        invoice_customer_term = '".static::$db->real_escape_string($data['invoice_customer_term'])."', 
+        invoice_customer_tax = '".static::$db->real_escape_string($data['invoice_customer_tax'])."', 
+        invoice_customer_branch = '".static::$db->real_escape_string($data['invoice_customer_branch'])."', 
+        invoice_customer_due = '".static::$db->real_escape_string($data['invoice_customer_due'])."', 
         invoice_customer_close = '".$data['invoice_customer_close']."', 
         invoice_customer_begin = '".$data['invoice_customer_begin']."', 
+        vat_section = '".static::$db->real_escape_string($data['vat_section'])."', 
+        vat_section_add = '".static::$db->real_escape_string($data['vat_section_add'])."', 
+        invoice_customer_total_price_non = '".$data['invoice_customer_total_price_non']."', 
+        invoice_customer_vat_price_non = '".$data['invoice_customer_vat_price_non']."', 
+        invoice_customer_total_non = '".$data['invoice_customer_total_non']."', 
+        invoice_customer_description = '".static::$db->real_escape_string($data['invoice_customer_description'])."', 
+        invoice_customer_remark = '".static::$db->real_escape_string($data['invoice_customer_remark'])."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
         WHERE invoice_customer_id = $id 
@@ -340,9 +348,17 @@ class InvoiceCustomerModel extends BaseModel{
             invoice_customer_name,
             invoice_customer_address,
             invoice_customer_tax,
+            invoice_customer_branch,
             invoice_customer_term,
             invoice_customer_due,
             invoice_customer_begin,  
+            vat_section,
+            vat_section_add,
+            invoice_customer_total_price_non,
+            invoice_customer_vat_price_non,
+            invoice_customer_total_non,
+            invoice_customer_description,
+            invoice_customer_remark,
             addby,
             adddate,
             updateby,
@@ -350,18 +366,26 @@ class InvoiceCustomerModel extends BaseModel{
         VALUES ('".
         $data['customer_id']."','".
         $data['employee_id']."','".
-        $data['invoice_customer_code']."','".
+        static::$db->real_escape_string($data['invoice_customer_code'])."','".
         $data['invoice_customer_total_price']."','".
         $data['invoice_customer_vat']."','".
         $data['invoice_customer_vat_price']."','".
         $data['invoice_customer_net_price']."','".
-        $data['invoice_customer_date']."','".
-        $data['invoice_customer_name']."','".
-        $data['invoice_customer_address']."','".
-        $data['invoice_customer_tax']."','".
-        $data['invoice_customer_term']."','".
-        $data['invoice_customer_due']."','".
+        static::$db->real_escape_string($data['invoice_customer_date'])."','".
+        static::$db->real_escape_string($data['invoice_customer_name'])."','".
+        static::$db->real_escape_string($data['invoice_customer_address'])."','".
+        static::$db->real_escape_string($data['invoice_customer_tax'])."','".
+        static::$db->real_escape_string($data['invoice_customer_branch'])."','".
+        static::$db->real_escape_string($data['invoice_customer_term'])."','".
+        static::$db->real_escape_string($data['invoice_customer_due'])."','".
         $data['invoice_customer_begin']."','".
+        static::$db->real_escape_string($data['vat_section'])."','".
+        static::$db->real_escape_string($data['vat_section_add'])."','".
+        static::$db->real_escape_string($data['invoice_customer_total_price_non'])."','".
+        static::$db->real_escape_string($data['invoice_customer_vat_price_non'])."','".
+        static::$db->real_escape_string($data['invoice_customer_total_non'])."','".
+        static::$db->real_escape_string($data['invoice_customer_description'])."','".
+        static::$db->real_escape_string($data['invoice_customer_remark'])."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].

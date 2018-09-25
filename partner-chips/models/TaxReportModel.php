@@ -16,11 +16,11 @@ class TaxReportModel extends BaseModel{
         $str_user = "";
 
         if($date_start != "" && $date_end != ""){
-            $str_date = "AND STR_TO_DATE(invoice_supplier_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(invoice_supplier_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+            $str_date = "AND STR_TO_DATE(invoice_supplier_date_recieve,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(invoice_supplier_date_recieve,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
         }else if ($date_start != ""){
-            $str_date = "AND STR_TO_DATE(invoice_supplier_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+            $str_date = "AND STR_TO_DATE(invoice_supplier_date_recieve,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
         }else if ($date_end != ""){
-            $str_date = "AND STR_TO_DATE(invoice_supplier_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+            $str_date = "AND STR_TO_DATE(invoice_supplier_date_recieve,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
         }
 
         if($user_id != ""){
@@ -38,7 +38,8 @@ class TaxReportModel extends BaseModel{
         invoice_supplier_vat_price,
         invoice_supplier_net_price,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name,  
-        IFNULL(tb2.supplier_name_th,tb2.supplier_name_en) as supplier_name  
+        invoice_supplier_name,
+        invoice_supplier_tax  
         FROM tb_invoice_supplier 
         LEFT JOIN tb_user as tb1 ON tb_invoice_supplier.employee_id = tb1.user_id 
         LEFT JOIN tb_supplier as tb2 ON tb_invoice_supplier.supplier_id = tb2.supplier_id 

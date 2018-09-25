@@ -105,6 +105,7 @@
                             <th >เลขที่ <br>Code.</th>
                             <th >เลขที่ออกใหม่ <br>New code.</th>
                             <th>ผู้ขาย <br>Supplier</th>
+                            <th>เลขผู้เสียภาษี <br> Tax</th>
                             <th width="120" > ผู้ออก<br>Create by</th> 
                             <th>ยอดเงิน<br>Net Price.</th>
                             <th>ภาษีซื้อ<br>Vat.</th>
@@ -124,7 +125,8 @@
                             <td><?php echo $tax_reports[$i]['invoice_supplier_date']; ?></td>
                             <td><?php echo $tax_reports[$i]['invoice_supplier_code']; ?></td>
                             <td><?php echo $tax_reports[$i]['invoice_supplier_code_gen']; ?></td>
-                            <td><?php echo $tax_reports[$i]['supplier_name']; ?> </td>
+                            <td><?php echo $tax_reports[$i]['invoice_supplier_name']; ?></td>
+                            <td><?php echo $tax_reports[$i]['invoice_supplier_tax']; ?></td>
                             <td><?php echo $tax_reports[$i]['employee_name']; ?></td>
                             <td  align="right" >
                                 <?php echo number_format($tax_reports[$i]['invoice_supplier_net_price'],2); ?>

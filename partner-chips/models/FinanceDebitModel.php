@@ -167,29 +167,26 @@ class FinanceDebitModel extends BaseModel{
         '0' as finance_debit_list_paid, 
         '' as finance_debit_list_billing, 
         '' as finance_debit_list_receipt, 
-        tb_billing_note_list.billing_note_list_balance as finance_debit_list_amount, 
+        MAX(IFNULL(tb_billing_note_list.billing_note_list_balance,0)) as finance_debit_list_amount, 
+        SUM(IFNULL(finance_debit_list_balance,0)) as finance_debit_list_paid, 
         invoice_customer_date as finance_debit_list_date, 
         invoice_customer_due as finance_debit_list_due 
         FROM tb_billing_note_list 
         LEFT JOIN tb_invoice_customer ON tb_billing_note_list.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
         LEFT JOIN tb_billing_note ON tb_billing_note_list.billing_note_id = tb_billing_note.billing_note_id 
+        LEFT JOIN tb_finance_debit_list ON tb_billing_note_list.billing_note_list_id = tb_finance_debit_list.billing_note_list_id 
+        LEFT JOIN tb_finance_debit ON tb_finance_debit_list.finance_debit_id = tb_finance_debit.finance_debit_id 
         LEFT JOIN tb_official_receipt_list ON tb_billing_note_list.billing_note_list_id = tb_official_receipt_list.billing_note_list_id 
         LEFT JOIN tb_official_receipt ON tb_official_receipt_list.official_receipt_id = tb_official_receipt.official_receipt_id 
-        WHERE tb_billing_note_list.billing_note_list_id NOT IN ($str) 
-        AND tb_billing_note_list.billing_note_list_id  IN (
-            SELECT DISTINCT tb_billing_note_list.billing_note_list_id 
-            FROM tb_billing_note_list 
-            LEFT JOIN tb_finance_debit_list ON tb_billing_note_list.billing_note_list_id = tb_finance_debit_list.billing_note_list_id
-            LEFT JOIN tb_billing_note ON tb_billing_note_list.billing_note_id = tb_billing_note.billing_note_id
-            GROUP BY tb_billing_note_list.billing_note_list_id 
-            HAVING MAX(IFNULL(tb_billing_note_list.billing_note_list_balance,0)) > SUM(IFNULL(finance_debit_list_balance,0))
-        ) 
+        WHERE tb_billing_note_list.billing_note_list_id NOT IN ($str)  
         AND tb_invoice_customer.customer_id = '$customer_id' 
         AND (
             invoice_customer_date LIKE ('%$search%') OR
             invoice_customer_due LIKE ('%$search%') OR 
             invoice_customer_code LIKE ('%$search%') 
         ) 
+        GROUP BY tb_billing_note_list.billing_note_list_id 
+        HAVING MAX(IFNULL(tb_billing_note_list.billing_note_list_balance,0)) -  SUM(IFNULL(finance_debit_list_balance,0)) != 0
         ORDER BY  invoice_customer_code ";
 
         //echo $sql_customer;

@@ -162,29 +162,25 @@ class FinanceCreditModel extends BaseModel{
             $str='0';
         }
 
-        $sql_supplier = "SELECT invoice_supplier_id, 
+        $sql_supplier = "SELECT tb_invoice_supplier.invoice_supplier_id, 
         invoice_supplier_code,
         '0' as finance_credit_list_paid, 
         invoice_supplier_code_gen as finance_credit_list_recieve,
         '' as finance_credit_list_receipt,
-        invoice_supplier_net_price as finance_credit_list_amount, 
+        MAX(IFNULL(tb_invoice_supplier.invoice_supplier_net_price,0)) as finance_credit_list_amount, 
+        SUM(IFNULL(finance_credit_list_balance,0)) as finance_credit_list_paid, 
         invoice_supplier_date as finance_credit_list_date, 
         invoice_supplier_due as finance_credit_list_due 
         FROM tb_invoice_supplier 
-        WHERE tb_invoice_supplier.invoice_supplier_id NOT IN ($str) 
-        AND tb_invoice_supplier.invoice_supplier_id  IN (
-            SELECT DISTINCT tb_invoice_supplier.invoice_supplier_id 
-            FROM tb_invoice_supplier
-            LEFT JOIN tb_finance_credit_list ON tb_invoice_supplier.invoice_supplier_id = tb_finance_credit_list.invoice_supplier_id 
-            WHERE supplier_id = '$supplier_id' 
-            GROUP BY tb_invoice_supplier.invoice_supplier_id 
-            HAVING MAX(IFNULL(tb_invoice_supplier.invoice_supplier_net_price,0)) - SUM(IFNULL(finance_credit_list_balance,0)) != 0 
-        ) 
-        AND supplier_id = '$supplier_id' 
+        LEFT JOIN tb_finance_credit_list ON tb_invoice_supplier.invoice_supplier_id = tb_finance_credit_list.invoice_supplier_id 
+        WHERE tb_invoice_supplier.invoice_supplier_id NOT IN ($str)  
+        AND tb_invoice_supplier.supplier_id = '$supplier_id' 
         AND (
             invoice_supplier_code LIKE ('%$search%') OR 
             invoice_supplier_code_gen LIKE ('%$search%') 
         ) 
+        GROUP BY tb_invoice_supplier.invoice_supplier_id 
+        HAVING MAX(IFNULL(tb_invoice_supplier.invoice_supplier_net_price,0)) - SUM(IFNULL(finance_credit_list_balance,0)) != 0 
         ORDER BY  invoice_supplier_code ";
 
         //echo $sql_supplier;

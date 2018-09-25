@@ -46,7 +46,7 @@ $tax_reports = $tax_report_model->getPurchaseTaxReportBy($date_start,$date_end,$
 //     $tax_reports[] = $tax_reports[0];
 // }
 
-$lines = 30;
+$lines = 28;
 
 $page_max = (int)(count($tax_reports) / $lines);
 if(count($tax_reports) % $lines > 0){
@@ -71,7 +71,7 @@ if($_GET['action'] == "pdf"){
     
     for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
-        $mpdf->AddPage('P');
+        $mpdf->AddPage('L');
         $mpdf->mirrorMargins = true;
         
         $mpdf->SetDisplayMode('fullpage','two');

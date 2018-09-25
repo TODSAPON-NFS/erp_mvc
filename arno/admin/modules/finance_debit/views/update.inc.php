@@ -324,7 +324,7 @@
                         '<input type="text" class="form-control" name="finance_debit_list_paid[]" style="text-align:right" onchange="update_sum(this);" value="'+data_buffer[i].finance_debit_list_paid+'" />'+
                         '</td>'+
                         '<td align="right">'+
-                        '<input type="text" class="form-control" name="finance_debit_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="'+(data_buffer[i].finance_debit_list_amount - data_buffer[i].finance_debit_list_paid)+'" readonly />'+
+                        '<input type="text" class="form-control" name="finance_debit_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="'+(data_buffer[i].finance_debit_list_amount - data_buffer[i].finance_debit_list_paid)+'"  />'+
                         '</td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -373,9 +373,9 @@
 
         balance = amount-paid;
 
-        $(id).closest('tr').children('td').children('input[name="finance_debit_list_amount[]"]').val( amount.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $(id).closest('tr').children('td').children('input[name="finance_debit_list_amount[]"]').val( amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
         $(id).closest('tr').children('td').children('input[name="finance_debit_list_paid[]"]').val( paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $(id).closest('tr').children('td').children('input[name="finance_debit_list_balance[]"]').val( sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        //$(id).closest('tr').children('td').children('input[name="finance_debit_list_balance[]"]').val( sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
 
         calculateAll();
 
@@ -728,7 +728,7 @@
                                     <input type="text" class="form-control" name="finance_debit_list_paid[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($finance_debit_lists[$i]['finance_debit_list_paid'],2);?>" />
                                 </td>
                                 <td align="right">
-                                    <input type="text" class="form-control" name="finance_debit_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($finance_debit_lists[$i]['finance_debit_list_amount'] - $finance_debit_lists[$i]['finance_debit_list_paid'],2);?>" readonly/>
+                                    <input type="text" class="form-control" name="finance_debit_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="<?PHP echo  number_format($finance_debit_lists[$i]['finance_debit_list_amount'] - $finance_debit_lists[$i]['finance_debit_list_paid'],2);?>" />
                                 </td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">

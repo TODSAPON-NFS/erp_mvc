@@ -46,7 +46,7 @@ $tax_reports = $tax_report_model->getSaleTaxReportBy($date_start,$date_end,$cust
 //     $tax_reports[] = $tax_reports[0];
 // }
 
-$lines = 30;
+$lines = 28;
 
 $page_max = (int)(count($tax_reports) / $lines);
 if(count($tax_reports) % $lines > 0){
@@ -79,6 +79,7 @@ if($_GET['action'] == "pdf"){
 
         //$html = ob_get_contents();  
         //ob_end_clean();
+
         $mpdf->WriteHTML($html[$page_index]);
 
     }
@@ -90,7 +91,8 @@ if($_GET['action'] == "pdf"){
 }else if ($_GET['action'] == "excel") {
     
     header("Content-type: application/vnd.ms-excel");
-	// header('Content-type: application/csv'); //*** CSV ***//
+    // header('Content-type: application/csv'); //*** CSV ***//
+    
     header("Content-Disposition: attachment; filename=Sale_vat $d1-$d2-$d3 $d4:$d5:$d6.xls");
 
     for($page_index=0 ; $page_index < $page_max ; $page_index++){

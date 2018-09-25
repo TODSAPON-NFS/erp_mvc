@@ -143,9 +143,7 @@ if(!isset($_GET['action'])&& (($license_request_page == 'Low') || $license_reque
                         $request_special_list_model->insertRequestSpecialList($data);
                     }else{
                         $request_special_list_model->updateRequestSpecialListById($data,$request_special_list_id[$i]);
-                    }
-                    
-                    
+                    } 
                 }
             }else{
                 $data = [];

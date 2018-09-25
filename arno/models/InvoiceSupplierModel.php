@@ -156,22 +156,25 @@ class InvoiceSupplierModel extends BaseModel{
         $sql = " UPDATE tb_invoice_supplier SET 
         supplier_id = '".$data['supplier_id']."', 
         employee_id = '".$data['employee_id']."', 
-        invoice_supplier_code = '".$data['invoice_supplier_code']."', 
-        invoice_supplier_code_gen = '".$data['invoice_supplier_code_gen']."', 
+        invoice_supplier_code = '".static::$db->real_escape_string($data['invoice_supplier_code'])."', 
+        invoice_supplier_code_gen = '".static::$db->real_escape_string($data['invoice_supplier_code_gen'])."', 
         invoice_supplier_total_price = '".$data['invoice_supplier_total_price']."', 
         invoice_supplier_vat = '".$data['invoice_supplier_vat']."', 
         invoice_supplier_vat_price = '".$data['invoice_supplier_vat_price']."', 
         invoice_supplier_net_price = '".$data['invoice_supplier_net_price']."', 
-        invoice_supplier_date = '".$data['invoice_supplier_date']."', 
-        invoice_supplier_date_recieve = '".$data['invoice_supplier_date_recieve']."', 
-        invoice_supplier_name = '".$data['invoice_supplier_name']."', 
-        invoice_supplier_address = '".$data['invoice_supplier_address']."', 
-        invoice_supplier_tax = '".$data['invoice_supplier_tax']."', 
-        invoice_supplier_term = '".$data['invoice_supplier_term']."', 
-        invoice_supplier_due = '".$data['invoice_supplier_due']."',  
+        invoice_supplier_date = '".static::$db->real_escape_string($data['invoice_supplier_date'])."', 
+        invoice_supplier_date_recieve = '".static::$db->real_escape_string($data['invoice_supplier_date_recieve'])."', 
+        invoice_supplier_name = '".static::$db->real_escape_string($data['invoice_supplier_name'])."', 
+        invoice_supplier_address = '".static::$db->real_escape_string($data['invoice_supplier_address'])."', 
+        invoice_supplier_tax = '".static::$db->real_escape_string($data['invoice_supplier_tax'])."', 
+        invoice_supplier_branch = '".static::$db->real_escape_string($data['invoice_supplier_branch'])."', 
+        invoice_supplier_term = '".static::$db->real_escape_string($data['invoice_supplier_term'])."', 
+        invoice_supplier_due = '".static::$db->real_escape_string($data['invoice_supplier_due'])."',  
         invoice_supplier_begin = '".$data['invoice_supplier_begin']."', 
         import_duty = '".$data['import_duty']."', 
         freight_in = '".$data['freight_in']."', 
+        vat_section = '".static::$db->real_escape_string($data['vat_section'])."', 
+        vat_section_add = '".static::$db->real_escape_string($data['vat_section_add'])."', 
         invoice_supplier_total_price_non = '".$data['invoice_supplier_total_price_non']."', 
         invoice_supplier_vat_price_non = '".$data['invoice_supplier_vat_price_non']."', 
         invoice_supplier_total_non = '".$data['invoice_supplier_total_non']."', 
@@ -361,6 +364,7 @@ class InvoiceSupplierModel extends BaseModel{
             invoice_supplier_name,
             invoice_supplier_address,
             invoice_supplier_tax,
+            invoice_supplier_branch,
             invoice_supplier_term,
             invoice_supplier_due, 
             invoice_supplier_begin,
@@ -380,24 +384,25 @@ class InvoiceSupplierModel extends BaseModel{
         VALUES ('".
         $data['supplier_id']."','".
         $data['employee_id']."','".
-        $data['invoice_supplier_code']."','".
-        $data['invoice_supplier_code_gen']."','".
+        static::$db->real_escape_string($data['invoice_supplier_code'])."','".
+        static::$db->real_escape_string($data['invoice_supplier_code_gen'])."','".
         $data['invoice_supplier_total_price']."','".
         $data['invoice_supplier_vat']."','".
         $data['invoice_supplier_vat_price']."','".
         $data['invoice_supplier_net_price']."','".
-        $data['invoice_supplier_date']."','".
-        $data['invoice_supplier_date_recieve']."','".
-        $data['invoice_supplier_name']."','".
-        $data['invoice_supplier_address']."','".
-        $data['invoice_supplier_tax']."','".
-        $data['invoice_supplier_term']."','".
-        $data['invoice_supplier_due']."','".  
+        static::$db->real_escape_string($data['invoice_supplier_date'])."','".
+        static::$db->real_escape_string($data['invoice_supplier_date_recieve'])."','".
+        static::$db->real_escape_string($data['invoice_supplier_name'])."','".
+        static::$db->real_escape_string($data['invoice_supplier_address'])."','".
+        static::$db->real_escape_string($data['invoice_supplier_tax'])."','".
+        static::$db->real_escape_string($data['invoice_supplier_branch'])."','".
+        static::$db->real_escape_string($data['invoice_supplier_term'])."','".
+        static::$db->real_escape_string($data['invoice_supplier_due'])."','".  
         $data['invoice_supplier_begin']."','". 
         $data['import_duty']."','".
         $data['freight_in']."','".
-        $data['vat_section']."','".
-        $data['vat_section_add']."','".
+        static::$db->real_escape_string($data['vat_section'])."','".
+        static::$db->real_escape_string($data['vat_section_add'])."','".
         $data['invoice_supplier_total_price_non']."','".
         $data['invoice_supplier_vat_price_non']."','".
         $data['invoice_supplier_total_non']."','".

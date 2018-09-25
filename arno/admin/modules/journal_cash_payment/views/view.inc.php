@@ -138,6 +138,7 @@
                             <th>วันที่ <br>Journal Cash Payment Date</th>
                             <th>หมายเลขสมุดรายวันจ่ายเงิน <br>Journal Cash Payment No.</th>
                             <th>ชื่อสมุดรายวันจ่ายเงิน <br>Name.</th>
+                            <th>ใบจ่ายชำระเงิน <br>Finance credit.</th>
                             <th>ผู้เพิ่มเอกสาร <br>Add by</th>
                             <th>วันที่เพิ่มเอกสาร <br>Add date</th>
                             <th>ผู้แก้ไขเอกสาร <br>Update by</th>
@@ -154,12 +155,22 @@
                             <td><?php echo $journal_cash_payments[$i]['journal_cash_payment_date']; ?></td>
                             <td><?php echo $journal_cash_payments[$i]['journal_cash_payment_code']; ?></td>
                             <td><?php echo $journal_cash_payments[$i]['journal_cash_payment_name']; ?></td>
-                            <td><?php echo $journal_cash_payments[$i]['add_name']; ?></td>
+                            <td>
+                                <?php if($journal_cash_payments[$i]['finance_credit_id'] == 0) { ?> 
+                                -
+                                <?php }else{ ?>
+                                <a href="?app=finance_credit&action=update&id=<?php echo $journal_cash_payments[$i]['finance_credit_id']; ?>" target="_blank" ><?php echo $journal_cash_payments[$i]['finance_credit_code']; ?> </a>
+                                <?php } ?>
+                            </td>
+                            <td><?php echo $journal_cash_payments[$i]['add_name']; ?></td> 
                             <td><?php echo $journal_cash_payments[$i]['adddate']; ?></td>
                             <td><?php echo $journal_cash_payments[$i]['update_name']; ?></td>
                             <td><?php echo $journal_cash_payments[$i]['lastupdate']; ?></td>
                             <td>
-                                <a href="?app=journal_special_04&action=update&id=<?php echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>">
+                                <a href="print.php?app=report_journal_04&type=id&action=pdf&id=<?php echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>" target="_blank" >
+                                    <i class="fa fa-print" aria-hidden="true"></i>
+                                </a> 
+                                <a href="?app=journal_special_04&action=update&id=<?php echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>" style="color:orange;">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
                                 <a href="?app=journal_special_04&action=delete&id=<?php echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>" onclick="return confirm('You want to delete Journal Cash Payment : <?php echo $journal_cash_payments[$i]['journal_cash_payment_code']; ?>');" style="color:red;">

@@ -24,17 +24,20 @@ class JournalCashReceiptModel extends BaseModel{
 
 
 
-        $sql = " SELECT journal_cash_receipt_id, 
+        $sql = " SELECT tb_journal_cash_receipt.journal_cash_receipt_id, 
+        IFNULL(tb_finance_debit.finance_debit_id,'0') as finance_debit_id,
+        IFNULL(tb_finance_debit.finance_debit_code,'-') as finance_debit_code,
         journal_cash_receipt_code, 
         journal_cash_receipt_date,
         journal_cash_receipt_name,
-        addby,
-        adddate,
-        updateby,
-        lastupdate,
+        tb_journal_cash_receipt.addby,
+        tb_journal_cash_receipt.adddate,
+        tb_journal_cash_receipt.updateby,
+        tb_journal_cash_receipt.lastupdate,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as add_name, 
         IFNULL(CONCAT(tb2.user_name,' ',tb2.user_lastname),'-') as update_name 
         FROM tb_journal_cash_receipt 
+        LEFT JOIN tb_finance_debit ON tb_journal_cash_receipt.finance_debit_id = tb_finance_debit.finance_debit_id 
         LEFT JOIN tb_user as tb1 ON tb_journal_cash_receipt.addby = tb1.user_id 
         LEFT JOIN tb_user as tb2 ON tb_journal_cash_receipt.updateby = tb2.user_id 
         WHERE ( 

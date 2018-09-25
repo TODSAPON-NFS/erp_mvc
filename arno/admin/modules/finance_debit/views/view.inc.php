@@ -199,6 +199,7 @@
                                     <th width="180">หมายเลขใบรับชำระหนี้ <br>Finance Debit Code.</th>
                                     <th>ผู้ซื้อ <br>Customer</th>
                                     <th width="150" > ผู้ออก<br>Create by</th> 
+                                    <th width="150" > สมุดรายวันรับ<br>Journal Receipt</th> 
                                     <th width="120" > จำนวนเงินรวม<br>Total</th>
                                     <th width="120" > ยอดรับจริง<br>Charged</th>
                                     <th width="120" > สถานะ<br>Status</th>  
@@ -219,6 +220,13 @@
                                     <td><?php echo $finance_debits[$i]['finance_debit_code']; ?></td>
                                     <td><?php echo $finance_debits[$i]['customer_name']; ?> </td>
                                     <td><?php echo $finance_debits[$i]['employee_name']; ?></td>
+                                    <td>
+                                        <?PHP if($finance_debits[$i]['journal_cash_receipt_id'] > 0){ ?>
+                                        <a target="blank" href="print.php?app=report_journal_04&type=id&action=pdf&id=<?php echo $finance_debits[$i]['journal_cash_receipt_id'];?>" target="_blank"><?php echo $finance_debits[$i]['journal_cash_receipt_code']; ?></a>
+                                        <?PHP }else{ ?>
+                                        -
+                                        <?PHP }?>
+                                    </td>
                                     <td align="right" ><?PHP echo number_format($finance_debits[$i]['finance_debit_total'],2); ?></td>
                                     <td align="right" ><?PHP echo number_format($finance_debits[$i]['finance_debit_pay'],2); ?></td>
                                     <td>

@@ -16,6 +16,7 @@ class JournalCashReceiptListModel extends BaseModel{
         journal_cash_receipt_list_debit,
         journal_cash_receipt_list_credit, 
         tb_journal_cash_receipt_list.account_id, 
+        account_code,
         account_name_th,  
         account_name_en 
         FROM tb_journal_cash_receipt_list LEFT JOIN tb_account ON tb_journal_cash_receipt_list.account_id = tb_account.account_id 
@@ -42,6 +43,7 @@ class JournalCashReceiptListModel extends BaseModel{
         journal_cash_receipt_list_credit, 
         tb_journal_cash_receipt_list.account_id, 
         finance_debit_pay_id,
+        account_code,
         account_name_th,  
         account_name_en 
         FROM tb_journal_cash_receipt_list LEFT JOIN tb_account ON tb_journal_cash_receipt_list.account_id = tb_account.account_id 

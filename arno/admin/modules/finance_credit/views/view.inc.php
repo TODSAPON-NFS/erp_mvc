@@ -221,7 +221,7 @@
                                     <td><?php echo $finance_credits[$i]['employee_name']; ?></td>
                                     <td>
                                         <?PHP if($finance_credits[$i]['journal_cash_payment_id'] > 0){ ?>
-                                        <a target="blank" href="?app=journal_special_04&action=update&id=<?php echo $finance_credits[$i]['journal_cash_payment_id'];?>"><?php echo $finance_credits[$i]['journal_cash_payment_code']; ?></a>
+                                        <a target="blank" href="print.php?app=report_journal_04&type=id&action=pdf&id=<?php echo $finance_credits[$i]['journal_cash_payment_id'];?>" target="_blank"><?php echo $finance_credits[$i]['journal_cash_payment_code']; ?></a>
                                         <?PHP }else{ ?>
                                         -
                                         <?PHP }?>

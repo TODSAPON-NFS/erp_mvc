@@ -79,7 +79,6 @@ class JournalCashReceiptModel extends BaseModel{
 
     }
 
-
     function getJournalCashReceiptByID($id){
         $sql = " SELECT * 
         FROM tb_journal_cash_receipt 
@@ -96,7 +95,24 @@ class JournalCashReceiptModel extends BaseModel{
         }
 
     }
+    
+    function getJournalCashReceiptByCode($journal_cash_receipt_code){
+        $sql = " SELECT * 
+        FROM tb_journal_cash_receipt 
+        WHERE journal_cash_receipt_code = '$journal_cash_receipt_code' 
+        ";
 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+    
     function getJournalCashReceiptViewByID($id){
         $sql = " SELECT journal_cash_receipt_id, 
         journal_cash_receipt_code, 

@@ -41,6 +41,7 @@ class InvoiceCustomerModel extends BaseModel{
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 
         invoice_customer_term, 
         invoice_customer_due, 
+        invoice_customer_name,
         IFNULL(CONCAT(tb2.customer_name_en,' (',tb2.customer_name_th,')'),'-') as customer_name  
         FROM tb_invoice_customer 
         LEFT JOIN tb_user as tb1 ON tb_invoice_customer.employee_id = tb1.user_id 
@@ -77,6 +78,24 @@ class InvoiceCustomerModel extends BaseModel{
         LEFT JOIN tb_customer ON tb_invoice_customer.customer_id = tb_customer.customer_id 
         LEFT JOIN tb_user ON tb_invoice_customer.employee_id = tb_user.user_id 
         WHERE invoice_customer_id = '$id' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+
+    function getInvoiceCustomerByCode($invoice_customer_code){
+        $sql = " SELECT * 
+        FROM tb_invoice_customer 
+        WHERE invoice_customer_code = '$invoice_customer_code' 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -452,11 +471,18 @@ class InvoiceCustomerModel extends BaseModel{
              mysqli_query(static::$db,$sql_delete[$i], MYSQLI_USE_RESULT);
          }
 
-        $sql = " DELETE FROM tb_invoice_customer WHERE invoice_customer_id = '$id' ";
-        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
-
         $sql = " DELETE FROM tb_invoice_customer_list WHERE invoice_customer_id = '$id' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = " DELETE FROM tb_invoice_customer WHERE invoice_customer_id = '$id' ";
+        
+        if(mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)){
+            return true;
+        }else{
+            return false;
+        }
+
+        
 
     }
 

@@ -828,32 +828,17 @@
                                     </a>
                                     <ul class="collapse" >
                                         <li>
-                                            <a href="?app=report_stock_01" ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้าและวัตถุดิบ </a>
+                                            <a href="?app=report_account_01" <?PHP if($_GET['app'] == "report_account_01"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ผังบัญชี </a>
                                         </li>
                                         <li>
-                                            <a href="?app=report_stock_02" ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้าคงเหลือ </a>
+                                            <a href="?app=report_account_02" <?PHP if($_GET['app'] == "report_account_02"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ยอดเคลื่อนไหว </a>
                                         </li>
                                         <li>
-                                            <a href="?app=report_stock_03" ><i class="fa fa-outdent" aria-hidden="true"></i> สรุปยอดเคลื่อนไหวสินค้า </a>
+                                            <a href="?app=report_account_03" <?PHP if($_GET['app'] == "report_account_03"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายการงบประมาณ </a>
                                         </li>
                                         <li>
-                                            <a href="?app=report_stock_04" ><i class="fa fa-outdent" aria-hidden="true"></i> รายละเอียดสินค้า </a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_stock_05" ><i class="fa fa-outdent" aria-hidden="true"></i> รายงานราคาขายสินค้า </a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_stock_06" ><i class="fa fa-outdent" aria-hidden="true"></i> รายงานรายการประจำวัน </a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_stock_07" ><i class="fa fa-outdent" aria-hidden="true"></i> จุดสั่งซื้อ</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_stock_08" ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้าที่ไม่เคลื่อนไหว</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_stock_09" ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้าไม่มีการขาย</a>
-                                        </li>  
+                                            <a href="?app=report_account_04" <?PHP if($_GET['app'] == "report_account_04"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวัน </a>
+                                        </li> 
                                     </ul>
                                 </li>
 

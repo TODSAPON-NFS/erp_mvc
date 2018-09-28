@@ -31,6 +31,29 @@ class StockGroupModel extends BaseModel{
 
     }
 
+    function getStockGroupByProductID($product_id = ""){
+        
+        $str = "";
+        if($product_id != ""){
+            $str = " WHERE tb_stock_report.product_id = '$product_id' ";
+        }
+
+        $sql = "  SELECT * 
+                  FROM tb_stock_group 
+                  LEFT JOIN tb_stock_type ON tb_stock_group.stock_type_id = tb_stock_type.stock_type_id 
+                  LEFT JOIN tb_stock_report ON tb_stock_group.stock_group_id = tb_stock_report.stock_group_id 
+                  $str ";
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getStockGroupByID($stock_group_id){
         $sql = "SELECT * FROM tb_stock_group WHERE stock_group_id = $stock_group_id ";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

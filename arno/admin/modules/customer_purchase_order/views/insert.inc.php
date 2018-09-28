@@ -9,7 +9,7 @@
         list: {
             maxNumberOfElements: 10,
             match: {
-                enabled: true
+                enabled: false
             }
         },
 
@@ -71,9 +71,6 @@
         }else{
             return true;
         }
-
-
-
     }
 
 
@@ -137,9 +134,6 @@
                 $(qty[0]).focus();
                 return false;
             }else{
-
-            
-
                 detail = "ซื้อจาก "+$(supplier_text[0]).text()+" จำนวน "+$(qty[0]).val()+' ('+$(stock_text[0]).text()+')';
                 content =   '<li class="list-group-item">'+
                                     '<input type="hidden" name="supplier_id_'+list_id+'[]" value="'+$(supplier[0]).val()+'" />'+
@@ -231,7 +225,6 @@
             $(stock_hold[0]).attr("disabled",false);
             $(supplier[0]).attr("disabled",true);
             $(stock[0]).attr("disabled",true);
-
         }else{
 
             $(stock_hold[0]).attr("disabled",true);

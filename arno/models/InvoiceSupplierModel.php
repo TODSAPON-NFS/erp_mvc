@@ -60,7 +60,7 @@ class InvoiceSupplierModel extends BaseModel{
         $str_supplier 
         $str_date 
         $str_user  
-        ORDER BY STR_TO_DATE(invoice_supplier_date_recieve,'%Y-%m-%d %H:%i:%s'),invoice_supplier_code DESC 
+        ORDER BY  invoice_supplier_code_gen DESC 
          ";
 
          //echo $sql;

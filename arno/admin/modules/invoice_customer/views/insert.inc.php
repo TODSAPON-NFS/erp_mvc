@@ -503,7 +503,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>หมายเลขใบกำกับภาษี / Inv code <font color="#F00"><b>*</b></font></label>
-                                        <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" value="<?php echo $last_code;?>" readonly />
+                                        <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" value="<?php echo $last_code;?>" />
                                         <p class="help-block">Example : INV1801001.</p>
                                     </div>
                                 </div>

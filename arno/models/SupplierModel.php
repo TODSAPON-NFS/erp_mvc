@@ -13,7 +13,7 @@ class SupplierModel extends BaseModel{
         $sql = " SELECT supplier_id, supplier_code, supplier_name_th, supplier_name_en , supplier_tax , supplier_tel, supplier_email   
         FROM tb_supplier 
         WHERE supplier_domestic LIKE ('%$supplier_domestic%') 
-        ORDER BY supplier_name_th  
+        ORDER BY supplier_name_en 
         ";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];

@@ -262,7 +262,8 @@
                             <th width="48">No.</th>
                             <th width="150">Recieve Date</th>
                             <th width="150">Invoice Date</th>
-                            <th width="150">Code.</th>
+                            <th width="150">Recieve Code.</th>
+                            <th width="150">Invoice Code.</th>
                             <th>Supplier</th>
                             <th width="150" >Recieve by</th>
                             <th>Remark</th>
@@ -278,6 +279,7 @@
                             <td><?php echo $i+1; ?></td>
                             <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date_recieve']; ?></td>
                             <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date']; ?></td>
+                            <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code_gen']; ?></td>
                             <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code']; ?></td>
                             <td><?php echo $invoice_suppliers[$i]['supplier_name']; ?> </td>
                             <td><?php echo $invoice_suppliers[$i]['employee_name']; ?></td>

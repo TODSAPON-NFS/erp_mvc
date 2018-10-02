@@ -83,7 +83,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         $supplier=$supplier_model->getSupplierByID($supplier_id);
         $invoice_supplier_lists = $invoice_supplier_model->generateInvoiceSupplierListBySupplierId($supplier_id,"","",$purchase_order_id);
         $suppliers=$supplier_model->getSupplierBy($supplier['supplier_domestic']);
-
+        $sort = $supplier['supplier_domestic'];
         if($supplier['supplier_domestic'] == "ภายในประเทศ"){
             $paper = $paper_model->getPaperByID('12');
         }else{
@@ -312,7 +312,10 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
             }
             
 ?>
-        <script>window.location="index.php?app=invoice_supplier&action=update&id=<?php echo $invoice_supplier_id;?>"</script>
+        <script>
+            //window.location="index.php?app=invoice_supplier&action=update&id=<?php echo $invoice_supplier_id;?>";
+            window.location="index.php?app=invoice_supplier&action=insert"
+        </script>
 <?php
         }else{
 ?>

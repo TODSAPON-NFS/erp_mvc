@@ -215,7 +215,7 @@ class InvoiceSupplierModel extends BaseModel{
 
     }
 
-    function getPurchaseOrder($type = "ภายในประเทศ"){
+    function getPurchaseOrder($type = "ภายในประเทศ",$keyword = ""){
 
         $sql = "    SELECT tb_purchase_order.purchase_order_id , purchase_order_code, tb_purchase_order.supplier_id, supplier_name_en, supplier_name_th 
                     FROM tb_purchase_order 
@@ -228,9 +228,10 @@ class InvoiceSupplierModel extends BaseModel{
                         GROUP BY tb_purchase_order_list.purchase_order_list_id 
                         HAVING IFNULL(SUM(invoice_supplier_list_qty),0) < AVG(purchase_order_list_qty)  
                     ) 
-                    AND purchase_order_status = 'Confirm'
+                    AND purchase_order_status = 'Confirm' 
                     AND supplier_domestic = '$type' 
-                    GROUP BY tb_purchase_order.purchase_order_id
+                    AND purchase_order_code LIKE('%$keyword%') 
+                    GROUP BY tb_purchase_order.purchase_order_id 
                 
         ";
 
@@ -240,6 +241,40 @@ class InvoiceSupplierModel extends BaseModel{
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
+            }
+            $result->close();
+            
+        }
+        return $data;
+    }
+
+
+    function getPurchaseOrderByCode($type = "ภายในประเทศ",$keyword = ""){
+
+        $sql = "    SELECT tb_purchase_order.purchase_order_id , purchase_order_code, tb_purchase_order.supplier_id, supplier_name_en, supplier_name_th 
+                    FROM tb_purchase_order 
+                    LEFT JOIN tb_supplier ON tb_purchase_order.supplier_id = tb_supplier.supplier_id
+                    LEFT JOIN tb_purchase_order_list ON tb_purchase_order.purchase_order_id = tb_purchase_order_list.purchase_order_id
+                    WHERE purchase_order_list_id IN ( 
+                        SELECT tb_purchase_order_list.purchase_order_list_id 
+                        FROM tb_purchase_order_list  
+                        LEFT JOIN tb_invoice_supplier_list ON  tb_purchase_order_list.purchase_order_list_id = tb_invoice_supplier_list.purchase_order_list_id 
+                        GROUP BY tb_purchase_order_list.purchase_order_list_id 
+                        HAVING IFNULL(SUM(invoice_supplier_list_qty),0) < AVG(purchase_order_list_qty)  
+                    ) 
+                    AND purchase_order_status = 'Confirm' 
+                    AND supplier_domestic = '$type' 
+                    AND purchase_order_code = '$keyword' 
+                    GROUP BY tb_purchase_order.purchase_order_id 
+                
+        ";
+
+        //echo $sql;
+        $data ;
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
             }
             $result->close();
             

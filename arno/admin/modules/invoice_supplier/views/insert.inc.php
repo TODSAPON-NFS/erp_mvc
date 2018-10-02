@@ -31,6 +31,47 @@
         requestDelay: 400
     };
 
+
+    var options_purchase = {
+        url: function(keyword) {
+            return "controllers/getPurchaseOrderByKeyword.php?type=<?PHP echo $sort; ?>&keyword="+keyword;
+        },
+
+        list: {
+            maxNumberOfElements: 10,
+            match: {
+                enabled: true
+            }
+        },
+
+        getValue: function(element) {
+            return element.purchase_order_code ;
+        },
+
+        template: {
+            type: "description",
+            fields: {
+                description: "supplier_name_en"
+            }
+        },
+        
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+
+        preparePostData: function(data) {
+            data.keyword = $(".example-ajax-post").val();
+            return data;
+        },
+
+        requestDelay: 400
+    };
+
+
     var stock_group_data = [
     <?php for($i = 0 ; $i < count($stock_groups) ; $i++ ){?>
         {
@@ -105,6 +146,8 @@
             document.getElementById('invoice_supplier_name').value = data.supplier_name_en;
             document.getElementById('invoice_supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
             document.getElementById('invoice_supplier_tax').value = data.supplier_tax ;
+            document.getElementById('invoice_supplier_day').value = data.credit_day ;
+            document.getElementById('invoice_supplier_term').value = data.condition_pay ;
         });
         $.post( "controllers/getInvoiceSupplierCodeByID.php", { 'supplier_id': supplier_id, 'employee_id':employee_id  }, function( data ) {
             document.getElementById('invoice_supplier_code_gen').value = data;
@@ -548,6 +591,36 @@
     }
 
 
+    function get_purchase(){
+        var code = $('#purchase_order_code').val();
+        $.post( "controllers/getPurchaseOrderByCode.php", { 'type':'<?PHP echo $sort;?>','purchase_order_code': code }, function( data ) {  
+            if(data !== null){  
+                window.location = "?app=invoice_supplier&action=insert&sort=<?PHP echo $sort; ?>&supplier_id="+data.supplier_id+"&purchase_order_id="+data.purchase_order_id; 
+            }else{  
+                alert("Can not find purchase order : "+ code );
+            } 
+        });
+    } 
+
+    function update_invoice_supplier_due(id){
+        var day = parseInt($('#invoice_supplier_day').val());
+        var date = $('#invoice_supplier_date').val();
+
+        var current_date = new Date();
+        var tomorrow = new Date();
+
+        if(isNaN(day)){
+            $('#invoice_supplier_term').val(0);
+            day = 0;
+        }else if (date == ""){
+            $('#invoice_supplier_due').val(("0" + current_date.getDate() ) .slice(-2) + '-' + ("0" + current_date.getMonth() + 1).slice(-2) + '-' + current_date.getFullYear());
+        } 
+
+        tomorrow.setDate(current_date.getDate()+day);
+        $('#invoice_supplier_due').val(("0" + tomorrow.getDate() ) .slice(-2) + '-' + ("0" + (tomorrow.getMonth()+1) ).slice(-2) + '-' + tomorrow.getFullYear());
+
+        console.log($('#invoice_supplier_due').val());
+    }
 
 
 
@@ -567,7 +640,23 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            เพิ่มใบกำกับภาษีรับเข้า / Add Invoice Supplier  
+                <div class="row">
+                    <div class="col-md-6">
+                        เพิ่มใบกำกับภาษีรับเข้า / Add Invoice Supplier
+                    </div>
+                    <div class="col-md-6">
+                        <table width="100%">
+                            <tr>
+                                <td style="padding-left:4px;">
+                                    <input class="purchase-ajax-post form-control" name="purchase_order_code" id="purchase_order_code" onchange=""/> 
+                                </td>
+                                <td style="padding-left:4px;width:100px;">
+                                    <button class="btn btn-success " onclick="get_purchase();" ><i class="fa fa-plus" aria-hidden="true"></i> get purchase.</button>
+                                </td> 
+                            </tr>
+                        </table> 
+                    </div>
+                </div> 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -667,7 +756,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่ออกใบกำกับภาษี / Date</label>
-                                        <input type="text" id="invoice_supplier_date" name="invoice_supplier_date"  class="form-control calendar" readonly/>
+                                        <input type="text" id="invoice_supplier_date" name="invoice_supplier_date"  class="form-control calendar" onchange="update_invoice_supplier_due(this)" readonly/>
                                         <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>
@@ -680,25 +769,26 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" style="display:none">
                                     <div class="form-group">
                                         <label>กำหนดชำระ / Due </label>
-                                        <input type="text" id="invoice_supplier_due" name="invoice_supplier_due"  class="form-control calendar" readonly/>
+                                        <input type="text" id="invoice_supplier_due" name="invoice_supplier_due"  class="form-control calendar" value="" readonly/>
+                                        <input type="hidden" id="invoice_supplier_day" name="invoice_supplier_day" value="<?PHP echo $supplier['credit_day']; ?>" />
                                         <p class="help-block">01-03-2018 </p>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" style="display:none">
                                     <div class="form-group">
                                         <label>เงื่อนไขการชำระ / term </label>
-                                        <input type="text" id="invoice_supplier_term" name="invoice_supplier_term"  class="form-control"  />
+                                        <input type="text" id="invoice_supplier_term" name="invoice_supplier_term"  class="form-control" value="<?PHP echo $supplier['condition_pay']; ?>" />
                                         <p class="help-block">Bank </p>
                                     </div>
                                 </div>
                                 
                                
 
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" style="display:none">
                                     <div class="form-group">
                                         <label>ผู้รับใบกำกับภาษี / Employee  <font color="#F00"><b>*</b></font> </label>
                                         <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true">
@@ -706,7 +796,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($users) ; $i++){
                                             ?>
-                                            <option <?PHP if($user[0][0] == $users[$i]['user_id']){?> SELECTED <?PHP }?> value="<?php echo $users[$i]['user_id'] ?>"><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
+                                            <option <?PHP if($admin_id == $users[$i]['user_id']){?> SELECTED <?PHP }?> value="<?php echo $users[$i]['user_id'] ?>"><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
                                             <?
                                             }
                                             ?>
@@ -778,12 +868,12 @@
                                     <input type="text" class="form-control" name="invoice_supplier_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_supplier_lists[$i]['invoice_supplier_list_remark']; ?>" />
                                 </td>
                                 <td>
-                                    <select name="stock_group_id[]" class="form-control select" data-live-search="true">
+                                    <select name="stock_group_id[]" class="form-control select" data-live-search="true" disabled>
                                         <option value="">เลือกคลังสินค้า</option>
                                         <?php 
-                                        for($i =  0 ; $i < count($stock_groups) ; $i++){
+                                        for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
                                         ?>
-                                        <option value="<?php echo $stock_groups[$i]['stock_group_id'] ?>" <?PHP if($stock_groups[$i]['stock_group_id'] == $invoice_supplier_lists[$i]['stock_group_id']){  ?> <?PHP } ?> ><?php echo $stock_groups[$i]['stock_group_name'] ?> </option>
+                                        <option value="<?php echo $stock_groups[$ii]['stock_group_id'] ?>" <?PHP if($stock_groups[$ii]['stock_group_id'] == $invoice_supplier_lists[$i]['stock_group_id']){  ?> SELECTED <?PHP } ?> ><?php echo $stock_groups[$ii]['stock_group_name'] ?> </option>
                                         <?
                                         }
                                         ?>
@@ -952,4 +1042,6 @@
 
 <script>
 $(".example-ajax-post").easyAutocomplete(options);
+
+$(".purchase-ajax-post").easyAutocomplete(options_purchase);
 </script>

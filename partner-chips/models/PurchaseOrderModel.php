@@ -77,6 +77,29 @@ class PurchaseOrderModel extends BaseModel{
 
     }
 
+    function getPurchaseOrderByKeyword($keyword = ""){
+
+        $sql = " SELECT *
+        FROM tb_purchase_order as tb
+        LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
+        LEFT JOIN tb_user as tb3 ON tb.purchase_order_accept_by = tb3.user_id 
+        LEFT JOIN tb_supplier as tb2 ON tb.supplier_id = tb2.supplier_id 
+        WHERE  purchase_order_code LIKE ('%$keyword%')   
+        ORDER BY purchase_order_code DESC 
+         ";
+
+    
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getPurchaseOrderByID($id){
         $sql = " SELECT * 
         FROM tb_purchase_order 

@@ -546,7 +546,23 @@
 
     }
 
+    function update_invoice_supplier_due(id){
+        var day = parseInt($('#invoice_supplier_day').val());
+        var date = $('#invoice_supplier_date').val();
 
+        var current_date = new Date();
+        var tomorrow = new Date();
+
+        if(isNaN(day)){
+            $('#invoice_supplier_term').val(0);
+            day = 0;
+        }else if (date == ""){
+            $('#invoice_supplier_due').val(("0" + current_date.getDate() ) .slice(-2) + '-' + ("0" + current_date.getMonth() + 1).slice(-2) + '-' + current_date.getFullYear());
+        } 
+
+        tomorrow.setDate(current_date.getDate()+day);
+        $('#invoice_supplier_due').val(("0" + tomorrow.getDate() ) .slice(-2) + '-' + ("0" + (tomorrow.getMonth()+1) ).slice(-2) + '-' + tomorrow.getFullYear());
+    }
 
 
 
@@ -668,7 +684,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่ออกใบกำกับภาษี / Date</label>
-                                        <input type="text" id="invoice_supplier_date" name="invoice_supplier_date" value="<?PHP echo $invoice_supplier['invoice_supplier_date'];?>"  class="form-control calendar" readonly/>
+                                        <input type="text" id="invoice_supplier_date" name="invoice_supplier_date" value="<?PHP echo $invoice_supplier['invoice_supplier_date'];?>"  onchange="update_invoice_supplier_due(this)"  class="form-control calendar" readonly/>
                                         <p class="help-block">01-03-2018</p>
                                     </div>
                                 </div>
@@ -681,15 +697,16 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" style="display:none">
                                     <div class="form-group">
                                         <label>กำหนดชำระ / Due </label>
                                         <input type="text" id="invoice_supplier_due" name="invoice_supplier_due"  class="form-control calendar" value="<?PHP echo $invoice_supplier['invoice_supplier_due'];?>" readonly/>
+                                        <input type="hidden" id="invoice_supplier_day" name="invoice_supplier_day" value="<?PHP echo $supplier['credit_day']; ?>" />
                                         <p class="help-block">01-03-2018 </p>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" style="display:none">
                                     <div class="form-group">
                                         <label>เงื่อนไขการชำระ / term </label>
                                         <input type="text" id="invoice_supplier_term" name="invoice_supplier_term"  class="form-control" value="<?PHP echo $invoice_supplier['invoice_supplier_term'];?>"  />
@@ -699,7 +716,7 @@
                                 
                                 
 
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" style="display:none">
                                     <div class="form-group">
                                         <label>ผู้รับใบกำกับภาษี / Employee  <font color="#F00"><b>*</b></font> </label>
                                         <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true">
@@ -783,9 +800,9 @@
                                     <select name="stock_group_id[]" class="form-control select" data-live-search="true" disabled>
                                         <option value="">เลือกคลังสินค้า</option>
                                         <?php 
-                                        for($i =  0 ; $i < count($stock_groups) ; $i++){
+                                        for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
                                         ?>
-                                        <option value="<?php echo $stock_groups[$i]['stock_group_id'] ?>" <?PHP if($stock_groups[$i]['stock_group_id'] == $invoice_supplier_lists[$i]['stock_group_id']){  ?> <?PHP } ?> ><?php echo $stock_groups[$i]['stock_group_name'] ?> </option>
+                                        <option value="<?php echo $stock_groups[$ii]['stock_group_id'] ?>" <?PHP if($stock_groups[$ii]['stock_group_id'] == $invoice_supplier_lists[$i]['stock_group_id']){  ?> SELECTED <?PHP } ?> ><?php echo $stock_groups[$ii]['stock_group_name'] ?> </option>
                                         <?
                                         }
                                         ?>
@@ -793,7 +810,7 @@
                                 </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_supplier_list_qty[]" value="<?php echo $invoice_supplier_lists[$i]['invoice_supplier_list_qty']; ?>" /></td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_supplier_list_price[]" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_price'],2); ?>" /></td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="invoice_supplier_list_total[]" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_qty'] * $invoice_supplier_lists[$i]['invoice_supplier_list_price'],2); ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="invoice_supplier_list_total[]" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_total'],2); ?>" /></td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>

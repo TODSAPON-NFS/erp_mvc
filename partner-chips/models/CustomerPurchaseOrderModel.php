@@ -33,44 +33,45 @@ class CustomerPurchaseOrderModel extends BaseModel{
         }
 
 
-        if($status == "1"){
-            $str_status = " AND (
+        if($status == "1"){//ยังไม่มีการสั่งสินค้า
+            $str_status = " AND  IFNULL((
                     SELECT COUNT(*) 
                     FROM tb_customer_purchase_order_list
                     LEFT JOIN tb_customer_purchase_order_list_detail  
                     ON tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list_detail.customer_purchase_order_list_id 
-                    WHERE IFNULL(tb_customer_purchase_order_list_detail.supplier_id,1) > 0 
-                    AND IFNULL(tb_customer_purchase_order_list_detail.purchase_order_list_id,0) = 0 
+                    WHERE IFNULL(tb_customer_purchase_order_list_detail.supplier_id,0) > 0 
+                    AND IFNULL(tb_customer_purchase_order_list_detail.purchase_order_list_id,0) > 0 
                     AND customer_purchase_order_id = tb.customer_purchase_order_id 
-                    ) > 0";
-        } else if($status == "2"){
-            $str_status = " AND (
+                    ),0) = 0";
+        } else if($status == "2"){//สั่งสินค้าแล้ว
+            $str_status = " AND  IFNULL((
                     SELECT COUNT(*) 
                     FROM tb_customer_purchase_order_list
                     LEFT JOIN tb_customer_purchase_order_list_detail  
                     ON tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list_detail.customer_purchase_order_list_id 
-                    WHERE IFNULL(tb_customer_purchase_order_list_detail.supplier_id,1) > 0 
+                    WHERE IFNULL(tb_customer_purchase_order_list_detail.supplier_id,0) > 0 
                     AND IFNULL(tb_customer_purchase_order_list_detail.purchase_order_list_id,0) = 0 
                     AND customer_purchase_order_id = tb.customer_purchase_order_id 
-                    ) = 0";
-        } else if($status == "3"){
-            $str_status = "  AND (
+                    ),0) = 0";
+        } else if($status == "3"){//ส่งสินค้ายังไม่ครบ
+            $str_status = "  AND  IFNULL((
                         SELECT COUNT(tb_customer_purchase_order_list.customer_purchase_order_list_id) 
                         FROM tb_customer_purchase_order_list  
                         LEFT JOIN tb_invoice_customer_list ON  tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_invoice_customer_list.customer_purchase_order_list_id  
                         WHERE customer_purchase_order_id = tb.customer_purchase_order_id
                         GROUP BY tb_customer_purchase_order_list.customer_purchase_order_id 
-                        HAVING IFNULL(SUM(invoice_customer_list_qty),0) < AVG(customer_purchase_order_list_qty)  
-                    ) > 0 ";
-        }else if($status == "4"){
-            $str_status = "  AND (
-                        SELECT COUNT(tb_customer_purchase_order_list.customer_purchase_order_list_id) 
-                        FROM tb_customer_purchase_order_list  
-                        LEFT JOIN tb_invoice_customer_list ON  tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_invoice_customer_list.customer_purchase_order_list_id  
-                        WHERE customer_purchase_order_id = tb.customer_purchase_order_id
-                        GROUP BY tb_customer_purchase_order_list.customer_purchase_order_id 
-                        HAVING IFNULL(SUM(invoice_customer_list_qty),0) < AVG(customer_purchase_order_list_qty)  
-                    ) = 0 ";
+                        HAVING IFNULL( IFNULL(SUM(invoice_customer_list_qty,0) ),0) < AVG( IFNULL(customer_purchase_order_list_qty,0) )  
+                    ),0) > 0 ";
+        }else if($status == "4"){//ส่งสินค้าครบแล้ว
+            $str_status = "  AND IFNULL(( 
+                SELECT COUNT(tb_customer_purchase_order_list.customer_purchase_order_list_id) 
+                FROM tb_customer_purchase_order_list 
+                LEFT JOIN tb_invoice_customer_list 
+                ON tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_invoice_customer_list.customer_purchase_order_list_id 
+                WHERE customer_purchase_order_id = tb.customer_purchase_order_id 
+                GROUP BY tb_customer_purchase_order_list.customer_purchase_order_id 
+                HAVING IFNULL(SUM( IFNULL(invoice_customer_list_qty,0) ),0) < SUM( IFNULL(customer_purchase_order_list_qty,0) ) 
+            ),0) = 0 ";
         }
 
         $sql = " SELECT customer_purchase_order_id, 
@@ -100,7 +101,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         $str_user  
         $str_status 
         ORDER BY STR_TO_DATE(customer_purchase_order_date,'%Y-%m-%d %H:%i:%s'),customer_purchase_order_code_gen,customer_purchase_order_code DESC 
-         ";
+         ";  
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

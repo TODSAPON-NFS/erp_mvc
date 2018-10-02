@@ -69,9 +69,6 @@
         }else{
             return true;
         }
-
-
-
     }
 
 
@@ -134,10 +131,7 @@
                 alert("Please input number of qty.");
                 $(qty[0]).focus();
                 return false;
-            }else{
-
-            
-
+            }else{ 
                 detail = "ซื้อจาก "+$(supplier_text[0]).text()+" จำนวน "+$(qty[0]).val()+' ('+$(stock_text[0]).text()+')';
                 content =   '<li class="list-group-item">'+
                                     '<input type="hidden" name="supplier_id_'+list_id+'[]" value="'+$(supplier[0]).val()+'" />'+
@@ -181,9 +175,7 @@
 
             });
 
-            $.post( "controllers/getStockGroupByProductID.php", { 'product_id': $(p_id[0]).val()}, function( data ) {
-                console.log("Product id : ",$(p_id[0]).val());
-                console.log("Product id : ",data);
+            $.post( "controllers/getStockGroupByProductID.php", { 'product_id': $(p_id[0]).val()}, function( data ) { 
                 var modelhold = $(id).closest('tr').children('td').children('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]')
                                 .children('div').children('div').children('div').children('select[name="stock_hold_id[]"]');
                 if(modelhold.length > 0){

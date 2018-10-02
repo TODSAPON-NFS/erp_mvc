@@ -259,16 +259,16 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
-                            <th width="48">No.</th>
-                            <th width="150">Recieve Date</th>
-                            <th width="150">Invoice Date</th>
-                            <th width="150">Recieve Code.</th>
-                            <th width="150">Invoice Code.</th>
-                            <th>Supplier</th>
+                            <th width="48">ลำดับ <br>No.</th>
+                            <th width="150">วันที่รับสินค้า<br>Recieve Date</th>
+                            <th width="150">หมายเลขรับสินค้า<br>Recieve Code.</th>
+                            <th width="150">วันที่ตามใบกำกับภาษี<br>Invoice Date</th> 
+                            <th width="150">หมายเลขใบกำกับภาษี<br>Invoice Code.</th>
+                            <th>ผู้ขาย <br> Supplier</th>
                             <!--
                             <th width="150" >Recieve by</th>
                             -->
-                            <th>Remark</th>
+                            <th>หมายเหตุ <br>Remark</th>
 							
                             <th width="64"></th>
                         </tr>
@@ -280,8 +280,8 @@
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
                             <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date_recieve']; ?></td>
-                            <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date']; ?></td>
                             <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code_gen']; ?></td>
+                            <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date']; ?></td> 
                             <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code']; ?></td>
                             <td><?php echo $invoice_suppliers[$i]['supplier_name']; ?> </td>
                             <!--

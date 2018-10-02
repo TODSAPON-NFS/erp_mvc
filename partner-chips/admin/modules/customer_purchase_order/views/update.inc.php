@@ -10,7 +10,7 @@
         list: {
             maxNumberOfElements: 10,
             match: {
-                enabled: true
+                enabled: false
             }
         },
 
@@ -42,14 +42,11 @@
 
     function check(){
 
-
-   
         var customer_id = document.getElementById("customer_id").value;
         var customer_purchase_order_code = document.getElementById("customer_purchase_order_code").value;
         var customer_purchase_order_date = document.getElementById("customer_purchase_order_date").value;
         var customer_purchase_order_credit_term = document.getElementById("customer_purchase_order_credit_term").value;
         var employee_id = document.getElementById("employee_id").value;
-        
 
         customer_id = $.trim(customer_id);
         customer_purchase_order_code = $.trim(customer_purchase_order_code);
@@ -185,13 +182,14 @@
             });
 
             $.post( "controllers/getStockGroupByProductID.php", { 'product_id': $(p_id[0]).val()}, function( data ) {
-
+                console.log("Product id : ",$(p_id[0]).val());
+                console.log("Product id : ",data);
                 var modelhold = $(id).closest('tr').children('td').children('div[name="modalAdd"]').children('div').children('div').children('div[name="modelBody"]')
                                 .children('div').children('div').children('div').children('select[name="stock_hold_id[]"]');
                 if(modelhold.length > 0){
                     var content = "<option value=''>Select Product</option>";
                     $.each(data, function (index, value) {
-                        content += "<option value='" + value['stock_group_id'] + "'>"+ value['stock_type_code'] + " "+ value['stock_type_name'] + " -> " + value['stock_group_name'] + "</option>";
+                        content += "<option value='" + value['stock_group_id'] + "'>"+ value['stock_type_code'] + " "+ value['stock_type_name'] + " -> " + value['stock_group_name'] + " ( Qty : "+ value['stock_report_qty']+" )</option>";
                     });
                     $(modelhold[0]).html(content);
                 }
@@ -859,7 +857,7 @@
                                                         <div class="col-lg-8">
                                                             <div class="form-group">
                                                                 <label>ดึงจากคลังสินค้า / Hold Stock  <font color="#F00"><b>*</b></font> </label>
-                                                                <select  class="form-control " name="stock_hold_id[]" disabled  >
+                                                                <select  class="form-control " name="stock_hold_id[]"  disabled  >
                                                                     <option value="">Select</option>
                                                                 </select>
                                                                 <p class="help-block">Example : Main stock.</p>

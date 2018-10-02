@@ -31,7 +31,9 @@ class FinanceDebitModel extends BaseModel{
             $str_customer = "AND tb2.customer_id = '$customer_id' ";
         }
 
-        $sql = " SELECT finance_debit_id, 
+        $sql = " SELECT tb.finance_debit_id, 
+        IFNULL (journal_cash_receipt_code, '-') as journal_cash_receipt_code,
+        IFNULL (journal_cash_receipt_id, '0') as journal_cash_receipt_id,
         finance_debit_code, 
         finance_debit_date, 
         finance_debit_date_pay, 
@@ -39,9 +41,10 @@ class FinanceDebitModel extends BaseModel{
         finance_debit_pay, 
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name,  
         IFNULL( tb2.customer_name_en ,'-') as customer_name  
-        FROM tb_finance_debit 
-        LEFT JOIN tb_user as tb1 ON tb_finance_debit.employee_id = tb1.user_id 
-        LEFT JOIN tb_customer as tb2 ON tb_finance_debit.customer_id = tb2.customer_id 
+        FROM tb_finance_debit as tb
+        LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
+        LEFT JOIN tb_customer as tb2 ON tb.customer_id = tb2.customer_id 
+        LEFT JOIN tb_journal_cash_receipt ON tb_journal_cash_receipt.finance_debit_id = tb.finance_debit_id 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
             OR  finance_debit_code LIKE ('%$keyword%') 
@@ -49,6 +52,7 @@ class FinanceDebitModel extends BaseModel{
         $str_customer 
         $str_date 
         $str_user  
+        GROUP BY tb.finance_debit_id
         ORDER BY finance_debit_code ASC 
          ";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

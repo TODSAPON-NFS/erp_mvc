@@ -227,32 +227,12 @@ if(!isset($_GET['action'])){
 
 
             /* -------------------------------- สร้างสมุดรายวันรับชำระเงิน ---------------------------------------*/
-            $customer=$customer_model->getCustomerByID($_POST['customer_id']);
-            $user=$user_model->getUserByID($admin_id);
-            $data = [];
-            $data['year'] = date("Y");
-            $data['month'] = date("m");
-            $data['number'] = "0000000000";
-            $data['employee_name'] = $user["user_name_en"];
-            $data['customer_code'] = $customer["customer_code"];
-        
-            $code = $code_generate->cut2Array($paper['paper_code'],$data);
-            $last_code = "";
-            for($i = 0 ; $i < count($code); $i++){
-            
-                if($code[$i]['type'] == "number"){
-                    $last_code = $journal_cash_receipt_model->getJournalCashReceiptLastID($last_code,$code[$i]['length']);
-                }else{
-                    $last_code .= $code[$i]['value'];
-                }   
-            }
-
             $data = [];
             $data['finance_debit_id'] = $finance_debit_id;
             $data['journal_cash_receipt_date'] = $_POST['finance_debit_date'];
-            $data['journal_cash_receipt_code'] = $last_code;
+            $data['journal_cash_receipt_code'] = $_POST['finance_debit_code'];
             $data['journal_cash_receipt_name'] = "รับชำระหนี้ให้ " . $_POST['finance_debit_name'];
-            $data['addby'] = $user[0][0];
+            $data['addby'] = $admin_id;
 
             $journal_cash_receipt_id = $journal_cash_receipt_model->insertJournalCashReceipt($data);
 
@@ -497,36 +477,26 @@ if(!isset($_GET['action'])){
         $journal_cash_receipt = $journal_cash_receipt_model->getJournalCashReceiptByFinanceDebitID($finance_debit_id);
 
         
-        if($journal_cash_receipt['journal_cash_receipt_id'] == 0){ 
-            $user=$user_model->getUserByID($admin_id);
-            $data = [];
-            $data['year'] = date("Y");
-            $data['month'] = date("m");
-            $data['number'] = "0000000000";
-            $data['employee_name'] = $user["user_name_en"];
-            $data['customer_code'] = $customer["customer_code"];
-        
-            $code = $code_generate->cut2Array($paper['paper_code'],$data);
-            $last_code = "";
-            for($i = 0 ; $i < count($code); $i++){
-            
-                if($code[$i]['type'] == "number"){
-                    $last_code = $journal_cash_receipt_model->getJournalCashReceiptLastID($last_code,$code[$i]['length']);
-                }else{
-                    $last_code .= $code[$i]['value'];
-                }   
-            }
+        if($journal_cash_receipt['journal_cash_receipt_id'] == 0){  
 
             $data = [];
             $data['finance_debit_id'] = $finance_debit_id;
             $data['journal_cash_receipt_date'] = $_POST['finance_debit_date'];
-            $data['journal_cash_receipt_code'] = $last_code;
+            $data['journal_cash_receipt_code'] = $_POST['finance_debit_code'];
             $data['journal_cash_receipt_name'] = "รับชำระหนี้ให้ " . $_POST['finance_debit_name'];
-            $data['addby'] = $user[0][0];
+            $data['addby'] = $admin_id;
 
             $journal_cash_receipt_id = $journal_cash_receipt_model->insertJournalCashReceipt($data);
         }else{
             $journal_cash_receipt_id = $journal_cash_receipt['journal_cash_receipt_id'];  
+            $data['finance_debit_id'] = $finance_debit_id;
+            $data['journal_cash_receipt_date'] = $_POST['finance_debit_date'];
+            $data['journal_cash_receipt_code'] = $_POST['finance_debit_code'];
+            $data['journal_cash_receipt_name'] = "รับชำระหนี้ให้ " . $_POST['finance_debit_name'];
+            $data['updateby'] = $admin_id;
+
+            $journal_cash_receipt_model->updateJournalCashReceiptByID($journal_cash_receipt_id,$data);
+
         }
          
         

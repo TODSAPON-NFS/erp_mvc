@@ -8,6 +8,12 @@
         getValue: function(element) {
             return element.product_code ;
         },
+        template: {
+            type: "description",
+            fields: {
+                description: "product_name"
+            }
+        },
 
         ajaxSettings: {
             dataType: "json",
@@ -25,7 +31,7 @@
         requestDelay: 400
     };
 
-    var stock_data = [
+    var stock_group_data = [
     <?php for($i = 0 ; $i < count($stock_groups) ; $i++ ){?>
         {
             stock_group_id:'<?php echo $stock_groups[$i]['stock_group_id'];?>',
@@ -277,11 +283,12 @@
                             '<input type="text" class="form-control" name="invoice_customer_list_product_detail[]" placeholder="Product Detail (Customer)" value="'+ data_buffer[i].invoice_customer_list_product_detail +'"/>'+
                             '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark" value="'+ data_buffer[i].invoice_customer_list_remark +'"/>'+
                         '</td>'+
-                        '<td align="right">'+
-                            //'<select class="form-control"  name="stock_group_id[]" onchange="show_data(this);" ></select>'+
-                            //'Qty in stock : <span name="qty[]">0</span> pcs<br>'+
-                            //'Qty sale : <span>'+ data_buffer[i].invoice_customer_list_qty +'</span> pcs<br>'+
-                            '<input  class="form-control " type="hidden" name="stock_group_id[]" value="<?PHP echo $$stock_groups[0]['stock_group_id']; ?>" />'+
+                        '<td>'+
+                            '<select  name="stock_group_id[]" class="form-control select" data-live-search="true">'+ 
+                                '<option value="0">Select</option>'+ 
+                            '</select>'+ 
+                        '</td>'+
+                        '<td align="right">'+  
                             '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_qty +'" />'+
                         '</td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_price +'" /></td>'+
@@ -297,11 +304,15 @@
                 $(".example-ajax-post").easyAutocomplete(options);
 
                 var str_stock = "<option value=''>Select Stock</option>";
-                $.each(stock_data, function (index, value) {
-                    str_stock += "<option value='" + value['stock_group_id'] + "'>"+value['stock_group_name']+"</option>";
+                $.each(stock_group_data, function (index, value) {
+                    if(value['stock_group_id'] == data_buffer[i].stock_group_id ){
+                        str_stock += "<option value='" + value['stock_group_id'] + "' SELECTED >" +  value['stock_group_name'] + "</option>";
+                    }else{
+                        str_stock += "<option value='" + value['stock_group_id'] + "'>" +  value['stock_group_name'] + "</option>";
+                    }
                 });
                 $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').html(str_stock);
-
+                $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').selectpicker();
             }
             
         }
@@ -332,11 +343,12 @@
                     '<input type="text" class="form-control" name="invoice_customer_list_product_detail[]" placeholder="Product Detail (Customer)" />'+
                     '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark"/>'+
                 '</td>'+
-                '<td align="right">'+
-                    //'<select class="form-control" name="stock_group_id[]" onchange="show_data(this);"  ></select>'+
-                    //'Qty in stock : <span name="qty[]">0</span> pcs<br>'+
-                    //'Qty sale : <span>0</span> pcs<br>'+
-                    '<input  class="form-control " type="hidden" name="stock_group_id[]" value="<?PHP echo $$stock_groups[0]['stock_group_id']; ?>" />'+
+                '<td>'+
+                    '<select  name="stock_group_id[]" class="form-control select" data-live-search="true">'+ 
+                        '<option value="0">Select</option>'+ 
+                    '</select>'+ 
+                '</td>'+
+                '<td align="right">'+ 
                     '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" />'+
                 '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" /></td>'+
@@ -352,10 +364,11 @@
         $(".example-ajax-post").easyAutocomplete(options);
         
         var str_stock = "<option value=''>Select Stock</option>";
-        $.each(stock_data, function (index, value) {
+        $.each(stock_group_data, function (index, value) {
             str_stock += "<option value='" + value['stock_group_id'] + "'>"+value['stock_group_name']+"</option>";
         });
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').html(str_stock);
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').selectpicker();
     }
 
 
@@ -562,6 +575,7 @@
                             <tr>
                                 <th style="text-align:center;">รหัสสินค้า <br> (Product Code)</th>
                                 <th style="text-align:center;">รายละเอียดสินค้า <br> (Product Detail)</th>
+                                <th style="text-align:center;">คลังสินค้า <br> (Stock)</th>
                                 <th style="text-align:center;" width="150">จำนวน <br> (Qty)</th>
                                 <th style="text-align:center;" width="150">ราคาต่อหน่วย <br> (Unit price) </th>
                                 <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount)</th>
@@ -587,9 +601,8 @@
                                     <input type="text" class="form-control" name="invoice_customer_list_product_detail[]"  placeholder="Product Detail (Customer)" value="<?PHP echo $invoice_customer_lists[$i]['invoice_customer_list_product_detail'];?>"/>
                                     <input type="text" class="form-control" name="invoice_customer_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_remark']; ?>" />
                                 </td>
-                                <td align="right">
-                                <!--
-                                    <select  class="form-control" name="stock_group_id[]" onchange="show_qty(this);" >
+                                <td>
+                                    <select  class="form-control" name="stock_group_id[]"  >
                                         <option value="">Select</option>
                                         <?php 
                                         for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
@@ -598,12 +611,9 @@
                                         <?
                                         }
                                         ?>
-                                    </select>
-                                    Qty in stock : <span name="qty[]">0</span> pcs<br>
-                                    Qty sale : <span><?php echo $invoice_customer_lists[$i]['invoice_customer_list_qty']; ?></span> pcs<br>
-
-                                -->
-                                    <input  class="form-control " type="hidden" name="stock_group_id[]" value="<?PHP echo $stock_groups[0]['stock_group_id']; ?>" />
+                                    </select> 
+                                </td>
+                                <td align="right">  
                                     <input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_qty[]" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_qty']; ?>" />
                                 </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_price[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" /></td>
@@ -622,7 +632,7 @@
 
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td colspan="6" align="center">
+                                <td colspan="7" align="center">
                                     <a href="javascript:;" onclick="show_purchase_order(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> 
                                         <span>เพิ่มสินค้า / Add product</span>
@@ -677,7 +687,7 @@
                                 <td colspan="2" rowspan="3">
                                     
                                 </td>
-                                <td colspan="2" align="left" style="vertical-align: middle;">
+                                <td colspan="3" align="left" style="vertical-align: middle;">
                                     <span>ราคารวมทั้งสิ้น / Sub total</span>
                                 </td>
                                 <td>
@@ -687,7 +697,7 @@
                                 </td>
                             </tr>
                             <tr class="odd gradeX">
-                                <td colspan="2" align="left" style="vertical-align: middle;">
+                                <td colspan="3" align="left" style="vertical-align: middle;">
                                     <table>
                                         <tr>
                                             <td>
@@ -710,7 +720,7 @@
                                 </td>
                             </tr>
                             <tr class="odd gradeX">
-                                <td colspan="2" align="left" style="vertical-align: middle;">
+                                <td colspan="3" align="left" style="vertical-align: middle;">
                                     <span>จำนวนเงินรวมทั้งสิ้น / Net Total</span>
                                 </td>
                                 <td>

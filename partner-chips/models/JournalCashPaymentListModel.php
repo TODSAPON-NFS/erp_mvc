@@ -20,6 +20,7 @@ class JournalCashPaymentListModel extends BaseModel{
         tb_journal_cash_payment_list.journal_cheque_pay_id, 
         tb_journal_cash_payment_list.journal_invoice_customer_id, 
         tb_journal_cash_payment_list.journal_invoice_supplier_id, 
+        account_code,  
         account_name_th,  
         account_name_en 
         FROM tb_journal_cash_payment_list LEFT JOIN tb_account ON tb_journal_cash_payment_list.account_id = tb_account.account_id 

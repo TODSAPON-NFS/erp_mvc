@@ -8,6 +8,7 @@ require_once('../models/PurchaseOrderListModel.php');
 require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
+require_once('../models/StockGroupModel.php');
 require_once('../models/SupplierModel.php');
 require_once('../models/ExchangeRateBahtModel.php');
 require_once('../functions/DateTimeFunction.func.php');
@@ -28,6 +29,7 @@ $invoice_supplier_model = new InvoiceSupplierModel;
 $invoice_supplier_list_model = new InvoiceSupplierListModel;
 $purchase_order_list_model = new PurchaseOrderListModel;
 $product_model = new ProductModel;
+$stock_group_model = new StockGroupModel;
 $exchange_rate_baht_model = new ExchangeRateBahtModel;
 $date_time_function_model = new DateTimeFunction;
 $journal_purchase_model = new JournalPurchaseModel;
@@ -67,6 +69,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 }else if ($_GET['action'] == 'insert' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     $products=$product_model->getProductBy('','','','');
+    $stock_groups=$stock_group_model->getStockGroupBy();
     $suppliers=$supplier_model->getSupplierBy($sort);
     $users=$user_model->getUserBy();
 
@@ -114,7 +117,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 
 }else if ($_GET['action'] == 'update' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     $products=$product_model->getProductBy('','','','');
-    
+    $stock_groups=$stock_group_model->getStockGroupBy();
     $users=$user_model->getUserBy();
 
     $invoice_supplier = $invoice_supplier_model->getInvoiceSupplierByID($invoice_supplier_id);

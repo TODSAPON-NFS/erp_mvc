@@ -9,6 +9,10 @@
         require_once("print/finance_debit/views/index.inc.php");
     }else if($_GET['app'] == "finance_credit"){
         require_once("print/finance_credit/views/index.inc.php");
+    }else if($_GET['app'] == "report_journal_03"){
+        require_once("print/report_journal_03/views/index.inc.php");
+    }else if($_GET['app'] == "report_journal_04"){
+        require_once("print/report_journal_04/views/index.inc.php");
     }
 
 /* ################################################### รายงานเจ้าหนี้ ################################################### */

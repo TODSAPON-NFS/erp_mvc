@@ -140,7 +140,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6" align="center"> รวม </td>
+                            <td colspan="7" align="center"> รวม </td>
                             <td  align="right" ><?php echo number_format($net_total,2); ?></td>
                             <td  align="right" ><?php echo number_format($vat_total,2); ?></td>
                         </tr>

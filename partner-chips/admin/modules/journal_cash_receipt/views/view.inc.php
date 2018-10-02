@@ -130,6 +130,7 @@
                             <th>วันที่ <br>Journal Cash Receipt Date</th>
                             <th>หมายเลขสมุดรายวันรับเงิน <br>Journal Cash Receipt No.</th>
                             <th>ชื่อสมุดรายวันรับเงิน <br>Name.</th>
+                            <th>ใบรับชำระเงิน <br>Finance debit.</th>
                             <th>ผู้เพิ่มเอกสาร <br>Add by</th>
                             <th>วันที่เพิ่มเอกสาร <br>Add date</th>
                             <th>ผู้แก้ไขเอกสาร <br>Update by</th>
@@ -146,14 +147,23 @@
                             <td><?php echo $journal_cash_receipts[$i]['journal_cash_receipt_date']; ?></td>
                             <td><?php echo $journal_cash_receipts[$i]['journal_cash_receipt_code']; ?></td>
                             <td><?php echo $journal_cash_receipts[$i]['journal_cash_receipt_name']; ?></td>
+                            <td>
+                                <?php if($journal_cash_receipts[$i]['finance_debit_id'] == 0) { ?> 
+                                -
+                                <?php }else{ ?>
+                                <a href="?app=finance_debit&action=update&id=<?php echo $journal_cash_receipts[$i]['finance_debit_id']; ?>" target="_blank" ><?php echo $journal_cash_receipts[$i]['finance_debit_code']; ?></a>
+                                <?php } ?>
+                            </td>
                             <td><?php echo $journal_cash_receipts[$i]['add_name']; ?></td>
                             <td><?php echo $journal_cash_receipts[$i]['adddate']; ?></td>
                             <td><?php echo $journal_cash_receipts[$i]['update_name']; ?></td>
                             <td><?php echo $journal_cash_receipts[$i]['lastupdate']; ?></td>
                             <td>
  
-
-                                <a href="?app=journal_special_03&action=update&id=<?php echo $journal_cash_receipts[$i]['journal_cash_receipt_id'];?>">
+                                <a href="print.php?app=report_journal_03&type=id&action=pdf&id=<?php echo $journal_cash_receipts[$i]['journal_cash_receipt_id'];?>" target="_blank" >
+                                    <i class="fa fa-print" aria-hidden="true"></i>
+                                </a> 
+                                <a href="?app=journal_special_03&action=update&id=<?php echo $journal_cash_receipts[$i]['journal_cash_receipt_id'];?>" style="color:orange;">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
                                 <a href="?app=journal_special_03&action=delete&id=<?php echo $journal_cash_receipts[$i]['journal_cash_receipt_id'];?>" onclick="return confirm('You want to delete Journal Cash Receipt : <?php echo $journal_cash_receipts[$i]['journal_cash_receipt_code']; ?>');" style="color:red;">

@@ -52,6 +52,7 @@ class FinanceCreditModel extends BaseModel{
         $str_supplier 
         $str_date 
         $str_user  
+        GROUP BY tb.finance_credit_id
         ORDER BY finance_credit_code ASC 
          ";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

@@ -133,6 +133,16 @@
             }
         }
 
+        if(journal_invoice_customer_id[0].value > 0){
+            var invoice_customer_id = $('#tb_invoice_customer').children('tbody').children('tr').children('td').children('input[name="invoice_customer_id[]"]');   
+            for(var i = 0; i < invoice_customer_id.length ;i++){
+                if(invoice_customer_id[i].value == journal_invoice_customer_id[0].value){
+                    $(invoice_customer_id[i]).closest('tr').remove();
+                    calculateInvoiceCustomerAll();
+                }
+            }
+        }
+        
         $(id).closest('tr').remove();
 
         calculateAll();
@@ -153,6 +163,7 @@
                     '<input type="hidden" name="journal_cheque_pay_id[]" value="0" />'+  
                     '<input type="hidden" name="journal_invoice_customer_id[]" value="0" />'+  
                     '<input type="hidden" name="journal_invoice_supplier_id[]" value="0" />'+     
+                    '<input type="hidden" name="journal_cash_payment_list_id[]" value="0" />'+     
                     '<select class="form-control select" type="text" name="account_id[]"  data-live-search="true" onchange="get_account_type(this);"  ></select>'+
                 '</td>'+
                 '<td><input type="text" class="form-control" name="journal_cash_payment_list_name[]" value="' + document.getElementById("journal_cash_payment_name").value + '" /></td>'+
@@ -231,12 +242,10 @@
                 add_invoice_supplier_row($('#add_invoice_supplier_row'),id);
             } 
         }else if (account_id == vat_sale_account){
-            /*
-            var journal_invoice_customer_id = $(id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]');
+            var journal_invoice_customer_id = $(id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]'); 
             if(journal_invoice_customer_id[0].value == 0){ 
                 add_invoice_customer_row($('#add_invoice_customer_row'),id);
             } 
-            */
         }else {
 
         }
@@ -283,15 +292,18 @@
                     }
                 }
             }
-        }else if (account_id == vat_sale_account){
-            /*
-            var journal_invoice_customer_id = $(id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]');
+        }else if (account_id == vat_sale_account){ 
+            var journal_invoice_customer_id = $(id[0]).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]'); 
             if(journal_invoice_customer_id[0].value == 0){ 
-                add_invoice_customer_row($('#add_invoice_customer_row'),id);
+                add_invoice_customer_row($('#add_invoice_customer_row'),id[0]);
             } else{
-                
+                var invoice_customer_id = $('#tb_invoice_customer').children('tbody').children('tr').children('td').children('input[name="invoice_customer_id[]"]');   
+                for(var i = 0; i < invoice_customer_id.length ;i++){
+                    if(invoice_customer_id[i].value == journal_invoice_customer_id[0].value){
+                        edit_invoice_customer_row(invoice_customer_id[i],id[0]);
+                    }
+                }
             }
-            */
         }else {
 
         }
@@ -488,7 +500,7 @@
 
                         <div id="vat_sale" class="tab-pane fade">
                             <h3>ภาษีขาย</h3>
-
+                            <?PHP require_once($path.'vat-sale.inc.php'); ?>  
                         </div>
 
                     </div>

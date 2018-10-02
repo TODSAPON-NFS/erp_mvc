@@ -25,16 +25,19 @@ class JournalCashPaymentModel extends BaseModel{
 
 
         $sql = " SELECT journal_cash_payment_id, 
+        IFNULL(tb_finance_credit.finance_credit_id,'0') as finance_credit_id, 
+        IFNULL(tb_finance_credit.finance_credit_code,'-') as finance_credit_code,
         journal_cash_payment_code, 
         journal_cash_payment_date,
         journal_cash_payment_name,
-        addby,
-        adddate,
-        updateby,
-        lastupdate,
+        tb_journal_cash_payment.addby,
+        tb_journal_cash_payment.adddate,
+        tb_journal_cash_payment.updateby,
+        tb_journal_cash_payment.lastupdate,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as add_name, 
         IFNULL(CONCAT(tb2.user_name,' ',tb2.user_lastname),'-') as update_name 
         FROM tb_journal_cash_payment 
+        LEFT JOIN tb_finance_credit ON tb_journal_cash_payment.finance_credit_id = tb_finance_credit.finance_credit_id 
         LEFT JOIN tb_user as tb1 ON tb_journal_cash_payment.addby = tb1.user_id 
         LEFT JOIN tb_user as tb2 ON tb_journal_cash_payment.updateby = tb2.user_id 
         WHERE ( 
@@ -44,8 +47,10 @@ class JournalCashPaymentModel extends BaseModel{
             OR  journal_cash_payment_name LIKE ('%$keyword%') 
         ) 
         $str_date 
+        GROUP BY journal_cash_payment_id 
         ORDER BY  journal_cash_payment_code DESC 
          ";
+ 
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];

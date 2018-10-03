@@ -117,7 +117,11 @@
             alert("Please input invoice supplier date recieve.");
             document.getElementById("invoice_supplier_date_recieve").focus();
             return false;
-        }else if(invoice_supplier_term.length == 0){
+        }
+
+
+        /*
+        else if(invoice_supplier_term.length == 0){
             alert("Please input invoice supplier term.");
             document.getElementById("invoice_supplier_term").focus();
             return false;
@@ -129,7 +133,10 @@
             alert("Please input employee");
             document.getElementById("employee_id").focus();
             return false;
-        }else{
+        }
+        */
+
+        else{
             $('select[name="stock_group_id[]"]').prop('disabled', false);
             return true;
         }
@@ -201,7 +208,6 @@
     }
 
 
-
     function show_purchase_order(id){
         var supplier_id = document.getElementById('supplier_id').value;
         var val = document.getElementsByName('purchase_order_list_id[]');
@@ -264,6 +270,7 @@
         }
         
     } 
+
 
     function search_pop_like(id){
         var supplier_id = document.getElementById('supplier_id').value;
@@ -868,7 +875,7 @@
                                     <input type="text" class="form-control" name="invoice_supplier_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_supplier_lists[$i]['invoice_supplier_list_remark']; ?>" />
                                 </td>
                                 <td>
-                                    <select name="stock_group_id[]" class="form-control select" data-live-search="true" disabled>
+                                    <select name="stock_group_id[]" class="form-control select" data-live-search="true" >
                                         <option value="">เลือกคลังสินค้า</option>
                                         <?php 
                                         for($ii =  0 ; $ii < count($stock_groups) ; $ii++){

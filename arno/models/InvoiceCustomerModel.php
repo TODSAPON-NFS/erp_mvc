@@ -248,7 +248,7 @@ class InvoiceCustomerModel extends BaseModel{
     }
 
 
-    function getCustomerPurchaseOrder(){
+    function getCustomerPurchaseOrder($keyword = ""){
 
         $sql = "SELECT tb_customer_purchase_order.customer_purchase_order_id, customer_purchase_order_code, tb_customer.customer_id, customer_name_en , customer_name_th 
                 FROM tb_customer_purchase_order 
@@ -263,6 +263,7 @@ class InvoiceCustomerModel extends BaseModel{
                     GROUP BY tb_customer_purchase_order_list.customer_purchase_order_list_id 
                     HAVING IFNULL(SUM(invoice_customer_list_qty),0) < AVG(customer_purchase_order_list_qty)  
                 ) 
+                AND customer_purchase_order_code LIKE ('%$keyword%')
                 GROUP BY tb_customer_purchase_order.customer_purchase_order_id
         ";
         $data = [];
@@ -270,6 +271,37 @@ class InvoiceCustomerModel extends BaseModel{
             
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
+            }
+            $result->close();
+            
+        }
+        return $data;
+    }
+
+
+    function getCustomerPurchaseOrderByCode($customer_purchase_order_code = ""){
+
+        $sql = "SELECT tb_customer_purchase_order.customer_purchase_order_id, customer_purchase_order_code, tb_customer.customer_id, customer_name_en , customer_name_th 
+                FROM tb_customer_purchase_order 
+                LEFT JOIN tb_customer 
+                ON tb_customer_purchase_order.customer_id = tb_customer.customer_id 
+                LEFT JOIN tb_customer_purchase_order_list 
+                ON tb_customer_purchase_order.customer_purchase_order_id = tb_customer_purchase_order_list.customer_purchase_order_id 
+                WHERE customer_purchase_order_list_id IN ( 
+                    SELECT tb_customer_purchase_order_list.customer_purchase_order_list_id 
+                    FROM tb_customer_purchase_order_list  
+                    LEFT JOIN tb_invoice_customer_list ON  tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_invoice_customer_list.customer_purchase_order_list_id  
+                    GROUP BY tb_customer_purchase_order_list.customer_purchase_order_list_id 
+                    HAVING IFNULL(SUM(invoice_customer_list_qty),0) < AVG(customer_purchase_order_list_qty)  
+                ) 
+                AND customer_purchase_order_code = '$customer_purchase_order_code' 
+                GROUP BY tb_customer_purchase_order.customer_purchase_order_id
+        ";
+        $data;
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
             }
             $result->close();
             

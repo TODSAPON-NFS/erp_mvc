@@ -152,6 +152,10 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 
 }else if ($_GET['action'] == 'add' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     if(isset($_POST['invoice_supplier_code'])){
+
+        $supplier=$supplier_model->getSupplierByID($_POST['supplier_id']);
+        $sort = $supplier['supplier_domestic'];
+
         $data = [];
         $data['supplier_id'] = $_POST['supplier_id'];
         $data['employee_id'] = $_POST['employee_id'];
@@ -314,7 +318,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 ?>
         <script>
             //window.location="index.php?app=invoice_supplier&action=update&id=<?php echo $invoice_supplier_id;?>";
-            window.location="index.php?app=invoice_supplier&action=insert"
+            window.location="index.php?app=invoice_supplier&action=insert&sort=<?PHP echo $sort;?>"
         </script>
 <?php
         }else{

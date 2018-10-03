@@ -75,7 +75,9 @@
             alert("Please input invoice supplier date recieve.");
             document.getElementById("invoice_supplier_date_recieve").focus();
             return false;
-        }else if(invoice_supplier_term.length == 0){
+        }
+        /*
+        else if(invoice_supplier_term.length == 0){
             alert("Please input invoice supplier term.");
             document.getElementById("invoice_supplier_term").focus();
             return false;
@@ -87,7 +89,9 @@
             alert("Please input employee");
             document.getElementById("employee_id").focus();
             return false;
-        }else{
+        }
+        */
+        else{
             $('select[name="stock_group_id[]"]').prop('disabled', false);
             return true;
         }

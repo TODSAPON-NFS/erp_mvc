@@ -135,8 +135,7 @@
 
         
     }
-
-
+ 
 
     function show_purchase_order(id){
         var customer_id = document.getElementById('customer_id').value;
@@ -154,25 +153,32 @@
                     data_buffer = data;
                     var content = "";
                     for(var i = 0; i < data.length ; i++){
-
+                        var invoice_customer_list_qty = parseFloat( data[i].invoice_customer_list_qty );
+                        var invoice_customer_list_price = parseFloat( data[i].invoice_customer_list_price );
+                        var invoice_customer_list_total = invoice_customer_list_price * invoice_customer_list_qty;
                         content += '<tr class="odd gradeX">'+
                                         '<td>'+
-                                            '<input type="checkbox" name="p_id" value="'+data[i].product_id+'" />'+     
+                                            '<input type="checkbox" name="p_id" value="'+data[i].product_id+'" onchange="show_recieve(this);" />'+     
                                         '</td>'+
                                         '<td>'+
                                             data[i].product_code+
                                         '</td>'+
                                         '<td>'+
                                             data[i].product_name+
+                                            '<br>Remark : '+
+                                            data[i].invoice_customer_list_remark+
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].invoice_customer_list_qty +
+                                            '<span name="qty">' + invoice_customer_list_qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '</span>' +
+                                            '<input name="qty" style="display:none;text-align:right;" type="text" class="form-control" value="' + invoice_customer_list_qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")  + '" onchange="calculate_list(this);" />'+
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].invoice_customer_list_price +
+                                            '<span name="price">' + invoice_customer_list_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '</span>' +
+                                            '<input name="price" style="display:none;text-align:right;" type="text" class="form-control" value="' + invoice_customer_list_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")  + '" onchange="calculate_list(this);" />'+
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].invoice_customer_list_qty * data[i].invoice_customer_list_price) +
+                                            '<span name="total">' + invoice_customer_list_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '</span>' +
+                                            '<input name="total" style="display:none;text-align:right;" type="text" class="form-control" value="' + invoice_customer_list_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")  + '" onchange="calculate_list(this);" readonly />'+
                                         '</td>'+
                                     '</tr>';
 
@@ -209,22 +215,27 @@
 
                         content += '<tr class="odd gradeX">'+
                                         '<td>'+
-                                            '<input type="checkbox" name="p_id" value="'+data[i].product_id+'" />'+     
+                                            '<input type="checkbox" name="p_id" value="'+data[i].product_id+'" onchange="show_recieve(this);" />'+     
                                         '</td>'+
                                         '<td>'+
                                             data[i].product_code+
                                         '</td>'+
                                         '<td>'+
                                             data[i].product_name+
+                                            '<br>Remark : '+
+                                            data[i].invoice_customer_list_remark+
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].invoice_customer_list_qty +
+                                            '<span name="qty">' + invoice_customer_list_qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '</span>' +
+                                            '<input name="qty" style="display:none;text-align:right;" type="text" class="form-control" value="' + invoice_customer_list_qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")  + '" onchange="calculate_list(this);" />'+
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].invoice_customer_list_price +
+                                            '<span name="price">' + invoice_customer_list_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '</span>' +
+                                            '<input name="price" style="display:none;text-align:right;" type="text" class="form-control" value="' + invoice_customer_list_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")  + '" onchange="calculate_list(this);" />'+
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].invoice_customer_list_qty * data[i].invoice_customer_list_price) +
+                                            '<span name="total">' + invoice_customer_list_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '</span>' +
+                                            '<input name="total" style="display:none;text-align:right;" type="text" class="form-control" value="' + invoice_customer_list_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")  + '" onchange="calculate_list(this);" readonly />'+
                                         '</td>'+
                                     '</tr>';
 
@@ -236,11 +247,65 @@
         
     }
 
+    function show_recieve(checkbox){ 
+        if (checkbox.checked == true){
+            $(checkbox).closest('tr').children('td').children('input[name="qty"]').show();
+            $(checkbox).closest('tr').children('td').children('span[name="qty"]').hide();
+
+            $(checkbox).closest('tr').children('td').children('input[name="price"]').show();
+            $(checkbox).closest('tr').children('td').children('span[name="price"]').hide();
+
+            $(checkbox).closest('tr').children('td').children('input[name="total"]').show();
+            $(checkbox).closest('tr').children('td').children('span[name="total"]').hide();
+
+
+        }else{
+            $(checkbox).closest('tr').children('td').children('input[name="qty"]').hide();
+            $(checkbox).closest('tr').children('td').children('span[name="qty"]').show();
+
+            $(checkbox).closest('tr').children('td').children('input[name="price"]').hide();
+            $(checkbox).closest('tr').children('td').children('span[name="price"]').show();
+
+            $(checkbox).closest('tr').children('td').children('input[name="total"]').hide();
+            $(checkbox).closest('tr').children('td').children('span[name="total"]').show();
+        }
+    }
+
+
+    function calculate_list(id){
+        var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="qty"]').val(  ).replace(',',''));
+        var price =  parseFloat($(id).closest('tr').children('td').children('input[name="price"]').val( ).replace(',',''));
+        var sum =  parseFloat($(id).closest('tr').children('td').children('input[name="total"]').val( ).replace(',',''));
+
+        if(isNaN(qty)){
+            qty = 0;
+        }
+
+        if(isNaN(price)){
+            price = 0.0;
+        }
+
+        if(isNaN(sum)){
+            sum = 0.0;
+        }
+
+        sum = qty*price;
+
+        $(id).closest('tr').children('td').children('input[name="qty"]').val( qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $(id).closest('tr').children('td').children('input[name="price"]').val( price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $(id).closest('tr').children('td').children('input[name="total"]').val( sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+
+    }
+
     function add_row(id){
         $('#modalAdd').modal('hide');
         var checkbox = document.getElementsByName('p_id');
         for(var i = 0 ; i < (checkbox.length); i++){
             if(checkbox[i].checked){
+
+                var qty =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="qty"]').val(  ).replace(',',''));
+                var price =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="price"]').val( ).replace(',',''));
+                var sum =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="total"]').val( ).replace(',',''));
 
                 var index = 0;
                 if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
@@ -252,10 +317,9 @@
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
                         '<td>'+
-                            '<input type="hidden" name="invoice_customer_list_id[]" value="0" />'+  
                             '<input type="hidden" name="customer_purchase_order_list_id[]" value="'+ data_buffer[i].customer_purchase_order_list_id +'" readonly />'+     
                             '<input type="hidden" name="product_id[]" class="form-control" value="'+ data_buffer[i].product_id +'" />'+
-					        '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="'+ data_buffer[i].product_code +'" />'+ 
+					        '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code"  value="'+ data_buffer[i].product_code +'" />'+ 
                         '</td>'+
                         '<td>'+
                             '<input type="text" class="form-control" name="product_name[]" value="'+ data_buffer[i].product_name +'" readonly />'+
@@ -268,11 +332,11 @@
                                 '<option value="0">Select</option>'+ 
                             '</select>'+ 
                         '</td>'+
-                        '<td align="right">'+ 
-                            '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_qty +'" />'+
+                        '<td align="right">'+  
+                            '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="'+ qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" />'+
                         '</td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_price +'" /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);"  value="'+ (data_buffer[i].invoice_customer_list_qty * data_buffer[i].invoice_customer_list_price) +'" readonly /></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" value="'+ price.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" /></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);"  value="'+ total.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly /></td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -293,7 +357,6 @@
                 });
                 $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').html(str_stock);
                 $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').selectpicker();
-
             }
             
         }
@@ -359,8 +422,23 @@
         var checkbox = document.getElementById('check_all');
         if (checkbox.checked == true){
             $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', true);
+            $(id).closest('table').children('tbody').children('tr').children('td').children('input[name="qty"]').show();
+            $(id).closest('table').children('tbody').children('tr').children('td').children('input[name="price"]').show();
+            $(id).closest('table').children('tbody').children('tr').children('td').children('input[name="total"]').show();
+
+            $(id).closest('table').children('tbody').children('tr').children('td').children('span[name="qty"]').hide();
+            $(id).closest('table').children('tbody').children('tr').children('td').children('span[name="price"]').hide();
+            $(id).closest('table').children('tbody').children('tr').children('td').children('span[name="total"]').hide();
         }else{
             $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', false);
+            $(id).closest('table').children('tbody').children('tr').children('td').children('input[name="qty"]').hide();
+            $(id).closest('table').children('tbody').children('tr').children('td').children('input[name="price"]').hide();
+            $(id).closest('table').children('tbody').children('tr').children('td').children('input[name="total"]').hide();
+
+            $(id).closest('table').children('tbody').children('tr').children('td').children('span[name="qty"]').show();
+            $(id).closest('table').children('tbody').children('tr').children('td').children('span[name="price"]').show();
+            $(id).closest('table').children('tbody').children('tr').children('td').children('span[name="total"]').show();
+
         }
     }
 

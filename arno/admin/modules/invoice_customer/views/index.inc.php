@@ -273,7 +273,10 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             }
             
 ?>
-        <script>window.location="index.php?app=invoice_customer&action=update&id=<?php echo $invoice_customer_id;?>"</script>
+        <script>
+            //window.location="index.php?app=invoice_customer&action=update&id=<?php echo $invoice_customer_id;?>"
+            window.location="index.php?app=invoice_customer&action=insert";
+        </script>
 <?php
         }else{
 ?>

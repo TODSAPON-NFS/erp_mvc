@@ -821,9 +821,7 @@
                                             </div>
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
-                                    </div><!-- /.modal -->
-
-
+                                    </div><!-- /.modal --> 
                                 </td>
                             </tr>
                             <tr class="odd gradeX">

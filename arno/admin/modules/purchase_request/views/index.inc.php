@@ -72,7 +72,7 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
     $data['year'] = date("Y");
     $data['month'] = date("m");
     $data['number'] = "0000000000";
-    $data['employee_name'] = $user["user_name_en"];
+    $data['employee_name'] = $user["user_name"];
 
     $code = $code_generate->cut2Array($paper['paper_code'],$data);
     $last_code = "";

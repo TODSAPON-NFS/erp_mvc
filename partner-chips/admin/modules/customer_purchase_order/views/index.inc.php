@@ -99,8 +99,9 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $data['year'] = date("Y");
     $data['month'] = date("m");
     $data['number'] = "0000000000";
-    $data['employee_name'] = $user["user_name_en"];
+    $data['employee_name'] = $user["user_name"];
     $data['customer_code'] = $customers[0]['customer_code'];
+    $data['customer_name'] = $customers[0]['customer_name_en'];
 
     $code = $code_generate->cut2Array($paper['paper_code'],$data);
     $last_code = "";

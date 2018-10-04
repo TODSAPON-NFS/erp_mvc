@@ -1,5 +1,5 @@
 <?php 
-require_once('../../models/QuotationModel.php');
+require_once('../../models/CustomerPurchaseOrderModel.php');
 require_once('../../models/CustomerModel.php');
 require_once('../../functions/CodeGenerateFunction.func.php');
 require_once('../../models/PaperModel.php');
@@ -7,13 +7,13 @@ require_once('../../models/UserModel.php');
 
 $user_model = new UserModel;
 $customer_model = new CustomerModel;
-$quotation_model = new QuotationModel;
+$customer_purchase_order_model = new CustomerPurchaseOrderModel;
 
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
 
 // 9 = key ของ purchase request ใน tb_paper
-$paper = $paper_model->getPaperByID('14');
+$paper = $paper_model->getPaperByID('15');
 
 $user=$user_model->getUserByID($_POST['employee_id']);
 $customer=$customer_model->getCustomerByID($_POST['customer_id']); 
@@ -31,7 +31,7 @@ $last_code = "";
 for($i = 0 ; $i < count($code); $i++){
 
     if($code[$i]['type'] == "number"){
-        $last_code = $quotation_model->getQuotationLastID($last_code,$code[$i]['length']);
+        $last_code = $customer_purchase_order_model->getCustomerPurchaseOrderLastID($last_code,$code[$i]['length']);
     }else{
         $last_code .= $code[$i]['value'];
     }   

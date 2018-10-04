@@ -210,7 +210,17 @@
 
 
     function set_employee(){
-        $('employee_id').val($('employee_name').val());
+        $('#employee_id').val($('#employee_name').val());
+        getNewCode();
+    }
+
+    function getNewCode(){
+        var employee_id = document.getElementById('employee_id').value;  
+        $.post( "controllers/getPurchaseRequestCodeIndex.php", { 'employee_id':employee_id }, function( data ) {
+            console.log(data);
+            document.getElementById('purchase_request_code').value = data;
+        });
+
     }
 
 </script>
@@ -238,7 +248,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>ประเภทใบร้องขอสั่งซื้อสินค้า / PR Code <font color="#F00"><b>*</b></font></label>
-                                <input id="purchase_request_code" name="purchase_request_code" class="form-control" value="<?php echo $last_code;?>" readonly>
+                                <input id="purchase_request_code" name="purchase_request_code" class="form-control" value="<?php echo $last_code;?>" >
                                 <p class="help-block">Example : PR1801001.</p>
                             </div>
                         </div>

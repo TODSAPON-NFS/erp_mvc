@@ -22,7 +22,7 @@ $data = [];
 $data['year'] = date("Y");
 $data['month'] = date("m");
 $data['number'] = "0000000000";
-$data['employee_name'] = $user["user_name_en"];
+$data['employee_name'] = $user["user_name"];
 $data['customer_code'] = $customer['customer_code'];
 
 $code = $code_generate->cut2Array($paper['paper_code'],$data);

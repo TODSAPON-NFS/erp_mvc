@@ -207,7 +207,17 @@
     }
 
     function set_employee(){
-        $('employee_id').val($('employee_name').val());
+        $('#employee_id').val($('#employee_name').val());
+        getNewCode();
+    }
+
+    function getNewCode(){
+        var employee_id = document.getElementById('employee_id').value;  
+        $.post( "controllers/getPurchaseRequestCodeIndex.php", { 'employee_id':employee_id }, function( data ) {
+            console.log(data);
+            document.getElementById('purchase_request_code').value = data;
+        });
+
     }
 
 
@@ -239,7 +249,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขใบร้องขอสั่งซื้อสินค้า / PR Code <font color="#F00"><b>* </b></font> <?php if($purchase_request['purchase_request_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_request['purchase_request_rewrite_no']; ?></font></b> <?PHP } ?></label>
-                                <input id="purchase_request_code" name="purchase_request_code" class="form-control"  value="<?PHP echo $purchase_request['purchase_request_code'];?>" readonly>
+                                <input id="purchase_request_code" name="purchase_request_code" class="form-control"  value="<?PHP echo $purchase_request['purchase_request_code'];?>" >
                                 <p class="help-block">Example : PR1801001.</p>
                             </div>
                         </div>

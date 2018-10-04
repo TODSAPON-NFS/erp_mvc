@@ -632,6 +632,15 @@
 
     }
 
+    function getNewCode(){
+        var customer_id = document.getElementById('customer_id').value;
+        var employee_id = document.getElementById('employee_id').value;  
+        $.post( "controllers/getCustomerPurchaseOrderCodeIndex.php", { 'customer_id': customer_id,'employee_id':employee_id }, function( data ) {
+            document.getElementById('customer_purchase_order_code_gen').value = data;
+        });
+
+    }
+
 </script>
 
 <div class="row">
@@ -670,7 +679,7 @@
                                 <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>ลูกค้า / Customer  <font color="#F00"><b>*</b></font> </label>
-                                        <select id="customer_id" name="customer_id" class="form-control select" onchange="get_customer_detail()" data-live-search="true">
+                                        <select id="customer_id" name="customer_id" class="form-control select" onchange="get_customer_detail();getNewCode();" data-live-search="true">
                                             <option value="">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($customers) ; $i++){
@@ -715,7 +724,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>เลขที่รับเข้าใบสั่งซื้อ / PO Recieve Code <font color="#F00"><b>*</b></font></label>
-                                        <input id="customer_purchase_order_code_gen" name="customer_purchase_order_code_gen" class="form-control" value="<? echo $customer_purchase_order['customer_purchase_order_code_gen'];?>" readonly />
+                                        <input id="customer_purchase_order_code_gen" name="customer_purchase_order_code_gen" class="form-control" value="<? echo $customer_purchase_order['customer_purchase_order_code_gen'];?>" />
                                         <p class="help-block">Example : PO1801001.</p>
                                     </div>
                                 </div>
@@ -743,7 +752,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>พนักงานขาย / Sale  <font color="#F00"><b>*</b></font> </label>
-                                        <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true" >
+                                        <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true" onchange="getNewCode();"  >
                                             <option value="">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($users) ; $i++){

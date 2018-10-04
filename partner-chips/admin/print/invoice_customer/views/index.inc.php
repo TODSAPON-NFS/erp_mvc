@@ -59,7 +59,7 @@ if($_GET['action'] == "pdf"){
     for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
         $mpdf->AddPage('P');
-        $mpdf->mirrorMargins = true;
+        //$mpdf->mirrorMargins = true;
         
         $mpdf->SetDisplayMode('fullpage','two');
         

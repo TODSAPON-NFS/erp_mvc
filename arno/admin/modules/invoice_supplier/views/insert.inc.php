@@ -590,7 +590,7 @@
             }
         }
 
-        document.getElementById('exchange_rate_baht').value = exchange_rate_baht.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        document.getElementById('exchange_rate_baht').value = numberWithCommas(exchange_rate_baht);
         document.getElementById('invoice_supplier_total_price').value = invoice_supplier_total_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
         document.getElementById('import_duty').value = import_duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
         document.getElementById('freight_in').value = freight_in.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -719,7 +719,7 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label>Exchange rate Baht<font color="#F00"><b>*</b></font></label>
-                                        <input  id="exchange_rate_baht" name="exchange_rate_baht" onchange="calculateCost();" class="form-control" value="<?php echo $exchange_rate_baht['exchange_rate_baht'];?>" onchange="calculateCost()" >
+                                        <input  id="exchange_rate_baht" name="exchange_rate_baht" onchange="calculateCost();" class="form-control" value="<?php echo number_format($exchange_rate_baht['exchange_rate_baht'],5);?>" onchange="calculateCost()" >
                                         <p class="help-block">Example : 0.</p>
                                     </div>
                                 </div>

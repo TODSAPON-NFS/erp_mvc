@@ -71,7 +71,7 @@
                         </div>
                         <div class="col-lg-4">
                             <label>อัตราการแลกเปลี่ยน / Exchange rate <font color="#F00"><b>*</b></font></label>
-                            <input type="text" id="exchange_rate_baht_value" name="exchange_rate_baht_value"  class="form-control" value="<? echo $exchange_rate_baht['exchange_rate_baht_value'];?>" />
+                            <input type="text" id="exchange_rate_baht_value" name="exchange_rate_baht_value"  class="form-control" value="<? echo number_format($exchange_rate_baht['exchange_rate_baht'],5);?>" />
                             <p class="help-block">30.25</p>
                         </div>
                     </div>    

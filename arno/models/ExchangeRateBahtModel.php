@@ -112,7 +112,7 @@ class ExchangeRateBahtModel extends BaseModel{
 
 
     function deleteExchangeRateBahtByID($id){
-        $sql = " DELETE FROM tb_stock_log WHERE stock_log_id = '$id' ";
+        $sql = " DELETE FROM tb_exchange_rate_baht WHERE exchange_rate_baht_id = '$id' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }

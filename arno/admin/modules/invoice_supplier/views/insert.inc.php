@@ -178,14 +178,22 @@
         });
      }
 
-     function update_sum(id){
 
-          var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_supplier_list_qty[]"]').val(  ).replace(',',''));
-          var price =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_supplier_list_price[]"]').val( ).replace(',',''));
-          var sum =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_supplier_list_total[]"]').val( ).replace(',',''));
+<?PHP if($sort == "ภายนอกประเทศ"){ ?>
+    function update_sum(id){ 
+    
+        var exchange_rate = parseFloat(document.getElementById('exchange_rate_baht').value.replace(',',''));
+        var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_supplier_list_qty[]"]').val(  ).replace(',',''));
+        var purchase_price =  parseFloat($(id).closest('tr').children('td').children('input[name="purchase_order_list_price[]"]').val( ).replace(',',''));
+        var price =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_supplier_list_price[]"]').val( ).replace(',',''));
+        var sum =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_supplier_list_total[]"]').val( ).replace(',',''));
 
         if(isNaN(qty)){
             qty = 0;
+        }
+
+        if(isNaN(purchase_price)){
+            purchase_price = 0.0;
         }
 
         if(isNaN(price)){
@@ -196,6 +204,7 @@
             sum = 0.0;
         }
 
+        price =  purchase_price * exchange_rate;
         sum = qty*price;
 
         $(id).closest('tr').children('td').children('input[name="invoice_supplier_list_qty[]"]').val( qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
@@ -204,9 +213,41 @@
 
         calculateAll();
 
+
+    }
+<?PHP } else { ?>
+     function update_sum(id){
+            var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_supplier_list_qty[]"]').val(  ).replace(',',''));
+            var price =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_supplier_list_price[]"]').val( ).replace(',',''));
+            var sum =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_supplier_list_total[]"]').val( ).replace(',',''));
+
+
+
+            if(isNaN(qty)){
+                qty = 0;
+            }
+
+            if(isNaN(price)){
+                price = 0.0;
+            }
+
+            if(isNaN(sum)){
+                sum = 0.0;
+            }
+
+            sum = qty*price;
+
+            $(id).closest('tr').children('td').children('input[name="invoice_supplier_list_qty[]"]').val( qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+            $(id).closest('tr').children('td').children('input[name="invoice_supplier_list_cost[]"]').val( price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+            $(id).closest('tr').children('td').children('input[name="invoice_supplier_list_price[]"]').val( price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+            $(id).closest('tr').children('td').children('input[name="invoice_supplier_list_total[]"]').val( sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+
+            calculateAll();
+
         
     }
 
+<?PHP } ?>
 
     function show_purchase_order(id){
         var supplier_id = document.getElementById('supplier_id').value;
@@ -540,8 +581,12 @@
         $('#invoice_supplier_total_price').val(total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
         $('#invoice_supplier_vat_price').val((total * ($('#invoice_supplier_vat').val()/100.0)).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
         $('#invoice_supplier_net_price').val((total * ($('#invoice_supplier_vat').val()/100.0) + total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+
+        <?PHP if($sort == "ภายนอกประเทศ"){ ?>
         calculateCost();
+        <?PHP }?>
     }
+
 
 
     function calculateCost(){
@@ -551,8 +596,7 @@
         var invoice_supplier_list_qty = document.getElementsByName('invoice_supplier_list_qty[]');
         var exchange_rate_baht = parseFloat(document.getElementById('exchange_rate_baht').value.toString().replace(new RegExp(',', 'g'),''));
         var invoice_supplier_total_price = parseFloat(document.getElementById('invoice_supplier_total_price').value.toString().replace(new RegExp(',', 'g'),''));
-
-
+         
         var invoice_supplier_total_price_ex = 0; 
         var import_duty = parseFloat(document.getElementById('import_duty').value.toString().replace(new RegExp(',', 'g'),''));
         var freight_in = parseFloat(document.getElementById('freight_in').value.toString().replace(new RegExp(',', 'g'),''));
@@ -596,6 +640,8 @@
         document.getElementById('freight_in').value = freight_in.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 
     }
+
+
 
 
     function get_purchase(){
@@ -826,8 +872,11 @@
                                 <th style="text-align:center;">รายละเอียดสินค้า <br> (Product Detail)</th>
                                 <th style="text-align:center;">คลังสินค้า <br> (Stock)</th>
                                 <th style="text-align:center;" width="150">จำนวน <br> (Qty)</th>
-                                <th style="text-align:center;" width="150">ราคาต่อหน่วย <br> (Unit price) </th>
-                                <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount)</th>
+                                <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+                                <th style="text-align:center;" width="150">ราคาต่อหน่วย <span nane="currency"><?PHP echo $supplier['currency_sign']; ?></span> <br> (Unit price <span nane="currency"><?PHP echo $supplier['currency_sign']; ?></span>) </th>
+                                <?PHP } ?>
+                                <th style="text-align:center;" width="150">ราคาต่อหน่วยบาท <br> (Unit price bath) </th>
+                                <th style="text-align:center;" width="150">จำนวนเงินบาท <br> (Amount bath)</th>
                                 <th width="24"></th>
                             </tr>
                         </thead>
@@ -839,6 +888,10 @@
                             $cost_price_total_s = 0;
                             $cost_price_ex_total_s = 0;
                             for($i=0; $i < count($invoice_supplier_lists); $i++){
+                                if($sort != "ภายนอกประเทศ"){
+                                    $invoice_supplier_lists[$i]['invoice_supplier_list_price'] = $invoice_supplier_lists[$i]['purchase_order_list_price'];
+                                }
+
                                 $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
                                 $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
                                 $cost_duty += $cost_qty * $cost_price;
@@ -847,17 +900,30 @@
 
                             for($i=0; $i < count($invoice_supplier_lists); $i++){
 
-                                $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
-                                $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
-                                $cost_price_ex = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] * $exchange_rate_baht['exchange_rate_baht_value'];
+                                if($sort == "ภายนอกประเทศ"){
+                                    $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
+                                    $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
+                                    $cost_price_ex = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] * $exchange_rate_baht['exchange_rate_baht_value'];
 
-                                $cost_price_total = $cost_qty * $cost_price;
-                                $cost_price_ex_total = $cost_qty * $cost_price_ex;
+                                    $cost_price_total = $cost_qty * $cost_price;
+                                    $cost_price_ex_total = $cost_qty * $cost_price_ex;
 
+                                    if($cost_duty * $invoice_supplier['import_duty'] == 0){
+                                        $cost_price_duty = 0;
+                                    }else{
+                                        $cost_price_duty = $cost_price_total / $cost_duty * $invoice_supplier['import_duty'];
+                                    }
 
-                                $cost_price_duty = $cost_price_total / $cost_duty * $invoice_supplier['import_duty'];
-                                $cost_price_f = $cost_price_total / $cost_duty * $invoice_supplier['freight_in'];
-                                $cost_total = $cost_price_f + $cost_price_duty + $cost_price_ex_total;
+                                    if($cost_duty * $invoice_supplier['freight_in'] == 0){
+                                        $cost_price_f = 0;
+                                    }else{
+                                        $cost_price_f = $cost_price_total / $cost_duty * $invoice_supplier['freight_in'];
+                                    } 
+
+                                    $cost_total = $cost_price_f + $cost_price_duty + $cost_price_ex_total;
+                                }else{
+                                    $cost_total = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
+                                }
                             ?>
                             <tr class="odd gradeX">
                                 <td><input type="hidden" name="purchase_order_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['purchase_order_list_id'];?>" />
@@ -875,6 +941,7 @@
                                     <input type="text" class="form-control" name="invoice_supplier_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_supplier_lists[$i]['invoice_supplier_list_remark']; ?>" />
                                 </td>
                                 <td>
+                                
                                     <select name="stock_group_id[]" class="form-control select" data-live-search="true" >
                                         <option value="">เลือกคลังสินค้า</option>
                                         <?php 
@@ -885,8 +952,13 @@
                                         }
                                         ?>
                                     </select>
+
                                 </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_supplier_list_qty[]" value="<?php echo $invoice_supplier_lists[$i]['invoice_supplier_list_qty']; ?>" /></td>
+                                
+                                <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+                                    <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="purchase_order_list_price[]" value="<?php echo $invoice_supplier_lists[$i]['purchase_order_list_price']; ?>" /></td>
+                                <?PHP } ?>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_supplier_list_price[]" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_price'],2); ?>" /></td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="invoice_supplier_list_total[]" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_qty'] * $invoice_supplier_lists[$i]['invoice_supplier_list_price'],2); ?>" /></td>
                                 <td>
@@ -903,7 +975,13 @@
 
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td colspan="7" align="center">
+                                <td 
+                                <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+                                colspan="8" 
+                                <?PHP } else { ?>
+                                colspan="7" 
+                                <?PHP } ?>
+                                align="center">
                                     <a href="javascript:;" onclick="show_purchase_order(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> 
                                         <span>เพิ่มสินค้า / Add product</span>
@@ -955,7 +1033,11 @@
                                 </td>
                             </tr>
                             <tr class="odd gradeX">
-                                <td colspan="2" rowspan="3">
+                                <td <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+                                colspan="3" 
+                                <?PHP } else { ?>
+                                colspan="2" 
+                                <?PHP } ?> rowspan="3">
                                     
                                 </td>
                                 <td colspan="3" align="left" style="vertical-align: middle;">

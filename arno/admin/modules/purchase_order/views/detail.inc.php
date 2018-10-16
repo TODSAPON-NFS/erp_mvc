@@ -163,8 +163,8 @@
                                 </td>
                                 <td align="right">
                                     <?php echo number_format($sub_total,2);?> <br>
-                                    <?php echo number_format($sub_total * 0.07,2);?> <br>
-                                    <?php echo number_format($sub_total+($sub_total * 0.07),2);?> <br>
+                                    <?php echo number_format($sub_total * $vat/100,2);?> <br>
+                                    <?php echo number_format($sub_total+($sub_total * $vat/100),2);?> <br>
                                 </td>								
                                 <td width="80"></td>
                                 <!--

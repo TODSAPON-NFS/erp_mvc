@@ -42,7 +42,7 @@ class InvoiceCustomerModel extends BaseModel{
         invoice_customer_term, 
         invoice_customer_due, 
         invoice_customer_name,
-        IFNULL(CONCAT(tb2.customer_name_en,' (',tb2.customer_name_th,')'),'-') as customer_name  
+        IFNULL(tb2.customer_name_en,'-') as customer_name  
         FROM tb_invoice_customer 
         LEFT JOIN tb_user as tb1 ON tb_invoice_customer.employee_id = tb1.user_id 
         LEFT JOIN tb_customer as tb2 ON tb_invoice_customer.customer_id = tb2.customer_id 

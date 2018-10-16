@@ -306,6 +306,7 @@ function calculate(id,all_duty){
                                 </td>
                                 <td style="text-align: right;">
                                 <?PHP
+                                    $total = $cost_price_ex_total_s + $invoice_supplier['import_duty'] + $invoice_supplier['freight_in'];
                                     if($invoice_supplier['vat_type'] == 1){
                                         $total_val = $total - (($invoice_supplier['vat']/( 100 + $invoice_supplier['vat'] )) * $total);
                                     } else if($invoice_supplier['vat_type'] == 2){
@@ -314,7 +315,7 @@ function calculate(id,all_duty){
                                         $total_val = $total;
                                     }
                                 ?>
-                                    <?PHP echo number_format($total_val,2) ;?>
+                                    <?PHP echo number_format( $total_val ,2) ;?>
                                 </td>
                             </tr>
                             <tr class="odd gradeX">

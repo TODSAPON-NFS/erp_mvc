@@ -64,6 +64,20 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     $supplier_orders_out = $invoice_supplier_model->getSupplierOrder("ภายนอกประเทศ");
     $purchase_orders_in = $invoice_supplier_model->getPurchaseOrder("ภายในประเทศ");
     $purchase_orders_out = $invoice_supplier_model->getPurchaseOrder("ภายนอกประเทศ");
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+    $list_size = count($invoice_suppliers);
+    $page_max = (int)($list_size/$page_size);
+    if($list_size%$page_size > 0){
+        $page_max += 1;
+    }
+
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
@@ -131,6 +145,8 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 
 }else if ($_GET['action'] == 'detail'){
     $invoice_supplier = $invoice_supplier_model->getInvoiceSupplierViewByID($invoice_supplier_id);
+    
+    
     $invoice_supplier_lists = $invoice_supplier_list_model->getInvoiceSupplierListBy($invoice_supplier_id);
     require_once($path.'detail.inc.php');
 
@@ -480,6 +496,20 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     $supplier_orders_out = $invoice_supplier_model->getSupplierOrder("ภายนอกประเทศ");
     $purchase_orders_in = $invoice_supplier_model->getPurchaseOrder("ภายในประเทศ");
     $purchase_orders_out = $invoice_supplier_model->getPurchaseOrder("ภายนอกประเทศ");
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+    $list_size = count($invoice_suppliers);
+    $page_max = (int)($list_size/$page_size);
+    if($list_size%$page_size > 0){
+        $page_max += 1;
+    }
+    
     require_once($path.'view.inc.php');
 
 }

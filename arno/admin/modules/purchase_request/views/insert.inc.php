@@ -82,6 +82,14 @@
 
     function delete_row(id){
         $(id).closest('tr').remove();
+        update_line(id);
+    }
+
+    function update_line(id){
+        var td_number = $('table[name="tb_list"]').children('tbody').children('tr').children('td:first-child');
+        for(var i = 0; i < td_number.length ;i++){
+            td_number[i].innerHTML = (i+1);
+        }
     }
 
     function add_row(id){
@@ -105,6 +113,9 @@
 
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
+                        '<td>'+
+                        index+
+                        '.</td>'+
                         '<td>'+
                             '<input type="hidden" class="form-control" name="purchase_request_list_id[]" value="0" />'+
                             '<input type="hidden" class="form-control" name="product_id[]" value="'+data.product_id+'" />'+
@@ -163,6 +174,9 @@
 
                         $(id).closest('table').children('tbody').append(
                             '<tr class="odd gradeX">'+
+                                '<td>'+
+                                index+
+                                '.</td>'+
                                 '<td>'+
                                     '<input type="hidden" class="form-control" name="purchase_request_list_id[]" value="0" />'+
                                     '<input type="hidden" class="form-control" name="product_id[]" value="'+data.product_id+'" />'+
@@ -336,9 +350,10 @@
                         </div>
                     </div>
 
-                    <table width="100%" class="table table-striped table-bordered table-hover" >
+                    <table name="tb_list" width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
+                                <th style="text-align:center;" width="60">ลำดับ<br>(No.)</th>
                                 <th style="text-align:center;">รหัสสินค้า <br>(Product Code)</th>
                                 <th style="text-align:center;">ชื่อสินค้า<br>(Product Name)</th>
                                 <th style="text-align:center;max-width:100px;">จำนวน<br>(Qty)</th>
@@ -352,6 +367,9 @@
                             for($i=0; $i < count($purchase_request_lists); $i++){
                             ?>
                             <tr class="odd gradeX">
+                                <td>
+                                    <?PHP echo ($i + 1); ?>.
+                                </td>
                                 <td>
                                     <input type="hidden" class="form-control" name="purchase_request_list_id[]" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_id']; ?>" />
                                     <input type="hidden" class="form-control" name="product_id[]" value="<?php echo $purchase_request_lists[$i]['product_id']; ?>" />
@@ -378,7 +396,7 @@
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td colspan="6" align="center">
+                                <td colspan="7" align="center">
                                     <a href="javascript:;" onclick="split_product(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                         <span>เพิ่มสินค้า / Add product</span>

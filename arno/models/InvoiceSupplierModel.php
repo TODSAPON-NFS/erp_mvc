@@ -363,9 +363,10 @@ class InvoiceSupplierModel extends BaseModel{
             FROM tb_invoice_supplier_list 
             WHERE purchase_order_list_id = tb2.purchase_order_list_id 
         ),0) ,0) as invoice_supplier_list_qty, 
-        purchase_order_list_price as invoice_supplier_list_price, 
+        purchase_order_list_price,
+        '0' as invoice_supplier_list_price, 
         purchase_order_list_price_sum as invoice_supplier_list_total,
-        purchase_order_list_price_sum as invoice_supplier_list_cost, 
+        '0' as invoice_supplier_list_cost, 
         CONCAT('PO : ',purchase_order_code) as invoice_supplier_list_remark 
         FROM tb_purchase_order 
         LEFT JOIN tb_purchase_order_list as tb2 ON tb_purchase_order.purchase_order_id = tb2.purchase_order_id 

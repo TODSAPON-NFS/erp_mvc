@@ -644,7 +644,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>Exchange rate Baht<font color="#F00"><b>*</b></font></label>
-                                            <input  id="exchange_rate_baht" name="exchange_rate_baht" onchange="calculateCost();" class="form-control" value="<?php echo number_format($exchange_rate_baht['exchange_rate_baht'],5);?>">
+                                            <input  id="exchange_rate_baht" name="exchange_rate_baht" onchange="calculateCost();" class="form-control" value="<?php echo number_format($invoice_supplier['exchange_rate_baht'],5);?>">
                                             <p class="help-block">Example : 0.</p>
                                         </div>
                                     </div>

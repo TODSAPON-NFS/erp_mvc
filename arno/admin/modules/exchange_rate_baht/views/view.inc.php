@@ -54,7 +54,7 @@
                                     <?php 
                                     for($i =  0 ; $i < count($currencies) ; $i++){
                                     ?>
-                                    <option <?if($currencies['currency_id'] == $exchange_rate_baht[$i]['currency_id'] ){?> selected <?php } ?> value="<?php echo $currencies[$i]['currency_id'] ?>">[<?PHP echo $currencies[$i]['currency_code'];?>] <?PHP echo $currencies[$i]['currency_country'];?> - <?PHP echo $currencies[$i]['currency_name'];?> (<?PHP echo $currencies[$i]['currency_sign'];?>)</option>
+                                    <option <?if($currencies[$i]['currency_id'] == $exchange_rate_baht['currency_id'] ){?> selected <?php } ?> value="<?php echo $currencies[$i]['currency_id'] ?>">[<?PHP echo $currencies[$i]['currency_code'];?>] <?PHP echo $currencies[$i]['currency_country'];?> - <?PHP echo $currencies[$i]['currency_name'];?> (<?PHP echo $currencies[$i]['currency_sign'];?>)</option>
                                     <?
                                     }
                                     ?>
@@ -65,13 +65,13 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>วันที่ / Date <font color="#F00"><b>*</b></font></label>
-                                <input type="text" id="exchange_rate_baht_date" name="exchange_rate_baht_date"  class="form-control calendar" value="<?php if($exchange_rate_baht['exchange_rate_baht_date'] != ""){echo $date_time_function->changeDateFormat($exchange_rate_baht['exchange_rate_baht_date']);} ?>" ready/>
+                                <input type="text" id="exchange_rate_baht_date" name="exchange_rate_baht_date"  class="form-control calendar" value="<?php echo $exchange_rate_baht['exchange_rate_baht_date']; ?>" readonly/>
                                 <p class="help-block">Example : 01-03-2018.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <label>อัตราการแลกเปลี่ยน / Exchange rate <font color="#F00"><b>*</b></font></label>
-                            <input type="text" id="exchange_rate_baht_value" name="exchange_rate_baht_value"  class="form-control" value="<? echo number_format($exchange_rate_baht['exchange_rate_baht'],5);?>" />
+                            <input type="text" id="exchange_rate_baht_value" name="exchange_rate_baht_value"  class="form-control" value="<? echo number_format($exchange_rate_baht['exchange_rate_baht_value'],5);?>" />
                             <p class="help-block">30.25</p>
                         </div>
                     </div>    
@@ -108,13 +108,13 @@
                                 <div class="row">
                                     <div class="col-lg-3">
                                             <label>จากวันที่ / Date Start </label>
-                                            <input type="text" id="date_start" name="date_start"  class="form-control" value="<? echo $date_start;?>" readonly/>
+                                            <input type="text" id="date_start" name="date_start"  class="form-control calendar" value="<? echo $date_start;?>" readonly/>
                                             <p class="help-block"></p>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label>ถึงวันที่ / Date End </label>
-                                            <input type="text" id="date_end" name="date_end"  class="form-control" value="<? echo $date_end;?>" readonly/>
+                                            <input type="text" id="date_end" name="date_end"  class="form-control calendar" value="<? echo $date_end;?>" readonly/>
                                             <p class="help-block"></p>
                                         </div>
                                     </div>
@@ -141,7 +141,7 @@
                                     ?>
                                     <tr class="odd gradeX">
                                         <td style="text-align:center"><?php echo $i+1; ?></td>
-                                        <td style="text-align:center"><?php echo $date_time_function->changeDateFormat($exchange_rate_bahts[$i]['exchange_rate_baht_date']); ?></td>
+                                        <td style="text-align:center"><?php echo $exchange_rate_bahts[$i]['exchange_rate_baht_date']; ?></td>
                                         <td style="text-align:center">[<?PHP echo $exchange_rate_bahts[$i]['currency_code'];?>] <?PHP echo $exchange_rate_bahts[$i]['currency_country'];?> - <?PHP echo $exchange_rate_bahts[$i]['currency_name'];?> (<?PHP echo $exchange_rate_bahts[$i]['currency_sign'];?>)</td>
                                         <td style="text-align:right"><?php echo $exchange_rate_bahts[$i]['exchange_rate_baht_value']; ?></td>
                                         <td>

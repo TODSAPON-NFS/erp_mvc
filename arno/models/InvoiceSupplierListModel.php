@@ -14,8 +14,9 @@ class InvoiceSupplierListModel extends BaseModel{
         invoice_supplier_list_id,
         CONCAT(product_code_first,product_code) as product_code, 
         product_name, 
-        purchase_order_list_id,
-        stock_group_id,
+        tb_invoice_supplier_list.purchase_order_list_id,
+        purchase_order_list_price,
+        tb_invoice_supplier_list.stock_group_id,
         invoice_supplier_list_product_name, 
         invoice_supplier_list_product_detail, 
         invoice_supplier_list_qty, 
@@ -24,10 +25,12 @@ class InvoiceSupplierListModel extends BaseModel{
         invoice_supplier_list_total, 
         invoice_supplier_list_cost, 
         invoice_supplier_list_remark 
-        FROM tb_invoice_supplier_list LEFT JOIN tb_product ON tb_invoice_supplier_list.product_id = tb_product.product_id 
+        FROM tb_invoice_supplier_list 
+        LEFT JOIN tb_product ON tb_invoice_supplier_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_purchase_order_list ON tb_invoice_supplier_list.purchase_order_list_id = tb_purchase_order_list.purchase_order_list_id 
         WHERE invoice_supplier_id = '$invoice_supplier_id' 
         ORDER BY invoice_supplier_list_id 
-        ";
+        "; 
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];

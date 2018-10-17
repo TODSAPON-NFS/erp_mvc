@@ -206,6 +206,8 @@ class InvoiceSupplierModel extends BaseModel{
         WHERE invoice_supplier_id = $id 
         ";
 
+        //echo $sql;
+
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
@@ -472,7 +474,7 @@ class InvoiceSupplierModel extends BaseModel{
         ";
 
 
-        //echo $sql;
+        echo $sql;
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             return mysqli_insert_id(static::$db);
         }else {

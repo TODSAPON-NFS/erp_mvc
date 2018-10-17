@@ -125,8 +125,8 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         }   
     } 
    
-
-    $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($date_time_function_model->changeDateFormat($invoice_supplier['invoice_supplier_date_recieve']),$supplier['currency_id']);
+    $first_date = date("d")."-".date("m")."-".date("Y");
+    $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($first_date,$supplier['currency_id']);
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
@@ -140,7 +140,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     $suppliers=$supplier_model->getSupplierBy($supplier['supplier_domestic']);
     $invoice_supplier_lists = $invoice_supplier_list_model->getInvoiceSupplierListBy($invoice_supplier_id);
 
-    $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($date_time_function_model->changeDateFormat($invoice_supplier['invoice_supplier_date_recieve']),$supplier['currency_id']);
+    $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($invoice_supplier['invoice_supplier_date_recieve'],$supplier['currency_id']);
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
@@ -446,11 +446,11 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         if($output){
         
 ?>
-        <script>window.location="index.php?app=invoice_supplier&action=update&id=<?php echo $invoice_supplier_id;?>"</script>
+        <script>window.location="index.php?app=invoice_supplier"</script>
 <?php
         }else{
 ?>
-        <script>window.history.back();</script>
+        <script>swindow.history.back();</script>
 <?php
         }
     

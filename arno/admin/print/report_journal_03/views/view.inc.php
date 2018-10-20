@@ -35,7 +35,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     <table width="100%" border="0" cellspacing="0">
         <tr>
             <td align="left" > </td>
-            <td colspan = "2" align="left" style="font-size:12px;"> PAYMENT VOUCHER </td> 
+            <td colspan = "2" align="left" style="font-size:12px;"> RECEIPT VOUCHER </td> 
         </tr>
         <tr>
             <td align="left" ></td>
@@ -49,6 +49,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         </tr> 
     </table>  
     <br>
+    <div style="font-size:10px;"><b>สมุดรายวันรับ</div>
     <div style="font-size:10px;"><b>รายละเอียด :</b> '.$journal_cash_receipt['journal_cash_receipt_name'].' </div>
  
     ';

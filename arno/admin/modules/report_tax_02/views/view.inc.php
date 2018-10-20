@@ -116,7 +116,7 @@
                         $net_total = 0;
                         for($i=0; $i < count($tax_reports); $i++){
                             $vat_total +=  $tax_reports[$i]['invoice_customer_vat_price'];
-                            $net_total +=  $tax_reports[$i]['invoice_customer_net_price'];
+                            $net_total +=  $tax_reports[$i]['invoice_customer_total_price'];
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
@@ -125,7 +125,7 @@
                             <td><?php echo $tax_reports[$i]['customer_name']; ?> </td>
                             <td><?php echo $tax_reports[$i]['employee_name']; ?></td>
                             <td  align="right" >
-                                <?php echo number_format($tax_reports[$i]['invoice_customer_net_price'],2); ?>
+                                <?php echo number_format($tax_reports[$i]['invoice_customer_total_price'],2); ?>
                             </td>
                             <td  align="right" ><?php echo number_format($tax_reports[$i]['invoice_customer_vat_price'],2); ?></td>
                             

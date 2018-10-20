@@ -30,7 +30,7 @@ $check_pay_model = new CheckPayModel;
 $invoice_supplier_model = new InvoiceSupplierModel;
 $invoice_customer_model = new InvoiceCustomerModel;
 
-$lines = 28;
+$lines = 30;
 
 if($_GET['type'] == "id"){
     $journal_cash_payment_id = $_GET['id'];

@@ -49,6 +49,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         </tr> 
     </table>  
     <br>
+    <div style="font-size:10px;"><b>สมุดรายวันจ่าย</div>
     <div style="font-size:10px;"><b>รายละเอียด :</b> '.$journal_cash_payment['journal_cash_payment_name'].' </div>
  
     ';
@@ -69,34 +70,132 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     ';
  
      
-    $dr_page = 0;
-    $cr_page = 0;
-    for($i=$page_index * $lines; $i < count($journal_cash_payment_lists) && $i < $page_index * $lines + $lines; $i++){
-        $dr_page +=  $journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'];
-        $cr_page +=  $journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'];
-        $dr_total +=  $journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'];
-        $cr_total +=  $journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'];
+    if($page_index * $lines < count($journal_cash_payment_lists)){
+        $dr_page = 0;
+        $cr_page = 0;
+        for($i=$page_index * $lines; $i < count($journal_cash_payment_lists) && $i < $page_index * $lines + $lines; $i++){
+            $dr_page +=  $journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'];
+            $cr_page +=  $journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'];
+            $dr_total +=  $journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'];
+            $cr_total +=  $journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'];
 
-                $html[$page_index] .= ' 
-                <tr>  
-                    <td  align="left">'.$journal_cash_payment_lists[$i]['account_code'].'</td>
-                    <td  align="left">'.$journal_cash_payment_lists[$i]['account_name_th'].'</td> 
-                    <td  align="right" >
-                        '.number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'],2).'
-                    </td>
-                    <td  align="right" >
-                        '.number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'],2).' 
-                    </td> 
-                </tr> 
-                ';
+                    $html[$page_index] .= ' 
+                    <tr>  
+                        <td  align="left">'.$journal_cash_payment_lists[$i]['account_code'].'</td>
+                        <td  align="left">'.$journal_cash_payment_lists[$i]['account_name_th'].'</td> 
+                        <td  align="right" >
+                            '.number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_debit'],2).'
+                        </td>
+                        <td  align="right" >
+                            '.number_format($journal_cash_payment_lists[$i]['journal_cash_payment_list_credit'],2).' 
+                        </td> 
+                    </tr> 
+                    ';
+        }
     }
+    
+    if(($page_index * $lines - count($journal_cash_payment_lists)) < count($checks)){
+ 
+    
+        for($i=0; $i < count($checks) ; $i++){
+            $html[$page_index] .= ' 
+            <tr>  
+                <td  align="left">'.$checks[$i]['check_code'].'</td>
+                <td  align="left">'.$checks[$i]['check_date'].'</td> 
+                <td  align="right" >
+                    '.number_format($checks[$i]['check_total'],2).'
+                </td>
+                <td  align="right" >
+                    '.$checks[$i]['check_remark'] .' 
+                </td> 
+            </tr> 
+            ';
+        }
+     
+    }
+    
+    if(count($check_pays) > 0){
+     
+        for($i=0; $i < count($check_pays) ; $i++){
+            $html[$page_index-1] .= ' 
+            <tr>  
+                <td  align="left">'.$check_pays[$i]['check_pay_code'].'</td>
+                <td  align="left">'.$check_pays[$i]['check_pay_date'].'</td> 
+                <td  align="right" >
+                    '.number_format($check_pays[$i]['check_pay_total'],2).'
+                </td>
+                <td  align="right" >
+                    '.$check_pays[$i]['check_pay_remark'] .' 
+                </td> 
+            </tr> 
+            ';
+        } 
+    
+    }
+    
+    if(count($invoice_suppliers) > 0){
+    
+        $html[$page_index-1] .= ' 
+            <tr> 
+                <th width="120" align="center" >Tax inv.no.</th>
+                <th width="120" align="center" >Doc dd. </th> 
+                <th width="120" align="center" >amount.</th> 
+                <th width="120" align="center" >VAT amount.</th>  
+            </tr> 
+        ';
+        
+        
+        for($i=0; $i < count($invoice_suppliers) ; $i++){
+            $html[$page_index-1] .= ' 
+            <tr>   
+                <td  align="left">#ภาษีซื้อ '.$invoice_suppliers[$i]['invoice_supplier_code'].'</td>
+                <td  align="left">'.$invoice_suppliers[$i]['invoice_supplier_date'].'</td> 
+                <td  align="right" >
+                    '.number_format($invoice_suppliers[$i]['invoice_supplier_total_price'],2).'
+                </td>
+                <td  align="right" >
+                    '.number_format($invoice_suppliers[$i]['invoice_supplier_vat_price'],2).'
+                </td> 
+            </tr> 
+            ';
+        } 
+    }
+    
+    if(count($invoice_customers) > 0){
+    
+        $html[$page_index-1] .= ' 
+            <tr> 
+                <th width="120" align="center" >Tax inv.no.</th>
+                <th width="120" align="center" >Doc dd. </th> 
+                <th width="120" align="center" >amount.</th> 
+                <th width="120" align="center" >VAT amount.</th>  
+            </tr> 
+        '; 
+        
+        for($i=0; $i < count($invoice_customers) ; $i++){
+            $html[$page_index-1] .= ' 
+            <tr>   
+                <td  align="left">#ภาษีซื้อ '.$invoice_customers[$i]['invoice_customer_code'].'</td>
+                <td  align="left">'.$invoice_customers[$i]['invoice_customer_date'].'</td> 
+                <td  align="right" >
+                    '.number_format($invoice_customers[$i]['invoice_customer_total_price'],2).'
+                </td>
+                <td  align="right" >
+                    '.number_format($invoice_customers[$i]['invoice_customer_vat_price'],2).'
+                </td> 
+            </tr> 
+            ';
+        } 
+    }
+   
+
+
 
     if($page_index+1 < $page_max){
         $html[$page_index] .= ' 
                 </tbody>
                 <tfoot>
-                    <tr>
-                        <td></td>
+                    <tr> 
                         <td colspan="2" align="left"> <b>รวมแต่ละหน้า</b> </td>
                         <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($dr_page,2).'</td>
                         <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($cr_page,2).'</td> 
@@ -128,144 +227,6 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 }
 
 
-if(count($checks) > 0){
 
-    $html[$page_index-1] .= '
-    <br>
-    <table  width="100%" cellspacing="0" style="font-size:12px;"> 
-        <tbody>
-    ';
-    
-    for($i=0; $i < count($checks) ; $i++){
-        $html[$page_index-1] .= ' 
-        <tr>  
-            <td  align="left">'.$checks[$i]['check_code'].'</td>
-            <td  align="left">'.$checks[$i]['check_date'].'</td> 
-            <td  align="right" >
-                '.number_format($checks[$i]['check_total'],2).'
-            </td>
-            <td  align="right" >
-                '.$checks[$i]['check_remark'] .' 
-            </td> 
-        </tr> 
-        ';
-    }
-    
-    $html[$page_index-1] .= ' 
-        </tbody>
-    </table>
-    ';
-    
-}
-
-if(count($check_pays) > 0){
-
-    $html[$page_index-1] .= '
-    <br>
-    <table  width="100%" cellspacing="0" style="font-size:12px;"> 
-        <tbody>
-    ';
-    
-    for($i=0; $i < count($check_pays) ; $i++){
-        $html[$page_index-1] .= ' 
-        <tr>  
-            <td  align="left">'.$check_pays[$i]['check_pay_code'].'</td>
-            <td  align="left">'.$check_pays[$i]['check_pay_date'].'</td> 
-            <td  align="right" >
-                '.number_format($check_pays[$i]['check_pay_total'],2).'
-            </td>
-            <td  align="right" >
-                '.$check_pays[$i]['check_pay_remark'] .' 
-            </td> 
-        </tr> 
-        ';
-    }
-    
-    $html[$page_index-1] .= ' 
-        </tbody>
-    </table>
-    ';
-}
-
-
-if(count($invoice_suppliers) > 0){
-
-    $html[$page_index-1] .= '
-    <br>
-    <table  width="100%" cellspacing="0" style="font-size:12px;"> 
-        <thead> 
-            <tr>
-                <th></th>
-                <th width="120" align="center" >Tax inv.no.</th>
-                <th width="120" align="center" >Doc dd. </th> 
-                <th width="120" align="center" >amount.</th> 
-                <th width="120" align="center" >VAT amount.</th>  
-            </tr>
-        </thead>
-        <tbody>
-    ';
-    
-    
-    for($i=0; $i < count($invoice_suppliers) ; $i++){
-        $html[$page_index-1] .= ' 
-        <tr>  
-            <td align="left" > #ภาษีซื้อ </td>
-            <td  align="left">'.$invoice_suppliers[$i]['invoice_supplier_code'].'</td>
-            <td  align="left">'.$invoice_suppliers[$i]['invoice_supplier_date'].'</td> 
-            <td  align="right" >
-                '.number_format($invoice_suppliers[$i]['invoice_supplier_total_price'],2).'
-            </td>
-            <td  align="right" >
-                '.number_format($invoice_suppliers[$i]['invoice_supplier_vat_price'],2).'
-            </td> 
-        </tr> 
-        ';
-    }
-    
-    $html[$page_index-1] .= ' 
-        </tbody>
-    </table>
-    ';
-}
-
-if(count($invoice_customers) > 0){
-
-    $html[$page_index-1] .= '
-    <br>
-    <table  width="100%" cellspacing="0" style="font-size:12px;"> 
-        <thead> 
-            <tr>
-                <th></th>
-                <th width="120" align="center" >Tax inv.no.</th>
-                <th width="120" align="center" >Doc dd. </th> 
-                <th width="120" align="center" >amount.</th> 
-                <th width="120" align="center" >VAT amount.</th>  
-            </tr>
-        </thead>
-        <tbody>
-    ';
-    
-    
-    for($i=0; $i < count($invoice_customers) ; $i++){
-        $html[$page_index-1] .= ' 
-        <tr>  
-            <td align="left" > #ภาษีซื้อ </td>
-            <td  align="left">'.$invoice_customers[$i]['invoice_customer_code'].'</td>
-            <td  align="left">'.$invoice_customers[$i]['invoice_customer_date'].'</td> 
-            <td  align="right" >
-                '.number_format($invoice_customers[$i]['invoice_customer_total_price'],2).'
-            </td>
-            <td  align="right" >
-                '.number_format($invoice_customers[$i]['invoice_customer_vat_price'],2).'
-            </td> 
-        </tr> 
-        ';
-    }
-    
-    $html[$page_index-1] .= ' 
-        </tbody>
-    </table>
-    ';
-}
 
 ?>

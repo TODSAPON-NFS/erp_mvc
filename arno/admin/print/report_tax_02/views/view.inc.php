@@ -93,9 +93,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     $net_page = 0;
     for($i=$page_index * $lines; $i < count($tax_reports) && $i < $page_index * $lines + $lines; $i++){
         $vat_page +=  $tax_reports[$i]['invoice_customer_vat_price'];
-        $net_page +=  $tax_reports[$i]['invoice_customer_net_price'];
+        $net_page +=  $tax_reports[$i]['invoice_customer_total_price'];
         $vat_total +=  $tax_reports[$i]['invoice_customer_vat_price'];
-        $net_total +=  $tax_reports[$i]['invoice_customer_net_price'];
+        $net_total +=  $tax_reports[$i]['invoice_customer_total_price'];
 
                 $html[$page_index] .= ' 
                 <tr>
@@ -107,7 +107,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <td>' .'</td>
                     <td>' .'</td>
                     <td  align="right" >
-                        '.number_format($tax_reports[$i]['invoice_customer_net_price'],2).'
+                        '.number_format($tax_reports[$i]['invoice_customer_total_price'],2).'
                     </td>
                     <td  align="right" >'.number_format($tax_reports[$i]['invoice_customer_vat_price'],2).'</td>
                     <td>

@@ -15,6 +15,10 @@ class JournalGeneralListModel extends BaseModel{
         journal_general_list_name,
         journal_general_list_debit,
         journal_general_list_credit, 
+        journal_cheque_id,
+        journal_cheque_pay_id,
+        journal_invoice_customer_id,
+        journal_invoice_supplier_id,
         tb_journal_general_list.account_id, 
         account_name_th,  
         account_name_en 
@@ -38,6 +42,10 @@ class JournalGeneralListModel extends BaseModel{
     function insertJournalGeneralList($data = []){
         $sql = " INSERT INTO tb_journal_general_list (
             journal_general_id,
+            journal_cheque_id,
+            journal_cheque_pay_id,
+            journal_invoice_customer_id,
+            journal_invoice_supplier_id,
             account_id,
             journal_general_list_name,
             journal_general_list_debit,
@@ -47,7 +55,11 @@ class JournalGeneralListModel extends BaseModel{
             updateby,
             lastupdate
         ) VALUES (
-            '".$data['journal_general_id']."', 
+            '".$data['journal_general_id']."',  
+            '".$data['journal_cheque_id']."', 
+            '".$data['journal_cheque_pay_id']."', 
+            '".$data['journal_invoice_customer_id']."', 
+            '".$data['journal_invoice_supplier_id']."', 
             '".$data['account_id']."', 
             '".$data['journal_general_list_name']."', 
             '".$data['journal_general_list_debit']."',
@@ -69,7 +81,11 @@ class JournalGeneralListModel extends BaseModel{
     function updateJournalGeneralListById($data,$id){
 
         $sql = " UPDATE tb_journal_general_list 
-            SET account_id = '".$data['account_id']."', 
+            SET account_id = '".$data['account_id']."',  
+            journal_cheque_id = '".$data['journal_cheque_id']."',
+            journal_cheque_pay_id = '".$data['journal_cheque_pay_id']."',
+            journal_invoice_customer_id = '".$data['journal_invoice_customer_id']."',
+            journal_invoice_supplier_id = '".$data['journal_invoice_supplier_id']."',
             journal_general_list_name = '".$data['journal_general_list_name']."',
             journal_general_list_debit = '".$data['journal_general_list_debit']."',
             journal_general_list_credit = '".$data['journal_general_list_credit']."' 

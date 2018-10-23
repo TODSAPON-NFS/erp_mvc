@@ -98,7 +98,9 @@ class TaxReportModel extends BaseModel{
         }
 
         $sql = " SELECT invoice_customer_id, 
-        invoice_customer_code,  
+        invoice_customer_code,   
+        invoice_customer_name,   
+        invoice_customer_tax,   
         invoice_customer_date, 
         invoice_customer_vat_price,
         invoice_customer_total_price,

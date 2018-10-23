@@ -15,6 +15,10 @@ class JournalPurchaseListModel extends BaseModel{
         journal_purchase_list_name,
         journal_purchase_list_debit,
         journal_purchase_list_credit, 
+        journal_cheque_id,
+        journal_cheque_pay_id,
+        journal_invoice_customer_id,
+        journal_invoice_supplier_id,
         tb_journal_purchase_list.account_id, 
         account_name_th,  
         account_name_en 
@@ -32,12 +36,16 @@ class JournalPurchaseListModel extends BaseModel{
             return $data;
         }
 
-    }
+    } 
 
 
     function insertJournalPurchaseList($data = []){
         $sql = " INSERT INTO tb_journal_purchase_list (
             journal_purchase_id, 
+            journal_cheque_id,
+            journal_cheque_pay_id,
+            journal_invoice_customer_id,
+            journal_invoice_supplier_id,
             account_id,
             journal_purchase_list_name,
             journal_purchase_list_debit,
@@ -47,7 +55,11 @@ class JournalPurchaseListModel extends BaseModel{
             updateby,
             lastupdate
         ) VALUES (
-            '".$data['journal_purchase_id']."',  
+            '".$data['journal_purchase_id']."',   
+            '".$data['journal_cheque_id']."', 
+            '".$data['journal_cheque_pay_id']."', 
+            '".$data['journal_invoice_customer_id']."', 
+            '".$data['journal_invoice_supplier_id']."', 
             '".$data['account_id']."', 
             '".$data['journal_purchase_list_name']."', 
             '".$data['journal_purchase_list_debit']."',
@@ -69,7 +81,11 @@ class JournalPurchaseListModel extends BaseModel{
     function updateJournalPurchaseListById($data,$id){
 
         $sql = " UPDATE tb_journal_purchase_list 
-            SET account_id = '".$data['account_id']."', 
+            SET account_id = '".$data['account_id']."',  
+            journal_cheque_id = '".$data['journal_cheque_id']."',
+            journal_cheque_pay_id = '".$data['journal_cheque_pay_id']."',
+            journal_invoice_customer_id = '".$data['journal_invoice_customer_id']."',
+            journal_invoice_supplier_id = '".$data['journal_invoice_supplier_id']."',
             journal_purchase_list_name = '".$data['journal_purchase_list_name']."',
             journal_purchase_list_debit = '".$data['journal_purchase_list_debit']."',
             journal_purchase_list_credit = '".$data['journal_purchase_list_credit']."' 

@@ -40,7 +40,7 @@ class StockMoveModel extends BaseModel{
 
     function getStockMoveByID($id){
         $sql = " SELECT stock_move_id, 
-        employee_id, 
+        tb_stock_move.employee_id, 
         stock_group_id_out, 
         stock_group_id_in, 
         stock_move_code, 
@@ -69,7 +69,7 @@ class StockMoveModel extends BaseModel{
 
     function getStockMoveViewByID($id){
         $sql = " SELECT stock_move_id, 
-        employee_id, 
+        tb_stock_move.employee_id, 
         stock_group_id_out, 
         stock_group_id_in, 
         stock_move_code, 

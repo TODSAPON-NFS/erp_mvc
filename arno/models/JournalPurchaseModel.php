@@ -24,20 +24,22 @@ class JournalPurchaseModel extends BaseModel{
 
 
 
-        $sql = " SELECT journal_purchase_id, 
-        invoice_supplier_id,
+        $sql = " SELECT journal_purchase_id,  
         journal_purchase_code, 
         journal_purchase_date,
         journal_purchase_name,
-        addby,
-        adddate,
-        updateby,
-        lastupdate,
+        tb_journal_purchase.invoice_supplier_id,
+        tb_invoice_supplier.invoice_supplier_code_gen,
+        tb_journal_purchase.addby,
+        tb_journal_purchase.adddate,
+        tb_journal_purchase.updateby,
+        tb_journal_purchase.lastupdate,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as add_name, 
         IFNULL(CONCAT(tb2.user_name,' ',tb2.user_lastname),'-') as update_name 
         FROM tb_journal_purchase 
         LEFT JOIN tb_user as tb1 ON tb_journal_purchase.addby = tb1.user_id 
         LEFT JOIN tb_user as tb2 ON tb_journal_purchase.updateby = tb2.user_id 
+        LEFT JOIN tb_invoice_supplier ON tb_journal_purchase.invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
             OR  CONCAT(tb2.user_name,' ',tb2.user_lastname) LIKE ('%$keyword%') 
@@ -47,6 +49,8 @@ class JournalPurchaseModel extends BaseModel{
         $str_date 
         ORDER BY STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s'), journal_purchase_code DESC 
          ";
+
+         echo $sql;
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -95,11 +99,31 @@ class JournalPurchaseModel extends BaseModel{
 
     }
 
+    function getJournalPurchaseByKeyword(){
+       
+        $sql = " SELECT journal_purchase_id, 
+        journal_purchase_code,  
+        journal_purchase_name 
+        FROM tb_journal_purchase  
+        WHERE journal_purchase_code LIKE ('%$keyword%')  OR  journal_purchase_name LIKE ('%$keyword%') 
+        ORDER BY journal_purchase_code DESC 
+         ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+
     function getJournalPurchaseViewByID($id){
         $sql = " SELECT journal_purchase_id, 
         journal_purchase_code, 
         journal_purchase_date,
-        journal_purchase_name,
+        journal_purchase_name,  
         addby,
         adddate,
         updateby,
@@ -110,6 +134,23 @@ class JournalPurchaseModel extends BaseModel{
         LEFT JOIN tb_user as tb1 ON tb_journal_purchase.addby = tb1.user_id 
         LEFT JOIN tb_user as tb2 ON tb_journal_purchase.updateby = tb2.user_id 
         WHERE journal_purchase_id = '$id' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getJournalPurchaseByCode($journal_purchase_code){
+        $sql = " SELECT * 
+        FROM tb_journal_purchase 
+        WHERE journal_purchase_code = '$journal_purchase_code' 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

@@ -195,6 +195,34 @@ if(!isset($_GET['action'])){
         <?php
     }
     
+}else if ($_GET['action'] == 'import' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
+    
+    $product_code = $_POST['product_code'];
+    $product_name = $_POST['product_name'];
+
+    for($i = 0 ; $i < count($product_code) ; $i++){
+        $data = [];
+        $data['product_code_first'] = '';
+        $data['product_code'] = $product_code[$i];
+        $data['product_name'] = $product_name[$i];
+        $data['product_group'] = '';
+        $data['product_barcode'] = '';
+        $data['product_description'] = '';
+        $data['product_type'] = '';
+        $data['product_unit'] = '';
+        $data['product_status'] = 'Active';
+        $data['product_category_id'] = ''; 
+    
+        $model_product->insertProduct($data);
+    }
+    ?>
+
+    <script>
+        alert("Import product <?PHP echo $i; ?> list complete.");
+        window.location="index.php?app=product";
+    </script>
+    <?php
+    
 }else if ($_GET['action'] == 'edit' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     
     if(isset($_POST['product_name'])){

@@ -473,8 +473,6 @@ class InvoiceSupplierModel extends BaseModel{
         "',NOW()); 
         ";
 
-
-        echo $sql;
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             return mysqli_insert_id(static::$db);
         }else {

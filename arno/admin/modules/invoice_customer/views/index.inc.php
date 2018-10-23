@@ -116,6 +116,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 }else if ($_GET['action'] == 'detail'){
     
     $invoice_customer = $invoice_customer_model->getInvoiceCustomerViewByID($invoice_customer_id);
+    $customer=$customer_model->getCustomerByID($invoice_customer['customer_id']);
     $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy($invoice_customer_id);
     require_once($path.'detail.inc.php');
 

@@ -540,7 +540,7 @@ function check_number(id){
                             <th>ใหญ่  <br> Big</th>
                             <th>กลาง  <br> Medium</th>
                             <th>เล็ก  <br> Small</th>
-                            <th> ลบ <br> Delete</th>
+                            <th>ลบ <br> Delete</th>
                         </tr>
                     </thead>
                     <tbody id="bodyAdd">

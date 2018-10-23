@@ -273,9 +273,8 @@ class CustomerModel extends BaseModel{
         customer_logo = '".$data['customer_logo']."' , 
         updateby = '".$data['updateby']."',  
         lastupdate = NOW() 
-        WHERE customer_id = $id 
-        ";
-
+        WHERE customer_id = '$id' 
+        "; 
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;

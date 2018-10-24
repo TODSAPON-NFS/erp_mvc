@@ -470,7 +470,7 @@ function invoice_supplier_post(){
                         'lastupdate':lastupdate
                     }, 
                     function( data ) {
-                        if(data !== null){
+                        if(data != null){
                             set_invoice_supplier_row(data); 
                             $('.select').selectpicker('refresh');
                             $('#modalInvoiceSupplier').modal('hide');
@@ -506,7 +506,7 @@ function invoice_supplier_post(){
                     }, 
                     function( data ) { 
                         console.log(data);
-                        if(data !== null){
+                        if(data != null){
                             set_invoice_supplier_row(data);
                             $('.select').selectpicker('refresh');
                             $('#modalInvoiceSupplier').modal('hide');

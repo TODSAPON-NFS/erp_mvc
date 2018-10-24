@@ -202,6 +202,10 @@
 
     /* ----------------------------------- ระบบรายงาน ---------------------------------------------- */
 
+    else if($_GET['app'] == "report_creditor_04"){
+        require_once("modules/report_creditor_04/views/index.inc.php");
+    }
+
     else if($_GET['app'] == "report_debtor_03"){
         require_once("modules/report_debtor_03/views/index.inc.php");
     }else if($_GET['app'] == "report_debtor_06"){

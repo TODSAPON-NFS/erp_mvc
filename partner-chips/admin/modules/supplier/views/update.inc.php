@@ -325,12 +325,12 @@
                     <div class="col-lg-2">
                         <div class="form-group">
                             <label>สกุลเงิน / Curreny. </label>
-                            <select id="currency_id" name="currency_id" class="form-control">
+                            <select id="currency_id" name="currency_id" class="form-control select" data-live-search="true">
                                 <option value="">เลือก / Select</option>
                                 <?PHP 
                                     for($i=0; $i < count($currency) ; $i++){
                                 ?>
-                                    <option value="<?PHP echo $currency[$i]['currency_id'];?>" <?PHP if($currency[$i]['currency_id'] == $supplier['currency_id']){?> Selected <?PHP }?>><?PHP echo $currency[$i]['currency_code'];?> - <?PHP echo $currency[$i]['currency_name'];?></option>
+                                    <option value="<?PHP echo $currency[$i]['currency_id'];?>" <?PHP if($currency[$i]['currency_id'] == $supplier['currency_id']){?> Selected <?PHP }?>>[<?PHP echo $currency[$i]['currency_code'];?>] <?PHP echo $currency[$i]['currency_country'];?>  - <?PHP echo $currency[$i]['currency_name'];?> (<?PHP echo $currency[$i]['currency_sign'];?>)</option>
                                 <?PHP
                                     }
                                 ?>

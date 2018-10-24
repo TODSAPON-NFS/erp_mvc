@@ -1,5 +1,153 @@
            
+<script src="../plugins/excel/xlsx.core.min.js"></script>  
+<script src="../plugins/excel/xls.core.min.js"></script> 
 
+<script>
+
+var number_error = 0; 
+    
+function ExportToTable(id) {  
+    var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;  
+    /*Checks whether the file is a valid excel file*/  
+    if (regex.test($("#excelfile").val().toLowerCase())) {  
+        var xlsxflag = false; /*Flag for checking whether excel is .xls format or .xlsx format*/  
+        if ($("#excelfile").val().toLowerCase().indexOf(".xlsx") > 0) {  
+            xlsxflag = true;  
+        }  
+        /*Checks whether the browser supports HTML5*/  
+        if (typeof (FileReader) != "undefined") {  
+            var reader = new FileReader();  
+            reader.onload = function (e) {  
+                var data = e.target.result;  
+                /*Converts the excel data in to object*/  
+                if (xlsxflag) {  
+                    var workbook = XLSX.read(data, { type: 'binary' });  
+                }  
+                else {  
+                    var workbook = XLS.read(data, { type: 'binary' });  
+                }  
+                /*Gets all the sheetnames of excel in to a variable*/  
+                var sheet_name_list = workbook.SheetNames;  
+
+                var cnt = 0; /*This is used for restricting the script to consider only first sheet of excel*/  
+                sheet_name_list.forEach(function (y) { /*Iterate through all sheets*/  
+                    /*Convert the cell value to Json*/  
+                    if (xlsxflag) {  
+                        var exceljson = XLSX.utils.sheet_to_json(workbook.Sheets[y]);  
+                    }  
+                    else {  
+                        var exceljson = XLS.utils.sheet_to_row_object_array(workbook.Sheets[y]);  
+                    }  
+                    if (exceljson.length > 0 && cnt == 0) {  
+                        BindTable(exceljson,id);  
+                        cnt++;  
+                    }  
+                });  
+                $('#exceltable').show();  
+            }  
+            if (xlsxflag) {/*If excel file is .xlsx extension than creates a Array Buffer from excel*/  
+                reader.readAsArrayBuffer($("#excelfile")[0].files[0]);  
+            }  
+            else {  
+                reader.readAsBinaryString($("#excelfile")[0].files[0]);  
+            }  
+        }  
+        else {  
+            alert("Sorry! Your browser does not support HTML5!");  
+        }  
+    }  
+    else {  
+        alert("Please upload a valid Excel file!");  
+    }  
+}   
+
+
+function delete_row(id){
+    $(id).closest('tr').remove();
+} 
+
+
+function BindTable(jsondata,id) {
+    number_error = 0;
+    $("#search_pop").attr('checked',false);
+    $("#bodyAdd").html('');
+
+    if($('#stock_group_id').val() != ''){
+        product_data = jsondata;
+        for (var i = 0; i < jsondata.length; i++) {  
+            get_product_row(jsondata[i],i);
+        }
+
+        $("#excelfile").val('');
+        $('#modalAdd').modal('show');
+    }else{
+            alert('Please select stock group.');
+    }   
+}
+
+
+function get_product_row(product,i){
+    $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product.product_code)}, function( data ) {
+        if(data != null){ 
+            number_error ++;
+            $('.number_error').html(number_error);
+            $("#bodyAdd").append(
+                '<tr class="odd gradeX not-find" >'+ 
+                    '<td style="background:#888;">'+   
+                        'มีสินค้ารหัส "' + product.product_code + '" นี้ในระบบแล้ว' +
+                    '</td>'+
+                    '<td style="background:#888;" align="right">'+product.product_name+'</td>'+ 
+                    '<td style="background:#888;" >'+
+                        '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
+                            '<i class="fa fa-times" aria-hidden="true"></i>'+
+                        '</a>'+
+                    '</td>'+
+                '</tr>'
+            ); 
+        }else{
+            $("#bodyAdd").append(
+                '<tr class="odd gradeX find">'+  
+                    '<td align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_code[]" value="'+product.product_code+'" readonly /></td>'+
+                    '<td align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_name[]" value="'+product.product_name+'" readonly /></td>'+ 
+                    '<td>'+
+                        '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
+                            '<i class="fa fa-times" aria-hidden="true"></i>'+
+                        '</a>'+
+                    '</td>'+
+                '</tr>'
+            );
+        } 
+    });
+}
+
+function search_pop_like(id){ 
+
+    if($(id).is(':checked')){
+        $('tr[class="odd gradeX find"]').hide();
+        console.log("checked");
+    }else{
+        $('tr[class="odd gradeX find"]').show();
+        console.log("unchecked");
+    }
+}
+
+function export_error(){
+    $('tr[class="odd gradeX find"]').remove();
+    var d = new Date();
+
+    var downloadLink = document.createElement("a");
+    downloadLink.href = 'data:application/vnd.ms-excel,' + encodeURIComponent($('#tb_import').html());
+    downloadLink.download = "export-error "+d.getFullYear() +"-"+ (d.getMonth() + 1) +"-"+ d.getDate() +".xls";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    //window.open('data:application/vnd.ms-excel,filename=export-error.xls,' + encodeURIComponent($('#tb_import').html()));
+    $('#modalAdd').modal('hide');
+
+} 
+ 
+</script>
             <div class="row">
                 <div class="col-lg-6">
                     <h1 class="page-header">Product Management</h1>
@@ -19,12 +167,20 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     รายการสินค้า / Product List
                                 </div>
-                                <div class="col-md-4">
-                                <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
-                                    <a class="btn btn-success " style="float:right;" href="?app=product&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                                <div class="col-md-6">
+                                <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?>  
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="file" id="excelfile" />
+                                        </div>
+                                        <div class="col-md-6" align="right">
+                                            <a class="btn btn-success " href="javascript:;" onclick="ExportToTable(this)" ><i class="fa fa-plus" aria-hidden="true"></i> Import product list</a>
+                                            <a class="btn btn-success " style="float:right;margin-left:8px;" href="?app=product&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                                        </div>
+                                    </div>   
                                 <?PHP } ?>
                                 </div>
                             </div>
@@ -283,5 +439,49 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            
-            
+
+<form role="form" method="post"   action="index.php?app=product&action=import"   enctype="multipart/form-data"> 
+    <div id="modalAdd" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg " role="document">
+            <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">เลือกรายการสินค้า / Choose product</h4>
+            </div>
+
+            <div  class="modal-body">
+            <div class="row">
+                <div class="col-md-offset-8 col-md-4" align="right">
+                    <input type="checkbox" id="search_pop" onchange="search_pop_like(this)"  /> แสดงรายการที่มีปัญหาจำนวน <span class="number_error"></span> รายการ
+                </div>
+            </div>
+            <br>
+
+            <div id="tb_import">
+                <table width="100%"  class="table table-striped table-bordered table-hover" >
+                    <thead>
+                        <tr> 
+                            <th>รหัสสินค้า</th>
+                            <th>ชื่อสินค้า</th> 
+                            <th>ลบ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyAdd">
+
+                    </tbody>
+                </table>
+            </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger"  onclick="export_error()" >Export Error (<span class="number_error"></span>)</button>
+                <button type="summit" class="btn btn-primary" > Import product list </button>
+            </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+</form>

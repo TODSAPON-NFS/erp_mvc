@@ -256,73 +256,183 @@
                     </div>
                 </div>
                 <br>
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                    <thead>
-                        <tr>
-                            <th width="48">ลำดับ <br>No.</th>
-                            <th width="150">วันที่รับสินค้า<br>Recieve Date</th>
-                            <th width="150">หมายเลขรับสินค้า<br>Recieve Code.</th>
-                            <th width="150">วันที่ตามใบกำกับภาษี<br>Invoice Date</th> 
-                            <th width="150">หมายเลขใบกำกับภาษี<br>Invoice Code.</th>
-                            <th>ผู้ขาย <br> Supplier</th>
-                            <!--
-                            <th width="150" >Recieve by</th>
-                            -->
-                            <th>หมายเหตุ <br>Remark</th>
-							
-                            <th width="64"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                        for($i=0; $i < count($invoice_suppliers); $i++){
-                        ?>
-                        <tr class="odd gradeX">
-                            <td><?php echo $i+1; ?></td>
-                            <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date_recieve']; ?></td>
-                            <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code_gen']; ?></td>
-                            <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date']; ?></td> 
-                            <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code']; ?></td>
-                            <td><?php echo $invoice_suppliers[$i]['supplier_name']; ?> </td>
-                            <!--
-                            <td><?php echo $invoice_suppliers[$i]['employee_name']; ?></td>
-                            -->
-                            <td><?php echo $invoice_suppliers[$i]['invoice_supplier_remark']; ?></td>
+                <div class="row" style="margin:0px;">
+                    <div class="col-sm-6">
+                        <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format($list_size,0);?> entries</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dataTables_paginate paging_simple_numbers" >
+                            <ul class="pagination">
 
-                            <td>
-                                <a href="?app=invoice_supplier&action=detail&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
-                                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                </a>
+                                <li class="paginate_button previous <?PHP if($page == 0){ ?>disabled<?PHP } ?>" >
+                                    <a href="<?PHP if($page == 0){?>javascript:;<?PHP }else{ ?>index.php?app=invoice_supplier<?PHP echo $url_search ;?>&page=<?PHP echo $page; }?>">Previous</a>
+                                </li>
 
-                                <?PHP if($invoice_suppliers[$i]['supplier_domestic'] == "ภายนอกประเทศ"){ ?>
-                                <a href="?app=invoice_supplier&action=cost&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
-                                    <i class="fa fa-money" aria-hidden="true"></i>
-                                </a>
+                                <?PHP if($page > 0){ ?>
+                                <li class="paginate_button "  >
+                                    <a href="index.php?app=invoice_supplier<?PHP echo $url_search ;?>&page=1">1</a>
+                                </li>
+                                <li class="paginate_button disabled"   >
+                                    <a href="#">…</a>
+                                </li>
                                 <?PHP } ?>
 
+                                    
+                                <li class="paginate_button active"  >
+                                    <a href="index.php?app=invoice_supplier<?PHP echo $url_search ;?>&page=<?PHP echo $page+1;?>"><?PHP echo number_format($page + 1);?></a>
+                                </li>
 
-                                <?PHP if($license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?>
-                                <a href="?app=invoice_supplier&action=update&sort=<?PHP echo $invoice_suppliers[$i]['supplier_domestic'];?>&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </a> 
+                                <?PHP for($i = $page + 1 ; $i < $page_max && $i <= $page + 5 ; $i++ ){?>
+                                <li class="paginate_button "  >
+                                    <a href="index.php?app=invoice_supplier<?PHP echo $url_search ;?>&page=<?PHP echo $i + 1;?>"><?PHP echo number_format($i + 1,0);?></a>
+                                </li>
                                 <?PHP } ?>
-
-
-                                <?PHP if( $license_purchase_page == "High"){ ?>
-                                <a href="?app=invoice_supplier&action=delete&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" onclick="return confirm('You want to delete Invoice Supplier : <?php echo $invoice_suppliers[$i]['invoice_supplier_code']; ?>');" style="color:red;">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                </a>
-                                <?PHP } ?>
-
                                 
-                            </td>
 
-                        </tr>
-                        <?
-                        }
-                        ?>
-                    </tbody>
-                </table>
+
+                                <?PHP if($page < $page_max){ ?>
+                                <li class="paginate_button disabled"   >
+                                    <a href="#">…</a>
+                                </li>
+                                <li class="paginate_button "  >
+                                    <a href="index.php?app=invoice_supplier<?PHP echo $url_search ;?>&page=<?PHP echo $page_max;?>"><?PHP echo number_format($page_max,0);?></a>
+                                </li>
+                                <?PHP } ?>
+
+                                <li class="paginate_button next <?PHP if($page+1 == $page_max){ ?>disabled<?PHP } ?>"   >
+                                    <a href="<?PHP if($page+1 == $page_max){?>javascript:;<?PHP }else{ ?>index.php?app=invoice_supplier<?PHP echo $url_search ;?>&page=<?PHP echo $page + 2; }?>" >Next</a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table width="100%" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="48">ลำดับ <br>No.</th>
+                                    <th width="150">วันที่รับสินค้า<br>Recieve Date</th>
+                                    <th width="150">หมายเลขรับสินค้า<br>Recieve Code.</th>
+                                    <th width="150">วันที่ตามใบกำกับภาษี<br>Invoice Date</th> 
+                                    <th width="150">หมายเลขใบกำกับภาษี<br>Invoice Code.</th>
+                                    <th>ผู้ขาย <br> Supplier</th>
+                                    <!--
+                                    <th width="150" >Recieve by</th>
+                                    -->
+                                    <th>หมายเหตุ <br>Remark</th>
+                                    
+                                    <th width="100"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                for($i=0; $i < count($invoice_suppliers); $i++){
+                                ?>
+                                <tr class="odd gradeX">
+                                    <td><?php echo $i+1; ?></td>
+                                    <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date_recieve']; ?></td>
+                                    <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code_gen']; ?></td>
+                                    <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date']; ?></td> 
+                                    <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code']; ?></td>
+                                    <td><?php echo $invoice_suppliers[$i]['supplier_name']; ?> </td>
+                                    <!--
+                                    <td><?php echo $invoice_suppliers[$i]['employee_name']; ?></td>
+                                    -->
+                                    <td><?php echo $invoice_suppliers[$i]['invoice_supplier_remark']; ?></td>
+
+                                    <td>
+                                        <a href="?app=invoice_supplier&action=detail&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
+                                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                        </a>
+
+                                        <?PHP if($invoice_suppliers[$i]['supplier_domestic'] == "ภายนอกประเทศ"){ ?>
+                                        <a href="?app=invoice_supplier&action=cost&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
+                                            <i class="fa fa-money" aria-hidden="true"></i>
+                                        </a>
+                                        <?PHP } ?>
+
+
+                                        <?PHP if($license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?>
+                                        <a href="?app=invoice_supplier&action=update&sort=<?PHP echo $invoice_suppliers[$i]['supplier_domestic'];?>&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        </a> 
+                                        <?PHP } ?>
+
+
+                                        <?PHP if( $license_purchase_page == "High"){ ?>
+                                        <a href="?app=invoice_supplier&action=delete&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" onclick="return confirm('You want to delete Invoice Supplier : <?php echo $invoice_suppliers[$i]['invoice_supplier_code']; ?>');" style="color:red;">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </a>
+                                        <?PHP } ?>
+
+                                        
+                                    </td>
+
+                                </tr>
+                                <?
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="row" style="margin:0px;">
+                    <div class="col-sm-6">
+                        <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format($list_size,0);?> entries</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dataTables_paginate paging_simple_numbers" >
+                            <ul class="pagination">
+
+                                <li class="paginate_button previous <?PHP if($page == 0){ ?>disabled<?PHP } ?>" >
+                                    <a href="<?PHP if($page == 0){?>javascript:;<?PHP }else{ ?>index.php?app=invoice_supplier<?PHP echo $url_search ;?>&page=<?PHP echo $page; }?>">Previous</a>
+                                </li>
+
+                                <?PHP if($page > 0){ ?>
+                                <li class="paginate_button "  >
+                                    <a href="index.php?app=invoice_supplier<?PHP echo $url_search ;?>&page=1">1</a>
+                                </li>
+                                <li class="paginate_button disabled"   >
+                                    <a href="#">…</a>
+                                </li>
+                                <?PHP } ?>
+
+                                    
+                                <li class="paginate_button active"  >
+                                    <a href="index.php?app=invoice_supplier<?PHP echo $url_search ;?>&page=<?PHP echo $page+1;?>"><?PHP echo number_format($page + 1);?></a>
+                                </li>
+
+                                <?PHP for($i = $page + 1 ; $i < $page_max && $i <= $page + 5 ; $i++ ){?>
+                                <li class="paginate_button "  >
+                                    <a href="index.php?app=invoice_supplier<?PHP echo $url_search ;?>&page=<?PHP echo $i + 1;?>"><?PHP echo number_format($i + 1,0);?></a>
+                                </li>
+                                <?PHP } ?>
+                                
+
+
+                                <?PHP if($page < $page_max){ ?>
+                                <li class="paginate_button disabled"   >
+                                    <a href="#">…</a>
+                                </li>
+                                <li class="paginate_button "  >
+                                    <a href="index.php?app=invoice_supplier<?PHP echo $url_search ;?>&page=<?PHP echo $page_max;?>"><?PHP echo number_format($page_max,0);?></a>
+                                </li>
+                                <?PHP } ?>
+
+                                <li class="paginate_button next <?PHP if($page+1 == $page_max){ ?>disabled<?PHP } ?>"   >
+                                    <a href="<?PHP if($page+1 == $page_max){?>javascript:;<?PHP }else{ ?>index.php?app=invoice_supplier<?PHP echo $url_search ;?>&page=<?PHP echo $page + 2; }?>" >Next</a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 
             </div>
             <!-- /.panel-body -->

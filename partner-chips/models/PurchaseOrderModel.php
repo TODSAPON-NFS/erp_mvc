@@ -48,7 +48,7 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_credit_term, 
         purchase_order_delivery_term, 
         purchase_order_cancelled,
-        IFNULL(CONCAT(tb2.supplier_name_en,' (',tb2.supplier_name_th,')'),'-') as supplier_name, 
+        IFNULL(tb2.supplier_name_en,'-') as supplier_name, 
         purchase_order_delivery_by 
         FROM tb_purchase_order as tb
         LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
@@ -516,7 +516,7 @@ class PurchaseOrderModel extends BaseModel{
             AND tb_purchase_request.purchase_request_id = '$purchase_request_id' 
             AND purchase_order_list_id = 0  
             AND purchase_request_list_id NOT IN ($str_pr)  
-            AND purchase_request_code LIKE ('%$search%') 
+            AND ( purchase_request_code LIKE ('%$search%') OR CONCAT(product_code_first,product_code) LIKE ('%$search%') )  
             AND purchase_request_type = 'Sale Blanked' 
             AND purchase_request_accept_status = 'Approve' 
                ";
@@ -643,7 +643,7 @@ class PurchaseOrderModel extends BaseModel{
 
             ) 
             AND delivery_note_supplier_list_id NOT IN ($str_dn) 
-            AND delivery_note_supplier_code LIKE ('%$search%');
+            AND ( delivery_note_supplier_code LIKE ('%$search%') OR CONCAT(product_code_first,product_code) LIKE ('%$search%') );
             ";
 
             
@@ -680,7 +680,7 @@ class PurchaseOrderModel extends BaseModel{
             AND purchase_order_list_id = 0 
             AND purchase_order_open = 1 
             AND request_standard_list_id NOT IN ($str_rspt) 
-            AND request_standard_code LIKE ('%$search%');
+            AND ( request_standard_code LIKE ('%$search%') OR CONCAT(product_code_first,product_code) LIKE ('%$search%') );
             ";
 
             //echo $sql_rspt."<br><br>";
@@ -717,7 +717,7 @@ class PurchaseOrderModel extends BaseModel{
             AND purchase_order_list_id = 0 
             AND tool_test_result = 1 
             AND request_special_list_id NOT IN ($str_rst) 
-            AND request_special_code LIKE ('%$search%');
+            AND ( request_special_code LIKE ('%$search%') OR CONCAT(product_code_first,product_code) LIKE ('%$search%') );
             ";
 
             //echo $sql_rst."<br><br>";
@@ -754,7 +754,7 @@ class PurchaseOrderModel extends BaseModel{
             AND purchase_order_list_id = 0 
             AND tool_test_result = 1 
             AND request_regrind_list_id NOT IN ($str_rst) 
-            AND request_regrind_code LIKE ('%$search%');
+            AND ( request_regrind_code LIKE ('%$search%') OR CONCAT(product_code_first,product_code) LIKE ('%$search%') );
             ";
 
             //echo $sql_rst."<br><br>";
@@ -840,9 +840,10 @@ class PurchaseOrderModel extends BaseModel{
             WHERE tb_purchase_request.supplier_id = '$supplier_id' 
             AND purchase_order_list_id = 0 
             AND purchase_request_list_id NOT IN ($str_pr) 
-            AND purchase_request_code LIKE ('%$search%') 
+            AND ( purchase_request_code LIKE ('%$search%') OR CONCAT(product_code_first,product_code) LIKE ('%$search%') )  
             AND purchase_request_type IN ('Sale','Use') 
             AND purchase_request_accept_status = 'Approve' 
+            ORDER BY purchase_request_list_id ASC
              ";
 
             
@@ -882,7 +883,7 @@ class PurchaseOrderModel extends BaseModel{
             WHERE tb_customer_purchase_order_list_detail.supplier_id = '$supplier_id' 
             AND tb_customer_purchase_order_list_detail.purchase_order_list_id = 0 
             AND customer_purchase_order_list_detail_id NOT IN ($str_cpo) 
-            AND customer_purchase_order_code LIKE ('%$search%')  ";
+            AND ( customer_purchase_order_code LIKE ('%$search%') OR CONCAT(product_code_first,product_code) LIKE ('%$search%') )  ";
 
             //echo $sql_customer."<br><br>";
             if ($result = mysqli_query(static::$db,$sql_customer, MYSQLI_USE_RESULT)) {
@@ -915,7 +916,7 @@ class PurchaseOrderModel extends BaseModel{
             AND purchase_order_list_id = 0 
             AND request_test_list_id = 0 
             AND delivery_note_supplier_list_id NOT IN ($str_dn) 
-            AND delivery_note_supplier_code LIKE ('%$search%');
+            AND (delivery_note_supplier_code LIKE ('%$search%') OR CONCAT(product_code_first,product_code) LIKE ('%$search%') );
             ";
 
             //echo $sql_dn."<br><br>";
@@ -971,7 +972,7 @@ class PurchaseOrderModel extends BaseModel{
             WHERE tb_regrind_supplier_receive.supplier_id = '$supplier_id' 
             AND purchase_order_list_id = 0 
             AND regrind_supplier_receive_list_id NOT IN ($str_srr) 
-            AND (product_name LIKE ('%$search%') OR regrind_supplier_receive_code LIKE ('%$search%')) ";
+            AND (product_name LIKE ('%$search%') OR regrind_supplier_receive_code LIKE ('%$search%') OR CONCAT(product_code_first,product_code) LIKE ('%$search%') ) ";
 
 
             if ($result = mysqli_query(static::$db,$sql_customer, MYSQLI_USE_RESULT)) {

@@ -48,9 +48,7 @@ class JournalPurchaseModel extends BaseModel{
         ) 
         $str_date 
         ORDER BY STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s'), journal_purchase_code DESC 
-         ";
-
-         echo $sql;
+         "; 
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -71,9 +69,9 @@ class JournalPurchaseModel extends BaseModel{
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-            $data = [];
+            $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                $data[] = $row;
+                $data = $row;
             }
             $result->close();
             return $data;

@@ -116,6 +116,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 }else if ($_GET['action'] == 'detail'){
     
     $invoice_customer = $invoice_customer_model->getInvoiceCustomerViewByID($invoice_customer_id);
+    $customer=$customer_model->getCustomerByID($invoice_customer['customer_id']);
     $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy($invoice_customer_id);
     require_once($path.'detail.inc.php');
 
@@ -151,7 +152,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
         if($invoice_customer_id > 0){
 
-
+            //----------------------------- สร้างสมุดรายวันขาย ----------------------------------------
             $data = [];
 
             $sale_paper = $paper_model->getPaperByID('28');
@@ -186,6 +187,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     
     
             $journal_sale_id = $journal_sale_model->insertJournalSale($data);
+            //----------------------------- สิ้นสุด สร้างสมุดรายวันขาย ----------------------------------------
 
             if($journal_sale_id > 0){
 
@@ -196,33 +198,75 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                 $account_sale = $account_setting_model->getAccountSettingByID(19);
 
 
+                //---------------------------- เพิ่มรายการลูกหนี้ --------------------------------------------
+                $journal_sale_list_debit = 0;
+                $journal_sale_list_credit = 0;
+
+                if((float)filter_var( $_POST['invoice_customer_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                    $journal_sale_list_debit = (float)filter_var( $_POST['invoice_customer_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $journal_sale_list_credit = 0;
+                }else{
+                    $journal_sale_list_debit = 0;
+                    $journal_sale_list_credit = (float)filter_var( $_POST['invoice_customer_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                }
 
                 $customer=$customer_model->getCustomerByID($_POST['customer_id']);
                 $data = [];
                 $data['journal_sale_id'] = $journal_sale_id;
                 $data['account_id'] = $customer['account_id'];
                 $data['journal_sale_list_name'] = "ขายเชื่อให้ ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
-                $data['journal_sale_list_debit'] = (float)filter_var( $_POST['invoice_customer_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                $data['journal_sale_list_credit'] = 0;
+                $data['journal_sale_list_debit'] = $journal_sale_list_debit;
+                $data['journal_sale_list_credit'] = $journal_sale_list_credit;
                 $journal_sale_list_model->insertJournalSaleList($data);
+                //---------------------------- สิ้นสุด เพิ่มรายการลูกหนี้ --------------------------------------------
+                
+
+                //---------------------------- เพิ่มรายการขายเชื่อ --------------------------------------------
+                $journal_sale_list_debit = 0;
+                $journal_sale_list_credit = 0;
+
+                if((float)filter_var( $_POST['invoice_customer_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                    $journal_sale_list_debit = 0;
+                    $journal_sale_list_credit = (float)filter_var( $_POST['invoice_customer_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                }else{
+                    $journal_sale_list_debit = (float)filter_var( $_POST['invoice_customer_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $journal_sale_list_credit = 0;
+                }
 
                 $data = [];
                 $data['journal_sale_id'] = $journal_sale_id;
                 $data['account_id'] = $account_sale['account_id'];
                 $data['journal_sale_list_name'] = "ขายเชื่อให้ ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
-                $data['journal_sale_list_debit'] = 0;
-                $data['journal_sale_list_credit'] = (float)filter_var( $_POST['invoice_customer_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['journal_sale_list_debit'] = $journal_sale_list_debit;
+                $data['journal_sale_list_credit'] = $journal_sale_list_credit;
                 $journal_sale_list_model->insertJournalSaleList($data);
+                //---------------------------- สิ้นสุด เพิ่มรายการขายเชื่อ --------------------------------------------
 
-                if((float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0.0){
+
+                //---------------------------- เพิ่มรายการภาษีขาย --------------------------------------------
+                if((float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) != 0.0){
+                    $journal_sale_list_debit = 0;
+                    $journal_sale_list_credit = 0;
+
+                    if((float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                        $journal_sale_list_debit = 0;
+                        $journal_sale_list_credit = (float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    }else{
+                        $journal_sale_list_debit = (float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                        $journal_sale_list_credit = 0;
+                    }
+
                     $data = [];
                     $data['journal_sale_id'] = $journal_sale_id;
                     $data['account_id'] = $account_vat_sale['account_id'];
                     $data['journal_sale_list_name'] = "ขายเชื่อให้ ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
-                    $data['journal_sale_list_debit'] = 0;
-                    $data['journal_sale_list_credit'] = (float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data['journal_invoice_customer_id'] = $invoice_customer_id;
+                    $data['journal_sale_list_debit'] = $journal_sale_list_debit;
+                    $data['journal_sale_list_credit'] = $journal_sale_list_credit;
                     $journal_sale_list_model->insertJournalSaleList($data);
-                }
+                } 
+                //---------------------------- สิ้นสุด เพิ่มรายการภาษีขาย --------------------------------------------
+
             }
 
             $data = [];
@@ -368,6 +412,163 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         }
 
         $output = $invoice_customer_model->updateInvoiceCustomerByID($invoice_customer_id,$data);
+        
+
+        //----------------------------- สร้างสมุดรายวันขาย ----------------------------------------
+
+        $journal_sale = $journal_sale_model->getJournalSaleByInvoiceCustomerID($invoice_customer_id);
+        if($journal_sale['journal_sale_id'] < 1){
+
+            $data = [];
+
+            $sale_paper = $paper_model->getPaperByID('28');
+
+            $user=$user_model->getUserByID($admin_id);
+
+            $data = [];
+            $data['year'] = date("Y");
+            $data['month'] = date("m");
+            $data['number'] = "0000000000";
+            $data['employee_name'] = $user["user_name_en"];
+            $data['customer_code'] = $customer["customer_code"];
+
+            $code = $code_generate->cut2Array($sale_paper['paper_code'],$data);
+            $last_code = "";
+            for($i = 0 ; $i < count($code); $i++){
+            
+                if($code[$i]['type'] == "number"){
+                    $last_code =  $journal_sale_model->getJournalSaleLastID($last_code,$code[$i]['length']);
+                }else{
+                    $last_code .= $code[$i]['value'];
+                }   
+            }
+            $first_date = date("d")."-".date("m")."-".date("Y"); 
+
+
+            $data['invoice_customer_id'] = $invoice_customer_id;
+            $data['journal_sale_date'] = $_POST['invoice_customer_date'];
+            $data['journal_sale_code'] = $last_code;
+            $data['journal_sale_name'] = "ขายเชื่อให้ ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
+            $data['addby'] = $admin_id;
+
+
+            $journal_sale_id = $journal_sale_model->insertJournalSale($data);
+        }else{
+            $data['invoice_customer_id'] = $invoice_customer_id;
+            $data['journal_sale_date'] = $_POST['invoice_customer_date'];
+            $data['journal_sale_code'] = $journal_sale['journal_sale_code'];
+            $data['journal_sale_name'] = "ขายเชื่อให้ ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
+            $data['addby'] = $admin_id; 
+
+            $journal_sale_id = $journal_sale_model->updateJournalSaleByID($journal_sale['journal_sale_id'],$data);
+        }
+        //----------------------------- สิ้นสุด สร้างสมุดรายวันขาย ----------------------------------------
+
+
+        //account setting id = 15 ภาษีขาย --> [2135-00] ภาษีขาย
+        $account_vat_sale = $account_setting_model->getAccountSettingByID(15);
+        
+        //account setting id = 19 ขายเชื่อ --> [4100-01] รายได้-ขายอะไหล่ชิ้นส่วน
+        $account_sale = $account_setting_model->getAccountSettingByID(19);
+
+
+        //---------------------------- เพิ่มรายการลูกหนี้ --------------------------------------------
+        $journal_sale_list_debit = 0;
+        $journal_sale_list_credit = 0;
+
+        if((float)filter_var( $_POST['invoice_customer_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+            $journal_sale_list_debit = (float)filter_var( $_POST['invoice_customer_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $journal_sale_list_credit = 0;
+        }else{
+            $journal_sale_list_debit = 0;
+            $journal_sale_list_credit = (float)filter_var( $_POST['invoice_customer_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        }
+
+        $customer=$customer_model->getCustomerByID($_POST['customer_id']);
+        $data = [];
+        $data['journal_sale_id'] = $journal_sale_id;
+        $data['account_id'] = $customer['account_id'];
+        $data['journal_sale_list_name'] = "ขายเชื่อให้ ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
+        $data['journal_sale_list_debit'] = $journal_sale_list_debit;
+        $data['journal_sale_list_credit'] = $journal_sale_list_credit;
+
+        $journal_sale_list_id = [];
+
+        $journal_sale_list = $journal_sale_list_model->getJournalSaleListByAccountId($journal_sale_id,$customer['account_id']);
+        if(count($journal_sale_list) > 0){
+            $journal_sale_list_id [] = $journal_sale_list['journal_sale_list_id'];
+            $journal_sale_list_model->updateJournalSaleListById($data , $journal_sale_list['journal_sale_list_id']);
+        }else{
+            $journal_sale_list_id [] =  $journal_sale_list_model->insertJournalSaleList($data);
+        }
+
+ 
+
+        //---------------------------- สิ้นสุด เพิ่มรายการลูกหนี้ --------------------------------------------
+        
+
+        //---------------------------- เพิ่มรายการขายเชื่อ --------------------------------------------
+        $journal_sale_list_debit = 0;
+        $journal_sale_list_credit = 0;
+
+        if((float)filter_var( $_POST['invoice_customer_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+            $journal_sale_list_debit = 0;
+            $journal_sale_list_credit = (float)filter_var( $_POST['invoice_customer_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        }else{
+            $journal_sale_list_debit = (float)filter_var( $_POST['invoice_customer_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $journal_sale_list_credit = 0;
+        }
+
+        $data = [];
+        $data['journal_sale_id'] = $journal_sale_id;
+        $data['account_id'] = $account_sale['account_id'];
+        $data['journal_sale_list_name'] = "ขายเชื่อให้ ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
+        $data['journal_sale_list_debit'] = $journal_sale_list_debit;
+        $data['journal_sale_list_credit'] = $journal_sale_list_credit;
+        $journal_sale_list = $journal_sale_list_model->getJournalSaleListByAccountId($journal_sale_id,$account_sale['account_id']);
+        if(count($journal_sale_list) > 0){
+            $journal_sale_list_id [] = $journal_sale_list['journal_sale_list_id'];
+            $journal_sale_list_model->updateJournalSaleListById($data , $journal_sale_list['journal_sale_list_id']);
+        }else{
+            $journal_sale_list_id [] =  $journal_sale_list_model->insertJournalSaleList($data);
+        }
+        //---------------------------- สิ้นสุด เพิ่มรายการขายเชื่อ --------------------------------------------
+
+
+        //---------------------------- เพิ่มรายการภาษีขาย --------------------------------------------
+        if((float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) != 0.0){
+            $journal_sale_list_debit = 0;
+            $journal_sale_list_credit = 0;
+
+            if((float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                $journal_sale_list_debit = 0;
+                $journal_sale_list_credit = (float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            }else{
+                $journal_sale_list_debit = (float)filter_var( $_POST['invoice_customer_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $journal_sale_list_credit = 0;
+            }
+
+            $data = [];
+            $data['journal_sale_id'] = $journal_sale_id;
+            $data['account_id'] = $account_vat_sale['account_id'];
+            $data['journal_sale_list_name'] = "ขายเชื่อให้ ".$_POST['invoice_customer_name']." [".$_POST['invoice_customer_code']."] ";
+            $data['journal_invoice_customer_id'] = $invoice_customer_id;
+            $data['journal_sale_list_debit'] = $journal_sale_list_debit;
+            $data['journal_sale_list_credit'] = $journal_sale_list_credit;
+            $journal_sale_list = $journal_sale_list_model->getJournalSaleListByAccountId($journal_sale_id,$account_vat_sale['account_id']);
+            if(count($journal_sale_list) > 0){
+                $journal_sale_list_id [] = $journal_sale_list['journal_sale_list_id'];
+                $journal_sale_list_model->updateJournalSaleListById($data , $journal_sale_list['journal_sale_list_id']);
+            }else{
+                $journal_sale_list_id [] =  $journal_sale_list_model->insertJournalSaleList($data);
+            }
+        } 
+        //---------------------------- สิ้นสุด เพิ่มรายการภาษีขาย --------------------------------------------
+
+        //---------------------------- ลบรายการที่ไม่เกี่ยวข้อง ---------------------------------------------
+        $journal_sale_list_model->deleteJournalSaleListByJournalSaleIDNotIN($journal_sale_id,$journal_sale_list_id );
+        //---------------------------- ลบรายการที่ไม่เกี่ยวข้อง ---------------------------------------------
+
         
 
         if($output){

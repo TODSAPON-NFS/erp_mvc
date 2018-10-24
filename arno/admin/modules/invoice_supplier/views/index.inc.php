@@ -138,6 +138,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 
     $supplier=$supplier_model->getSupplierByID($invoice_supplier['supplier_id']);
     $suppliers=$supplier_model->getSupplierBy($supplier['supplier_domestic']);
+    $sort = $supplier['supplier_domestic'];
     $invoice_supplier_lists = $invoice_supplier_list_model->getInvoiceSupplierListBy($invoice_supplier_id);
 
     $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($invoice_supplier['invoice_supplier_date_recieve'],$supplier['currency_id']);
@@ -197,12 +198,11 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 
         $invoice_supplier_id = $invoice_supplier_model->insertInvoiceSupplier($data);
 
-        if($invoice_supplier_id > 0){
-
+        if($invoice_supplier_id > 0){ 
+            //----------------------------- สร้างสมุดรายวันซื้อ ----------------------------------------
             $data = [];
 
             $purchase_paper = $paper_model->getPaperByID('27');
-
             $user=$user_model->getUserByID($admin_id);
             $data = [];
             $data['year'] = date("Y");
@@ -221,20 +221,16 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
                     $last_code .= $code[$i]['value'];
                 }   
             }
-            $first_date = date("d")."-".date("m")."-".date("Y"); 
-
-            
+            $first_date = date("d")."-".date("m")."-".date("Y");  
 
             $data['invoice_supplier_id'] = $invoice_supplier_id;
             $data['journal_purchase_date'] = $_POST['invoice_supplier_date_recieve'];
             $data['journal_purchase_code'] = $last_code;
             $data['journal_purchase_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
-            $data['addby'] = $admin_id;
-    
-
-    
+            $data['addby'] = $admin_id; 
             $journal_purchase_id = $journal_purchase_model->insertJournalPurchase($data);
 
+            //----------------------------- สิ้นสุด สร้างสมุดรายวันซื้อ ----------------------------------------
             if($journal_purchase_id > 0){
                 
                 //account setting id = 9 ภาษีซื้อ  --> [1154-00] ภาษีซื้อ
@@ -244,37 +240,84 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
                 $account_buy = $account_setting_model->getAccountSettingByID(26);
 
                 $supplier=$supplier_model->getSupplierByID($_POST['supplier_id']);
+
+
+                //---------------------------- เพิ่มรายการซื้อเชื่อ --------------------------------------------
+                $journal_purchase_list_debit = 0;
+                $journal_purchase_list_credit = 0;
+
+                if((float)filter_var( $_POST['invoice_supplier_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                    $journal_purchase_list_debit = (float)filter_var( $_POST['invoice_supplier_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $journal_purchase_list_credit = 0;
+                }else{
+                    $journal_purchase_list_debit = 0;
+                    $journal_purchase_list_credit = (float)filter_var( $_POST['invoice_supplier_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                }
                 
                 $data = [];
                 $data['journal_purchase_id'] = $journal_purchase_id;
                 $data['account_id'] = $account_buy['account_id'];
                 $data['journal_purchase_list_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
-                $data['journal_purchase_list_debit'] = (float)filter_var( $_POST['invoice_supplier_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                $data['journal_purchase_list_credit'] = 0;
+                $data['journal_purchase_list_debit'] = $journal_purchase_list_debit;
+                $data['journal_purchase_list_credit'] = $journal_purchase_list_credit;
                 $journal_purchase_list_model->insertJournalPurchaseList($data);
+                //---------------------------- สิ้นสุด เพิ่มรายการซื้อเชื่อ --------------------------------------------
 
-                if((float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0.0){
+
+
+                //---------------------------- เพิ่มรายการภาษีซื้อ --------------------------------------------
+                if((float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) != 0.0){
+
+                    $journal_purchase_list_debit = 0;
+                    $journal_purchase_list_credit = 0;
+
+                    if((float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                        $journal_purchase_list_debit = (float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                        $journal_purchase_list_credit = 0;
+                    }else{
+                        $journal_purchase_list_debit = 0;
+                        $journal_purchase_list_credit = (float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    }
+
                     $data = [];
                     $data['journal_purchase_id'] = $journal_purchase_id;
                     $data['account_id'] = $account_vat_buy['account_id'];
                     $data['journal_purchase_list_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
-                    $data['journal_purchase_list_debit'] = (float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                    $data['journal_purchase_list_credit'] = 0;
+                    $data['journal_invoice_supplier_id'] = $invoice_supplier_id;
+                    $data['journal_purchase_list_debit'] = $journal_purchase_list_debit;
+                    $data['journal_purchase_list_credit'] = $journal_purchase_list_credit;
                     $journal_purchase_list_model->insertJournalPurchaseList($data);
+                }
+                //---------------------------- สิ้นสุด เพิ่มรายการภาษีซื้อ --------------------------------------------
+
+
+
+                //---------------------------- เพิ่มรายการเจ้าหนี้ --------------------------------------------
+                $journal_purchase_list_debit = 0;
+                $journal_purchase_list_credit = 0;
+
+                if((float)filter_var( $_POST['invoice_supplier_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                    $journal_purchase_list_debit = 0;
+                    $journal_purchase_list_credit = (float)filter_var( $_POST['invoice_supplier_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                }else{
+                    $journal_purchase_list_debit = (float)filter_var( $_POST['invoice_supplier_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $journal_purchase_list_credit = 0;
                 }
 
                 $data = [];
                 $data['journal_purchase_id'] = $journal_purchase_id;
                 $data['account_id'] = $supplier['account_id'];
                 $data['journal_purchase_list_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
-                $data['journal_purchase_list_debit'] = 0;
-                $data['journal_purchase_list_credit'] = (float)filter_var( $_POST['invoice_supplier_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data['journal_purchase_list_debit'] = $journal_purchase_list_debit;
+                $data['journal_purchase_list_credit'] = $journal_purchase_list_credit;
                 $journal_purchase_list_model->insertJournalPurchaseList($data);
-
+                //---------------------------- สิ้นสุด เพิ่มรายการเจ้าหนี้ --------------------------------------------
                 
 
 
             }
+
+
 
 
 
@@ -441,7 +484,161 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         }
 
         $output = $invoice_supplier_model->updateInvoiceSupplierByID($invoice_supplier_id,$data);
+
+
+
+        //----------------------------- สร้างสมุดรายวันซื้อ ----------------------------------------
+        $journal_purchase = $journal_purchase_model->getJournalPurchaseByInvoiceSupplierID($invoice_supplier_id);
+        if($journal_purchase['journal_purchase_id'] < 1){
+            $data = [];
+            $purchase_paper = $paper_model->getPaperByID('27');
+            $user=$user_model->getUserByID($admin_id);
+            $data = [];
+            $data['year'] = date("Y");
+            $data['month'] = date("m");
+            $data['number'] = "0000000000";
+            $data['employee_name'] = $user["user_name_en"];
+            $data['customer_code'] = $customer["customer_code"];
+    
+            $code = $code_generate->cut2Array($purchase_paper['paper_code'],$data);
+            $last_code = "";
+            for($i = 0 ; $i < count($code); $i++){
+    
+                if($code[$i]['type'] == "number"){
+                    $last_code =  $journal_purchase_model->getJournalPurchaseLastID($last_code,$code[$i]['length']);
+                }else{
+                    $last_code .= $code[$i]['value'];
+                }   
+            } 
+    
+            $data['invoice_supplier_id'] = $invoice_supplier_id;
+            $data['journal_purchase_date'] = $_POST['invoice_supplier_date_recieve'];
+            $data['journal_purchase_code'] = $last_code;
+            $data['journal_purchase_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
+            $data['addby'] = $admin_id; 
+            $journal_purchase_id = $journal_purchase_model->insertJournalPurchase($data);
+        }else{
+            $journal_purchase_id = $journal_purchase['journal_purchase_id'];
+            $data['invoice_supplier_id'] = $invoice_supplier_id;
+            $data['journal_purchase_date'] = $_POST['invoice_supplier_date_recieve'];
+            $data['journal_purchase_code'] = $journal_purchase['journal_purchase_code'];
+            $data['journal_purchase_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
+            $data['addby'] = $admin_id; 
+            $journal_purchase_model->updateJournalPurchaseByID($journal_purchase_id,$data);
+        }
+        //----------------------------- สิ้นสุด สร้างสมุดรายวันซื้อ ----------------------------------------
+            
+        //account setting id = 9 ภาษีซื้อ  --> [1154-00] ภาษีซื้อ
+        $account_vat_buy = $account_setting_model->getAccountSettingByID(10);
         
+        //account setting id = 26 ซื้อสินค้า --> [5130-01] ซื้อ
+        $account_buy = $account_setting_model->getAccountSettingByID(26);
+
+        $supplier=$supplier_model->getSupplierByID($_POST['supplier_id']);
+
+
+        //---------------------------- เพิ่มรายการซื้อเชื่อ --------------------------------------------
+        $journal_purchase_list_debit = 0;
+        $journal_purchase_list_credit = 0;
+
+        if((float)filter_var( $_POST['invoice_supplier_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+            $journal_purchase_list_debit = (float)filter_var( $_POST['invoice_supplier_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $journal_purchase_list_credit = 0;
+        }else{
+            $journal_purchase_list_debit = 0;
+            $journal_purchase_list_credit = (float)filter_var( $_POST['invoice_supplier_total_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        }
+        
+        $data = [];
+        $data['journal_purchase_id'] = $journal_purchase_id;
+        $data['account_id'] = $account_buy['account_id'];
+        $data['journal_purchase_list_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
+        $data['journal_purchase_list_debit'] = $journal_purchase_list_debit;
+        $data['journal_purchase_list_credit'] = $journal_purchase_list_credit;
+
+        $journal_purchase_list_id = [];
+
+        $journal_purchase_list = $journal_purchase_list_model->getJournalPurchaseListByAccountId($journal_purchase_id,$account_buy['account_id']);
+        if(count($journal_purchase_list) > 0){
+            $journal_purchase_list_id [] = $journal_purchase_list['journal_purchase_list_id'];
+            $journal_purchase_list_model->updateJournalPurchaseListById($data , $journal_purchase_list['journal_purchase_list_id']);
+        }else{
+            $journal_purchase_list_id [] = $journal_purchase_list_model->insertJournalPurchaseList($data);
+        }
+        
+        //---------------------------- สิ้นสุด เพิ่มรายการซื้อเชื่อ --------------------------------------------
+
+
+
+        //---------------------------- เพิ่มรายการภาษีซื้อ --------------------------------------------
+        if((float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) != 0.0){
+
+            $journal_purchase_list_debit = 0;
+            $journal_purchase_list_credit = 0;
+
+            if((float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                $journal_purchase_list_debit = (float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $journal_purchase_list_credit = 0;
+            }else{
+                $journal_purchase_list_debit = 0;
+                $journal_purchase_list_credit = (float)filter_var( $_POST['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            }
+
+            $data = [];
+            $data['journal_purchase_id'] = $journal_purchase_id;
+            $data['account_id'] = $account_vat_buy['account_id'];
+            $data['journal_purchase_list_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
+            $data['journal_invoice_supplier_id'] = $invoice_supplier_id;
+            $data['journal_purchase_list_debit'] = $journal_purchase_list_debit;
+            $data['journal_purchase_list_credit'] = $journal_purchase_list_credit;
+
+            $journal_purchase_list = $journal_purchase_list_model->getJournalPurchaseListByAccountId($journal_purchase_id,$account_vat_buy['account_id']);
+            if(count($journal_purchase_list) > 0){
+                $journal_purchase_list_id [] = $journal_purchase_list['journal_purchase_list_id'];
+                $journal_purchase_list_model->updateJournalPurchaseListById($data , $journal_purchase_list['journal_purchase_list_id']);
+            }else{
+                $journal_purchase_list_id [] = $journal_purchase_list_model->insertJournalPurchaseList($data);
+            }
+        }
+        //---------------------------- สิ้นสุด เพิ่มรายการภาษีซื้อ --------------------------------------------
+
+
+
+        //---------------------------- เพิ่มรายการเจ้าหนี้ --------------------------------------------
+        $journal_purchase_list_debit = 0;
+        $journal_purchase_list_credit = 0;
+
+        if((float)filter_var( $_POST['invoice_supplier_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+            $journal_purchase_list_debit = 0;
+            $journal_purchase_list_credit = (float)filter_var( $_POST['invoice_supplier_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        }else{
+            $journal_purchase_list_debit = (float)filter_var( $_POST['invoice_supplier_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $journal_purchase_list_credit = 0;
+        }
+
+        $data = [];
+        $data['journal_purchase_id'] = $journal_purchase_id;
+        $data['account_id'] = $supplier['account_id'];
+        $data['journal_purchase_list_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
+        $data['journal_purchase_list_debit'] = $journal_purchase_list_debit;
+        $data['journal_purchase_list_credit'] = $journal_purchase_list_credit;
+
+        $journal_purchase_list = $journal_purchase_list_model->getJournalPurchaseListByAccountId($journal_purchase_id,$supplier['account_id']);
+        if(count($journal_purchase_list) > 0){
+            $journal_purchase_list_id [] = $journal_purchase_list['journal_purchase_list_id'];
+            $journal_purchase_list_model->updateJournalPurchaseListById($data , $journal_purchase_list['journal_purchase_list_id']);
+        }else{
+            $journal_purchase_list_id [] = $journal_purchase_list_model->insertJournalPurchaseList($data);
+        }
+        //---------------------------- สิ้นสุด เพิ่มรายการเจ้าหนี้ -------------------------------------------- 
+
+        print_r($journal_purchase_list_id);
+
+        //---------------------------- ลบรายการที่ไม่เกี่ยวข้อง ---------------------------------------------
+        $journal_purchase_list_model->deleteJournalPurchaseListByJournalPurchaseIDNotIN($journal_purchase_id,$journal_purchase_list_id );
+        //---------------------------- ลบรายการที่ไม่เกี่ยวข้อง ---------------------------------------------
+
+
 
         if($output){
         

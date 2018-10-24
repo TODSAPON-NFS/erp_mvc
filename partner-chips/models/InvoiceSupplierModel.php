@@ -206,6 +206,8 @@ class InvoiceSupplierModel extends BaseModel{
         WHERE invoice_supplier_id = $id 
         ";
 
+        //echo $sql;
+
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
@@ -363,9 +365,10 @@ class InvoiceSupplierModel extends BaseModel{
             FROM tb_invoice_supplier_list 
             WHERE purchase_order_list_id = tb2.purchase_order_list_id 
         ),0) ,0) as invoice_supplier_list_qty, 
-        purchase_order_list_price as invoice_supplier_list_price, 
+        purchase_order_list_price,
+        '0' as invoice_supplier_list_price, 
         purchase_order_list_price_sum as invoice_supplier_list_total,
-        purchase_order_list_price_sum as invoice_supplier_list_cost, 
+        '0' as invoice_supplier_list_cost, 
         CONCAT('PO : ',purchase_order_code) as invoice_supplier_list_remark 
         FROM tb_purchase_order 
         LEFT JOIN tb_purchase_order_list as tb2 ON tb_purchase_order.purchase_order_id = tb2.purchase_order_id 
@@ -470,13 +473,36 @@ class InvoiceSupplierModel extends BaseModel{
         "',NOW()); 
         ";
 
-
-        //echo $sql;
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             return mysqli_insert_id(static::$db);
         }else {
             return 0;
         }
+
+    }
+
+
+    function updateSupplierByInvoiceID($id,$data = []){
+        $sql = " UPDATE tb_invoice_supplier SET 
+        supplier_id = '".$data['supplier_id']."',  
+        invoice_supplier_name = '".static::$db->real_escape_string($data['invoice_supplier_name'])."', 
+        invoice_supplier_address = '".static::$db->real_escape_string($data['invoice_supplier_address'])."', 
+        invoice_supplier_tax = '".static::$db->real_escape_string($data['invoice_supplier_tax'])."', 
+        invoice_supplier_branch = '".static::$db->real_escape_string($data['invoice_supplier_branch'])."', 
+        invoice_supplier_term = '".static::$db->real_escape_string($data['invoice_supplier_term'])."',  
+        updateby = '".$data['updateby']."', 
+        lastupdate = '".$data['lastupdate']."' 
+        WHERE invoice_supplier_id = $id 
+        ";
+
+        //echo $sql;
+
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+
 
     }
 

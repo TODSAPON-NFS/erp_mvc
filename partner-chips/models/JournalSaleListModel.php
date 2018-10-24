@@ -15,6 +15,10 @@ class JournalSaleListModel extends BaseModel{
         journal_sale_list_name,
         journal_sale_list_debit,
         journal_sale_list_credit, 
+        journal_cheque_id,
+        journal_cheque_pay_id,
+        journal_invoice_customer_id,
+        journal_invoice_supplier_id,
         tb_journal_sale_list.account_id, 
         account_name_th,  
         account_name_en 
@@ -32,12 +36,34 @@ class JournalSaleListModel extends BaseModel{
             return $data;
         }
 
-    }
+    } 
+
+    function getJournalSaleListByAccountId($journal_sale_id,$account_id){
+        $sql = " SELECT *
+        FROM tb_journal_sale_list  
+        WHERE journal_sale_id = '$journal_sale_id' AND account_id = '$account_id' 
+        ORDER BY journal_sale_list_id 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    } 
 
 
     function insertJournalSaleList($data = []){
         $sql = " INSERT INTO tb_journal_sale_list (
             journal_sale_id,
+            journal_cheque_id,
+            journal_cheque_pay_id,
+            journal_invoice_customer_id,
+            journal_invoice_supplier_id,
             account_id,
             journal_sale_list_name,
             journal_sale_list_debit,
@@ -47,7 +73,11 @@ class JournalSaleListModel extends BaseModel{
             updateby,
             lastupdate
         ) VALUES (
-            '".$data['journal_sale_id']."', 
+            '".$data['journal_sale_id']."',  
+            '".$data['journal_cheque_id']."', 
+            '".$data['journal_cheque_pay_id']."', 
+            '".$data['journal_invoice_customer_id']."', 
+            '".$data['journal_invoice_supplier_id']."', 
             '".$data['account_id']."', 
             '".$data['journal_sale_list_name']."', 
             '".$data['journal_sale_list_debit']."',
@@ -69,7 +99,11 @@ class JournalSaleListModel extends BaseModel{
     function updateJournalSaleListById($data,$id){
 
         $sql = " UPDATE tb_journal_sale_list 
-            SET account_id = '".$data['account_id']."', 
+            SET account_id = '".$data['account_id']."',  
+            journal_cheque_id = '".$data['journal_cheque_id']."',
+            journal_cheque_pay_id = '".$data['journal_cheque_pay_id']."',
+            journal_invoice_customer_id = '".$data['journal_invoice_customer_id']."',
+            journal_invoice_supplier_id = '".$data['journal_invoice_supplier_id']."',
             journal_sale_list_name = '".$data['journal_sale_list_name']."',
             journal_sale_list_debit = '".$data['journal_sale_list_debit']."',
             journal_sale_list_credit = '".$data['journal_sale_list_credit']."' 

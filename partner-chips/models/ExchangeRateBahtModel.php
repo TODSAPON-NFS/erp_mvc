@@ -13,9 +13,9 @@ class ExchangeRateBahtModel extends BaseModel{
         $sql = "SELECT * 
         FROM tb_exchange_rate_baht 
         LEFT JOIN tb_currency ON tb_exchange_rate_baht.currency_id = tb_currency.currency_id  
-        WHERE   STR_TO_DATE(exchange_rate_baht_date,'%Y-%m-%d %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') 
-        AND STR_TO_DATE(exchange_rate_baht_date,'%Y-%m-%d %H:%i:%s') <= STR_TO_DATE('$date_end','%Y-%m-%d %H:%i:%s') 
-        ORDER BY STR_TO_DATE(exchange_rate_baht_date,'%Y-%m-%d %H:%i:%s')  
+        WHERE   STR_TO_DATE(exchange_rate_baht_date,'%d-%m-%Y') >= STR_TO_DATE('$date_start','%d-%m-%Y') 
+        AND STR_TO_DATE(exchange_rate_baht_date,'%d-%m-%Y') <= STR_TO_DATE('$date_end','%d-%m-%Y') 
+        ORDER BY STR_TO_DATE(exchange_rate_baht_date,'%d-%m-%Y')  
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -31,8 +31,7 @@ class ExchangeRateBahtModel extends BaseModel{
 
     function getExchangeRateBahtByID($id){
         $sql = " SELECT * 
-        FROM tb_exchange_rate_baht 
-        LEFT JOIN tb_currency ON tb_exchange_rate_baht.currency_id = tb_currency.currency_id  
+        FROM tb_exchange_rate_baht  
         WHERE exchange_rate_baht_id = '$id' 
         ";
 
@@ -52,8 +51,8 @@ class ExchangeRateBahtModel extends BaseModel{
         FROM tb_exchange_rate_baht 
         LEFT JOIN tb_currency ON tb_exchange_rate_baht.currency_id = tb_currency.currency_id  
         WHERE tb_exchange_rate_baht.currency_id = '$currency_id' 
-        AND STR_TO_DATE(tb_exchange_rate_baht.exchange_rate_baht_date,'%Y-%m-%d %H:%i:%s') = STR_TO_DATE('$date 00:00:00','%Y-%m-%d %H:%i:%s') 
-        ";
+        AND tb_exchange_rate_baht.exchange_rate_baht_date ='$date'  
+        "; 
 
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -112,7 +111,7 @@ class ExchangeRateBahtModel extends BaseModel{
 
 
     function deleteExchangeRateBahtByID($id){
-        $sql = " DELETE FROM tb_stock_log WHERE stock_log_id = '$id' ";
+        $sql = " DELETE FROM tb_exchange_rate_baht WHERE exchange_rate_baht_id = '$id' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }

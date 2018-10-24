@@ -14,12 +14,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         }
 
         th{
-            padding:8px 4px;
+            padding:2px 4px;
             font-size:10px;
         }
 
         td{
-            padding:4px;
+            padding:2px 4px;
             font-size:10px;
         }
 
@@ -36,7 +36,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             </td>
         </tr>
     </table>
-    <div align="center" style="font-size:14px;color:#00F;"> <b>รายงานภาษีซื้อ</b></div>
+    <div align="center" style="font-size:14px;color:#00F;"> <b>รายงานภาษีขาย</b></div>
     <table width="100%" border="0" cellspacing="0">
         <tr>
             <td align="left" width="140px" ><b>ชื่อสถานประกอบการ </b></td>
@@ -62,7 +62,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <tr>
                 <th width="48" align="center" > ลำดับ </th>
                 <th colspan="2" align="center" style="border-bottom: 1px dotted black;" >ใบกำกับภาษี</th>
-                <th align="center" >ชื่อผู้ขายสินค้า/ผู้ให้บริการ</th>
+                <th align="center" >ชื่อผู้ซื้อสินค้า/ผู้รับบริการ</th>
                 <th align="center" >เลขประจำตัว</th>
                 <th colspan="2" align="center" style="border-bottom: 1px dotted black;" >สถานประกอบการ</th>
                 <th align="center" >มูลค่าสินค้า</th>
@@ -93,9 +93,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     $net_page = 0;
     for($i=$page_index * $lines; $i < count($tax_reports) && $i < $page_index * $lines + $lines; $i++){
         $vat_page +=  $tax_reports[$i]['invoice_customer_vat_price'];
-        $net_page +=  $tax_reports[$i]['invoice_customer_net_price'];
+        $net_page +=  $tax_reports[$i]['invoice_customer_total_price'];
         $vat_total +=  $tax_reports[$i]['invoice_customer_vat_price'];
-        $net_total +=  $tax_reports[$i]['invoice_customer_net_price'];
+        $net_total +=  $tax_reports[$i]['invoice_customer_total_price'];
 
                 $html[$page_index] .= ' 
                 <tr>
@@ -107,7 +107,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <td>' .'</td>
                     <td>' .'</td>
                     <td  align="right" >
-                        '.number_format($tax_reports[$i]['invoice_customer_net_price'],2).'
+                        '.number_format($tax_reports[$i]['invoice_customer_total_price'],2).'
                     </td>
                     <td  align="right" >'.number_format($tax_reports[$i]['invoice_customer_vat_price'],2).'</td>
                     <td>

@@ -38,6 +38,24 @@ class JournalPurchaseListModel extends BaseModel{
 
     } 
 
+    function getJournalPurchaseListByAccountId($journal_purchase_id,$account_id){
+        $sql = " SELECT *
+        FROM tb_journal_purchase_list  
+        WHERE journal_purchase_id = '$journal_purchase_id' AND account_id = '$account_id' 
+        ORDER BY journal_purchase_list_id 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data ;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    } 
+
 
     function insertJournalPurchaseList($data = []){
         $sql = " INSERT INTO tb_journal_purchase_list (
@@ -79,6 +97,8 @@ class JournalPurchaseListModel extends BaseModel{
     }
 
     function updateJournalPurchaseListById($data,$id){
+
+
 
         $sql = " UPDATE tb_journal_purchase_list 
             SET account_id = '".$data['account_id']."',  
@@ -135,6 +155,7 @@ class JournalPurchaseListModel extends BaseModel{
         }
 
         $sql = "DELETE FROM tb_journal_purchase_list WHERE journal_purchase_id = '$id' AND journal_purchase_list_id NOT IN ($str) ";
+ 
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }

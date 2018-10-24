@@ -36,18 +36,27 @@ class TaxReportModel extends BaseModel{
         invoice_supplier_code_gen, 
         invoice_supplier_date, 
         invoice_supplier_vat_price,
-        invoice_supplier_net_price,
+        invoice_supplier_total_price,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name,  
         invoice_supplier_name,
-        invoice_supplier_tax  
-        FROM tb_invoice_supplier 
-        LEFT JOIN tb_user as tb1 ON tb_invoice_supplier.employee_id = tb1.user_id 
-        LEFT JOIN tb_supplier as tb2 ON tb_invoice_supplier.supplier_id = tb2.supplier_id 
+        invoice_supplier_tax,
+        IFNULL(
+            (
+                SELECT GROUP_CONCAT(journal_cash_payment_code) 
+                FROM tb_journal_cash_payment 
+                LEFT JOIN tb_journal_cash_payment_list ON tb_journal_cash_payment.journal_cash_payment_id = tb_journal_cash_payment_list.journal_cash_payment_id 
+                WHERE tb_journal_cash_payment_list.	journal_invoice_supplier_id = tb.invoice_supplier_id
+            )
+            ,'-'
+        )  as reference_code 
+        FROM tb_invoice_supplier as tb
+        LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
+        LEFT JOIN tb_supplier as tb2 ON tb.supplier_id = tb2.supplier_id 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
             OR  invoice_supplier_code LIKE ('%$keyword%') 
         ) 
-        AND invoice_supplier_vat_price > 0
+        AND invoice_supplier_vat_price != 0
         $str_supplier 
         $str_date 
         $str_user  
@@ -89,10 +98,12 @@ class TaxReportModel extends BaseModel{
         }
 
         $sql = " SELECT invoice_customer_id, 
-        invoice_customer_code,  
+        invoice_customer_code,   
+        invoice_customer_name,   
+        invoice_customer_tax,   
         invoice_customer_date, 
         invoice_customer_vat_price,
-        invoice_customer_net_price,
+        invoice_customer_total_price,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name,  
         IFNULL(tb2.customer_name_th,tb2.customer_name_en) as customer_name  
         FROM tb_invoice_customer 
@@ -102,7 +113,7 @@ class TaxReportModel extends BaseModel{
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
             OR  invoice_customer_code LIKE ('%$keyword%') 
         ) 
-        AND invoice_customer_vat_price > 0
+        AND invoice_customer_vat_price != 0
         $str_customer 
         $str_date 
         $str_user  

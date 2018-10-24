@@ -28,15 +28,18 @@ class JournalSaleModel extends BaseModel{
         journal_sale_code, 
         journal_sale_date,
         journal_sale_name,
-        addby,
-        adddate,
-        updateby,
-        lastupdate,
+        tb_journal_sale.invoice_customer_id,
+        tb_invoice_customer.invoice_customer_code,
+        tb_journal_sale.addby,
+        tb_journal_sale.adddate,
+        tb_journal_sale.updateby,
+        tb_journal_sale.lastupdate,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as add_name, 
         IFNULL(CONCAT(tb2.user_name,' ',tb2.user_lastname),'-') as update_name 
         FROM tb_journal_sale 
         LEFT JOIN tb_user as tb1 ON tb_journal_sale.addby = tb1.user_id 
         LEFT JOIN tb_user as tb2 ON tb_journal_sale.updateby = tb2.user_id 
+        LEFT JOIN tb_invoice_customer ON tb_journal_sale.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
             OR  CONCAT(tb2.user_name,' ',tb2.user_lastname) LIKE ('%$keyword%') 
@@ -65,6 +68,27 @@ class JournalSaleModel extends BaseModel{
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data ;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getJournalSaleByKeyword(){
+       
+        $sql = " SELECT journal_sale_id, 
+        journal_sale_code,  
+        journal_sale_name 
+        FROM tb_journal_sale  
+        WHERE journal_sale_code LIKE ('%$keyword%')  OR  journal_sale_name LIKE ('%$keyword%') 
+        ORDER BY journal_sale_code DESC 
+         ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data[] = $row;
@@ -72,7 +96,6 @@ class JournalSaleModel extends BaseModel{
             $result->close();
             return $data;
         }
-
     }
 
 
@@ -83,6 +106,23 @@ class JournalSaleModel extends BaseModel{
         $sql = " SELECT * 
         FROM tb_journal_sale 
         WHERE journal_sale_id = '$id' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getJournalSaleByCode($journal_sale_code){
+        $sql = " SELECT * 
+        FROM tb_journal_sale 
+        WHERE journal_sale_code = '$journal_sale_code' 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

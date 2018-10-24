@@ -51,7 +51,6 @@ $purchase_request_id = $_GET['purchase_request_id'];
 $type = strtoupper($_GET['type']);
 
 
-
 if(!isset($_GET['action'])){
 
     $date_start = $_GET['date_start'];
@@ -66,6 +65,21 @@ if(!isset($_GET['action'])){
     $supplier_tests = $purchase_order_model->getSupplierTestOrder();
     $supplier_blankeds = $purchase_order_model->getSupplierBlankedOrder();
     $supplier_regrinds = $purchase_order_model->getSupplierRegrind();
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+    $list_size = count($purchase_orders);
+    $page_max = (int)($list_size/$page_size);
+    if($list_size%$page_size > 0){
+        $page_max += 1;
+    }
+
+
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
@@ -83,6 +97,11 @@ if(!isset($_GET['action'])){
 
     if($supplier_id > 0){
         $supplier=$supplier_model->getSupplierByID($supplier_id);
+        if($supplier['vat_type'] == '0'){
+            $vat= '0';
+        }else{
+            $vat = $invoice_supplier['vat'];
+        }
         //$products=$product_supplier_model->getProductBySupplierID(/*$supplier_id*/);
         $products=$product_model->getProductBy('','','','Active');
 
@@ -128,6 +147,11 @@ if(!isset($_GET['action'])){
     $type=$purchase_order["purchase_order_type"];
     $purchase_order_lists = $purchase_order_list_model->getPurchaseOrderListBy($purchase_order_id);
     $supplier=$supplier_model->getSupplierByID($purchase_order['supplier_id']);
+    if($supplier['vat_type'] == '0'){
+        $vat= '0';
+    }else{
+        $vat = $invoice_supplier['vat'];
+    }
     //$products=$product_supplier_model->getProductBySupplierID($purchase_order['supplier_id']);
     $products=$product_model->getProductBy('','','','Active');
     require_once($path.'update.inc.php');
@@ -135,6 +159,11 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'detail'){ 
     $purchase_order = $purchase_order_model->getPurchaseOrderViewByID($purchase_order_id);
     $purchase_order_lists = $purchase_order_list_model->getPurchaseOrderListBy($purchase_order_id);
+    if($supplier['vat_type'] == '0'){
+        $vat= '0';
+    }else{
+        $vat = $invoice_supplier['vat'];
+    }
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'delete' && ( $license_purchase_page == "High" )){
@@ -780,8 +809,32 @@ if(!isset($_GET['action'])){
     
 }else if ($license_purchase_page == "Medium" || $license_purchase_page == "High" ){
 
-    $purchase_orders = $purchase_order_model->getPurchaseOrderBy();
+    $date_start = $_GET['date_start'];
+    $date_end = $_GET['date_end'];
+    $supplier_id = $_GET['supplier_id'];
+    $keyword = $_GET['keyword'];
+
+    $suppliers=$supplier_model->getSupplierBy();
+
+    $purchase_orders = $purchase_order_model->getPurchaseOrderBy($date_start,$date_end,$supplier_id,$keyword);
     $supplier_orders = $purchase_order_model->getSupplierOrder();
+    $supplier_tests = $purchase_order_model->getSupplierTestOrder();
+    $supplier_blankeds = $purchase_order_model->getSupplierBlankedOrder();
+    $supplier_regrinds = $purchase_order_model->getSupplierRegrind();
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+    $list_size = count($purchase_orders);
+    $page_max = (int)($list_size/$page_size);
+    if($list_size%$page_size > 0){
+        $page_max += 1;
+    }
+    
     require_once($path.'view.inc.php');
 
 }

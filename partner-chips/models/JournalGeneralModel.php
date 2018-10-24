@@ -45,7 +45,7 @@ class JournalGeneralModel extends BaseModel{
         ) 
         $str_date 
         ORDER BY STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s'), journal_general_code DESC 
-         ";
+         "; 
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -66,6 +66,43 @@ class JournalGeneralModel extends BaseModel{
         $sql = " SELECT * 
         FROM tb_journal_general 
         WHERE journal_general_id = '$id' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getJournalGeneralByKeyword(){
+       
+        $sql = " SELECT journal_general_id, 
+        journal_general_code,  
+        journal_general_name 
+        FROM tb_journal_general  
+        WHERE journal_general_code LIKE ('%$keyword%')  OR  journal_general_name LIKE ('%$keyword%') 
+        ORDER BY journal_general_code DESC 
+         ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+
+    function getJournalGeneralByCode($journal_general_code){
+        $sql = " SELECT * 
+        FROM tb_journal_general 
+        WHERE journal_general_code = '$journal_general_code' 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

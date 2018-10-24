@@ -119,7 +119,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=customer&action=edit" enctype="multipart/form-data" >
+                <form role="form" method="post" onsubmit="return check();" action="index.php?app=customer&action=edit&id=<?php echo $customer_id ?>" enctype="multipart/form-data" >
                     <input type="hidden"  id="customer_id" name="customer_id" value="<?php echo $customer_id ?>" />
                     <input type="hidden"  id="customer_logo_o" name="customer_logo_o" value="<?php echo $customer['customer_logo']; ?>" />    
                         
@@ -361,7 +361,7 @@
                         <div class="col-lg-2">
                             <div class="form-group">
                                 <label>เครดิต / Credit Day </label>
-                                <input id="credit_day" name="credit_day" type="text" class="form-control"  value="30" style="text-align:right;" value="<? echo $customer['credit_day']?>">
+                                <input id="credit_day" name="credit_day" type="text" class="form-control" style="text-align:right;" value="<? echo $customer['credit_day']?>">
                                 <p class="help-block">Example : 30 (วัน).</p>
                             </div>
                         </div>

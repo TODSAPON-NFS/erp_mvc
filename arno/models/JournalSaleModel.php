@@ -68,9 +68,9 @@ class JournalSaleModel extends BaseModel{
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-            $data = [];
+            $data ;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                $data[] = $row;
+                $data = $row;
             }
             $result->close();
             return $data;

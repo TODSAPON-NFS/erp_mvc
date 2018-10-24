@@ -38,6 +38,24 @@ class JournalSaleListModel extends BaseModel{
 
     } 
 
+    function getJournalSaleListByAccountId($journal_sale_id,$account_id){
+        $sql = " SELECT *
+        FROM tb_journal_sale_list  
+        WHERE journal_sale_id = '$journal_sale_id' AND account_id = '$account_id' 
+        ORDER BY journal_sale_list_id 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    } 
+
 
     function insertJournalSaleList($data = []){
         $sql = " INSERT INTO tb_journal_sale_list (

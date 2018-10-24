@@ -140,6 +140,7 @@
                             <th>ชื่อสมุดรายวันทั่วไป <br>Name.</th>
                             <th>เดบิต <br>Debit.</th>
                             <th>เครดิต <br>Credit.</th>
+                            <th>สถานะ <br>Status.</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -154,6 +155,13 @@
                             <td><?php echo $journal_generals[$i]['journal_general_name']; ?></td> 
                             <td align="right"><?php echo number_format($journal_generals[$i]['journal_debit'],2); ?></td> 
                             <td align="right"><?php echo number_format($journal_generals[$i]['journal_credit'],2); ?></td>  
+                            <td align="center">
+                                <?PHP if($journal_generals[$i]['journal_debit'] == $journal_generals[$i]['journal_credit']){ ?>
+                                    <font color="green"><b>ยอดตรง</b></font>
+                                <?PHP } else { ?> 
+                                    <font color="red"><b>ยอดไม่ตรง</b></font>
+                                <?PHP } ?>
+                            </td>  
                             <td>
                                 <a href="print.php?app=report_journal_04&type=id&action=pdf&id=<?php echo $journal_generals[$i]['journal_general_id'];?>" target="_blank" >
                                     <i class="fa fa-print" aria-hidden="true"></i>

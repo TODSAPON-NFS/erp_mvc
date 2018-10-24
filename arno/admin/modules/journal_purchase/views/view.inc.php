@@ -139,8 +139,9 @@
                             <th>หมายเลขสมุดรายวันซื้อ <br>Journal Purchase No.</th>
                             <th>ชื่อสมุดรายวันซื้อ <br>Name.</th>
                             <th>ใบรับสินค้า <br>Supplier Invoice.</th> 
-                            <th>ผู้แก้ไขเอกสาร <br>Update by</th>
-                            <th>วันที่แก้ไขเอกสาร <br>Last update</th>
+                            <th>เดบิต <br>Debit.</th>
+                            <th>เครดิต <br>Credit.</th>
+                            <th>สถานะ <br>Status.</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -160,8 +161,15 @@
                                 <a href="?app=invoice_supplier&action=update&id=<?php echo $journal_purchases[$i]['invoice_supplier_id']; ?>" target="_blank" ><?php echo $journal_purchases[$i]['invoice_supplier_code_gen']; ?> </a>
                                 <?php } ?>
                             </td> 
-                            <td><?php echo $journal_purchases[$i]['update_name']; ?></td>
-                            <td><?php echo $journal_purchases[$i]['lastupdate']; ?></td>
+                            <td align="right"><?php echo number_format($journal_purchases[$i]['journal_debit'],2); ?></td> 
+                            <td align="right"><?php echo number_format($journal_purchases[$i]['journal_credit'],2); ?></td>  
+                            <td align="center">
+                                <?PHP if(number_format($journal_purchases[$i]['journal_debit'],2) == number_format($journal_purchases[$i]['journal_credit'],2)){ ?>
+                                    <font color="green"><b>ยอดตรง</b></font>
+                                <?PHP } else { ?> 
+                                    <font color="red"><b>ยอดไม่ตรง</b></font>
+                                <?PHP } ?>
+                            </td>  
                             <td>
                                 <a href="print.php?app=report_journal_04&type=id&action=pdf&id=<?php echo $journal_purchases[$i]['journal_purchase_id'];?>" target="_blank" >
                                     <i class="fa fa-print" aria-hidden="true"></i>

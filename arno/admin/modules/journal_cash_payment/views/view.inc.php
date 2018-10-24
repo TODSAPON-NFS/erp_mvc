@@ -139,10 +139,9 @@
                             <th>หมายเลขสมุดรายวันจ่ายเงิน <br>Journal Cash Payment No.</th>
                             <th>ชื่อสมุดรายวันจ่ายเงิน <br>Name.</th>
                             <th>ใบจ่ายชำระเงิน <br>Finance credit.</th>
-                            <th>ผู้เพิ่มเอกสาร <br>Add by</th>
-                            <th>วันที่เพิ่มเอกสาร <br>Add date</th>
-                            <th>ผู้แก้ไขเอกสาร <br>Update by</th>
-                            <th>วันที่แก้ไขเอกสาร <br>Last update</th>
+                            <th>เดบิต <br>Debit.</th>
+                            <th>เครดิต <br>Credit.</th>
+                            <th>สถานะ <br>Status.</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -162,10 +161,15 @@
                                 <a href="?app=finance_credit&action=update&id=<?php echo $journal_cash_payments[$i]['finance_credit_id']; ?>" target="_blank" ><?php echo $journal_cash_payments[$i]['finance_credit_code']; ?> </a>
                                 <?php } ?>
                             </td>
-                            <td><?php echo $journal_cash_payments[$i]['add_name']; ?></td> 
-                            <td><?php echo $journal_cash_payments[$i]['adddate']; ?></td>
-                            <td><?php echo $journal_cash_payments[$i]['update_name']; ?></td>
-                            <td><?php echo $journal_cash_payments[$i]['lastupdate']; ?></td>
+                            <td align="right"><?php echo number_format($journal_cash_payments[$i]['journal_debit'],2); ?></td> 
+                            <td align="right"><?php echo number_format($journal_cash_payments[$i]['journal_credit'],2); ?></td>  
+                            <td align="center">
+                                <?PHP if(number_format($journal_cash_payments[$i]['journal_debit'],2) == number_format($journal_cash_payments[$i]['journal_credit'],2)){ ?>
+                                    <font color="green"><b>ยอดตรง</b></font>
+                                <?PHP } else { ?> 
+                                    <font color="red"><b>ยอดไม่ตรง</b></font>
+                                <?PHP } ?>
+                            </td>  
                             <td>
                                 <a href="print.php?app=report_journal_04&type=id&action=pdf&id=<?php echo $journal_cash_payments[$i]['journal_cash_payment_id'];?>" target="_blank" >
                                     <i class="fa fa-print" aria-hidden="true"></i>

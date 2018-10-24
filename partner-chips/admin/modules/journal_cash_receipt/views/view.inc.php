@@ -131,10 +131,9 @@
                             <th>หมายเลขสมุดรายวันรับเงิน <br>Journal Cash Receipt No.</th>
                             <th>ชื่อสมุดรายวันรับเงิน <br>Name.</th>
                             <th>ใบรับชำระเงิน <br>Finance debit.</th>
-                            <th>ผู้เพิ่มเอกสาร <br>Add by</th>
-                            <th>วันที่เพิ่มเอกสาร <br>Add date</th>
-                            <th>ผู้แก้ไขเอกสาร <br>Update by</th>
-                            <th>วันที่แก้ไขเอกสาร <br>Last update</th>
+                            <th>เดบิต <br>Debit.</th>
+                            <th>เครดิต <br>Credit.</th>
+                            <th>สถานะ <br>Status.</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -154,10 +153,15 @@
                                 <a href="?app=finance_debit&action=update&id=<?php echo $journal_cash_receipts[$i]['finance_debit_id']; ?>" target="_blank" ><?php echo $journal_cash_receipts[$i]['finance_debit_code']; ?></a>
                                 <?php } ?>
                             </td>
-                            <td><?php echo $journal_cash_receipts[$i]['add_name']; ?></td>
-                            <td><?php echo $journal_cash_receipts[$i]['adddate']; ?></td>
-                            <td><?php echo $journal_cash_receipts[$i]['update_name']; ?></td>
-                            <td><?php echo $journal_cash_receipts[$i]['lastupdate']; ?></td>
+                            <td align="right"><?php echo number_format($journal_cash_receipts[$i]['journal_debit'],2); ?></td> 
+                            <td align="right"><?php echo number_format($journal_cash_receipts[$i]['journal_credit'],2); ?></td>  
+                            <td align="center">
+                                <?PHP if(number_format($journal_cash_receipts[$i]['journal_debit'],2) == number_format($journal_cash_receipts[$i]['journal_credit'],2)){ ?>
+                                    <font color="green"><b>ยอดตรง</b></font>
+                                <?PHP } else { ?> 
+                                    <font color="red"><b>ยอดไม่ตรง</b></font>
+                                <?PHP } ?>
+                            </td>  
                             <td>
  
                                 <a href="print.php?app=report_journal_03&type=id&action=pdf&id=<?php echo $journal_cash_receipts[$i]['journal_cash_receipt_id'];?>" target="_blank" >

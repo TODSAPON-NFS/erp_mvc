@@ -30,23 +30,17 @@ class JournalCashReceiptModel extends BaseModel{
         journal_cash_receipt_code, 
         journal_cash_receipt_date,
         journal_cash_receipt_name,
-        tb_journal_cash_receipt.addby,
-        tb_journal_cash_receipt.adddate,
-        tb_journal_cash_receipt.updateby,
-        tb_journal_cash_receipt.lastupdate,
-        IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as add_name, 
-        IFNULL(CONCAT(tb2.user_name,' ',tb2.user_lastname),'-') as update_name 
+        IFNULL(SUM(journal_cash_receipt_list_debit),0) as journal_debit,
+        IFNULL(SUM(journal_cash_receipt_list_credit),0) as journal_credit 
         FROM tb_journal_cash_receipt 
-        LEFT JOIN tb_finance_debit ON tb_journal_cash_receipt.finance_debit_id = tb_finance_debit.finance_debit_id 
-        LEFT JOIN tb_user as tb1 ON tb_journal_cash_receipt.addby = tb1.user_id 
-        LEFT JOIN tb_user as tb2 ON tb_journal_cash_receipt.updateby = tb2.user_id 
+        LEFT JOIN tb_journal_cash_receipt_list ON tb_journal_cash_receipt_list.journal_cash_receipt_id = tb_journal_cash_receipt.journal_cash_receipt_id
+        LEFT JOIN tb_finance_debit ON tb_journal_cash_receipt.finance_debit_id = tb_finance_debit.finance_debit_id  
         WHERE ( 
-            CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
-            OR  CONCAT(tb2.user_name,' ',tb2.user_lastname) LIKE ('%$keyword%') 
-            OR  journal_cash_receipt_code LIKE ('%$keyword%') 
+                journal_cash_receipt_code LIKE ('%$keyword%') 
             OR  journal_cash_receipt_name LIKE ('%$keyword%') 
         ) 
         $str_date 
+        GROUP BY tb_journal_cash_receipt.journal_cash_receipt_id 
         ORDER BY journal_cash_receipt_code DESC 
          ";
 

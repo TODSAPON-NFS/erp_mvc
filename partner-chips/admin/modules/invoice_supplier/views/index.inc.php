@@ -632,7 +632,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         }
         //---------------------------- สิ้นสุด เพิ่มรายการเจ้าหนี้ -------------------------------------------- 
 
-        print_r($journal_purchase_list_id);
+        //print_r($journal_purchase_list_id);
 
         //---------------------------- ลบรายการที่ไม่เกี่ยวข้อง ---------------------------------------------
         $journal_purchase_list_model->deleteJournalPurchaseListByJournalPurchaseIDNotIN($journal_purchase_id,$journal_purchase_list_id );

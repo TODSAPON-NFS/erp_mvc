@@ -139,8 +139,9 @@
                             <th>หมายเลขสมุดรายวันขาย <br>Journal Sale No.</th>
                             <th>ชื่อสมุดรายวันขาย <br>Name.</th>
                             <th>ใบกำกับภาษี <br>Invoice.</th> 
-                            <th>ผู้แก้ไขเอกสาร <br>Update by</th>
-                            <th>วันที่แก้ไขเอกสาร <br>Last update</th>
+                            <th>เดบิต <br>Debit.</th>
+                            <th>เครดิต <br>Credit.</th>
+                            <th>สถานะ <br>Status.</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -160,8 +161,15 @@
                                 <a href="?app=invoice_customer&action=update&id=<?php echo $journal_sales[$i]['invoice_customer_id']; ?>" target="_blank" ><?php echo $journal_sales[$i]['invoice_customer_code']; ?> </a>
                                 <?php } ?>
                             </td> 
-                            <td><?php echo $journal_sales[$i]['update_name']; ?></td>
-                            <td><?php echo $journal_sales[$i]['lastupdate']; ?></td>
+                            <td align="right"><?php echo number_format($journal_sales[$i]['journal_debit'],2); ?></td> 
+                            <td align="right"><?php echo number_format($journal_sales[$i]['journal_credit'],2); ?></td>  
+                            <td align="center">
+                                <?PHP if(number_format($journal_sales[$i]['journal_debit'],2) == number_format($journal_sales[$i]['journal_credit'],2)){ ?>
+                                    <font color="green"><b>ยอดตรง</b></font>
+                                <?PHP } else { ?> 
+                                    <font color="red"><b>ยอดไม่ตรง</b></font>
+                                <?PHP } ?>
+                            </td>  
                             <td>
                                 <a href="print.php?app=report_journal_04&type=id&action=pdf&id=<?php echo $journal_sales[$i]['journal_sale_id'];?>" target="_blank" >
                                     <i class="fa fa-print" aria-hidden="true"></i>

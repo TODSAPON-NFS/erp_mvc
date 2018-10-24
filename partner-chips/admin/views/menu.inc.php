@@ -590,12 +590,14 @@
                                         <li>
                                             <a href="?app=journal_special_04" <?PHP if($_GET['app'] == "journal_special_04"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> สมุดรายวันจ่ายเงิน</a>
                                         </li>
+										<!--
                                         <li>
                                             <a href="?app=journal_special_05" <?PHP if($_GET['app'] == "journal_special_05"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> สมุดรายวันส่งคืนสินค้าและจำนวนที่ได้ลด</a>
                                         </li>
                                         <li>
                                             <a href="?app=journal_special_06" <?PHP if($_GET['app'] == "journal_special_06"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> สมุดรายวันรับคืนสินค้าและจำนวนที่ลดให้</a>
                                         </li>
+										-->
                                     </ul>
                                 </li>
                             </ul>

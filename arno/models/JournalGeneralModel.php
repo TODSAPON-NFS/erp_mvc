@@ -24,26 +24,20 @@ class JournalGeneralModel extends BaseModel{
 
 
 
-        $sql = " SELECT journal_general_id, 
+        $sql = " SELECT tb_journal_general.journal_general_id, 
         journal_general_code, 
         journal_general_date,
         journal_general_name,
-        addby,
-        adddate,
-        updateby,
-        lastupdate,
-        IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as add_name, 
-        IFNULL(CONCAT(tb2.user_name,' ',tb2.user_lastname),'-') as update_name 
+        IFNULL(SUM(journal_general_list_debit),0) as journal_debit,
+        IFNULL(SUM(journal_general_list_credit),0) as journal_credit
         FROM tb_journal_general 
-        LEFT JOIN tb_user as tb1 ON tb_journal_general.addby = tb1.user_id 
-        LEFT JOIN tb_user as tb2 ON tb_journal_general.updateby = tb2.user_id 
+        LEFT JOIN tb_journal_general_list ON tb_journal_general_list.journal_general_id = tb_journal_general.journal_general_id  
         WHERE ( 
-            CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
-            OR  CONCAT(tb2.user_name,' ',tb2.user_lastname) LIKE ('%$keyword%') 
-            OR  journal_general_code LIKE ('%$keyword%') 
+                journal_general_code LIKE ('%$keyword%') 
             OR  journal_general_name LIKE ('%$keyword%') 
         ) 
         $str_date 
+        GROUP BY tb_journal_general.journal_general_id 
         ORDER BY STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s'), journal_general_code DESC 
          "; 
 

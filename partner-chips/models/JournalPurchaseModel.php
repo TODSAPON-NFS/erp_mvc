@@ -24,29 +24,23 @@ class JournalPurchaseModel extends BaseModel{
 
 
 
-        $sql = " SELECT journal_purchase_id,  
+        $sql = " SELECT tb_journal_purchase.journal_purchase_id,  
         journal_purchase_code, 
         journal_purchase_date,
         journal_purchase_name,
         tb_journal_purchase.invoice_supplier_id,
-        tb_invoice_supplier.invoice_supplier_code_gen,
-        tb_journal_purchase.addby,
-        tb_journal_purchase.adddate,
-        tb_journal_purchase.updateby,
-        tb_journal_purchase.lastupdate,
-        IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as add_name, 
-        IFNULL(CONCAT(tb2.user_name,' ',tb2.user_lastname),'-') as update_name 
-        FROM tb_journal_purchase 
-        LEFT JOIN tb_user as tb1 ON tb_journal_purchase.addby = tb1.user_id 
-        LEFT JOIN tb_user as tb2 ON tb_journal_purchase.updateby = tb2.user_id 
+        tb_invoice_supplier.invoice_supplier_code_gen, 
+        IFNULL(SUM(journal_purchase_list_debit),0) as journal_debit,
+        IFNULL(SUM(journal_purchase_list_credit),0) as journal_credit
+        FROM tb_journal_purchase  
+        LEFT JOIN tb_journal_purchase_list ON tb_journal_purchase_list.journal_purchase_id = tb_journal_purchase.journal_purchase_id
         LEFT JOIN tb_invoice_supplier ON tb_journal_purchase.invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id 
         WHERE ( 
-            CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
-            OR  CONCAT(tb2.user_name,' ',tb2.user_lastname) LIKE ('%$keyword%') 
-            OR  journal_purchase_code LIKE ('%$keyword%') 
+                journal_purchase_code LIKE ('%$keyword%') 
             OR  journal_purchase_name LIKE ('%$keyword%') 
         ) 
         $str_date 
+        GROUP BY tb_journal_purchase.journal_purchase_id 
         ORDER BY STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s'), journal_purchase_code DESC 
          "; 
 

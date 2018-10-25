@@ -100,9 +100,9 @@
                 </thead>
                 <tbody> 
                     <tr class="odd gradeX">
-                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_total_price" name="invoice_customer_total_price" onchange="update_vat()" value="<?php echo $invoice_customer['invoice_customer_total_price']; ?>" /></td>
+                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_total_price" name="invoice_customer_total_price" onchange="update_sale_vat()" value="<?php echo $invoice_customer['invoice_customer_total_price']; ?>" /></td>
                         <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_vat_price" name="invoice_customer_vat_price"  value="<?php echo $invoice_customer['invoice_customer_vat_price']; ?>" /></td>
-                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_total_price_non" name="invoice_customer_total_price_non" onchange="update_vat_non()" value="<?php echo $invoice_customer['invoice_customer_total_price_non']; ?>" /></td>
+                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_total_price_non" name="invoice_customer_total_price_non" onchange="update_sale_vat_non()" value="<?php echo $invoice_customer['invoice_customer_total_price_non']; ?>" /></td>
                         <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_vat_price_non" name="invoice_customer_vat_price_non"  value="<?php echo $invoice_customer['invoice_customer_vat_price_non']; ?>" /></td>
                         <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_total_non"  name="invoice_customer_total_non"  value="<?php echo $invoice_customer['invoice_customer_total_non']; ?>" /></td>
                     </tr> 
@@ -686,7 +686,7 @@ function delete_invoice_customer_row(id){
 }
 
 
-function update_vat(){
+function update_sale_vat(){
     var invoice_customer_total_price =  parseFloat($("#invoice_customer_total_price").val().replace(',',''));
     var invoice_customer_vat_price =  parseFloat($("#invoice_customer_vat_price").val().replace(',',''));
 
@@ -703,7 +703,7 @@ function update_vat(){
 
 }
 
-function update_vat_non(){
+function update_sale_vat_non(){
     var invoice_customer_total_price_non =  parseFloat($("#invoice_customer_total_price_non").val().replace(',',''));
     var invoice_customer_vat_price_non =  parseFloat($("#invoice_customer_vat_price_non").val().replace(',',''));
 

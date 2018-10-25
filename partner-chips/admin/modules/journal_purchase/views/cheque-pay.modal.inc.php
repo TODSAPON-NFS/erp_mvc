@@ -22,7 +22,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>เลขที่เช็ค <font color="#F00"><b>*</b></font></label>
-                                <input id="check_pay_code" name="check_pay_code" class="form-control" type="text"  onchange="get_cheque_pay_id(this)" />
+                                <input id="check_pay_code" name="check_pay_code" class="form-control" type="text"  value="QP"  onchange="get_cheque_pay_id(this)" />
                                 <p class="help-block">Example : QP4411555.</p>
                             </div>
                         </div>
@@ -170,7 +170,7 @@ function edit_cheque_pay_row(id,journal_id){
 
         }else{ 
             $('#check_pay_id').val('0');
-            $('#check_pay_code').val('');  
+            $('#check_pay_code').val('QP');   
             $('#check_pay_date_write').val($('#journal_purchase_date').val()); 
             $('#check_pay_date_recieve').val($('#journal_purchase_date').val());
             $('#cheque_pay_supplier_id').val($('#supplier_id').val());
@@ -195,7 +195,7 @@ function edit_cheque_pay_row(id,journal_id){
 function add_cheque_pay_row(id,journal_id){
     
     $('#check_pay_id').val('0');
-    $('#check_pay_code').val('');  
+    $('#check_pay_code').val('QP');   
     $('#check_pay_date_write').val($('#journal_purchase_date').val()); 
     $('#check_pay_date_recieve').val($('#journal_purchase_date').val());
     $('#cheque_pay_supplier_id').val($('#supplier_id').val());

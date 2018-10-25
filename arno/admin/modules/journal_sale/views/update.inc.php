@@ -334,7 +334,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขสมุดรายวันขาย / Journal Sale Code <font color="#F00"><b>*</b></font></label>
-                                <input id="journal_sale_code" name="journal_sale_code" class="form-control" value="<?php echo $journal_sale['journal_sale_code'];?>" readonly>
+                                <input id="journal_sale_code" name="journal_sale_code" class="form-control" value="<?php echo $journal_sale['journal_sale_code'];?>" >
                                 <p class="help-block">Example : JG1801001.</p>
                             </div>
                         </div>

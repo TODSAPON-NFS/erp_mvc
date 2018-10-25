@@ -334,7 +334,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขสมุดรายวันทั่วไป / Journal General Code <font color="#F00"><b>*</b></font></label>
-                                <input id="journal_general_code" name="journal_general_code" class="form-control" value="<?php echo $journal_general['journal_general_code'];?>" readonly>
+                                <input id="journal_general_code" name="journal_general_code" class="form-control" value="<?php echo $journal_general['journal_general_code'];?>" >
                                 <p class="help-block">Example : JG1801001.</p>
                             </div>
                         </div>

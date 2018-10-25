@@ -335,7 +335,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขสมุดรายวันรับเงิน / Journal Receipt Code <font color="#F00"><b>*</b></font></label>
-                                <input id="journal_cash_receipt_code" name="journal_cash_receipt_code" class="form-control" value="<?php echo $journal_cash_receipt['journal_cash_receipt_code'];?>" readonly>
+                                <input id="journal_cash_receipt_code" name="journal_cash_receipt_code" class="form-control" value="<?php echo $journal_cash_receipt['journal_cash_receipt_code'];?>" >
                                 <p class="help-block">Example : JG1801001.</p>
                             </div>
                         </div>

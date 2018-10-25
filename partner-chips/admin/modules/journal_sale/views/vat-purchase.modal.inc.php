@@ -114,9 +114,9 @@
                 </thead>
                 <tbody> 
                     <tr class="odd gradeX">
-                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_total_price" name="invoice_supplier_total_price" onchange="update_vat()" value="<?php echo $invoice_supplier['invoice_supplier_total_price']; ?>" /></td>
+                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_total_price" name="invoice_supplier_total_price" onchange="update_puchase_vat()" value="<?php echo $invoice_supplier['invoice_supplier_total_price']; ?>" /></td>
                         <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_vat_price" name="invoice_supplier_vat_price"  value="<?php echo $invoice_supplier['invoice_supplier_vat_price']; ?>" /></td>
-                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_total_price_non" name="invoice_supplier_total_price_non" onchange="update_vat_non()" value="<?php echo $invoice_supplier['invoice_supplier_total_price_non']; ?>" /></td>
+                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_total_price_non" name="invoice_supplier_total_price_non" onchange="update_puchase_vat_non()" value="<?php echo $invoice_supplier['invoice_supplier_total_price_non']; ?>" /></td>
                         <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_vat_price_non" name="invoice_supplier_vat_price_non"  value="<?php echo $invoice_supplier['invoice_supplier_vat_price_non']; ?>" /></td>
                         <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_supplier_total_non"  name="invoice_supplier_total_non"  value="<?php echo $invoice_supplier['invoice_supplier_total_non']; ?>" /></td>
                     </tr> 
@@ -718,7 +718,7 @@ function delete_invoice_supplier_row(id){
 }
 
 
-function update_vat(){
+function update_puchase_vat(){
     var invoice_supplier_total_price =  parseFloat($("#invoice_supplier_total_price").val().replace(',',''));
     var invoice_supplier_vat_price =  parseFloat($("#invoice_supplier_vat_price").val().replace(',',''));
 
@@ -735,7 +735,7 @@ function update_vat(){
 
 }
 
-function update_vat_non(){
+function update_puchase_vat_non(){
     var invoice_supplier_total_price_non =  parseFloat($("#invoice_supplier_total_price_non").val().replace(',',''));
     var invoice_supplier_vat_price_non =  parseFloat($("#invoice_supplier_vat_price_non").val().replace(',',''));
 

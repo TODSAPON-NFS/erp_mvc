@@ -21,7 +21,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>เลขที่เช็ค <font color="#F00"><b>*</b></font></label>
-                                <input id="check_code" name="check_code" class="form-control" type="text" onchange="get_cheque_id(this)" >
+                                <input id="check_code" name="check_code" class="form-control"  value="QR" type="text" onchange="get_cheque_id(this)" >
                                 <p class="help-block">Example : QR4411555.</p>
                             </div>
                         </div>
@@ -174,7 +174,7 @@ function edit_cheque_row(id,journal_id){
 
         }else{ 
             $('#check_id').val('0');
-            $('#check_code').val('');  
+            $('#check_code').val('QR');  
             $('#check_date_write').val($('#journal_cash_payment_date').val()); 
             $('#check_date_recieve').val($('#journal_cash_payment_date').val());
             $('#cheque_customer_id').val($('#customer_id').val());
@@ -199,7 +199,7 @@ function edit_cheque_row(id,journal_id){
 function add_cheque_row(id,journal_id){
     
     $('#check_id').val('0');
-    $('#check_code').val('');  
+    $('#check_code').val('QR');  
     $('#check_date_write').val($('#journal_cash_payment_date').val()); 
     $('#check_date_recieve').val($('#journal_cash_payment_date').val());
     $('#cheque_customer_id').val($('#customer_id').val());

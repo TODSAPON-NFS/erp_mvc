@@ -36,7 +36,7 @@ class BillingNoteModel extends BaseModel{
         billing_note_date, 
         billing_note_total,
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name,  
-        IFNULL(CONCAT(tb2.customer_name_en,' (',tb2.customer_name_th,')'),'-') as customer_name  
+        IFNULL(tb2.customer_name_en,'-') as customer_name  
         FROM tb_billing_note 
         LEFT JOIN tb_user as tb1 ON tb_billing_note.employee_id = tb1.user_id 
         LEFT JOIN tb_customer as tb2 ON tb_billing_note.customer_id = tb2.customer_id 
@@ -127,7 +127,8 @@ class BillingNoteModel extends BaseModel{
                         GROUP BY invoice_customer_id 
                     ) 
                     GROUP BY customer_id 
-                ) 
+                )
+                ORDER BY customer_name_en
         ";
         $data = [];
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -173,7 +174,7 @@ class BillingNoteModel extends BaseModel{
             GROUP BY invoice_customer_id 
         ) 
         AND tb_invoice_customer.customer_id = '$customer_id' 
-        ORDER BY  STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') ";
+        ORDER BY  invoice_customer_code ASC ";
 
         //echo $sql_customer;
 

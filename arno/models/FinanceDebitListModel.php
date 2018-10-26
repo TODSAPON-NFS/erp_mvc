@@ -28,7 +28,7 @@ class FinanceDebitListModel extends BaseModel{
         LEFT JOIN tb_billing_note_list ON tb_finance_debit_list.billing_note_list_id = tb_billing_note_list.billing_note_list_id 
         LEFT JOIN tb_invoice_customer ON tb_billing_note_list.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
         WHERE finance_debit_id = '$finance_debit_id' 
-        ORDER BY finance_debit_list_id 
+        ORDER BY invoice_customer_code 
         ";
 
         //echo $sql;

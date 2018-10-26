@@ -30,7 +30,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div style="font-size:18px;padding: 8px 0px;">แยกตามลูกค้า</div>
                         <table width="100%" class="table table-striped table-bordered table-hover" >
                             <thead>
@@ -46,7 +46,11 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $customer_orders[$i]['customer_name_en']; ?>  </td>
+                                    <td>
+                                        <a href="?app=official_receipt&action=insert&customer_id=<?php echo $customer_orders[$i]['customer_id'];?>">
+                                            <?php echo $customer_orders[$i]['customer_name_en']; ?>  
+                                        </a>
+                                    </td>
                                     <td>
                                         <a href="?app=official_receipt&action=insert&customer_id=<?php echo $customer_orders[$i]['customer_id'];?>">
                                             <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -61,6 +65,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <!--
                     <div class="col-md-6">
                         <div style="font-size:18px;padding: 8px 0px;">แยกตามใบเสร็จ</div>
                         <table width="100%" class="table table-striped table-bordered table-hover" >
@@ -77,7 +82,11 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $billing_notes[$i]['customer_name_en']; ?>  </td>
+                                    <td>
+                                        <a href="?app=official_receipt&action=insert&customer_id=<?php echo $billing_notes[$i]['customer_id'];?>">
+                                            <?php echo $billing_notes[$i]['customer_name_en']; ?>  
+                                        </a>
+                                    </td>
                                     <td>
                                         <a href="?app=official_receipt&action=insert&customer_id=<?php echo $billing_notes[$i]['customer_id'];?>">
                                             <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -92,6 +101,7 @@
                             </tbody>
                         </table>
                     </div>
+                    -->
                 </div>
                 
             </div>

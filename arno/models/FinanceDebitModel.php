@@ -132,6 +132,7 @@ class FinanceDebitModel extends BaseModel{
                     GROUP BY tb_billing_note_list.billing_note_list_id 
                     HAVING MAX(IFNULL(tb_billing_note_list.billing_note_list_balance,0)) > SUM(IFNULL(finance_debit_list_balance,0))
                 ) 
+                ORDER BY customer_name_en
         "; 
         $data = [];
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

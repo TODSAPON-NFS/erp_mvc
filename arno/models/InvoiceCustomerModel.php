@@ -477,23 +477,27 @@ class InvoiceCustomerModel extends BaseModel{
     function deleteInvoiceCustomerByID($id){
 
 
-        $sql = "    SELECT invoice_customer_list_id, stock_group_id, product_id, invoice_customer_list_qty, invoice_customer_list_cost
+        $sql = "    SELECT invoice_customer_list_id, stock_group_id, product_id, invoice_customer_list_qty, invoice_customer_list_cost,stock_event
         FROM  tb_invoice_customer_list 
+        LEFT JOIN tb_product ON tb_invoice_customer_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
         WHERE invoice_customer_id = '$id' ";   
                 
         $sql_delete=[];
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
         while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-            $sql_delete [] = "
-                CALL delete_stock_customer('".
-                $row['stock_group_id']."','".
-                $row['invoice_customer_list_id']."','".
-                $row['product_id']."','".
-                $row['invoice_customer_list_qty']."','".
-                $row['invoice_customer_list_cost']."'".
-                ");
-            ";
+            if($row['stock_event'] != "None"){
+                $sql_delete [] = "
+                    CALL delete_stock_customer('".
+                    $row['stock_group_id']."','".
+                    $row['invoice_customer_list_id']."','".
+                    $row['product_id']."','".
+                    $row['invoice_customer_list_qty']."','".
+                    $row['invoice_customer_list_cost']."'".
+                    ");
+                ";
+            }
             
         }
         $result->close();

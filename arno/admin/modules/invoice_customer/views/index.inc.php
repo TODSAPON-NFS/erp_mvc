@@ -371,7 +371,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         if(is_array($product_id)){
             for($i=0; $i < count($product_id) ; $i++){
                 $data_sub = [];
-                $data_sub['invoice_customer_id'] = $output;
+                $data_sub['invoice_customer_id'] = $invoice_customer_id;
                 $data_sub['product_id'] = $product_id[$i];
                 $data_sub['customer_purchase_order_list_id'] = $customer_purchase_order_list_id[$i];
                 $data_sub['stock_group_id'] = $stock_group_id[$i];
@@ -392,7 +392,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             }
         }else if($product_id != ""){
             $data_sub = [];
-            $data_sub['invoice_customer_id'] = $output;
+            $data_sub['invoice_customer_id'] = $invoice_customer_id;
             $data_sub['product_id'] = $product_id;
             $data_sub['customer_purchase_order_list_id'] = $customer_purchase_order_list_id;
             $data_sub['stock_group_id'] = $stock_group_id;

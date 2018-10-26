@@ -225,6 +225,10 @@
         require_once("modules/report_tax_03/views/index.inc.php");
     }
 
+    else if($_GET['app'] == "report_account_04"){
+        require_once("modules/report_account_04/views/index.inc.php");
+    }
+
     /* ----------------------------------- //ระบบรายงาน// ---------------------------------------------- */
    
 

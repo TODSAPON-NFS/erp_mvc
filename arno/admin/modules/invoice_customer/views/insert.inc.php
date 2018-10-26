@@ -140,6 +140,7 @@
     
     function delete_row(id){
         $(id).closest('tr').remove();
+        calculateAll();
      }
 
      function show_qty(id){
@@ -376,7 +377,7 @@
                         '<td>'+
                             '<input type="hidden" name="customer_purchase_order_list_id[]" value="'+ data_buffer[i].customer_purchase_order_list_id +'" readonly />'+     
                             '<input type="hidden" name="product_id[]" class="form-control" value="'+ data_buffer[i].product_id +'" />'+
-					        '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code"  value="'+ data_buffer[i].product_code +'" />'+ 
+					        '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code"  value="'+ data_buffer[i].product_code +'" readonly />'+ 
                         '</td>'+
                         '<td>'+
                             '<input type="text" class="form-control" name="product_name[]" value="'+ data_buffer[i].product_name +'" readonly />'+
@@ -393,7 +394,7 @@
                             '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="'+ qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" />'+
                         '</td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" value="'+ price.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);"  value="'+ total.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly /></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);"  value="'+ sum.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly /></td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+

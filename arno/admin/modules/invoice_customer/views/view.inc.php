@@ -178,19 +178,27 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
-                            <th width="48">No.</th>
-                            <th width="150">Invoice Date</th>
-                            <th width="150">Code.</th>
-                            <th>Customer</th>
-                            <th width="150" >Recieve by</th>
-                            <th>Remark</th>
+                            <th width="48">ลำดับ <br> No.</th>
+                            <th width="150">วันที่ <br> Invoice Date</th>
+                            <th width="150">เลขที่ใบกำกับภาษี <br> Invoice Code.</th>
+                            <th>ลูกค้า <br> Customer</th>
+                            <th width="150" >ผู้ออกเอกสาร <br> Create by</th>
+                            <th>จำนวนเงิน</th>
+                            <th>ภาษีขาย</th>
+                            <th>จำนวนเงินสุทธิ</th>
 							
                             <th width="64"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php 
+                        $invoice_customer_total_price =0;
+                        $invoice_customer_vat_price =0;
+                        $invoice_customer_net_price =0;
                         for($i=0; $i < count($invoice_customers); $i++){
+                            $invoice_customer_total_price +=$invoice_customers[$i]['invoice_customer_total_price'];
+                            $invoice_customer_vat_price +=$invoice_customers[$i]['invoice_customer_vat_price'];
+                            $invoice_customer_net_price +=$invoice_customers[$i]['invoice_customer_net_price'];
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
@@ -198,7 +206,9 @@
                             <td><?php echo $invoice_customers[$i]['invoice_customer_code']; ?></td>
                             <td><?php echo $invoice_customers[$i]['customer_name']; ?> </td>
                             <td><?php echo $invoice_customers[$i]['employee_name']; ?></td>
-                            <td><?php echo $invoice_customers[$i]['invoice_customer_remark']; ?></td>
+                            <td align="right"><?php echo number_format($invoice_customers[$i]['invoice_customer_total_price'],2); ?></td>
+                            <td align="right"><?php echo number_format($invoice_customers[$i]['invoice_customer_vat_price'],2); ?></td>
+                            <td align="right"><?php echo number_format($invoice_customers[$i]['invoice_customer_net_price'],2); ?></td>
 
                             <td>
                                 <a href="?app=invoice_customer&action=detail&id=<?php echo $invoice_customers[$i]['invoice_customer_id'];?>">
@@ -228,6 +238,15 @@
                         }
                         ?>
                     </tbody>
+                    <tfoot>
+                        <tr class="odd gradeX">
+                            <td colspan ="5"><b>จำนวนเงินรวม</b></td>
+                            <td align="right"><?php echo number_format($invoice_customer_total_price,2); ?></td>
+                            <td align="right"><?php echo number_format($invoice_customer_vat_price,2); ?></td>
+                            <td align="right"><?php echo number_format($invoice_customer_net_price,2); ?></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
                 </table>
                 
             </div>

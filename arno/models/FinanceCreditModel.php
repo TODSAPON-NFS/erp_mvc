@@ -131,6 +131,7 @@ class FinanceCreditModel extends BaseModel{
                     GROUP BY tb_invoice_supplier.invoice_supplier_id 
                     HAVING MAX(IFNULL(tb_invoice_supplier.invoice_supplier_net_price,0)) > SUM(IFNULL(finance_credit_list_balance,0)) 
                 ) 
+                ORDER BY supplier_name_en
         "; 
         $data = [];
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

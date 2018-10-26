@@ -79,9 +79,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     </table>
 
     <div>สำนักงานใหญ่ : '.$company['company_address_1'].' '.$company['company_address_2'].' <br>'.$company['company_address_3'].' 
-    Tel.'.$company['company_tel'].' Fax. '.$company['company_fax'].'</div>
-    <div align="center" style="font-size:12px;">ใบเสร็จรับเงิน</div>
-    <div align="center" style="font-size:12px;">OFFICIAL RECEIPT</div>
+    Tel.'.$company['company_tel'].' Fax. '.$company['company_fax'].' Tax. '.$company['company_tax'].'</div>
+    <div align="center" style="font-size:16px;">ใบเสร็จรับเงิน</div>
+    <div align="center" style="font-size:16px;">OFFICIAL RECEIPT</div>
 
     <div style="display:block;padding:4px;">
         Receipt by thanks from : -
@@ -92,7 +92,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <tr>
                 <td style="padding:4px;">
                     <div style="display:block;padding:8px;"> '.$finance_debit['finance_debit_name'].'  '.$branch.' </div>
-                    <div style="display:block;padding:8px;"> '. $finance_debit['finance_debit_address'].'</div>
+                    <div style="display:block;padding:8px;"> '.nl2br ( $finance_debit['finance_debit_address']).'</div>
                     <div style="display:block;padding:8px;"> เลขประจำตัวผู้เสียภาษี / Tax : '.$finance_debit['finance_debit_tax'].' </div>
                 </td>
                 <td width="240">
@@ -248,13 +248,13 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         <tr>
         <tr>
             <td>[ ]</td>
-            <td>CASH  no._____________________</td>
+            <td>CASH </td>
             <td>date ___________________</td>
             <td>Baht _________________</td>
         </tr>
         <tr>
             <td>[ ]</td>
-            <td>TRANSFER no.________________</td>
+            <td>TRANSFER </td>
             <td>date ___________________</td>
             <td>Baht _________________</td>
         </tr>

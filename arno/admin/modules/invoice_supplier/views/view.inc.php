@@ -323,14 +323,22 @@
                                     <!--
                                     <th width="150" >Recieve by</th>
                                     -->
-                                    <th>หมายเหตุ <br>Remark</th>
+                                    <th>จำนวนเงิน</th>
+                                    <th>ภาษีซื้อ</th>
+                                    <th>จำนวนเงินสุทธิ</th>
                                     
                                     <th width="100"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php 
+                                $invoice_supplier_total_price =0;
+                                $invoice_supplier_vat_price =0;
+                                $invoice_supplier_net_price =0;
                                 for($i=0; $i < count($invoice_suppliers); $i++){
+                                    $invoice_supplier_total_price +=$invoice_suppliers[$i]['invoice_supplier_total_price'];
+                                    $invoice_supplier_vat_price +=$invoice_suppliers[$i]['invoice_supplier_vat_price'];
+                                    $invoice_supplier_net_price +=$invoice_suppliers[$i]['invoice_supplier_net_price'];
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
@@ -342,7 +350,9 @@
                                     <!--
                                     <td><?php echo $invoice_suppliers[$i]['employee_name']; ?></td>
                                     -->
-                                    <td><?php echo $invoice_suppliers[$i]['invoice_supplier_remark']; ?></td>
+                                    <td align="right"><?php echo number_format($invoice_suppliers[$i]['invoice_supplier_total_price'],2); ?></td>
+                                    <td align="right"><?php echo number_format($invoice_suppliers[$i]['invoice_supplier_vat_price'],2); ?></td>
+                                    <td align="right"><?php echo number_format($invoice_suppliers[$i]['invoice_supplier_net_price'],2); ?></td>
 
                                     <td>
                                         <a href="?app=invoice_supplier&action=detail&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
@@ -377,6 +387,15 @@
                                 }
                                 ?>
                             </tbody>
+                            <tfoot>
+                                <tr class="odd gradeX">
+                                    <td colspan ="6"><b>จำนวนเงินรวม</b></td>
+                                    <td align="right"><?php echo number_format($invoice_supplier_total_price,2); ?></td>
+                                    <td align="right"><?php echo number_format($invoice_supplier_vat_price,2); ?></td>
+                                    <td align="right"><?php echo number_format($invoice_supplier_net_price,2); ?></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>

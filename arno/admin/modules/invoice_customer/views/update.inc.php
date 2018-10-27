@@ -670,7 +670,8 @@ generate_credit_date();
                                 <td>
                                     <input type="hidden" name="customer_purchase_order_list_id[]" value="<?PHP echo  $invoice_customer_lists[$i]['customer_purchase_order_list_id'];?>" />
                                     <input type="hidden" name="invoice_customer_list_id[]" value="<?PHP echo  $invoice_customer_lists[$i]['invoice_customer_list_id'];?>" />
-                                   
+                                    <input type="hidden" name="old_cost[]" value="<?PHP echo  $invoice_customer_lists[$i]['invoice_customer_list_price'];?>" />
+                                    <input type="hidden" name="old_qty[]" value="<?PHP echo  $invoice_customer_lists[$i]['invoice_customer_list_qty'];?>" />
                                     <input type="hidden" name="product_id[]" class="form-control" value="<?php echo $invoice_customer_lists[$i]['product_id']; ?>" />
                                     <input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="<?php echo $invoice_customer_lists[$i]['product_code']; ?>"  readonly/>
                                 </td>

@@ -23,7 +23,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>วันที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
-                        <input id="invoice_customer_date" name="invoice_customer_date" class="form-control calendar" value="<?php echo $invoice_customer['invoice_customer_date']; ?>" readonly />
+                        <input id="invoice_customer_date" name="invoice_customer_date" class="form-control calendar" value="<?php echo $invoice_customer['invoice_customer_date']; ?>" onchange="sale_duty_date();" readonly />
                         <p class="help-block">Example : -.</p>
                     </div>
                 </div> 
@@ -176,6 +176,11 @@ var invoice_customer_options = {
 
     requestDelay: 400
 };
+ 
+function sale_duty_date(){
+    var d = $('#invoice_customer_date').val().toString().split("-");
+    $('#customer_vat_section').val(d[2].substr(2, 2) +  "/" + d[1]);
+}
 
 
 function edit_invoice_customer_row(id,journal_id){
@@ -223,7 +228,7 @@ function edit_invoice_customer_row(id,journal_id){
             $('#invoice_customer_name').val(''); 
             $('#invoice_customer_tax').val(''); 
             $('#invoice_customer_address').val(''); 
-            $('#customer_vat_section').val(''); 
+            sale_duty_date();
             $('#customer_vat_section_add').val('');
             $('#invoice_customer_total_price').val('0');
             $('#invoice_customer_vat_price').val('0');
@@ -254,7 +259,7 @@ function add_invoice_customer_row(id,journal_id){
     $('#invoice_customer_name').val(''); 
     $('#invoice_customer_tax').val(''); 
     $('#invoice_customer_address').val(''); 
-    $('#customer_vat_section').val(''); 
+    sale_duty_date();
     $('#customer_vat_section_add').val('');
     $('#invoice_customer_total_price').val('0');
     $('#invoice_customer_vat_price').val('0');
@@ -320,7 +325,7 @@ function get_invoice_customer_data(id,code){
             $('#invoice_customer_name').val(''); 
             $('#invoice_customer_tax').val(''); 
             $('#invoice_customer_address').val(''); 
-            $('#customer_vat_section').val(''); 
+            sale_duty_date();
             $('#customer_vat_section_add').val('');
             $('#invoice_customer_total_price').val('0');
             $('#invoice_customer_vat_price').val('0');

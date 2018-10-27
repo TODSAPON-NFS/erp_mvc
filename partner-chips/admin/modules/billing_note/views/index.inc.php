@@ -163,7 +163,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             }
 
 ?>
-        <script>window.location="index.php?app=billing_note&action=update&id=<?php echo $output;?>"</script>
+        <script>window.location="index.php?app=billing_note"</script>
 <?php
         }else{
 ?>
@@ -245,7 +245,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         if($output){
         
 ?>
-        <script>window.location="index.php?app=billing_note&action=update&id=<?php echo $billing_note_id;?>"</script>
+        <script>window.location="index.php?app=billing_note"</script>
 <?php
         }else{
 ?>

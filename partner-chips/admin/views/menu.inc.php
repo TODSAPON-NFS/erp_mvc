@@ -841,6 +841,12 @@
                                         <li>
                                             <a href="?app=report_account_04" <?PHP if($_GET['app'] == "report_account_04"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวัน </a>
                                         </li> 
+										<li>
+                                            <a href="?app=report_account_05" <?PHP if($_GET['app'] == "report_account_05"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> งบทดลอง </a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=report_account_06" <?PHP if($_GET['app'] == "report_account_06"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> บัญชีแยกประเภท </a>
+                                        </li>
                                     </ul>
                                 </li>
 

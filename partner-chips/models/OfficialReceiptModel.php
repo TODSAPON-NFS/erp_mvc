@@ -130,6 +130,7 @@ class OfficialReceiptModel extends BaseModel{
                     ) 
                     GROUP BY customer_id 
                 ) 
+                ORDER BY customer_name_en
         ";
 
         $data = [];
@@ -178,7 +179,7 @@ class OfficialReceiptModel extends BaseModel{
             FROM tb_official_receipt_list 
             GROUP BY billing_note_list_id 
         ) 
-        ORDER BY  STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') ";
+        ORDER BY  invoice_customer_code ";
 
 
         $data = [];

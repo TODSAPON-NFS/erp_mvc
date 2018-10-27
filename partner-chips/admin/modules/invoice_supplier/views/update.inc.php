@@ -182,7 +182,9 @@
     function delete_row(id){
         $(id).closest('tr').remove();
         calculateAll();
+        <?PHP if($sort == "ภายนอกประเทศ"){ ?>
         calculateCost();
+        <?PHP } ?>
      }
 
      function show_data(id){
@@ -233,8 +235,10 @@
             val_price =  val_purchase_price * exchange_rate;
             val_sum = val_qty*val_price;
 
+            console.log("val_price",val_price);
+
             qty[i].value = val_qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") ;
-            price[i].value = val_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") ;
+            price[i].value = numberWithCommas(val_price.toFixed(4)) ;
             sum[i].value = val_sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
         }  
         calculateAll();
@@ -296,7 +300,11 @@
                     for(var i = 0; i < data.length ; i++){
 
                         var invoice_supplier_list_qty = parseFloat( data[i].invoice_supplier_list_qty );
+                        <?PHP if($sort != "ภายนอกประเทศ"){ ?>
+                        var invoice_supplier_list_price = parseFloat( data[i].purchase_order_list_price );
+                        <?PHP } else { ?>
                         var invoice_supplier_list_price = parseFloat( data[i].invoice_supplier_list_price );
+                        <?PHP } ?>
                         var invoice_supplier_list_total = invoice_supplier_list_price * invoice_supplier_list_qty;
 
                         content += '<tr class="odd gradeX">'+
@@ -359,7 +367,11 @@
                 for(var i = 0; i < data.length ; i++){
 
                     var invoice_supplier_list_qty = parseFloat( data[i].invoice_supplier_list_qty );
+                    <?PHP if($sort != "ภายนอกประเทศ"){ ?>
+                    var invoice_supplier_list_price = parseFloat( data[i].purchase_order_list_price );
+                    <?PHP } else { ?>
                     var invoice_supplier_list_price = parseFloat( data[i].invoice_supplier_list_price );
+                    <?PHP } ?>
                     var invoice_supplier_list_total = invoice_supplier_list_price * invoice_supplier_list_qty;
 
                     content += '<tr class="odd gradeX">'+
@@ -472,7 +484,7 @@
                     '<tr class="odd gradeX">'+
                         '<td>'+
                             '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'" readonly />'+   
-                            '<input type="hidden" name="invoice_supplier_list_cost[]" value="0" readonly />'+     
+                            '<input type="hidden" name="invoice_supplier_list_cost[]" value="'+ price.toFixed(2)+'" readonly />'+     
                             '<input type="hidden" name="product_id[]" class="form-control" value="'+ data_buffer[i].product_id +'" />'+
 					        '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="'+ data_buffer[i].product_code +'" />'+ 
                         '</td>'+
@@ -607,9 +619,7 @@
 
 
     function calculateAll(){
-        
-
-        var exchange_rate_baht = parseFloat(document.getElementById('exchange_rate_baht').value.toString().replace(new RegExp(',', 'g'),''));
+         
         var val = document.getElementsByName('invoice_supplier_list_total[]');
         var total = 0.0;
 
@@ -984,7 +994,7 @@
                                 <?PHP if($sort == "ภายนอกประเทศ"){ ?>
                                     <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="purchase_order_list_price[]" value="<?php echo $invoice_supplier_lists[$i]['purchase_order_list_price']; ?>" /></td>
                                 <?PHP } ?>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_supplier_list_price[]" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_price'],2); ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_supplier_list_price[]" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_price'],4); ?>" /></td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="invoice_supplier_list_total[]" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_qty'] * $invoice_supplier_lists[$i]['invoice_supplier_list_price'],2); ?>" /></td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">

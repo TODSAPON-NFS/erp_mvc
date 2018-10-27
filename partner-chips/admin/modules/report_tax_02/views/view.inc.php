@@ -122,7 +122,7 @@
                             <td><?php echo $i+1; ?></td>
                             <td><?php echo $tax_reports[$i]['invoice_customer_date']; ?></td>
                             <td><?php echo $tax_reports[$i]['invoice_customer_code']; ?></td>
-                            <td><?php echo $tax_reports[$i]['customer_name']; ?> </td>
+                            <td><?php echo $tax_reports[$i]['invoice_customer_name']; ?> </td>
                             <td><?php echo $tax_reports[$i]['employee_name']; ?></td>
                             <td  align="right" >
                                 <?php echo number_format($tax_reports[$i]['invoice_customer_total_price'],2); ?>

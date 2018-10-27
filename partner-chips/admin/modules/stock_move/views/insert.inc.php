@@ -186,7 +186,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>หมายเลขใบย้ายสินค้า / Stock Transfer Code <font color="#F00"><b>*</b></font></label>
-                                        <input id="stock_move_code" name="stock_move_code" class="form-control" value="<?php echo $last_code;?>" readonly>
+                                        <input id="stock_move_code" name="stock_move_code" class="form-control" value="<?php echo $last_code;?>" >
                                         <p class="help-block">Example : SM1801001.</p>
                                     </div>
                                 </div>

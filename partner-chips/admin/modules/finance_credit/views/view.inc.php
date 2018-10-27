@@ -35,7 +35,11 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $supplier_orders[$i]['supplier_name_en']; ?></td>
+                                    <td>
+                                        <a href="?app=finance_credit&action=insert&supplier_id=<?php echo $supplier_orders[$i]['supplier_id'];?>">
+                                            <?php echo $supplier_orders[$i]['supplier_name_en']; ?>
+                                        </a>
+                                    </td>
                                     <td>
                                         <a href="?app=finance_credit&action=insert&supplier_id=<?php echo $supplier_orders[$i]['supplier_id'];?>">
                                             <i class="fa fa-plus-square" aria-hidden="true"></i>

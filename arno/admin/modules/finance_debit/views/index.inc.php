@@ -97,7 +97,10 @@ if(!isset($_GET['action'])){
     $accounts=$account_model->getAccountAll();
 
     $customer=$customer_model->getCustomerByID($customer_id);
-    $finance_debit_lists = $finance_debit_model->generateFinanceDebitListByCustomerId($customer_id);
+    if($customer_id != 0){
+        $finance_debit_lists = $finance_debit_model->generateFinanceDebitListByCustomerId($customer_id);
+    }
+    
     $users=$user_model->getUserBy();
    
     $user=$user_model->getUserByID($admin_id);

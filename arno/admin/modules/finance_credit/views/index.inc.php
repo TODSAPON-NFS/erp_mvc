@@ -95,7 +95,10 @@ if(!isset($_GET['action'])){
     $accounts=$account_model->getAccountAll();
 
     $supplier=$supplier_model->getSupplierByID($supplier_id);
-    $finance_credit_lists = $finance_credit_model->generateFinanceCreditListBySupplierId($supplier_id);
+    if($supplier_id != 0){
+        $finance_credit_lists = $finance_credit_model->generateFinanceCreditListBySupplierId($supplier_id);
+    }
+    
     $users=$user_model->getUserBy();
 
     $user=$user_model->getUserByID($admin_id);

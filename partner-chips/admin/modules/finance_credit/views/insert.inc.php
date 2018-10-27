@@ -163,7 +163,7 @@
         $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id }, function( data ) {
             document.getElementById('supplier_code').value = data.supplier_code;
             document.getElementById('finance_credit_name').value = data.supplier_name_en ;
-            document.getElementById('finance_credit_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
+            document.getElementById('finance_credit_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3+' '+ data.customer_zipcode+ '\nTel.'+ data.customer_tel+' Fax. '+data.customer_fax;
             document.getElementById('finance_credit_tax').value = data.supplier_tax ;
         });
     }

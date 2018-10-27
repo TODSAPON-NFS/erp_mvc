@@ -23,7 +23,15 @@ class StockModel extends BaseModel{
                 `stock_date` varchar(50) NOT NULL COMMENT 'วันที่ดำเนินการ', 
                 `customer_id` int(11) NOT NULL COMMENT 'รหัสลูกค้า', 
                 `supplier_id` int(11) NOT NULL COMMENT 'รหัสผู้ขาย', 
-                `qty` int(11) NOT NULL COMMENT 'จำนวน', 
+                `in_qty` int(11) NOT NULL COMMENT 'จำนวน (เข้า)', 
+                `in_price` double	 NOT NULL COMMENT 'ราคาต่อชิ้น (เข้า)', 
+                `in_total` double	 NOT NULL COMMENT 'ราคารวม (เข้า)', 
+                `out_qty` int(11) NOT NULL COMMENT 'จำนวน (ออก)', 
+                `out_price` double	 NOT NULL COMMENT 'ราคาต่อชิ้น (ออก)', 
+                `out_total` double	 NOT NULL COMMENT 'ราคารวม (ออก)', 
+                `balance_qty` int(11) NOT NULL COMMENT 'จำนวน (คงเหลือ)', 
+                `balance_price` double	 NOT NULL COMMENT 'ราคาต่อชิ้น (คงเหลือ)', 
+                `balance_total` double	 NOT NULL COMMENT 'ราคารวม (คงเหลือ)', 
                 `delivery_note_supplier_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการยืมเข้า', 
                 `delivery_note_customer_list_id` int(11) DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการยืมออก', 
                 `invoice_supplier_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการซื้อเข้า', 
@@ -83,36 +91,36 @@ class StockModel extends BaseModel{
     function getStockLogListByDate($date_start = '', $date_end = '', $stock_group_id = '', $keyword = ''){
         $str = " AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s') AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%Y-%m-%d %H:%i:%s') ";
 
-        $sql_old_in = "SELECT SUM(qty) 
+        $sql_old_in = "SELECT SUM(in_qty) 
         FROM ".$this->table_name."  
         WHERE ".$this->table_name.".product_id = tb.product_id 
         AND stock_type = 'in' 
         AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') < STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s')";
 
 
-        $sql_old_out = "SELECT SUM(qty) 
+        $sql_old_out = "SELECT SUM(out_qty) 
         FROM ".$this->table_name."  
         WHERE ".$this->table_name.".product_id = tb.product_id 
         AND stock_type = 'out' 
         AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') < STR_TO_DATE('$date_start','%Y-%m-%d %H:%i:%s')";
 
 
-        $sql_in = "SELECT SUM(qty) 
+        $sql_in = "SELECT SUM(in_qty) 
         FROM ".$this->table_name."  
         WHERE ".$this->table_name.".product_id = tb.product_id 
         AND stock_type = 'in' ".$str;
 
-        $sql_out = "SELECT SUM(qty) 
+        $sql_out = "SELECT SUM(out_qty) 
         FROM ".$this->table_name." 
         WHERE ".$this->table_name.".product_id = tb.product_id 
         AND stock_type = 'out' ".$str;
 
-        $sql_borrow_in = "SELECT SUM(qty) 
+        $sql_borrow_in = "SELECT SUM(in_qty) 
         FROM ".$this->table_name." 
         WHERE ".$this->table_name.".product_id = tb.product_id 
         AND stock_type = 'borrow_in' ".$str;
 
-        $sql_borrow_out = "SELECT SUM(qty) 
+        $sql_borrow_out = "SELECT SUM(out_qty) 
         FROM ".$this->table_name." 
         WHERE ".$this->table_name.".product_id = tb.product_id 
         AND stock_type = 'borrow_out' ".$str;
@@ -158,7 +166,7 @@ class StockModel extends BaseModel{
 
     function getStockInByDate($date_start = '', $date_end = ''){
         $sql = "SELECT stock_id, stock_date, ".$this->table_name.".product_id,  CONCAT(product_code_first,product_code) as product_code, 
-        product_name, product_type, product_status , qty , supplier_name_th, supplier_name_en 
+        product_name, product_type, product_status , in_qty , supplier_name_th, supplier_name_en 
         FROM ".$this->table_name." 
         LEFT JOIN tb_product ON ".$this->table_name.".product_id = tb_product.product_id 
         LEFT JOIN tb_invoice_supplier_list ON ".$this->table_name.".invoice_supplier_list_id = tb_invoice_supplier_list.invoice_supplier_list_id 
@@ -183,7 +191,7 @@ class StockModel extends BaseModel{
 
     function getStockOutByDate($date_start = '', $date_end = ''){
         $sql = "SELECT stock_id, stock_date, ".$this->table_name.".product_id,  CONCAT(product_code_first,product_code) as product_code, 
-        product_name, product_type, product_status , qty , customer_name_th, customer_name_en 
+        product_name, product_type, product_status , out_qty , customer_name_th, customer_name_en 
         FROM ".$this->table_name." 
         LEFT JOIN tb_product ON ".$this->table_name.".product_id = tb_product.product_id 
         LEFT JOIN tb_invoice_customer_list ON ".$this->table_name.".invoice_customer_list_id = tb_invoice_customer_list.invoice_customer_list_id 
@@ -213,7 +221,15 @@ class StockModel extends BaseModel{
         stock_date = '".$data['stock_date']."' , 
         customer_id = '".$data['customer_id']."' , 
         supplier_id = '".$data['supplier_id']."' , 
-        qty = '".$data['qty']."' , 
+        in_qty = '".$data['in_qty']."' , 
+        in_price = '".$data['in_price']."' , 
+        in_total = '".$data['in_total']."' , 
+        out_qty = '".$data['out_qty']."' , 
+        out_price = '".$data['out_price']."' , 
+        out_total = '".$data['out_total']."' , 
+        balance_qty = '".$data['balance_qty']."' , 
+        balance_price = '".$data['balance_price']."' , 
+        balance_total = '".$data['balance_total']."' , 
         delivery_note_supplier_list_id = '".$data['delivery_note_supplier_list_id']."' , 
         delivery_note_customer_list_id = '".$data['delivery_note_customer_list_id']."' , 
         invoice_supplier_list_id = '".$data['invoice_supplier_list_id']."' , 
@@ -239,7 +255,15 @@ class StockModel extends BaseModel{
             stock_date, 
             customer_id, 
             supplier_id, 
-            qty, 
+            in_qty, 
+            in_price, 
+            in_total,  
+            out_qty, 
+            out_price, 
+            out_total,  
+            balance_qty, 
+            balance_price, 
+            balance_total,  
             delivery_note_supplier_list_id, 
             delivery_note_customer_list_id, 
             invoice_supplier_list_id, 
@@ -254,7 +278,15 @@ class StockModel extends BaseModel{
             '".$data['stock_date']."', 
             '".$data['customer_id']."', 
             '".$data['supplier_id']."', 
-            '".$data['qty']."', 
+            '".$data['in_qty']."', 
+            '".$data['in_price']."', 
+            '".$data['in_total']."', 
+            '".$data['out_qty']."', 
+            '".$data['out_price']."', 
+            '".$data['out_total']."', 
+            '".$data['balance_qty']."', 
+            '".$data['balance_price']."', 
+            '".$data['balance_total']."', 
             '".$data['delivery_note_supplier_list_id']."', 
             '".$data['delivery_note_customer_list_id']."', 
             '".$data['invoice_supplier_list_id']."', 

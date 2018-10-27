@@ -51,6 +51,7 @@ $purchase_request_id = $_GET['purchase_request_id'];
 $type = strtoupper($_GET['type']);
 
 
+
 if(!isset($_GET['action'])){
 
     $date_start = $_GET['date_start'];

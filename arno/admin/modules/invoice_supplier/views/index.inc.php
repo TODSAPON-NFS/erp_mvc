@@ -200,8 +200,8 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 
         if($invoice_supplier_id > 0){ 
             //----------------------------- สร้างสมุดรายวันซื้อ ----------------------------------------
-            $data = [];
-
+            
+/*
             $purchase_paper = $paper_model->getPaperByID('27');
             $user=$user_model->getUserByID($admin_id);
             $data = [];
@@ -222,10 +222,11 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
                 }   
             }
             $first_date = date("d")."-".date("m")."-".date("Y");  
-
+*/
+            $data = [];
             $data['invoice_supplier_id'] = $invoice_supplier_id;
             $data['journal_purchase_date'] = $_POST['invoice_supplier_date_recieve'];
-            $data['journal_purchase_code'] = $last_code;
+            $data['journal_purchase_code'] = $_POST['invoice_supplier_code_gen'];
             $data['journal_purchase_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
             $data['addby'] = $admin_id; 
             $journal_purchase_id = $journal_purchase_model->insertJournalPurchase($data);
@@ -419,7 +420,8 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
        
         $product_id = $_POST['product_id'];
         $invoice_supplier_list_id = $_POST['invoice_supplier_list_id'];
-        
+        $old_cost = $_POST['old_cost'];
+        $old_qty = $_POST['old_qty'];
         $invoice_supplier_list_product_name = $_POST['invoice_supplier_list_product_name'];
         $invoice_supplier_list_product_detail = $_POST['invoice_supplier_list_product_detail'];
         $invoice_supplier_list_qty = $_POST['invoice_supplier_list_qty'];
@@ -441,6 +443,8 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
                 $data_sub['product_id'] = $product_id[$i];
                 $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
                 
+                $data_sub['old_cost'] = $old_cost[$i];
+                $data_sub['old_qty'] = $old_qty[$i];
                 $data_sub['invoice_supplier_list_product_name'] = $invoice_supplier_list_product_name[$i];
                 $data_sub['invoice_supplier_list_product_detail'] = $invoice_supplier_list_product_detail[$i];
                 $data_sub['invoice_supplier_list_qty'] = (float)filter_var($invoice_supplier_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -465,6 +469,8 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
             $data_sub['product_id'] = $product_id;
             $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
 
+            $data_sub['old_cost'] = $old_cost;
+            $data_sub['old_qty'] = $old_qty;
             $data_sub['invoice_supplier_list_product_name'] = $invoice_supplier_list_product_name;
             $data_sub['invoice_supplier_list_product_detail'] = $invoice_supplier_list_product_detail;
             $data_sub['invoice_supplier_list_qty'] = (float)filter_var($invoice_supplier_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -490,7 +496,8 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         //----------------------------- สร้างสมุดรายวันซื้อ ----------------------------------------
         $journal_purchase = $journal_purchase_model->getJournalPurchaseByInvoiceSupplierID($invoice_supplier_id);
         if($journal_purchase['journal_purchase_id'] < 1){
-            $data = [];
+            
+            /*
             $purchase_paper = $paper_model->getPaperByID('27');
             $user=$user_model->getUserByID($admin_id);
             $data = [];
@@ -510,18 +517,20 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
                     $last_code .= $code[$i]['value'];
                 }   
             } 
-    
+            */
+            $data = [];
             $data['invoice_supplier_id'] = $invoice_supplier_id;
             $data['journal_purchase_date'] = $_POST['invoice_supplier_date_recieve'];
-            $data['journal_purchase_code'] = $last_code;
+            $data['journal_purchase_code'] = $_POST['invoice_supplier_code_gen'];
             $data['journal_purchase_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
             $data['addby'] = $admin_id; 
             $journal_purchase_id = $journal_purchase_model->insertJournalPurchase($data);
         }else{
+            $data = [];
             $journal_purchase_id = $journal_purchase['journal_purchase_id'];
             $data['invoice_supplier_id'] = $invoice_supplier_id;
             $data['journal_purchase_date'] = $_POST['invoice_supplier_date_recieve'];
-            $data['journal_purchase_code'] = $journal_purchase['journal_purchase_code'];
+            $data['journal_purchase_code'] = $_POST['invoice_supplier_code_gen'];
             $data['journal_purchase_name'] = "ซื้อเชื่อจาก ".$_POST['invoice_supplier_name']." [".$_POST['invoice_supplier_code']."] ";
             $data['addby'] = $admin_id; 
             $journal_purchase_model->updateJournalPurchaseByID($journal_purchase_id,$data);

@@ -162,7 +162,7 @@
         $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
             document.getElementById('customer_code').value = data.customer_code;
             document.getElementById('finance_debit_name').value = data.customer_name_en  ;
-            document.getElementById('finance_debit_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
+            document.getElementById('finance_debit_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3 +' '+ data.customer_zipcode + '\nTel.'+ data.customer_tel+' Fax. '+data.customer_fax;
             document.getElementById('finance_debit_tax').value = data.customer_tax ;
         });
     }
@@ -616,21 +616,21 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ชื่อตามใบรับชำระหนี้ / Full name <font color="#F00"><b>*</b></font></label>
-                                        <input  id="finance_debit_name" name="finance_debit_name" class="form-control" value="<?php echo $customer['customer_name_en'];?>  " >
+                                        <input  id="finance_debit_name" name="finance_debit_name" class="form-control" value="<?php echo $finance_debit['finance_debit_name'];?>  " >
                                         <p class="help-block">Example : Revel soft.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ที่อยู่ตามใบกำภาษี / Address <font color="#F00"><b>*</b></font></label>
-                                        <textarea  id="finance_debit_address" name="finance_debit_address" class="form-control" rows="5" ><?php echo $customer['customer_address_1'] ."\n". $customer['customer_address_2'] ."\n". $customer['customer_address_3'];?></textarea >
+                                        <textarea  id="finance_debit_address" name="finance_debit_address" class="form-control" rows="5" ><?php echo $finance_debit['finance_debit_address'];?></textarea >
                                         <p class="help-block">Example : IN.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>เลขประจำตัวผู้เสียภาษี / Tax <font color="#F00"><b>*</b></font></label>
-                                        <input  id="finance_debit_tax" name="finance_debit_tax" class="form-control" value="<?php echo $customer['customer_tax'];?>" >
+                                        <input  id="finance_debit_tax" name="finance_debit_tax" class="form-control" value="<?php echo $finance_debit['finance_debit_tax'];?>" >
                                         <p class="help-block">Example : 0305559003597.</p>
                                     </div>
                                 </div>

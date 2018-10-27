@@ -195,6 +195,8 @@
         require_once("modules/journal_purchase_return/views/index.inc.php");
     }else if($_GET['app'] == "journal_special_06"){
         require_once("modules/journal_sale_return/views/index.inc.php");
+    }else if($_GET['app'] == "maintenance"){
+        require_once("modules/maintenance/views/index.inc.php");
     }
 
     /* ----------------------------------- //ระบบบัญชี// ---------------------------------------------- */
@@ -227,6 +229,10 @@
 
     else if($_GET['app'] == "report_account_04"){
         require_once("modules/report_account_04/views/index.inc.php");
+    }else if($_GET['app'] == "report_account_05"){
+        require_once("modules/report_account_05/views/index.inc.php");
+    }else if($_GET['app'] == "report_account_06"){
+        require_once("modules/report_account_06/views/index.inc.php");
     }
 
     /* ----------------------------------- //ระบบรายงาน// ---------------------------------------------- */

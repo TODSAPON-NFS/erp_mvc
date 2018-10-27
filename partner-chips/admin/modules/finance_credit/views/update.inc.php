@@ -163,7 +163,7 @@
         $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id }, function( data ) {
             document.getElementById('supplier_code').value = data.supplier_code;
             document.getElementById('finance_credit_name').value = data.supplier_name_en ;
-            document.getElementById('finance_credit_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
+            document.getElementById('finance_credit_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3+' '+ data.customer_zipcode+ '\nTel.'+ data.customer_tel+' Fax. '+data.customer_fax;
             document.getElementById('finance_credit_tax').value = data.supplier_tax ;
         });
     }
@@ -625,21 +625,21 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ชื่อตามใบจ่ายชำระหนี้ / Full name <font color="#F00"><b>*</b></font></label>
-                                        <input  id="finance_credit_name" name="finance_credit_name" class="form-control" value="<?php echo $supplier['supplier_name_en'];?>" >
+                                        <input  id="finance_credit_name" name="finance_credit_name" class="form-control" value="<?php echo $finance_credit['finance_credit_name']; ?>" >
                                         <p class="help-block">Example : Revel soft.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ที่อยู่ตามใบกำภาษี / Address <font color="#F00"><b>*</b></font></label>
-                                        <textarea  id="finance_credit_address" name="finance_credit_address" class="form-control" rows="5" ><?php echo $supplier['supplier_address_1'] ."\n". $supplier['supplier_address_2'] ."\n". $supplier['supplier_address_3'];?></textarea >
+                                        <textarea  id="finance_credit_address" name="finance_credit_address" class="form-control" rows="5" ><?php echo $finance_credit['finance_credit_address']; ?></textarea >
                                         <p class="help-block">Example : IN.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>เลขประจำตัวผู้เสียภาษี / Tax <font color="#F00"><b>*</b></font></label>
-                                        <input  id="finance_credit_tax" name="finance_credit_tax" class="form-control" value="<?php echo $supplier['supplier_tax'];?>" >
+                                        <input  id="finance_credit_tax" name="finance_credit_tax" class="form-control" value="<?php echo $finance_credit['finance_credit_tax']; ?>" >
                                         <p class="help-block">Example : 0305559003597.</p>
                                     </div>
                                 </div>

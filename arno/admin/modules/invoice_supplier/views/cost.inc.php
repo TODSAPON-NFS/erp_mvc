@@ -203,16 +203,16 @@ function calculate(id,all_duty){
                             $cost_price_ex_total_s = 0;
                             for($i=0; $i < count($invoice_supplier_lists); $i++){
                                 $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
-                                $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
+                                $cost_price = $invoice_supplier_lists[$i]['purchase_order_list_price'] ;
                                 $cost_duty += $cost_qty * $cost_price;
                             }
 
                             for($i=0; $i < count($invoice_supplier_lists); $i++){
                                 $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
 
-                                $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
+                                $cost_price = $invoice_supplier_lists[$i]['purchase_order_list_price'] ;
 
-                                $cost_price_ex = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] * $exchange_rate_baht['exchange_rate_baht_value'];
+                                $cost_price_ex = $invoice_supplier_lists[$i]['purchase_order_list_price'] * $exchange_rate_baht['exchange_rate_baht_value'];
 
                                 $cost_price_total = $cost_qty * $cost_price;
 

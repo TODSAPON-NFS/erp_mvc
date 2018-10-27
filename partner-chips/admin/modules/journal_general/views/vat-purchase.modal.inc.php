@@ -23,7 +23,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>วันที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
-                        <input id="invoice_supplier_date" name="invoice_supplier_date" class="form-control calendar" value="<?php echo $invoice_supplier['invoice_supplier_date']; ?>" readonly />
+                        <input id="invoice_supplier_date" name="invoice_supplier_date" class="form-control calendar" value="<?php echo $invoice_supplier['invoice_supplier_date']; ?>" onchange="purchase_duty_date();" readonly />
                         <p class="help-block">Example : -.</p>
                     </div>
                 </div>
@@ -191,6 +191,12 @@ var invoice_supplier_options = {
     requestDelay: 400
 };
 
+function purchase_duty_date(){
+    var d = $('#invoice_supplier_date').val().toString().split("-");
+    console.log("test : " , d);
+    $('#vat_section').val(d[2].substr(2, 2) +  "/" + d[1]);
+}
+
 
 function edit_invoice_supplier_row(id,journal_id){
     row_journal_id = journal_id;
@@ -241,7 +247,7 @@ function edit_invoice_supplier_row(id,journal_id){
             $('#invoice_supplier_name').val(''); 
             $('#invoice_supplier_tax').val(''); 
             $('#invoice_supplier_address').val(''); 
-            $('#vat_section').val(''); 
+            purchase_duty_date(); 
             $('#vat_section_add').val('');
             $('#invoice_supplier_total_price').val('0');
             $('#invoice_supplier_vat_price').val('0');
@@ -274,7 +280,7 @@ function add_invoice_supplier_row(id,journal_id){
     $('#invoice_supplier_name').val(''); 
     $('#invoice_supplier_tax').val(''); 
     $('#invoice_supplier_address').val(''); 
-    $('#vat_section').val(''); 
+    purchase_duty_date(); 
     $('#vat_section_add').val('');
     $('#invoice_supplier_total_price').val('0');
     $('#invoice_supplier_vat_price').val('0');
@@ -344,7 +350,7 @@ function get_invoice_supplier_data(id,code){
             $('#invoice_supplier_name').val(''); 
             $('#invoice_supplier_tax').val(''); 
             $('#invoice_supplier_address').val(''); 
-            $('#vat_section').val(''); 
+            purchase_duty_date(); 
             $('#vat_section_add').val('');
             $('#invoice_supplier_total_price').val('0');
             $('#invoice_supplier_vat_price').val('0');

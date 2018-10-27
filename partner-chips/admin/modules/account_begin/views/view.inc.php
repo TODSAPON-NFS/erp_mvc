@@ -35,8 +35,9 @@ function setFormat(id){
                             <tr>
                                 <th width="150px" >เลขที่บัญชี<br>Account Code.</th>
                                 <th>ชื่อบัญชี<br>Account Name</th>
-                                <th width="200px">เครดิต<br>Credit</th>
                                 <th width="200px">เดบิต<br>Debit</th>
+                                <th width="200px">เครดิต<br>Credit</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -56,8 +57,9 @@ function setFormat(id){
                                     <?php echo $accounts[$i]['account_code']; ?>
                                 </td>
                                 <td><?php echo $accounts[$i]['account_name_th']; ?></td>
-                                <td width="200px" ><input type="text" name="account_credit_begin[]" onchange="setFormat(this);" style="text-align:right;" class="form-control" value="<?php echo number_format($accounts[$i]['account_credit_begin'],2); ?>" /></td>
                                 <td width="200px" ><input type="text" name="account_debit_begin[]" onchange="setFormat(this);" style="text-align:right;" class="form-control" value="<?php echo number_format($accounts[$i]['account_debit_begin'],2); ?>" /></td>
+                                <td width="200px" ><input type="text" name="account_credit_begin[]" onchange="setFormat(this);" style="text-align:right;" class="form-control" value="<?php echo number_format($accounts[$i]['account_credit_begin'],2); ?>" /></td>
+                                
                             </tr>
                         <?
                             }

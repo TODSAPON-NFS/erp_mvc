@@ -77,20 +77,31 @@ class InvoiceCustomerListModel extends BaseModel{
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $id = mysqli_insert_id(static::$db);
 
-            $sql = "
-            CALL insert_stock_customer('".
-            $data['stock_group_id']."','".
-            $id."','".
-            $data['product_id']."','".
-            $data['invoice_customer_list_qty']."','".
-            $data['stock_date']."','".
-            $data['invoice_customer_list_cost']."'".
-            ");
-        ";
+            $sql = " SELECT stock_event 
+                FROM tb_product 
+                LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
+                WHERE product_id = '".$data['product_id']."' ";
+            
+            if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                 $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+                 $result->close();
+            }
 
-            //echo $sql . "<br><br>";
+            if($row['stock_event'] != "None"){
 
-            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+                $sql = "
+                    CALL insert_stock_customer('".
+                    $data['stock_group_id']."','".
+                    $id."','".
+                    $data['product_id']."','".
+                    $data['invoice_customer_list_qty']."','".
+                    $data['stock_date']."','".
+                    $data['invoice_customer_list_cost']."'".
+                    ");
+                ";
+
+                mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT); 
+            } 
 
             return $id; 
         }else {
@@ -118,22 +129,35 @@ class InvoiceCustomerListModel extends BaseModel{
        //echo $sql . "<br><br>";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-            $sql = "
-                CALL update_stock_customer('".
-                $data['stock_group_id']."','".
-                $id."','".
-                $data['product_id']."','".
-                $data['stock_date']."','".
-                $data['old_qty']."','". 
-                $data['old_cost']."','". 
-                $data['invoice_customer_list_qty']."','". 
-                $data['invoice_customer_list_cost']."'".
-                ");
-            ";
 
-            //echo $sql . "<br><br>";
+            $sql = " SELECT stock_event 
+                FROM tb_product 
+                LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
+                WHERE product_id = '".$data['product_id']."' ";
+            
+            if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                 $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+                 $result->close();
+            }
 
-            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+            if($row['stock_event'] != "None"){
+                $sql = "
+                    CALL update_stock_customer('".
+                    $data['stock_group_id']."','".
+                    $id."','".
+                    $data['product_id']."','".
+                    $data['stock_date']."','".
+                    $data['old_qty']."','". 
+                    $data['old_cost']."','". 
+                    $data['invoice_customer_list_qty']."','". 
+                    $data['invoice_customer_list_cost']."'".
+                    ");
+                ";
+
+                echo $sql . "<br><br>";
+
+                mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+            } 
            return true;
         }else {
             return false;
@@ -190,22 +214,26 @@ class InvoiceCustomerListModel extends BaseModel{
 
         $sql = "    SELECT * 
                     FROM  tb_invoice_customer_list 
+                    LEFT JOIN tb_product ON tb_invoice_customer_list.product_id = tb_product.product_id 
+                    LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
                     WHERE invoice_customer_id = '$id' 
-                    AND invoice_customer_list_id NOT IN ($str) ";   
+                    AND invoice_customer_list_id NOT IN ($str) 
+                ";   
 
         $sql_delete=[];
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                $sql_delete [] = "
-                    CALL delete_stock_customer('".
-                    $row['stock_group_id']."','".
-                    $row['invoice_customer_list_id']."','".
-                    $row['product_id']."','".
-                    $row['invoice_customer_list_qty']."','".
-                    $row['invoice_customer_list_cost']."'".
-                    ");
-                ";
-               
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){ 
+                if($row['stock_event'] != "None"){
+                    $sql_delete [] = "
+                        CALL delete_stock_customer('".
+                        $row['stock_group_id']."','".
+                        $row['invoice_customer_list_id']."','".
+                        $row['product_id']."','".
+                        $row['invoice_customer_list_qty']."','".
+                        $row['invoice_customer_list_cost']."'".
+                        ");
+                    ";
+                } 
             }
             $result->close();
         }

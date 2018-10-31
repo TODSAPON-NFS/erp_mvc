@@ -111,17 +111,17 @@
                 </div>
                 <br>
 
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table width="100%" class="table table-striped table-bordered table-hover" >
                     <thead>
                         <tr>
                             <th>ลำดับ</th>
                             <th>วันที่รับเช็ค </th>
                             <th>หมายเลขเช็ค</th>
-                            <th>จำนวนเงิน </th>
                             <th>ผู้สั่งจ่าย</th>
                             <th>วันที่ออกเช็ค</th>
                             <th>วันที่ฝากเช็ค</th>
                             <th>หมายเหตุ</th>
+                            <th>จำนวนเงิน </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -146,17 +146,31 @@
                                 }
                                 ?>    
                             </td>
-                            <td><?php echo $checks[$i]['check_total']; ?></td>
-                            <td><?php if($checks[$i]['customer_name_th'] != ""){echo $checks[$i]['customer_name_th'];}else{echo $checks[$i]['customer_name_en'];} ?> </td>
+                            <td><?php echo $checks[$i]['customer_name_en']; ?> </td>
                             <td><?php echo $checks[$i]['check_date_write']; ?></td>
                             <td><?php echo $checks[$i]['check_date_deposit']; ?></td>
                             <td><?php echo $checks[$i]['check_remark']; ?></td>
+                            <td align="right"><?php echo number_format($checks[$i]['check_total'],2); ?></td>
 
                             <td>
+                                <?PHP if($checks[$i]['check_status'] == '0'){ ?>
                                 <form role="form" method="post" onsubmit="return check(this,'<?PHP echo $checks[$i]['check_date_deposit']; ?>');" action="?app=bank_check_in_pass&action=pass&id=<?php echo $checks[$i]['check_id'];?>" enctype="multipart/form-data">
-                                    <input type="text" name="check_date_pass" class="form-control calendar" style="width:120px;"  readonly />
-                                    <button type="summit" class="btn btn-success" ><i class="fa fa-check" aria-hidden="true"></i> ผ่านเช็ค</button>
+                                    <table width="100%">
+                                        <tr>
+                                            <td>
+                                                <input type="text" name="check_date_pass" class="form-control calendar" style="width:120px;"  readonly />
+                                            </td>
+                                            <td>
+                                                <button type="summit" class="btn btn-success" ><i class="fa fa-check" aria-hidden="true"></i> ผ่านเช็ค</button>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </form>
+                                <?PHP } else { ?>
+                                <form role="form" method="post" action="?app=bank_check_in_pass&action=unpass&id=<?php echo $checks[$i]['check_id'];?>" enctype="multipart/form-data"> 
+                                    <button type="summit" class="btn btn-danger" ><i class="fa fa-times" aria-hidden="true"></i> ยกเลิก</button>
+                                </form>
+                                <?PHP } ?>
                             </td>
 
                         </tr>

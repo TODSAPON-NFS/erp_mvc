@@ -242,10 +242,7 @@
                                         <?PHP } ?>
                                     </td> 
 
-                                    <td>
-                                        <a href="?app=finance_credit&action=detail&id=<?php echo $finance_credits[$i]['finance_credit_id'];?>">
-                                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                        </a>
+                                    <td> 
 
                                         <a href="print.php?app=finance_credit&action=pdf&id=<?PHP echo $finance_credits[$i]['finance_credit_id'];?>" target="blank">
                                             <i class="fa fa-print" aria-hidden="true"></i>

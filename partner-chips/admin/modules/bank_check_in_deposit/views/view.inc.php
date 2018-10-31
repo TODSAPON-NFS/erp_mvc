@@ -36,6 +36,10 @@
         }
         
     }
+
+    function clear_deposit(id,check_id){
+        window.location="?app=bank_check_in_deposit&action=undeposit&id="+check_id;
+    }
 </script>
 
 <div class="row">
@@ -118,18 +122,18 @@
                 </div>
                 <br>
 
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table width="100%" class="table table-striped table-bordered table-hover" >
                     <thead>
                         <tr>
                             <th>ลำดับ </th>
                             <th>วันที่รับเช็ค </th>
                             <th>หมายเลขเช็ค</th>
-                            <th>จำนวนเงิน </th>
                             <th>ผู้สั่งจ่าย</th>
                             <th>วันที่ออกเช็ค</th>
                             <th>ธนาคารที่นำฝาก </th>
-                            <th>ค่าธรรมเนียม </th>
                             <th>วันที่ที่นำฝาก </th>
+                            <th>จำนวนเงิน </th>
+                            <th>ค่าธรรมเนียม </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -159,30 +163,52 @@
                                 }
                                 ?>    
                             </td>
-                            <td><?php echo $checks[$i]['check_total']; ?></td>
-                            <td><?php if($checks[$i]['customer_name_th'] != ""){echo $checks[$i]['customer_name_th'];}else{echo $checks[$i]['customer_name_en'];} ?> </td>
+                            <td><?php echo $checks[$i]['customer_name_en']; ?> </td>
                             <td><?php echo $checks[$i]['check_date_write']; ?></td>
                             <td>
+                            <?PHP  if($checks[$i]['check_date_deposit'] == ""){  ?>
                                 <select id="bank_deposit_id" name="bank_deposit_id" class="form-control select" data-live-search="true">
                                     <option value="">Select</option>
                                     <?php 
                                     for($ii =  0 ; $ii < count($accounts) ; $ii++){
                                     ?>
-                                    <option value="<?php echo $accounts[$ii]['bank_account_id'] ?>"><?php echo $accounts[$ii]['bank_account_name'] ?> </option>
+                                    <option value="<?php echo $accounts[$ii]['bank_account_id'] ?>" <?PHP if( $checks[$i]['bank_deposit_id'] == $accounts[$ii]['bank_account_id']){ ?> SELECTED <?PHP } ?>><?php echo $accounts[$ii]['bank_account_name'] ?> </option>
                                     <?
                                     }
                                     ?>
                                 </select>
+                            <?PHP } else { 
+                                for($ii =  0 ; $ii < count($accounts) ; $ii++){
+                                    if( $checks[$i]['bank_deposit_id'] == $accounts[$ii]['bank_account_id']){
+                                        echo $accounts[$ii]['bank_account_name'];
+                                    }  
+                                }
+                                    ?>
+                            <?PHP } ?> 
                             </td>
+                            <td> 
+                            <?PHP  if($checks[$i]['check_date_deposit'] == ""){  ?>
+                                <input type="text" name="check_date_deposit" class="form-control calendar" style="width:120px;" value="<?PHP echo  $checks[$i]['check_date_deposit']; ?>" readonly />
+                            <?PHP } else { ?>
+                                <?PHP echo  $checks[$i]['check_date_deposit']; ?>
+                            <?PHP } ?> 
+                            </td> 
+                            <td align="right"><?php echo number_format($checks[$i]['check_total'],2); ?></td>
 
                             <td>
-                                <input type="text" name="check_fee" class="form-control" style="width:80px;" value="0"   />
+                            <?PHP  if($checks[$i]['check_date_deposit'] == ""){  ?>
+                                <input type="text" name="check_fee" class="form-control" style="width:80px;" value="<?PHP echo  $checks[$i]['check_fee']; ?>"   />
+                            <?PHP } else { ?>
+                                <?PHP echo  $checks[$i]['check_fee']; ?>
+                            <?PHP } ?> 
                             </td> 
-                            <td> 
-                                <input type="text" name="check_date_deposit" class="form-control calendar" style="width:120px;"  readonly />
-                            </td> 
+                            
                             <td>
+                            <?PHP  if($checks[$i]['check_date_deposit'] == ""){  ?>
                                 <button type="button" class="btn btn-success" onclick="update_deposit(this,'<?PHP echo $checks[$i]['check_id']; ?>','<?PHP echo $checks[$i]['check_date_write']; ?>');" ><i class="fa fa-check" aria-hidden="true"></i> นำฝากเช็ค</button> 
+                            <?PHP } else { ?>
+                                <button type="button" class="btn btn-danger" onclick="clear_deposit(this,'<?PHP echo $checks[$i]['check_id']; ?>');" ><i class="fa fa-times" aria-hidden="true"></i> ยกเลิก</button> 
+                            <?PHP } ?> 
                             </td>
 
                         </tr>

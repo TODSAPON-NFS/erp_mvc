@@ -117,10 +117,11 @@
                             <th>ลำดับ <br>No.</th>
                             <th>วันที่จ่ายเช็ค </th>
                             <th>หมายเลขเช็ค</th>
-                            <th>จำนวนเงิน </th>
                             <th>ผู้ขาย</th>
                             <th>วันที่ออกเช็ค</th>
                             <th>หมายเหตุ <br>Remark</th>
+                            <th>เอกสารอ้างอิง</th> 
+                            <th>จำนวนเงิน </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -145,18 +146,42 @@
                                 }
                                 ?>    
                             </td>
-                            <td><?php echo $checks[$i]['check_pay_total']; ?></td>
                             <td><?php if($checks[$i]['supplier_name_th'] != ""){echo $checks[$i]['supplier_name_th'];}else{echo $checks[$i]['supplier_name_en'];} ?> </td>
                             <td><?php echo $checks[$i]['check_pay_date_write']; ?></td>
                             <td><?php echo $checks[$i]['check_pay_remark']; ?></td>
+                            <td>
+                            <?php 
+                                
+                                for($ii = 0; $ii < count($cheque_journals[$checks[$i]['check_pay_id']]) ; $ii++ ){
+                                    echo $cheque_journals[$checks[$i]['check_pay_id']][$ii]['journal_code'];
+                                    if($ii + 1 < count($cheque_journals[$checks[$ii]['check_pay_id']])){
+                                        echo ", ";
+                                    }
+                                }
+                            ?>
+                            </td>
+                            <td align="right" ><?php echo number_format($checks[$i]['check_pay_total'],2); ?></td>
 
                             <td>
+                                <?PHP if($checks[$i]['check_pay_status'] == '0'){ ?>
                                 <form role="form" method="post" onsubmit="return check(this,'<?PHP echo $checks[$i]['check_pay_date']; ?>');" action="?app=bank_check_pay_pass&action=pass&id=<?php echo $checks[$i]['check_pay_id'];?>" enctype="multipart/form-data">
-                                    <input type="text" name="check_pay_date_pass" class="form-control calendar"  readonly />
-                                    <button type="summit" class="btn btn-success" ><i class="fa fa-check" aria-hidden="true"></i> ผ่านเช็ค</button>
+                                    <table width="100%">
+                                        <tr>
+                                            <td style="padding:0px 4px;"> 
+                                                <input type="text" name="check_pay_date_pass" class="form-control calendar"  readonly />
+                                            </td>
+                                            <td style="padding:0px 4px;" > 
+                                                <button type="summit" class="btn btn-success" ><i class="fa fa-check" aria-hidden="true"></i> ผ่านเช็ค</button>
+                                            </td>
+                                        </tr>
+                                    </table> 
                                 </form>
-                            </td>
-
+                                <?PHP } else { ?>
+                                <form role="form" method="post" action="?app=bank_check_pay_pass&action=unpass&id=<?php echo $checks[$i]['check_pay_id'];?>" enctype="multipart/form-data"> 
+                                    <button type="summit" class="btn btn-danger" ><i class="fa fa-times" aria-hidden="true"></i> ยกเลิก</button>
+                                </form>
+                                <?PHP } ?> 
+                            </td> 
                         </tr>
                         <?
                         }

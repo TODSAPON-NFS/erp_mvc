@@ -18,7 +18,11 @@ if(!isset($_GET['action'])){
     $keyword = $_GET['keyword'];
 
     $suppliers=$supplier_model->getSupplierBy();
-    $checks = $check_model->getCheckPayBy('',$date_start,$date_end,$supplier_id,$keyword,'0');
+    $checks = $check_model->getCheckPayBy('',$date_start,$date_end,$supplier_id,$keyword,'');
+    $cheque_journals = [];
+    for($i=0; $i < count($checks); $i++){
+        $cheque_journals[$checks[$i]['check_pay_id']] = $check_model->getJournalByChequePayID($checks[$i]['check_pay_id']);
+    } 
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'pass'){
@@ -48,7 +52,11 @@ if(!isset($_GET['action'])){
     $keyword = $_GET['keyword'];
 
     $suppliers=$supplier_model->getSupplierBy();
-    $checks = $check_model->getCheckPayBy('',$date_start,$date_end,$supplier_id,$keyword,'0');
+    $checks = $check_model->getCheckPayBy('',$date_start,$date_end,$supplier_id,$keyword,'');
+    $cheque_journals = [];
+    for($i=0; $i < count($checks); $i++){
+        $cheque_journals[$checks[$i]['check_pay_id']] = $check_model->getJournalByChequePayID($checks[$i]['check_pay_id']);
+    } 
     require_once($path.'view.inc.php');
 
 }

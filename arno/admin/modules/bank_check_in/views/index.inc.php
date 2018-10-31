@@ -36,6 +36,10 @@ if(!isset($_GET['action'])){
 
     $customers=$customer_model->getCustomerBy();
     $checks = $check_model->getCheckBy('0',$date_start,$date_end,$customer_id,$keyword);
+    $cheque_journals = [];
+    for($i=0; $i < count($checks); $i++){
+        $cheque_journals[$checks[$i]['check_id']] = $check_model->getJournalByChequeID($checks[$i]['check_id']);
+    } 
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
@@ -152,6 +156,11 @@ if(!isset($_GET['action'])){
 
     $customers=$customer_model->getCustomerBy();
     $checks = $check_model->getCheckBy('0',$date_start,$date_end,$customer_id,$keyword);
+    $cheque_journals = [];
+    for($i=0; $i < count($checks); $i++){
+        $cheque_journals[$checks[$i]['check_id']] = $check_model->getJournalByChequeID($checks[$i]['check_id']);
+    }
+ 
     require_once($path.'view.inc.php');
 
 }

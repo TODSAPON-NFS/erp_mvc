@@ -20,7 +20,7 @@ if(!isset($_GET['action'])){
     $keyword = $_GET['keyword'];
 
     $customers=$customer_model->getCustomerBy();
-    $checks = $check_model->getCheckBy('',$date_start,$date_end,$customer_id,$keyword,'0','0');
+    $checks = $check_model->getCheckBy('',$date_start,$date_end,$customer_id,$keyword,'0','');
     $accounts=$account_model->getBankAccountBy();
     require_once($path.'view.inc.php');
 
@@ -53,7 +53,7 @@ if(!isset($_GET['action'])){
     $keyword = $_GET['keyword'];
 
     $customers=$customer_model->getCustomerBy();
-    $checks = $check_model->getCheckBy('',$date_start,$date_end,$customer_id,$keyword,'0','0');
+    $checks = $check_model->getCheckBy('',$date_start,$date_end,$customer_id,$keyword,'0','');
     $accounts=$account_model->getBankAccountBy();
     require_once($path.'view.inc.php');
 

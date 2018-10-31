@@ -1,3 +1,4 @@
+ 
 <script>
     function search(){
         var date_start = $("#date_start").val();
@@ -92,16 +93,17 @@
                 </div>
                 <br>
 
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table width="100%" class="table table-striped table-bordered table-hover" >
                     <thead>
                         <tr>
-                            <th>ลำดับ <br>No.</th>
+                            <th>ลำดับ </th>
                             <th>วันที่รับเช็ค </th>
-                            <th>หมายเลขเช็ค</th>
-                            <th>จำนวนเงิน </th>
+                            <th>หมายเลขเช็ค</th> 
                             <th>ผู้สั่งจ่าย</th>
                             <th>วันที่ออกเช็ค</th>
-                            <th>หมายเหตุ <br>Remark</th>
+                            <th>หมายเหตุ </th>
+                            <th>เอกสารอ้างอิง</th> 
+                            <th>จำนวนเงิน </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -130,20 +132,28 @@
                                 }
                                 ?>    
                             </td>
-                            <td align="right" ><?php echo number_format($checks[$i]['check_total'],2); ?></td>
+                            
                             <td><?php if($checks[$i]['customer_name_th'] != ""){echo $checks[$i]['customer_name_th'];}else{echo $checks[$i]['customer_name_en'];} ?></td>
                             <td><?php echo $checks[$i]['check_date_write']; ?></td>
                             <td><?php echo $checks[$i]['check_remark']; ?></td>
-
                             <td>
-                              
-                                <a href="?app=bank_check_in&action=detail&id=<?php echo $checks[$i]['check_id'];?>">
-                                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                </a>
-
+                            <?php 
+                                
+                                for($ii = 0; $ii < count($cheque_journals[$checks[$i]['check_id']]) ; $ii++ ){
+                                    echo $cheque_journals[$checks[$i]['check_id']][$ii]['journal_code'];
+                                    if($ii + 1 < count($cheque_journals[$checks[$ii]['check_id']])){
+                                        echo ", ";
+                                    }
+                                }
+                            ?>
+                            </td>
+                            <td align="right" ><?php echo number_format($checks[$i]['check_total'],2); ?></td>
+                            <td>
+                                <?PHP if(count($cheque_journals[$checks[$i]['check_id']]) == 0){ ?>
                                 <a href="?app=bank_check_in&action=update&id=<?php echo $checks[$i]['check_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
+                                <?PHP } ?>
                                 <a href="?app=bank_check_in&action=delete&id=<?php echo $checks[$i]['check_id'];?>" onclick="return confirm('You want to delete Delivery Note Customer : <?php echo $checks[$i]['check_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>

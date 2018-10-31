@@ -18,7 +18,7 @@ if(!isset($_GET['action'])){
     $keyword = $_GET['keyword'];
 
     $customers=$customer_model->getCustomerBy();
-    $checks = $check_model->getCheckBy('',$date_start,$date_end,$customer_id,$keyword,'0','1');
+    $checks = $check_model->getCheckBy('',$date_start,$date_end,$customer_id,$keyword,'','1');
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'pass'){
@@ -48,7 +48,7 @@ if(!isset($_GET['action'])){
     $keyword = $_GET['keyword'];
 
     $customers=$customer_model->getCustomerBy();
-    $checks = $check_model->getCheckBy('',$date_start,$date_end,$customer_id,$keyword,'0','1');
+    $checks = $check_model->getCheckBy('',$date_start,$date_end,$customer_id,$keyword,'','1');
     require_once($path.'view.inc.php');
 
 }

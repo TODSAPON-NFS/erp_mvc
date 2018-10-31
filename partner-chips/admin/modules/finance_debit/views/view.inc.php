@@ -226,7 +226,7 @@
                                     <td><?php echo $finance_debits[$i]['employee_name']; ?></td>
                                     <td>
                                         <?PHP if($finance_debits[$i]['journal_cash_receipt_id'] > 0){ ?>
-                                        <a target="blank" href="print.php?app=report_journal_04&type=id&action=pdf&id=<?php echo $finance_debits[$i]['journal_cash_receipt_id'];?>" target="_blank"><?php echo $finance_debits[$i]['journal_cash_receipt_code']; ?></a>
+                                        <a target="blank" href="print.php?app=report_journal_03&type=id&action=pdf&id=<?php echo $finance_debits[$i]['journal_cash_receipt_id'];?>" target="_blank"><?php echo $finance_debits[$i]['journal_cash_receipt_code']; ?></a>
                                         <?PHP }else{ ?>
                                         -
                                         <?PHP }?>
@@ -243,10 +243,7 @@
                                         <?PHP } ?>
                                     </td>
                                     
-                                    <td>
-                                        <a href="?app=finance_debit&action=detail&id=<?php echo $finance_debits[$i]['finance_debit_id'];?>">
-                                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                        </a>
+                                    <td> 
 
                                         <a href="print.php?app=finance_debit&action=pdf&id=<?PHP echo $finance_debits[$i]['finance_debit_id'];?>" target="blank" >
                                             <i class="fa fa-print" aria-hidden="true"></i>
@@ -268,7 +265,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="5"> </td>
+                                    <td colspan="6"> </td>
                                     <td align="right" ><?PHP echo number_format($finance_debit_total,2); ?></td>
                                     <td align="right" ><?PHP echo number_format($finance_debit_pay,2); ?></td>
                                     <td colspan="2"> </td> 

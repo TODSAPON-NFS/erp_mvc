@@ -140,6 +140,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['invoice_customer_net_price'] = (float)filter_var($_POST['invoice_customer_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['invoice_customer_date'] = $_POST['invoice_customer_date'];
         $data['invoice_customer_name'] = $_POST['invoice_customer_name'];
+        $data['invoice_customer_branch'] = $_POST['invoice_customer_branch'];
         $data['invoice_customer_address'] = $_POST['invoice_customer_address'];
         $data['invoice_customer_tax'] = $_POST['invoice_customer_tax'];
         $data['invoice_customer_term'] = $_POST['invoice_customer_term'];
@@ -349,6 +350,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['invoice_customer_net_price'] = (double)filter_var($_POST['invoice_customer_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['invoice_customer_date'] = $_POST['invoice_customer_date'];
         $data['invoice_customer_name'] = $_POST['invoice_customer_name'];
+        $data['invoice_customer_branch'] = $_POST['invoice_customer_branch'];
         $data['invoice_customer_address'] = $_POST['invoice_customer_address'];
         $data['invoice_customer_tax'] = $_POST['invoice_customer_tax'];
         $data['invoice_customer_term'] = $_POST['invoice_customer_term'];

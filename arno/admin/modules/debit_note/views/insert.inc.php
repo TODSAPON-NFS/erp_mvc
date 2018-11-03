@@ -58,6 +58,7 @@
             document.getElementById('debit_note_name').value = data.customer_name_en ;
             document.getElementById('debit_note_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
             document.getElementById('debit_note_tax').value = data.customer_tax ;
+            document.getElementById('debit_note_branch').value = data.customer_branch ;
         });
 
          $.post( "controllers/getInvoiceCustomerByCustomerID.php", { 'customer_id': customer_id }, function( data ) {
@@ -348,10 +349,17 @@
                                         <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>ชื่อตามใบเพิ่มหนี้ / Full name <font color="#F00"><b>*</b></font></label>
                                         <input  id="debit_note_name" name="debit_note_name" class="form-control" value="<?php echo $customer['customer_name_en'];?>" >
+                                        <p class="help-block">Example : Revel soft.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>สาขา / Branch <font color="#F00"><b>*</b></font></label>
+                                        <input  id="debit_note_branch" name="debit_note_branch" class="form-control" value="<?php echo $customer['customer_branch'];?>" >
                                         <p class="help-block">Example : Revel soft.</p>
                                     </div>
                                 </div>

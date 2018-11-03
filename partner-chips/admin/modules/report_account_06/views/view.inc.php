@@ -109,9 +109,7 @@
                         $journal_credit_sum = 0; 
 
                         for($i=0; $i < count($journal_reports); $i++){ 
-                            if( $journal_reports[$i-1]['account_code'] != $journal_reports[$i]['account_code']){
-                                $journal_debit +=  $journal_reports[$i]['account_debit_begin'];
-                                $journal_credit +=  $journal_reports[$i]['account_credit_begin'];
+                            if( $journal_reports[$i-1]['account_code'] != $journal_reports[$i]['account_code']){ 
                                 $balance = $journal_reports[$i]['account_debit_begin'] - $journal_reports[$i]['account_credit_begin'];
                         ?>
                         <tr class="">
@@ -126,10 +124,10 @@
                                 <b><font color="black">ยอดยกมา</font></b>
                             </td>
                             <td align="right">
-                                <font color="black"> <?php echo number_format($journal_reports[$i]['account_debit_begin'],2); ?></font>
+                                <font color="black"> </font>
                             </td>
                             <td align="right">
-                                <font color="black"> <?php echo number_format($journal_reports[$i]['account_credit_begin'],2); ?></font>
+                                <font color="black"> </font>
                             </td>
                             <td align="right">
                                 <font color="black"> <?php echo number_format($balance,2); ?></font>
@@ -153,15 +151,7 @@
                             <td  align="right" ><?php echo number_format($balance,2); ?></td> 
                         </tr>
                         <?PHP
-                            if($journal_reports[$i]['account_code'] != $journal_reports[$i+1]['account_code']){
-                                if($journal_debit - $journal_credit < 0){
-                                    $journal_credit = $journal_credit - $journal_debit; 
-                                    $journal_debit = 0;
-                                }else{
-                                    $journal_credit = 0;
-                                    $journal_debit = $journal_debit - $journal_credit;
-
-                                }
+                            if($journal_reports[$i]['account_code'] != $journal_reports[$i+1]['account_code']){ 
 
                                 $journal_debit_sum += $journal_debit;
                                 $journal_credit_sum +=  $journal_credit; 
@@ -170,10 +160,10 @@
                             <td colspan="4" align="center" >
                                <b><font color="black"> ยอดคงเหลือ</font> </b>
                             </td> 
-                            <td align="right"><b><font color="black"> </font></b> </td>
-                            <td align="right"><b><font color="black"> </font></b> </td> 
+                            <td align="right"><b><font color="black"><?php echo number_format($journal_debit,2); ?> </font></b> </td>
+                            <td align="right"><b><font color="black"><?php echo number_format($journal_credit,2); ?> </font></b> </td> 
                             <td  align="right" >
-                            <b><font color="black"><?php echo number_format($balance,2); ?></font></b>
+                            <b><font color="black"></font></b>
                             </td>
                         </tr>
                         <?PHP  

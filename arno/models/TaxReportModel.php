@@ -40,6 +40,7 @@ class TaxReportModel extends BaseModel{
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name,  
         invoice_supplier_name,
         invoice_supplier_tax,
+        invoice_supplier_branch, 
         IFNULL(
             (
                 SELECT GROUP_CONCAT(journal_cash_payment_code) 
@@ -101,6 +102,7 @@ class TaxReportModel extends BaseModel{
         invoice_customer_code,   
         invoice_customer_name,   
         invoice_customer_tax,   
+        invoice_customer_branch,   
         invoice_customer_date, 
         invoice_customer_vat_price,
         invoice_customer_total_price,

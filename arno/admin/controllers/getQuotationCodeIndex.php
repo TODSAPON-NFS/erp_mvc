@@ -1,9 +1,13 @@
 <?php 
+
+
 require_once('../../models/QuotationModel.php');
 require_once('../../models/CustomerModel.php');
 require_once('../../functions/CodeGenerateFunction.func.php');
 require_once('../../models/PaperModel.php');
 require_once('../../models/UserModel.php');
+
+date_default_timezone_set('asia/bangkok');
 
 $user_model = new UserModel;
 $customer_model = new CustomerModel;

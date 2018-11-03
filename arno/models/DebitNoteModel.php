@@ -42,7 +42,7 @@ class DebitNoteModel extends BaseModel{
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 
         debit_note_term, 
         debit_note_due, 
-        IFNULL(CONCAT(tb2.customer_name_en,' (',tb2.customer_name_th,')'),'-') as customer_name  
+        IFNULL( tb2.customer_name_en ,'-') as customer_name  
         FROM tb_debit_note 
         LEFT JOIN tb_user as tb1 ON tb_debit_note.employee_id = tb1.user_id 
         LEFT JOIN tb_customer as tb2 ON tb_debit_note.customer_id = tb2.customer_id 
@@ -201,6 +201,7 @@ class DebitNoteModel extends BaseModel{
         debit_note_name = '".$data['debit_note_name']."', 
         debit_note_address = '".$data['debit_note_address']."', 
         debit_note_tax = '".$data['debit_note_tax']."', 
+        debit_note_branch = '".$data['debit_note_branch']."', 
         debit_note_term = '".$data['debit_note_term']."', 
         debit_note_due = '".$data['debit_note_due']."', 
         updateby = '".$data['updateby']."', 
@@ -236,6 +237,7 @@ class DebitNoteModel extends BaseModel{
             debit_note_name,
             debit_note_address,
             debit_note_tax,
+            debit_note_branch,
             debit_note_term,
             debit_note_due,
             addby,
@@ -258,6 +260,7 @@ class DebitNoteModel extends BaseModel{
         $data['debit_note_name']."','".
         $data['debit_note_address']."','".
         $data['debit_note_tax']."','".
+        $data['debit_note_branch']."','".
         $data['debit_note_term']."','".
         $data['debit_note_due']."','".
         $data['addby']."',".

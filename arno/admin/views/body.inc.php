@@ -208,14 +208,26 @@
         require_once("modules/report_creditor_04/views/index.inc.php");
     }
 
-    else if($_GET['app'] == "report_debtor_03"){
+    else if($_GET['app'] == "report_debtor_01"){
+        require_once("modules/report_debtor_01/views/index.inc.php");
+    }else if($_GET['app'] == "report_debtor_02"){
+        require_once("modules/report_debtor_02/views/index.inc.php");
+    }else if($_GET['app'] == "report_debtor_03"){
         require_once("modules/report_debtor_03/views/index.inc.php");
+    }else if($_GET['app'] == "report_debtor_04"){
+        require_once("modules/report_debtor_04/views/index.inc.php");
+    }else if($_GET['app'] == "report_debtor_05"){
+        require_once("modules/report_debtor_05/views/index.inc.php");
     }else if($_GET['app'] == "report_debtor_06"){
         require_once("modules/report_debtor_06/views/index.inc.php");
     }else if($_GET['app'] == "report_debtor_07"){
         require_once("modules/report_debtor_07/views/index.inc.php");
-    }else if($_GET['app'] == "report_debtor_15"){
-        require_once("modules/report_debtor_15/views/index.inc.php");
+    }else if($_GET['app'] == "report_debtor_08"){
+        require_once("modules/report_debtor_08/views/index.inc.php");
+    }else if($_GET['app'] == "report_debtor_09"){
+        require_once("modules/report_debtor_09/views/index.inc.php");
+    }else if($_GET['app'] == "report_debtor_10"){
+        require_once("modules/report_debtor_10/views/index.inc.php");
     }
 
 

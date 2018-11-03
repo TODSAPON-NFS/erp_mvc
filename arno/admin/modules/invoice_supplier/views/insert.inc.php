@@ -153,6 +153,7 @@
             if(data != null){
                 document.getElementById('supplier_code').value = data.supplier_code;
                 document.getElementById('invoice_supplier_name').value = data.supplier_name_en;
+                document.getElementById('invoice_supplier_branch').value = data.supplier_branch;
                 document.getElementById('invoice_supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
                 document.getElementById('invoice_supplier_tax').value = data.supplier_tax ;
                 document.getElementById('invoice_supplier_day').value = data.credit_day ;
@@ -793,11 +794,18 @@
                                         <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>ชื่อตามใบกำกับภาษี / Full name <font color="#F00"><b>*</b></font></label>
                                         <input  id="invoice_supplier_name" name="invoice_supplier_name" class="form-control" value="<?php echo $supplier['supplier_name_en'];?> " >
                                         <p class="help-block">Example : Revel soft.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>สาขา / Branch <font color="#F00"><b>*</b></font></label>
+                                        <input  id="invoice_supplier_branch" name="invoice_supplier_branch" class="form-control" value="<?php echo $supplier['supplier_branch'];?>" >
+                                        <p class="help-block">Example : 0000 </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">

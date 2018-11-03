@@ -132,6 +132,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['debit_note_name'] = $_POST['debit_note_name'];
         $data['debit_note_address'] = $_POST['debit_note_address'];
         $data['debit_note_tax'] = $_POST['debit_note_tax'];
+        $data['debit_note_branch'] = $_POST['debit_note_branch'];
         $data['debit_note_term'] = $_POST['debit_note_term'];
         $data['debit_note_due'] = $_POST['debit_note_due'];
         $data['addby'] = $user[0][0];
@@ -219,6 +220,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['debit_note_name'] = $_POST['debit_note_name'];
         $data['debit_note_address'] = $_POST['debit_note_address'];
         $data['debit_note_tax'] = $_POST['debit_note_tax'];
+        $data['debit_note_branch'] = $_POST['debit_note_branch'];
         $data['debit_note_term'] = $_POST['debit_note_term'];
         $data['debit_note_due'] = $_POST['debit_note_due'];
         $data['addby'] = $user[0][0];

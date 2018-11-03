@@ -97,24 +97,33 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         $vat_total +=  $tax_reports[$i]['invoice_customer_vat_price'];
         $net_total +=  $tax_reports[$i]['invoice_customer_total_price'];
 
-                $html[$page_index] .= ' 
-                <tr>
-                    <td align="center" >'.($i + 1).'</td>
-                    <td align="center" >'.$tax_reports[$i]['invoice_customer_date'].'</td>
-                    <td>'.$tax_reports[$i]['invoice_customer_code'].'</td> 
-                    <td>'.$tax_reports[$i]['invoice_customer_name'].' </td>
-                    <td>'.$tax_reports[$i]['invoice_customer_tax'].' </td>
-                    <td>' .'</td>
-                    <td>' .'</td>
-                    <td  align="right" >
-                        '.number_format($tax_reports[$i]['invoice_customer_total_price'],2).'
-                    </td>
-                    <td  align="right" >'.number_format($tax_reports[$i]['invoice_customer_vat_price'],2).'</td>
-                    <td>
-                        '.$tax_reports[$i]['invoice_customer_remark'].'
-                    </td>
-                </tr> 
-                ';
+        $branch = (int)$tax_reports[$i]['invoice_customer_branch'];
+        if($branch == 0){
+            $branch_main = "/";
+            $branch_sub = "";
+        }else{
+            $branch_main = "";
+            $branch_sub = $branch;
+        }
+
+        $html[$page_index] .= ' 
+        <tr>
+            <td align="center" >'.($i + 1).'</td>
+            <td align="center" >'.$tax_reports[$i]['invoice_customer_date'].'</td>
+            <td>'.$tax_reports[$i]['invoice_customer_code'].'</td> 
+            <td>'.$tax_reports[$i]['invoice_customer_name'].' </td>
+            <td>'.$tax_reports[$i]['invoice_customer_tax'].' </td>
+            <td align="center" >' .$branch_main.'</td>
+            <td align="center" >' .$branch_sub.'</td>
+            <td  align="right" >
+                '.number_format($tax_reports[$i]['invoice_customer_total_price'],2).'
+            </td>
+            <td  align="right" >'.number_format($tax_reports[$i]['invoice_customer_vat_price'],2).'</td>
+            <td>
+                '.$tax_reports[$i]['invoice_customer_remark'].'
+            </td>
+        </tr> 
+        ';
     }
 
     if($page_index+1 < $page_max){

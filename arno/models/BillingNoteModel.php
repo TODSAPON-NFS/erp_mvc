@@ -201,6 +201,7 @@ class BillingNoteModel extends BaseModel{
         billing_note_name = '".$data['billing_note_name']."', 
         billing_note_address = '".$data['billing_note_address']."', 
         billing_note_tax = '".$data['billing_note_tax']."', 
+        billing_note_branch = '".$data['billing_note_branch']."', 
         billing_note_remark = '".$data['billing_note_remark']."', 
         billing_note_sent_name = '".$data['billing_note_sent_name']."', 
         billing_note_recieve_name = '".$data['billing_note_recieve_name']."', 
@@ -231,6 +232,7 @@ class BillingNoteModel extends BaseModel{
             billing_note_name,
             billing_note_address,
             billing_note_tax,
+            billing_note_branch,
             billing_note_remark,
             billing_note_sent_name,
             billing_note_recieve_name,
@@ -248,6 +250,7 @@ class BillingNoteModel extends BaseModel{
         $data['billing_note_name']."','".
         $data['billing_note_address']."','".
         $data['billing_note_tax']."','".
+        $data['billing_note_branch']."','".
         $data['billing_note_remark']."','".
         $data['billing_note_sent_name']."','".
         $data['billing_note_recieve_name']."','".

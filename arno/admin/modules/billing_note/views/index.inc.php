@@ -118,6 +118,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['billing_note_code'] = $_POST['billing_note_code'];
         $data['billing_note_date'] = $_POST['billing_note_date'];
         $data['billing_note_name'] = $_POST['billing_note_name'];
+        $data['billing_note_branch'] = $_POST['billing_note_branch'];
         $data['billing_note_address'] = $_POST['billing_note_address'];
         $data['billing_note_tax'] = $_POST['billing_note_tax'];
         $data['billing_note_remark'] = $_POST['billing_note_remark'];
@@ -186,6 +187,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['billing_note_code'] = $_POST['billing_note_code'];
         $data['billing_note_date'] = $_POST['billing_note_date'];
         $data['billing_note_name'] = $_POST['billing_note_name'];
+        $data['billing_note_branch'] = $_POST['billing_note_branch'];
         $data['billing_note_address'] = $_POST['billing_note_address'];
         $data['billing_note_tax'] = $_POST['billing_note_tax'];
         $data['billing_note_remark'] = $_POST['billing_note_remark'];

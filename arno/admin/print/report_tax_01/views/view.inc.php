@@ -98,6 +98,16 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         $net_page +=  $tax_reports[$i]['invoice_supplier_total_price'];
         $vat_total +=  $tax_reports[$i]['invoice_supplier_vat_price'];
         $net_total +=  $tax_reports[$i]['invoice_supplier_total_price'];
+
+        $branch = (int)$tax_reports[$i]['invoice_supplier_branch'];
+        if($branch == 0){
+            $branch_main = "/";
+            $branch_sub = "";
+        }else{
+            $branch_main = "";
+            $branch_sub = $branch;
+        }
+
         if($tax_reports[$i]['invoice_supplier_code_gen'] != ""){ 
             $reference_code = $tax_reports[$i]['invoice_supplier_code_gen']; 
         } else { 
@@ -111,8 +121,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <td>'.$reference_code.'</td>
                     <td>'.$tax_reports[$i]['invoice_supplier_name'].' </td>
                     <td>'.$tax_reports[$i]['invoice_supplier_tax'].' </td>
-                    <td>' .'</td>
-                    <td>' .'</td>
+                    <td align="center" >' .$branch_main.'</td>
+                    <td align="center" >' .$branch_sub.'</td>
                     <td  align="right" >
                         '.number_format($tax_reports[$i]['invoice_supplier_total_price'],2).'
                     </td>

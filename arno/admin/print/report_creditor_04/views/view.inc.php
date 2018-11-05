@@ -1,6 +1,7 @@
 <?PHP 
 
 
+$total_total = 0;
 $vat_total = 0;
 $net_total = 0;
 for($page_index=0 ; $page_index < $page_max ; $page_index++){
@@ -14,12 +15,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         }
 
         th{
-            padding:4px 4px;
+            padding:2px 4px;
             font-size:10px;
         }
 
         td{
-            padding:4px 4px;
+            padding:2px 4px;
             font-size:10px;
         }
 
@@ -36,7 +37,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             </td>
         </tr>
     </table>
-    <div align="center" style="font-size:14px;color:#00F;"> <b>รายงานใบรับสินค้า</b></div>
+    <div align="center" style="font-size:14px;color:#00F;"> <b>รายงานใบจ่ายชำระหนี้ </b></div>
     <table width="100%" border="0" cellspacing="0">
         <tr>
             <td align="left" width="140px" ><b>ชื่อสถานประกอบการ </b></td>
@@ -59,18 +60,26 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     $html[$page_index] .= '
     <table  width="100%" cellspacing="0" style="font-size:12px;">
         <thead>
+            <tr>
+                <th width="48" align="center" > ลำดับ </th>
+                <th colspan="2" align="center" style="border-bottom: 1px dotted black;" >ใบรับชำระหนี้ </th>
+                <th align="center" >ชื่อผู้ขายสินค้า/ผู้ให้บริการ</th>
+                <th align="center" >เลขประจำตัว</th>
+                <th colspan="2" align="center" style="border-bottom: 1px dotted black;" >สถานประกอบการ</th>
+                <th align="center" >จำนวนเงินรวม</th>  
+                <th align="center" >ยอดจ่ายจริง</th>  
+            </tr>
             <tr> 
-                <th align="center" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">เลขที่ </th>
-                <th align="center" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">วันที่ </th>
-                <th align="center" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">ผู้จำหน่าย </th> 
-                <th align="center" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">เลขที่บิล</th>
-                <th align="center" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">มูลค่าสินค้า</th> 
-                <th align="center" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">VAT.</th>
-                <th align="center" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">รวมทั้งสิ้น</th> 
-                <th align="center" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">ครบกำหนด</th> 
-                <th align="center" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">ใบสั่งซื้อ</th> 
-                <th align="center" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">จ่ายเงิน</th> 
-            </tr> 
+                <th></th>
+                <th width="80" align="center" >วัน/เดือน/ปี</th>
+                <th align="center" >เลขที่ </th>  
+                <th></th>
+                <th align="center" >ผู้เสียภาษี</th> 
+                <th align="center" width="80" >สนญ.</th>
+                <th align="center" width="80" >สาขาที่</th> 
+                <th align="center" ></th>  
+                <th align="center" ></th>  
+            </tr>
         </thead>
 
         <tbody>
@@ -78,44 +87,65 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     ';
  
     
-    //count($tax_reports)
-    $invoice_supplier_total_price = 0;
-    $invoice_supplier_vat_price = 0;
-    $invoice_supplier_net_price = 0; 
-    for($i=$page_index * $lines; $i < count($tax_reports) && $i < $page_index * $lines + $lines; $i++){
-        if( $tax_reports[$i]['payment'] == $tax_reports[$i]['invoice_supplier_net_price']) { $payment = "Y"; } else { $payment =  "N"; }
-        $invoice_supplier_total_price += $tax_reports[$i]['invoice_supplier_total_price'];
-        $invoice_supplier_vat_price += $tax_reports[$i]['invoice_supplier_vat_price'];
-        $invoice_supplier_net_price += $tax_reports[$i]['invoice_supplier_net_price']; 
+    //count($credit_reports)
+    $total_page = 0; 
+    $net_page = 0;
+    for($i=$page_index * $lines; $i < count($credit_reports) && $i < $page_index * $lines + $lines; $i++){
+        $branch = (int)$credit_reports[$i]['finance_credit_branch'];
+        if($branch == 0){
+            $branch_main = "/";
+            $branch_sub = "";
+        }else{
+            $branch_main = "";
+            $branch_sub = $branch;
+        }
+        $total_page +=  $credit_reports[$i]['finance_credit_total'];  
+        $net_page +=  $credit_reports[$i]['finance_credit_pay']; 
+
+        $total_total +=  $credit_reports[$i]['finance_credit_total'];  
+        $net_total +=  $credit_reports[$i]['finance_credit_pay']; 
 
                 $html[$page_index] .= ' 
-                <tr> 
-                    <td align="center">'.$tax_reports[$i]['invoice_supplier_code_gen'].'</td>
-                    <td align="center">'.$tax_reports[$i]['invoice_supplier_date_recieve'].'</td>
-                    <td align="left">'.$tax_reports[$i]['invoice_supplier_name'].'</td>
-                    <td align="left">'.$tax_reports[$i]['invoice_supplier_code'].'</td>
-                    <td align="right">'.number_format($tax_reports[$i]['invoice_supplier_total_price'],2).'</td>
-                    <td align="right">'.number_format($tax_reports[$i]['invoice_supplier_vat_price'],2).'</td>
-                    <td align="right">'.number_format($tax_reports[$i]['invoice_supplier_net_price'],2).'</td>
-                    <td align="center">'.$tax_reports[$i]['invoice_supplier_due'].'</td>
-                    <td align="center">'.$tax_reports[$i]['purchase_order_code'].'</td>
-                    <td align="center">'.$payment.'</td> 
-                </tr>
+                <tr>
+                    <td align="center" >'.($i + 1).'</td>
+                    <td align="center" >'.$credit_reports[$i]['finance_credit_date'].'</td>
+                    <td>'.$credit_reports[$i]['finance_credit_code'].'</td>  
+                    <td>['.$credit_reports[$i]['supplier_code'].'] '.$credit_reports[$i]['finance_credit_name'].' </td>
+                    <td>'.$credit_reports[$i]['finance_credit_tax'].' </td>
+                    <td align="center" >' .$branch_main.'</td>
+                    <td align="center" >' .$branch_sub.'</td>
+                    <td  align="right" >
+                        '.number_format($credit_reports[$i]['finance_credit_total'],2).'
+                    </td> 
+                    <td  align="right" >
+                        '.number_format($credit_reports[$i]['finance_credit_pay'],2).'
+                    </td>  
+                </tr> 
                 ';
     }
 
-    if($page_index+1 < $page_max){
+    if($page_index+1 < $page_max ){
         $html[$page_index] .= ' 
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="4" align="center"> รวม '. number_format(count($tax_reports),0).' ใบ</td>
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">'. number_format($invoice_supplier_total_price,2).'</td>
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">'. number_format($invoice_supplier_vat_price,2).'</td>
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">'. number_format($invoice_supplier_net_price,2).'</td>
-                        <td  align="right" ></td>
-                        <td  align="right" ></td>
-                        <td  align="right" ></td>
+                        <td></td>
+                        <td colspan="6" align="left"> <b>รวมแต่ละหน้า</b> </td> 
+                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($total_page,2).'</td> 
+                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($net_page,2).'</td> 
+                    </tr>
+                </tfoot>
+            </table>
+        ';
+    }else if($page_index == 0){
+        $html[$page_index] .= ' 
+                </tbody>
+                <tfoot>  
+                    <tr>
+                        <td></td>
+                        <td colspan="6" align="left"><div><b>รวมทั้งสิ้น งวด </b> '.$section_date.' (<b>เริ่มจาก</b> '.$date_start.' <b>ถึง</b> '.$date_end.') </div> </td>
+                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($total_total,2).'</td>  
+                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($net_total,2).'</td>   
                     </tr>
                 </tfoot>
             </table>
@@ -125,20 +155,25 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="4" align="center"> รวม '. number_format(count($tax_reports),0).' ใบ</td>
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">'. number_format($invoice_supplier_total_price,2).'</td>
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">'. number_format($invoice_supplier_vat_price,2).'</td>
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;">'. number_format($invoice_supplier_net_price,2).'</td>
-                        <td  align="right" ></td>
-                        <td  align="right" ></td>
-                        <td  align="right" ></td>
+                        <td></td>
+                        <td colspan="6" align="left"> <b>รวมแต่ละหน้า</b> </td>
+                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($total_page,2).'</td>  
+                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($net_page,2).'</td> 
+                    </tr>
+                    <tr>
+                        <td colspan="9" align="center"> </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="6" align="left"><div><b>รวมทั้งสิ้น งวด </b> '.$section_date.' (<b>เริ่มจาก</b> '.$date_start.' <b>ถึง</b> '.$date_end.') </div> </td> 
+                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($total_total,2).'</td>  
+                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($net_total,2).'</td>  
                     </tr>
                 </tfoot>
             </table>
         ';
     }
 
-    
 }
 
 ?>

@@ -177,6 +177,7 @@ class FinanceCreditModel extends BaseModel{
         LEFT JOIN tb_finance_credit_list ON tb_invoice_supplier.invoice_supplier_id = tb_finance_credit_list.invoice_supplier_id 
         WHERE tb_invoice_supplier.invoice_supplier_id NOT IN ($str)  
         AND tb_invoice_supplier.supplier_id = '$supplier_id' 
+        AND invoice_supplier_begin != '2' 
         AND (
             invoice_supplier_code LIKE ('%$search%') OR 
             invoice_supplier_code_gen LIKE ('%$search%') 

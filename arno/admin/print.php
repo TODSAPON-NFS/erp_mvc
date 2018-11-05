@@ -15,7 +15,7 @@
         require_once("print/report_journal_04/views/index.inc.php");
     }
 
-/* ################################################### รายงานเจ้าหนี้ ################################################### */
+/* ################################################### รายงานลูกหนี้ ################################################### */
     else if($_GET['app'] == "report_debtor_01"){
         require_once("print/report_debtor_01/views/index.inc.php");
     } else if($_GET['app'] == "report_debtor_02"){
@@ -46,10 +46,31 @@
         require_once("print/report_debtor_14/views/index.inc.php");
     } 
 
+/* ################################################### สิ้นสุด รายงานลูกหนี้ ################################################### */
+
+
+
+
+/* ################################################### รายงานลูกหนี้ ################################################### */
+
+else if($_GET['app'] == "report_creditor_01"){
+    require_once("print/report_creditor_01/views/index.inc.php");
+}else if($_GET['app'] == "report_creditor_02"){
+    require_once("print/report_creditor_02/views/index.inc.php");
+}else if($_GET['app'] == "report_creditor_03"){
+    require_once("print/report_creditor_03/views/index.inc.php");
+}else if($_GET['app'] == "report_creditor_04"){
+    require_once("print/report_creditor_04/views/index.inc.php");
+}else if($_GET['app'] == "report_creditor_05"){
+    require_once("print/report_creditor_05/views/index.inc.php");
+}else if($_GET['app'] == "report_creditor_06"){
+    require_once("print/report_creditor_06/views/index.inc.php");
+}else if($_GET['app'] == "report_creditor_07"){
+    require_once("print/report_creditor_07/views/index.inc.php");
+}else if($_GET['app'] == "report_creditor_08"){
+    require_once("print/report_creditor_08/views/index.inc.php");
+}
 /* ################################################### สิ้นสุด รายงานเจ้าหนี้ ################################################### */
-
-
-
 
 
 

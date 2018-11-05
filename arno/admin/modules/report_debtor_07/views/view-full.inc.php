@@ -6,8 +6,7 @@
 
         window.location = "index.php?app=report_debtor_07&date_end="+date_end+"&customer_id="+customer_id+"&view_type="+view_type;
     }
-    function print(type){
-        var date_start = $("#date_start").val();
+    function print(type){ 
         var date_end = $("#date_end").val();
         var customer_id = $("#customer_id").val();
         var view_type = $("#view_type").val();
@@ -65,7 +64,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>คำค้น <font color="#F00"><b>*</b></font></label>
+                            <label>แสดง <font color="#F00"><b>*</b></font></label>
                             <select id="view_type" name="view_type" class="form-control "  >
                                 <option <?php if($view_type == ''){?> selected <?php }?> value="">แบบย่อ</option>
                                 <option <?php if($view_type == 'full'){?> selected <?php }?> value="full">แบบละเอียด</option> 

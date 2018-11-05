@@ -1,6 +1,16 @@
 <?PHP 
 
 
+$due_comming_more_than_60_page = 0;  
+$due_comming_in_60_page = 0;  
+$due_comming_in_30_page = 0;  
+$over_due_1_to_30_page = 0;  
+$over_due_31_to_60_page = 0;  
+$over_due_61_to_90_page = 0;  
+$over_due_more_than_90_page = 0;  
+$balance_page = 0;  
+
+
 $paper_number_total = 0;  
 $due_comming_more_than_60_total = 0;  
 $due_comming_in_60_total = 0;  
@@ -99,24 +109,7 @@ while($i < count($debtor_reports)){
 
     ';
  
-    $due_comming_more_than_60_page = 0;  
-    $due_comming_in_60_page = 0;  
-    $due_comming_in_30_page = 0;  
-    $over_due_1_to_30_page = 0;  
-    $over_due_31_to_60_page = 0;  
-    $over_due_61_to_90_page = 0;  
-    $over_due_more_than_90_page = 0;  
-    $balance_page = 0;  
-    
-    $paper_number_total = 0;  
-    $due_comming_more_than_60_total = 0;  
-    $due_comming_in_60_total = 0;  
-    $due_comming_in_30_total = 0;  
-    $over_due_1_to_30_total = 0;  
-    $over_due_31_to_60_total = 0;  
-    $over_due_61_to_90_total = 0;  
-    $over_due_more_than_90_total = 0;  
-    $balance_total = 0;  
+     
     
     for(; $i < count($debtor_reports); $i++){
 
@@ -233,7 +226,7 @@ while($i < count($debtor_reports)){
                  '.number_format($over_due_more_than_90 ,2).'
             </td> 
             <td  align="right" >
-                 '.number_format($debtor_reports[$i]['invoice_customer_balance'],0).'
+                 '.number_format($debtor_reports[$i]['invoice_customer_balance'],2).'
             </td>  
         </tr> 
         ';
@@ -267,7 +260,7 @@ while($i < count($debtor_reports)){
             }
 
             $html[$page_index] .= '<tr>
-                <td colspan="3" align="center" ></td>
+                <td colspan="13" align="center" ></td>
             </tr>'; 
 
             $line ++;

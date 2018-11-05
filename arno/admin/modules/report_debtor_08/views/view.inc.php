@@ -65,7 +65,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>คำค้น <font color="#F00"><b>*</b></font></label>
+                            <label>แสดง <font color="#F00"><b>*</b></font></label>
                             <select id="view_type" name="view_type" class="form-control "  >
                                 <option <?php if($view_type == ''){?> selected <?php }?> value="">แบบย่อ</option>
                                 <option <?php if($view_type == 'full'){?> selected <?php }?> value="full">แบบละเอียด</option> 

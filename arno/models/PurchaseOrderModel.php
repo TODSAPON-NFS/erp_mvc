@@ -196,9 +196,10 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_delivery_by = '".$data['purchase_order_delivery_by']."', 
         purchase_order_date = '".$data['purchase_order_date']."', 
         purchase_order_status = '".$data['purchase_order_status']."', 
-        purchase_order_total = '".$data['purchase_order_total']."', 
+        purchase_order_total_price = '".$data['purchase_order_total_price']."', 
         purchase_order_vat = '".$data['purchase_order_vat']."', 
-        purchase_order_net = '".$data['purchase_order_net']."',
+        purchase_order_vat_price = '".$data['purchase_order_vat_price']."', 
+        purchase_order_net_price = '".$data['purchase_order_net_price']."',
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
         WHERE purchase_order_id = $id 
@@ -1005,9 +1006,10 @@ class PurchaseOrderModel extends BaseModel{
             purchase_order_delivery_term,
             purchase_order_delivery_by,
             purchase_order_date,
-            purchase_order_total,
+            purchase_order_total_price,
             purchase_order_vat,
-            purchase_order_net,
+            purchase_order_vat_price,
+            purchase_order_net_price,
             addby,
             adddate,
             updateby,
@@ -1027,9 +1029,10 @@ class PurchaseOrderModel extends BaseModel{
         $data['purchase_order_delivery_term']."','".
         $data['purchase_order_delivery_by']."','".
         $data['purchase_order_date']."','".
-        $data['purchase_order_total']."','".
+        $data['purchase_order_total_price']."','".
         $data['purchase_order_vat']."','".
-        $data['purchase_order_net']."','".
+        $data['purchase_order_vat_price']."','".
+        $data['purchase_order_net_price']."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].

@@ -199,9 +199,10 @@ if(!isset($_GET['action'])){
         $data['purchase_order_type'] = $type;
         $data['purchase_order_status'] = '';
         $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
-        $data['purchase_order_total'] = (float)filter_var($purchase_order_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['purchase_order_total_price'] = (float)filter_var($purchase_order_total_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['purchase_order_vat'] = (float)filter_var($purchase_order_vat, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $data['purchase_order_net'] = (float)filter_var($purchase_order_net, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['purchase_order_vat_price'] = (float)filter_var($purchase_order_vat_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['purchase_order_net_price'] = (float)filter_var($purchase_order_net_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['employee_id'] = $_POST['employee_id'];
 
         $output = $purchase_order_model->insertPurchaseOrder($data);
@@ -300,9 +301,10 @@ if(!isset($_GET['action'])){
             $data['purchase_order_credit_term'] = $_POST['purchase_order_credit_term'];
             $data['purchase_order_accept_status'] = '';
             $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
-            $data['purchase_order_total'] = (float)filter_var($purchase_order_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['purchase_order_total_price'] = (float)filter_var($purchase_order_total_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data['purchase_order_vat'] = (float)filter_var($purchase_order_vat, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-            $data['purchase_order_net'] = (float)filter_var($purchase_order_net, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['purchase_order_vat_price'] = (float)filter_var($purchase_order_vat_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['purchase_order_net_price'] = (float)filter_var($purchase_order_net_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data['employee_id'] = $_POST['employee_id'];
 
             $purchase_order_model->updatePurchaseOrderByID($output,$data);
@@ -433,16 +435,16 @@ if(!isset($_GET['action'])){
         $data['purchase_order_credit_term'] = $_POST['purchase_order_credit_term'];
         $data['purchase_order_accept_status'] = '';
         $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
-        $data['purchase_order_total'] = (float)filter_var($purchase_order_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['purchase_order_total_price'] = (float)filter_var($purchase_order_total_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['purchase_order_vat'] = (float)filter_var($purchase_order_vat, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $data['purchase_order_net'] = (float)filter_var($purchase_order_net, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['purchase_order_vat_price'] = (float)filter_var($purchase_order_vat_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['purchase_order_net_price'] = (float)filter_var($purchase_order_net_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['employee_id'] = $_POST['employee_id'];
 
         $output = $purchase_order_model->updatePurchaseOrderByID($purchase_order_id , $data);
         
 
-        if($output){
-        
+        if($output){ 
 ?>
         <script>window.location="index.php?app=purchase_order&action=update&id=<?php echo $purchase_order_id;?>"</script>
 <?php
@@ -677,7 +679,7 @@ if(!isset($_GET['action'])){
             $body = '
                 We are opening the purchase order.
                 Can you please confirm the order details?. 
-                At <a href="http://arno-thailand.revelsoft.co.th/partner-chips/supplier/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
+                At <a href="http://arno-thailand.revelsoft.co.th/arno/supplier/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
                 Before I send you a purchase order.
                 <br>
                 <br>
@@ -753,7 +755,7 @@ if(!isset($_GET['action'])){
             $body = '
                 We are opened the purchase order.
                 Can you confirm the order details?. 
-                At <a href="http://arno-thailand.revelsoft.co.th/partner-chips/supplier/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
+                At <a href="http://arno-thailand.revelsoft.co.th/arno/supplier/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
 
                 <br>
                 <br>

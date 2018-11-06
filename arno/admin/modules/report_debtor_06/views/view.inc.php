@@ -1,10 +1,11 @@
 <script>
     function search(){ 
+        var date_start = $("#date_start").val();
         var date_end = $("#date_end").val();
         var customer_id = $("#customer_id").val();
         var keyword = $("#keyword").val();
 
-        window.location = "index.php?app=report_debtor_06&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
+        window.location = "index.php?app=report_debtor_06&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
     }
     function print(type){
         var date_start = $("#date_start").val();
@@ -12,7 +13,7 @@
         var customer_id = $("#customer_id").val();
         var keyword = $("#keyword").val();
 
-        window.open("print.php?app=report_debtor_06&action="+type+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword,'_blank');
+        window.open("print.php?app=report_debtor_06&action="+type+"&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword,'_blank');
     }
 </script>
 
@@ -37,12 +38,39 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-            <div class="row">
+                <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>ถึงวันที่</label>
-                            <input type="text" id="date_end" name="date_end" value="<?PHP echo $date_end;?>"  class="form-control calendar" readonly/>
-                            <p class="help-block">01-01-2018</p>
+                            <label>ช่วงวัน</label>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" id="date_start" name="date_start" value="<?PHP echo $date_start;?>"  class="form-control calendar" readonly/>
+                                </div>
+                                <div class="col-md-1" align="center">
+                                    -
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" id="date_end" name="date_end" value="<?PHP echo $date_end;?>"  class="form-control calendar" readonly/>
+                                </div>
+                            </div>
+                            <p class="help-block">01-01-2018 - 31-12-2018</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>รหัสลูกค้า</label>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" id="code_start" name=code_start" value="<?PHP echo $code_start;?>"  class="form-control " />
+                                </div>
+                                <div class="col-md-1" align="center">
+                                    -
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" id="code_end" name="code_end" value="<?PHP echo $code_end;?>"  class="form-control " />
+                                </div>
+                            </div>
+                            <p class="help-block">0A-001 - 0C-001</p>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -62,14 +90,7 @@
                             </select>
                             <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>คำค้น <font color="#F00"><b>*</b></font></label>
-                            <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >
-                            <p class="help-block">Example : T001.</p>
-                        </div>
-                    </div>
+                    </div >
                 </div>
 
                 <div class="row">
@@ -89,46 +110,53 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" >
                     <thead>
                         <tr>
-                            <th rowspan="2" width="48" style="text-align: center;vertical-align: middle;"> ลำดับ</th> 
-                            <th rowspan="2" style="text-align: center;vertical-align: middle;" >ลูกค้า</th> 
-                            <th rowspan="2" style="text-align: center;vertical-align: middle;" >จำนวนเอกสาร</th> 
-                            <th rowspan="2" style="text-align: center;vertical-align: middle;" >ยอดคงค้าง</th>  
-                            <th colspan="3" style="text-align: center;vertical-align: middle;" >จะครบกำหนด</th>  
-                            <th colspan="4" style="text-align: center;vertical-align: middle;" >เกินกำหนด</th>  
-                        </tr>
-                        <tr>
-                            <th style="text-align: center;vertical-align: middle;" >เกิน 60 วัน</th> 
-                            <th style="text-align: center;vertical-align: middle;" >ภายใน 60 วัน</th> 
-                            <th style="text-align: center;vertical-align: middle;" >ภายใน 30 วัน</th> 
-                            <th style="text-align: center;vertical-align: middle;" >1 - 30 วัน</th>  
-                            <th style="text-align: center;vertical-align: middle;" >31 - 60 วัน</th>  
-                            <th style="text-align: center;vertical-align: middle;" >61 - 90 วัน</th>  
-                            <th style="text-align: center;vertical-align: middle;" >เกิน 90 วัน</th>  
-                        </tr>
+                            <th  width="48" style="text-align: center;vertical-align: middle;"> ลำดับ</th> 
+                            <th  style="text-align: center;vertical-align: middle;" >ลูกค้า</th> 
+                            <th  style="text-align: center;vertical-align: middle;" >ยอดหนี้ยกมา</th> 
+                            <th  style="text-align: center;vertical-align: middle;" >ยอดขาย</th>  
+                            <th  style="text-align: center;vertical-align: middle;" >เพิ่มหนี้</th>  
+                            <th  style="text-align: center;vertical-align: middle;" >ลดหนี้/รับคืน</th>  
+                            <th  style="text-align: center;vertical-align: middle;" >รับชำระหนี้</th>  
+                            <th  style="text-align: center;vertical-align: middle;" >ยอดหนี้ยกไป</th>  
+                        </tr> 
                     </thead>
                     <tbody>
+
                         <?php 
-                        $invoice_customer_net_price = 0; 
-                        $finance_debit_list_paid = 0;  
-                        $invoice_customer_balance = 0;  
+                        $debit_before = 0; 
+                        $debit_invoice = 0;  
+                        $debit_debit = 0;  
+                        $debit_credit = 0; 
+                        $debit_reciept = 0;  
+                        $debit_balance = 0;  
                         for($i=0; $i < count($debtor_reports); $i++){
-                            $invoice_customer_net_price +=  $debtor_reports[$i]['invoice_customer_net_price']; 
-                            $finance_debit_list_paid +=  $debtor_reports[$i]['finance_debit_list_paid'];  
-                            $invoice_customer_balance +=  $debtor_reports[$i]['invoice_customer_balance'];  
+                            $debit_before +=  $debtor_reports[$i]['debit_before']; 
+                            $debit_invoice +=  $debtor_reports[$i]['debit_invoice'];  
+                            $debit_debit +=  $debtor_reports[$i]['debit_debit'];  
+                            $debit_credit +=  $debtor_reports[$i]['debit_credit']; 
+                            $debit_reciept +=  $debtor_reports[$i]['debit_reciept'];  
+                            $debit_balance +=  $debtor_reports[$i]['debit_balance'];  
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
-                            <td><?php echo $debtor_reports[$i]['invoice_customer_date']; ?></td>
-                            <td><?php echo $debtor_reports[$i]['invoice_customer_code']; ?></td>
-                            <td><?php echo $debtor_reports[$i]['billing_note_name']; ?> </td> 
+                            <td>[<?php echo $debtor_reports[$i]['customer_code']; ?>] <?php echo $debtor_reports[$i]['customer_name_en']; ?></td> 
                             <td  align="right" >
-                                <?php echo number_format($debtor_reports[$i]['invoice_customer_net_price'],2); ?>
+                                <?php echo number_format($debtor_reports[$i]['debit_before'],2); ?>
                             </td> 
                             <td  align="right" >
-                                <?php echo number_format($debtor_reports[$i]['finance_debit_list_paid'],2); ?>
+                                <?php echo number_format($debtor_reports[$i]['debit_invoice'],2); ?>
                             </td>  
                             <td  align="right" >
-                                <?php echo number_format($debtor_reports[$i]['invoice_customer_balance'],2); ?>
+                                <?php echo number_format($debtor_reports[$i]['debit_debit'],2); ?>
+                            </td>  
+                            <td  align="right" >
+                                <?php echo number_format($debtor_reports[$i]['debit_credit'],2); ?>
+                            </td>  
+                            <td  align="right" >
+                                <?php echo number_format($debtor_reports[$i]['debit_reciept'],2); ?>
+                            </td>  
+                            <td  align="right" >
+                                <?php echo number_format($debtor_reports[$i]['debit_balance'],2); ?>
                             </td>  
                         </tr>
                         <?
@@ -137,14 +165,13 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4" align="center"><b>รวม</b></td>
-                            <td  align="right" ><b><?php echo number_format($invoice_customer_net_price,2); ?></b></td> 
-                            <td  align="right" ><b><?php echo number_format($finance_debit_list_paid,2); ?></b></td> 
-                            <td  align="right" ><b><?php echo number_format($invoice_customer_balance,2); ?></b></td>  
-                            <td  align="right" ><b><?php echo number_format($invoice_customer_balance,2); ?></b></td>  
-                            <td  align="right" ><b><?php echo number_format($invoice_customer_balance,2); ?></b></td>  
-                            <td  align="right" ><b><?php echo number_format($invoice_customer_balance,2); ?></b></td>  
-                            <td  align="right" ><b><?php echo number_format($invoice_customer_balance,2); ?></b></td>  
+                            <td colspan="2" align="center"><b>รวม</b></td>
+                            <td  align="right" ><b><?php echo number_format($debit_before,2); ?></b></td>  
+                            <td  align="right" ><b><?php echo number_format($debit_invoice,2); ?></b></td>  
+                            <td  align="right" ><b><?php echo number_format($debit_debit,2); ?></b></td>  
+                            <td  align="right" ><b><?php echo number_format($debit_credit,2); ?></b></td>  
+                            <td  align="right" ><b><?php echo number_format($debit_reciept,2); ?></b></td>  
+                            <td  align="right" ><b><?php echo number_format($debit_balance,2); ?></b></td>  
                         </tr>
                     </tfoot>
                 </table>

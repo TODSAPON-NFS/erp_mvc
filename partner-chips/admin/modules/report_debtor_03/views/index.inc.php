@@ -1,23 +1,38 @@
 <?php
 session_start();
-$user = $_SESSION['user'];
 
-require_once('../models/InvoiceCustomerModel.php');
+require_once('../models/DebtorReportModel.php');
 require_once('../models/CustomerModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/report_debtor_03/views/";
+
 $customer_model = new CustomerModel;
-$invoice_customer_model = new InvoiceCustomerModel;
 
- 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $customer_id = $_GET['customer_id'];
-    $keyword = $_GET['keyword'];
+$debtor_report_model = new DebtorReportModel;
 
-    $customers=$customer_model->getCustomerBy();
-    $invoice_customers = $invoice_customer_model->getInvoiceCustomerBy($date_start,$date_end,$customer_id,$keyword);
-    require_once($path.'view.inc.php');
+
+
+$date_start = $_GET['date_start'];
+$date_end = $_GET['date_end'];
+
+if($date_start == ""){
+    $date_start = date('01-m-Y'); 
+}
+
+if($date_end == ""){ 
+    $date_end  = date('t-m-Y');
+}
+
+$customer_id = $_GET['customer_id'];
+$keyword = $_GET['keyword'];
+
+$customers=$customer_model->getCustomerBy();
+
+$debtor_reports = $debtor_report_model->getCreditNoteDebtorReportBy($date_start,$date_end,$customer_id,$keyword);
+
+require_once($path.'view.inc.php');
+
 
 ?>

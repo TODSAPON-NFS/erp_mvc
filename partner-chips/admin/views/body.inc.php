@@ -195,6 +195,8 @@
         require_once("modules/journal_purchase_return/views/index.inc.php");
     }else if($_GET['app'] == "journal_special_06"){
         require_once("modules/journal_sale_return/views/index.inc.php");
+    }else if($_GET['app'] == "maintenance"){
+        require_once("modules/maintenance/views/index.inc.php");
     }
 
     /* ----------------------------------- //ระบบบัญชี// ---------------------------------------------- */
@@ -202,10 +204,27 @@
 
     /* ----------------------------------- ระบบรายงาน ---------------------------------------------- */
 
-    else if($_GET['app'] == "report_creditor_04"){
+    else if($_GET['app'] == "report_creditor_01"){
+        require_once("modules/report_creditor_01/views/index.inc.php");
+    }else if($_GET['app'] == "report_creditor_02"){
+        require_once("modules/report_creditor_02/views/index.inc.php");
+    }else if($_GET['app'] == "report_creditor_03"){
+        require_once("modules/report_creditor_03/views/index.inc.php");
+    }else if($_GET['app'] == "report_creditor_04"){
         require_once("modules/report_creditor_04/views/index.inc.php");
+    }else if($_GET['app'] == "report_creditor_05"){
+        require_once("modules/report_creditor_05/views/index.inc.php");
+    }else if($_GET['app'] == "report_creditor_06"){
+        require_once("modules/report_creditor_06/views/index.inc.php");
+    }else if($_GET['app'] == "report_creditor_07"){
+        require_once("modules/report_creditor_07/views/index.inc.php");
+    }else if($_GET['app'] == "report_creditor_08"){
+        require_once("modules/report_creditor_08/views/index.inc.php");
+    }else if($_GET['app'] == "report_creditor_09"){
+        require_once("modules/report_creditor_09/views/index.inc.php");
     }
 
+    
     else if($_GET['app'] == "report_debtor_01"){
         require_once("modules/report_debtor_01/views/index.inc.php");
     }else if($_GET['app'] == "report_debtor_02"){

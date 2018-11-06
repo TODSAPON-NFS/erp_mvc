@@ -188,6 +188,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         $data['invoice_supplier_date'] = $_POST['invoice_supplier_date'];
         $data['invoice_supplier_date_recieve'] = $_POST['invoice_supplier_date_recieve'];
         $data['invoice_supplier_name'] = $_POST['invoice_supplier_name'];
+        $data['invoice_supplier_branch'] = $_POST['invoice_supplier_branch'];
         $data['invoice_supplier_address'] = $_POST['invoice_supplier_address'];
         $data['invoice_supplier_tax'] = $_POST['invoice_supplier_tax'];
         $data['invoice_supplier_term'] = $_POST['invoice_supplier_term'];
@@ -408,6 +409,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         $data['invoice_supplier_date'] = $_POST['invoice_supplier_date'];
         $data['invoice_supplier_date_recieve'] = $_POST['invoice_supplier_date_recieve'];
         $data['invoice_supplier_name'] = $_POST['invoice_supplier_name'];
+        $data['invoice_supplier_branch'] = $_POST['invoice_supplier_branch'];
         $data['invoice_supplier_address'] = $_POST['invoice_supplier_address'];
         $data['invoice_supplier_tax'] = $_POST['invoice_supplier_tax'];
         $data['invoice_supplier_term'] = $_POST['invoice_supplier_term'];

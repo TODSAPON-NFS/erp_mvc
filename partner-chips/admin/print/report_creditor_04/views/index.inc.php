@@ -1,12 +1,11 @@
 <?PHP 
 
 session_start();
+require_once('../models/CompanyModel.php');
 require_once('../models/CreditorReportModel.php');
 require_once('../models/SupplierModel.php');
-require_once('../models/InvoiceSupplierModel.php');
-require_once('../models/CompanyModel.php');
 
-date_default_timezone_set('asia/bangkok'); 
+date_default_timezone_set('asia/bangkok');
 $d1=date("d");
 $d2=date("m");
 $d3=date("Y");
@@ -18,11 +17,8 @@ $path = "print/report_creditor_04/views/";
 
 $company_model = new CompanyModel;
 $supplier_model = new SupplierModel;
-$invoice_supplier_model = new InvoiceSupplierModel; 
-$creditor_report_model = new CreditorReportModel; 
+$credit_report_model = new CreditorReportModel;
 
-
-  
 
 $date_start = $_GET['date_start'];
 $date_end = $_GET['date_end'];
@@ -35,24 +31,22 @@ if($date_end == ""){
     $date_end  = date('t-m-Y');
 }
 
-$supplier_id = $_GET['supplier_id'];
+$val = explode("-",$date_start);
+
+$section_date =  $val['1']."/".$val['2'];
+
+$customer_id = $_GET['customer_id'];
 $keyword = $_GET['keyword'];
-$code_start = $_GET['code_start'];
-$code_end = $_GET['code_end'];
 
-$suppliers=$supplier_model->getSupplierBy();
+$company=$company_model->getCompanyByID('1');
 
-$tax_reports = $creditor_report_model->getInvoiceSupplierReportBy($date_start, $date_end, $code_start ,$code_end, $supplier_id, $keyword); 
+$credit_reports = $credit_report_model->getFinanceCreditReportBy($date_start,$date_end,$supplier_id,$keyword);
 
-$company=$company_model->getCompanyByID('1'); 
-// for($i = 0 ; $i < 80; $i++){
-//     $tax_reports[] = $tax_reports[0];
-// }
 
 $lines = 28;
 
-$page_max = (int)(count($tax_reports) / $lines);
-if(count($tax_reports) % $lines > 0){
+$page_max = (int)(count($credit_reports) / $lines);
+if(count($credit_reports) % $lines > 0){
     $page_max += 1;
 }
 
@@ -74,7 +68,7 @@ if($_GET['action'] == "pdf"){
     
     for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
-        $mpdf->AddPage('P');
+        $mpdf->AddPage('L');
         $mpdf->mirrorMargins = true;
         
         $mpdf->SetDisplayMode('fullpage','two');
@@ -82,6 +76,7 @@ if($_GET['action'] == "pdf"){
 
         //$html = ob_get_contents();  
         //ob_end_clean();
+
         $mpdf->WriteHTML($html[$page_index]);
 
     }
@@ -93,8 +88,9 @@ if($_GET['action'] == "pdf"){
 }else if ($_GET['action'] == "excel") {
     
     header("Content-type: application/vnd.ms-excel");
-	// header('Content-type: application/csv'); //*** CSV ***//
-    header("Content-Disposition: attachment; filename=purchase_vat $d1-$d2-$d3 $d4:$d5:$d6.xls");
+    // header('Content-type: application/csv'); //*** CSV ***//
+    
+    header("Content-Disposition: attachment; filename=Sale_vat $d1-$d2-$d3 $d4:$d5:$d6.xls");
 
     for($page_index=0 ; $page_index < $page_max ; $page_index++){
         echo $html[$page_index] ."<div> </div> <br>"; 

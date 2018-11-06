@@ -33,7 +33,7 @@ $finance_debit_lists = $finance_debit_list_model->getFinanceDebitListBy($finance
 //     $tax_reports[] = $tax_reports[0];
 // }
 
-$lines = 18;
+$lines = 10;
 
 $page_max = (int)(count($finance_debit_lists) / $lines);
 if(count($finance_debit_lists) % $lines > 0){
@@ -54,7 +54,7 @@ if($_GET['action'] == "pdf"){
     /*############################### FPDF ##############################*/
 
     include("../plugins/mpdf/mpdf.php");
-    $mpdf=new mPDF('th', 'A4', '0', 'garuda');  
+    $mpdf=new mPDF('th', 'Letter', '0', 'garuda');  
     
     for($page_index=0 ; $page_index < $page_max ; $page_index++){
 

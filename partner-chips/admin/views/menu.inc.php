@@ -73,9 +73,9 @@
 
 
 
-            <div class="navbar-default sidebar" role="navigation">
+             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu"> 
+                    <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
                                  
@@ -439,7 +439,7 @@
                                     <a href="?app=paper" <?PHP if($_GET['app'] == "paper"){?> class="active" <?PHP } ?> ><i class="fa  fa-cog fa-fw" aria-hidden="true"></i> กำหนดเลขที่เอกสาร (Paper Setting)</a>
                                 </li>
                                 <li>
-                                    <a href="?app=finance_debit_account" <?PHP if($_GET['app'] == "finance_debit_account"){?> class="active" <?PHP } ?> ><i class="fa  fa-cog fa-fw" aria-hidden="true"></i> กำหนดวิธีการรับชำระหนี้ (Charge Setting)</a>
+                                    <a href="?app=finance_debit_account" <?PHP if($_GET['app'] == "finance_debit_account"){?> class="active" <?PHP } ?> ><i class="fa  fa-cog fa-fw" aria-hidden="true"></i> กำหนดวิธีการรับชำระหนี้ (Received Setting)</a>
                                 </li>
                                 <li>
                                     <a href="?app=finance_credit_account" <?PHP if($_GET['app'] == "finance_credit_account"){?> class="active" <?PHP } ?> ><i class="fa  fa-cog fa-fw" aria-hidden="true"></i> กำหนดวิธีการจ่ายชำระหนี้ (Payment Setting)</a>
@@ -590,15 +590,18 @@
                                         <li>
                                             <a href="?app=journal_special_04" <?PHP if($_GET['app'] == "journal_special_04"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> สมุดรายวันจ่ายเงิน</a>
                                         </li>
-										<!--
+                                    <!--
                                         <li>
                                             <a href="?app=journal_special_05" <?PHP if($_GET['app'] == "journal_special_05"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> สมุดรายวันส่งคืนสินค้าและจำนวนที่ได้ลด</a>
                                         </li>
                                         <li>
                                             <a href="?app=journal_special_06" <?PHP if($_GET['app'] == "journal_special_06"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> สมุดรายวันรับคืนสินค้าและจำนวนที่ลดให้</a>
                                         </li>
-										-->
+                                    -->
                                     </ul>
+                                </li>
+                                <li>
+                                    <a href="?app=maintenance" <?PHP if($_GET['app'] == "maintenance"){?> class="active" <?PHP } ?> ><i class="fa fa-refresh" aria-hidden="true"></i> ซ่อมแซมระบบ </a>
                                 </li>
                             </ul>
                         </li>
@@ -647,7 +650,7 @@
                                             <a href="?app=report_debtor_02" <?PHP if($_GET['app'] == "report_debtor_02"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ใบวางบิล</a>
                                         </li>
                                         <li>
-                                            <a href="?app=report_debtor_03" <?PHP if($_GET['app'] == "report_debtor_04"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ใบลดหนี้/รับคืน</a>
+                                            <a href="?app=report_debtor_03" <?PHP if($_GET['app'] == "report_debtor_03"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ใบลดหนี้/รับคืน</a>
                                         </li>
                                         <li>
                                             <a href="?app=report_debtor_04" <?PHP if($_GET['app'] == "report_debtor_04"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รับชำระหนี้</a>
@@ -686,49 +689,34 @@
                                     <a href="#" >
                                         <i class="fa fa-line-chart" aria-hidden="true"></i> เจ้าหนี้ <span class="glyphicon arrow"></span>
                                     </a>
-                                    <ul class="collapse" >
+                                    <ul class="collapse" > 
                                         <li>
-                                            <a href="?app=report_creditor_01" <?PHP if($_GET['app'] == "report_creditor_01"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> จ่ายเงินมัดจำ</a>
+                                            <a href="?app=report_creditor_01" <?PHP if($_GET['app'] == "report_creditor_01"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ใบสั่งซื้อ</a>
                                         </li>
                                         <li>
-                                            <a href="?app=report_creditor_02" <?PHP if($_GET['app'] == "report_creditor_02"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ซื้อเงินสด</a>
+                                            <a href="?app=report_creditor_02" <?PHP if($_GET['app'] == "report_creditor_02"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ซื้อเงินเชื่อ(ใบรับสินค้า)</a>
                                         </li>
                                         <li>
-                                            <a href="?app=report_creditor_03" <?PHP if($_GET['app'] == "report_creditor_03"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ใบสั่งซื้อ</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_creditor_04" <?PHP if($_GET['app'] == "report_creditor_04"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ซื้อเงินเชื่อ(ใบรับสินค้า)</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_creditor_05" <?PHP if($_GET['app'] == "report_creditor_05"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ค่าใช้จ่ายอื่นๆ</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_creditor_06" <?PHP if($_GET['app'] == "report_creditor_06"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ใบรับวางบิล</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_creditor_07" <?PHP if($_GET['app'] == "report_creditor_07"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ใบลดหนี้/ส่งคืน</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_creditor_08" <?PHP if($_GET['app'] == "report_creditor_08"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ใบเพิ่มหนี้</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_creditor_09" <?PHP if($_GET['app'] == "report_creditor_09"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> การจ่ายชำระหนี้</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_creditor_10" <?PHP if($_GET['app'] == "report_creditor_10"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> เจ้าหนี้คงค้าง</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_creditor_11" <?PHP if($_GET['app'] == "report_creditor_11"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> วิเคราะห์อายุเจ้าหนี้</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_creditor_12" <?PHP if($_GET['app'] == "report_creditor_12"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายการเคลื่อนไหวเจ้าหนี้</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_creditor_13" <?PHP if($_GET['app'] == "report_creditor_13"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ซื้อเกินวงเงิน</a>
-                                        </li>
-                                        <li>
-                                            <a href="?app=report_creditor_14" <?PHP if($_GET['app'] == "report_creditor_14"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายละเอียดผู้จำหน่าย</a>
+                                            <a href="?app=report_creditor_03" <?PHP if($_GET['app'] == "report_creditor_03"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ค่าใช้จ่ายอื่นๆ</a>
                                         </li> 
+                                        <li>
+                                            <a href="?app=report_creditor_04" <?PHP if($_GET['app'] == "report_creditor_04"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> การจ่ายชำระหนี้</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_creditor_05" <?PHP if($_GET['app'] == "report_creditor_05"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> เจ้าหนี้คงค้าง</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=report_creditor_06" <?PHP if($_GET['app'] == "report_creditor_06"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> สถานะเจ้าหนี้</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_creditor_07" <?PHP if($_GET['app'] == "report_creditor_07"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> วิเคราะห์อายุเจ้าหนี้</a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_creditor_08" <?PHP if($_GET['app'] == "report_creditor_08"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายการเคลื่อนไหวเจ้าหนี้</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=report_creditor_09" <?PHP if($_GET['app'] == "report_creditor_09"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายละเอียดผู้จำหน่าย</a>
+                                        </li>
                                     </ul>
                                 </li>
 
@@ -826,7 +814,7 @@
                                         <li>
                                             <a href="?app=report_account_04" <?PHP if($_GET['app'] == "report_account_04"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวัน </a>
                                         </li> 
-										<li>
+                                        <li>
                                             <a href="?app=report_account_05" <?PHP if($_GET['app'] == "report_account_05"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> งบทดลอง </a>
                                         </li> 
                                         <li>

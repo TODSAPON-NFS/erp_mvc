@@ -15,8 +15,7 @@ $paper_model = new PaperModel;
 // 9 = key ของ purchase request ใน tb_paper
 $paper = $paper_model->getPaperByID('9');
 
-$user=$user_model->getUserByID($_POST['employee_id']);
-$customer=$customer_model->getCustomerByID($_POST['customer_id']); 
+$user=$user_model->getUserByID($_POST['employee_id']); 
 
 $data = [];
 $data['year'] = date("Y");

@@ -1,19 +1,21 @@
 <script>
     function search(){ 
+        var date_start = $("#date_start").val(); 
         var date_end = $("#date_end").val(); 
         var code_start = $("#code_start").val(); 
         var code_end = $("#code_end").val(); 
         var keyword = $("#keyword").val(); 
 
-        window.location = "index.php?app=report_account_06&date_end="+date_end+"&code_start="+code_start+"&code_end="+code_end+"&keyword="+keyword ;
+        window.location = "index.php?app=report_account_06&date_start="+date_start+"&date_end="+date_end+"&code_start="+code_start+"&code_end="+code_end+"&keyword="+keyword ;
     }
     function print(type){ 
+        var date_start = $("#date_start").val(); 
         var date_end = $("#date_end").val(); 
         var code_start = $("#code_start").val(); 
         var code_end = $("#code_end").val(); 
         var keyword = $("#keyword").val(); 
 
-        window.location = "print.php?app=report_account_06&action="+type+"&date_end="+date_end+"&code_start="+code_start+"&code_end="+code_end+"&keyword="+keyword ;
+        window.open("print.php?app=report_account_06&action="+type+"&date_start="+date_start+"&date_end="+date_end+"&code_start="+code_start+"&code_end="+code_end+"&keyword="+keyword ,'_blank');
     }
 </script>
 
@@ -42,7 +44,17 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>ถึงวันที่</label> 
-                            <input type="text" id="date_end" name="date_end" value="<?PHP echo $date_end;?>"  class="form-control calendar" readonly/> 
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" id="date_start" name="date_start" value="<?PHP echo $date_start;?>"  class="form-control calendar" readonly/>
+                                </div>
+                                <div class="col-md-1" align="center">
+                                    -
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" id="date_end" name="date_end" value="<?PHP echo $date_end;?>"  class="form-control calendar" readonly/>
+                                </div>
+                            </div>
                             <p class="help-block">31-12-2018</p>
                         </div>
                     </div> 
@@ -90,8 +102,7 @@
                     <thead>
                         <tr>
                             <th width="100" >วันที่</th> 
-                            <th width="120" >เลขที่เอกสาร</th> 
-                            <th >ชื่อเอกสาร</th>
+                            <th width="120" >เลขที่เอกสาร</th>  
                             <th >คำอธิบาย</th>
                             <th width="150" >เดบิต</th>
                             <th width="150" >เครดิต</th>  
@@ -110,27 +121,27 @@
 
                         for($i=0; $i < count($journal_reports); $i++){ 
                             if( $journal_reports[$i-1]['account_code'] != $journal_reports[$i]['account_code']){ 
-                                $balance = $journal_reports[$i]['account_debit_begin'] - $journal_reports[$i]['account_credit_begin'];
+                                if($journal_reports[$i]['account_id'] != ""){
+                                    $balance1 =  $journal_report_model->getJournalAcountBalanceBy($date_start,$journal_reports[$i]['account_id'] );
+                                }else{
+                                    $balance1 = 0;
+                                }
+                                
+                                $balance = $balance1 + $journal_reports[$i]['account_debit_begin'] - $journal_reports[$i]['account_credit_begin'];
                         ?>
                         <tr class="">
-                            <td colspan="7" >
+                            <td colspan="6" >
                             </td>
                         </tr>
                         <tr class="">
-                            <td colspan="3" >
+                            <td colspan="4" >
                                 <b><?php echo $journal_reports[$i]['account_code']; ?></b> <?php echo $journal_reports[$i]['account_name_th']; ?>
                             </td> 
                             <td align="right">
                                 <b><font color="black">ยอดยกมา</font></b>
-                            </td>
+                            </td> 
                             <td align="right">
-                                <font color="black"> </font>
-                            </td>
-                            <td align="right">
-                                <font color="black"> </font>
-                            </td>
-                            <td align="right">
-                                <font color="black"> <?php echo number_format($balance,2); ?></font>
+                                <font color="black"> <?php echo number_format($balance,2); ?> </font>
                             </td>
                         </tr>
                         
@@ -143,8 +154,7 @@
                         ?>
                         <tr class="">
                             <td><?php echo $journal_reports[$i]['journal_date']; ?></td>
-                            <td><?php echo $journal_reports[$i]['journal_code']; ?></td>
-                            <td><?php echo $journal_reports[$i]['journal_name']; ?></td>
+                            <td><?php echo $journal_reports[$i]['journal_code']; ?></td> 
                             <td><?php echo $journal_reports[$i]['journal_list_name']; ?></td>
                             <td align="right" ><?php echo number_format($journal_reports[$i]['journal_debit'],2); ?> </td>
                             <td align="right" ><?php echo number_format($journal_reports[$i]['journal_credit'],2); ?></td> 
@@ -157,7 +167,7 @@
                                 $journal_credit_sum +=  $journal_credit; 
                         ?>
                         <tr class="">
-                            <td colspan="4" align="center" >
+                            <td colspan="3" align="center" >
                                <b><font color="black"> ยอดคงเหลือ</font> </b>
                             </td> 
                             <td align="right"><b><font color="black"><?php echo number_format($journal_debit,2); ?> </font></b> </td>
@@ -175,7 +185,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4" align="center">รวม</td>
+                            <td colspan="3" align="center">รวม</td>
                             <td  align="right" ><?php echo number_format($journal_debit_sum,2); ?></td>
                             <td  align="right" ><?php echo number_format($journal_credit_sum,2); ?></td>
                             <td></td>

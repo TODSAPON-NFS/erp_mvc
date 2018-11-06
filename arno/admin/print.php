@@ -81,10 +81,14 @@ else if($_GET['app'] == "report_creditor_01"){
         require_once("print/report_account_01/views/index.inc.php");
     } else if($_GET['app'] == "report_account_02"){
         require_once("print/report_account_02/views/index.inc.php");
+    } else if($_GET['app'] == "report_account_03"){
+        require_once("print/report_account_03/views/index.inc.php");
     } else if($_GET['app'] == "report_account_04"){
         require_once("print/report_account_04/views/index.inc.php");
-    } else if($_GET['app'] == "report_account_04"){
-        require_once("print/report_account_04/views/index.inc.php");
+    } else if($_GET['app'] == "report_account_05"){
+        require_once("print/report_account_05/views/index.inc.php");
+    } else if($_GET['app'] == "report_account_06"){
+        require_once("print/report_account_06/views/index.inc.php");
     }
 
 

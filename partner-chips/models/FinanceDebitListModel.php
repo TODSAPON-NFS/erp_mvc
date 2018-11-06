@@ -23,9 +23,11 @@ class FinanceDebitListModel extends BaseModel{
         finance_debit_list_amount,
         finance_debit_list_paid,
         finance_debit_list_balance,
+        billing_note_code,
         finance_debit_list_remark 
         FROM tb_finance_debit_list 
         LEFT JOIN tb_billing_note_list ON tb_finance_debit_list.billing_note_list_id = tb_billing_note_list.billing_note_list_id 
+        LEFT JOIN tb_billing_note ON tb_billing_note_list.billing_note_id = tb_billing_note.billing_note_id 
         LEFT JOIN tb_invoice_customer ON tb_billing_note_list.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
         WHERE finance_debit_id = '$finance_debit_id' 
         ORDER BY invoice_customer_code 

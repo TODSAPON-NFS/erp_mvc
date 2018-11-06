@@ -14,7 +14,8 @@ $journal_report_model = new JournalReportModel;
 $date_start = $_GET['date_start'];
 $date_end = $_GET['date_end'];
 $code_start = $_GET['code_start'];
-$code_end = $_GET['code_end'];
+$code_end = $_GET['code_end'];  
+$keyword = $_GET['keyword'];
 
 if($date_start == ""){
     $date_start = date('01-m-Y'); 
@@ -23,11 +24,9 @@ if($date_start == ""){
 if($date_end == ""){ 
     $date_end  = date('t-m-Y');
 }
- 
-$type = $_GET['type'];
-$keyword = $_GET['keyword'];
 
-$journal_reports = $journal_report_model->getJournalAcountFullReportBy($date_end,$code_start,$code_end,$keyword);
+
+$journal_reports = $journal_report_model->getJournalAcountFullReportBy($date_start,$date_end,$code_start,$code_end,$keyword);
 require_once($path.'view.inc.php');
   
 

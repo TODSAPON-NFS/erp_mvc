@@ -219,6 +219,7 @@ class FinanceDebitModel extends BaseModel{
         finance_debit_name = '".$data['finance_debit_name']."', 
         finance_debit_address = '".$data['finance_debit_address']."', 
         finance_debit_tax = '".$data['finance_debit_tax']."', 
+        finance_debit_branch = '".$data['finance_debit_branch']."', 
         finance_debit_remark = '".$data['finance_debit_remark']."', 
         finance_debit_sent_name = '".$data['finance_debit_sent_name']."', 
         finance_debit_recieve_name = '".$data['finance_debit_recieve_name']."', 
@@ -255,6 +256,7 @@ class FinanceDebitModel extends BaseModel{
             finance_debit_name,
             finance_debit_address,
             finance_debit_tax,
+            finance_debit_branch,
             finance_debit_remark,
             finance_debit_sent_name,
             finance_debit_recieve_name,
@@ -278,6 +280,7 @@ class FinanceDebitModel extends BaseModel{
         $data['finance_debit_name']."','".
         $data['finance_debit_address']."','".
         $data['finance_debit_tax']."','".
+        $data['finance_debit_branch']."','".
         $data['finance_debit_remark']."','".
         $data['finance_debit_sent_name']."','".
         $data['finance_debit_recieve_name']."','".

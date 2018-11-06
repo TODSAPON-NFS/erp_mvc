@@ -60,6 +60,7 @@
             document.getElementById('credit_note_name').value = data.customer_name_en;
             document.getElementById('credit_note_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
             document.getElementById('credit_note_tax').value = data.customer_tax ;
+            document.getElementById('credit_note_branch').value = data.customer_branch ;
         });
 
          $.post( "controllers/getInvoiceCustomerByCustomerID.php", { 'customer_id': customer_id }, function( data ) {
@@ -351,11 +352,18 @@
                                         <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>ชื่อตามใบลดหนี้ / Full name <font color="#F00"><b>*</b></font></label>
-                                        <input  id="credit_note_name" name="credit_note_name" class="form-control" value="<?php echo $customer['customer_name_en'];?> (<?php echo $customer['customer_name_th'];?>)" >
+                                        <input  id="credit_note_name" name="credit_note_name" class="form-control" value="<?php echo $customer['customer_name_en'];?> " >
                                         <p class="help-block">Example : Revel soft.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>สาขา / Branch <font color="#F00"><b>*</b></font></label>
+                                        <input  id="credit_note_name" name="credit_note_name" class="form-control" value="<?php echo $customer['customer_branch'];?>" >
+                                        <p class="help-block">Example : 0000.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">

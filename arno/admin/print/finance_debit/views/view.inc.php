@@ -80,8 +80,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
     <div>สำนักงานใหญ่ : '.$company['company_address_1'].' '.$company['company_address_2'].' <br>'.$company['company_address_3'].' 
     Tel.'.$company['company_tel'].' Fax. '.$company['company_fax'].' Tax. '.$company['company_tax'].'</div>
-    <div align="center" style="font-size:16px;">ใบเสร็จรับเงิน</div>
-    <div align="center" style="font-size:16px;">OFFICIAL RECEIPT</div>
+    <div align="center" style="font-size:14px;">ใบเสร็จรับเงิน <br>OFFICIAL RECEIPT</div>
 
     <div style="display:block;padding:4px;">
         Receipt by thanks from : -
@@ -134,7 +133,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         </table>
     </div>
 
-    <div style="height:32px;" >
+    <div >
         Begin payment for the followings invoice : - 
     </div>
 
@@ -161,26 +160,26 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
         $total += $finance_debit_lists[$i]['finance_debit_list_balance'];
                 $html[$page_index] .= ' 
-                <tr class="odd gradeX">
-                        <td align="center">
+                <tr >
+                        <td align="center" style="height:24px">
                             '.($i+1).'
                         </td>
-                        <td align="center">
+                        <td align="center" style="height:24px">
                             '. $finance_debit_lists[$i]['invoice_customer_code'].'
                         </td>
-                        <td align="center">
+                        <td align="center" style="height:24px">
                             '. $finance_debit_lists[$i]['finance_debit_list_date'].'
                         </td>
-                        <td align="center">
+                        <td align="center" style="height:24px">
                             '. $finance_debit_lists[$i]['finance_debit_list_due'].'
                         </td>
-                        <td align="center">
-                            '. $finance_debit_lists[$i]['finance_debit_list_billing'].'
+                        <td align="center" style="height:24px">
+                            '. $finance_debit_lists[$i]['billing_note_code'].'
                         </td>
-                        <td align="right">
+                        <td align="right" style="height:24px">
                             '. number_format($finance_debit_lists[$i]['finance_debit_list_amount'],2).'
                         </td>
-                        <td align="right">
+                        <td align="right" style="height:24px">
                             '. number_format($finance_debit_lists[$i]['finance_debit_list_balance'],2).'
                         </td>
                     </tr>
@@ -192,26 +191,26 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         if(count($finance_debit_lists) % $lines > 0){
             for($i = count($finance_debit_lists) % $lines ; $i < $lines; $i++){
                 $html[$page_index] .= ' 
-                    <tr class="odd gradeX">
-                            <td align="center"> 
+                    <tr>
+                            <td align="center" style="height:24px"> 
 
                             </td>
-                            <td align="center">
+                            <td align="center" style="height:24px">
                                  
                             </td>
-                            <td align="center">
+                            <td align="center" style="height:24px">
                                  
                             </td>
-                            <td align="center">
+                            <td align="center" style="height:24px">
                                 
                             </td>
-                            <td align="center">
+                            <td align="center" style="height:24px">
                                
                             </td>
-                            <td align="right">
+                            <td align="right" style="height:24px">
                                  
                             </td>
-                            <td align="right">
+                            <td align="right" style="height:24px">
                                  
                             </td>
                         </tr>
@@ -222,6 +221,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     
        $total_price = number_format($total,2);
        $str = $number_2_text->convert($total_price);
+       if($str != ""){
+        $str = '('.$str.')';
+       }
 
     }
    
@@ -231,7 +233,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <tfoot>
                 <tr class="odd gradeX" >
                     <td colspan="6" align="center">
-                        ('. $str.')
+                        '. $str.'
                     </td>
                     <td style="text-align: right;" >
                     '.  $total_price .'
@@ -244,7 +246,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     
     <table width="100%">
         <tr>
-            <td colspan="4" style="padding:8px 0px;">Payment in form of </b></td>
+            <td colspan="4" style="padding:4px 0px;">Payment in form of </b></td>
         <tr>
         <tr>
             <td>[ ]</td>

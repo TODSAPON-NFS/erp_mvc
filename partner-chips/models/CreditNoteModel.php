@@ -45,7 +45,7 @@ class CreditNoteModel extends BaseModel{
         IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 
         credit_note_term, 
         credit_note_due, 
-        IFNULL(CONCAT(tb2.customer_name_en,' (',tb2.customer_name_th,')'),'-') as customer_name  
+        IFNULL( tb2.customer_name_en ,'-') as customer_name  
         FROM tb_credit_note 
         LEFT JOIN tb_credit_note_type ON tb_credit_note.credit_note_type_id = tb_credit_note_type.credit_note_type_id 
         LEFT JOIN tb_user as tb1 ON tb_credit_note.employee_id = tb1.user_id 
@@ -208,6 +208,7 @@ class CreditNoteModel extends BaseModel{
         credit_note_name = '".$data['credit_note_name']."', 
         credit_note_address = '".$data['credit_note_address']."', 
         credit_note_tax = '".$data['credit_note_tax']."', 
+        credit_note_branch = '".$data['credit_note_branch']."', 
         credit_note_term = '".$data['credit_note_term']."', 
         credit_note_due = '".$data['credit_note_due']."', 
         updateby = '".$data['updateby']."', 
@@ -244,6 +245,7 @@ class CreditNoteModel extends BaseModel{
             credit_note_name,
             credit_note_address,
             credit_note_tax,
+            credit_note_branch,
             credit_note_term,
             credit_note_due,
             addby,
@@ -267,6 +269,7 @@ class CreditNoteModel extends BaseModel{
         $data['credit_note_name']."','".
         $data['credit_note_address']."','".
         $data['credit_note_tax']."','".
+        $data['credit_note_branch']."','".
         $data['credit_note_term']."','".
         $data['credit_note_due']."','".
         $data['addby']."',".

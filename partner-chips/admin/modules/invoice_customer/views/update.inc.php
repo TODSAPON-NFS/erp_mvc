@@ -95,6 +95,7 @@
         $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
             document.getElementById('customer_code').value = data.customer_code;
             document.getElementById('invoice_customer_name').value = data.customer_name_en;
+            document.getElementById('invoice_customer_branch').value = data.invoice_customer_branch ;
             document.getElementById('invoice_customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
             document.getElementById('invoice_customer_tax').value = data.customer_tax ;
         });
@@ -546,24 +547,31 @@ generate_credit_date();
                                         <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-8">
                                     <div class="form-group">
                                         <label>ชื่อตามใบกำกับภาษี / Full name <font color="#F00"><b>*</b></font></label>
-                                        <input  id="invoice_customer_name" name="invoice_customer_name" class="form-control" value="<?php echo $customer['customer_name_en'];?>" >
+                                        <input  id="invoice_customer_name" name="invoice_customer_name" class="form-control" value="<?php echo $invoice_customer['invoice_customer_name'];?>" >
                                         <p class="help-block">Example : Revel soft.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>สาขา / Branch <font color="#F00"><b>*</b></font></label>
+                                        <input  id="invoice_customer_branch" name="invoice_customer_branch" class="form-control" value="<?php echo $invoice_customer['invoice_customer_branch'];?>" >
+                                        <p class="help-block">Example : 0000 </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>ที่อยู่ตามใบกำภาษี / Address <font color="#F00"><b>*</b></font></label>
-                                        <textarea  id="invoice_customer_address" name="invoice_customer_address" class="form-control" rows="5" ><?php echo $customer['customer_address_1'] ."\n". $customer['customer_address_2'] ."\n". $customer['customer_address_3'];?></textarea >
+                                        <textarea  id="invoice_customer_address" name="invoice_customer_address" class="form-control" rows="5" ><?php echo $invoice_customer['invoice_customer_address'];?></textarea >
                                         <p class="help-block">Example : IN.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>เลขประจำตัวผู้เสียภาษี / Tax <font color="#F00"><b>*</b></font></label>
-                                        <input  id="invoice_customer_tax" name="invoice_customer_tax" class="form-control" value="<?php echo $customer['customer_tax'];?>" >
+                                        <input  id="invoice_customer_tax" name="invoice_customer_tax" class="form-control" value="<?php echo $invoice_customer['invoice_customer_tax'];?>" >
                                         <p class="help-block">Example : 0305559003597.</p>
                                     </div>
                                 </div>

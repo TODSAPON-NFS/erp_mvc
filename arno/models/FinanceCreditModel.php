@@ -85,6 +85,25 @@ class FinanceCreditModel extends BaseModel{
 
     }
 
+    function getFinanceCreditByCode($code){
+        $sql = " SELECT * 
+        FROM tb_finance_credit 
+        LEFT JOIN tb_supplier ON tb_finance_credit.supplier_id = tb_supplier.supplier_id 
+        LEFT JOIN tb_user ON tb_finance_credit.employee_id = tb_user.user_id 
+        WHERE finance_credit_code = '$code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getFinanceCreditViewByID($id){
         $sql = " SELECT *   
         FROM tb_finance_credit 

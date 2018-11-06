@@ -1,15 +1,17 @@
 <script>
     function search(){  
-        var customer_id = $("#customer_id").val();
+        var code_start = $("#code_start").val();
+        var code_end = $("#code_end").val();
         var view_type = $("#view_type").val();
 
-        window.location = "index.php?app=report_debtor_09&date_end="+date_end+"&customer_id="+customer_id+"&view_type="+view_type;
+        window.location = "index.php?app=report_debtor_09&code_start="+code_start+"&code_end="+code_end+"&view_type="+view_type;
     }
     function print(type){ 
-        var customer_id = $("#customer_id").val();
+        var code_start = $("#code_start").val();
+        var code_end = $("#code_end").val();
         var view_type = $("#view_type").val();
 
-        window.open("print.php?app=report_debtor_09&action="+type+"&date_end="+date_end+"&customer_id="+customer_id+"&view_type="+view_type,'_blank');
+        window.open("print.php?app=report_debtor_09&action="+type+"&code_start="+code_start+"&code_end="+code_end+"&view_type="+view_type,'_blank');
     }
 </script>
 
@@ -34,28 +36,27 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-            <div class="row"> 
+                <div class="row"> 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>ลูกค้า </label>
-                            <select id="customer_id" name="customer_id" class="form-control select"  data-live-search="true">
-                                <option value="">ทั้งหมด</option>
-
-                                <?php 
-                                for($i =  0 ; $i < count($customers) ; $i++){
-                                ?>
-                                <option <?php if($customers[$i]['customer_id'] == $customer_id){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> (<?php echo $customers[$i]['customer_name_th'] ?>)</option>
-                                <?
-                                }
-                                ?>
-
-                            </select>
-                            <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
+                            <label>รหัสลูกค้า</label>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" id="code_start" name=code_start" value="<?PHP echo $code_start;?>"  class="form-control " />
+                                </div>
+                                <div class="col-md-1" align="center">
+                                    -
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" id="code_end" name="code_end" value="<?PHP echo $code_end;?>"  class="form-control " />
+                                </div>
+                            </div>
+                            <p class="help-block">01-01-2018 - 31-12-2018</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>คำค้น <font color="#F00"><b>*</b></font></label>
+                            <label>แสดง <font color="#F00"><b>*</b></font></label>
                             <select id="view_type" name="view_type" class="form-control "  >
                                 <option <?php if($view_type == ''){?> selected <?php }?> value="">แบบย่อ</option>
                                 <option <?php if($view_type == 'full'){?> selected <?php }?> value="full">แบบละเอียด</option> 
@@ -82,94 +83,34 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" >
                     <thead>
                         <tr>
-                            <th rowspan="2" width="48" style="text-align: center;vertical-align: middle;"> ลำดับ</th> 
-                            <th rowspan="2" style="text-align: center;vertical-align: middle;" >ลูกค้า</th> 
-                            <th rowspan="2" style="text-align: center;vertical-align: middle;" >จำนวนเอกสาร</th> 
-                            <th colspan="3" style="text-align: center;vertical-align: middle;" >จะครบกำหนด</th>  
-                            <th colspan="4" style="text-align: center;vertical-align: middle;" >เกินกำหนด</th> 
-                            <th rowspan="2" style="text-align: center;vertical-align: middle;" >ยอดคงค้าง</th>   
-                        </tr>
-                        <tr>
-                            <th style="text-align: center;vertical-align: middle;" >เกิน 60 วัน</th> 
-                            <th style="text-align: center;vertical-align: middle;" >ภายใน 60 วัน</th> 
-                            <th style="text-align: center;vertical-align: middle;" >ภายใน 30 วัน</th> 
-                            <th style="text-align: center;vertical-align: middle;" >1 - 30 วัน</th>  
-                            <th style="text-align: center;vertical-align: middle;" >31 - 60 วัน</th>  
-                            <th style="text-align: center;vertical-align: middle;" >61 - 90 วัน</th>  
-                            <th style="text-align: center;vertical-align: middle;" >เกิน 90 วัน</th>  
-                        </tr>
+                            <th width="48" style="text-align: center;vertical-align: middle;"> ลำดับ</th>
+                            <th style="text-align: center;vertical-align: middle;" >รหัส</th> 
+                            <th style="text-align: center;vertical-align: middle;" >ชื่อภาษาไทย</th> 
+                            <th style="text-align: center;vertical-align: middle;" >ชื่อภาษาอังกฤษ</th> 
+                            <th style="text-align: center;vertical-align: middle;" >เลขผู้เสียภาษี</th>  
+                            <th style="text-align: center;vertical-align: middle;" >เบอร์โทรศัพท์</th> 
+                            <th style="text-align: center;vertical-align: middle;" >Fax.</th> 
+                            <th style="text-align: center;vertical-align: middle;" >อีเมล</th>   
+                        </tr> 
                     </thead>
                     <tbody>
-                        <?php 
-                        $paper_number = 0;   
-                        $due_comming_more_than_60 = 0;  
-                        $due_comming_in_60 = 0;  
-                        $due_comming_in_30 = 0;  
-                        $over_due_1_to_30 = 0;  
-                        $over_due_31_to_60 = 0;  
-                        $over_due_61_to_90 = 0;  
-                        $over_due_more_than_90 = 0;  
-                        $balance = 0;  
-                        for($i=0; $i < count($debtor_reports); $i++){
-                            $paper_number +=  $debtor_reports[$i]['paper_number']; 
-                            $due_comming_more_than_60 +=  $debtor_reports[$i]['due_comming_more_than_60'];  
-                            $due_comming_in_60 +=  $debtor_reports[$i]['due_comming_in_60'];  
-                            $due_comming_in_30 +=  $debtor_reports[$i]['due_comming_in_30'];  
-                            $over_due_1_to_30 +=  $debtor_reports[$i]['over_due_1_to_30'];  
-                            $over_due_31_to_60 +=  $debtor_reports[$i]['over_due_31_to_60'];  
-                            $over_due_61_to_90 +=  $debtor_reports[$i]['over_due_61_to_90'];  
-                            $over_due_more_than_90 +=  $debtor_reports[$i]['over_due_more_than_90'];  
-                            $balance +=  $debtor_reports[$i]['balance'];  
+                        <?php  
+                        for($i=0; $i < count($debtor_reports); $i++){ 
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
-                            <td>[<?php echo $debtor_reports[$i]['customer_code']; ?>] <?php echo $debtor_reports[$i]['customer_name_en']; ?></td>
-                            <td  align="right" >
-                                <?php echo number_format($debtor_reports[$i]['paper_number'],0); ?>
-                            </td>
-                            <td  align="right" >
-                                <?php echo number_format($debtor_reports[$i]['due_comming_more_than_60'],2); ?>
-                            </td> 
-                            <td  align="right" >
-                                <?php echo number_format($debtor_reports[$i]['due_comming_in_60'],2); ?>
-                            </td>  
-                            <td  align="right" >
-                                <?php echo number_format($debtor_reports[$i]['due_comming_in_30'],2); ?>
-                            </td>  
-                            <td  align="right" >
-                                <?php echo number_format($debtor_reports[$i]['over_due_1_to_30'],2); ?>
-                            </td>  
-                            <td  align="right" >
-                                <?php echo number_format($debtor_reports[$i]['over_due_31_to_60'],2); ?>
-                            </td>  
-                            <td  align="right" >
-                                <?php echo number_format($debtor_reports[$i]['over_due_61_to_90'],2); ?>
-                            </td> 
-                            <td  align="right" >
-                                <?php echo number_format($debtor_reports[$i]['over_due_more_than_90'],2); ?>
-                            </td> 
-                            <td  align="right" >
-                                <?php echo number_format($debtor_reports[$i]['balance'],0); ?>
-                            </td>  
+                            <td><?php echo $debtor_reports[$i]['customer_code']; ?></td> 
+                            <td><?php echo $debtor_reports[$i]['customer_name_th']; ?></td> 
+                            <td><?php echo $debtor_reports[$i]['customer_name_en']; ?></td> 
+                            <td><?php echo $debtor_reports[$i]['customer_tax']; ?></td> 
+                            <td><?php echo $debtor_reports[$i]['customer_tel']; ?></td> 
+                            <td><?php echo $debtor_reports[$i]['customer_fax']; ?></td> 
+                            <td><?php echo $debtor_reports[$i]['customer_email']; ?></td> 
                         </tr>
                         <?
                         }
                         ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="2" align="center"><b>รวม</b></td>
-                            <td  align="right" ><b><?php echo number_format($paper_number,0); ?></b></td> 
-                            <td  align="right" ><b><?php echo number_format($due_comming_more_than_60,2); ?></b></td>  
-                            <td  align="right" ><b><?php echo number_format($due_comming_in_60,2); ?></b></td>  
-                            <td  align="right" ><b><?php echo number_format($due_comming_in_30,2); ?></b></td>  
-                            <td  align="right" ><b><?php echo number_format($over_due_1_to_30,2); ?></b></td>  
-                            <td  align="right" ><b><?php echo number_format($over_due_31_to_60,2); ?></b></td>  
-                            <td  align="right" ><b><?php echo number_format($over_due_61_to_90,2); ?></b></td>  
-                            <td  align="right" ><b><?php echo number_format($over_due_more_than_90,2); ?></b></td>
-                            <td  align="right" ><b><?php echo number_format($balance,2); ?></b></td>   
-                        </tr>
-                    </tfoot>
+                    </tbody> 
                 </table>
                 
             </div>

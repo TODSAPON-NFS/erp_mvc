@@ -83,6 +83,25 @@ class PurchaseRequestModel extends BaseModel{
 
     }
 
+
+    function getPurchaseRequestByCode($code){
+        $sql = " SELECT * 
+        FROM tb_purchase_request 
+        WHERE purchase_request_code = '$code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+
     function getPurchaseRequestViewByID($id){
         $sql = " SELECT * 
         FROM tb_purchase_request 

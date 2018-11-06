@@ -82,6 +82,21 @@
     ];
 
     var data_buffer = [];
+
+    function check_code(id){
+        var code = $(id).val();
+        $.post( "controllers/getInvoiceSupplierByCode.php", { 'invoice_supplier_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("invoice_supplier_code_gen").focus();
+                $("#invoice_check").val(data.invoice_supplier_id);
+                
+            } else{
+                $("#invoice_check").val("");
+            }
+        });
+    }
+
     function check(){
 
         var supplier_id = document.getElementById("supplier_id").value;
@@ -91,6 +106,7 @@
         var invoice_supplier_term = document.getElementById("invoice_supplier_term").value;
         var invoice_supplier_due = document.getElementById("invoice_supplier_due").value;
         var employee_id = document.getElementById("employee_id").value;
+        var invoice_check = document.getElementById("invoice_check").value;
 
         
         supplier_id = $.trim(supplier_id);
@@ -101,7 +117,11 @@
         invoice_supplier_due = $.trim(invoice_supplier_due);
         employee_id = $.trim(employee_id);
 
-        if(supplier_id.length == 0){
+        if(invoice_check != ""){
+            alert("This "+invoice_supplier_code_gen+" is already in the system.");
+            document.getElementById("invoice_supplier_code_gen").focus();
+            return false;
+        }else if(supplier_id.length == 0){
             alert("Please input iupplier.");
             document.getElementById("supplier_id").focus();
             return false;
@@ -862,7 +882,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>หมายเลขรับใบกำกับภาษี / recieve code <font color="#F00"><b>*</b></font></label>
-                                        <input id="invoice_supplier_code_gen" name="invoice_supplier_code_gen" class="form-control" value="<?php echo $last_code;?>" >
+                                        <input id="invoice_supplier_code_gen" name="invoice_supplier_code_gen" class="form-control" onchange="check_code(this)" value="<?php echo $last_code;?>" >
+                                        <input id="invoice_check" type="hidden" value="" />
                                         <p class="help-block">Example : RR1801001 OR RF1801001.</p>
                                     </div>
                                 </div>

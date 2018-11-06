@@ -95,7 +95,7 @@ class InvoiceSupplierModel extends BaseModel{
     function getInvoiceSupplierByCode($invoice_supplier_code){
         $sql = " SELECT * 
         FROM tb_invoice_supplier  
-        WHERE invoice_supplier_code = '$invoice_supplier_code' 
+        WHERE invoice_supplier_code_gen = '$invoice_supplier_code' 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

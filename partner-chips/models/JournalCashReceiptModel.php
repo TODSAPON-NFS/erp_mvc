@@ -55,6 +55,26 @@ class JournalCashReceiptModel extends BaseModel{
 
     }
 
+    function getJournalCashReceiptByKeyword($keyword = ""){
+       
+        $sql = " SELECT journal_cash_receipt_id, 
+        journal_cash_receipt_code,  
+        journal_cash_receipt_name 
+        FROM tb_journal_cash_receipt  
+        WHERE journal_cash_receipt_code LIKE ('%$keyword%')  OR  journal_cash_receipt_name LIKE ('%$keyword%') 
+        ORDER BY journal_cash_receipt_code DESC 
+         ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+
 
     function getJournalCashReceiptByFinanceDebitID($id){
         $sql = " SELECT * 

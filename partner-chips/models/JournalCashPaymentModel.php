@@ -56,7 +56,7 @@ class JournalCashPaymentModel extends BaseModel{
 
     }
 
-    function getJournalCashPaymentByKeyword(){
+    function getJournalCashPaymentByKeyword($keyword = ""){
        
         $sql = " SELECT journal_cash_payment_id, 
         journal_cash_payment_code,  

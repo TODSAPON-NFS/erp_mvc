@@ -5,7 +5,7 @@
     var vat_purchase_account = '<?PHP echo $account_setting['vat_purchase_account']['account_id']; ?>';
     var vat_sale_account = '<?PHP echo $account_setting['vat_sale_account']['account_id']; ?>';
 
-    var options = {
+    var journal_options = {
         url: function(keyword) {
             return "controllers/getJournalGeneralByKeyword.php?keyword="+keyword;
         },
@@ -59,11 +59,27 @@
 
     var vat_id  ;
 
+
+    function check_code(id){
+        var code = $(id).val();
+        $.post( "controllers/getJournalGeneralByCode.php", { 'journal_general_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("journal_general_code").focus();
+                $("#journal_check").val(data.journal_general_id);
+                
+            } else{
+                $("#journal_check").val("");
+            }
+        });
+    } 
+
     function check(){
 
         var journal_general_code = document.getElementById("journal_general_code").value;
         var journal_general_date = document.getElementById("journal_general_date").value;
         var journal_general_name = document.getElementById("journal_general_name").value;
+        var journal_check = document.getElementById("journal_check").value;
         
         var debit_total = parseFloat($('#journal_general_list_debit').val( ).toString().replace(new RegExp(',', 'g'),''));
         var credit_total = parseFloat($('#journal_general_list_credit').val( ).toString().replace(new RegExp(',', 'g'),''));
@@ -73,7 +89,11 @@
         journal_general_name = $.trim(journal_general_name);
         
 
-        if(journal_general_code.length == 0){
+        if(journal_check != ""){
+            alert("This "+journal_general_code+" is already in the system.");
+            document.getElementById("journal_general_code").focus();
+            return false;
+        }else if(journal_general_code.length == 0){
             alert("Please input Journal General code");
             document.getElementById("journal_general_code").focus();
             return false;
@@ -378,7 +398,8 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขสมุดรายวันทั่วไป / Journal General Code <font color="#F00"><b>*</b></font></label>
-                                <input id="journal_general_code" name="journal_general_code" class="form-control" value="<?php echo $last_code;?>" >
+                                <input id="journal_general_code" name="journal_general_code" class="form-control" onchange="check_code(this)" value="<?php echo $last_code;?>" >
+                                <input id="journal_check" type="hidden" value="" />
                                 <p class="help-block">Example : JG1801001.</p>
                             </div>
                         </div>
@@ -523,6 +544,9 @@
     <!-- /.col-lg-12 -->
 </div>
 
+<script>
+    $(".example-ajax-post").easyAutocomplete(journal_options);
+</script>
 
 <!-- ************************************************** Cheque Modal  *********************************** -->
 <?PHP require_once($path.'cheque.modal.inc.php'); ?>
@@ -542,6 +566,3 @@
 <?PHP require_once($path.'vat-sale.modal.inc.php'); ?>
 <!-- ************************************************** End Cheque Modal  *********************************** -->
 
-<script>
-    $(".example-ajax-post").easyAutocomplete(options);
-</script>

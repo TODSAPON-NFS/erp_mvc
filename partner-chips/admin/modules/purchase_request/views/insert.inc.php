@@ -32,25 +32,40 @@
         requestDelay: 400
     };
 	
+
+    function check_code(id){
+        var code = $(id).val();
+        $.post( "controllers/getPurchaseRequestByCode.php", { 'purchase_request_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("purchase_request_code").focus();
+                $("#purchase_check").val(data.purchase_request_id);
+                
+            } else{
+                $("#purchase_check").val("");
+            }
+        });
+    }
 	
     function check(){
 
 
         var purchase_request_code = document.getElementById("purchase_request_code").value;
         var purchase_request_type = document.getElementById("purchase_request_type").value;
-        var employee_id = document.getElementById("employee_id").value;
-        var urgent_time = document.getElementById("urgent_time").value;
-        var urgent_status = document.getElementById("urgent_status").value;
+        var employee_id = document.getElementById("employee_id").value; 
+        var purchase_check = document.getElementById("purchase_check").value;
 
         
         purchase_request_code = $.trim(purchase_request_code);
         purchase_request_type = $.trim(purchase_request_type);
-        employee_id = $.trim(employee_id);
-        urgent_time = $.trim(urgent_time);
-        urgent_status = $.trim(urgent_status);
+        employee_id = $.trim(employee_id); 
         
-
-        if(purchase_request_code.length == 0){
+        
+        if(purchase_check != ""){
+            alert("This "+purchase_request_code+" is already in the system.");
+            document.getElementById("purchase_request_code").focus();
+            return false;
+        }else if(purchase_request_code.length == 0){
             alert("Please input purchase request code");
             document.getElementById("purchase_request_code").focus();
             return false;
@@ -261,8 +276,9 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>ประเภทใบร้องขอสั่งซื้อสินค้า / PR Code <font color="#F00"><b>*</b></font></label>
-                                <input id="purchase_request_code" name="purchase_request_code" class="form-control" value="<?php echo $last_code;?>" >
+                                <label>รหัสใบร้องขอสั่งซื้อสินค้า / PR Code <font color="#F00"><b>*</b></font></label>
+                                <input id="purchase_request_code" name="purchase_request_code" class="form-control"   onchange="check_code(this)" value="<?php echo $last_code;?>" >
+                                <input id="purchase_check" type="hidden" value="" />
                                 <p class="help-block">Example : PR1801001.</p>
                             </div>
                         </div>

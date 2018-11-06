@@ -679,7 +679,7 @@ if(!isset($_GET['action'])){
             $body = '
                 We are opening the purchase order.
                 Can you please confirm the order details?. 
-                At <a href="http://arno-thailand.revelsoft.co.th/arno/supplier/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
+                At <a href="http://arno-thailand.revelsoft.co.th/partner-chips/supplier/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
                 Before I send you a purchase order.
                 <br>
                 <br>
@@ -755,7 +755,7 @@ if(!isset($_GET['action'])){
             $body = '
                 We are opened the purchase order.
                 Can you confirm the order details?. 
-                At <a href="http://arno-thailand.revelsoft.co.th/arno/supplier/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
+                At <a href="http://arno-thailand.revelsoft.co.th/partner-chips/supplier/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
 
                 <br>
                 <br>

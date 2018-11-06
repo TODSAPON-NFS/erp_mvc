@@ -58,12 +58,28 @@
 
     var total_old = 0.0;
     var data_buffer = [];
+
+    function check_code(id){
+        var code = $(id).val();
+        $.post( "controllers/getFinanceCreditByCode.php", { 'finance_credit_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("finance_credit_code").focus();
+                $("#finance_check").val(data.finance_credit_id);
+                
+            } else{
+                $("#finance_check").val("");
+            }
+        });
+    } 
+
     function check(){
 
         var supplier_id = document.getElementById("supplier_id").value;
         var finance_credit_code = document.getElementById("finance_credit_code").value;
         var finance_credit_date = document.getElementById("finance_credit_date").value;
         var employee_id = document.getElementById("employee_id").value;
+        var finance_check = document.getElementById("finance_check").value;
 
         
         supplier_id = $.trim(supplier_id);
@@ -71,12 +87,16 @@
         finance_credit_date = $.trim(finance_credit_date);
         employee_id = $.trim(employee_id);
 
-        if(supplier_id.length == 0){
+        if(finance_check != ""){
+            alert("This "+finance_credit_code+" is already in the system.");
+            document.getElementById("finance_credit_code").focus();
+            return false;
+        }else if(supplier_id.length == 0){
             alert("Please input iupplier.");
             document.getElementById("supplier_id").focus();
             return false;
         }else if(finance_credit_code.length == 0){
-            alert("Please input Finance Credit date.");
+            alert("Please input Finance Credit code.");
             document.getElementById("finance_credit_code").focus();
             return false;
         }else if(finance_credit_date.length == 0){
@@ -659,7 +679,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>หมายเลขใบจ่ายชำระหนี้ / CN code <font color="#F00"><b>*</b></font></label>
-                                        <input id="finance_credit_code" name="finance_credit_code" class="form-control" value="<?php echo $last_code;?>"  />
+                                        <input id="finance_credit_code" name="finance_credit_code" class="form-control" onchange="check_code(this)" value="<?php echo $last_code;?>" >
+                                        <input id="finance_check" type="hidden" value="" />
                                         <p class="help-block">Example : CN1801001.</p>
                                     </div>
                                 </div>

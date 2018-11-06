@@ -394,5 +394,45 @@ class CreditorReportModel extends BaseModel{
 
 
 
+
+    //#####################################################################################################################
+    //
+    //
+    //----------------------------------------------- ดึงรายงานผู้ขาย ---------------------------------------------------------
+    //
+    //
+    //#####################################################################################################################
+
+    function getSupplierListReportBy($code_start = '',$code_end = ''){
+
+        $str_code="";
+        if($code_start != "" && $code_end != ""){
+            $str_code = "AND supplier_code >=  '$code_start' AND supplier_code <=  '$code_end' ";
+        }else if ($code_start != ""){
+            $str_code = "AND supplier_code >=  '$code_start' ";    
+        }else if ($code_end != ""){
+            $str_code = "AND supplier_code <= '$code_end' ";  
+        }
+
+        $sql = " SELECT * 
+        FROM tb_supplier as tb1   
+        WHERE 1 
+        $str_code
+        ORDER BY tb1.supplier_code  
+        "; 
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+
+
 }
 ?>

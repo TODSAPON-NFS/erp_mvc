@@ -59,11 +59,26 @@
 
     var vat_id  ;
 
+    function check_code(id){
+        var code = $(id).val();
+        $.post( "controllers/getJournalSaleByCode.php", { 'journal_sale_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("journal_sale_code").focus();
+                $("#journal_check").val(data.journal_general_id);
+                
+            } else{
+                $("#journal_check").val("");
+            }
+        });
+    } 
+
     function check(){
 
         var journal_sale_code = document.getElementById("journal_sale_code").value;
         var journal_sale_date = document.getElementById("journal_sale_date").value;
         var journal_sale_name = document.getElementById("journal_sale_name").value;
+        var journal_check = document.getElementById("journal_check").value;
         
         var debit_total = parseFloat($('#journal_sale_list_debit').val( ).toString().replace(new RegExp(',', 'g'),''));
         var credit_total = parseFloat($('#journal_sale_list_credit').val( ).toString().replace(new RegExp(',', 'g'),''));
@@ -73,7 +88,11 @@
         journal_sale_name = $.trim(journal_sale_name);
         
 
-        if(journal_sale_code.length == 0){
+         if(journal_check != ""){
+            alert("This "+journal_sale_code+" is already in the system.");
+            document.getElementById("journal_sale_code").focus();
+            return false;
+        }else if(journal_sale_code.length == 0){
             alert("Please input Journal Sale code");
             document.getElementById("journal_sale_code").focus();
             return false;
@@ -378,7 +397,8 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขสมุดรายวันขาย / Journal Sale Code <font color="#F00"><b>*</b></font></label>
-                                <input id="journal_sale_code" name="journal_sale_code" class="form-control" value="<?php echo $last_code;?>" >
+                                <input id="journal_sale_code" name="journal_sale_code" class="form-control" onchange="check_code(this)" value="<?php echo $last_code;?>" >
+                                <input id="journal_check" type="hidden" value="" />
                                 <p class="help-block">Example : JG1801001.</p>
                             </div>
                         </div>

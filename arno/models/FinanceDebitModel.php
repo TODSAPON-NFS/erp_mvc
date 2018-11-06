@@ -85,6 +85,26 @@ class FinanceDebitModel extends BaseModel{
 
     }
 
+
+    function getFinanceDebitByCode($code){
+        $sql = " SELECT * 
+        FROM tb_finance_debit 
+        LEFT JOIN tb_customer ON tb_finance_debit.customer_id = tb_customer.customer_id 
+        LEFT JOIN tb_user ON tb_finance_debit.employee_id = tb_user.user_id 
+        WHERE finance_debit_code = '$code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getFinanceDebitViewByID($id){
         $sql = " SELECT *   
         FROM tb_finance_debit 

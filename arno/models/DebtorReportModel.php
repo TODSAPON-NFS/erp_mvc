@@ -676,7 +676,47 @@ class DebtorReportModel extends BaseModel{
     //#####################################################################################################################
     //
     //
-    //----------------------------------------------- ดึงรายงานใบกำกับภาษี ---------------------------------------------------
+    //----------------------------------------------- ดึงรายงานลูกค้า ---------------------------------------------------------
+    //
+    //
+    //#####################################################################################################################
+
+    function getCustomerListReportBy($code_start = '',$code_end = ''){
+
+        $str_code="";
+        if($code_start != "" && $code_end != ""){
+            $str_code = "AND customer_code >=  '$code_start' AND customer_code <=  '$code_end' ";
+        }else if ($code_start != ""){
+            $str_code = "AND customer_code >=  '$code_start' ";    
+        }else if ($code_end != ""){
+            $str_code = "AND customer_code <= '$code_end' ";  
+        }
+
+        $sql = " SELECT * 
+        FROM tb_customer as tb1  
+        LEFT JOIN tb_customer_type ON tb1.customer_type_id = tb_customer_type.customer_type_id 
+        WHERE 1 
+        $str_code
+        ORDER BY tb1.customer_code  
+        "; 
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+
+
+    //#####################################################################################################################
+    //
+    //
+    //----------------------------------------------- ดึงรายงานใบเสนอราคา ---------------------------------------------------
     //
     //
     //#####################################################################################################################

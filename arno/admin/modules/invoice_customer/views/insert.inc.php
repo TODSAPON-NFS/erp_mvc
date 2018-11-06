@@ -80,6 +80,21 @@
     ];
 
     var data_buffer = [];
+
+    function check_code(id){
+        var code = $(id).val();
+        $.post( "controllers/getInvoiceCustomerByCode.php", { 'invoice_customer_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("invoice_customer_code").focus();
+                $("#invoice_check").val(data.invoice_customer_id);
+                
+            } else{
+                $("#invoice_check").val("");
+            }
+        });
+    }
+
     function check(){
         var customer_id = document.getElementById("customer_id").value;
         var invoice_customer_code = document.getElementById("invoice_customer_code").value;
@@ -87,6 +102,7 @@
         var invoice_customer_term = document.getElementById("invoice_customer_term").value;
         var invoice_customer_due = document.getElementById("invoice_customer_due").value;
         var employee_id = document.getElementById("employee_id").value;
+        var invoice_check = document.getElementById("invoice_check").value;
 
         
         customer_id = $.trim(customer_id);
@@ -96,7 +112,11 @@
         invoice_customer_due = $.trim(invoice_customer_due);
         employee_id = $.trim(employee_id);
 
-        if(customer_id.length == 0){
+        if(invoice_check != ""){
+            alert("This "+invoice_customer_code+" is already in the system.");
+            document.getElementById("invoice_customer_code").focus();
+            return false;
+        }else if(customer_id.length == 0){
             alert("Please input iupplier.");
             document.getElementById("customer_id").focus();
             return false;
@@ -668,7 +688,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>หมายเลขใบกำกับภาษี / Inv code <font color="#F00"><b>*</b></font></label>
-                                        <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" value="<?php echo $last_code;?>" />
+                                        <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" onchange="check_code(this)" value="<?php echo $last_code;?>" >
+                                        <input id="invoice_check" type="hidden" value="" />
                                         <p class="help-block">Example : INV1801001.</p>
                                     </div>
                                 </div>

@@ -41,7 +41,7 @@ class JournalSaleModel extends BaseModel{
         ) 
         $str_date 
         GROUP BY tb_journal_sale.journal_sale_id 
-        ORDER BY STR_TO_DATE(journal_sale_date,'%d-%m-%Y %H:%i:%s'), journal_sale_code DESC 
+        ORDER BY journal_sale_code DESC 
          ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

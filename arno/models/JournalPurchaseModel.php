@@ -41,7 +41,7 @@ class JournalPurchaseModel extends BaseModel{
         ) 
         $str_date 
         GROUP BY tb_journal_purchase.journal_purchase_id 
-        ORDER BY STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s'), journal_purchase_code DESC 
+        ORDER BY journal_purchase_code DESC 
          "; 
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

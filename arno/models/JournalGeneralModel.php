@@ -38,7 +38,7 @@ class JournalGeneralModel extends BaseModel{
         ) 
         $str_date 
         GROUP BY tb_journal_general.journal_general_id 
-        ORDER BY STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s'), journal_general_code DESC 
+        ORDER BY  journal_general_code DESC 
          "; 
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

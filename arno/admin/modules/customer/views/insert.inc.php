@@ -310,7 +310,7 @@
                                     <?PHP 
                                         for($i=0; $i < count($account) ; $i++){
                                     ?>
-                                        <option value="<?PHP echo $account[$i]['account_id'];?>" <?PHP if($account[$i]['account_id'] == $customer['account_id'] ){ ?> SELECTED <? } ?> ><?PHP echo $account[$i]['account_code'];?> <?PHP echo $account[$i]['account_name_th'];?></option>
+                                        <option value="<?PHP echo $account[$i]['account_id'];?>" <?PHP if($account[$i]['account_id'] == 15 ){ ?> SELECTED <? } ?> ><?PHP echo $account[$i]['account_code'];?> <?PHP echo $account[$i]['account_name_th'];?></option>
                                     <?PHP
                                         }
                                     ?>
@@ -323,9 +323,9 @@
                                 <label>ประเภทภาษีมูลค่าเพิ่ม / Vat type </label>
                                 <select id="vat_type" name="vat_type" class="form-control">
                                     <option value=""  >เลือก / Select</option>
-                                    <option value="0" <?PHP if($customer['vat_type'] == '0'){?>Selected <?PHP }?> >0 - ไม่มี Vat</option>
-                                    <option value="1"  <?PHP if($customer['vat_type'] == '1'){?>Selected <?PHP }?> >1 - รวม Vat</option>
-                                    <option value="2"  <?PHP if($customer['vat_type'] == '2'){?>Selected <?PHP }?> >2 - แยก Vat</option>
+                                    <option value="0" >0 - ไม่มี Vat</option>
+                                    <option value="1"  >1 - รวม Vat</option>
+                                    <option value="2"  Selected >2 - แยก Vat</option>
                                 </select>
                                 <p class="help-block">Example : 0 - ไม่มี vat.</p>
                             </div>
@@ -333,7 +333,7 @@
                         <div class="col-lg-2">
                             <div class="form-group">
                                 <label>ภาษีมูลค่าเพิ่ม / Vat </label>
-                                <input id="vat" name="vat" type="text" class="form-control"  style="text-align:right;" value="<? echo $customer['vat']?>">
+                                <input id="vat" name="vat" type="text" class="form-control"  style="text-align:right;" value="7">
                                 <p class="help-block">Example : 7.</p>
                             </div>
                         </div>
@@ -345,7 +345,7 @@
                                     <?PHP 
                                         for($i=0; $i < count($currency) ; $i++){
                                     ?>
-                                        <option value="<?PHP echo $currency[$i]['currency_id'];?>" <?PHP if($currency[$i]['currency_id'] == $customer['currency_id']){?> Selected <?PHP }?>><?PHP echo $currency[$i]['currency_code'];?> - <?PHP echo $currency[$i]['currency_name'];?></option>
+                                        <option value="<?PHP echo $currency[$i]['currency_id'];?>" <?PHP if($currency[$i]['currency_id'] == 117){?> Selected <?PHP }?>><?PHP echo $currency[$i]['currency_code'];?> - <?PHP echo $currency[$i]['currency_name'];?></option>
                                     <?PHP
                                         }
                                     ?>

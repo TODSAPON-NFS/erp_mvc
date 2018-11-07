@@ -123,6 +123,18 @@ if(!isset($_GET['action'])){
 
     $journal_cash_receipt = $journal_cash_receipt_model->getJournalCashReceiptByID($journal_cash_receipt_id);
     $journal_cash_receipt_lists = $journal_cash_receipt_list_model->getJournalCashReceiptListBy($journal_cash_receipt_id);
+
+    $journal_cash_receipts = $journal_cash_receipt_model->getJournalCashReceiptBy();
+
+    for($i = 0 ; $i < count($journal_cash_receipts) ; $i++){
+        if($journal_cash_receipt_id == $journal_cash_receipts[$i]['journal_cash_receipt_id']){
+            $previous_id = $journal_cash_receipts[$i-1]['journal_cash_receipt_id'];
+            $previous_code = $journal_cash_receipts[$i-1]['journal_cash_receipt_code'];
+            $next_id = $journal_cash_receipts[$i+1]['journal_cash_receipt_id'];
+            $next_code = $journal_cash_receipts[$i+1]['journal_cash_receipt_code'];
+
+        }
+    }
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){

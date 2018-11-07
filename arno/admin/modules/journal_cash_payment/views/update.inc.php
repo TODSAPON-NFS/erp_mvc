@@ -325,7 +325,20 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            เพิ่มสมุดรายวันจ่ายเงิน /  Add Journal Payment   
+                <div class="row">
+                    <div class="col-md-8">
+                        เพิ่มสมุดรายวันจ่ายเงิน /  Add Journal Payment   
+                    </div>
+                    <div class="col-md-4" align="right">
+                        <?PHP if($previous_id != ""){?>
+                        <a class="btn btn-primary" href="?app=journal_cash_payment&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
+                        <?PHP } ?>
+
+                        <?PHP if($next_id != ""){?>
+                        <a class="btn btn-primary" href="?app=journal_cash_payment&action=update&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
+                        <?PHP } ?>
+                    </div>
+                </div> 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

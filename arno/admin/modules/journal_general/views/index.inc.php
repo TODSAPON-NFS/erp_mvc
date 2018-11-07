@@ -127,6 +127,18 @@ if(!isset($_GET['action'])){
 
     $journal_general = $journal_general_model->getJournalGeneralByID($journal_general_id);
     $journal_general_lists = $journal_general_list_model->getJournalGeneralListBy($journal_general_id); 
+
+    $journal_generals = $journal_general_model->getJournalGeneralBy();
+
+    for($i = 0 ; $i < count($journal_generals) ; $i++){
+        if($journal_general_id == $journal_generals[$i]['journal_general_id']){
+            $previous_id = $journal_generals[$i-1]['journal_general_id'];
+            $previous_code = $journal_generals[$i-1]['journal_general_code'];
+            $next_id = $journal_generals[$i+1]['journal_general_id'];
+            $next_code = $journal_generals[$i+1]['journal_general_code'];
+
+        }
+    }
  
     require_once($path.'update.inc.php');
 

@@ -127,6 +127,20 @@ if(!isset($_GET['action'])){
 
     $journal_sale = $journal_sale_model->getJournalSaleByID($journal_sale_id);
     $journal_sale_lists = $journal_sale_list_model->getJournalSaleListBy($journal_sale_id); 
+
+    
+    $journal_sales = $journal_sale_model->getJournalSaleBy();
+
+    for($i = 0 ; $i < count($journal_sales) ; $i++){
+        if($journal_sale_id == $journal_sales[$i]['journal_sale_id']){
+            $previous_id = $journal_sales[$i-1]['journal_sale_id'];
+            $previous_code = $journal_sales[$i-1]['journal_sale_code'];
+            $next_id = $journal_sales[$i+1]['journal_sale_id'];
+            $next_code = $journal_sales[$i+1]['journal_sale_code'];
+
+        }
+    }
+    
  
     require_once($path.'update.inc.php');
 

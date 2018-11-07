@@ -265,6 +265,166 @@ class CreditorReportModel extends BaseModel{
 
 
 
+    //#####################################################################################################################
+    //
+    //
+    //----------------------------------------------- ดึงรายงานสถานะเจ้าหนี้ --------------------------------------------------
+    //
+    //
+    //#####################################################################################################################
+
+    function getCreditorListReportBy($supplier_id="",$code_start="",$code_end=""){
+
+        $str_supplier ='';
+        if($supplier_id != ""){
+            $str_supplier =" AND supplier_id = '$supplier_id' ";
+        }
+        
+        $str_code="";
+        if($code_start != "" && $code_end != ""){
+            $str_code = "AND supplier_code >=  '$code_start' AND supplier_code <=  '$code_end' ";
+        }else if ($code_start != ""){
+            $str_code = "AND supplier_code >=  '$code_start' ";    
+        }else if ($code_end != ""){
+            $str_code = "AND supplier_code <= '$code_end' ";  
+        }
+
+        $sql_supplier = "SELECT 
+        tb_supplier.supplier_id,
+        supplier_code,
+        supplier_name_en  
+        FROM tb_supplier  
+        WHERE 1  
+        $str_supplier
+        $str_supplier
+        ORDER BY supplier_code
+        "; 
+
+
+        $data = [];
+        if ($result = mysqli_query(static::$db,$sql_supplier, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+
+        return $data;
+    }
+
+    function getBeforeCreditReportBy($supplier_id,$date_start){
+        $sql ="SELECT 
+            IFNULL( 
+                ( 
+                    SELECT SUM(invoice_supplier_net_price) 
+                    FROM tb_invoice_supplier 
+                    WHERE supplier_id = '$supplier_id' 
+                    AND invoice_supplier_begin != '2' 
+                    AND STR_TO_DATE(invoice_supplier_date,'%d-%m-%Y %H:%i:%s') < STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') 
+                ) 
+            , 0) 
+        -   IFNULL( 
+                ( 
+                    SELECT SUM(finance_credit_pay) 
+                    FROM tb_finance_credit 
+                    WHERE supplier_id = '$supplier_id' 
+                    AND STR_TO_DATE(finance_credit_date,'%d-%m-%Y %H:%i:%s') < STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s')  
+                ) 
+            , 0) as credit_before "; 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data['credit_before'];
+        }else{
+            return 0;
+        }
+
+    }
+    function getInvoiceCreditReportBy($supplier_id,$date_start,$date_end){
+        $sql =" SELECT SUM(invoice_supplier_net_price) as credit_invoice 
+                FROM tb_invoice_supplier 
+                WHERE supplier_id = '$supplier_id' 
+                AND invoice_supplier_begin != '2' 
+                AND STR_TO_DATE(invoice_supplier_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') 
+                AND STR_TO_DATE(invoice_supplier_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') 
+            "; 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data['credit_invoice'];
+        }else{
+            return 0;
+        }
+
+    }
+    function getCreditDebitReportBy($supplier_id,$date_start,$date_end){
+        $sql =" SELECT SUM(debit_note_net_price) as credit_debit 
+                FROM tb_debit_note 
+                WHERE supplier_id = '$supplier_id' 
+                AND STR_TO_DATE(debit_note_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') 
+                AND STR_TO_DATE(debit_note_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') 
+            "; 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data['credit_debit'];
+        }else{
+            return 0;
+        }
+
+    }
+    function getCreditCreditReportBy($supplier_id,$date_start,$date_end){
+        $sql =" SELECT SUM(credit_note_net_price) as credit_credit 
+                FROM tb_credit_note 
+                WHERE supplier_id = '$supplier_id' 
+                AND STR_TO_DATE(credit_note_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') 
+                AND STR_TO_DATE(credit_note_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') 
+            "; 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data['credit_credit'];
+        }else{
+            return 0;
+        }
+
+    }
+    function getPaymentCreditReportBy($supplier_id,$date_start,$date_end){
+        $sql =" SELECT SUM(finance_credit_pay) as credit_payment 
+                FROM tb_finance_credit 
+                WHERE supplier_id = '$supplier_id' 
+                AND STR_TO_DATE(finance_credit_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') 
+                AND STR_TO_DATE(finance_credit_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') 
+            "; 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data['credit_payment'];
+        }else{
+            return 0;
+        }
+
+    }
+
+
+
 
     //#####################################################################################################################
     //

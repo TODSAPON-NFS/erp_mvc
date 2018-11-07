@@ -2,18 +2,20 @@
     function search(){ 
         var date_start = $("#date_start").val();
         var date_end = $("#date_end").val();
-        var customer_id = $("#customer_id").val();
-        var keyword = $("#keyword").val();
+        var code_start = $("#code_start").val();
+        var code_end = $("#code_end").val();
+        var customer_id = $("#customer_id").val(); 
 
-        window.location = "index.php?app=report_debtor_06&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
+        window.location = "index.php?app=report_debtor_06&date_start="+date_start+"&date_end="+date_end+"&code_start="+code_start+"&code_end="+code_end+"&customer_id="+customer_id ;
     }
     function print(type){
         var date_start = $("#date_start").val();
         var date_end = $("#date_end").val();
-        var customer_id = $("#customer_id").val();
-        var keyword = $("#keyword").val();
+        var code_start = $("#code_start").val();
+        var code_end = $("#code_end").val();
+        var customer_id = $("#customer_id").val(); 
 
-        window.open("print.php?app=report_debtor_06&action="+type+"&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword,'_blank');
+        window.open("print.php?app=report_debtor_06&action="+type+"&date_start="+date_start+"&date_end="+date_end+"&code_start="+code_start+"&code_end="+code_end+"&customer_id="+customer_id ,'_blank');
     }
 </script>
 
@@ -185,3 +187,4 @@
 </div>
             
             
+    

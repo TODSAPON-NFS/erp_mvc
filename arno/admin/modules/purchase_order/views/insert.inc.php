@@ -2,8 +2,8 @@
 
     var data_buffer = [];
 
-    function check_code(id){
-        var code = $(id).val();
+    function check_code(){
+        var code = $('#purchase_order_code').val();
         $.post( "controllers/getPurchaseOrderByCodeCheck.php", { 'purchase_order_code': code }, function( data ) {  
             if(data != null){ 
                 alert("This "+code+" is already in the system.");
@@ -73,6 +73,8 @@
 
         $.post( "controllers/getPurchaseOrderCodeByID.php", { 'supplier_id': supplier_id, 'employee_id':employee_id  }, function( data ) {
             document.getElementById('purchase_order_code').value = data;
+            check_code();
+
         });
 
         $.post( "controllers/getProductBySupplierID.php", { 'supplier_id': supplier_id }, function( data ) {
@@ -84,6 +86,7 @@
     function delete_row(id){
         $(id).closest('tr').remove();
         update_line(id);
+        calculateAll();
      }
 
      function update_line(id){
@@ -92,33 +95,6 @@
             td_number[i].innerHTML = (i+1);
         }
     }
-
-     function update_sum(id){
-
-          var qty =  $(id).closest('tr').children('td').children('input[name="purchase_order_list_qty[]"]').val(  );
-          var price =  $(id).closest('tr').children('td').children('input[name="purchase_order_list_price[]"]').val( );
-          var sum =  $(id).closest('tr').children('td').children('input[name="purchase_order_list_price_sum[]"]').val( );
-
-        if(isNaN(qty)){
-            qty = 0;
-        }
-
-        if(isNaN(price)){
-            price = 0;
-        }
-
-        if(isNaN(sum)){
-            sum = 0;
-        }
-
-        sum = qty*price;
-
-        $(id).closest('tr').children('td').children('input[name="purchase_order_list_qty[]"]').val( qty );
-        $(id).closest('tr').children('td').children('input[name="purchase_order_list_price[]"]').val( price );
-        $(id).closest('tr').children('td').children('input[name="purchase_order_list_price_sum[]"]').val( sum );
-
-        
-     }
 
 
      
@@ -601,7 +577,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>รหัสใบสั่งซื้อสินค้า / Purchase Order Code <font color="#F00"><b>*</b></font></label>
-                                        <input id="purchase_order_code" name="purchase_order_code" class="form-control"  onchange="check_code(this)" value="<?php echo $last_code;?>" >
+                                        <input id="purchase_order_code" name="purchase_order_code" class="form-control"  onchange="check_code()" value="<?php echo $last_code;?>" >
                                         <input id="purchase_check" type="hidden" value="" />
                                         <p class="help-block">Example : PO1801001.</p>
                                     </div>

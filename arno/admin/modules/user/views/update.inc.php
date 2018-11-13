@@ -1,5 +1,20 @@
 
 <script>
+
+    function check_code(id){
+        var code = $(id).val();
+        $.post( "controllers/getUserByCode.php", { 'user_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("user_code").focus();
+                $("#code_check").val(data.user_code);
+                
+            } else{
+                $("#code_check").val("");
+            }
+        });
+    }
+
     function check(){
 
 
@@ -19,6 +34,8 @@
         var user_position_id = document.getElementById("user_position_id").value;
         var license_id = document.getElementById("license_id").value;
         var user_status_id = document.getElementById("user_status_id").value;
+        var code_check = document.getElementById("code_check").value;
+        var user_id = document.getElementById("user_id").value;
 
         
         user_code = $.trim(user_code);
@@ -40,7 +57,11 @@
 
         
 
-        if(user_code.length == 0){
+        if(code_check != "" && code_check != user_id){
+            alert("This "+code_check+" is already in the system.");
+            document.getElementById("user_code").focus();
+            return false;
+        }else if(user_code.length == 0){
             alert("Please input employee code");
             document.getElementById("user_code").focus();
             return false;
@@ -158,7 +179,8 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>รหัสพนักงาน / Employee Code <font color="#F00"><b>*</b></font></label>
-                                <input id="user_code" name="user_code" class="form-control" value="<?php echo $user['user_code']?>">
+                                <input id="user_code" name="user_code" class="form-control" value="<?php echo $user['user_code']?>" onchange="check_code(this)" />
+                                <input id="code_check" type="hidden" value="" />
                                 <p class="help-block">Example : 0000001.</p>
                             </div>
                         </div>

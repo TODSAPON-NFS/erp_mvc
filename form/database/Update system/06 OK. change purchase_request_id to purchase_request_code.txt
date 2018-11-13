@@ -1,0 +1,16 @@
+UPDATE tb_purchase_request_list 
+SET purchase_request_id = (SELECT purchase_request_code FROM tb_purchase_request WHERE purchase_request_id = tb_purchase_request_list.purchase_request_id);
+
+
+UPDATE tb_purchase_request SET purchase_request_id = LPAD(purchase_request_id,10,'0');
+
+//ใช้คำสั่งนี้หาข้อมูลที่รหัสซ้ำ แล้วลบออก
+SELECT * FROM tb_purchase_request WHERE  purchase_request_code IN ( SELECT DISTINCT  purchase_request_code  FROM tb_purchase_request GROUP BY  purchase_request_code  HAVING COUNT( purchase_request_code ) > 1 )
+
+
+//แก้ไขข้อมูล purchase_request_id = purchase_request_code
+UPDATE tb_purchase_request SET purchase_request_id = purchase_request_code;
+
+//แก้ไขไฟล์ 
+    -- PurchaseRequestModel
+    -- PurchaseRequest Module

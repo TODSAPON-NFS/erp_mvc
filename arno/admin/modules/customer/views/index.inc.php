@@ -78,6 +78,7 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'add' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['customer_code'])){
         $data = [];
+        $data['customer_id'] = $_POST['customer_code'];
         $data['customer_code'] = $_POST['customer_code'];
         $data['customer_name_th'] = $_POST['customer_name_th'];
         $data['customer_name_en'] = $_POST['customer_name_en'];
@@ -160,6 +161,7 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'edit' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['customer_code'])){
         $data = [];
+        $data['customer_id'] = $_POST['customer_code'];
         $data['customer_code'] = $_POST['customer_code'];
         $data['customer_name_th'] = $_POST['customer_name_th'];
         $data['customer_name_en'] = $_POST['customer_name_en'];

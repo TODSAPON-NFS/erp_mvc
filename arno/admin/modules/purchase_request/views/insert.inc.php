@@ -284,6 +284,13 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
+                                <label>วันที่ร้องขอ  / PR Date</label>
+                                <input type="text" id="purchase_request_date" name="purchase_requepurchase_request_datest_alert" value="<?PHP echo $purchase_request['purchase_request_date'];?>"  class="form-control calendar" readonly/>
+                                <p class="help-block">01-03-2018</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
                                 <label>ประเภทใบร้องขอสั่งซื้อสินค้า / PR Type <font color="#F00"><b>*</b></font></label>
                                 <select id="purchase_request_type" name="purchase_request_type" class="form-control">
                                         <?PHP if($type == "STANDARD"){ ?>
@@ -318,7 +325,7 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label>สำหรับลูกค้า / Customer </label>
                                 <select id="customer_id" name="customer_id" class="form-control" >
@@ -334,7 +341,7 @@
                                 <p class="help-block">Example : บริษัท เรเวลซอฟต์ จำกัด (Revel Soft co,ltd).</p>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label>ผู้ขาย / Supplier  <font color="#F00"><b>*</b></font> </label>
                                 <select id="supplier_id" name="supplier_id" class="form-control select" data-live-search="true">

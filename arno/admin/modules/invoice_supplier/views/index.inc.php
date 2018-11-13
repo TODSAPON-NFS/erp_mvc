@@ -316,7 +316,6 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
                 //---------------------------- สิ้นสุด เพิ่มรายการเจ้าหนี้ --------------------------------------------
                 
 
-
             }
 
 
@@ -339,6 +338,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
                 for($i=0; $i < count($product_id) ; $i++){
                     $data_sub = [];
                     $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
+                    $data_sub['invoice_supplier_list_id'] = $invoice_supplier_id.date("YmdHisu").$i;
                     $data_sub['product_id'] = $product_id[$i];
                     $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
                     
@@ -359,6 +359,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
             }else if($product_id != ""){
                 $data_sub = [];
                 $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
+                $data_sub['invoice_supplier_list_id'] = $invoice_supplier_id.date("YmdHisu").$i;
                 $data_sub['product_id'] = $product_id;
                 $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
                 
@@ -442,6 +443,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
             for($i=0; $i < count($product_id) ; $i++){
                 $data_sub = [];
                 $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
+                $data_sub['invoice_supplier_list_id'] = $invoice_supplier_id.date("YmdHisu").$i;
                 $data_sub['product_id'] = $product_id[$i];
                 $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
                 
@@ -468,6 +470,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         }else if($product_id != ""){
             $data_sub = [];
             $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
+            $data_sub['invoice_supplier_list_id'] = $invoice_supplier_id.date("YmdHisu").$i;
             $data_sub['product_id'] = $product_id;
             $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
 

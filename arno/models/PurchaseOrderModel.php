@@ -62,7 +62,8 @@ class PurchaseOrderModel extends BaseModel{
         $str_supplier 
         $str_date 
         $str_user  
-        ORDER BY STR_TO_DATE(purchase_order_date,'%d-%m-%Y %H:%i:%s'),purchase_order_code DESC 
+        GROUP BY purchase_order_id
+        ORDER BY purchase_order_code DESC 
          ";
 
     
@@ -179,7 +180,7 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_cancelled = '1', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE purchase_order_id = $id 
+        WHERE purchase_order_id = '$id' 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -194,7 +195,7 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_cancelled = '0', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE purchase_order_id = $id 
+        WHERE purchase_order_id = '$id' 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -206,7 +207,7 @@ class PurchaseOrderModel extends BaseModel{
 
 
     function updatePurchaseOrderByID($id,$data = []){
-        $sql = " UPDATE tb_purchase_order SET 
+        $sql = " UPDATE tb_purchase_order SET  
         supplier_id = '".$data['supplier_id']."', 
         employee_id = '".$data['employee_id']."', 
         purchase_order_code = '".$data['purchase_order_code']."', 
@@ -221,7 +222,7 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_net_price = '".$data['purchase_order_net_price']."',
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE purchase_order_id = $id 
+        WHERE purchase_order_id = '$id' 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -241,7 +242,7 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_status = '".$data['purchase_order_status']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = NOW() 
-        WHERE purchase_order_id = $id 
+        WHERE purchase_order_id = '$id' 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -262,7 +263,7 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_status = '".$data['purchase_order_status']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = NOW() 
-        WHERE purchase_order_id = $id 
+        WHERE purchase_order_id = '$id' 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -283,7 +284,7 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_status = '".$data['purchase_order_status']."', 
         $str 
         lastupdate = NOW() 
-        WHERE purchase_order_id = $id 
+        WHERE purchase_order_id = '$id' 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -497,19 +498,22 @@ class PurchaseOrderModel extends BaseModel{
 
         if($type == "BLANKED"){
 
-            $str_pr ='0';
+            $str_pr ="'0'";
 
-            if(is_array($data_pr)){ 
+            if(is_array($data_pr) && count($data_pr) > 0){ 
+
+                $str_pr ="";
                 for($i=0; $i < count($data_pr) ;$i++){
-                    $str_pr .= $data_pr[$i];
+                    $str_pr .= " '".$data_pr[$i]."' ";
                     if($i + 1 < count($data_pr)){
-                        $str_pr .= ',';
+                        $str_pr .= ",";
                     }
                 }
+
             }else if ($data_pr != ''){
-                $str_pr = $data_pr;
+                $str_pr = "'".$data_pr."'";
             }else{
-                $str_pr='0';
+                $str_pr="'0'";
             }
 
             
@@ -556,67 +560,71 @@ class PurchaseOrderModel extends BaseModel{
 
         }else if($type == "TEST"){
             
-            $str_dn ='0';
+            $str_dn ="'0'";
 
-            if(is_array($data_dn)){ 
+            if(is_array($data_dn) && count($data_dn) > 0){ 
+                $str_dn ="";
                 for($i=0; $i < count($data_dn) ;$i++){
-                    $str_dn .= $data_dn[$i];
+                    $str_dn .= " '".$data_dn[$i]."' ";
                     if($i + 1 < count($data_dn)){
                         $str_dn .= ',';
                     }
                 }
             }else if ($data_dn != ''){
-                $str_dn = $data_dn;
+                $str_dn = "'".$data_dn."'";
             }else{
-                $str_dn='0';
+                $str_dn="'0'";
             }
 
 
-            $str_rst ='0';
+            $str_rst ="'0'";
 
-            if(is_array($data_rst)){ 
+            if(is_array($data_rst) && count($data_rst) > 0){ 
+                $str_rst ="";
                 for($i=0; $i < count($data_rst) ;$i++){
-                    $str_rst .= $data_rst[$i];
+                    $str_rst .= " '".$data_rst[$i]."' ";
                     if($i + 1 < count($data_rst)){
                         $str_rst .= ',';
                     }
                 }
             }else if ($data_rst != ''){
-                $str_rst = $data_rst;
+                $str_rst = "'".$data_rst."'";
             }else{
-                $str_rst='0';
+                $str_rst="'0'";
             }
 
 
-            $str_rspt ='0';
+            $str_rspt ="'0'";
 
-            if(is_array($data_rspt)){ 
+            if(is_array($data_rspt) && count($data_rspt) > 0){ 
+                $str_rspt ="";
                 for($i=0; $i < count($data_rspt) ;$i++){
-                    $str_rspt .= $data_rspt[$i];
+                    $str_rspt .= " '".$data_rspt[$i]."' ";
                     if($i + 1 < count($data_rspt)){
                         $str_rspt .= ',';
                     }
                 }
             }else if ($data_rspt != ''){
-                $str_rspt = $data_rspt;
+                $str_rspt = "'".$data_rspt."'";
             }else{
-                $str_rspt='0';
+                $str_rspt="'0'";
             }
 
 
-            $str_rrt ='0';
+            $str_rrt ="'0'";
 
-            if(is_array($data_rrt)){ 
+            if(is_array($data_rrt) && count($data_rrt) > 0){ 
+                $str_rrt ="";
                 for($i=0; $i < count($data_rrt) ;$i++){
-                    $str_rrt .= $data_rrt[$i];
+                    $str_rrt .= " '".$data_rrt[$i]."' ";
                     if($i + 1 < count($data_rrt)){
                         $str_rrt .= ',';
                     }
                 }
             }else if ($data_rrt != ''){
-                $str_rrt = $data_rrt;
+                $str_rrt = "'".$data_rrt."'";
             }else{
-                $str_rrt='0';
+                $str_rrt="'0'";
             }
 
             $sql_dn = "SELECT tb_delivery_note_supplier_list.product_id, 
@@ -790,51 +798,54 @@ class PurchaseOrderModel extends BaseModel{
 
 
         }else if($type == "STANDARD"){
-            $str_pr ='0';
+            $str_pr ="'0'";
 
-            if(is_array($data_pr)){ 
+            if(is_array($data_pr) && count($data_pr) > 0){ 
+                $str_pr ="";
                 for($i=0; $i < count($data_pr) ;$i++){
-                    $str_pr .= $data_pr[$i];
+                    $str_pr .= " '".$data_pr[$i]."' ";
                     if($i + 1 < count($data_pr)){
-                        $str_pr .= ',';
+                        $str_pr .= ",";
                     }
                 }
             }else if ($data_pr != ''){
-                $str_pr = $data_pr;
+                $str_pr = "'".$data_pr."'";
             }else{
-                $str_pr='0';
+                $str_pr="'0'";
             }
 
 
-            $str_cpo ='0';
+            $str_cpo ="'0'";
 
-            if(is_array($data_cpo)){ 
+            if(is_array($data_cpo) && count($data_cpo) > 0){ 
+                $str_cpo ="";
                 for($i=0; $i < count($data_cpo) ;$i++){
-                    $str_cpo .= $data_cpo[$i];
+                    $str_cpo .= " '".$data_cpo[$i]."' ";
                     if($i + 1 < count($data_cpo)){
-                        $str_cpo .= ',';
+                        $str_cpo .= ",";
                     }
                 }
             }else if ($data_cpo != ''){
-                $str_cpo = $data_cpo;
+                $str_cpo = "'".$data_cpo."'";
             }else{
-                $str_cpo='0';
+                $str_cpo="'0'";
             }
 
 
-            $str_dn ='0';
+            $str_dn ="'0'";
 
-            if(is_array($data_dn)){ 
+            if(is_array($data_dn)  && count($data_dn) > 0 ){ 
+                $str_dn ="";
                 for($i=0; $i < count($data_dn) ;$i++){
-                    $str_dn .= $data_dn[$i];
+                    $str_dn .= " '".$data_dn[$i]."' ";
                     if($i + 1 < count($data_dn)){
-                        $str_dn .= ',';
+                        $str_dn .= ",";
                     }
                 }
             }else if ($data_dn != ''){
-                $str_dn = $data_dn;
+                $str_dn = "'".$data_dn."'";
             }else{
-                $str_dn='0';
+                $str_dn="'0'";
             }
 
 
@@ -953,19 +964,20 @@ class PurchaseOrderModel extends BaseModel{
 
         }else if($type == "REGRIND"){
  
-            $str_srr ='0';
+            $str_srr ="'0'";
 
-            if(is_array($data_srr)){ 
+            if(is_array($data_srr) && count($data_srr) > 0){ 
+                $str_srr ='';
                 for($i=0; $i < count($data_srr) ;$i++){
-                    $str_srr .= $data_srr[$i];
+                    $str_srr .= " '".$data_srr[$i]."' ";
                     if($i + 1 < count($data_srr)){
-                        $str_srr .= ',';
+                        $str_srr .= ",";
                     }
                 }
             }else if ($data_srr != ''){
-                $str_srr = $data_srr;
+                $str_srr = "'".$data_srr."'";
             }else{
-                $str_srr='0';
+                $str_srr="'0'";
             }
 
 
@@ -1010,7 +1022,7 @@ class PurchaseOrderModel extends BaseModel{
     }
 
     function insertPurchaseOrder($data = []){
-        $sql = " INSERT INTO tb_purchase_order (
+        $sql = " INSERT INTO tb_purchase_order ( 
             supplier_id,
             employee_id,
             purchase_order_rewrite_id,
@@ -1033,7 +1045,7 @@ class PurchaseOrderModel extends BaseModel{
             adddate,
             updateby,
             lastupdate) 
-        VALUES ('".
+        VALUES ('". 
         $data['supplier_id']."','".
         $data['employee_id']."','".
         $data['purchase_order_rewrite_id']."','".
@@ -1062,7 +1074,7 @@ class PurchaseOrderModel extends BaseModel{
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             return mysqli_insert_id(static::$db);
         }else {
-            return 0;
+            return '';
         }
 
     }

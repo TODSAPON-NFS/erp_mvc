@@ -1,0 +1,71 @@
+
+UPDATE tb_check_pay 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_check_pay.supplier_id);
+
+UPDATE tb_credit_purchasing 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_credit_purchasing.supplier_id);
+
+UPDATE tb_customer_purchase_order_list_detail 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_customer_purchase_order_list_detail.supplier_id);
+
+UPDATE tb_delivery_note_supplier 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_delivery_note_supplier.supplier_id);
+
+UPDATE tb_finance_credit 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_finance_credit.supplier_id);
+
+UPDATE tb_invoice_supplier 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_invoice_supplier.supplier_id);
+
+UPDATE tb_other_expense 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_other_expense.supplier_id);
+
+UPDATE tb_product_supplier 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_product_supplier.supplier_id);
+
+UPDATE tb_purchase_order 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_purchase_order.supplier_id);
+
+UPDATE tb_purchase_request 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_purchase_request.supplier_id);
+
+UPDATE tb_regrind_supplier 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_regrind_supplier.supplier_id);
+
+UPDATE tb_regrind_supplier_receive 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_regrind_supplier_receive.supplier_id);
+
+UPDATE tb_request_regrind 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_request_regrind.supplier_id);
+
+UPDATE tb_request_special 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_request_special.supplier_id);
+
+UPDATE tb_request_standard 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_request_standard.supplier_id);
+
+UPDATE tb_request_test 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_request_test.supplier_id);
+
+UPDATE tb_supplier_account 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_supplier_account.supplier_id);
+
+UPDATE tb_supplier_contact 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_supplier_contact.supplier_id);
+
+UPDATE tb_supplier_logistic 
+SET supplier_id = (SELECT supplier_code FROM tb_supplier WHERE supplier_id = tb_supplier_logistic.supplier_id);
+
+
+UPDATE tb_supplier SET supplier_id = LPAD(supplier_id,10,'0');
+
+//ใช้คำสั่งนี้หาข้อมูลที่รหัสซ้ำ แล้วลบออก
+SELECT * FROM tb_supplier WHERE  supplier_code IN ( SELECT DISTINCT  supplier_code  FROM tb_supplier GROUP BY  supplier_code  HAVING COUNT( supplier_code ) > 1 )
+
+
+//แก้ไขข้อมูล supplier_id = supplier_code
+UPDATE tb_supplier SET supplier_id = supplier_code;
+
+//แก้ไขไฟล์ 
+    -- SupplierModel
+    -- Supplier Module

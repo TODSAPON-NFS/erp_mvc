@@ -35,7 +35,7 @@ class PurchaseRequestListModel extends BaseModel{
 
 
     function insertPurchaseRequestList($data = []){
-        $sql = " INSERT INTO tb_purchase_request_list (
+        $sql = " INSERT INTO tb_purchase_request_list ( 
             purchase_request_id,
             product_id,
             purchase_request_list_qty,
@@ -45,7 +45,7 @@ class PurchaseRequestListModel extends BaseModel{
             adddate,
             updateby,
             lastupdate
-        ) VALUES (
+        ) VALUES ( 
             '".$data['purchase_request_id']."', 
             '".$data['product_id']."', 
             '".$data['purchase_request_list_qty']."', 
@@ -116,9 +116,9 @@ class PurchaseRequestListModel extends BaseModel{
         $str ='';
         if(is_array($data)){ 
             for($i=0; $i < count($data) ;$i++){
-                $str .= $data[$i];
+                $str .= " '".$data[$i]."' ";
                 if($i + 1 < count($data)){
-                    $str .= ',';
+                    $str .= ",";
                 }
             }
         }else if ($data != ''){

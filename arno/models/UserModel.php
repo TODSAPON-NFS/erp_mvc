@@ -68,25 +68,43 @@ class UserModel extends BaseModel{
 
     }
 
+
+    function getUserByCode($code){
+        $sql = " SELECT * 
+        FROM tb_user 
+        WHERE user_code = '$code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function updateUserByID($id,$data = []){
         $sql = " UPDATE tb_user SET 
-        user_code = '".$data['user_code']."', 
-        user_prefix = '".$data['user_prefix']."', 
-        user_name = '".$data['user_name']."', 
-        user_lastname = '".$data['user_lastname']."', 
-        user_mobile = '".$data['user_mobile']."', 
-        user_email = '".$data['user_email']."', 
-        user_username = '".$data['user_username']."', 
-        user_password = '".$data['user_password']."', 
-        user_address = '".$data['user_address']."', 
-        user_province = '".$data['user_province']."', 
-        user_amphur = '".$data['user_amphur']."', 
-        user_district = '".$data['user_district']."', 
-        user_zipcode = '".$data['user_zipcode']."', 
-        user_position_id = '".$data['user_position_id']."',
-        license_id = '".$data['license_id']."', 
-        user_status_id = '".$data['user_status_id']."' 
-        WHERE user_id = $id 
+        user_code = '".static::$db->real_escape_string($data['user_code'])."',  
+        user_prefix = '".static::$db->real_escape_string($data['user_prefix'])."', 
+        user_name = '".static::$db->real_escape_string($data['user_name'])."', 
+        user_lastname = '".static::$db->real_escape_string($data['user_lastname'])."', 
+        user_mobile = '".static::$db->real_escape_string($data['user_mobile'])."', 
+        user_email = '".static::$db->real_escape_string($data['user_email'])."', 
+        user_username = '".static::$db->real_escape_string($data['user_username'])."', 
+        user_password = '".static::$db->real_escape_string($data['user_password'])."', 
+        user_address = '".static::$db->real_escape_string($data['user_address'])."', 
+        user_province = '".static::$db->real_escape_string($data['user_province'])."', 
+        user_amphur = '".static::$db->real_escape_string($data['user_amphur'])."', 
+        user_district = '".static::$db->real_escape_string($data['user_district'])."', 
+        user_zipcode = '".static::$db->real_escape_string($data['user_zipcode'])."', 
+        user_position_id = '".static::$db->real_escape_string($data['user_position_id'])."',
+        license_id = '".static::$db->real_escape_string($data['license_id'])."', 
+        user_status_id = '".static::$db->real_escape_string($data['user_status_id'])."' 
+        WHERE user_id = '".static::$db->real_escape_string($id)."'
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -101,7 +119,7 @@ class UserModel extends BaseModel{
     function updateUserSignatureByID($id,$data = []){
         $sql = " UPDATE tb_user SET 
         user_signature = '".$data['user_signature']."' 
-        WHERE user_id = $id 
+        WHERE user_id = '$id'
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -116,7 +134,7 @@ class UserModel extends BaseModel{
     function updatePlayerIDByID($id,$user_player_id){
         $sql = " UPDATE tb_user SET 
         user_player_id = '".$user_player_id."' 
-        WHERE user_id = $id 
+        WHERE user_id = '$id' 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -129,14 +147,46 @@ class UserModel extends BaseModel{
     }
 
     function insertUser($data = []){
-        $sql = " INSERT INTO tb_user (user_code,user_prefix,user_name,user_lastname,user_mobile,user_email,user_username,user_password,user_address,user_province,user_amphur,user_district,user_zipcode,user_position_id,license_id,user_status_id) 
-        VALUES ('".$data['user_code']."','".$data['user_prefix']."','".$data['user_name']."','".$data['user_lastname']."','".$data['user_mobile']."','".$data['user_email']."','".$data['user_username']."','".$data['user_password']."','".$data['user_address']."','".$data['user_province']."','".$data['user_amphur']."','".$data['user_district']."','".$data['user_zipcode']."','".$data['user_position_id']."','".$data['license_id']."','".$data['user_status_id']."'); 
+        $sql = " INSERT INTO tb_user ( 
+            user_code,
+            user_prefix,
+            user_name,
+            user_lastname,
+            user_mobile,
+            user_email,
+            user_username,
+            user_password,
+            user_address,
+            user_province,
+            user_amphur,
+            user_district,
+            user_zipcode,
+            user_position_id,
+            license_id,
+            user_status_id
+            )  VALUES ('". 
+            $data['user_code']."','".
+            $data['user_prefix']."','".
+            $data['user_name']."','".
+            $data['user_lastname']."','".
+            $data['user_mobile']."','".
+            $data['user_email']."','".
+            $data['user_username']."','".
+            $data['user_password']."','".
+            $data['user_address']."','".
+            $data['user_province']."','".
+            $data['user_amphur']."','".
+            $data['user_district']."','".
+            $data['user_zipcode']."','".
+            $data['user_position_id']."','".
+            $data['license_id']."','".
+            $data['user_status_id']."'); 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             return mysqli_insert_id(static::$db);
         }else {
-            return 0;
+            return '';
         }
 
     }

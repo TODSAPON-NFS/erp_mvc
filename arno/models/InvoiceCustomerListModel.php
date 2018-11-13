@@ -120,7 +120,7 @@ class InvoiceCustomerListModel extends BaseModel{
             invoice_customer_list_product_detail = '".$data['invoice_customer_list_product_detail']."',
             invoice_customer_list_qty = '".$data['invoice_customer_list_qty']."',
             invoice_customer_list_price = '".$data['invoice_customer_list_price']."', 
-            invoice_customer_list_total = '".$data['invoice_customer_list_price_sum']."',
+            invoice_customer_list_total = '".$data['invoice_customer_list_total']."',
             invoice_customer_list_remark = '".$data['invoice_customer_list_remark']."', 
             customer_purchase_order_list_id = '".$data['customer_purchase_order_list_id']."',
             stock_group_id = '".$data['stock_group_id']."'

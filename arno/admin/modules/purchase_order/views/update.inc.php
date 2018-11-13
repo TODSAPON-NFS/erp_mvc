@@ -1,6 +1,21 @@
 <script>
 
     var data_buffer = [];
+
+    function check_code(){
+        var code = $('#purchase_order_code').val();
+        $.post( "controllers/getPurchaseOrderByCodeCheck.php", { 'purchase_order_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("purchase_order_code").focus();
+                $("#purchase_check").val(data.purchase_order_id);
+                
+            } else{
+                $("#purchase_check").val("");
+            }
+        });
+    }
+
     function check(){
 
 
@@ -10,6 +25,8 @@
         var purchase_order_date = document.getElementById("purchase_order_date").value;
         var purchase_order_credit_term = document.getElementById("purchase_order_credit_term").value;
         var employee_id = document.getElementById("employee_id").value;
+        var purchase_check = document.getElementById("purchase_check").value;
+        var purchase_order_id = document.getElementById("purchase_order_id").value;
         
         supplier_id = $.trim(supplier_id);
         purchase_order_code = $.trim(purchase_order_code);
@@ -17,7 +34,11 @@
         purchase_order_credit_term = $.trim(purchase_order_credit_term);
         employee_id = $.trim(employee_id);
 
-        if(supplier_id.length == 0){
+        if(purchase_check != "" && purchase_order_id != purchase_check){
+            alert("This "+purchase_order_code+" is already in the system.");
+            document.getElementById("purchase_order_code").focus();
+            return false;
+        }else if(supplier_id.length == 0){
             alert("Please input Supplier");
             document.getElementById("supplier_id").focus();
             return false;
@@ -48,6 +69,7 @@
 
         $.post( "controllers/getPurchaseOrderCodeByID.php", { 'supplier_id': supplier_id, 'employee_id':employee_id  }, function( data ) {
             document.getElementById('purchase_order_code').value = data;
+            check_code();
         });
 
         $.post( "controllers/getProductBySupplierID.php", { 'supplier_id': supplier_id }, function( data ) {
@@ -59,6 +81,7 @@
     function delete_row(id){
         $(id).closest('tr').remove();
         update_line(id);
+        calculateAll();
      }
 
      function update_line(id){
@@ -578,7 +601,8 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>รหัสใบสั่งซื้อสินค้า / Purchase Order Code <font color="#F00"><b>*</b></font></label>
-                                        <input id="purchase_order_code" name="purchase_order_code" class="form-control" value="<? echo $purchase_order['purchase_order_code'];?>" >
+                                        <input id="purchase_order_code" name="purchase_order_code" class="form-control" value="<? echo $purchase_order['purchase_order_code'];?>"  onchange="check_code()" > 
+                                        <input id="purchase_check" type="hidden" value="" />
                                         <p class="help-block">Example : PO1801001.</p>
                                     </div>
                                 </div>

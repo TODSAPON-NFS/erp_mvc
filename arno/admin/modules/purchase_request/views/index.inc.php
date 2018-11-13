@@ -134,9 +134,10 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
 }else if ($_GET['action'] == 'add' && ($license_purchase_page == "Low" || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     if(isset($_POST['purchase_request_code'])){
         $data = [];
-        $data['purchase_request_date'] = date("d")."-".date("m")."-".date("Y");
-        $data['purchase_request_alert'] = $_POST['purchase_request_alert'];
+        $data['purchase_request_id'] = $_POST['purchase_request_code'];
         $data['purchase_request_code'] = $_POST['purchase_request_code'];
+        $data['purchase_request_date'] = $_POST['purchase_request_date'];
+        $data['purchase_request_alert'] = $_POST['purchase_request_alert'];
         $data['purchase_request_type'] = $_POST['purchase_request_type'];
         $data['purchase_request_accept_status'] = "Waiting";
         $data['employee_id'] = $_POST['employee_id'];
@@ -144,9 +145,10 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
         $data['supplier_id'] = $_POST['supplier_id'];
         $data['purchase_request_remark'] = $_POST['purchase_request_remark'];
 
-        $purchase_request_id = $purchase_request_model->insertPurchaseRequest($data);
+        $purchase_request_id = $purchase_request_model->insertPurchaseRequest($data); 
 
-        if($purchase_request_id > 0){
+        if($purchase_request_id != ''){
+
             $product_id = $_POST['product_id'];
             $purchase_request_list_id = $_POST['purchase_request_list_id'];
             $purchase_request_list_qty = $_POST['purchase_request_list_qty'];
@@ -160,12 +162,13 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
                 for($i=0; $i < count($product_id) ; $i++){
                     $data = [];
                     $data['purchase_request_id'] = $purchase_request_id;
+                    $data['purchase_request_list_id'] = $purchase_request_id.date("YmdHisu").$i;
                     $data['product_id'] = $product_id[$i];
                     $data['purchase_request_list_qty'] = $purchase_request_list_qty[$i];
                     $data['purchase_request_list_delivery'] = $purchase_request_list_delivery_min[$i];
                     $data['purchase_request_list_remark'] = $purchase_request_list_remark[$i];
         
-                    if($purchase_request_list_id[$i] == 0){
+                    if($purchase_request_list_id[$i] == '0'){
                         $purchase_request_list_model->insertPurchaseRequestList($data);
                     }else{
                         $purchase_request_list_model->updatePurchaseRquestListById($data,$purchase_request_list_id[$i]);
@@ -175,13 +178,14 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
                 }
             }else{
                 $data = [];
+                $data['purchase_request_list_id'] = $purchase_request_id.date("YmdHisu").$i;
                 $data['purchase_request_id'] = $purchase_request_id;
                 $data['product_id'] = $product_id;
                 $data['purchase_request_list_qty'] = $purchase_request_list_qty;
                 $data['purchase_request_list_delivery'] = $purchase_request_list_delivery_min;
                 $data['purchase_request_list_remark'] = $purchase_request_list_remark;
 
-                if($purchase_request_list_id == 0){
+                if($purchase_request_list_id == '0'){
                     $purchase_request_list_model->insertPurchaseRequestList($data);
                 }else{
                     $purchase_request_list_model->updatePurchaseRquestListById($data,$purchase_request_list_id);
@@ -192,7 +196,7 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
 <?php
         }else{
 ?>
-        <script>window.history.back();</script>
+        <script>//window.history.back();</script>
 <?php
         }
     }else{
@@ -205,9 +209,10 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
     
     if(isset($_POST['purchase_request_code'])){
         $data = [];
+        $data['purchase_request_id'] = $_POST['purchase_request_code'];
+        $data['purchase_request_code'] = $_POST['purchase_request_code'];
         $data['purchase_request_date'] = $_POST['purchase_request_date'];
         $data['purchase_request_alert'] = $_POST['purchase_request_alert'];
-        $data['purchase_request_code'] = $_POST['purchase_request_code'];
         $data['purchase_request_type'] = $_POST['purchase_request_type'];
         $data['purchase_request_accept_status'] = "Waiting";
         $data['employee_id'] = $_POST['employee_id'];
@@ -229,13 +234,14 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
         if(is_array($product_id)){
             for($i=0; $i < count($product_id) ; $i++){
                 $data = [];
+                $data['purchase_request_list_id'] = $purchase_request_id.date("YmdHisu").$i;
                 $data['purchase_request_id'] = $purchase_request_id;
                 $data['product_id'] = $product_id[$i];
                 $data['purchase_request_list_qty'] = $purchase_request_list_qty[$i];
                 $data['purchase_request_list_delivery'] = $purchase_request_list_delivery_min[$i];
                 $data['purchase_request_list_remark'] = $purchase_request_list_remark[$i];
     
-                if($purchase_request_list_id[$i] == 0){
+                if($purchase_request_list_id[$i] == '0'){
                     $purchase_request_list_model->insertPurchaseRequestList($data);
                 }else{
                     $purchase_request_list_model->updatePurchaseRquestListById($data,$purchase_request_list_id[$i]);
@@ -243,13 +249,14 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
             }
         }else{
             $data = [];
+            $data['purchase_request_list_id'] = $purchase_request_id.date("YmdHisu").$i;
             $data['purchase_request_id'] = $purchase_request_id;
             $data['product_id'] = $product_id;
             $data['purchase_request_list_qty'] = $purchase_request_list_qty;
             $data['purchase_request_list_delivery'] = $purchase_request_list_delivery_min;
             $data['purchase_request_list_remark'] = $purchase_request_list_remark;
 
-            if($purchase_request_list_id == 0){
+            if($purchase_request_list_id == '0'){
                 $purchase_request_list_model->insertPurchaseRequestList($data);
             }else{
                 $purchase_request_list_model->updatePurchaseRquestListById($data,$purchase_request_list_id);
@@ -283,24 +290,26 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
         $purchase_request_model->cancelPurchaseRequestById($purchase_request_id);
 
         $data = [];
-        $data['purchase_request_date'] = $purchase_request['purchase_request_date'];
-        $data['purchase_request_code'] = $purchase_request['purchase_request_code'];
+        $data['purchase_request_rewrite_no'] = $purchase_request['purchase_request_rewrite_no'] + 1;
+        $data['purchase_request_id'] = $purchase_request['purchase_request_code']."-REVISE-".$data['purchase_request_rewrite_no'];
+        $data['purchase_request_code'] = $data['purchase_request_id'];
+        $data['purchase_request_date'] = $purchase_request['purchase_request_date']; 
         $data['purchase_request_type'] = $purchase_request['purchase_request_type'];
         $data['purchase_request_accept_status'] = "Waiting";
         $data['employee_id'] = $purchase_request['employee_id'];
         $data['customer_id'] = $purchase_request['customer_id'];
-        $data['purchase_request_rewrite_id'] = $purchase_request_id;
-        $data['purchase_request_rewrite_no'] = $purchase_request['purchase_request_rewrite_no'] + 1;
+        $data['purchase_request_rewrite_id'] = $purchase_request_id; 
         $data['purchase_request_remark'] = $purchase_request['purchase_request_remark'];
 
         $purchase_request_id = $purchase_request_model->insertPurchaseRequest($data);
 
-        if($purchase_request_id > 0){
+        if($purchase_request_id != 0){
  
             if(count($purchase_request_lists) > 0){
                 for($i=0; $i < count($purchase_request_lists) ; $i++){
                     $data = [];
                     $data['purchase_request_id'] = $purchase_request_id;
+                    $data['purchase_request_list_id'] = $purchase_request_id.date("YmdHisu").$i;
                     $data['product_id'] = $purchase_request_lists[$i]['product_id'];
                     $data['purchase_request_list_qty'] = $purchase_request_lists[$i]['purchase_request_list_qty'];
                     $data['purchase_request_list_delivery'] = $purchase_request_lists[$i]['purchase_request_list_delivery_min'];

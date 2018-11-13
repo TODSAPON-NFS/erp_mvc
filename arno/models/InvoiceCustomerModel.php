@@ -54,7 +54,7 @@ class InvoiceCustomerModel extends BaseModel{
         $str_customer 
         $str_date 
         $str_user  
-        ORDER BY STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s'),invoice_customer_code DESC 
+        ORDER BY invoice_customer_code ASC 
          ";
 
          //echo $sql;

@@ -1,0 +1,19 @@
+//ใช้คำสั่งนี้หาข้อมูลที่รหัสซ้ำ แล้วลบออก
+SELECT * FROM tb_purchase_order WHERE  purchase_order_code IN ( SELECT DISTINCT  purchase_order_code  FROM tb_purchase_order GROUP BY  purchase_order_code  HAVING COUNT( purchase_order_code ) > 1 )
+
+UPDATE tb_purchase_order_list 
+SET purchase_order_id = (SELECT purchase_order_code FROM tb_purchase_order WHERE purchase_order_id = tb_purchase_order_list.purchase_order_id);
+
+UPDATE tb_credit_purchasing 
+SET purchase_order_id = (SELECT purchase_order_code FROM tb_purchase_order WHERE purchase_order_id = tb_credit_purchasing.purchase_order_id);
+
+
+UPDATE tb_purchase_order SET purchase_order_id = LPAD(purchase_order_id,10,'0');
+
+
+//แก้ไขข้อมูล purchase_order_id = purchase_order_code
+UPDATE tb_purchase_order SET purchase_order_id = purchase_order_code;
+
+//แก้ไขไฟล์ 
+    -- PurchaseOrderModel
+    -- PurchaseOrder Module

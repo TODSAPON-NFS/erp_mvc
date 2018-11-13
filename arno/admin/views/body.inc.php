@@ -275,6 +275,8 @@
         require_once("modules/search_product/views/index.inc.php");
     }else if($_GET['app'] == "stock_move"){
         require_once("modules/stock_move/views/index.inc.php");
+    }else if($_GET['app'] == "stock_change_product"){
+        require_once("modules/stock_change_product/views/index.inc.php");
     }else if($_GET['app'] == "stock_type"){
         require_once("modules/stock_type/views/index.inc.php");
     }else if($_GET['app'] == "stock_group"){

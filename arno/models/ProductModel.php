@@ -44,7 +44,7 @@ class ProductModel extends BaseModel{
         $product_type 
         $product_category  
         GROUP BY tb_product.product_id
-        ORDER BY product_name  
+        ORDER BY product_code  
         "; 
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) { 
@@ -56,6 +56,41 @@ class ProductModel extends BaseModel{
             return $data;
         }
     }
+
+    function getProductINStockBy($stock_group_id = '', $keyword  = ''){
+        
+        if($stock_group_id != ""){
+            $str_stock_group = "AND tb_stock_report.stock_group_id = '$stock_group_id' ";
+        } 
+        
+
+        
+        if($keyword != ""){
+            $sts_keyword = " AND (product_name LIKE ('%$keyword%') OR product_code LIKE ('%$keyword%') ) ";
+        }
+
+        
+        $sql = " SELECT * 
+        FROM tb_stock_report 
+        LEFT JOIN tb_product ON tb_stock_report.product_id = tb_product.product_id 
+        LEFT JOIN tb_stock_group ON tb_stock_report.stock_group_id = tb_stock_group.stock_group_id  
+        WHERE 1 
+        $str_stock_group
+        $sts_keyword 
+        GROUP BY tb_product.product_id
+        ORDER BY product_code  
+        "; 
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) { 
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+
 
     function getProduct(){
         
@@ -99,6 +134,24 @@ class ProductModel extends BaseModel{
         $sql = "SELECT * 
         FROM tb_product 
         WHERE product_code = '$product_code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getProductCostByCode($stock_group_id, $product_code){
+        $sql = "SELECT * 
+        FROM tb_stock_report 
+        LEFT JOIN tb_product ON tb_stock_report.product_id = tb_product.product_id  
+        WHERE stock_group_id = '$stock_group_id' AND product_code = '$product_code' 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -179,7 +232,7 @@ class ProductModel extends BaseModel{
         $sql = " SELECT product_code, product_name, product_buyprice as product_price, $qty as product_qty  
         FROM tb_product as tb 
         LEFT JOIN tb_product_supplier ON tb.product_id = tb_product_supplier.product_id 
-        WHERE tb.product_code = '$product_code' 
+        WHERE tb.product_code = '".static::$db->real_escape_string($product_code)."' 
         AND product_supplier_status = 'Active' 
         ";
 
@@ -204,20 +257,22 @@ class ProductModel extends BaseModel{
     
 
     function updateProductByID($id,$data = []){
-        $sql = " UPDATE tb_product SET 
-        product_code_first = '".$data['product_code_first']."', 
-        product_code = '".$data['product_code']."', 
-        product_name = '".$data['product_name']."', 
-        product_group = '".$data['product_group']."', 
-        product_barcode = '".$data['product_barcode']."', 
-        product_description = '".$data['product_description']."', 
-        product_type = '".$data['product_type']."', 
-        product_unit = '".$data['product_unit']."', 
-        product_drawing = '".$data['product_drawing']."', 
-        product_logo = '".$data['product_logo']."',
-        product_status = '".$data['product_status']."', 
-        product_category_id = '".$data['product_category_id']."' 
-        WHERE product_id = $id 
+        $sql = " UPDATE tb_product SET  
+        product_code_first = '".static::$db->real_escape_string($data['product_code_first'])."', 
+        product_code = '".static::$db->real_escape_string($data['product_code'])."', 
+        product_name = '".static::$db->real_escape_string($data['product_name'])."', 
+        product_group = '".static::$db->real_escape_string($data['product_group'])."', 
+        product_barcode = '".static::$db->real_escape_string($data['product_barcode'])."', 
+        product_description = '".static::$db->real_escape_string($data['product_description'])."', 
+        product_type = '".static::$db->real_escape_string($data['product_type'])."', 
+        product_unit = '".static::$db->real_escape_string($data['product_unit'])."', 
+        product_drawing = '".static::$db->real_escape_string($data['product_drawing'])."', 
+        product_logo = '".static::$db->real_escape_string($data['product_logo'])."',
+        product_status = '".static::$db->real_escape_string($data['product_status'])."', 
+        product_category_id = '".static::$db->real_escape_string($data['product_category_id'])."', 
+        buy_account_id = '".static::$db->real_escape_string($data['buy_account_id'])."', 
+        sale_account_id = '".static::$db->real_escape_string($data['sale_account_id'])."'  
+        WHERE product_id = '".static::$db->real_escape_string($id)."' 
         ";
 
         //echo $sql;
@@ -233,14 +288,14 @@ class ProductModel extends BaseModel{
 
     function updateProductPriceByID($id,$data = []){
         $sql = " UPDATE tb_product SET 
-        product_price_1 = '".$data['product_price_1']."', 
-        product_price_2 = '".$data['product_price_2']."', 
-        product_price_3 = '".$data['product_price_3']."', 
-        product_price_4 = '".$data['product_price_4']."', 
-        product_price_5 = '".$data['product_price_5']."', 
-        product_price_6 = '".$data['product_price_6']."', 
-        product_price_7 = '".$data['product_price_7']."'   
-        WHERE product_id = $id 
+        product_price_1 = '".static::$db->real_escape_string($data['product_price_1'])."', 
+        product_price_2 = '".static::$db->real_escape_string($data['product_price_2'])."', 
+        product_price_3 = '".static::$db->real_escape_string($data['product_price_3'])."', 
+        product_price_4 = '".static::$db->real_escape_string($data['product_price_4'])."', 
+        product_price_5 = '".static::$db->real_escape_string($data['product_price_5'])."', 
+        product_price_6 = '".static::$db->real_escape_string($data['product_price_6'])."', 
+        product_price_7 = '".static::$db->real_escape_string($data['product_price_7'])."'   
+        WHERE product_id = '".static::$db->real_escape_string($id)."' 
         ";
 
 
@@ -255,7 +310,7 @@ class ProductModel extends BaseModel{
 
 
     function insertProduct($data = []){
-        $sql = " INSERT INTO tb_product (
+        $sql = " INSERT INTO tb_product ( 
             product_code_first, 
             product_code,
             product_name,
@@ -267,20 +322,24 @@ class ProductModel extends BaseModel{
             product_drawing,
             product_logo,
             product_status, 
-            product_category_id
-        ) VALUES (
-            '".$data['product_code_first']."', 
-            '".$data['product_code']."', 
-            '".$data['product_name']."', 
-            '".$data['product_group']."', 
-            '".$data['product_barcode']."', 
-            '".$data['product_description']."', 
-            '".$data['product_type']."', 
-            '".$data['product_unit']."', 
-            '".$data['product_drawing']."', 
-            '".$data['product_logo']."', 
-            '".$data['product_status']."', 
-            '".$data['product_category_id']."' 
+            product_category_id,
+            buy_account_id,
+            sale_account_id
+        ) VALUES ( 
+            '".static::$db->real_escape_string($data['product_code_first'])."', 
+            '".static::$db->real_escape_string($data['product_code'])."', 
+            '".static::$db->real_escape_string($data['product_name'])."', 
+            '".static::$db->real_escape_string($data['product_group'])."', 
+            '".static::$db->real_escape_string($data['product_barcode'])."', 
+            '".static::$db->real_escape_string($data['product_description'])."', 
+            '".static::$db->real_escape_string($data['product_type'])."', 
+            '".static::$db->real_escape_string($data['product_unit'])."', 
+            '".static::$db->real_escape_string($data['product_drawing'])."', 
+            '".static::$db->real_escape_string($data['product_logo'])."', 
+            '".static::$db->real_escape_string($data['product_status'])."', 
+            '".static::$db->real_escape_string($data['product_category_id'])."', 
+            '".static::$db->real_escape_string($data['buy_account_id'])."', 
+            '".static::$db->real_escape_string($data['sale_account_id'])."' 
         ); 
         ";
 
@@ -297,7 +356,7 @@ class ProductModel extends BaseModel{
 
 
     function deleteProductByID($id){
-        $sql = " DELETE FROM tb_product WHERE product_id = '$id' ";
+        $sql = " DELETE FROM tb_product WHERE product_id = '".static::$db->real_escape_string($id)."' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }

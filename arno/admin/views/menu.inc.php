@@ -294,6 +294,7 @@
                                 <li>
                                     <a href="?app=purchase_order" <?PHP if($_GET['app'] == "purchase_order"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบสั่งซื้อ (PO)</a>
                                 </li>
+                                
                                 <li>
                                     <a href="?app=invoice_supplier" <?PHP if($_GET['app'] == "invoice_supplier"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบรับสินค้า (Supplier Invoice) </a>
                                 </li>
@@ -379,6 +380,9 @@
                                 <?PHP if($license_inventery_page == "High" || $license_inventery_page == "Medium" ){?>
                                 <li>
                                     <a href="?app=stock_move" <?PHP if($_GET['app'] == "stock_move"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบโอนคลังสินค้า (Transfer Stock)</a>
+                                </li>
+                                <li>
+                                    <a href="?app=stock_change_product" <?PHP if($_GET['app'] == "stock_change_product"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบย้ายสินค้า (Change Stock)</a>
                                 </li>
                                 <li>
                                     <a href="?app=stock_issue" <?PHP if($_GET['app'] == "stock_issue"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบนำออกสินค้า (Issue Stock)</a>

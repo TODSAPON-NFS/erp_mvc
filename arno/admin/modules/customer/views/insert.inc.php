@@ -1,4 +1,20 @@
 <script>
+
+    function check_code(){
+        var code = $('#customer_code').val();
+        $.post( "controllers/getCustomerByCode.php", { 'customer_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("customer_code").focus();
+                $("#code_check").val(data.customer_id);
+                
+            } else{
+                $("#code_check").val("");
+            }
+        });
+    }
+
+    
     function check(){
 
 
@@ -12,6 +28,7 @@
         var customer_address_3 = document.getElementById("customer_address_3").value;
         var customer_domestic = document.getElementById("customer_domestic").value;
         var customer_branch = document.getElementById("customer_branch").value;
+        var code_check = document.getElementById("code_check").value; 
        
        
         customer_code = $.trim(customer_code);
@@ -27,7 +44,11 @@
         
         
 
-        if(customer_code.length == 0){
+        if(code_check != "" ){
+            alert("This "+code_check+" is already in the system.");
+            document.getElementById("customer_code").focus();
+            return false;
+        }else if(customer_code.length == 0){
             alert("Please input customer code");
             document.getElementById("customer_code").focus();
             return false;
@@ -125,7 +146,8 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label>รหัสลูกค้า / Customer code<font color="#F00"><b>*</b></font></label>
-                                        <input id="customer_code" name="customer_code"   class="form-control">
+                                        <input id="customer_code" name="customer_code"   class="form-control" onchange="check_code()" />
+                                        <input id="code_check" type="hidden" value="" />
                                         <p class="help-block">Example : R001.</p>
                                     </div>
                                 </div>

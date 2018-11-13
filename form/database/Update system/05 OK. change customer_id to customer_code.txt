@@ -1,0 +1,71 @@
+
+UPDATE tb_billing_note 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_billing_note.customer_id);
+
+UPDATE tb_check 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_check.customer_id);
+
+UPDATE tb_customer_account 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_customer_account.customer_id);
+
+UPDATE tb_customer_contact 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_customer_contact.customer_id);
+
+UPDATE tb_customer_holiday 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_customer_holiday.customer_id);
+
+UPDATE tb_customer_logistic 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_customer_logistic.customer_id);
+
+UPDATE tb_customer_purchase_order 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_customer_purchase_order.customer_id);
+
+UPDATE tb_debit_note 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_debit_note.customer_id);
+
+UPDATE tb_delivery_note_customer 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_delivery_note_customer.customer_id);
+
+UPDATE tb_finance_debit 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_finance_debit.customer_id);
+
+UPDATE tb_invoice_customer 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_invoice_customer.customer_id);
+
+UPDATE tb_job 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_job.customer_id);
+
+UPDATE tb_official_receipt 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_official_receipt.customer_id);
+
+UPDATE tb_product_customer 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_product_customer.customer_id);
+
+UPDATE tb_purchase_request 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_purchase_request.customer_id);
+
+UPDATE tb_quotation 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_quotation.customer_id);
+
+UPDATE tb_request_regrind_list 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_request_regrind_list.customer_id);
+
+UPDATE tb_request_special_list 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_request_special_list.customer_id);
+
+UPDATE tb_request_standard_list 
+SET customer_id = (SELECT customer_code FROM tb_customer WHERE customer_id = tb_request_standard_list.customer_id);
+
+
+UPDATE tb_customer SET customer_id = LPAD(customer_id,10,'0');
+
+//ใช้คำสั่งนี้หาข้อมูลที่รหัสซ้ำ แล้วลบออก
+SELECT * FROM tb_customer WHERE  customer_code IN ( SELECT DISTINCT  customer_code  FROM tb_customer GROUP BY  customer_code  HAVING COUNT( customer_code ) > 1 )
+
+
+//แก้ไขข้อมูล customer_id = customer_code
+UPDATE tb_customer SET customer_id = customer_code;
+
+//แก้ไขไฟล์ 
+    -- CustomerModel
+    -- Customer Module

@@ -1,12 +1,16 @@
 <?php
 
-require_once("BaseModel.php");
+require_once("BaseModel.php"); 
+require_once("MaintenanceStockModel.php"); 
 class InvoiceSupplierModel extends BaseModel{
+
+    private $maintenance_stock;
 
     function __construct(){
         if(!static::$db){
             static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
         }
+        $this->maintenance_stock =  new MaintenanceStockModel;
     }
 
     function getInvoiceSupplierBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = "",$begin = '0'){
@@ -60,8 +64,8 @@ class InvoiceSupplierModel extends BaseModel{
         $str_supplier 
         $str_date 
         $str_user  
-        ORDER BY  invoice_supplier_code_gen DESC 
-         ";
+        ORDER BY  invoice_supplier_code_gen ASC 
+        ";
 
          //echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -174,7 +178,7 @@ class InvoiceSupplierModel extends BaseModel{
 
    
     function updateInvoiceSupplierByID($id,$data = []){
-        $sql = " UPDATE tb_invoice_supplier SET 
+        $sql = " UPDATE tb_invoice_supplier SET  
         supplier_id = '".$data['supplier_id']."', 
         employee_id = '".$data['employee_id']."', 
         invoice_supplier_code = '".static::$db->real_escape_string($data['invoice_supplier_code'])."', 
@@ -203,7 +207,7 @@ class InvoiceSupplierModel extends BaseModel{
         invoice_supplier_remark = '".static::$db->real_escape_string($data['invoice_supplier_remark'])."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE invoice_supplier_id = $id 
+        WHERE invoice_supplier_id = '$id' 
         ";
 
         //echo $sql;
@@ -409,7 +413,7 @@ class InvoiceSupplierModel extends BaseModel{
     }
 
     function insertInvoiceSupplier($data = []){
-        $sql = " INSERT INTO tb_invoice_supplier (
+        $sql = " INSERT INTO tb_invoice_supplier ( 
             supplier_id,
             employee_id,
             invoice_supplier_code,
@@ -440,7 +444,7 @@ class InvoiceSupplierModel extends BaseModel{
             adddate,
             updateby,
             lastupdate) 
-        VALUES ('".
+        VALUES ('". 
         $data['supplier_id']."','".
         $data['employee_id']."','".
         static::$db->real_escape_string($data['invoice_supplier_code'])."','".
@@ -492,7 +496,7 @@ class InvoiceSupplierModel extends BaseModel{
         invoice_supplier_term = '".static::$db->real_escape_string($data['invoice_supplier_term'])."',  
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE invoice_supplier_id = $id 
+        WHERE invoice_supplier_id = '$id' 
         ";
 
         //echo $sql;
@@ -513,29 +517,20 @@ class InvoiceSupplierModel extends BaseModel{
                     FROM  tb_invoice_supplier_list 
                     WHERE invoice_supplier_id = '$id' ";   
                      
-         $sql_delete=[];
+         $data_clear=[];
 
-         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                 $sql_delete [] = "
-                     CALL delete_stock_supplier('".
-                     $row['stock_group_id']."','".
-                     $row['invoice_supplier_list_id']."','".
-                     $row['product_id']."','".
-                     $row['invoice_supplier_list_qty']."','".
-                     $row['invoice_supplier_list_cost']."'".
-                     ");
-                 ";
-                
-             }
-             $result->close();
-         }
- 
-         for($i = 0 ; $i < count($sql_delete); $i++){
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+            
+                $data_clear [] = $row;
+            
+            }
+            $result->close();
+        }
 
-            //echo $sql_delete[$i] . "<br><br>";
-             mysqli_query(static::$db,$sql_delete[$i], MYSQLI_USE_RESULT);
-         }
+        for($i = 0 ; $i < count($data_clear); $i++){
+            $this->maintenance_stock->removePurchase( $data_clear[$i]['stock_group_id'], $data_clear[$i]['invoice_supplier_list_id'], $data_clear[$i]['product_id'], $data_clear[$i]['invoice_supplier_list_qty'], $data_clear[$i]['invoice_supplier_list_cost']); 
+        }
  
 
         $sql = " DELETE FROM tb_invoice_supplier_list WHERE invoice_supplier_id = '$id' ";

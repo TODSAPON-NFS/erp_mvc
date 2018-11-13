@@ -143,7 +143,7 @@ class PurchaseRequestModel extends BaseModel{
         purchase_request_cancelled = '1', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE purchase_request_id = $id 
+        WHERE purchase_request_id = '$id' 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -158,7 +158,7 @@ class PurchaseRequestModel extends BaseModel{
         purchase_request_cancelled = '0', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE purchase_request_id = $id 
+        WHERE purchase_request_id = '$id' 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -170,7 +170,7 @@ class PurchaseRequestModel extends BaseModel{
 
    
     function updatePurchaseRequestByID($id,$data = []){
-        $sql = " UPDATE tb_purchase_request SET 
+        $sql = " UPDATE tb_purchase_request SET  
         purchase_request_alert = '".$data['purchase_request_alert']."', 
         purchase_request_code = '".$data['purchase_request_code']."', 
         purchase_request_type = '".$data['purchase_request_type']."', 
@@ -182,7 +182,7 @@ class PurchaseRequestModel extends BaseModel{
         purchase_request_remark = '".$data['purchase_request_remark']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE purchase_request_id = $id 
+        WHERE purchase_request_id = '$id' 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -217,7 +217,7 @@ class PurchaseRequestModel extends BaseModel{
     
 
     function insertPurchaseRequest($data = []){
-        $sql = " INSERT INTO tb_purchase_request (
+        $sql = " INSERT INTO tb_purchase_request ( 
             purchase_request_rewrite_id,
             purchase_request_rewrite_no,
             purchase_request_alert,
@@ -231,7 +231,7 @@ class PurchaseRequestModel extends BaseModel{
             purchase_request_accept_status,
             addby,
             adddate) 
-        VALUES ('".
+        VALUES ('". 
         $data['purchase_request_rewrite_id']."','".
         $data['purchase_request_rewrite_no']."','".
         $data['purchase_request_alert']."','".
@@ -247,10 +247,12 @@ class PurchaseRequestModel extends BaseModel{
         "NOW()); 
         ";
 
+        echo $sql;
+
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             return mysqli_insert_id(static::$db);
         }else {
-            return 0;
+            return '';
         }
 
     }

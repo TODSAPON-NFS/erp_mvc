@@ -1,0 +1,104 @@
+UPDATE tb_credit_note_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_credit_note_list.product_id);
+
+UPDATE tb_customer_purchase_order_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_customer_purchase_order_list.product_id);
+
+UPDATE tb_debit_note_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_debit_note_list.product_id);
+
+UPDATE tb_delivery_note_customer_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_delivery_note_customer_list.product_id);
+
+UPDATE tb_delivery_note_supplier_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_delivery_note_supplier_list.product_id);
+
+UPDATE tb_invoice_customer_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_invoice_customer_list.product_id);
+
+UPDATE tb_invoice_supplier_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_invoice_supplier_list.product_id);
+
+UPDATE tb_job_operation_process_tool SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_job_operation_process_tool.product_id);
+
+UPDATE tb_product_customer SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_product_customer.product_id);
+
+UPDATE tb_product_supplier SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_product_supplier.product_id);
+
+UPDATE tb_purchase_order_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_purchase_order_list.product_id);
+
+UPDATE tb_purchase_request_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_purchase_request_list.product_id);
+
+UPDATE tb_quotation_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_quotation_list.product_id);
+
+UPDATE tb_regrind_supplier_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_regrind_supplier_list.product_id);
+
+UPDATE tb_regrind_supplier_receive_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_regrind_supplier_receive_list.product_id);
+
+UPDATE tb_request_regrind_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_request_regrind_list.product_id);
+
+UPDATE tb_request_special_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_request_special_list.product_id);
+
+UPDATE tb_request_standard_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_request_standard_list.product_id);
+
+UPDATE tb_request_test_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_request_test_list.product_id);
+
+UPDATE tb_stock_1 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_1.product_id);
+
+UPDATE tb_stock_2 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_2.product_id); 
+
+UPDATE tb_stock_4 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_4.product_id);
+
+UPDATE tb_stock_5 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_5.product_id);
+
+UPDATE tb_stock_6 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_6.product_id);
+
+UPDATE tb_stock_7 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_7.product_id);
+
+UPDATE tb_stock_8 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_8.product_id);
+
+UPDATE tb_stock_10 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_10.product_id);
+
+UPDATE tb_stock_11 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_11.product_id);
+
+UPDATE tb_stock_12 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_12.product_id);
+
+UPDATE tb_stock_13 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_13.product_id);
+
+UPDATE tb_stock_14 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_14.product_id);
+
+UPDATE tb_stock_15 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_15.product_id);
+
+UPDATE tb_stock_16 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_16.product_id);
+
+UPDATE tb_stock_17 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_17.product_id);
+
+UPDATE tb_stock_18 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_18.product_id);
+
+UPDATE tb_stock_19 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_19.product_id);
+
+UPDATE tb_stock_20 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_20.product_id);
+
+UPDATE tb_stock_21 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_21.product_id);
+
+UPDATE tb_stock_22 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_22.product_id);
+
+UPDATE tb_stock_23 SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_23.product_id); 
+
+UPDATE tb_stock_issue_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_issue_list.product_id);
+
+UPDATE tb_stock_move_list SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_move_list.product_id);
+
+UPDATE tb_stock_report SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_stock_report.product_id);
+
+UPDATE tb_summit_product SET product_id = (SELECT CONCAT(product_code_first,product_code) FROM tb_product WHERE product_id = tb_summit_product.product_id);
+
+UPDATE tb_product SET product_id = LPAD(product_id,10,'0');
+
+
+//ใช้คำสั่งนี้หาข้อมูลที่รหัสซ้ำ แล้วลบออก
+SELECT * FROM tb_product WHERE CONCAT(product_code_first,product_code) IN ( SELECT DISTINCT CONCAT(product_code_first,product_code) FROM tb_product GROUP BY CONCAT(product_code_first,product_code) HAVING COUNT(CONCAT(product_code_first,product_code)) > 1 )
+
+
+//แก้ไขข้อมูล product_id = product_code
+UPDATE tb_product SET product_id = CONCAT(product_code_first,product_code);
+
+
+
+///---------------------------------------- 
+แก้ไขไฟล์ 
+	- ProductModel 
+	- Module Product

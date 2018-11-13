@@ -79,10 +79,12 @@ class MaintenanceStockModel extends BaseModel{
         '0' as stock_group_id_in, 
         invoice_supplier_list_id,  
         '0' as stock_move_list_id, 
-        '0' as product_rename_list_id, 
+        '0' as stock_change_product_list_id, 
         '0' as invoice_customer_list_id,   
         '0' as stock_issue_list_id,  
-        product_id, 
+        product_id,  
+        '0' as product_id_old, 
+        '0' as product_id_new, 
         invoice_supplier_list_qty as qty, 
         invoice_supplier_list_cost as cost 
         FROM tb_invoice_supplier 
@@ -102,10 +104,12 @@ class MaintenanceStockModel extends BaseModel{
         stock_group_id_in, 
         '0' as invoice_supplier_list_id, 
         stock_move_list_id, 
-        '0' as product_rename_list_id, 
+        '0' as stock_change_product_list_id, 
         '0' as invoice_customer_list_id,   
         '0' as stock_issue_list_id,  
-        product_id, 
+        product_id,  
+        '0' as product_id_old, 
+        '0' as product_id_new, 
         stock_move_list_qty as qty, 
         '0' as cost 
         FROM tb_stock_move 
@@ -115,9 +119,29 @@ class MaintenanceStockModel extends BaseModel{
 
 
         //ดึงข้อมูลการย้ายจำนวนจากสินค้าชื่อนึง ไป ยังสินค้าชื่อนึง เข้าเรียงตามวันที่
-        $sql_rename = "";
+        $sql_rename = "SELECT 
+        stock_change_product_code as transaction_code,  
+        stock_change_product_date as stock_date,  
+        '3_rename' as transaction_type, 
+        stock_group_id,   
+        '0' as stock_group_id_out, 
+        '0' as stock_group_id_in, 
+        '0' as invoice_supplier_list_id, 
+        '0' as stock_move_list_id, 
+        stock_change_product_list_id, 
+        '0' as invoice_customer_list_id,   
+        '0' as stock_issue_list_id,  
+        '0' as product_id, 
+        product_id_old, 
+        product_id_new, 
+        stock_change_product_list_qty as qty, 
+        stock_change_product_list_price as cost 
+        FROM tb_stock_change_product 
+        LEFT JOIN tb_stock_change_product_list ON tb_stock_change_product.stock_change_product_id = tb_stock_change_product_list.stock_change_product_id 
+        ORDER BY STR_TO_DATE(stock_change_product_date,'%d-%m-%Y %H:%i:%s') , stock_change_product_code";
 
 
+        
 
         //ดึงข้อมูลการรับสินค้าเข้าเรียงตามวันที่
         $sql_sale="SELECT 
@@ -129,10 +153,12 @@ class MaintenanceStockModel extends BaseModel{
         '0' as stock_group_id_in, 
         '0' as invoice_supplier_list_id, 
         '0' as stock_move_list_id, 
-        '0' as product_rename_list_id, 
+        '0' as stock_change_product_list_id, 
         invoice_customer_list_id,   
         '0' as stock_issue_list_id,  
         product_id, 
+        '0' as product_id_old, 
+        '0' as product_id_new, 
         invoice_customer_list_qty as qty, 
         invoice_customer_list_price as cost 
         FROM tb_invoice_customer 
@@ -151,10 +177,12 @@ class MaintenanceStockModel extends BaseModel{
         '0' as stock_group_id_in, 
         '0' as invoice_supplier_list_id, 
         '0' as stock_move_list_id, 
-        '0' as product_rename_list_id, 
+        '0' as stock_change_product_list_id, 
         invoice_customer_list_id,   
         '0' as stock_issue_list_id,  
         product_id, 
+        '0' as product_id_old, 
+        '0' as product_id_new, 
         stock_issue_list_qty as qty, 
         '0' as cost 
         FROM tb_stock_issue 
@@ -164,29 +192,33 @@ class MaintenanceStockModel extends BaseModel{
 
         // ดึงข้อมูล Transaction รวมทั้งหมด
         $sql = "SELECT 
-        transaction_code, 
+        transaction_code,  
         stock_date, 
-        transaction_type,
+        transaction_type, 
         stock_group_id, 
         stock_group_id_out, 
         stock_group_id_in, 
         invoice_supplier_list_id, 
         stock_move_list_id,
-        invoice_customer_list_id,
-        product_rename_list_id,
-        invoice_customer_list_id,
-        stock_issue_list_id,
-        product_id, 
+        invoice_customer_list_id, 
+        stock_change_product_list_id, 
+        invoice_customer_list_id, 
+        stock_issue_list_id, 
+        product_id,  
+        product_id_old,  
+        product_id_new,  
         qty, 
         cost 
         FROM    (
                     ($sql_purchase) 
                     UNION  ($sql_move) 
+                    UNION  ($sql_rename) 
                     UNION  ($sql_sale) 
                 ) as tb_transaction  
-        ORDER BY STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'), transaction_type ASC
+        ORDER BY STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'), transaction_type ASC 
         "; 
         
+        //echo $sql."<br><br><br>";
         $data = [];
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -194,12 +226,14 @@ class MaintenanceStockModel extends BaseModel{
             }
             $result->close();
             for($i = 0 ; $i < count($data) ; $i++){
+                //echo "<br><b>".$data[$i]['transaction_type']." : ".$data[$i]['transaction_code']." ".$data[$i]['invoice_supplier_list_id']."</b><br>";
                 if($data[$i]['transaction_type'] == '1_purchase'){ // คำนวนคลังสินค้าในรูปแบบของการซื้อ
                     $this->addPurchase($data[$i]['stock_date'], $data[$i]['stock_group_id'], $data[$i]['invoice_supplier_list_id'], $data[$i]['product_id'], $data[$i]['qty'], $data[$i]['cost']);
                 }else if($data[$i]['transaction_type'] == '2_move'){// คำนวนคลังสินค้าในรูปแบบของการย้ายคลังสินค้า
                     $this->addMoveStock($data[$i]['stock_date'], $data[$i]['stock_group_id_out'],$data[$i]['stock_group_id_in'],$data[$i]['stock_move_list_id'], $data[$i]['product_id'], $data[$i]['qty']);
                 }else if($data[$i]['transaction_type'] == '3_rename'){// คำนวนคลังสินค้าในรูปแบบของการย้ายสินค้าไปยังสินค้าชื่ออื่น
-
+                    
+                    $this->addStockChangeProduct($data[$i]['stock_date'],$data[$i]['stock_group_id'] ,$data[$i]['stock_change_product_list_id'], $data[$i]['product_id_old'], $data[$i]['product_id_new'], $data[$i]['qty']);
                 }else if($data[$i]['transaction_type'] == '4_sale'){// คำนวนคลังสินค้าในรูปแบบของการขาย
                     $this->addSaleStock($data[$i]['stock_date'], $data[$i]['stock_group_id'], $data[$i]['invoice_customer_list_id'], $data[$i]['product_id'], $data[$i]['qty']);
                 }else if($data[$i]['transaction_type'] == '5_issue'){// คำนวนคลังสินค้าในรูปแบบของการตัดสินค้า Tool Management
@@ -266,17 +300,25 @@ class MaintenanceStockModel extends BaseModel{
         $sql = "SELECT stock_report_qty , stock_report_cost_avg  
         FROM tb_stock_report
         WHERE stock_group_id = '$stock_group_id' 
-        AND product_id = '$product_id' ;";
+        AND product_id = '$product_id' ;"; 
+
+       
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $stock_report = mysqli_fetch_array($result,MYSQLI_ASSOC) ;
             $result->close();
-
+            
             $stock_qty = $stock_report['stock_report_qty'];
             $stock_cost = $stock_report['stock_report_cost_avg'];
 
             $new_qty = $stock_qty + $qty;
-            $new_cost = (($stock_qty * $stock_cost) + ($qty * $cost))/$new_qty;
+            if($new_qty > 0){
+                $new_cost = (($stock_qty * $stock_cost) + ($qty * $cost)) / $new_qty;
+                //echo $sql." $qty $cost [$stock_qty] [$new_qty] <br><br>";
+            }else{
+                $new_cost = 0;
+            }
+            
  
             $sql = "UPDATE tb_stock_report 
                     SET stock_report_qty = '$new_qty', 
@@ -724,7 +766,7 @@ class MaintenanceStockModel extends BaseModel{
         ($stock_report['stock_report_cost_avg'])."','".
         ($stock_report['stock_report_qty'] * $stock_report['stock_report_cost_avg'])."','".
         $invoice_customer_list_id."'); "; 
-        echo $sql."<br><br>";
+        //echo $sql."<br><br>";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
     } 
 
@@ -877,7 +919,144 @@ class MaintenanceStockModel extends BaseModel{
         $this->createRowStockReport($stock_in['stock_group_id'],$product_id);
         $stock_report = $this->calculatePurchaseCostOut($stock_in['stock_group_id'], $product_id, $qty, $cost);
 
-        $sql = "DELETE FROM ".$stock_in['table_name']." WHERE invoice_supplier_list_id ='".$invoice_supplier_list_id."'";
+        $sql = "DELETE FROM ".$stock_in['table_name']." WHERE stock_move_list_id ='".$stock_move_list_id."'";
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);  
+
+
+
+    }
+
+
+
+    //##########################################################################################################
+    //
+    //###################################### ทำการคำณวนต้นทุนเมื่อเพิ่มรายการย้ายสินค้า #################################
+    //
+    //##########################################################################################################
+
+    function addStockChangeProduct($stock_date,$stock_group_id ,$stock_change_product_list_id, $product_id_old, $product_id_new, $qty){
+
+
+
+        //------------------------------------------------ คำณวนต้นทุนของคลังสินค้าขาออก -------------------------------------------
+        $stock_out = $this->getStockGroupTable($stock_group_id);
+
+        $this->createRowStockReport($stock_out['stock_group_id'],$product_id_old);
+
+        $stock_report = $this->calculateSaleCostIn($stock_out['stock_group_id'],$product_id_old,$qty); 
+ 
+        $sql = "INSERT INTO ". $stock_out['table_name'] ." (
+            stock_type,
+            product_id, 
+            stock_date,
+            in_qty, 
+            in_stock_cost_avg,
+            in_stock_cost_avg_total,
+            out_qty, 
+            out_stock_cost_avg,
+            out_stock_cost_avg_total,
+            balance_qty, 
+            balance_stock_cost_avg,
+            balance_stock_cost_avg_total,
+            stock_change_product_list_id
+            ) VALUE ('".
+        "out"."','".
+        $product_id_old."','".
+        $stock_date."','".
+        (0)."','".
+        (0)."','".
+        (0)."','".
+        $qty."','".
+        $stock_report['stock_report_cost_avg']."','".
+        ($qty * $stock_report['stock_report_cost_avg'])."','".
+        ($stock_report['stock_report_qty'])."','".
+        ($stock_report['stock_report_cost_avg'])."','".
+        ($stock_report['stock_report_qty'] * $stock_report['stock_report_cost_avg'])."','".
+        $stock_change_product_list_id."'); "; 
+
+        //echo $sql ."<br><br>";
+
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+
+        //------------------------------------------------ คำณวนต้นทุนของคลังสินค้าขาเข้า -------------------------------------------
+        $cost = $stock_report['stock_report_cost_avg'];
+        $stock_in = $this->getStockGroupTable($stock_group_id);
+        $this->createRowStockReport($stock_in['stock_group_id'],$product_id_new);
+
+        //echo $product_id_new ."<br><br>";
+        //echo $qty ."<br><br>";
+        //echo $cost ."<br><br>";
+
+        $stock_report = $this->calculatePurchaseCostIn($stock_in['stock_group_id'], $product_id_new, $qty, $cost);
+ 
+        $sql = "INSERT INTO ". $stock_in['table_name'] ." (
+            stock_type,
+            product_id, 
+            stock_date,
+            in_qty, 
+            in_stock_cost_avg,
+            in_stock_cost_avg_total,
+            out_qty, 
+            out_stock_cost_avg,
+            out_stock_cost_avg_total,
+            balance_qty, 
+            balance_stock_cost_avg,
+            balance_stock_cost_avg_total,
+            stock_change_product_list_id
+            ) VALUE ('".
+        "in"."','".
+        $product_id_new."','".
+        $stock_date."','".
+        $qty."','".
+        $cost."','".
+        ($qty * $cost)."','".
+        (0)."','".
+        (0)."','".
+        (0)."','".
+        ($stock_report['stock_report_qty'])."','".
+        ($stock_report['stock_report_cost_avg'])."','".
+        ($stock_report['stock_report_qty'] * $stock_report['stock_report_cost_avg'])."','".
+        $stock_change_product_list_id."'); "; 
+
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+        //echo $sql ."<br><br><br><br>";
+
+
+    } 
+
+
+
+
+
+
+
+
+    //##########################################################################################################
+    //
+    //###################################### ทำการคำณวนต้นทุนเมื่อเพิ่มรายการย้ายสินค้า #################################
+    //
+    //##########################################################################################################
+
+    function removeStockChangeProduct($stock_group_id,$stock_change_product_list_id,  $product_id_old, $product_id_new, $qty, $cost){
+        //------------------------------------------------ คำณวนต้นทุนของคลังสินค้าขาออก -------------------------------------------
+        $stock_out = $this->getStockGroupTable($stock_group_id); 
+
+        $this->createRowStockReport($stock_out['stock_group_id'],$product_id_old);
+        $stock_report = $this->calculateSaleCostOut($stock['stock_group_id'], $product_id_old, $qty, $cost);
+
+        $sql = "DELETE FROM ".$stock_out['table_name']." WHERE stock_change_product_list_id ='".$stock_change_product_list_id."'";
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT); 
+
+
+        //------------------------------------------------ คำณวนต้นทุนของคลังสินค้าขาเข้า -------------------------------------------
+        $stock_in = $this->getStockGroupTable($stock_group_id); 
+
+        $this->createRowStockReport($stock_in['stock_group_id'],$product_id_new);
+        $stock_report = $this->calculatePurchaseCostOut($stock_in['stock_group_id'], $product_id_new, $qty, $cost);
+
+        $sql = "DELETE FROM ".$stock_in['table_name']." WHERE stock_change_product_list_id ='".$stock_change_product_list_id."'";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);  
 
 

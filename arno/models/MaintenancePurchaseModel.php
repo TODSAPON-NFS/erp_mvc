@@ -12,6 +12,12 @@ class MaintenancePurchaseModel extends BaseModel{
 
     function runMaintenance(){
 
+        $sql = "TRUNCATE TABLE tb_journal_purchase ";
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = "TRUNCATE TABLE tb_journal_purchase_list ";
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
         //ดึงหัวเอกสารการรับสินค้าเข้า
         $sql = "    SELECT * 
                     FROM tb_invoice_supplier 
@@ -44,8 +50,17 @@ class MaintenancePurchaseModel extends BaseModel{
                     $result->close(); 
                 }
 
+                /*
+                if($data[$i]['invoice_supplier_id'] == 276){
+                    echo "<pre>";
+                    print_r($data_sub);
+                    echo "</pre>";
+
+                }
+                */
+
                
-                
+                $journal_list = [];
                //คำนวนต้นทุนในกรณีเป็นบริษัทภายในประเทศ ----------------------------------------------------------
                 if( $data[$i]['supplier_domestic'] == "ภายในประเทศ"){
                     $total = 0;
@@ -75,6 +90,21 @@ class MaintenancePurchaseModel extends BaseModel{
 
                         //echo "<B> ".$data[$i]['invoice_supplier_code']."---->".($i_sup+1)."===>".$data_sub[$i_sup]['product_id']." </B> : ".$sql ."<br><br>";
                         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+                        $has_account = false;
+                        for($ii = 0 ; $ii < count($journal_list); $ii++){
+                            if($journal_list[$ii]['account_id'] == $data_sub[$i_sup]['buy_account_id']){
+                                $has_account = true;
+                                $journal_list[$ii]['invoice_supplier_list_total'] += $data_sub[$i_sup]['invoice_supplier_list_total'];
+                                break;
+                            }
+                        }
+
+                        if($has_account == false){
+                            $journal_list[] = array (
+                                "account_id"=>$data_sub[$i_sup]['buy_account_id'], 
+                                "invoice_supplier_list_total"=>$data_sub[$i_sup]['invoice_supplier_list_total'] 
+                            ); 
+                        } 
 
                     }
                 
@@ -125,6 +155,53 @@ class MaintenancePurchaseModel extends BaseModel{
             
                     mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
+                    //account setting id = 9 ภาษีซื้อ  --> [1154-00] ภาษีซื้อ
+                    $sql = " SELECT *
+                    FROM tb_account_setting 
+                    LEFT JOIN tb_account ON tb_account_setting.account_id = tb_account.account_id  
+                    LEFT JOIN tb_account_group  ON tb_account_setting.account_group_id = tb_account_group.account_group_id  
+                    WHERE tb_account_setting.account_setting_id = '9' 
+                    ";
+
+                    if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                        $account_vat_purchase ;
+                        while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                            $account_vat_purchase  = $row;
+                        }
+                        $result->close();
+                    } 
+                        
+                    //account setting id = 26 ซื้อสินค้า --> [5130-01] ซื้อ
+                    $sql = " SELECT *
+                    FROM tb_account_setting 
+                    LEFT JOIN tb_account ON tb_account_setting.account_id = tb_account.account_id  
+                    LEFT JOIN tb_account_group  ON tb_account_setting.account_group_id = tb_account_group.account_group_id  
+                    WHERE tb_account_setting.account_setting_id = '26' 
+                    ";
+
+                    if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                        $account_purchase ;
+                        while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                            $account_purchase  = $row;
+                        }
+                        $result->close();
+                    }  
+/*
+                    if($data[$i]['invoice_supplier_id'] == 276){
+                        echo "<pre>";
+                        print_r($data_sub);
+                        echo "</pre>";
+    
+                        echo "<pre>";
+                        print_r($journal_list);
+                        echo "</pre>";
+    
+                    }
+*/
+                    $account_supplier = $data[$i]['account_id'];
+
+                    $this->updateJournal($data[$i],$journal_list, $account_supplier, $account_vat_purchase['account_id'],$account_purchase['account_id']);
+
                 }else{
 
                     $sql = " SELECT *  FROM tb_exchange_rate_baht 
@@ -150,7 +227,7 @@ class MaintenancePurchaseModel extends BaseModel{
                     }else{
                         $exchange_rate = 1;
                     }
-
+ 
 
                     //echo "<b>".$sql." ===> ".$exchange_rate."</b><br><br>";
 
@@ -161,7 +238,27 @@ class MaintenancePurchaseModel extends BaseModel{
                         $cost_duty += $cost_qty * $cost_price;
                         $total += $cost_qty * $cost_price;
                         $data_sub[$i_sup]['invoice_supplier_list_total'] = round($cost_qty * $cost_price,2);
+                        
+                        $has_account = false;
+                        for($ii = 0 ; $ii < count($journal_list); $ii++){
+                            if($journal_list[$ii]['account_id'] == $data_sub[$i_sup]['buy_account_id']){
+                                $has_account = true;
+                                $journal_list[$ii]['invoice_supplier_list_total'] +=  $cost_qty * $cost_price;
+                                break;
+                            }
+                        }
+
+                        if($has_account == false){
+                            $journal_list[] = array (
+                                "account_id"=>$data_sub[$i_sup]['buy_account_id'], 
+                                "invoice_supplier_list_total"=> $cost_qty * $cost_price 
+                            ); 
+                        } 
+
                     }
+
+
+
                     
                     for($i_sup = 0 ; $i_sup < count($data_sub); $i_sup ++ ){
                         $cost_qty = $data_sub[$i_sup]['invoice_supplier_list_qty']; 
@@ -183,7 +280,7 @@ class MaintenancePurchaseModel extends BaseModel{
 
                         $cost_total = $cost_price_f + $cost_price_duty + $cost_price_ex_total; 
 
-                        $data_sub[$i]['invoice_supplier_list_cost'] = round($cost_total,2);
+                        $data_sub[$i_sup]['invoice_supplier_list_cost'] = round($cost_total,2);
 
                         $sql = " UPDATE tb_invoice_supplier_list 
                                 SET product_id = '".$data_sub[$i_sup]['product_id']."', 
@@ -201,6 +298,8 @@ class MaintenancePurchaseModel extends BaseModel{
 
                         //echo "<B> ".$data[$i]['invoice_supplier_code_gen']."---->".($i_sup+1)."===>".$data_sub[$i_sup]['product_id']." </B> : ".$sql ."<br><br>";
                         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+                       
 
                     }
 
@@ -249,6 +348,53 @@ class MaintenancePurchaseModel extends BaseModel{
             
                     //echo "<B> ".$data[$i]['invoice_supplier_code_gen']." </B> : ".$sql ."<br><br><br><br><br>";
                     mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+                    //account setting id = 9 ภาษีซื้อ  --> [1154-00] ภาษีซื้อ
+                    $sql = " SELECT *
+                    FROM tb_account_setting 
+                    LEFT JOIN tb_account ON tb_account_setting.account_id = tb_account.account_id  
+                    LEFT JOIN tb_account_group  ON tb_account_setting.account_group_id = tb_account_group.account_group_id  
+                    WHERE tb_account_setting.account_setting_id = '9' 
+                    ";
+
+                    if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                        $account_vat_purchase ;
+                        while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                            $account_vat_purchase  = $row;
+                        }
+                        $result->close();
+                    } 
+                        
+                    //account setting id = 26 ซื้อสินค้า --> [5130-01] ซื้อ
+                    $sql = " SELECT *
+                    FROM tb_account_setting 
+                    LEFT JOIN tb_account ON tb_account_setting.account_id = tb_account.account_id  
+                    LEFT JOIN tb_account_group  ON tb_account_setting.account_group_id = tb_account_group.account_group_id  
+                    WHERE tb_account_setting.account_setting_id = '26' 
+                    ";
+
+                    if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                        $account_purchase ;
+                        while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                            $account_purchase  = $row;
+                        }
+                        $result->close();
+                    }  
+    
+                    $account_supplier = $data[$i]['account_id'];
+/*
+                    if($data[$i]['invoice_supplier_id'] == 276){
+                        echo "<pre>";
+                        print_r($data_sub);
+                        echo "</pre>";
+    
+                        echo "<pre>";
+                        print_r($journal_list);
+                        echo "</pre>";
+    
+                    }
+*/
+                    $this->updateJournal($data[$i],$journal_list, $account_supplier, $account_vat_purchase['account_id'],$account_purchase['account_id']);
                     
 
                 }    
@@ -256,5 +402,242 @@ class MaintenancePurchaseModel extends BaseModel{
         } 
 
     } 
+
+    function updateJournal($data,$journal_list, $account_supplier, $account_vat_purchase,$account_purchase){
+        //----------------------------- สร้างสมุดรายวันซื้อ ----------------------------------------  
+        $journal_purchase_name = "ซื้อเชื่อจาก ".$data['invoice_supplier_name']." [".$data['invoice_supplier_code']."] "; 
+
+        $sql = " SELECT * 
+        FROM tb_journal_purchase 
+        WHERE invoice_supplier_id = '".$data['invoice_supplier_id']."' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $journal;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $journal = $row;
+            }
+            $result->close();
+        }
+
+
+        if($journal['journal_purchase_id'] != ""){
+            $journal_purchase_id = $journal['journal_purchase_id'];
+
+            $sql = " UPDATE tb_journal_purchase SET 
+            journal_purchase_code = '".$data['invoice_supplier_code']."', 
+            journal_purchase_date = '".$data['invoice_supplier_date']."', 
+            journal_purchase_name = '".$journal_purchase_name."', 
+            updateby = '".$data['updateby']."', 
+            lastupdate = NOW() 
+            WHERE journal_purchase_id = '".$journal_purchase_id."' 
+            ";
+
+            //echo $sql."<br><br>";
+    
+            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+            $sql = " DELETE FROM tb_journal_purchase_list WHERE journal_purchase_id = '$journal_purchase_id' ";
+            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+        }else{
+            $sql = " INSERT INTO tb_journal_purchase (
+                invoice_supplier_id,
+                journal_purchase_code, 
+                journal_purchase_date,
+                journal_purchase_name,
+                addby,
+                adddate,
+                updateby, 
+                lastupdate) 
+            VALUES ('".
+            $data['invoice_supplier_id']."','".
+            $data['invoice_supplier_code']."','".
+            $data['invoice_supplier_date']."','".
+            $journal_purchase_name."','".
+            $data['addby']."',".
+            "NOW(),'".
+            $data['addby'].
+            "',NOW()); 
+            ";
+    
+            //echo $sql."<br><br>";
+    
+            if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                $journal_purchase_id = mysqli_insert_id(static::$db);
+            }
+        }
+
+       
+
+
+
+        //----------------------------- สิ้นสุด สร้างสมุดรายวันซื้อ ----------------------------------------
+
+        if($journal_purchase_id != ""){ 
+
+            //---------------------------- เพิ่มรายการเจ้าหนี้ --------------------------------------------
+            $journal_purchase_list_debit = 0;
+            $journal_purchase_list_credit = 0;
+
+            if((float)filter_var( $data['invoice_supplier_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) < 0){
+                $journal_purchase_list_debit = (float)filter_var( $data['invoice_supplier_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $journal_purchase_list_credit = 0;
+            }else{
+                $journal_purchase_list_debit = 0;
+                $journal_purchase_list_credit = (float)filter_var( $data['invoice_supplier_net_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            } 
+
+            $sql = " INSERT INTO tb_journal_purchase_list (
+                journal_purchase_id,
+                journal_cheque_id,
+                journal_cheque_pay_id,
+                journal_invoice_customer_id,
+                journal_invoice_supplier_id,
+                account_id,
+                journal_purchase_list_name,
+                journal_purchase_list_debit,
+                journal_purchase_list_credit,
+                addby,
+                adddate,
+                updateby,
+                lastupdate
+            ) VALUES (
+                '".$journal_purchase_id."',  
+                '0', 
+                '0', 
+                '0', 
+                '0', 
+                '".$account_supplier."', 
+                '".$journal_purchase_name."', 
+                '".$journal_purchase_list_debit."',
+                '".$journal_purchase_list_credit."',
+                '".$data['addby']."', 
+                NOW(), 
+                '".$data['updateby']."', 
+                NOW() 
+            ); 
+            ";
+
+            //echo $sql."<br><br>";
+
+            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+            
+            //---------------------------- สิ้นสุด เพิ่มรายการเจ้าหนี้ --------------------------------------------
+            
+
+            //---------------------------- เพิ่มรายการซื้อเชื่อ --------------------------------------------
+            for($i = 0; $i < count($journal_list) ; $i++){
+                $journal_purchase_list_debit = 0;
+                $journal_purchase_list_credit = 0;
+                
+                if($journal_list[$i]['account_id'] == 0){
+                    $account_id = $account_purchase;
+                }else{
+                    $account_id = $journal_list[$i]['account_id'];
+                }
+                
+
+
+
+                if((float)filter_var( $journal_list[$i]['invoice_supplier_list_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) > 0){
+                    $journal_purchase_list_debit = round((float)filter_var( $journal_list[$i]['invoice_supplier_list_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),2);
+                    $journal_purchase_list_credit = 0;
+                }else{
+                    $journal_purchase_list_debit = 0;
+                    $journal_purchase_list_credit = round((float)filter_var( $journal_list[$i]['invoice_supplier_list_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),2);
+                } 
+
+                $sql = " INSERT INTO tb_journal_purchase_list (
+                    journal_purchase_id,
+                    journal_cheque_id,
+                    journal_cheque_pay_id,
+                    journal_invoice_customer_id,
+                    journal_invoice_supplier_id,
+                    account_id,
+                    journal_purchase_list_name,
+                    journal_purchase_list_debit,
+                    journal_purchase_list_credit,
+                    addby,
+                    adddate,
+                    updateby,
+                    lastupdate
+                ) VALUES (
+                    '".$journal_purchase_id."',  
+                    '0', 
+                    '0', 
+                    '0', 
+                    '0', 
+                    '".$account_id."', 
+                    '".$journal_purchase_name."', 
+                    '".$journal_purchase_list_debit."',
+                    '".$journal_purchase_list_credit."',
+                    '".$data['addby']."', 
+                    NOW(), 
+                    '".$data['updateby']."', 
+                    NOW() 
+                ); 
+                ";
+
+                //echo $sql."<br><br>";
+
+                mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+            } 
+            //---------------------------- สิ้นสุด เพิ่มรายการซื้อเชื่อ --------------------------------------------
+
+
+            //---------------------------- เพิ่มรายการภาษีซื้อ --------------------------------------------
+            if((float)filter_var( $data['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) != 0.0){
+                $journal_purchase_list_debit = 0;
+                $journal_purchase_list_credit = 0;
+
+                if((float)filter_var( $data['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) < 0){
+                    $journal_purchase_list_debit = 0;
+                    $journal_purchase_list_credit = (float)filter_var( $data['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                }else{
+                    $journal_purchase_list_debit = (float)filter_var( $data['invoice_supplier_vat_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $journal_purchase_list_credit = 0;
+                }
+
+
+                $sql = " INSERT INTO tb_journal_purchase_list (
+                    journal_purchase_id,
+                    journal_cheque_id,
+                    journal_cheque_pay_id,
+                    journal_invoice_customer_id,
+                    journal_invoice_supplier_id,
+                    account_id,
+                    journal_purchase_list_name,
+                    journal_purchase_list_debit,
+                    journal_purchase_list_credit,
+                    addby,
+                    adddate,
+                    updateby,
+                    lastupdate
+                ) VALUES (
+                    '".$journal_purchase_id."',  
+                    '0', 
+                    '0', 
+                    '0', 
+                    '". $data['invoice_supplier_id']."', 
+                    '".$account_vat_purchase."', 
+                    '".$journal_purchase_name."', 
+                    '".$journal_purchase_list_debit."',
+                    '".$journal_purchase_list_credit."',
+                    '".$data['addby']."', 
+                    NOW(), 
+                    '".$data['updateby']."', 
+                    NOW() 
+                ); 
+                ";
+
+                //echo $sql."<br><br><hr>";
+
+                mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+            } 
+            //---------------------------- สิ้นสุด เพิ่มรายการภาษีซื้อ --------------------------------------------
+
+        }
+    }
 }
 ?>

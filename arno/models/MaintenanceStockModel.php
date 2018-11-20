@@ -82,14 +82,17 @@ class MaintenanceStockModel extends BaseModel{
         '0' as stock_change_product_list_id, 
         '0' as invoice_customer_list_id,   
         '0' as stock_issue_list_id,  
-        product_id,  
+        tb_invoice_supplier_list.product_id as product_id,  
         '0' as product_id_old, 
         '0' as product_id_new, 
         invoice_supplier_list_qty as qty, 
         invoice_supplier_list_cost as cost 
         FROM tb_invoice_supplier 
         LEFT JOIN tb_invoice_supplier_list ON tb_invoice_supplier.invoice_supplier_id = tb_invoice_supplier_list.invoice_supplier_id 
-        WHERE invoice_supplier_begin = 0 
+        LEFT JOIN tb_product ON tb_invoice_supplier_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
+        WHERE invoice_supplier_begin = '0' AND stock_event = '1' 
+        GROUP BY invoice_supplier_list_id 
         ORDER BY STR_TO_DATE(invoice_supplier_date_recieve,'%d-%m-%Y %H:%i:%s') , invoice_supplier_code_gen  ";
 
 
@@ -107,7 +110,7 @@ class MaintenanceStockModel extends BaseModel{
         '0' as stock_change_product_list_id, 
         '0' as invoice_customer_list_id,   
         '0' as stock_issue_list_id,  
-        product_id,  
+        tb_stock_move_list.product_id as product_id,  
         '0' as product_id_old, 
         '0' as product_id_new, 
         stock_move_list_qty as qty, 
@@ -123,9 +126,9 @@ class MaintenanceStockModel extends BaseModel{
         stock_change_product_code as transaction_code,  
         stock_change_product_date as stock_date,  
         '3_rename' as transaction_type, 
-        stock_group_id,   
-        '0' as stock_group_id_out, 
-        '0' as stock_group_id_in, 
+        '0' as stock_group_id,   
+        stock_group_id_old as stock_group_id_out, 
+        stock_group_id_new as stock_group_id_in, 
         '0' as invoice_supplier_list_id, 
         '0' as stock_move_list_id, 
         stock_change_product_list_id, 
@@ -156,14 +159,17 @@ class MaintenanceStockModel extends BaseModel{
         '0' as stock_change_product_list_id, 
         invoice_customer_list_id,   
         '0' as stock_issue_list_id,  
-        product_id, 
+        tb_invoice_customer_list.product_id as product_id, 
         '0' as product_id_old, 
         '0' as product_id_new, 
         invoice_customer_list_qty as qty, 
         invoice_customer_list_price as cost 
         FROM tb_invoice_customer 
         LEFT JOIN tb_invoice_customer_list ON tb_invoice_customer.invoice_customer_id = tb_invoice_customer_list.invoice_customer_id 
-        WHERE invoice_customer_begin = 0 
+        LEFT JOIN tb_product ON tb_invoice_customer_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
+        WHERE invoice_customer_begin = '0' AND stock_event = '1' 
+        GROUP BY invoice_customer_list_id 
         ORDER BY STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') , invoice_customer_code  ";
 
 
@@ -231,9 +237,8 @@ class MaintenanceStockModel extends BaseModel{
                     $this->addPurchase($data[$i]['stock_date'], $data[$i]['stock_group_id'], $data[$i]['invoice_supplier_list_id'], $data[$i]['product_id'], $data[$i]['qty'], $data[$i]['cost']);
                 }else if($data[$i]['transaction_type'] == '2_move'){// คำนวนคลังสินค้าในรูปแบบของการย้ายคลังสินค้า
                     $this->addMoveStock($data[$i]['stock_date'], $data[$i]['stock_group_id_out'],$data[$i]['stock_group_id_in'],$data[$i]['stock_move_list_id'], $data[$i]['product_id'], $data[$i]['qty']);
-                }else if($data[$i]['transaction_type'] == '3_rename'){// คำนวนคลังสินค้าในรูปแบบของการย้ายสินค้าไปยังสินค้าชื่ออื่น
-                    
-                    $this->addStockChangeProduct($data[$i]['stock_date'],$data[$i]['stock_group_id'] ,$data[$i]['stock_change_product_list_id'], $data[$i]['product_id_old'], $data[$i]['product_id_new'], $data[$i]['qty']);
+                }else if($data[$i]['transaction_type'] == '3_rename'){// คำนวนคลังสินค้าในรูปแบบของการย้ายสินค้าไปยังสินค้าชื่ออื่น 
+                    $this->addStockChangeProduct($data[$i]['stock_date'],$data[$i]['stock_group_id_out'],$data[$i]['stock_group_id_in'] ,$data[$i]['stock_change_product_list_id'], $data[$i]['product_id_old'], $data[$i]['product_id_new'], $data[$i]['qty']);
                 }else if($data[$i]['transaction_type'] == '4_sale'){// คำนวนคลังสินค้าในรูปแบบของการขาย
                     $this->addSaleStock($data[$i]['stock_date'], $data[$i]['stock_group_id'], $data[$i]['invoice_customer_list_id'], $data[$i]['product_id'], $data[$i]['qty']);
                 }else if($data[$i]['transaction_type'] == '5_issue'){// คำนวนคลังสินค้าในรูปแบบของการตัดสินค้า Tool Management
@@ -934,12 +939,12 @@ class MaintenanceStockModel extends BaseModel{
     //
     //##########################################################################################################
 
-    function addStockChangeProduct($stock_date,$stock_group_id ,$stock_change_product_list_id, $product_id_old, $product_id_new, $qty){
+    function addStockChangeProduct($stock_date,$stock_group_id_out,$stock_group_id_in ,$stock_change_product_list_id, $product_id_old, $product_id_new, $qty){
 
 
 
         //------------------------------------------------ คำณวนต้นทุนของคลังสินค้าขาออก -------------------------------------------
-        $stock_out = $this->getStockGroupTable($stock_group_id);
+        $stock_out = $this->getStockGroupTable($stock_group_id_out);
 
         $this->createRowStockReport($stock_out['stock_group_id'],$product_id_old);
 
@@ -981,7 +986,7 @@ class MaintenanceStockModel extends BaseModel{
 
         //------------------------------------------------ คำณวนต้นทุนของคลังสินค้าขาเข้า -------------------------------------------
         $cost = $stock_report['stock_report_cost_avg'];
-        $stock_in = $this->getStockGroupTable($stock_group_id);
+        $stock_in = $this->getStockGroupTable($stock_group_id_in);
         $this->createRowStockReport($stock_in['stock_group_id'],$product_id_new);
 
         //echo $product_id_new ."<br><br>";

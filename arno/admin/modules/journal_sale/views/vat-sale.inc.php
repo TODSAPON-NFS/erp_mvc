@@ -7,8 +7,7 @@
             <th style="text-align:center;" rowspan="2">ยื่นรวม<br>ในงวด</th>
             <th style="text-align:center;" colspan="2">ใบกำกับภาษี</th>
             <th style="text-align:center;" rowspan="2">รายการ</th>
-            <th style="text-align:center;" colspan="2">ภาษีของคืนได้</th>
-            <th style="text-align:center;" colspan="2">ภาษีของคืนไม่ได้</th>
+            <th style="text-align:center;" colspan="2">ภาษีขาย</th> 
             <th style="text-align:center;" rowspan="2">หมายเหตุ</th>
             <th rowspan="2"></th>
         </tr>
@@ -16,22 +15,16 @@
             <th style="text-align:center;">วันที่</th>
             <th style="text-align:center;">เลขที่</th>
             <th style="text-align:center;">มูลค่า</th>
-            <th style="text-align:center;">ภาษี</th>
-            <th style="text-align:center;">มูลค่า</th>
-            <th style="text-align:center;">ภาษี</th>  
+            <th style="text-align:center;">ภาษี</th> 
         </tr>
     </thead>
     <tbody>
     <?php  
         $invoice_customer_sum = 0;
-        $invoice_customer_sum_vat = 0;
-        $invoice_customer_sum_non = 0;
-        $invoice_customer_sum_vat_non = 0;
+        $invoice_customer_sum_vat = 0; 
         for($i=0; $i < count($invoice_customers); $i++){
             $invoice_customer_sum += $invoice_customer[$i]['invoice_customer_total_price']; 
-            $invoice_customer_sum_vat += $invoice_customer[$i]['invoice_customer_vat_price']; 
-            $invoice_customer_sum_non += $invoice_customer[$i]['invoice_customer_total_price_non']; 
-            $invoice_customer_sum_vat_non += $invoice_customer[$i]['invoice_customer_vat_price_non']; 
+            $invoice_customer_sum_vat += $invoice_customer[$i]['invoice_customer_vat_price'];  
         ?>
         <tr class="odd gradeX">
             <td>
@@ -52,13 +45,7 @@
             </td>
             <td align="right">
                 <span name="display_invoice_customer_vat_price" ><?php echo number_format($invoice_customers[$i]['invoice_customer_vat_price'],2); ?></span>
-            </td>
-            <td align="right">
-                <span name="display_invoice_customer_total_price_non" ><?php echo number_format($invoice_customers[$i]['invoice_customer_total_price_non'],2); ?></span>
-            </td>
-            <td align="right">
-                <span name="display_invoice_customer_vat_price_non" ><?php echo number_format($invoice_customers[$i]['invoice_customer_vat_price_non'],2); ?></span>
-            </td>
+            </td> 
             <td >
                 <span name="display_invoice_customer_remark" ><?php echo $invoice_customers[$i]['invoice_customer_remark']; ?></span>
             </td>
@@ -90,13 +77,7 @@
             </td> 
             <td align="right">
                 <span id="invoice_customer_sum_vat" ><?php echo number_format($invoice_customer_sum_vat,2); ?> </span> 
-            </td> 
-            <td align="right">
-                <span id="invoice_customer_sum_non" ><?php echo number_format($invoice_customer_sum_non,2); ?> </span> 
-            </td> 
-            <td align="right">
-                <span id="invoice_customer_sum_vat_non" ><?php echo number_format($invoice_customer_sum_vat_non,2); ?> </span> 
-            </td> 
+            </td>  
             <td colspan="2"> 
             </td>
         </tr>

@@ -11,6 +11,8 @@ class StockChangeProductListModel extends BaseModel{
 
     function getStockChangeProductListBy($stock_change_product_id){
         $sql = " SELECT 
+        stock_group_id_new,
+        stock_group_id_old,
         tb_stock_change_product_list.product_id_old, 
         CONCAT(tb1.product_code_first,tb1.product_code) as product_code_old,
         tb1.product_name as product_name_old,   
@@ -46,6 +48,8 @@ class StockChangeProductListModel extends BaseModel{
             stock_change_product_id,
             product_id_new,
             product_id_old,
+            stock_group_id_new,
+            stock_group_id_old,
             stock_change_product_list_qty, 
             stock_change_product_list_price, 
             stock_change_product_list_total, 
@@ -58,6 +62,8 @@ class StockChangeProductListModel extends BaseModel{
             '".$data['stock_change_product_id']."', 
             '".$data['product_id_new']."', 
             '".$data['product_id_old']."', 
+            '".$data['stock_group_id_new']."', 
+            '".$data['stock_group_id_old']."', 
             '".$data['stock_change_product_list_qty']."', 
             '".$data['stock_change_product_list_price']."', 
             '".$data['stock_change_product_list_total']."', 
@@ -93,6 +99,8 @@ class StockChangeProductListModel extends BaseModel{
         $sql = " UPDATE tb_stock_change_product_list 
             SET product_id_new = '".$data['product_id_new']."', 
             product_id_old = '".$data['product_id_old']."',  
+            stock_group_id_new = '".$data['stock_group_id_new']."',  
+            stock_group_id_old = '".$data['stock_group_id_old']."',  
             stock_change_product_id = '".$data['stock_change_product_id']."',  
             stock_change_product_list_qty = '".$data['stock_change_product_list_qty']."',  
             stock_change_product_list_price = '".$data['stock_change_product_list_price']."',  

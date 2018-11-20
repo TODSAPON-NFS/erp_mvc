@@ -405,7 +405,7 @@
                     '</select>'+ 
                 '</td>'+
                 '<td align="right">'+ 
-                    '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="'+ data_buffer[i].invoice_customer_list_qty +'" />'+
+                    '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="0" />'+
                 '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);" readonly /></td>'+

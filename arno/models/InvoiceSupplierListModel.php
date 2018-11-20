@@ -47,6 +47,23 @@ class InvoiceSupplierListModel extends BaseModel{
 
     }
 
+    function getInvoiceSupplierListByID($id){
+        $sql = " SELECT * 
+        FROM tb_invoice_supplier_list 
+        WHERE invoice_supplier_list_id = '$id'  
+        "; 
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
 
     function insertInvoiceSupplierList($data = []){
         $sql = " INSERT INTO tb_invoice_supplier_list ( 
@@ -90,6 +107,7 @@ class InvoiceSupplierListModel extends BaseModel{
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
 
             $purchase_order_list_id = mysqli_insert_id(static::$db);
+            
             $this->maintenance_stock->addPurchase($data['stock_date'], $data['stock_group_id'] , $purchase_order_list_id, $data['product_id'], $data['invoice_supplier_list_qty'], $data['invoice_supplier_list_cost']);
             return $purchase_order_list_id; 
         }else {
@@ -101,6 +119,8 @@ class InvoiceSupplierListModel extends BaseModel{
     
 
     function updateInvoiceSupplierListById($data,$id){
+
+        $data_old = $this->getInvoiceSupplierListByID($id);
 
         $sql = " UPDATE tb_invoice_supplier_list 
             SET product_id = '".$data['product_id']."', 
@@ -117,24 +137,10 @@ class InvoiceSupplierListModel extends BaseModel{
         ";
 
         //echo $sql . "<br><br>";
-        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-            $sql = "
-                CALL update_stock_supplier('".
-                $data['stock_group_id']."','".
-                $id."','".
-                $data['product_id']."','".
-                $data['stock_date']."','".
-                $data['old_qty']."','". 
-                $data['old_cost']."','". 
-                $data['invoice_supplier_list_qty']."','". 
-                $data['invoice_supplier_list_cost']."'".
-                ");
-            ";
-
-            //echo $sql . "<br><br>";
-
-            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
-
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) { 
+            $this->maintenance_stock->removePurchase($data_old['stock_group_id'], $id, $data_old['product_id'], $data_old['invoice_supplier_list_qty'] , $data_old['invoice_supplier_list_cost']);
+            $this->maintenance_stock->addPurchase($data['stock_date'], $data['stock_group_id'] , $id, $data['product_id'], $data['invoice_supplier_list_qty'], $data['invoice_supplier_list_cost']);
+ 
            return true;
         }else {
             return false;

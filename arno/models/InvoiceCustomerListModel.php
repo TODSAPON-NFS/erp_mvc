@@ -1,12 +1,17 @@
 <?php
 
 require_once("BaseModel.php");
+require_once("MaintenanceStockModel.php"); 
 class InvoiceCustomerListModel extends BaseModel{
+
+    private $maintenance_stock;
 
     function __construct(){
         if(!static::$db){
             static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
         }
+
+        $this->maintenance_stock =  new MaintenanceStockModel;
     }
 
     function getInvoiceCustomerListBy($invoice_customer_id){
@@ -25,6 +30,24 @@ class InvoiceCustomerListModel extends BaseModel{
         FROM tb_invoice_customer_list LEFT JOIN tb_product ON tb_invoice_customer_list.product_id = tb_product.product_id 
         WHERE invoice_customer_id = '$invoice_customer_id' 
         ORDER BY invoice_customer_list_id 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+
+    function getInvoiceCustomerListByID($id){
+        $sql = " SELECT *
+        FROM tb_invoice_customer_list 
+        WHERE invoice_customer_list_id = '$id'  
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -75,7 +98,7 @@ class InvoiceCustomerListModel extends BaseModel{
 
         //echo $sql . "<br><br>";
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-            $id = mysqli_insert_id(static::$db);
+            $invoice_customer_list_id = mysqli_insert_id(static::$db);
 
             $sql = " SELECT stock_event 
                 FROM tb_product 
@@ -87,23 +110,11 @@ class InvoiceCustomerListModel extends BaseModel{
                  $result->close();
             }
 
-            if($row['stock_event'] != "None"){
-
-                $sql = "
-                    CALL insert_stock_customer('".
-                    $data['stock_group_id']."','".
-                    $id."','".
-                    $data['product_id']."','".
-                    $data['invoice_customer_list_qty']."','".
-                    $data['stock_date']."','".
-                    $data['invoice_customer_list_cost']."'".
-                    ");
-                ";
-
-                mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT); 
+            if($row['stock_event'] != "None"){ 
+                $this->maintenance_stock->addSaleStock($data['stock_date'], $data['stock_group_id'], $invoice_customer_list_id, $data['product_id'], $data['invoice_customer_list_qty']);
             } 
 
-            return $id; 
+            return $invoice_customer_list_id; 
         }else {
             return 0;
         }
@@ -113,6 +124,7 @@ class InvoiceCustomerListModel extends BaseModel{
     
 
     function updateInvoiceCustomerListById($data,$id){
+        $data_old = $this->getInvoiceCustomerListByID($id);
 
         $sql = " UPDATE tb_invoice_customer_list 
             SET product_id = '".$data['product_id']."', 
@@ -130,6 +142,7 @@ class InvoiceCustomerListModel extends BaseModel{
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
 
+            
             $sql = " SELECT stock_event 
                 FROM tb_product 
                 LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
@@ -141,22 +154,8 @@ class InvoiceCustomerListModel extends BaseModel{
             }
 
             if($row['stock_event'] != "None"){
-                $sql = "
-                    CALL update_stock_customer('".
-                    $data['stock_group_id']."','".
-                    $id."','".
-                    $data['product_id']."','".
-                    $data['stock_date']."','".
-                    $data['old_qty']."','". 
-                    $data['old_cost']."','". 
-                    $data['invoice_customer_list_qty']."','". 
-                    $data['invoice_customer_list_cost']."'".
-                    ");
-                ";
-
-                echo $sql . "<br><br>";
-
-                mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+                $this->maintenance_stock->removeSaleStock($data_old['stock_group_id'],$data_old['invoice_customer_list_id'], $data_old['product_id'], $data_old['invoice_customer_list_qty'], $data_old['invoice_customer_list_cost']);
+                
             } 
            return true;
         }else {
@@ -220,26 +219,19 @@ class InvoiceCustomerListModel extends BaseModel{
                     AND invoice_customer_list_id NOT IN ($str) 
                 ";   
 
-        $sql_delete=[];
+        $data_old=[];
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){ 
                 if($row['stock_event'] != "None"){
-                    $sql_delete [] = "
-                        CALL delete_stock_customer('".
-                        $row['stock_group_id']."','".
-                        $row['invoice_customer_list_id']."','".
-                        $row['product_id']."','".
-                        $row['invoice_customer_list_qty']."','".
-                        $row['invoice_customer_list_cost']."'".
-                        ");
-                    ";
+                    $data_old [] = $row; 
                 } 
             }
             $result->close();
         }
 
-        for($i = 0 ; $i < count($sql_delete); $i++){
-            mysqli_query(static::$db,$sql_delete[$i], MYSQLI_USE_RESULT);
+        for($i = 0 ; $i < count($data_old); $i++){
+            $this->maintenance_stock->removeSaleStock($data_old['stock_group_id'],$data_old['invoice_customer_list_id'], $data_old['product_id'], $data_old['invoice_customer_list_qty'], $data_old['invoice_customer_list_cost']);
+                
         }
 
         $sql = "DELETE FROM tb_invoice_customer_list WHERE invoice_customer_id = '$id' AND invoice_customer_list_id NOT IN ($str) ";

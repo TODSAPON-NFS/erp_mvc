@@ -137,7 +137,7 @@
                                 
                                 for($ii = 0; $ii < count($cheque_journals[$checks[$i]['check_pay_id']]) ; $ii++ ){
                                     echo $cheque_journals[$checks[$i]['check_pay_id']][$ii]['journal_code'];
-                                    if($ii + 1 < count($cheque_journals[$checks[$ii]['check_pay_id']])){
+                                    if($ii + 1 < count($cheque_journals[$checks[$i]['check_pay_id']])){
                                         echo ", ";
                                     }
                                 }
@@ -146,11 +146,11 @@
                             <td align="right"><?php echo number_format($checks[$i]['check_pay_total'],2); ?></td>
                             <td>
                                
-                            <?PHP if(count($cheque_journals[$checks[$i]['check_pay_id']]) == 0){ ?>
+                            <?PHP //if(count($cheque_journals[$checks[$i]['check_pay_id']]) == 0){ ?>
                                 <a href="?app=bank_check_pay&action=update&id=<?php echo $checks[$i]['check_pay_id'];?>">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a> 
-                            <?PHP } ?>
+                            <?PHP //} ?>
                                 <a href="?app=bank_check_pay&action=delete&id=<?php echo $checks[$i]['check_pay_id'];?>" onclick="return confirm('You want to delete check : <?php echo $checks[$i]['check_pay_code']; ?>');" style="color:red;">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>

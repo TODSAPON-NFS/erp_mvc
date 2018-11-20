@@ -10,16 +10,14 @@ class StockChangeProductModel extends BaseModel{
     }
 
     function getStockChangeProductBy($date_start  = '', $date_end  = ''){
-        $sql = " SELECT stock_change_product_id, 
-        tb_stock_change_product.stock_group_id,  
+        $sql = " SELECT stock_change_product_id,  
         stock_change_product_code, 
         stock_change_product_date, 
         stock_group_name, 
         stock_change_product_remark, 
         IFNULL(CONCAT(user_name,' ',user_lastname),'-') as employee_name 
         FROM tb_stock_change_product 
-        LEFT JOIN tb_user ON tb_stock_change_product.employee_id = tb_user.user_id 
-        LEFT JOIN tb_stock_group  ON tb_stock_change_product.stock_group_id = tb_stock_group.stock_group_id  
+        LEFT JOIN tb_user ON tb_stock_change_product.employee_id = tb_user.user_id  
         ORDER BY STR_TO_DATE(stock_change_product_date,'%Y-%m-%d %H:%i:%s') DESC 
          ";
 
@@ -37,16 +35,13 @@ class StockChangeProductModel extends BaseModel{
 
     function getStockChangeProductByID($id){
         $sql = " SELECT stock_change_product_id, 
-        tb_stock_change_product.employee_id, 
-        tb_stock_change_product.stock_group_id,  
-        stock_group_name,  
+        tb_stock_change_product.employee_id,   
         stock_change_product_code, 
         stock_change_product_date,  
         stock_change_product_remark, 
         IFNULL(CONCAT(user_name,' ',user_lastname),'-') as employee_name 
         FROM tb_stock_change_product 
-        LEFT JOIN tb_user ON tb_stock_change_product.employee_id = tb_user.user_id  
-        LEFT JOIN tb_stock_group  ON tb_stock_change_product.stock_group_id = tb_stock_group.stock_group_id 
+        LEFT JOIN tb_user ON tb_stock_change_product.employee_id = tb_user.user_id   
         WHERE stock_change_product_id = '$id' 
         ";
  
@@ -64,16 +59,14 @@ class StockChangeProductModel extends BaseModel{
 
     function getStockChangeProductViewByID($id){
         $sql = " SELECT stock_change_product_id, 
-        tb_stock_change_product.employee_id, 
-        tb_stock_change_product.stock_group_id,  
+        tb_stock_change_product.employee_id,  
         stock_change_product_code, 
         stock_change_product_date,
         stock_group_name, 
         stock_change_product_remark, 
         IFNULL(CONCAT(user_name,' ',user_lastname),'-') as employee_name 
         FROM tb_stock_change_product 
-        LEFT JOIN tb_user ON tb_stock_change_product.employee_id = tb_user.user_id 
-        LEFT JOIN tb_stock_group ON tb_stock_change_product.stock_group_id = tb_stock_group.stock_group_id  
+        LEFT JOIN tb_user ON tb_stock_change_product.employee_id = tb_user.user_id  
         WHERE stock_change_product_id = '$id' 
         ";
 
@@ -105,8 +98,7 @@ class StockChangeProductModel extends BaseModel{
 
    
     function updateStockChangeProductByID($id,$data = []){
-        $sql = " UPDATE tb_stock_change_product SET 
-        stock_group_id = '".$data['stock_group_id']."',  
+        $sql = " UPDATE tb_stock_change_product SET  
         employee_id = '".$data['employee_id']."', 
         stock_change_product_code = '".$data['stock_change_product_code']."', 
         stock_change_product_date = '".$data['stock_change_product_date']."', 
@@ -128,8 +120,7 @@ class StockChangeProductModel extends BaseModel{
 
 
     function insertStockChangeProduct($data = []){
-        $sql = " INSERT INTO tb_stock_change_product (
-            stock_group_id,  
+        $sql = " INSERT INTO tb_stock_change_product ( 
             employee_id,
             stock_change_product_code,
             stock_change_product_date,
@@ -138,8 +129,7 @@ class StockChangeProductModel extends BaseModel{
             adddate,
             updateby,
             lastupdate) 
-        VALUES ('".
-        $data['stock_group_id']."','". 
+        VALUES ('". 
         $data['employee_id']."','".
         $data['stock_change_product_code']."','".
         $data['stock_change_product_date']."','".

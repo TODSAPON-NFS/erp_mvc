@@ -331,11 +331,11 @@
                     </div>
                     <div class="col-md-4" align="right">
                         <?PHP if($previous_id != ""){?>
-                        <a class="btn btn-primary" href="?app=journal_sale&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
+                        <a class="btn btn-primary" href="?app=journal_special_02&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
                         <?PHP } ?>
 
                         <?PHP if($next_id != ""){?>
-                        <a class="btn btn-primary" href="?app=journal_sale&action=update&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
+                        <a class="btn btn-primary" href="?app=journal_special_02&action=update&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
                         <?PHP } ?>
                     </div>
                 </div>

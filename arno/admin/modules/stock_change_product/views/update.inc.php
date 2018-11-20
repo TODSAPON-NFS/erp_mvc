@@ -2,9 +2,10 @@
 
     var option_stocks = {
         url: function(keyword) {
-            var stock_group_id =  $("#stock_group_id").val();
-            console.log("stock_group_id",stock_group_id);
-            return "controllers/getProductINStockByKeyword.php?stock_group_id="+stock_group_id+"&keyword="+keyword;
+            // var stock_group_id = $(this).closest('tr').children('td').children('select[name="stock_group_id_old[]"]').val(); 
+            // return "controllers/getProductINStockByKeyword.php?stock_group_id="+stock_group_id+"&keyword="+keyword;
+
+            return "controllers/getProductByKeyword.php?keyword="+keyword;
         },
 
         getValue: function(element) {
@@ -66,6 +67,15 @@
 
         requestDelay: 400
     };
+
+    var stock_group_data = [
+    <?php for($i = 0 ; $i < count($stock_groups) ; $i++ ){?>
+        {
+            stock_group_id:'<?php echo $stock_groups[$i]['stock_group_id'];?>',
+            stock_group_name:'<?php echo $stock_groups[$i]['stock_group_name'];?>'
+        },
+    <?php }?>
+    ];
 
     function check(){
 
@@ -166,8 +176,9 @@
 
      function show_data_old(id){
         var product_code = $(id).val();
-        var stock_group_id = $("#stock_group_id").val();
-        $.post( "controllers/getProductCostByCode.php", { stock_group_id:stock_group_id, 'product_code': $.trim(product_code)}, function( data ) {
+        var stock_group_id_old = $(id).closest('tr').children('td').children('select[name="stock_group_id_old[]"]').val();
+
+        $.post( "controllers/getProductCostByCode.php", { stock_group_id:stock_group_id_old, 'product_code': $.trim(product_code)}, function( data ) {
             console.log(data);
             if(data != null){
                 $(id).closest('tr').children('td').children('input[name="product_name_old[]"]').val(data.product_name);
@@ -200,7 +211,13 @@
          }
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
-                '<td align="center" >'+   
+                '<td align="center" >'+  
+                    
+                '</td>'+
+                '<td>'+
+                    '<select  name="stock_group_id_old[]" class="form-control select" data-live-search="true">'+ 
+                        '<option value="0">Select</option>'+ 
+                    '</select>'+ 
                 '</td>'+
                 '<td>'+   
                     '<input type="hidden" name="stock_change_product_list_id" value="0" />'+
@@ -208,6 +225,11 @@
 					'<input class="example-ajax-post form-control" name="product_code_old[]" onchange="show_data_old(this);" placeholder="Product Code" />'+ 
                 '</td>'+
                 '<td><input type="text" class="form-control" name="product_name_old[]" readonly /></td>'+
+                '<td>'+
+                    '<select  name="stock_group_id_new[]" class="form-control select" data-live-search="true">'+ 
+                        '<option value="0">Select</option>'+ 
+                    '</select>'+ 
+                '</td>'+
                 '<td>'+   
                     '<input type="hidden" name="product_id_new[]" class="form-control" />'+
 					'<input class="example-ajax-post form-control" name="product_code_new[]" onchange="show_data_new(this);" placeholder="Product Code" />'+ 
@@ -225,11 +247,23 @@
             '</tr>'
         ); 
 
+        var str_stock = "<option value=''>Select Stock</option>";
+        $.each(stock_group_data, function (index, value) { 
+            str_stock += "<option value='" + value['stock_group_id'] + "'>" +  value['stock_group_name'] + "</option>"; 
+        });
+
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id_old[]"]').html(str_stock);
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id_old[]"]').selectpicker();
+
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id_new[]"]').html(str_stock);
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id_new[]"]').selectpicker();
+
         $('input[name="product_code_old[]"]').easyAutocomplete(option_stocks);
         $('input[name="product_code_new[]"]').easyAutocomplete(options);
-
         update_line();
     }
+
+    
 
     $('input[name="product_code_old[]"]').easyAutocomplete(option_stocks);
     $('input[name="product_code_new[]"]').easyAutocomplete(options);
@@ -256,45 +290,24 @@
             <div class="panel-body">
                 <form role="form" method="post" onsubmit="return check();" action="index.php?app=stock_change_product&action=edit&id=<?PHP echo $stock_change_product['stock_change_product_id'];?>" enctype="multipart/form-data">
                 <input type="hidden" name="stock_change_product_id" value="<?PHP echo $stock_change_product['stock_change_product_id'];?>"  />
-                    <div class="row">
-                        <div class="col-lg-5">
+                    <div class="row"> 
+                        <div class="col-lg-12">
                             <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label>คลังสินค้า / Stock <font color="#F00"><b>*</b></font></label>
-                                        <select id="stock_group_id" name="stock_group_id" class="form-control select" data-live-search="true"> 
-                                            <?php 
-                                            for($i =  0 ; $i < count($stock_groups) ; $i++){
-                                            ?>
-                                            <option <?php if($stock_groups[$i]['stock_group_id'] == $stock_change_product['stock_group_id']){?> selected <?php }?> value="<?php echo $stock_groups[$i]['stock_group_id'] ?>"><?php echo $stock_groups[$i]['stock_group_name'] ?> </option>
-                                            <?
-                                            }
-                                            ?>
-                                        </select>
-                                        <p class="help-block">Example : Main Stock.</p>
-                                    </div>
-                                </div> 
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                        </div>
-                        <div class="col-lg-5">
-                            <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>หมายเลขใบย้ายสินค้า / Stock Change Product Code <font color="#F00"><b>*</b></font></label>
                                         <input id="stock_change_product_code" name="stock_change_product_code" class="form-control" value="<?php echo $stock_change_product['stock_change_product_code'];?>" >
                                         <p class="help-block">Example : SM1801001.</p>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่ออกใบย้ายสินค้า / Stock Change Product Date</label>
                                         <input type="text" id="stock_change_product_date" name="stock_change_product_date"  class="form-control calendar" value="<?php echo $stock_change_product['stock_change_product_date'];?>" readonly/>
                                         <p class="help-block">31-01-2018</p>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>ผู้ย้ายคลังสินค้า / Employee  <font color="#F00"><b>*</b></font> </label>
                                         <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true">
@@ -310,7 +323,7 @@
                                         <p class="help-block">Example : Thana Tepchuleepornsil.</p>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>หมายเหตุ / Remark</label>
                                         <textarea id="stock_change_product_remark" name="stock_change_product_remark"  class="form-control"><?php echo $stock_change_product['stock_change_product_remark'];?></textarea>
@@ -324,8 +337,8 @@
                         <thead>
                             <tr>
                                 <th style="text-align:center;">ลำดับ<br>(No.)</th>
-                                <th style="text-align:center;" colspan="2">สินค้าเดิม<br>(Product Old)</th>
-                                <th style="text-align:center;" colspan="2">สินค้าใหม่<br>(Product New)</th>
+                                <th style="text-align:center;" colspan="3">สินค้าเดิม<br>(Product Old)</th>
+                                <th style="text-align:center;" colspan="3">สินค้าใหม่<br>(Product New)</th>
                                 <th style="text-align:center;">จำนวน<br>(Qty)</th>
                                 <th style="text-align:center;">ต้นทุน<br>(Price)</th>
                                 <th style="text-align:center;">ต้นทุนรวม<br>(Total)</th>
@@ -343,11 +356,33 @@
                                     
                                 </td>
                                 <td> 
+                                    <select  name="stock_group_id_old[]" class="form-control select" data-live-search="true"> 
+                                        <?php 
+                                        for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
+                                        ?>
+                                        <option <?php if($stock_groups[$ii]['stock_group_id'] == $stock_change_product_lists[$i]['stock_group_id_old']){?> selected <?php }?> value="<?php echo $stock_groups[$ii]['stock_group_id'] ?>"><?php echo $stock_groups[$ii]['stock_group_name'] ?> </option>
+                                        <?
+                                        }
+                                        ?>
+                                    </select>
+                                </td>
+                                <td> 
                                     <input type="hidden" name="stock_change_product_list_id" value="<?PHP echo $stock_change_product_lists[$i]['stock_change_product_list_id'];?>" />
                                     <input type="hidden" name="product_id_old[]" class="form-control" value="<?php echo $stock_change_product_lists[$i]['product_id_old']; ?>" />
                                     <input class="example-ajax-post form-control" name="product_code_old[]" onchange="show_data_old(this);" placeholder="Product Code" value="<?php echo $stock_change_product_lists[$i]['product_code_old']; ?>"  readonly/>
                                 </td>
                                 <td><input type="text" class="form-control" name="product_name_old[]" readonly value="<?php echo $stock_change_product_lists[$i]['product_name_old']; ?>" /></td>
+                                <td> 
+                                    <select  name="stock_group_id_new[]" class="form-control select" data-live-search="true"> 
+                                        <?php 
+                                        for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
+                                        ?>
+                                        <option <?php if($stock_groups[$ii]['stock_group_id'] == $stock_change_product_lists[$i]['stock_group_id_new']){?> selected <?php }?> value="<?php echo $stock_groups[$ii]['stock_group_id'] ?>"><?php echo $stock_groups[$ii]['stock_group_name'] ?> </option>
+                                        <?
+                                        }
+                                        ?>
+                                    </select>
+                                </td>
                                 <td> 
                                     <input type="hidden" name="product_id_new[]" class="form-control" value="<?php echo $stock_change_product_lists[$i]['product_id_new']; ?>" />
                                     <input class="example-ajax-post form-control" name="product_code_new[]" onchange="show_data_new(this);" placeholder="Product Code" value="<?php echo $stock_change_product_lists[$i]['product_code_new']; ?>"  readonly/>
@@ -369,7 +404,7 @@
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td colspan="10" align="center">
+                                <td colspan="12" align="center">
                                     <a href="javascript:;" onclick="add_row(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> เพิ่มรายการ
                                     </a>

@@ -75,6 +75,8 @@ if(!isset($_GET['action'])){
 
             $product_id_new = $_POST['product_id_new'];
             $product_id_old = $_POST['product_id_old'];
+            $stock_group_id_new = $_POST['stock_group_id_new'];
+            $stock_group_id_old = $_POST['stock_group_id_old'];
             $stock_change_product_list_id = $_POST['stock_change_product_list_id'];
             $stock_change_product_list_qty = $_POST['stock_change_product_list_qty'];
             $stock_change_product_list_price = $_POST['stock_change_product_list_price'];
@@ -91,6 +93,8 @@ if(!isset($_GET['action'])){
                     $data['stock_change_product_id'] = $stock_change_product_id;
                     $data['product_id_new'] = $product_id_new[$i];
                     $data['product_id_old'] = $product_id_old[$i];
+                    $data['stock_group_id_new'] = $stock_group_id_new[$i];
+                    $data['stock_group_id_old'] = $stock_group_id_old[$i];
                     $data['stock_change_product_list_qty'] = (float)filter_var($stock_change_product_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data['stock_change_product_list_price'] = (float)filter_var($stock_change_product_list_price[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data['stock_change_product_list_total'] = (float)filter_var($stock_change_product_list_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -109,6 +113,8 @@ if(!isset($_GET['action'])){
                 $data['stock_change_product_id'] = $stock_change_product_id;
                 $data['product_id_new'] = $product_id_new;
                 $data['product_id_old'] = $product_id_old;
+                $data['stock_group_id_new'] = $stock_group_id_new;
+                $data['stock_group_id_old'] = $stock_group_id_old;
                 $data['stock_change_product_list_qty'] = (float)filter_var($stock_change_product_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['stock_change_product_list_price'] = (float)filter_var($stock_change_product_list_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['stock_change_product_list_total'] = (float)filter_var($stock_change_product_list_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -147,6 +153,8 @@ if(!isset($_GET['action'])){
 
         $product_id_new = $_POST['product_id_new'];
         $product_id_old = $_POST['product_id_old'];
+        $stock_group_id_new = $_POST['stock_group_id_new'];
+        $stock_group_id_old = $_POST['stock_group_id_old'];
         $stock_change_product_list_id = $_POST['stock_change_product_list_id'];
         $stock_change_product_list_qty = $_POST['stock_change_product_list_qty'];
         $stock_change_product_list_price = $_POST['stock_change_product_list_price'];
@@ -163,6 +171,8 @@ if(!isset($_GET['action'])){
                 $data['stock_change_product_id'] = $stock_change_product_id;
                 $data['product_id_new'] = $product_id_new[$i];
                 $data['product_id_old'] = $product_id_old[$i];
+                $data['stock_group_id_new'] = $stock_group_id_new[$i];
+                $data['stock_group_id_old'] = $stock_group_id_old[$i];
                 $data['stock_change_product_list_qty'] = (float)filter_var($stock_change_product_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['stock_change_product_list_price'] = (float)filter_var($stock_change_product_list_price[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data['stock_change_product_list_total'] = (float)filter_var($stock_change_product_list_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -181,6 +191,8 @@ if(!isset($_GET['action'])){
             $data['stock_change_product_id'] = $stock_change_product_id;
             $data['product_id_new'] = $product_id_new;
             $data['product_id_old'] = $product_id_old;
+            $data['stock_group_id_new'] = $stock_group_id_new;
+            $data['stock_group_id_old'] = $stock_group_id_old;
             $data['stock_change_product_list_qty'] = (float)filter_var($stock_change_product_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data['stock_change_product_list_price'] = (float)filter_var($stock_change_product_list_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data['stock_change_product_list_total'] = (float)filter_var($stock_change_product_list_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);

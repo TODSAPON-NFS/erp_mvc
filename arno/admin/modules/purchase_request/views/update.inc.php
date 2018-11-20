@@ -258,6 +258,8 @@
 
     }
 
+    
+
 
 
 </script>
@@ -295,7 +297,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>วันที่ร้องขอ  / PR Date</label>
-                                <input type="text" id="purchase_request_date" name="purchase_requepurchase_request_datest_alert" value="<?PHP echo $purchase_request['purchase_request_date'];?>"  class="form-control calendar" readonly/>
+                                <input type="text"  name="purchase_request_date" value="<?PHP echo $purchase_request['purchase_request_date'];?>"  class="form-control calendar" readonly/>
                                 <p class="help-block">01-03-2018</p>
                             </div>
                         </div>

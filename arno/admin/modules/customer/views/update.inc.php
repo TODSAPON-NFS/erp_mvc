@@ -151,7 +151,7 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label>รหัสลูกค้า / Customer code<font color="#F00"><b>*</b></font></label>
-                                        <input id="customer_code" name="customer_code" readonly="true" class="form-control" value="<? echo $customer['customer_code']?>" onchange="check_code()" />
+                                        <input id="customer_code" name="customer_code" class="form-control" value="<? echo $customer['customer_code']?>" onchange="check_code()" />
                                         <input id="code_check" type="hidden" value="" />
                                         <p class="help-block">Example : R001.</p>
                                     </div>

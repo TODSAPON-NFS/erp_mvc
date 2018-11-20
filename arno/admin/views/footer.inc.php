@@ -92,7 +92,7 @@
         $( "#customer_holiday_date" ).datepicker({ dateFormat: 'dd-mm-yy' });
         $( "#stock_date" ).datepicker({ dateFormat: 'dd-mm-yy' });
         $( "#date_start" ).datepicker({ dateFormat: 'dd-mm-yy' });
-        $( "#date_end" ).datepicker({ dateFormat: 'dd-mm-yy' });
+        $( "#date_end" ).datepicker({ dateFormat: 'dd-mm-yy' }); 
         $( ".calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
     } );
 
@@ -103,8 +103,6 @@
     } );
 
     
-
-
     </script>
     <style>
         div.dataTables_filter{

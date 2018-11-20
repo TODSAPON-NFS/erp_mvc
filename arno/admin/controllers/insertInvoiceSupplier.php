@@ -19,6 +19,7 @@ if(isset($_POST['invoice_supplier_code'])){
     $data['supplier_id'] = $_POST['supplier_id'];
     $data['invoice_supplier_name'] = $_POST['invoice_supplier_name'];
     $data['invoice_supplier_tax'] = $_POST['invoice_supplier_tax'];
+    $data['invoice_supplier_branch'] = $_POST['invoice_supplier_branch'];
     $data['invoice_supplier_address'] = $_POST['invoice_supplier_address'];
     $data['vat_section'] = $_POST['vat_section'];
     $data['vat_section_add'] = $_POST['vat_section_add'];

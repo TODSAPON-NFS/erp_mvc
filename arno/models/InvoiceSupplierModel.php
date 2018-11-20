@@ -99,6 +99,23 @@ class InvoiceSupplierModel extends BaseModel{
     function getInvoiceSupplierByCode($invoice_supplier_code){
         $sql = " SELECT * 
         FROM tb_invoice_supplier  
+        WHERE invoice_supplier_code = '$invoice_supplier_code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getInvoiceSupplierByCodeGen($invoice_supplier_code){
+        $sql = " SELECT * 
+        FROM tb_invoice_supplier  
         WHERE invoice_supplier_code_gen = '$invoice_supplier_code' 
         ";
 
@@ -513,9 +530,11 @@ class InvoiceSupplierModel extends BaseModel{
 
     function deleteInvoiceSupplierByID($id){
 
-        $sql = "    SELECT invoice_supplier_list_id, stock_group_id, product_id, invoice_supplier_list_qty, invoice_supplier_list_cost
+        $sql = "    SELECT invoice_supplier_list_id, stock_group_id, tb_invoice_supplier_list.product_id , invoice_supplier_list_qty, invoice_supplier_list_cost
                     FROM  tb_invoice_supplier_list 
-                    WHERE invoice_supplier_id = '$id' ";   
+                    LEFT JOIN tb_product ON tb_invoice_supplier_list.product_id = tb_product.product_id 
+                    LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
+                    WHERE invoice_supplier_id = '$id' AND stock_event = '1' ";   
                      
          $data_clear=[];
 

@@ -85,7 +85,7 @@
 
     function check_code(id){
         var code = $(id).val();
-        $.post( "controllers/getInvoiceSupplierByCode.php", { 'invoice_supplier_code': code }, function( data ) {  
+        $.post( "controllers/getInvoiceSupplierByCodeGen.php", { 'invoice_supplier_code': code }, function( data ) {  
             if(data != null){ 
                 alert("This "+code+" is already in the system.");
                 document.getElementById("invoice_supplier_code_gen").focus();

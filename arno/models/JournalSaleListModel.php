@@ -11,6 +11,7 @@ class JournalSaleListModel extends BaseModel{
 
     function getJournalSaleListBy($journal_sale_id){
         $sql = " SELECT 
+        account_code,
         journal_sale_list_id, 
         journal_sale_list_name,
         journal_sale_list_debit,

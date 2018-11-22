@@ -607,6 +607,9 @@
                                 <li>
                                     <a href="?app=maintenance" <?PHP if($_GET['app'] == "maintenance"){?> class="active" <?PHP } ?> ><i class="fa fa-refresh" aria-hidden="true"></i> ซ่อมแซมระบบ </a>
                                 </li>
+                                <li>
+                                    <a href="?app=paper_lock" <?PHP if($_GET['app'] == "paper_lock"){?> class="active" <?PHP } ?> ><i class="fa fa-lock" aria-hidden="true"></i> ล็อกงวดบัญชี </a>
+                                </li>
                             </ul>
                         </li>
 

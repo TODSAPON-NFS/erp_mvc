@@ -1,4 +1,9 @@
-<?PHP 
+<?PHP  
+    session_start();
+    $user_admin = $_SESSION['user'];
+    $admin_id = $user_admin[0][0]; 
+
+
     if($_GET['app'] == "delivery_note_customer"){
         require_once("print/delivery_note_customer/views/index.inc.php");
     }elseif($_GET['app'] == "invoice_customer"){
@@ -9,6 +14,12 @@
         require_once("print/finance_debit/views/index.inc.php");
     }else if($_GET['app'] == "finance_credit"){
         require_once("print/finance_credit/views/index.inc.php");
+    }else if($_GET['app'] == "report_journal_general"){
+        require_once("print/report_journal_general/views/index.inc.php");
+    }else if($_GET['app'] == "report_journal_01"){
+        require_once("print/report_journal_01/views/index.inc.php");
+    }else if($_GET['app'] == "report_journal_02"){
+        require_once("print/report_journal_02/views/index.inc.php");
     }else if($_GET['app'] == "report_journal_03"){
         require_once("print/report_journal_03/views/index.inc.php");
     }else if($_GET['app'] == "report_journal_04"){

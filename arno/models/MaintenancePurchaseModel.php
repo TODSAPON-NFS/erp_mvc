@@ -88,7 +88,7 @@ class MaintenancePurchaseModel extends BaseModel{
                                 WHERE invoice_supplier_list_id = '".$data_sub[$i_sup]['invoice_supplier_list_id']."' 
                         "; 
 
-                        //echo "<B> ".$data[$i]['invoice_supplier_code']."---->".($i_sup+1)."===>".$data_sub[$i_sup]['product_id']." </B> : ".$sql ."<br><br>";
+                        //echo "<B> ".$data[$i]['invoice_supplier_code_gen']."---->".($i_sup+1)."===>".$data_sub[$i_sup]['product_id']." </B> : ".$sql ."<br><br>";
                         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
                         $has_account = false;
                         for($ii = 0 ; $ii < count($journal_list); $ii++){
@@ -151,7 +151,7 @@ class MaintenancePurchaseModel extends BaseModel{
                                 WHERE invoice_supplier_id = '".$data[$i]['invoice_supplier_id']."' 
                     ";
             
-                    //echo "<B> ".$data[$i]['invoice_supplier_code']." </B> : ".$sql ."<br><br>";
+                    //echo "<B> ".$data[$i]['invoice_supplier_code_gen']." </B> : ".$sql ."<br><br>";
             
                     mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
@@ -405,7 +405,7 @@ class MaintenancePurchaseModel extends BaseModel{
 
     function updateJournal($data,$journal_list, $account_supplier, $account_vat_purchase,$account_purchase){
         //----------------------------- สร้างสมุดรายวันซื้อ ----------------------------------------  
-        $journal_purchase_name = "ซื้อเชื่อจาก ".$data['invoice_supplier_name']." [".$data['invoice_supplier_code']."] "; 
+        $journal_purchase_name = "ซื้อเชื่อจาก ".$data['invoice_supplier_name']." [".$data['invoice_supplier_code_gen']."] "; 
 
         $sql = " SELECT * 
         FROM tb_journal_purchase 
@@ -425,8 +425,8 @@ class MaintenancePurchaseModel extends BaseModel{
             $journal_purchase_id = $journal['journal_purchase_id'];
 
             $sql = " UPDATE tb_journal_purchase SET 
-            journal_purchase_code = '".$data['invoice_supplier_code']."', 
-            journal_purchase_date = '".$data['invoice_supplier_date']."', 
+            journal_purchase_code = '".$data['invoice_supplier_code_gen']."', 
+            journal_purchase_date = '".$data['invoice_supplier_date_recieve']."', 
             journal_purchase_name = '".$journal_purchase_name."', 
             updateby = '".$data['updateby']."', 
             lastupdate = NOW() 
@@ -452,8 +452,8 @@ class MaintenancePurchaseModel extends BaseModel{
                 lastupdate) 
             VALUES ('".
             $data['invoice_supplier_id']."','".
-            $data['invoice_supplier_code']."','".
-            $data['invoice_supplier_date']."','".
+            $data['invoice_supplier_code_gen']."','".
+            $data['invoice_supplier_date_recieve']."','".
             $journal_purchase_name."','".
             $data['addby']."',".
             "NOW(),'".

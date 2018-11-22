@@ -1,9 +1,11 @@
 <?PHP 
 
 session_start();
+
 require_once('../models/JournalCashPaymentModel.php');
 require_once('../models/JournalCashPaymentListModel.php');
 
+require_once('../models/UserModel.php');
 require_once('../models/CheckModel.php');
 require_once('../models/CheckPayModel.php');
 require_once('../models/InvoiceSupplierModel.php');
@@ -14,13 +16,14 @@ date_default_timezone_set('asia/bangkok');
 $d1=date("d");
 $d2=date("m");
 $d3=date("Y");
-$d4=date("h");
+$d4=date("H");
 $d5=date("i");
 $d6=date("s"); 
 
 $path = "print/report_journal_04/views/";
 
 $company_model = new CompanyModel;
+$user_model = new UserModel;
 
 $journal_cash_payment_model = new JournalCashPaymentModel;
 $journal_cash_payment_list_model = new JournalCashPaymentListModel;
@@ -29,9 +32,9 @@ $check_model = new CheckModel;
 $check_pay_model = new CheckPayModel;
 $invoice_supplier_model = new InvoiceSupplierModel;
 $invoice_customer_model = new InvoiceCustomerModel;
+ 
 
-$lines = 30;
-
+$user = $user_model->getUserByID($admin_id);
 if($_GET['type'] == "id"){
     $journal_cash_payment_id = $_GET['id'];
 
@@ -45,23 +48,11 @@ if($_GET['type'] == "id"){
     $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierViewListByjournalPaymentID($journal_cash_payment_id);
     $invoice_customers = $invoice_customer_model->getInvoiceCustomerViewListByjournalPaymentID($journal_cash_payment_id);
 }
+ 
 
-
-
-
-
-// for($i = 0 ; $i < 80; $i++){
-//     $tax_reports[] = $tax_reports[0];
-// }
-
-
-
-$lines_max = count($journal_cash_payment_lists) + count($checks) + count($check_pays) + count($invoice_suppliers) + count($invoice_customers) ; 
-
-$page_max = (int)($lines_max / $lines);
-if($lines_max % $lines > 0){
-    $page_max += 1;
-}
+$lines = 23;
+ 
+$page_max = 0;
 
 include($path."view.inc.php");
 

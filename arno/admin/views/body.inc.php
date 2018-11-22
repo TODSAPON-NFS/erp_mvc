@@ -197,6 +197,8 @@
         require_once("modules/journal_sale_return/views/index.inc.php");
     }else if($_GET['app'] == "maintenance"){
         require_once("modules/maintenance/views/index.inc.php");
+    }else if($_GET['app'] == "paper_lock"){
+        require_once("modules/paper_lock/views/index.inc.php");
     }
 
     /* ----------------------------------- //ระบบบัญชี// ---------------------------------------------- */

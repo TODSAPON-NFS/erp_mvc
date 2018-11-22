@@ -334,7 +334,7 @@
                         <?PHP if($previous_id != ""){?>
                         <a class="btn btn-primary" href="?app=journal_special_03&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
                         <?PHP } ?>
-
+                        <a class="btn btn-success" href="?app=journal_special_03&action=insert&id=<?php echo $journal_cash_receipt_id;?>" target="_blank" > <i class="fa fa-plus" aria-hidden="true"></i> Copy </a>
                         <?PHP if($next_id != ""){?>
                         <a class="btn btn-primary" href="?app=journal_special_03&action=update&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
                         <?PHP } ?>

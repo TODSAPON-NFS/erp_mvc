@@ -150,6 +150,27 @@ class InvoiceSupplierModel extends BaseModel{
 
     }
 
+    function getInvoiceSupplierViewListByjournalGeneralID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_general_list 
+        LEFT JOIN tb_invoice_supplier ON tb_journal_general_list.journal_invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id
+        LEFT JOIN tb_user ON tb_invoice_supplier.employee_id = tb_user.user_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
+        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
+        WHERE journal_general_id = '$id' AND tb_journal_general_list.journal_invoice_supplier_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getInvoiceSupplierViewListByjournalPaymentID($id){
         $sql = " SELECT *   
         FROM tb_journal_cash_payment_list 
@@ -179,6 +200,48 @@ class InvoiceSupplierModel extends BaseModel{
         LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
         LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
         WHERE journal_cash_receipt_id = '$id' AND tb_journal_cash_receipt_list.journal_invoice_supplier_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getInvoiceSupplierViewListByjournalPurchaseID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_purchase_list 
+        LEFT JOIN tb_invoice_supplier ON tb_journal_purchase_list.journal_invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id
+        LEFT JOIN tb_user ON tb_invoice_supplier.employee_id = tb_user.user_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
+        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
+        WHERE journal_purchase_id = '$id' AND tb_journal_purchase_list.journal_invoice_supplier_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getInvoiceSupplierViewListByjournalSaleID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_sale_list 
+        LEFT JOIN tb_invoice_supplier ON tb_journal_sale_list.journal_invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id
+        LEFT JOIN tb_user ON tb_invoice_supplier.employee_id = tb_user.user_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
+        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
+        WHERE journal_sale_id = '$id' AND tb_journal_sale_list.journal_invoice_supplier_id > 0
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

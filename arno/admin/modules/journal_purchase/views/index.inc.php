@@ -55,14 +55,27 @@ $target_dir = "../upload/journal_purchase/";
 
 if(!isset($_GET['action'])){
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $keyword = $_GET['keyword']; 
-
-    if($_GET['page'] == '' || $_GET['page'] == '0'){
-        $page = 0;
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
     }else{
-        $page = $_GET['page'] - 1;
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
     }
 
     $page_size = 50;
@@ -312,7 +325,7 @@ if(!isset($_GET['action'])){
         
         if($output){
     ?>
-            <script>window.location="index.php?app=journal_special_01&action=insert"</script>
+            <script>window.location="index.php?app=journal_special_01&action=update&id=<?PHP echo $journal_purchase_id?>"</script>
     <?php
         }
     
@@ -323,14 +336,27 @@ if(!isset($_GET['action'])){
     }
         
 }else{
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $keyword = $_GET['keyword']; 
-
-    if($_GET['page'] == '' || $_GET['page'] == '0'){
-        $page = 0;
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
     }else{
-        $page = $_GET['page'] - 1;
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
     }
 
     $page_size = 50;

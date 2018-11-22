@@ -7,7 +7,19 @@
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีขาย</h4>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีขาย</h4>
+                </div>
+                <div class="col-md-4"> 
+                      
+                </div>
+                <div class="col-md-1" align="right"> 
+                    <button class="btn btn-danger"  onclick="get_invoice_customer_id(this)" >Get Invoice</button> 
+                      
+                </div> 
+            </div>
         </div>
 
         <div  class="modal-body" align="left">
@@ -16,7 +28,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>เลขที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
-                        <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" value="<?php echo $invoice_customer['invoice_customer_code']; ?>" onchange="get_invoice_customer_id(this)" >
+                        <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" value="<?php echo $invoice_customer['invoice_customer_code']; ?>"  >
                         <p class="help-block">Example : -.</p>
                     </div>
                 </div>
@@ -174,6 +186,8 @@ var invoice_customer_options = {
     requestDelay: 400
 };
  
+$('#invoice_customer_code_search').easyAutocomplete(invoice_customer_options);
+
 function sale_duty_date(){
     var d = $('#invoice_customer_date').val().toString().split("-");
     $('#customer_vat_section').val(d[2].substr(2, 2) +  "/" + d[1]);
@@ -265,14 +279,13 @@ function add_invoice_customer_row(id,journal_id){
     $('#invoice_customer_delete').hide();
 
     $('.select').selectpicker('refresh');
-    $('#modalInvoiceCustomer').modal('show');
-    $('#invoice_customer_code').easyAutocomplete(invoice_customer_options);
+    $('#modalInvoiceCustomer').modal('show'); 
     row_invoice_customer_add_id = id;
     row_journal_id = journal_id;
 }
 
 function get_invoice_customer_id(id){ 
-    get_invoice_customer_data(id,$(id).val()); 
+    get_invoice_customer_data(id,$('#invoice_customer_code_search').val());
 }
 
 

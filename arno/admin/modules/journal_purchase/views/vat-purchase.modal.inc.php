@@ -7,7 +7,18 @@
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีซื้อ</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีซื้อ</h4>
+                </div>
+                <div class="col-md-4"> 
+                    <input id="invoice_supplier_code_search" name="invoice_supplier_code_search" class="form-control" placeholder="Search invoice" value="">  
+                </div>
+                <div class="col-md-1" align="right"> 
+                    <button class="btn btn-danger"  onclick="get_invoice_supplier_id(this)" >Get Invoice</button> 
+                      
+                </div> 
+            </div>
         </div>
 
         <div  class="modal-body" align="left">
@@ -16,7 +27,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>เลขที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
-                        <input id="invoice_supplier_code" name="invoice_supplier_code" class="form-control" value="<?php echo $invoice_supplier['invoice_supplier_code']; ?>" onchange="get_invoice_supplier_id(this)" >
+                        <input id="invoice_supplier_code" name="invoice_supplier_code" class="form-control" value="<?php echo $invoice_supplier['invoice_supplier_code']; ?>"  >
                         <p class="help-block">Example : -.</p>
                     </div>
                 </div>
@@ -198,6 +209,8 @@ var invoice_supplier_options = {
     requestDelay: 400
 };
 
+$('#invoice_supplier_code_search').easyAutocomplete(invoice_supplier_options);
+
 function purchase_duty_date(){
     var d = $('#invoice_supplier_date').val().toString().split("-");
     $('#vat_section').val(d[2].substr(2, 2) +  "/" + d[1]);
@@ -316,14 +329,13 @@ function add_invoice_supplier_row(id,journal_id){
     $('#invoice_supplier_delete').hide();
 
     $('.select').selectpicker('refresh');
-    $('#modalInvoiceSupplier').modal('show');
-    $('#invoice_supplier_code').easyAutocomplete(invoice_supplier_options);
+    $('#modalInvoiceSupplier').modal('show'); 
     row_invoice_supplier_add_id = id;
     row_journal_id = journal_id;
 }
 
 function get_invoice_supplier_id(id){ 
-    get_invoice_supplier_data(id,$(id).val()); 
+    get_invoice_supplier_data(id,$("#invoice_supplier_code_search").val()); 
 }
 
 

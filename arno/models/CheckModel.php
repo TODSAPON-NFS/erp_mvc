@@ -147,12 +147,33 @@ class CheckModel extends BaseModel{
 
     }
 
+    function getCheckViewListByjournalGeneralID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_general_list 
+        LEFT JOIN tb_check ON tb_journal_general_list.journal_cheque_id = tb_check.check_id
+        LEFT JOIN tb_bank ON tb_check.bank_id = tb_bank.bank_id
+        WHERE journal_general_id = '$id' AND tb_journal_general_list.journal_cheque_id > '0' 
+        GROUP BY check_id 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getCheckViewListByjournalPaymentID($id){
         $sql = " SELECT *   
         FROM tb_journal_cash_payment_list 
         LEFT JOIN tb_check ON tb_journal_cash_payment_list.journal_cheque_id = tb_check.check_id
         LEFT JOIN tb_bank ON tb_check.bank_id = tb_bank.bank_id
-        WHERE journal_cash_payment_id = '$id' AND tb_journal_cash_payment_list.journal_cheque_id > 0
+        WHERE journal_cash_payment_id = '$id' AND tb_journal_cash_payment_list.journal_cheque_id > '0' 
+        GROUP BY check_id 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -171,7 +192,48 @@ class CheckModel extends BaseModel{
         FROM tb_journal_cash_receipt_list 
         LEFT JOIN tb_check ON tb_journal_cash_receipt_list.journal_cheque_id = tb_check.check_id
         LEFT JOIN tb_bank ON tb_check.bank_id = tb_bank.bank_id
-        WHERE journal_cash_receipt_id = '$id' AND tb_journal_cash_receipt_list.journal_cheque_id > 0
+        WHERE journal_cash_receipt_id = '$id' AND tb_journal_cash_receipt_list.journal_cheque_id > '0' 
+        GROUP BY check_id 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getCheckViewListByjournalPurchaseID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_purchase_list 
+        LEFT JOIN tb_check ON tb_journal_purchase_list.journal_cheque_id = tb_check.check_id
+        LEFT JOIN tb_bank ON tb_check.bank_id = tb_bank.bank_id
+        WHERE journal_purchase_id = '$id' AND tb_journal_purchase_list.journal_cheque_id > '0' 
+        GROUP BY check_id 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getCheckViewListByjournalSaleID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_sale_list 
+        LEFT JOIN tb_check ON tb_journal_sale_list.journal_cheque_id = tb_check.check_id
+        LEFT JOIN tb_bank ON tb_check.bank_id = tb_bank.bank_id
+        WHERE journal_sale_id = '$id' AND tb_journal_sale_list.journal_cheque_id > '0' 
+        GROUP BY check_id 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

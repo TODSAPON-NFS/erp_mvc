@@ -34,10 +34,30 @@ $regrind_supplier = $regrind_supplier_model->getRegrindSupplierByID($regrind_sup
 $employee_id = $regrind_supplier['employee_id'];
 
 if(!isset($_GET['action']) && ($license_regrind_page == "Low" || $license_regrind_page == "Medium" || $license_regrind_page == "High" ) ){
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
     $supplier_id = $_GET['supplier_id'];
-    $keyword = $_GET['keyword'];
 
     $suppliers=$supplier_model->getSupplierBy();
 
@@ -373,10 +393,30 @@ if(!isset($_GET['action']) && ($license_regrind_page == "Low" || $license_regrin
 <?PHP
 }else if($license_regrind_page == "Low" || $license_regrind_page == "Medium" || $license_regrind_page == "High" ) {
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
     $supplier_id = $_GET['supplier_id'];
-    $keyword = $_GET['keyword'];
 
     $suppliers=$supplier_model->getSupplierBy();
     if($license_regrind_page == "Medium" || $license_regrind_page == "High" ){

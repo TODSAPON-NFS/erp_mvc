@@ -37,10 +37,32 @@ $supplier_id = $_GET['supplier_id'];
 
 if(!isset($_GET['action'])){
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+    
+    
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+     
+    
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    } 
+
     $supplier_id = $_GET['supplier_id'];
-    $keyword = $_GET['keyword'];
+    
 
     $suppliers=$supplier_model->getSupplierBy();
 
@@ -423,7 +445,36 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $request_tests = $request_test_model->getRequestTestBy();
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+    
+    
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+     
+    
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    } 
+
+    $supplier_id = $_GET['supplier_id'];
+    
+
+    $suppliers=$supplier_model->getSupplierBy();
+
+    $request_tests = $request_test_model->getRequestTestBy($date_start,$date_end,$supplier_id,$keyword);
     $supplier_orders = $request_test_model->getSupplierOrder();
     require_once($path.'view.inc.php');
 

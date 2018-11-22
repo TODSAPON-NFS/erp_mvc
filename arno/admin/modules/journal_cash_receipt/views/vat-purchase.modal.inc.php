@@ -213,7 +213,7 @@ $('#invoice_supplier_code_search').easyAutocomplete(invoice_supplier_options);
 
 function purchase_duty_date(){
     var d = $('#invoice_supplier_date').val().toString().split("-");
-    $('#vat_section').val(d[2].substr(2, 2) +  "/" + d[1]);
+    $('#vat_section').val(d[1] +  "/" + d[2].substr(2, 2));
 }
 
 

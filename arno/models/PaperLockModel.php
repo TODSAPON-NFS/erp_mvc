@@ -24,12 +24,13 @@ class PaperLockModel extends BaseModel{
 
     function generatePaperLock($date_start){
         date_default_timezone_set('asia/bangkok');
-       $sql = "TRUNCATE  tb_paper_lock ;";
+        $sql = "TRUNCATE  tb_paper_lock ;";
  
-       mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $date_str = explode("-",$date_start);
-        $time = strtotime($date_str[2]."-".$date_str[1]."-".$date_str[0]);
+        $time = strtotime($date_str[2]."-".$date_str[1]."-01" );
+
         for($i=0; $i < 24; $i++){
         
             $date_current = date("t-m-Y", strtotime("+".$i." month", $time));

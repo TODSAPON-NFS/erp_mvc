@@ -45,10 +45,30 @@ $target_dir = "../upload/customer_purchase_order/";
 
 if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+    
     $customer_id = $_GET['customer_id'];
-    $keyword = $_GET['keyword'];
     $status = $_GET['status'];
 
     if($_GET['page'] == '' || $_GET['page'] == '0'){
@@ -646,10 +666,30 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     
 }else if ($license_sale_page == "Medium" || $license_sale_page == "High" ){
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+    
     $customer_id = $_GET['customer_id'];
-    $keyword = $_GET['keyword'];
     $status = $_GET['status'];
 
     if($_GET['page'] == '' || $_GET['page'] == '0'){

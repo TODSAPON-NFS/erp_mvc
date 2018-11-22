@@ -2,6 +2,8 @@
 session_start();
 $user = $_SESSION['user'];
 
+require_once('../models/PaperLockModel.php');
+
 require_once('../models/InvoiceSupplierModel.php');
 require_once('../models/InvoiceSupplierListModel.php');
 require_once('../models/PurchaseOrderListModel.php');
@@ -23,6 +25,7 @@ date_default_timezone_set('asia/bangkok');
 
 $path = "modules/invoice_supplier/views/";
 $user_model = new UserModel;
+$paper_lock_model = new PaperLockModel;
 $supplier_model = new SupplierModel;
 $notification_model = new NotificationModel;
 $invoice_supplier_model = new InvoiceSupplierModel;
@@ -52,10 +55,30 @@ $first_char = "RR";
 $stock_group_id = 0;
 if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
     $supplier_id = $_GET['supplier_id'];
-    $keyword = $_GET['keyword'];
 
     $suppliers=$supplier_model->getSupplierBy();
 
@@ -498,10 +521,30 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     
 }else if ( $license_purchase_page == "Medium" || $license_purchase_page == "High" ){
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
     $supplier_id = $_GET['supplier_id'];
-    $keyword = $_GET['keyword'];
 
     $suppliers=$supplier_model->getSupplierBy();
 

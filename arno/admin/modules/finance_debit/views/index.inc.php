@@ -60,10 +60,29 @@ $vat = 7;
 
 if(!isset($_GET['action'])){
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    } 
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
     $customer_id = $_GET['customer_id'];
-    $keyword = $_GET['keyword'];
 
     $url_search = "&date_start=$date_start&date_end=$date_end&customer_id=$customer_id&keyword=$keyword";
 
@@ -790,11 +809,30 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $customer_id = $_GET['customer_id'];
-    $keyword = $_GET['keyword'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
 
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
+    $customer_id = $_GET['customer_id'];
     $url_search = "&date_start=$date_start&date_end=$date_end&customer_id=$customer_id&keyword=$keyword";
 
     

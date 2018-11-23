@@ -148,11 +148,28 @@ class CustomerModel extends BaseModel{
 
     }
 
+    function getCustomerByCode($code){
+        $sql = " SELECT * 
+        FROM tb_customer 
+        WHERE customer_code = '$code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
 
     function deleteEndUserByID($id){
         $sql = " UPDATE tb_customer SET 
         customer_end_user = '0' 
-        WHERE customer_id = $id 
+        WHERE customer_id = '$id' 
         ";
 
 
@@ -168,7 +185,7 @@ class CustomerModel extends BaseModel{
     function insertEndUserByID($customer_id,$id){
         $sql = " UPDATE tb_customer SET 
         customer_end_user = '$customer_id' 
-        WHERE customer_id = $id 
+        WHERE customer_id = '$id' 
         ";
 
 
@@ -188,7 +205,7 @@ class CustomerModel extends BaseModel{
         bill_shift = '".$data['bill_shift']."', 
         updateby = '".$data['updateby']."',  
         lastupdate = NOW() 
-        WHERE customer_id = $id 
+        WHERE customer_id = '$id' 
         ";
 
 
@@ -207,7 +224,7 @@ class CustomerModel extends BaseModel{
         invoice_shift = '".$data['invoice_shift']."', 
         updateby = '".$data['updateby']."',  
         lastupdate = NOW() 
-        WHERE customer_id = $id 
+        WHERE customer_id = '$id' 
         ";
 
 
@@ -225,7 +242,7 @@ class CustomerModel extends BaseModel{
         $sql = " UPDATE tb_customer SET  
         sale_id = '".$sale_id."',   
         lastupdate = NOW() 
-        WHERE customer_id = $id 
+        WHERE customer_id = '$id'
         ";
 
 
@@ -244,7 +261,7 @@ class CustomerModel extends BaseModel{
 
 
     function updateCustomerByID($id,$data = []){
-        $sql = " UPDATE tb_customer SET 
+        $sql = " UPDATE tb_customer SET  
         customer_code = '".$data['customer_code']."', 
         customer_name_th = '".$data['customer_name_th']."', 
         customer_name_en = '".$data['customer_name_en']."', 
@@ -286,7 +303,7 @@ class CustomerModel extends BaseModel{
     }
 
     function insertCustomer($data = []){
-        $sql = " INSERT INTO tb_customer (
+        $sql = " INSERT INTO tb_customer ( 
             customer_code,
             customer_name_th,
             customer_name_en,
@@ -315,7 +332,7 @@ class CustomerModel extends BaseModel{
             customer_logo,
             addby,
             adddate
-        ) VALUES (
+        ) VALUES ( 
             '".$data['customer_code']."', 
             '".$data['customer_name_th']."', 
             '".$data['customer_name_en']."', 

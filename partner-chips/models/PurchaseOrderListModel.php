@@ -58,7 +58,7 @@ class PurchaseOrderListModel extends BaseModel{
 
 
     function insertPurchaseOrderList($data = []){
-        $sql = " INSERT INTO tb_purchase_order_list (
+        $sql = " INSERT INTO tb_purchase_order_list ( 
             purchase_order_id,
             product_id,
             purchase_order_list_qty,
@@ -71,7 +71,7 @@ class PurchaseOrderListModel extends BaseModel{
             adddate,
             updateby,
             lastupdate
-        ) VALUES (
+        ) VALUES ( 
             '".$data['purchase_order_id']."', 
             '".$data['product_id']."', 
             '".$data['purchase_order_list_qty']."', 
@@ -87,11 +87,12 @@ class PurchaseOrderListModel extends BaseModel{
         ); 
         ";
 
+//echo $sql."<br><br>";
         //echo $sql;
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             return mysqli_insert_id(static::$db);
         }else {
-            return 0;
+            return '';
         }
 
     }
@@ -126,6 +127,7 @@ class PurchaseOrderListModel extends BaseModel{
             WHERE purchase_order_list_id = '$id'
         ";
 
+        //echo $sql."<br><br>";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
@@ -216,7 +218,7 @@ class PurchaseOrderListModel extends BaseModel{
         $str ='';
         if(is_array($data)){ 
             for($i=0; $i < count($data) ;$i++){
-                $str .= $data[$i];
+                $str .= " '".$data[$i]."' ";
                 if($i + 1 < count($data)){
                     $str .= ',';
                 }
@@ -227,7 +229,7 @@ class PurchaseOrderListModel extends BaseModel{
             $str='0';
         }
         $sql = "UPDATE  tb_purchase_request_list SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str)) ";
-     
+        //echo $sql."<br><br>";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = "UPDATE  tb_customer_purchase_order_list_detail SET purchase_order_list_id = '0'  WHERE purchase_order_list_id IN (SELECT purchase_order_list_id FROM tb_purchase_order_list WHERE purchase_order_id = '$id' AND purchase_order_list_id NOT IN ($str)) ";

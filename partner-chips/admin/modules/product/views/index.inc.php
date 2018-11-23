@@ -8,6 +8,7 @@ require_once('../models/ProductCustomerModel.php');
 require_once('../models/ProductSupplierModel.php');
 require_once('../models/CustomerModel.php');
 require_once('../models/SupplierModel.php');
+require_once('../models/AccountModel.php');
 
 $path = "modules/product/views/";
 $model_product = new ProductModel;
@@ -19,6 +20,7 @@ $model_product_customer = new ProductCustomerModel;
 $model_product_supplier = new ProductSupplierModel;
 $model_customer = new CustomerModel;
 $model_supplier = new SupplierModel;
+$account_model = new AccountModel;
 
 $target_dir = "../upload/product/";
 $product_id = $_GET['id'];
@@ -57,6 +59,7 @@ if(!isset($_GET['action'])){
     $product_type = $model_product_type->getProductTypeBy();
     $product_category = $model_product_category->getProductCategoryBy();
     $product_unit = $model_product_unit->getProductUnitBy();
+    $account = $account_model->getAccountAll();
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
@@ -67,6 +70,7 @@ if(!isset($_GET['action'])){
     $product_type = $model_product_type->getProductTypeBy();
     $product_category = $model_product_category->getProductCategoryBy();
     $product_unit = $model_product_unit->getProductUnitBy();
+    $account = $account_model->getAccountAll();
 
     $product_customers = $model_product_customer->getProductCustomerBy($product_id);
     $product_suppliers = $model_product_supplier->getProductSupplierBy($product_id);
@@ -108,6 +112,7 @@ if(!isset($_GET['action'])){
     if(isset($_POST['product_name'])){
 
         $data = [];
+        $data['product_id'] = $_POST['product_code_first'].$_POST['product_code'];
         $data['product_code_first'] = $_POST['product_code_first'];
         $data['product_code'] = $_POST['product_code'];
         $data['product_name'] = $_POST['product_name'];
@@ -118,6 +123,8 @@ if(!isset($_GET['action'])){
         $data['product_unit'] = $_POST['product_unit'];
         $data['product_status'] = $_POST['product_status'];
         $data['product_category_id'] = $_POST['product_category_id'];
+        $data['buy_account_id'] = $_POST['buy_account_id'];
+        $data['sale_account_id'] = $_POST['sale_account_id'];
         $check = true;
 
         if($_FILES['product_drawing']['name'] == ""){
@@ -202,6 +209,7 @@ if(!isset($_GET['action'])){
 
     for($i = 0 ; $i < count($product_code) ; $i++){
         $data = [];
+        $data['product_id'] = $product_code[$i];
         $data['product_code_first'] = '';
         $data['product_code'] = $product_code[$i];
         $data['product_name'] = $product_name[$i];
@@ -227,6 +235,7 @@ if(!isset($_GET['action'])){
     
     if(isset($_POST['product_name'])){
         $data = [];
+        $data['product_id'] = $_POST['product_code_first'].$_POST['product_code'];
         $data['product_code_first'] = $_POST['product_code_first'];
         $data['product_code'] = $_POST['product_code'];
         $data['product_name'] = $_POST['product_name'];
@@ -237,6 +246,8 @@ if(!isset($_GET['action'])){
         $data['product_unit'] = $_POST['product_unit'];
         $data['product_status'] = $_POST['product_status'];
         $data['product_category_id'] = $_POST['product_category_id'];
+        $data['buy_account_id'] = $_POST['buy_account_id'];
+        $data['sale_account_id'] = $_POST['sale_account_id'];
 
 
         $check = true;

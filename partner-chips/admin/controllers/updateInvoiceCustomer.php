@@ -18,6 +18,7 @@ if(isset($_POST['invoice_customer_code'])){
     $data['customer_id'] = $_POST['customer_id'];
     $data['invoice_customer_name'] = $_POST['invoice_customer_name'];
     $data['invoice_customer_tax'] = $_POST['invoice_customer_tax'];
+    $data['invoice_customer_branch'] = $_POST['invoice_customer_branch'];
     $data['invoice_customer_address'] = $_POST['invoice_customer_address'];
     $data['vat_section'] = $_POST['vat_section'];
     $data['vat_section_add'] = $_POST['vat_section_add'];

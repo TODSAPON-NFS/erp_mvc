@@ -61,8 +61,26 @@ class SupplierModel extends BaseModel{
 
     }
 
+    function getSupplierByCode($code){
+        $sql = " SELECT * 
+        FROM tb_supplier 
+        LEFT JOIN tb_currency ON tb_supplier.currency_id = tb_currency.currency_id 
+        WHERE supplier_code = '$code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function updateSupplierByID($id,$data = []){
-        $sql = " UPDATE tb_supplier SET 
+        $sql = " UPDATE tb_supplier SET  
         supplier_code = '".$data['supplier_code']."', 
         supplier_name_th = '".$data['supplier_name_th']."', 
         supplier_name_en = '".$data['supplier_name_en']."', 
@@ -89,7 +107,7 @@ class SupplierModel extends BaseModel{
         supplier_logo = '".$data['supplier_logo']."' , 
         updateby = '".$data['updateby']."',  
         lastupdate = NOW() 
-        WHERE supplier_id = $id 
+        WHERE supplier_id = '$id' 
         ";
 
 
@@ -109,7 +127,7 @@ class SupplierModel extends BaseModel{
         supplier_accept_date = NOW(),  
         updateby = '".$data['updateby']."', 
         lastupdate = NOW() 
-        WHERE supplier_id = $id 
+        WHERE supplier_id = '$id' 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -122,7 +140,7 @@ class SupplierModel extends BaseModel{
     }
 
     function insertSupplier($data = []){
-        $sql = " INSERT INTO tb_supplier (
+        $sql = " INSERT INTO tb_supplier ( 
             supplier_code,
             supplier_name_th,
             supplier_name_en,
@@ -149,7 +167,7 @@ class SupplierModel extends BaseModel{
             supplier_logo,
             addby,
             adddate
-        ) VALUES (
+        ) VALUES ( 
             '".$data['supplier_code']."', 
             '".$data['supplier_name_th']."', 
             '".$data['supplier_name_en']."', 

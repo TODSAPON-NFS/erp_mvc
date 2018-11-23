@@ -77,61 +77,8 @@
                     </div>
                 </form>
                 <br>
-
-                <div class="row" style="margin:0px;">
-                    <div class="col-sm-6">
-                        <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format(count($journal_generals),0);?> entries</div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="dataTables_paginate paging_simple_numbers" >
-                            <ul class="pagination">
-
-                                <li class="paginate_button previous <?PHP if($page == 0){ ?>disabled<?PHP } ?>" >
-                                    <a href="<?PHP if($page == 0){?>javascript:;<?PHP }else{ ?>index.php?app=journal_general&page=<?PHP echo $page; }?>">Previous</a>
-                                </li>
-
-                                <?PHP if($page > 0){ ?>
-                                <li class="paginate_button "  >
-                                    <a href="index.php?app=journal_general&page=1">1</a>
-                                </li>
-                                <li class="paginate_button disabled"   >
-                                    <a href="#">…</a>
-                                </li>
-                                <?PHP } ?>
-
-                                    
-                                <li class="paginate_button active"  >
-                                    <a href="index.php?app=journal_general&page=<?PHP echo $page+1;?>"><?PHP echo number_format($page + 1);?></a>
-                                </li>
-
-                                <?PHP for($i = $page + 1 ; $i < $page_max && $i <= $page + 5 ; $i++ ){?>
-                                <li class="paginate_button "  >
-                                    <a href="index.php?app=journal_general&page=<?PHP echo $i + 1;?>"><?PHP echo number_format($i + 1,0);?></a>
-                                </li>
-                                <?PHP } ?>
-                                
-
-
-                                <?PHP if($page < $page_max){ ?>
-                                <li class="paginate_button disabled"   >
-                                    <a href="#">…</a>
-                                </li>
-                                <li class="paginate_button "  >
-                                    <a href="index.php?app=journal_general&page=<?PHP echo $page_max;?>"><?PHP echo number_format($page_max,0);?></a>
-                                </li>
-                                <?PHP } ?>
-
-                                <li class="paginate_button next <?PHP if($page+1 == $page_max){ ?>disabled<?PHP } ?>"   >
-                                    <a href="<?PHP if($page+1 == $page_max){?>javascript:;<?PHP }else{ ?>index.php?app=journal_general&page=<?PHP echo $page + 2; }?>" >Next</a>
-                                </li>
-
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <table width="100%" class="table table-striped table-bordered table-hover" >
+ 
+                <table width="100%" class="table table-striped table-bordered table-hover"  id="dataTables-example">
                     <thead>
                         <tr>
                             <th>ลำดับ <br>No.</th>
@@ -156,14 +103,14 @@
                             <td align="right"><?php echo number_format($journal_generals[$i]['journal_debit'],2); ?></td> 
                             <td align="right"><?php echo number_format($journal_generals[$i]['journal_credit'],2); ?></td>  
                             <td align="center">
-                                <?PHP if($journal_generals[$i]['journal_debit'] == $journal_generals[$i]['journal_credit']){ ?>
+                                <?PHP if(number_format($journal_generals[$i]['journal_debit'],2) == number_format($journal_generals[$i]['journal_credit'],2)){ ?>
                                     <font color="green"><b>ยอดตรง</b></font>
                                 <?PHP } else { ?> 
                                     <font color="red"><b>ยอดไม่ตรง</b></font>
                                 <?PHP } ?>
                             </td>  
                             <td>
-                                <a href="print.php?app=report_journal_04&type=id&action=pdf&id=<?php echo $journal_generals[$i]['journal_general_id'];?>" target="_blank" >
+                                <a href="print.php?app=report_journal_general&type=id&action=pdf&id=<?php echo $journal_generals[$i]['journal_general_id'];?>" target="_blank" >
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                 </a> 
                                 <a href="?app=journal_general&action=update&id=<?php echo $journal_generals[$i]['journal_general_id'];?>" style="color:orange;">
@@ -180,59 +127,7 @@
                         ?>
                     </tbody>
                 </table>
-
-                <div class="row" style="margin:0px;">
-                    <div class="col-sm-6">
-                        <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format(count($journal_generals),0);?> entries</div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="dataTables_paginate paging_simple_numbers" >
-                            <ul class="pagination">
-
-                                <li class="paginate_button previous <?PHP if($page == 0){ ?>disabled<?PHP } ?>" >
-                                    <a href="<?PHP if($page == 0){?>javascript:;<?PHP }else{ ?>index.php?app=journal_general&page=<?PHP echo $page; }?>">Previous</a>
-                                </li>
-
-                                <?PHP if($page > 0){ ?>
-                                <li class="paginate_button "  >
-                                    <a href="index.php?app=journal_general&page=1">1</a>
-                                </li>
-                                <li class="paginate_button disabled"   >
-                                    <a href="#">…</a>
-                                </li>
-                                <?PHP } ?>
-
-                                    
-                                <li class="paginate_button active"  >
-                                    <a href="index.php?app=journal_general&page=<?PHP echo $page+1;?>"><?PHP echo number_format($page + 1);?></a>
-                                </li>
-
-                                <?PHP for($i = $page + 1 ; $i < $page_max && $i <= $page + 5 ; $i++ ){?>
-                                <li class="paginate_button "  >
-                                    <a href="index.php?app=journal_general&page=<?PHP echo $i + 1;?>"><?PHP echo number_format($i + 1,0);?></a>
-                                </li>
-                                <?PHP } ?>
-                                
-
-
-                                <?PHP if($page < $page_max){ ?>
-                                <li class="paginate_button disabled"   >
-                                    <a href="#">…</a>
-                                </li>
-                                <li class="paginate_button "  >
-                                    <a href="index.php?app=journal_general&page=<?PHP echo $page_max;?>"><?PHP echo number_format($page_max,0);?></a>
-                                </li>
-                                <?PHP } ?>
-
-                                <li class="paginate_button next <?PHP if($page+1 == $page_max){ ?>disabled<?PHP } ?>"   >
-                                    <a href="<?PHP if($page+1 == $page_max){?>javascript:;<?PHP }else{ ?>index.php?app=journal_general&page=<?PHP echo $page + 2; }?>" >Next</a>
-                                </li>
-
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+ 
                 
             </div>
             <!-- /.panel-body -->

@@ -4,19 +4,25 @@ session_start();
 require_once('../models/NotificationModel.php');
 $user_admin = $_SESSION['user'];
 $notification_id = $_GET['notification'];
+/*
+echo "<pre>";
+print_r($_SESSION['user']);
+echo "</pre>";
 
-$admin_id = $user_admin[0][0];
-$license_admin_page =  $user_admin[0][28];
-$license_sale_employee_page =  $user_admin[0][29]; 
-$license_request_page =  $user_admin[0][30];
-$license_delivery_note_page  =  $user_admin[0][31];
-$license_regrind_page =  $user_admin[0][32];
-$license_purchase_page =  $user_admin[0][33];
-$license_sale_page =  $user_admin[0][34];
-$license_inventery_page =  $user_admin[0][35];
-$license_account_page =  $user_admin[0][36];
-$license_report_page =  $user_admin[0][37];
-$license_manager_page   =  $user_admin[0][38];
+echo "[".$admin_id."]"; 
+*/
+$admin_id = $user_admin['user_id'];
+$license_admin_page =  $user_admin['license_admin_page'];
+$license_sale_employee_page =  $user_admin['license_sale_employee_page']; 
+$license_request_page =  $user_admin['license_request_page'];
+$license_delivery_note_page  =  $user_admin['license_delivery_note_page'];
+$license_regrind_page =  $user_admin['license_regrind_page'];
+$license_purchase_page =  $user_admin['license_purchase_page'];
+$license_sale_page =  $user_admin['license_sale_page'];
+$license_inventery_page =  $user_admin['license_inventery_page'];
+$license_account_page =  $user_admin['license_account_page'];
+$license_report_page =  $user_admin['license_report_page'];
+$license_manager_page   =  $user_admin['license_manager_page'];
 
 
 $model_notification = new NotificationModel;
@@ -25,16 +31,18 @@ if($notification_id != ""){
     $model_notification->setNotificationSeenByID($notification_id);
 }
 
-$notifications = $model_notification->getNotificationBy($user_admin[0][0]);
-$notifications_new = $model_notification->getNotificationBy($user_admin[0][0],"1");
+$notifications = $model_notification->getNotificationBy($admin_id);
+$notifications_new = $model_notification->getNotificationBy($admin_id,"1");
 
-$notifications_pr = $model_notification->getNotificationByType($user_admin[0][0],'Purchase Request',"1");
-$notifications_po = $model_notification->getNotificationByType($user_admin[0][0],'Purchase Order',"1");
-$notifications_cpo = $model_notification->getNotificationByType($user_admin[0][0],'Customer Order',"1");
-$notifications_ns = $model_notification->getNotificationByType($user_admin[0][0],'Supplier Approve',"1");
+$notifications_pr = $model_notification->getNotificationByType($admin_id,'Purchase Request',"1");
+$notifications_po = $model_notification->getNotificationByType($admin_id,'Purchase Order',"1");
+$notifications_cpo = $model_notification->getNotificationByType($admin_id,'Customer Order',"1");
+$notifications_ns = $model_notification->getNotificationByType($admin_id,'Supplier Approve',"1");
 
-if($user_admin[0][0] === ""){
-header('Location ../index.php');
+if($admin_id == ""){
+?>
+<script>window.location="../index.php";</script>
+<?PHP 
 }
 ?>
 <!DOCTYPE html>

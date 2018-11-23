@@ -208,7 +208,8 @@
     
 
     function val_format(id){
-        var val =  parseFloat($(id).val().replace(',',''));  
+        var val =  parseFloat($(id).val().replace(/,/g, ''));  
+        console.log($(id).val().replace(/,/g, ''));
         if(isNaN(val)){
             val = 0;
         }

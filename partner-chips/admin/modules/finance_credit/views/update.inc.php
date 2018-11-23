@@ -131,12 +131,15 @@
         if(finance_credit_account.length > 0){
             $(id).closest('tr').children('td').children('input[name="finance_credit_account_cheque[]"]').val(finance_credit_account[0].finance_credit_account_cheque);
             if(finance_credit_account[0].finance_credit_account_cheque == 1){
-                $.post( "controllers/getChequePayCodeIndex.php", {  }, function( data ) { 
-                    $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(data);
-                    $(id).closest('tr').children('td').children('div').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(data);
-                    $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').easyAutocomplete(options);
-                    get_cheque_data(id,data);
-                }); 
+                // $.post( "controllers/getChequePayCodeIndex.php", {  }, function( data ) { 
+                //     $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(data);
+                //     $(id).closest('tr').children('td').children('div').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(data);
+                //     $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').easyAutocomplete(options);
+                //     get_cheque_data(id,data);
+                // }); 
+                $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val("QP");
+                $(id).closest('tr').children('td').children('div').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val("QP");
+                $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').easyAutocomplete(options);
             }else{ 
                 $(id).closest('tr').children('td').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(finance_credit_account[0].finance_credit_account_code); 
                 $(id).closest('tr').children('td').children('div').children('div').children('div').children('input[name="finance_credit_pay_by[]"]').val(finance_credit_account[0].finance_credit_account_code); 
@@ -1191,7 +1194,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>เลขที่เช็ค <font color="#F00"><b>*</b></font></label>
-                                    <input id="check_pay_code" name="check_pay_code" class="form-control" type="text"  readonly />
+                                    <input id="check_pay_code" name="check_pay_code" class="form-control" type="text" readonly />
                                     <p class="help-block">Example : QP4411555.</p>
                                 </div>
                             </div>

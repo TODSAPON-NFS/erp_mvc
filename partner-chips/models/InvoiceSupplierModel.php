@@ -1,19 +1,32 @@
 <?php
 
-require_once("BaseModel.php");
+require_once("BaseModel.php"); 
+require_once("MaintenanceStockModel.php"); 
 class InvoiceSupplierModel extends BaseModel{
+
+    private $maintenance_stock;
 
     function __construct(){
         if(!static::$db){
             static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
         }
+        $this->maintenance_stock =  new MaintenanceStockModel;
     }
 
-    function getInvoiceSupplierBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = "",$begin = '0'){
+    function getInvoiceSupplierBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = "",$begin = '0', $lock_1 = "0", $lock_2 = "0" ){
 
         $str_supplier = "";
         $str_date = "";
         $str_user = "";
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0')";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
 
         if($date_start != "" && $date_end != ""){
             $str_date = "AND STR_TO_DATE(invoice_supplier_date_recieve,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(invoice_supplier_date_recieve,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
@@ -51,17 +64,19 @@ class InvoiceSupplierModel extends BaseModel{
         FROM tb_invoice_supplier 
         LEFT JOIN tb_user as tb1 ON tb_invoice_supplier.employee_id = tb1.user_id 
         LEFT JOIN tb_supplier as tb2 ON tb_invoice_supplier.supplier_id = tb2.supplier_id 
+        LEFT JOIN tb_paper_lock ON SUBSTRING(tb_invoice_supplier.invoice_supplier_date_recieve,3,9)=SUBSTRING(tb_paper_lock.paper_lock_date,3,9) 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
             OR  invoice_supplier_code LIKE ('%$keyword%') 
             OR  invoice_supplier_code_gen LIKE ('%$keyword%') 
         ) 
         AND invoice_supplier_begin = '$begin' 
+        $str_lock 
         $str_supplier 
         $str_date 
         $str_user  
-        ORDER BY  invoice_supplier_code_gen DESC 
-         ";
+        ORDER BY  invoice_supplier_code_gen ASC 
+        ";
 
          //echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -95,6 +110,23 @@ class InvoiceSupplierModel extends BaseModel{
     function getInvoiceSupplierByCode($invoice_supplier_code){
         $sql = " SELECT * 
         FROM tb_invoice_supplier  
+        WHERE invoice_supplier_code = '$invoice_supplier_code' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getInvoiceSupplierByCodeGen($invoice_supplier_code){
+        $sql = " SELECT * 
+        FROM tb_invoice_supplier  
         WHERE invoice_supplier_code_gen = '$invoice_supplier_code' 
         ";
 
@@ -122,6 +154,27 @@ class InvoiceSupplierModel extends BaseModel{
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                 $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getInvoiceSupplierViewListByjournalGeneralID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_general_list 
+        LEFT JOIN tb_invoice_supplier ON tb_journal_general_list.journal_invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id
+        LEFT JOIN tb_user ON tb_invoice_supplier.employee_id = tb_user.user_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
+        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
+        WHERE journal_general_id = '$id' AND tb_journal_general_list.journal_invoice_supplier_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
             }
             $result->close();
             return $data;
@@ -171,10 +224,52 @@ class InvoiceSupplierModel extends BaseModel{
 
     }
 
+    function getInvoiceSupplierViewListByjournalPurchaseID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_purchase_list 
+        LEFT JOIN tb_invoice_supplier ON tb_journal_purchase_list.journal_invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id
+        LEFT JOIN tb_user ON tb_invoice_supplier.employee_id = tb_user.user_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
+        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
+        WHERE journal_purchase_id = '$id' AND tb_journal_purchase_list.journal_invoice_supplier_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getInvoiceSupplierViewListByjournalSaleID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_sale_list 
+        LEFT JOIN tb_invoice_supplier ON tb_journal_sale_list.journal_invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id
+        LEFT JOIN tb_user ON tb_invoice_supplier.employee_id = tb_user.user_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
+        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
+        WHERE journal_sale_id = '$id' AND tb_journal_sale_list.journal_invoice_supplier_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
 
    
     function updateInvoiceSupplierByID($id,$data = []){
-        $sql = " UPDATE tb_invoice_supplier SET 
+        $sql = " UPDATE tb_invoice_supplier SET  
         supplier_id = '".$data['supplier_id']."', 
         employee_id = '".$data['employee_id']."', 
         invoice_supplier_code = '".static::$db->real_escape_string($data['invoice_supplier_code'])."', 
@@ -203,7 +298,7 @@ class InvoiceSupplierModel extends BaseModel{
         invoice_supplier_remark = '".static::$db->real_escape_string($data['invoice_supplier_remark'])."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE invoice_supplier_id = $id 
+        WHERE invoice_supplier_id = '$id' 
         ";
 
         //echo $sql;
@@ -409,7 +504,7 @@ class InvoiceSupplierModel extends BaseModel{
     }
 
     function insertInvoiceSupplier($data = []){
-        $sql = " INSERT INTO tb_invoice_supplier (
+        $sql = " INSERT INTO tb_invoice_supplier ( 
             supplier_id,
             employee_id,
             invoice_supplier_code,
@@ -440,7 +535,7 @@ class InvoiceSupplierModel extends BaseModel{
             adddate,
             updateby,
             lastupdate) 
-        VALUES ('".
+        VALUES ('". 
         $data['supplier_id']."','".
         $data['employee_id']."','".
         static::$db->real_escape_string($data['invoice_supplier_code'])."','".
@@ -492,7 +587,7 @@ class InvoiceSupplierModel extends BaseModel{
         invoice_supplier_term = '".static::$db->real_escape_string($data['invoice_supplier_term'])."',  
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE invoice_supplier_id = $id 
+        WHERE invoice_supplier_id = '$id' 
         ";
 
         //echo $sql;
@@ -509,33 +604,26 @@ class InvoiceSupplierModel extends BaseModel{
 
     function deleteInvoiceSupplierByID($id){
 
-        $sql = "    SELECT invoice_supplier_list_id, stock_group_id, product_id, invoice_supplier_list_qty, invoice_supplier_list_cost
+        $sql = "    SELECT invoice_supplier_list_id, stock_group_id, tb_invoice_supplier_list.product_id , invoice_supplier_list_qty, invoice_supplier_list_cost
                     FROM  tb_invoice_supplier_list 
-                    WHERE invoice_supplier_id = '$id' ";   
+                    LEFT JOIN tb_product ON tb_invoice_supplier_list.product_id = tb_product.product_id 
+                    LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
+                    WHERE invoice_supplier_id = '$id' AND stock_event = '1' ";   
                      
-         $sql_delete=[];
+         $data_clear=[];
 
-         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                 $sql_delete [] = "
-                     CALL delete_stock_supplier('".
-                     $row['stock_group_id']."','".
-                     $row['invoice_supplier_list_id']."','".
-                     $row['product_id']."','".
-                     $row['invoice_supplier_list_qty']."','".
-                     $row['invoice_supplier_list_cost']."'".
-                     ");
-                 ";
-                
-             }
-             $result->close();
-         }
- 
-         for($i = 0 ; $i < count($sql_delete); $i++){
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+            
+                $data_clear [] = $row;
+            
+            }
+            $result->close();
+        }
 
-            //echo $sql_delete[$i] . "<br><br>";
-             mysqli_query(static::$db,$sql_delete[$i], MYSQLI_USE_RESULT);
-         }
+        for($i = 0 ; $i < count($data_clear); $i++){
+            $this->maintenance_stock->removePurchase( $data_clear[$i]['stock_group_id'], $data_clear[$i]['invoice_supplier_list_id'], $data_clear[$i]['product_id'], $data_clear[$i]['invoice_supplier_list_qty'], $data_clear[$i]['invoice_supplier_list_cost']); 
+        }
  
 
         $sql = " DELETE FROM tb_invoice_supplier_list WHERE invoice_supplier_id = '$id' ";

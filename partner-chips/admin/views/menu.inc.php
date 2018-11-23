@@ -5,7 +5,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Partner Chips ERP</a>
+                <a class="navbar-brand" href="index.php">Partner Chips</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -73,7 +73,7 @@
 
 
 
-             <div class="navbar-default sidebar" role="navigation">
+            <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
@@ -294,6 +294,7 @@
                                 <li>
                                     <a href="?app=purchase_order" <?PHP if($_GET['app'] == "purchase_order"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบสั่งซื้อ (PO)</a>
                                 </li>
+                                
                                 <li>
                                     <a href="?app=invoice_supplier" <?PHP if($_GET['app'] == "invoice_supplier"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบรับสินค้า (Supplier Invoice) </a>
                                 </li>
@@ -379,6 +380,9 @@
                                 <?PHP if($license_inventery_page == "High" || $license_inventery_page == "Medium" ){?>
                                 <li>
                                     <a href="?app=stock_move" <?PHP if($_GET['app'] == "stock_move"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบโอนคลังสินค้า (Transfer Stock)</a>
+                                </li>
+                                <li>
+                                    <a href="?app=stock_change_product" <?PHP if($_GET['app'] == "stock_change_product"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบย้ายสินค้า (Change Stock)</a>
                                 </li>
                                 <li>
                                     <a href="?app=stock_issue" <?PHP if($_GET['app'] == "stock_issue"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบนำออกสินค้า (Issue Stock)</a>
@@ -555,13 +559,15 @@
                                     </ul>
                                 </li>
                                 
-
+<!--
                                 <li>
                                     <a href="?app=other_expense" <?PHP if($_GET['app'] == "other_expense"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ค่าใช้จ่ายอื่นๆ</a>
                                 </li>
+
                                 <li>
                                     <a href="?app=credit_purchasing" <?PHP if($_GET['app'] == "credit_purchasing"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ซื้อเงินเชื่อ</a>
                                 </li>
+-->
                                 <li>
                                     <a href="?app=journal_general" <?PHP if($_GET['app'] == "journal_general"){?> class="active" <?PHP } ?> ><i class="fa fa-book" aria-hidden="true"></i> สมุดรายวันทั่วไป</a>
                                 </li>
@@ -602,6 +608,9 @@
                                 </li>
                                 <li>
                                     <a href="?app=maintenance" <?PHP if($_GET['app'] == "maintenance"){?> class="active" <?PHP } ?> ><i class="fa fa-refresh" aria-hidden="true"></i> ซ่อมแซมระบบ </a>
+                                </li>
+                                <li>
+                                    <a href="?app=paper_lock" <?PHP if($_GET['app'] == "paper_lock"){?> class="active" <?PHP } ?> ><i class="fa fa-lock" aria-hidden="true"></i> ล็อกงวดบัญชี </a>
                                 </li>
                             </ul>
                         </li>

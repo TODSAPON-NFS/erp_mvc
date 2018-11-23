@@ -48,6 +48,7 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'add' && ($license_admin_page == 'Medium' || $license_admin_page == 'High')){
     if(isset($_POST['user_code'])){
         $data = [];
+        $data['user_id'] = $_POST['user_code'];
         $data['user_code'] = $_POST['user_code'];
         $data['user_prefix'] = $_POST['user_prefix'];
         $data['user_name'] = $_POST['user_name'];
@@ -67,7 +68,7 @@ if(!isset($_GET['action'])){
 
         $user = $model->insertUser($data);
 
-        if($user){
+        if($user != ""){
             $img = $_POST['hidden_data'];
             $data['user_signature'] = $img;
             $model->updateUserSignatureByID($_POST['user_id'],$data);
@@ -89,6 +90,7 @@ if(!isset($_GET['action'])){
     
     if(isset($_POST['user_code'])){
         $data = [];
+        $data['user_id'] = $_POST['user_code'];
         $data['user_code'] = $_POST['user_code'];
         $data['user_prefix'] = $_POST['user_prefix'];
         $data['user_name'] = $_POST['user_name'];

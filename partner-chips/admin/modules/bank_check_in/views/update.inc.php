@@ -10,12 +10,14 @@
         check_code = $.trim(check_code);
         customer_id = $.trim(customer_id);
         
-
+        /*
         if(customer_id.length == 0){
             alert("Please input Customer");
             document.getElementById("customer_id").focus();
             return false;
-        }else if(check_code.length == 0){
+        }else
+        */
+        if(check_code.length == 0){
             alert("Please input delivery note Customer code");
             document.getElementById("check_code").focus();
             return false;

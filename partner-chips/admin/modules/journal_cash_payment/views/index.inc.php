@@ -55,11 +55,43 @@ $account_setting['vat_sale_account'] = $account_setting_model->getAccountSetting
 $journal_cash_payment_id = $_GET['id'];
 $target_dir = "../upload/journal_cash_payment/";
 
-if(!isset($_GET['action'])){
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $keyword = $_GET['keyword']; 
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
+if(!isset($_GET['action'])){
+ 
+
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
 
     if($_GET['page'] == '' || $_GET['page'] == '0'){
         $page = 0;
@@ -67,9 +99,11 @@ if(!isset($_GET['action'])){
         $page = $_GET['page'] - 1;
     }
 
+    
+
     $page_size = 50;
 
-    $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy($date_start,$date_end,$keyword);
+    $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_cash_payments)/$page_size);
     if(count($journal_cash_payments)%$page_size > 0){
@@ -131,6 +165,18 @@ if(!isset($_GET['action'])){
     $journal_cash_payment_lists = $journal_cash_payment_list_model->getJournalCashPaymentListBy($journal_cash_payment_id);
     //$journal_cash_payment_invoices = $journal_cash_payment_invoice_model->getJournalCashPaymentInvoiceBy($journal_cash_payment_id);
  
+    $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy('','','',$lock_1,$lock_2);
+
+    for($i = 0 ; $i < count($journal_cash_payments) ; $i++){
+        if($journal_cash_payment_id == $journal_cash_payments[$i]['journal_cash_payment_id']){
+            $previous_id = $journal_cash_payments[$i-1]['journal_cash_payment_id'];
+            $previous_code = $journal_cash_payments[$i-1]['journal_cash_payment_code'];
+            $next_id = $journal_cash_payments[$i+1]['journal_cash_payment_id'];
+            $next_code = $journal_cash_payments[$i+1]['journal_cash_payment_code'];
+
+        }
+    }
+
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
@@ -302,7 +348,7 @@ if(!isset($_GET['action'])){
         
         if($output){
     ?>
-            <script>window.location="index.php?app=journal_special_04&action=insert"</script>
+            <script>window.location="index.php?app=journal_special_04&action=update&id=<?PHP echo $journal_cash_payment_id?>"</script>
     <?php
         }
     
@@ -313,19 +359,32 @@ if(!isset($_GET['action'])){
     }
         
 }else{
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $keyword = $_GET['keyword']; 
-
-    if($_GET['page'] == '' || $_GET['page'] == '0'){
-        $page = 0;
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
     }else{
-        $page = $_GET['page'] - 1;
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
     }
 
     $page_size = 50;
 
-    $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy($date_start,$date_end,$keyword);
+    $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_cash_payments)/$page_size);
     if(count($journal_cash_payments)%$page_size > 0){

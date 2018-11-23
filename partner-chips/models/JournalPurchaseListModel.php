@@ -11,6 +11,7 @@ class JournalPurchaseListModel extends BaseModel{
 
     function getJournalPurchaseListBy($journal_purchase_id){
         $sql = " SELECT 
+        account_code,
         journal_purchase_list_id, 
         journal_purchase_list_name,
         journal_purchase_list_debit,

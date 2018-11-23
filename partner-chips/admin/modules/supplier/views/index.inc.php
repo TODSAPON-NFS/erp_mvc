@@ -65,6 +65,7 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'add' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['supplier_code'])){
         $data = [];
+        $data['supplier_id'] = $_POST['supplier_code'];
         $data['supplier_code'] = $_POST['supplier_code'];
         $data['supplier_name_th'] = $_POST['supplier_name_th'];
         $data['supplier_name_en'] = $_POST['supplier_name_en'];
@@ -146,6 +147,7 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'edit' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     if(isset($_POST['supplier_code'])){
         $data = [];
+        $data['supplier_id'] = $_POST['supplier_code'];
         $data['supplier_code'] = $_POST['supplier_code'];
         $data['supplier_name_th'] = $_POST['supplier_name_th'];
         $data['supplier_name_en'] = $_POST['supplier_name_en'];

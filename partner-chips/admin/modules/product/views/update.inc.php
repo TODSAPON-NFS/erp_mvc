@@ -1,4 +1,19 @@
 <script>
+
+    function check_code(id){
+        var code = $('#product_code_first').val() + $('#product_code').val();
+        $.post( "controllers/getProductByCode.php", { 'product_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("product_code").focus();
+                $("#code_check").val(data.product_id);
+                
+            } else{
+                $("#code_check").val("");
+            }
+        });
+    }
+
     function check(){
 
 
@@ -10,6 +25,8 @@
         var product_type = document.getElementById("product_type").value;
         var product_unit = document.getElementById("product_unit").value;
         var product_status = document.getElementById("product_status").value;
+        var code_check = document.getElementById("code_check").value;
+        var product_id = document.getElementById("product_id").value;
        
        
         
@@ -24,7 +41,11 @@
         
         
 
-        if(product_code.length == 0){
+        if(code_check != "" && code_check != product_id){
+            alert("This "+code_check+" is already in the system.");
+            document.getElementById("product_code").focus();
+            return false;
+        }else if(product_code.length == 0){
             alert("Please input product code");
             document.getElementById("product_code").focus();
             return false;
@@ -191,7 +212,8 @@
                                             <input id="product_code_first" name="product_code_first" value="<?php echo $product['product_code_first']?>" class="form-control" readonly />
                                         </div>
                                         <div class="col-lg-9">
-                                            <input id="product_code" name="product_code" class="form-control"  value="<?php echo $product['product_code']?>" readonly>
+                                            <input id="product_code" name="product_code" class="form-control"  value="<?php echo $product['product_code']?>" readonly  onchange="check_code()" />
+                                            <input id="code_check" type="hidden" value="" />
                                         </div>
                                     </div>
                                     <p class="help-block">Example : VNMG060404EN.</p>
@@ -299,6 +321,40 @@
                                         <option <?php if($product['product_status'] == 'Inactive'){?> selected <?php } ?> >Inactive</option>
                                     </select>
                                     <p class="help-block">Example : Use.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>ดำเนินการกับบัญชีเมื่อซื้อ </label>
+                                    <select id="buy_account_id" name="buy_account_id" class="form-control select" data-live-search="true">
+                                        <option value="">เลือก / Select</option>
+                                        <?PHP 
+                                            for($i=0; $i < count($account) ; $i++){
+                                        ?>
+                                            <option value="<?PHP echo $account[$i]['account_id'];?>" <?PHP if($account[$i]['account_id'] == $product['buy_account_id'] ){ ?> SELECTED <? } ?> ><?PHP echo $account[$i]['account_code'];?> <?PHP echo $account[$i]['account_name_th'];?></option>
+                                        <?PHP
+                                            }
+                                        ?>
+                                    </select>
+                                    <p class="help-block">Example : 2120-01.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>ดำเนินการกับบัญชีเมื่อขาย</label>
+                                    <select id="sale_account_id" name="sale_account_id" class="form-control select" data-live-search="true">
+                                        <option value="">เลือก / Select</option>
+                                        <?PHP 
+                                            for($i=0; $i < count($account) ; $i++){
+                                        ?>
+                                            <option value="<?PHP echo $account[$i]['account_id'];?>" <?PHP if($account[$i]['account_id'] == $product['sale_account_id'] ){ ?> SELECTED <? } ?> ><?PHP echo $account[$i]['account_code'];?> <?PHP echo $account[$i]['account_name_th'];?></option>
+                                        <?PHP
+                                            }
+                                        ?>
+                                    </select>
+                                    <p class="help-block">Example : 2120-01.</p>
                                 </div>
                             </div>
                         </div>

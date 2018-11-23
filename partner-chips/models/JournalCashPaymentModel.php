@@ -9,10 +9,20 @@ class JournalCashPaymentModel extends BaseModel{
         }
     }
 
-    function getJournalCashPaymentBy($date_start = "", $date_end = "",$keyword = ""){
+    function getJournalCashPaymentBy($date_start = "", $date_end = "",$keyword = "", $lock_1 = "0", $lock_2 = "0"){
 
 
         $str_date = "";
+
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0') ";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
 
         if($date_start != "" && $date_end != ""){
             $str_date = "AND STR_TO_DATE(journal_cash_payment_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(journal_cash_payment_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
@@ -35,10 +45,12 @@ class JournalCashPaymentModel extends BaseModel{
         FROM tb_journal_cash_payment 
         LEFT JOIN tb_journal_cash_payment_list ON tb_journal_cash_payment_list.journal_cash_payment_id = tb_journal_cash_payment.journal_cash_payment_id
         LEFT JOIN tb_finance_credit ON tb_journal_cash_payment.finance_credit_id = tb_finance_credit.finance_credit_id   
+        LEFT JOIN tb_paper_lock ON SUBSTRING(tb_journal_cash_payment.journal_cash_payment_date,3,9)=SUBSTRING(tb_paper_lock.paper_lock_date,3,9) 
         WHERE ( 
                 journal_cash_payment_code LIKE ('%$keyword%') 
             OR  journal_cash_payment_name LIKE ('%$keyword%') 
         ) 
+        $str_lock 
         $str_date 
         GROUP BY journal_cash_payment_id 
         ORDER BY  journal_cash_payment_code DESC 

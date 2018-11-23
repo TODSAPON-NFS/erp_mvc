@@ -9,23 +9,26 @@
     }
 
     function check(id,check_date){
-        var date = $(id).children('input[name="check_date_pass"]').val();
-
-        var str_pass = date.split("-");
-        var str_pay = check_date.split("-");
-
-        var check_date_pass = new Date (str_pass[1]+'-'+str_pass[0]+'-'+str_pass[2]);
-        var check_date = new Date(str_pay[1]+'-'+str_pay[0]+'-'+str_pay[2]);
+        var date = $(id).closest('td').children('form').children('table').children('tbody').children('tr').children('td').children('input[name="check_date_pass"]').val();
+ 
         if(date == ""){
             alert("กรุณากรอกวันที่ผ่านเช็ค");
-            $(id).children('input[name="check_date_pass"]').first().focus();
+            $(id).closest('td').children('form').children('table').children('tbody').children('tr').children('td').children('input[name="check_date_pass"]').first().focus();
             return false;
-        }else if (check_date_pass <  check_date){
-            alert("วันที่ผ่านเช็คต้องมากกว่าหรือเท่ากับ วันที่ฝากเช็ค");
-            $(id).children('input[name="check_date_pass"]').first().focus();
-            return false;
-        }else{
-            return true;
+        }else {
+            var str_pass = date.split("-");
+            var str_pay = check_date.split("-");
+
+            var check_date_pass = new Date (str_pass[1]+'-'+str_pass[0]+'-'+str_pass[2]);
+            var check_date = new Date(str_pay[1]+'-'+str_pay[0]+'-'+str_pay[2]);
+
+            if (check_date_pass <  check_date){
+                alert("วันที่ผ่านเช็คต้องมากกว่าหรือเท่ากับ วันที่ฝากเช็ค");
+                $(id).closest('td').children('form').children('table').children('tbody').children('tr').children('td').children('input[name="check_date_pass"]').first().focus();
+                return false;
+            }else{
+                return true;
+            }
         }
         
     }
@@ -168,7 +171,16 @@
                                 </form>
                                 <?PHP } else { ?>
                                 <form role="form" method="post" action="?app=bank_check_in_pass&action=unpass&id=<?php echo $checks[$i]['check_id'];?>" enctype="multipart/form-data"> 
-                                    <button type="summit" class="btn btn-danger" ><i class="fa fa-times" aria-hidden="true"></i> ยกเลิก</button>
+                                    <table width="100%">
+                                        <tr>
+                                            <td style="padding:0px 4px;"> 
+                                                <input type="text" name="check_pay_date_pass" class="form-control" value="<?PHP echo $checks[$i]['check_date_pass']; ?>"  readonly />
+                                            </td>
+                                            <td style="padding:0px 4px;" > 
+                                                <button type="summit" class="btn btn-danger" ><i class="fa fa-times" aria-hidden="true"></i> ยกเลิก</button>
+                                            </td>
+                                        </tr>
+                                    </table> 
                                 </form>
                                 <?PHP } ?>
                             </td>

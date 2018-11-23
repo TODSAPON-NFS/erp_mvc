@@ -755,7 +755,7 @@ class JournalReportModel extends BaseModel{
                 UNION   ALL  ($sql_cash_receipt)) as tb_journal   
                 ON tb_account.account_id = tb_journal.account_id   
                 ORDER BY account_code ASC , STR_TO_DATE(journal_date,'%d-%m-%Y %H:%i:%s') ASC ,journal_code ASC, journal_debit DESC 
-        "; 
+        ";  
  
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

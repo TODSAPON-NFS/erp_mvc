@@ -15,11 +15,14 @@
             alert("Please input supplier");
             document.getElementById("supplier_id").focus();
             return false;
-        }else if(check_pay_code.length == 0){
+        }
+        /*else if(check_pay_code.length == 0){
             alert("Please input delivery note supplier code");
             document.getElementById("check_pay_code").focus();
             return false;
-        }else{
+        }
+        */
+        else{
             return true;
         }
 
@@ -73,7 +76,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($suppliers) ; $i++){
                                             ?>
-                                            <option  value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
+                                            <option  value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> </option>
                                             <?
                                             }
                                             ?>

@@ -43,12 +43,18 @@
         
 
         $('#dataTables-view').DataTable({
+            "lengthMenu": [[25, 50, 75, 100, 250, 500, -1 ],[25, 50, 75, 100, 250, 500, 'All' ]],
+            "pageLength": 100,
             responsive: true 
         });
         $('#dataTables-example').DataTable({
+            "lengthMenu": [[25, 50, 75, 100, 250, 500, -1 ],[25, 50, 75, 100, 250, 500, 'All' ]],
+            "pageLength": 100,
             responsive: true
         });
         $('#tb-product-customer').DataTable({
+            "lengthMenu": [[25, 50, 75, 100, 250, 500, -1 ],[25, 50, 75, 100, 250, 500, 'All' ]],
+            "pageLength": 100,
             responsive: true
         });
         $('.select').selectpicker();
@@ -86,7 +92,7 @@
         $( "#customer_holiday_date" ).datepicker({ dateFormat: 'dd-mm-yy' });
         $( "#stock_date" ).datepicker({ dateFormat: 'dd-mm-yy' });
         $( "#date_start" ).datepicker({ dateFormat: 'dd-mm-yy' });
-        $( "#date_end" ).datepicker({ dateFormat: 'dd-mm-yy' });
+        $( "#date_end" ).datepicker({ dateFormat: 'dd-mm-yy' }); 
         $( ".calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
     } );
 
@@ -97,8 +103,6 @@
     } );
 
     
-
-
     </script>
     <style>
         div.dataTables_filter{

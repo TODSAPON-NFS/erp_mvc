@@ -32,6 +32,22 @@
         requestDelay: 400
     };
 	
+
+    function check_code(id){
+        var code = $(id).val();
+        $.post( "controllers/getPurchaseRequestByCode.php", { 'purchase_request_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("purchase_request_code").focus();
+                $("#purchase_check").val(data.purchase_request_id);
+                
+            } else{
+                $("#purchase_check").val("");
+            }
+        });
+    }
+
+    
     function check(){
 
 
@@ -40,6 +56,8 @@
         var employee_id = document.getElementById("employee_id").value;
         var urgent_time = document.getElementById("urgent_time").value;
         var urgent_status = document.getElementById("urgent_status").value;
+        var purchase_check = document.getElementById("purchase_check").value;
+        var purchase_request_id = document.getElementById("purchase_request_id").value;
 
         
         purchase_request_code = $.trim(purchase_request_code);
@@ -49,7 +67,11 @@
         urgent_status = $.trim(urgent_status);
         
 
-        if(purchase_request_code.length == 0){
+        if(purchase_check != "" && purchase_check != ""){
+            alert("This "+purchase_request_code+" is already in the system.");
+            document.getElementById("purchase_request_code").focus();
+            return false;
+        }else if(purchase_request_code.length == 0){
             alert("Please input purchase request code");
             document.getElementById("purchase_request_code").focus();
             return false;
@@ -236,6 +258,8 @@
 
     }
 
+    
+
 
 
 </script>
@@ -265,8 +289,16 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขใบร้องขอสั่งซื้อสินค้า / PR Code <font color="#F00"><b>* </b></font> <?php if($purchase_request['purchase_request_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_request['purchase_request_rewrite_no']; ?></font></b> <?PHP } ?></label>
-                                <input id="purchase_request_code" name="purchase_request_code" class="form-control"  value="<?PHP echo $purchase_request['purchase_request_code'];?>" >
+                                <input id="purchase_request_code" name="purchase_request_code" class="form-control"  value="<?PHP echo $purchase_request['purchase_request_code'];?>"  onchange="check_code(this)" >
+                                <input id="purchase_check" type="hidden" value="" />
                                 <p class="help-block">Example : PR1801001.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>วันที่ร้องขอ  / PR Date</label>
+                                <input type="text"  name="purchase_request_date" value="<?PHP echo $purchase_request['purchase_request_date'];?>"  class="form-control calendar" readonly/>
+                                <p class="help-block">01-03-2018</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -305,7 +337,7 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label>สำหรับลูกค้า / Customer </label>
                                 <select id="customer_id" name="customer_id" class="form-control"  data-live-search="true">
@@ -321,7 +353,7 @@
                                 <p class="help-block">Example : บริษัท เรเวลซอฟต์ จำกัด (Revel Soft co,ltd).</p>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label>ผู้ขาย / Supplier  <font color="#F00"><b>*</b></font> </label>
                                 <select id="supplier_id" name="supplier_id" class="form-control select" onchange="get_supplier_detail()" data-live-search="true">

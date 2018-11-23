@@ -53,21 +53,46 @@ $account_setting['vat_sale_account'] = $account_setting_model->getAccountSetting
 $journal_purchase_id = $_GET['id'];
 $target_dir = "../upload/journal_purchase/";
 
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action'])){
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $keyword = $_GET['keyword']; 
-
-    if($_GET['page'] == '' || $_GET['page'] == '0'){
-        $page = 0;
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
     }else{
-        $page = $_GET['page'] - 1;
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
     }
 
     $page_size = 50;
 
-    $journal_purchases = $journal_purchase_model->getJournalPurchaseBy($date_start,$date_end,$keyword);
+    $journal_purchases = $journal_purchase_model->getJournalPurchaseBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_purchases)/$page_size);
     if(count($journal_purchases)%$page_size > 0){
@@ -127,6 +152,20 @@ if(!isset($_GET['action'])){
 
     $journal_purchase = $journal_purchase_model->getJournalPurchaseByID($journal_purchase_id);
     $journal_purchase_lists = $journal_purchase_list_model->getJournalPurchaseListBy($journal_purchase_id); 
+
+    
+    $journal_purchases = $journal_purchase_model->getJournalPurchaseBy('','','',$lock_1,$lock_2);
+
+    for($i = 0 ; $i < count($journal_purchases) ; $i++){
+        if($journal_purchase_id == $journal_purchases[$i]['journal_purchase_id']){
+            $previous_id = $journal_purchases[$i-1]['journal_purchase_id'];
+            $previous_code = $journal_purchases[$i-1]['journal_purchase_code'];
+            $next_id = $journal_purchases[$i+1]['journal_purchase_id'];
+            $next_code = $journal_purchases[$i+1]['journal_purchase_code'];
+
+        }
+    }
+    
  
     require_once($path.'update.inc.php');
 
@@ -298,7 +337,7 @@ if(!isset($_GET['action'])){
         
         if($output){
     ?>
-            <script>window.location="index.php?app=journal_special_01&action=insert"</script>
+            <script>window.location="index.php?app=journal_special_01&action=update&id=<?PHP echo $journal_purchase_id?>"</script>
     <?php
         }
     
@@ -309,19 +348,32 @@ if(!isset($_GET['action'])){
     }
         
 }else{
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $keyword = $_GET['keyword']; 
-
-    if($_GET['page'] == '' || $_GET['page'] == '0'){
-        $page = 0;
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
     }else{
-        $page = $_GET['page'] - 1;
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
     }
 
     $page_size = 50;
 
-    $journal_purchases = $journal_purchase_model->getJournalPurchaseBy($date_start,$date_end,$keyword);
+    $journal_purchases = $journal_purchase_model->getJournalPurchaseBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_purchases)/$page_size);
     if(count($journal_purchases)%$page_size > 0){

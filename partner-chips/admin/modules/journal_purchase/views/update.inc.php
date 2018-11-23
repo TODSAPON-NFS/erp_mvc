@@ -189,7 +189,7 @@
     
 
     function val_format(id){
-        var val =  parseFloat($(id).val().replace(',',''));  
+        var val =  parseFloat($(id).val().replace(new RegExp(',', 'g'),''));  
         if(isNaN(val)){
             val = 0;
         }
@@ -325,7 +325,20 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            เพิ่มสมุดรายวันซื้อ /  Add Journal Purchase   
+                <div class="row">
+                    <div class="col-md-8">
+                        เพิ่มสมุดรายวันซื้อ /  Add Journal Purchase 
+                    </div>
+                    <div class="col-md-4" align="right">
+                    <?PHP if($previous_id != ""){?>
+                        <a class="btn btn-primary" href="?app=journal_special_01&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
+                        <?PHP } ?>
+                        <a class="btn btn-success" href="?app=journal_special_01&action=insert&id=<?php echo $journal_purchase_id;?>" target="_blank" > <i class="fa fa-plus" aria-hidden="true"></i> Copy </a>
+                        <?PHP if($next_id != ""){?>
+                        <a class="btn btn-primary" href="?app=journal_special_01&action=update&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
+                        <?PHP } ?>
+                    </div>
+                </div>  
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

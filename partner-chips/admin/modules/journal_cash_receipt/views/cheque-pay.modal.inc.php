@@ -5,7 +5,17 @@
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">สร้างเช็คจ่าย / Add Cheque Payment</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="modal-title">สร้างเช็คจ่าย / Add Cheque Payment</h4>
+                </div>
+                <div class="col-md-4"> 
+                    <input id="check_pay_code_search" place name="check_pay_code_search" placeholder="Search cheque" class="form-control" type="text"  value="QP"  />
+                </div> 
+                <div class="col-md-1" align="right"> 
+                    <button class="btn btn-danger"  onclick="get_cheque_pay_id(this)" >Get cheque</button> 
+                </div>
+            </div>
         </div>
 
         <div  class="modal-body">
@@ -22,11 +32,10 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>เลขที่เช็ค <font color="#F00"><b>*</b></font></label>
-                                <input id="check_pay_code" name="check_pay_code" class="form-control" type="text"  value="QP"  onchange="get_cheque_pay_id(this)" />
+                                <input id="check_pay_code" name="check_pay_code" class="form-control" type="text"  value="QP"  />
                                 <p class="help-block">Example : QP4411555.</p>
                             </div>
                         </div>
-
 
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -48,8 +57,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>จ่ายจากบัญชี <font color="#F00"><b>*</b></font> </label>
-                                <select id="bank_account_id" name="bank_account_id" class="form-control select" data-live-search="true">
-                                    <option value="">Select</option>
+                                <select id="bank_account_id" name="bank_account_id" class="form-control select" data-live-search="true"> 
                                     <?php 
                                     for($i =  0 ; $i < count($bank_accounts) ; $i++){
                                     ?>
@@ -117,7 +125,7 @@ var cheque_pay_options = {
         template: {
             type: "description",
             fields: {
-                description: "bank_account_name"
+                description: "check_pay_remark"
             }
         },
         
@@ -137,6 +145,7 @@ var cheque_pay_options = {
         requestDelay: 400
     };
 
+$('#check_pay_code_search').easyAutocomplete(cheque_pay_options);
 
 function edit_cheque_pay_row(id,journal_id){
     row_journal_id = journal_id;
@@ -155,7 +164,7 @@ function edit_cheque_pay_row(id,journal_id){
             $('#check_pay_date_recieve').val(data.check_pay_date_recieve); 
             
             $('#cheque_pay_supplier_id').val(data.supplier_id);
-            $('#bank_id').val(data.bank_id);
+            $('#bank_account_id').val(data.bank_account_id);
             $('#bank_branch').val(data.bank_branch);
             $('#check_pay_date').val(data.check_pay_date);
             $('#check_pay_total').val(data.check_pay_total);
@@ -174,7 +183,7 @@ function edit_cheque_pay_row(id,journal_id){
             $('#check_pay_date_write').val($('#journal_cash_receipt_date').val()); 
             $('#check_pay_date_recieve').val($('#journal_cash_receipt_date').val());
             $('#cheque_pay_supplier_id').val($('#supplier_id').val());
-            $('#bank_id').val();
+            $('#bank_account_id').val();
             $('#bank_branch').val();
             $('#check_pay_date').val($('#journal_cash_receipt_date').val());
             $('#check_pay_total').val(0);
@@ -199,7 +208,7 @@ function add_cheque_pay_row(id,journal_id){
     $('#check_pay_date_write').val($('#journal_cash_receipt_date').val()); 
     $('#check_pay_date_recieve').val($('#journal_cash_receipt_date').val());
     $('#cheque_pay_supplier_id').val($('#supplier_id').val());
-    $('#bank_id').val();
+    $('#bank_account_id').val();
     $('#bank_branch').val();
     $('#check_pay_date').val($('#journal_cash_receipt_date').val());
     $('#check_pay_total').val(0);
@@ -210,14 +219,13 @@ function add_cheque_pay_row(id,journal_id){
     $('#cheque_pay_delete').hide();
 
     $('.select').selectpicker('refresh');
-    $('#modalChequePay').modal('show');
-    $('#check_pay_code').easyAutocomplete(cheque_pay_options);
+    $('#modalChequePay').modal('show'); 
     row_cheque_pay_add_id = id;
     row_journal_id = journal_id;
 }
 
 function get_cheque_pay_id(id){ 
-    get_cheque_pay_data(id,$(id).val()); 
+    get_cheque_pay_data(id,$("#check_pay_code_search").val()); 
 }
 
 

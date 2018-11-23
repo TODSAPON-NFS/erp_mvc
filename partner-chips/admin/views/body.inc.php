@@ -197,6 +197,8 @@
         require_once("modules/journal_sale_return/views/index.inc.php");
     }else if($_GET['app'] == "maintenance"){
         require_once("modules/maintenance/views/index.inc.php");
+    }else if($_GET['app'] == "paper_lock"){
+        require_once("modules/paper_lock/views/index.inc.php");
     }
 
     /* ----------------------------------- //ระบบบัญชี// ---------------------------------------------- */
@@ -275,6 +277,8 @@
         require_once("modules/search_product/views/index.inc.php");
     }else if($_GET['app'] == "stock_move"){
         require_once("modules/stock_move/views/index.inc.php");
+    }else if($_GET['app'] == "stock_change_product"){
+        require_once("modules/stock_change_product/views/index.inc.php");
     }else if($_GET['app'] == "stock_type"){
         require_once("modules/stock_type/views/index.inc.php");
     }else if($_GET['app'] == "stock_group"){

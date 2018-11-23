@@ -58,18 +58,49 @@ $notification_id = $_GET['notification'];
 $customer_id = $_GET['customer_id'];
 $vat = 7; 
 
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action'])){
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    } 
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
     $customer_id = $_GET['customer_id'];
-    $keyword = $_GET['keyword'];
 
     $url_search = "&date_start=$date_start&date_end=$date_end&customer_id=$customer_id&keyword=$keyword";
 
     $customers=$customer_model->getCustomerBy();
 
-    $finance_debits = $finance_debit_model->getFinanceDebitBy($date_start,$date_end,$customer_id,$keyword);
+    $finance_debits = $finance_debit_model->getFinanceDebitBy($date_start,$date_end,$customer_id,$keyword,"",$lock_1,$lock_2);
     $customer_orders = $finance_debit_model->getCustomerOrder();
 
     if($_GET['page'] == '' || $_GET['page'] == '0'){
@@ -790,18 +821,37 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $customer_id = $_GET['customer_id'];
-    $keyword = $_GET['keyword'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
 
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
+    $customer_id = $_GET['customer_id'];
     $url_search = "&date_start=$date_start&date_end=$date_end&customer_id=$customer_id&keyword=$keyword";
 
     
 
     $customers=$customer_model->getCustomerBy();
 
-    $finance_debits = $finance_debit_model->getFinanceDebitBy($date_start,$date_end,$customer_id,$keyword);
+    $finance_debits = $finance_debit_model->getFinanceDebitBy($date_start,$date_end,$customer_id,$keyword,"",$lock_1,$lock_2);
     $customer_orders = $finance_debit_model->getCustomerOrder();
 
     if($_GET['page'] == '' || $_GET['page'] == '0'){

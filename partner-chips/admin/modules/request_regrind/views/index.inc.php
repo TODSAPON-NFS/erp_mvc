@@ -35,9 +35,29 @@ $employee_id = $request_regrind['employee_id'];
 
 if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_request_page == 'Medium' || $license_request_page == 'High' )){
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $keyword = $_GET['keyword'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+    
+    
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+     
+    
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    } 
 
     if($license_request_page == 'Medium' || $license_request_page == 'High'){
         $request_regrinds = $request_regrind_model->getRequestRegrindBy($date_start,$date_end,$keyword,'');
@@ -341,9 +361,30 @@ if(!isset($_GET['action']) && (($license_request_page == 'Low') || $license_requ
     
 }else if($license_request_page == 'Low' || $license_request_page == 'Medium' || $license_request_page == 'High' ){
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $keyword = $_GET['keyword'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+    
+    
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+     
+    
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    } 
+    
     if($license_request_page == 'Medium' || $license_request_page == 'High'){
         $request_regrinds = $request_regrind_model->getRequestRegrindBy($date_start,$date_end,$keyword,'');
     }else{

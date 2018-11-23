@@ -11,14 +11,47 @@ $customer_model = new CustomerModel;
 $check_model = new CheckModel;
 $check_id = $_GET['id'];
 
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action'])){
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
     $customer_id = $_GET['customer_id'];
-    $keyword = $_GET['keyword'];
 
     $customers=$customer_model->getCustomerBy();
-    $checks = $check_model->getCheckBy('',$date_start,$date_end,$customer_id,$keyword,'','1');
+    $checks = $check_model->getCheckBy('',$date_start,$date_end,$customer_id,$keyword,'','1',$lock_1,$lock_2);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'pass'){
@@ -42,13 +75,33 @@ if(!isset($_GET['action'])){
 <?php
 
 }else{
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
     $customer_id = $_GET['customer_id'];
-    $keyword = $_GET['keyword'];
 
     $customers=$customer_model->getCustomerBy();
-    $checks = $check_model->getCheckBy('',$date_start,$date_end,$customer_id,$keyword,'','1');
+    $checks = $check_model->getCheckBy('',$date_start,$date_end,$customer_id,$keyword,'','1',$lock_1,$lock_2);
     require_once($path.'view.inc.php');
 
 }

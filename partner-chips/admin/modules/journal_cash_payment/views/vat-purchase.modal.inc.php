@@ -7,7 +7,18 @@
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีซื้อ</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีซื้อ</h4>
+                </div>
+                <div class="col-md-4"> 
+                    <input id="invoice_supplier_code_search" name="invoice_supplier_code_search" class="form-control" placeholder="Search invoice" value="">  
+                </div>
+                <div class="col-md-1" align="right"> 
+                    <button class="btn btn-danger"  onclick="get_invoice_supplier_id(this)" >Get Invoice</button> 
+                      
+                </div> 
+            </div>
         </div>
 
         <div  class="modal-body" align="left">
@@ -16,7 +27,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>เลขที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
-                        <input id="invoice_supplier_code" name="invoice_supplier_code" class="form-control" value="<?php echo $invoice_supplier['invoice_supplier_code']; ?>" onchange="get_invoice_supplier_id(this)" >
+                        <input id="invoice_supplier_code" name="invoice_supplier_code" class="form-control" value="<?php echo $invoice_supplier['invoice_supplier_code']; ?>"  >
                         <p class="help-block">Example : -.</p>
                     </div>
                 </div>
@@ -67,11 +78,18 @@
                         <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
                     </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="form-group">
                         <label>เลขประจำตัวผู้เสียภาษี / Tax ID. <font color="#F00"><b>*</b></font></label>
                         <input id="invoice_supplier_tax" name="invoice_supplier_tax" class="form-control" value="<?php echo $invoice_supplier['invoice_supplier_tax']; ?>" />
                         <p class="help-block">Example : Somchai Wongnai.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>สาขา / Branch. <font color="#F00"><b>*</b></font></label>
+                        <input id="invoice_supplier_branch" name="invoice_supplier_branch" class="form-control" value="<?php echo $invoice_supplier['invoice_supplier_branch']; ?>" />
+                        <p class="help-block">Example : 0000.</p>
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -87,7 +105,7 @@
                     <div class="form-group">
                         <label>ยื่นภาษีรวมในงวด <font color="#F00"><b>*</b></font> </label>
                         <input id="vat_section" name="vat_section" class="form-control" value="<?php echo $invoice_supplier['vat_section']; ?>" >
-                        <p class="help-block">Example : 08/61.</p>
+                        <p class="help-block">Example : 08/18.</p>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -191,9 +209,11 @@ var invoice_supplier_options = {
     requestDelay: 400
 };
 
+$('#invoice_supplier_code_search').easyAutocomplete(invoice_supplier_options);
+
 function purchase_duty_date(){
     var d = $('#invoice_supplier_date').val().toString().split("-");
-    $('#vat_section').val(d[2].substr(2, 2) +  "/" + d[1]);
+    $('#vat_section').val(d[1] +  "/" + d[2].substr(2, 2));
 }
 
 
@@ -217,6 +237,7 @@ function edit_invoice_supplier_row(id,journal_id){
             $('#vat_supplier_id').val(data.supplier_id); 
             $('#invoice_supplier_name').val(data.invoice_supplier_name); 
             $('#invoice_supplier_tax').val(data.invoice_supplier_tax); 
+            $('#invoice_supplier_branch').val(data.invoice_supplier_branch); 
             $('#invoice_supplier_address').val(data.invoice_supplier_address); 
             $('#vat_section').val(data.vat_section); 
             $('#vat_section_add').val(data.vat_section_add);
@@ -225,7 +246,12 @@ function edit_invoice_supplier_row(id,journal_id){
             $('#invoice_supplier_total_price_non').val(data.invoice_supplier_total_price_non); 
             $('#invoice_supplier_vat_price_non').val(data.invoice_supplier_vat_price_non);
             $('#invoice_supplier_total_non').val(data.invoice_supplier_total_non);
-            $('#invoice_supplier_description').val(data.invoice_supplier_description);
+            if(row_journal_id == null){
+                $('#invoice_supplier_description').val(data.invoice_supplier_description);
+            }else{
+                $('#invoice_supplier_description').val($(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val())
+            }
+            
             $('#invoice_supplier_remark').val(data.invoice_supplier_remark);
 
             $('#invoice_supplier_submit').html('Update Invoice');
@@ -245,6 +271,7 @@ function edit_invoice_supplier_row(id,journal_id){
             $('#vat_supplier_id').val('0'); 
             $('#invoice_supplier_name').val(''); 
             $('#invoice_supplier_tax').val(''); 
+            $('#invoice_supplier_branch').val(''); 
             $('#invoice_supplier_address').val(''); 
             purchase_duty_date(); 
             $('#vat_section_add').val('');
@@ -253,7 +280,11 @@ function edit_invoice_supplier_row(id,journal_id){
             $('#invoice_supplier_total_price_non').val('0'); 
             $('#invoice_supplier_vat_price_non').val('0');
             $('#invoice_supplier_total_non').val('0');
-            $('#invoice_supplier_description').val($('#journal_cash_payment_name').val());
+            if(row_journal_id == null){
+                $('#invoice_supplier_description').val($('#journal_cash_payment_name').val());
+            }else{
+                $('#invoice_supplier_description').val($(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val())
+            } 
             $('#invoice_supplier_remark').val('');
 
             $('#invoice_supplier_submit').html('Add Invoice');
@@ -278,6 +309,7 @@ function add_invoice_supplier_row(id,journal_id){
     $('#vat_supplier_id').val('0'); 
     $('#invoice_supplier_name').val(''); 
     $('#invoice_supplier_tax').val(''); 
+    $('#invoice_supplier_branch').val(''); 
     $('#invoice_supplier_address').val(''); 
     purchase_duty_date(); 
     $('#vat_section_add').val('');
@@ -286,7 +318,11 @@ function add_invoice_supplier_row(id,journal_id){
     $('#invoice_supplier_total_price_non').val('0'); 
     $('#invoice_supplier_vat_price_non').val('0');
     $('#invoice_supplier_total_non').val('0');
-    $('#invoice_supplier_description').val($('#journal_cash_payment_name').val());
+    if(row_journal_id == null){
+        $('#invoice_supplier_description').val($('#journal_cash_payment_name').val());
+    }else{
+        $('#invoice_supplier_description').val($(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val())
+    } 
     $('#invoice_supplier_remark').val('');
 
     $('#invoice_supplier_submit').html('Add Invoice');
@@ -295,18 +331,20 @@ function add_invoice_supplier_row(id,journal_id){
 
     $('.select').selectpicker('refresh');
     $('#modalInvoiceSupplier').modal('show');
-    $('#invoice_supplier_code').easyAutocomplete(invoice_supplier_options);
+    
     row_invoice_supplier_add_id = id;
     row_journal_id = journal_id;
 }
 
 function get_invoice_supplier_id(id){ 
-    get_invoice_supplier_data(id,$(id).val()); 
+    get_invoice_supplier_data(id,$("#invoice_supplier_code_search").val()); 
 }
 
 
 function get_invoice_supplier_data(id,code){ 
     $.post( "controllers/getInvoiceSupplierByCode.php", { 'invoice_supplier_code': code }, function( data ) { 
+
+        console.log(data);
         if(data !== null){
 
             $(id).closest('tr').children('td').children('input[name="invoice_supplier_id[]"]').val(data.invoice_supplier_id);
@@ -320,6 +358,7 @@ function get_invoice_supplier_data(id,code){
             $('#vat_supplier_id').val(data.supplier_id); 
             $('#invoice_supplier_name').val(data.invoice_supplier_name); 
             $('#invoice_supplier_tax').val(data.invoice_supplier_tax); 
+            $('#invoice_supplier_branch').val(data.invoice_supplier_branch); 
             $('#invoice_supplier_address').val(data.invoice_supplier_address); 
             $('#vat_section').val(data.vat_section); 
             $('#vat_section_add').val(data.vat_section_add);
@@ -328,7 +367,11 @@ function get_invoice_supplier_data(id,code){
             $('#invoice_supplier_total_price_non').val(data.invoice_supplier_total_price_non); 
             $('#invoice_supplier_vat_price_non').val(data.invoice_supplier_vat_price_non);
             $('#invoice_supplier_total_non').val(data.invoice_supplier_total_non);
-            $('#invoice_supplier_description').val(data.invoice_supplier_description);
+            if(row_journal_id == null){
+                $('#invoice_supplier_description').val(data.invoice_supplier_description);
+            }else{
+                $('#invoice_supplier_description').val($(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val())
+            }
             $('#invoice_supplier_remark').val(data.invoice_supplier_remark);
 
             $('#invoice_supplier_submit').html('Update Invoice');
@@ -348,6 +391,7 @@ function get_invoice_supplier_data(id,code){
             $('#vat_supplier_id').val('0'); 
             $('#invoice_supplier_name').val(''); 
             $('#invoice_supplier_tax').val(''); 
+            $('#invoice_supplier_branch').val(''); 
             $('#invoice_supplier_address').val(''); 
             purchase_duty_date(); 
             $('#vat_section_add').val('');
@@ -356,7 +400,11 @@ function get_invoice_supplier_data(id,code){
             $('#invoice_supplier_total_price_non').val('0'); 
             $('#invoice_supplier_vat_price_non').val('0');
             $('#invoice_supplier_total_non').val('0');
-            $('#invoice_supplier_description').val($('#journal_cash_payment_name').val());
+            if(row_journal_id == null){
+                $('#invoice_supplier_description').val($('#journal_cash_payment_name').val());
+            }else{
+                $('#invoice_supplier_description').val($(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val())
+            } 
             $('#invoice_supplier_remark').val('');
 
             $('#invoice_supplier_submit').html('Add Invoice');
@@ -406,6 +454,7 @@ function invoice_supplier_post(){
     var supplier_id = document.getElementById("vat_supplier_id").value;
     var invoice_supplier_name = document.getElementById("invoice_supplier_name").value; 
     var invoice_supplier_tax = document.getElementById("invoice_supplier_tax").value; 
+    var invoice_supplier_branch = document.getElementById("invoice_supplier_branch").value; 
     var invoice_supplier_address = document.getElementById("invoice_supplier_address").value; 
     var vat_section = document.getElementById("vat_section").value; 
     var vat_section_add = document.getElementById("vat_section_add").value; 
@@ -427,6 +476,7 @@ function invoice_supplier_post(){
     supplier_id = $.trim(supplier_id);
     invoice_supplier_name = $.trim(invoice_supplier_name);
     invoice_supplier_tax = $.trim(invoice_supplier_tax);
+    invoice_supplier_branch = $.trim(invoice_supplier_branch);
     invoice_supplier_address = $.trim(invoice_supplier_address);
     vat_section = $.trim(vat_section);
     vat_section_add = $.trim(vat_section_add);
@@ -461,6 +511,7 @@ function invoice_supplier_post(){
                         'supplier_id':supplier_id, 
                         'invoice_supplier_name':invoice_supplier_name, 
                         'invoice_supplier_tax':invoice_supplier_tax, 
+                        'invoice_supplier_branch':invoice_supplier_branch, 
                         'invoice_supplier_address':invoice_supplier_address, 
                         'vat_section':vat_section, 
                         'vat_section_add':vat_section_add, 
@@ -496,6 +547,7 @@ function invoice_supplier_post(){
                         'supplier_id':supplier_id, 
                         'invoice_supplier_name':invoice_supplier_name, 
                         'invoice_supplier_tax':invoice_supplier_tax, 
+                        'invoice_supplier_branch':invoice_supplier_branch, 
                         'invoice_supplier_address':invoice_supplier_address, 
                         'vat_section':vat_section, 
                         'vat_section_add':vat_section_add, 
@@ -642,7 +694,7 @@ function set_invoice_supplier_row(data){
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_cheque_pay_id[]"]').val('0');
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]').val('0');
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]').val(data.invoice_supplier_id);
-                $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.invoice_supplier_description);
+                //$(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.invoice_supplier_description);
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(invoice_supplier_vat_price_debit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                 $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val(invoice_supplier_vat_price_credit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                 $('.select').selectpicker();
@@ -675,7 +727,7 @@ function set_invoice_supplier_row(data){
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_cheque_pay_id[]"]').val('0');
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]').val('0');
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]').val(data.invoice_supplier_id);
-            $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.invoice_supplier_description);
+            //$(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.invoice_supplier_description);
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(invoice_supplier_vat_price_debit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
             $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val(invoice_supplier_vat_price_credit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
             $('.select').selectpicker();
@@ -691,7 +743,7 @@ function set_invoice_supplier_row(data){
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_cheque_pay_id[]"]').val('0');
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_customer_id[]"]').val('0');
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_invoice_supplier_id[]"]').val(data.invoice_supplier_id);
-                    $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.invoice_supplier_description);
+                    //$(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_name[]"]').val(data.invoice_supplier_description);
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_debit[]"]').val(invoice_supplier_vat_price_debit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                     $(row_journal_id).closest('tr').children('td').children('input[name="journal_cash_payment_list_credit[]"]').val(invoice_supplier_vat_price_credit.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                     $('.select').selectpicker();
@@ -763,6 +815,7 @@ function get_supplier_invoice(){
         document.getElementById('supplier_code').value = data.supplier_code;
         document.getElementById('invoice_supplier_name').value = data.supplier_name_en;
         document.getElementById('invoice_supplier_tax').value = data.supplier_tax;
+        document.getElementById('invoice_supplier_branch').value = data.supplier_branch;
         document.getElementById('invoice_supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
     });
 }

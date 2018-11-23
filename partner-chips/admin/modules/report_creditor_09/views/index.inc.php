@@ -12,8 +12,21 @@ $creditor_report_model = new CreditorReportModel;
 
 
 
-$code_start = $_GET['code_start'];
-$code_end = $_GET['code_end'];  
+if(!isset($_GET['date_start'])){
+    $date_start = $_SESSION['date_start'];
+}else{
+    $date_start = $_GET['date_start'];
+    $_SESSION['date_start'] = $date_start;
+}
+
+
+if(!isset($_GET['date_end'])){
+    $date_end = $_SESSION['date_end'];
+}else{
+    $date_end = $_GET['date_end'];
+    $_SESSION['date_end'] = $date_end;
+} 
+
 $view_type = $_GET['view_type']; 
 
 $creditor_reports = $creditor_report_model->getSupplierListReportBy($code_start, $code_end);

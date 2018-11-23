@@ -393,7 +393,7 @@ class DebtorReportModel extends BaseModel{
 
         $str_customer ='';
         if($customer_id != ""){
-            $str_customer =" AND tb_invoice_customer.customer_id = '$customer_id' ";
+            $str_customer =" AND customer_id = '$customer_id' ";
         }
         
         $str_code="";

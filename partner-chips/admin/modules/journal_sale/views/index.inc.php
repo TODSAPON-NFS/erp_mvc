@@ -53,21 +53,46 @@ $account_setting['vat_sale_account'] = $account_setting_model->getAccountSetting
 $journal_sale_id = $_GET['id'];
 $target_dir = "../upload/journal_sale/";
 
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action'])){
 
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $keyword = $_GET['keyword']; 
-
-    if($_GET['page'] == '' || $_GET['page'] == '0'){
-        $page = 0;
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
     }else{
-        $page = $_GET['page'] - 1;
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
     }
 
     $page_size = 50;
 
-    $journal_sales = $journal_sale_model->getJournalSaleBy($date_start,$date_end,$keyword);
+    $journal_sales = $journal_sale_model->getJournalSaleBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_sales)/$page_size);
     if(count($journal_sales)%$page_size > 0){
@@ -127,6 +152,19 @@ if(!isset($_GET['action'])){
 
     $journal_sale = $journal_sale_model->getJournalSaleByID($journal_sale_id);
     $journal_sale_lists = $journal_sale_list_model->getJournalSaleListBy($journal_sale_id); 
+
+    
+    $journal_sales = $journal_sale_model->getJournalSaleBy('','','',$lock_1,$lock_2);
+
+    for($i = 0 ; $i < count($journal_sales) ; $i++){
+        if($journal_sale_id == $journal_sales[$i]['journal_sale_id']){
+            $previous_id = $journal_sales[$i-1]['journal_sale_id'];
+            $previous_code = $journal_sales[$i-1]['journal_sale_code'];
+            $next_id = $journal_sales[$i+1]['journal_sale_id'];
+            $next_code = $journal_sales[$i+1]['journal_sale_code'];
+
+        }
+    }
  
     require_once($path.'update.inc.php');
 
@@ -298,7 +336,7 @@ if(!isset($_GET['action'])){
         
         if($output){
     ?>
-            <script>window.location="index.php?app=journal_special_02&action=insert"</script>
+            <script>window.location="index.php?app=journal_special_02&action=update&id=<?PHP echo $journal_sale_id?>"</script>
     <?php
         }
     
@@ -309,19 +347,32 @@ if(!isset($_GET['action'])){
     }
         
 }else{
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $keyword = $_GET['keyword']; 
-
-    if($_GET['page'] == '' || $_GET['page'] == '0'){
-        $page = 0;
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
     }else{
-        $page = $_GET['page'] - 1;
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
     }
 
     $page_size = 50;
 
-    $journal_sales = $journal_sale_model->getJournalSaleBy($date_start,$date_end,$keyword);
+    $journal_sales = $journal_sale_model->getJournalSaleBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_sales)/$page_size);
     if(count($journal_sales)%$page_size > 0){

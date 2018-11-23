@@ -3,8 +3,18 @@
         <div class="modal-content">
 
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">สร้างเช็ครับ / Add Cheque</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="modal-title">สร้างเช็ครับ / Add Cheque Receipt</h4>
+                </div>
+                <div class="col-md-4"> 
+                    <input id="check_code_search" place name="check_pay_code_search" placeholder="Search cheque" class="form-control" type="text"  value="QR"  />
+                </div> 
+                <div class="col-md-1" align="right"> 
+                    <button class="btn btn-danger"  onclick="get_cheque_id(this)" >Get cheque</button> 
+                </div>
+            </div>
         </div>
 
         <div  class="modal-body">
@@ -21,7 +31,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>เลขที่เช็ค <font color="#F00"><b>*</b></font></label>
-                                <input id="check_code" name="check_code" class="form-control" type="text" value="QR" onchange="get_cheque_id(this)" >
+                                <input id="check_code" name="check_code" class="form-control"  value="QR" type="text" >
                                 <p class="help-block">Example : QR4411555.</p>
                             </div>
                         </div>
@@ -142,6 +152,7 @@ var cheque_options = {
     requestDelay: 400
 };
 
+$('#check_code_search').easyAutocomplete(cheque_options);
 
 function edit_cheque_row(id,journal_id){
     row_cheque_update_id = id;
@@ -214,8 +225,7 @@ function add_cheque_row(id,journal_id){
     $('#cheque_delete').hide();
 
     $('.select').selectpicker('refresh');
-    $('#modalCheque').modal('show');
-    $('#check_code').easyAutocomplete(cheque_options);
+    $('#modalCheque').modal('show'); 
     row_cheque_add_id = id;
 
     row_journal_id = journal_id;
@@ -223,7 +233,7 @@ function add_cheque_row(id,journal_id){
 }
 
 function get_cheque_id(id){ 
-    get_cheque_data(id,$(id).val()); 
+    get_cheque_data(id,$("#check_code_search").val());
 }
 
 

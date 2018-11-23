@@ -1,19 +1,35 @@
 <?php
 
 require_once("BaseModel.php");
+require_once("MaintenanceStockModel.php"); 
 class InvoiceCustomerModel extends BaseModel{
+
+    private $maintenance_stock;
 
     function __construct(){
         if(!static::$db){
             static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
         }
+
+        $this->maintenance_stock =  new MaintenanceStockModel;
     }
 
-    function getInvoiceCustomerBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = "",$begin = "0"){
+    function getInvoiceCustomerBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = "",$begin = "0", $lock_1 = "0", $lock_2 = "0" ){
 
         $str_customer = "";
         $str_date = "";
         $str_user = "";
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0')";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
+
+
 
         if($date_start != "" && $date_end != ""){
             $str_date = "AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
@@ -31,7 +47,7 @@ class InvoiceCustomerModel extends BaseModel{
             $str_customer = "AND tb2.customer_id = '$customer_id' ";
         }
 
-        $sql = " SELECT invoice_customer_id, 
+        $sql = " SELECT tb_invoice_customer.invoice_customer_id, 
         invoice_customer_code, 
         invoice_customer_date, 
         invoice_customer_total_price,
@@ -46,18 +62,24 @@ class InvoiceCustomerModel extends BaseModel{
         FROM tb_invoice_customer 
         LEFT JOIN tb_user as tb1 ON tb_invoice_customer.employee_id = tb1.user_id 
         LEFT JOIN tb_customer as tb2 ON tb_invoice_customer.customer_id = tb2.customer_id 
+        LEFT JOIN tb_invoice_customer_list ON tb_invoice_customer.invoice_customer_id = tb_invoice_customer_list.invoice_customer_id 
+        LEFT JOIN tb_product ON tb_invoice_customer_list.product_id = tb_product.product_id   
+        LEFT JOIN tb_paper_lock ON SUBSTRING(tb_invoice_customer.invoice_customer_date,3,9)=SUBSTRING(tb_paper_lock.paper_lock_date,3,9) 
         WHERE ( 
-            CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
-            OR  invoice_customer_code LIKE ('%$keyword%') 
+            invoice_customer_code LIKE ('%$keyword%') 
+            OR  product_code LIKE ('%$keyword%') 
+            OR  product_name LIKE ('%$keyword%') 
         ) 
         AND invoice_customer_begin = '$begin' 
+        $str_lock 
         $str_customer 
         $str_date 
-        $str_user  
-        ORDER BY STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s'),invoice_customer_code DESC 
+        $str_user   
+        GROUP BY tb_invoice_customer.invoice_customer_id
+        ORDER BY invoice_customer_code ASC 
          ";
 
-         //echo $sql;
+        //echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -149,6 +171,26 @@ class InvoiceCustomerModel extends BaseModel{
     }
 
 
+    function getInvoiceCustomerViewListByjournalGeneralID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_general_list 
+        LEFT JOIN tb_invoice_customer ON tb_journal_general_list.journal_invoice_customer_id = tb_invoice_customer.invoice_customer_id
+        LEFT JOIN tb_user ON tb_invoice_customer.employee_id = tb_user.user_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
+        LEFT JOIN tb_customer ON tb_invoice_customer.customer_id = tb_customer.customer_id 
+        WHERE journal_general_id = '$id' AND tb_journal_general_list.journal_invoice_customer_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }   
+    }
+
     function getInvoiceCustomerViewListByjournalPaymentID($id){
         $sql = " SELECT *   
         FROM tb_journal_cash_payment_list 
@@ -177,6 +219,46 @@ class InvoiceCustomerModel extends BaseModel{
         LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
         LEFT JOIN tb_customer ON tb_invoice_customer.customer_id = tb_customer.customer_id 
         WHERE journal_cash_receipt_id = '$id' AND tb_journal_cash_receipt_list.journal_invoice_customer_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }   
+    }
+    
+    function getInvoiceCustomerViewListByjournalPurchaseID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_purchase_list 
+        LEFT JOIN tb_invoice_customer ON tb_journal_purchase_list.journal_invoice_customer_id = tb_invoice_customer.invoice_customer_id
+        LEFT JOIN tb_user ON tb_invoice_customer.employee_id = tb_user.user_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
+        LEFT JOIN tb_customer ON tb_invoice_customer.customer_id = tb_customer.customer_id 
+        WHERE journal_purchase_id = '$id' AND tb_journal_purchase_list.journal_invoice_customer_id > 0
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }   
+    }
+
+    function getInvoiceCustomerViewListByjournalSaleID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_sale_list 
+        LEFT JOIN tb_invoice_customer ON tb_journal_sale_list.journal_invoice_customer_id = tb_invoice_customer.invoice_customer_id
+        LEFT JOIN tb_user ON tb_invoice_customer.employee_id = tb_user.user_id 
+        LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
+        LEFT JOIN tb_customer ON tb_invoice_customer.customer_id = tb_customer.customer_id 
+        WHERE journal_sale_id = '$id' AND tb_journal_sale_list.journal_invoice_customer_id > 0
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -477,7 +559,7 @@ class InvoiceCustomerModel extends BaseModel{
     function deleteInvoiceCustomerByID($id){
 
 
-        $sql = "    SELECT invoice_customer_list_id, stock_group_id, product_id, invoice_customer_list_qty, invoice_customer_list_cost,stock_event
+        $sql = "SELECT invoice_customer_list_id, stock_group_id, product_id, invoice_customer_list_qty, invoice_customer_list_cost,stock_event
         FROM  tb_invoice_customer_list 
         LEFT JOIN tb_product ON tb_invoice_customer_list.product_id = tb_product.product_id 
         LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
@@ -488,15 +570,7 @@ class InvoiceCustomerModel extends BaseModel{
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
         while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
             if($row['stock_event'] != "None"){
-                $sql_delete [] = "
-                    CALL delete_stock_customer('".
-                    $row['stock_group_id']."','".
-                    $row['invoice_customer_list_id']."','".
-                    $row['product_id']."','".
-                    $row['invoice_customer_list_qty']."','".
-                    $row['invoice_customer_list_cost']."'".
-                    ");
-                ";
+                $sql_delete [] =  $row;
             }
             
         }
@@ -504,7 +578,7 @@ class InvoiceCustomerModel extends BaseModel{
         }
  
          for($i = 0 ; $i < count($sql_delete); $i++){
-             mysqli_query(static::$db,$sql_delete[$i], MYSQLI_USE_RESULT);
+            $this->maintenance_stock->removeSaleStock($sql_delete['stock_group_id'],$sql_delete['invoice_customer_list_id'], $sql_delete['product_id'], $sql_delete['invoice_customer_list_qty'], $sql_delete['invoice_customer_list_cost']);
          }
 
         $sql = " DELETE FROM tb_invoice_customer_list WHERE invoice_customer_id = '$id' ";

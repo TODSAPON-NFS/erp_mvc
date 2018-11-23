@@ -7,7 +7,19 @@
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีซื้อ</h4>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีขาย</h4>
+                </div>
+                <div class="col-md-4"> 
+                    <input id="invoice_customer_code_search" name="invoice_customer_code_search" class="form-control"   >
+                </div>
+                <div class="col-md-1" align="right"> 
+                    <button class="btn btn-danger"  onclick="get_invoice_customer_id(this)" >Get Invoice</button> 
+                      
+                </div> 
+            </div>
         </div>
 
         <div  class="modal-body" align="left">
@@ -16,7 +28,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label>เลขที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
-                        <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" value="<?php echo $invoice_customer['invoice_customer_code']; ?>" onchange="get_invoice_customer_id(this)" >
+                        <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" value="<?php echo $invoice_customer['invoice_customer_code']; ?>"  >
                         <p class="help-block">Example : -.</p>
                     </div>
                 </div>
@@ -53,10 +65,17 @@
                         <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
                     </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="form-group">
                         <label>เลขประจำตัวผู้เสียภาษี / Tax ID. <font color="#F00"><b>*</b></font></label>
                         <input id="invoice_customer_tax" name="invoice_customer_tax" class="form-control" value="<?php echo $invoice_customer['invoice_customer_tax']; ?>" />
+                        <p class="help-block">Example : Somchai Wongnai.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>สาขา / Branch. <font color="#F00"><b>*</b></font></label>
+                        <input id="invoice_customer_branch" name="invoice_customer_branch" class="form-control" value="<?php echo $invoice_customer['invoice_customer_branch']; ?>" />
                         <p class="help-block">Example : Somchai Wongnai.</p>
                     </div>
                 </div>
@@ -85,26 +104,16 @@
                 </div>
             </div>  
             <table width="100%" class="table table-striped table-bordered table-hover" >
-                <thead>
-                    <tr>
-                        <th style="text-align:center;" colspan="2">ภาษีซื้อขอคืนได้</th>
-                        <th style="text-align:center;" colspan="2">ภาษีซื้อขอคืนไม่ได้</th>
-                        <th style="text-align:center;" rowspan="2">มูลค่าสินค้าหรือบริการอัตราศูนย์</th>  
-                    </tr>
+                <thead> 
                     <tr>
                         <th style="text-align:center;" >มูลค่าสินค้า</th>
-                        <th style="text-align:center;" >จำนวนภาษี</th>
-                        <th style="text-align:center;" >มูลค่าสินค้า</th>
-                        <th style="text-align:center;" >จำนวนภาษี</th>
+                        <th style="text-align:center;" >จำนวนภาษี</th> 
                     </tr>
                 </thead>
                 <tbody> 
                     <tr class="odd gradeX">
                         <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_total_price" name="invoice_customer_total_price" onchange="update_sale_vat()" value="<?php echo $invoice_customer['invoice_customer_total_price']; ?>" /></td>
                         <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_vat_price" name="invoice_customer_vat_price"  value="<?php echo $invoice_customer['invoice_customer_vat_price']; ?>" /></td>
-                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_total_price_non" name="invoice_customer_total_price_non" onchange="update_sale_vat_non()" value="<?php echo $invoice_customer['invoice_customer_total_price_non']; ?>" /></td>
-                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_vat_price_non" name="invoice_customer_vat_price_non"  value="<?php echo $invoice_customer['invoice_customer_vat_price_non']; ?>" /></td>
-                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_total_non"  name="invoice_customer_total_non"  value="<?php echo $invoice_customer['invoice_customer_total_non']; ?>" /></td>
                     </tr> 
                 </tbody> 
             </table> 
@@ -177,6 +186,8 @@ var invoice_customer_options = {
     requestDelay: 400
 }; 
 
+$('#invoice_customer_code_search').easyAutocomplete(invoice_customer_options);
+
 function sale_duty_date(){
     var d = $('#invoice_customer_date').val().toString().split("-");
     $('#customer_vat_section').val(d[2].substr(2, 2) +  "/" + d[1]);
@@ -201,14 +212,12 @@ function edit_invoice_customer_row(id,journal_id){
             $('#vat_customer_id').val(data.customer_id); 
             $('#invoice_customer_name').val(data.invoice_customer_name); 
             $('#invoice_customer_tax').val(data.invoice_customer_tax); 
+            $('#invoice_customer_branch').val(data.invoice_customer_branch); 
             $('#invoice_customer_address').val(data.invoice_customer_address); 
             $('#customer_vat_section').val(data.vat_section); 
             $('#customer_vat_section_add').val(data.vat_section_add);
             $('#invoice_customer_total_price').val(data.invoice_customer_total_price);
-            $('#invoice_customer_vat_price').val(data.invoice_customer_vat_price);
-            $('#invoice_customer_total_price_non').val(data.invoice_customer_total_price_non); 
-            $('#invoice_customer_vat_price_non').val(data.invoice_customer_vat_price_non);
-            $('#invoice_customer_total_non').val(data.invoice_customer_total_non);
+            $('#invoice_customer_vat_price').val(data.invoice_customer_vat_price); 
             $('#invoice_customer_description').val(data.invoice_customer_description);
             $('#invoice_customer_remark').val(data.invoice_customer_remark);
 
@@ -227,14 +236,12 @@ function edit_invoice_customer_row(id,journal_id){
             $('#vat_customer_id').val('0'); 
             $('#invoice_customer_name').val(''); 
             $('#invoice_customer_tax').val(''); 
+            $('#invoice_customer_branch').val(''); 
             $('#invoice_customer_address').val(''); 
             sale_duty_date();
             $('#customer_vat_section_add').val('');
             $('#invoice_customer_total_price').val('0');
-            $('#invoice_customer_vat_price').val('0');
-            $('#invoice_customer_total_price_non').val('0'); 
-            $('#invoice_customer_vat_price_non').val('0');
-            $('#invoice_customer_total_non').val('0');
+            $('#invoice_customer_vat_price').val('0'); 
             $('#invoice_customer_description').val($('#journal_general_name').val());
             $('#invoice_customer_remark').val('');
 
@@ -258,14 +265,12 @@ function add_invoice_customer_row(id,journal_id){
     $('#vat_customer_id').val('0'); 
     $('#invoice_customer_name').val(''); 
     $('#invoice_customer_tax').val(''); 
+    $('#invoice_customer_branch').val(''); 
     $('#invoice_customer_address').val(''); 
     sale_duty_date();
     $('#customer_vat_section_add').val('');
     $('#invoice_customer_total_price').val('0');
-    $('#invoice_customer_vat_price').val('0');
-    $('#invoice_customer_total_price_non').val('0'); 
-    $('#invoice_customer_vat_price_non').val('0');
-    $('#invoice_customer_total_non').val('0');
+    $('#invoice_customer_vat_price').val('0'); 
     $('#invoice_customer_description').val($('#journal_general_name').val());
     $('#invoice_customer_remark').val('');
 
@@ -274,14 +279,13 @@ function add_invoice_customer_row(id,journal_id){
     $('#invoice_customer_delete').hide();
 
     $('.select').selectpicker('refresh');
-    $('#modalInvoiceCustomer').modal('show');
-    $('#invoice_customer_code').easyAutocomplete(invoice_customer_options);
+    $('#modalInvoiceCustomer').modal('show'); 
     row_invoice_customer_add_id = id;
     row_journal_id = journal_id;
 }
 
 function get_invoice_customer_id(id){ 
-    get_invoice_customer_data(id,$(id).val()); 
+    get_invoice_customer_data(id,$('#invoice_customer_code_search').val());
 }
 
 
@@ -298,14 +302,12 @@ function get_invoice_customer_data(id,code){
             $('#vat_customer_id').val(data.customer_id); 
             $('#invoice_customer_name').val(data.invoice_customer_name); 
             $('#invoice_customer_tax').val(data.invoice_customer_tax); 
+            $('#invoice_customer_branch').val(data.invoice_customer_branch); 
             $('#invoice_customer_address').val(data.invoice_customer_address); 
             $('#customer_vat_section').val(data.vat_section); 
             $('#customer_vat_section_add').val(data.vat_section_add);
             $('#invoice_customer_total_price').val(data.invoice_customer_total_price);
-            $('#invoice_customer_vat_price').val(data.invoice_customer_vat_price);
-            $('#invoice_customer_total_price_non').val(data.invoice_customer_total_price_non); 
-            $('#invoice_customer_vat_price_non').val(data.invoice_customer_vat_price_non);
-            $('#invoice_customer_total_non').val(data.invoice_customer_total_non);
+            $('#invoice_customer_vat_price').val(data.invoice_customer_vat_price); 
             $('#invoice_customer_description').val(data.invoice_customer_description);
             $('#invoice_customer_remark').val(data.invoice_customer_remark);
 
@@ -324,14 +326,12 @@ function get_invoice_customer_data(id,code){
             $('#vat_customer_id').val('0'); 
             $('#invoice_customer_name').val(''); 
             $('#invoice_customer_tax').val(''); 
+            $('#invoice_customer_branch').val(''); 
             $('#invoice_customer_address').val(''); 
             sale_duty_date();
             $('#customer_vat_section_add').val('');
             $('#invoice_customer_total_price').val('0');
-            $('#invoice_customer_vat_price').val('0');
-            $('#invoice_customer_total_price_non').val('0'); 
-            $('#invoice_customer_vat_price_non').val('0');
-            $('#invoice_customer_total_non').val('0');
+            $('#invoice_customer_vat_price').val('0'); 
             $('#invoice_customer_description').val($('#journal_general_name').val());
             $('#invoice_customer_remark').val('');
 
@@ -380,14 +380,12 @@ function invoice_customer_post(){
     var customer_id = document.getElementById("vat_customer_id").value;
     var invoice_customer_name = document.getElementById("invoice_customer_name").value; 
     var invoice_customer_tax = document.getElementById("invoice_customer_tax").value; 
+    var invoice_customer_branch = document.getElementById("invoice_customer_branch").value; 
     var invoice_customer_address = document.getElementById("invoice_customer_address").value; 
     var vat_section = document.getElementById("customer_vat_section").value; 
     var vat_section_add = document.getElementById("customer_vat_section_add").value; 
     var invoice_customer_total_price = document.getElementById("invoice_customer_total_price").value; 
     var invoice_customer_vat_price = document.getElementById("invoice_customer_vat_price").value; 
-    var invoice_customer_total_price_non = document.getElementById("invoice_customer_total_price_non").value; 
-    var invoice_customer_vat_price_non = document.getElementById("invoice_customer_vat_price_non").value; 
-    var invoice_customer_total_non = document.getElementById("invoice_customer_total_non").value; 
     var invoice_customer_description = document.getElementById("invoice_customer_description").value; 
     var invoice_customer_remark = document.getElementById("invoice_customer_remark").value; 
     var invoice_customer_action = document.getElementById("invoice_customer_action").value; 
@@ -399,14 +397,12 @@ function invoice_customer_post(){
     customer_id = $.trim(customer_id);
     invoice_customer_name = $.trim(invoice_customer_name);
     invoice_customer_tax = $.trim(invoice_customer_tax);
+    invoice_customer_branch = $.trim(invoice_customer_branch);
     invoice_customer_address = $.trim(invoice_customer_address);
     vat_section = $.trim(vat_section);
     vat_section_add = $.trim(vat_section_add);
     invoice_customer_total_price = $.trim(invoice_customer_total_price);
-    invoice_customer_vat_price = $.trim(invoice_customer_vat_price);
-    invoice_customer_total_price_non = $.trim(invoice_customer_total_price_non);
-    invoice_customer_vat_price_non = $.trim(invoice_customer_vat_price_non);
-    invoice_customer_total_non = $.trim(invoice_customer_total_non);
+    invoice_customer_vat_price = $.trim(invoice_customer_vat_price); 
     invoice_customer_description = $.trim(invoice_customer_description);
     invoice_customer_remark = $.trim(invoice_customer_remark);
     invoice_customer_action = $.trim(invoice_customer_action);
@@ -431,14 +427,12 @@ function invoice_customer_post(){
                         'customer_id':customer_id, 
                         'invoice_customer_name':invoice_customer_name, 
                         'invoice_customer_tax':invoice_customer_tax, 
+                        'invoice_customer_branch':invoice_customer_branch, 
                         'invoice_customer_address':invoice_customer_address, 
                         'vat_section':vat_section, 
                         'vat_section_add':vat_section_add, 
                         'invoice_customer_total_price':invoice_customer_total_price, 
-                        'invoice_customer_vat_price':invoice_customer_vat_price, 
-                        'invoice_customer_total_price_non':invoice_customer_total_price_non, 
-                        'invoice_customer_vat_price_non':invoice_customer_vat_price_non, 
-                        'invoice_customer_total_non':invoice_customer_total_non, 
+                        'invoice_customer_vat_price':invoice_customer_vat_price,  
                         'invoice_customer_description':invoice_customer_description, 
                         'invoice_customer_remark':invoice_customer_remark, 
                         'type':2,
@@ -464,14 +458,12 @@ function invoice_customer_post(){
                         'customer_id':customer_id, 
                         'invoice_customer_name':invoice_customer_name, 
                         'invoice_customer_tax':invoice_customer_tax, 
+                        'invoice_customer_branch':invoice_customer_branch, 
                         'invoice_customer_address':invoice_customer_address, 
                         'vat_section':vat_section, 
                         'vat_section_add':vat_section_add, 
                         'invoice_customer_total_price':invoice_customer_total_price, 
-                        'invoice_customer_vat_price':invoice_customer_vat_price, 
-                        'invoice_customer_total_price_non':invoice_customer_total_price_non, 
-                        'invoice_customer_vat_price_non':invoice_customer_vat_price_non, 
-                        'invoice_customer_total_non':invoice_customer_total_non, 
+                        'invoice_customer_vat_price':invoice_customer_vat_price,  
                         'invoice_customer_description':invoice_customer_description, 
                         'invoice_customer_remark':invoice_customer_remark, 
                         'type':2,
@@ -500,9 +492,7 @@ function invoice_customer_post(){
 function set_invoice_customer_row(data){
 
     var invoice_customer_total_price = parseFloat(data.invoice_customer_total_price);
-    var invoice_customer_vat_price = parseFloat(data.invoice_customer_vat_price);
-    var invoice_customer_total_price_non = parseFloat(data.invoice_customer_total_price_non);
-    var invoice_customer_vat_price_non = parseFloat(data.invoice_customer_vat_price_non);
+    var invoice_customer_vat_price = parseFloat(data.invoice_customer_vat_price); 
 
     var invoice_customer_vat_price_credit = 0 ;
     var invoice_customer_vat_price_debit = 0 ;
@@ -536,13 +526,7 @@ function set_invoice_customer_row(data){
                 '</td>'+
                 '<td align="right">'+
                     '<span name="display_invoice_customer_vat_price" >'+invoice_customer_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'</span>'+
-                '</td>'+
-                '<td align="right">'+
-                    '<span name="display_invoice_customer_total_price_non" >'+invoice_customer_total_price_non.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'</span>'+
-                '</td>'+
-                '<td align="right">'+
-                    '<span name="display_invoice_customer_vat_price_non" >'+invoice_customer_vat_price_non.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'</span>'+
-                '</td>'+
+                '</td>'+ 
                 '<td >'+
                     '<span name="display_invoice_customer_remark" >'+data.invoice_customer_remark+'</span>'+
                 '</td>'+
@@ -630,8 +614,6 @@ function set_invoice_customer_row(data){
         $(row_invoice_customer_update_id).closest('tr').children('td').children('span[name="display_invoice_customer_description"]').html(data.invoice_customer_description); 
         $(row_invoice_customer_update_id).closest('tr').children('td').children('span[name="display_invoice_customer_total_price"]').html(invoice_customer_total_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")); 
         $(row_invoice_customer_update_id).closest('tr').children('td').children('span[name="display_invoice_customer_vat_price"]').html(invoice_customer_vat_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")); 
-        $(row_invoice_customer_update_id).closest('tr').children('td').children('span[name="display_invoice_customer_total_price_non"]').html(invoice_customer_total_price_non.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")); 
-        $(row_invoice_customer_update_id).closest('tr').children('td').children('span[name="display_invoice_customer_vat_price_non"]').html(invoice_customer_vat_price_non.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")); 
         $(row_invoice_customer_update_id).closest('tr').children('td').children('span[name="display_invoice_customer_remark"]').html(data.invoice_customer_remark); 
         console.log("Update",row_journal_id);
         if(row_journal_id != null){
@@ -706,23 +688,7 @@ function update_sale_vat(){
         $("#invoice_customer_vat_price").val( (invoice_customer_total_price * (7/100.0) ).toFixed(2) );
     }
 
-}
-
-function update_sale_vat_non(){
-    var invoice_customer_total_price_non =  parseFloat($("#invoice_customer_total_price_non").val().replace(',',''));
-    var invoice_customer_vat_price_non =  parseFloat($("#invoice_customer_vat_price_non").val().replace(',',''));
-
-    if(isNaN(invoice_customer_vat_price_non)){
-        invoice_customer_vat_price_non = 0.0;
-    }
-    
-    if(isNaN(invoice_customer_total_price_non)){
-        invoice_customer_total_price_non = 0.0;
-        $("#invoice_customer_vat_price_non").val(0.00);
-    } else{
-        $("#invoice_customer_vat_price_non").val( (invoice_customer_total_price_non * (7/100.0) ).toFixed(2) );
-    }
-}
+} 
 
 
 function get_customer_invoice(){
@@ -731,15 +697,14 @@ function get_customer_invoice(){
         document.getElementById('customer_code').value = data.customer_code;
         document.getElementById('invoice_customer_name').value = data.customer_name_en;
         document.getElementById('invoice_customer_tax').value = data.customer_tax;
+        document.getElementById('invoice_customer_branch').value = data.customer_branch;
         document.getElementById('invoice_customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
     });
 }
 
 function calculateInvoiceCustomerAll(){
         var display_invoice_customer_total_price = document.getElementsByName('display_invoice_customer_total_price');
-        var display_invoice_customer_vat_price = document.getElementsByName('display_invoice_customer_vat_price');
-        var display_invoice_customer_total_price_non = document.getElementsByName('display_invoice_customer_total_price_non');
-        var display_invoice_customer_vat_price_non = document.getElementsByName('display_invoice_customer_vat_price_non');
+        var display_invoice_customer_vat_price = document.getElementsByName('display_invoice_customer_vat_price'); 
 
         var total_1 = 0.0;
         var total_2 = 0.0;
@@ -755,22 +720,10 @@ function calculateInvoiceCustomerAll(){
         for(var i = 0 ; i < display_invoice_customer_vat_price.length ; i++){
             
             total_2 += parseFloat(display_invoice_customer_vat_price[i].innerText.replace(new RegExp(',', 'g'),''));
-        } 
-
-        for(var i = 0 ; i < display_invoice_customer_total_price_non.length ; i++){
-            
-            total_3 += parseFloat(display_invoice_customer_total_price_non[i].innerText.replace(new RegExp(',', 'g'),''));
-        }
-
-        for(var i = 0 ; i < display_invoice_customer_vat_price_non.length ; i++){
-            
-            total_4 += parseFloat(display_invoice_customer_vat_price_non[i].innerText.replace(new RegExp(',', 'g'),''));
-        } 
+        }  
 
         $('#invoice_customer_sum').html((total_1).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $('#invoice_customer_sum_vat').html((total_2).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $('#invoice_customer_sum_non').html((total_3).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
-        $('#invoice_customer_sum_vat_non').html((total_4).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#invoice_customer_sum_vat').html((total_2).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") ); 
 
         calculateAll();
 

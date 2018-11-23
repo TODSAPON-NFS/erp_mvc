@@ -1,20 +1,33 @@
 <?php
 
 require_once("BaseModel.php");
+require_once("MaintenanceFinanceModel.php");
 class CheckPayModel extends BaseModel{
-
+    private $maintenance;
     function __construct(){
         if(!static::$db){
             static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
         }
+
+        $this->maintenance = new MaintenanceFinanceModel;
     }
 
-    function getCheckPayBy($check_pay_type = "",$date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$check_pay_status = ""){
+    function getCheckPayBy($check_pay_type = "",$date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$check_pay_status = "", $lock_1 = "0", $lock_2 = "0" ){
 
         $str_supplier = "";
         $str_date = "";
         $str_type = "";
         $str_status = "";
+
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0') ";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
 
         if($date_start != "" && $date_end != ""){
             $str_date = "AND STR_TO_DATE(check_pay_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(check_pay_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
@@ -41,9 +54,11 @@ class CheckPayModel extends BaseModel{
         $sql = " SELECT *
         FROM tb_check_pay 
         LEFT JOIN tb_supplier as tb2 ON tb_check_pay.supplier_id = tb2.supplier_id 
+        LEFT JOIN tb_paper_lock ON SUBSTRING(tb_check_pay.check_pay_date,3,9)=SUBSTRING(tb_paper_lock.paper_lock_date,3,9) 
         WHERE ( 
              check_pay_code LIKE ('%$keyword%') 
         ) 
+        $str_lock 
         $str_type
         $str_status 
         $str_supplier 
@@ -135,12 +150,33 @@ class CheckPayModel extends BaseModel{
 
     }
 
+    function getCheckPayViewListByjournalGeneralID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_general_list 
+        LEFT JOIN tb_check_pay ON tb_journal_general_list.journal_cheque_pay_id = tb_check_pay.check_pay_id
+        LEFT JOIN tb_bank_account ON tb_check_pay.bank_account_id = tb_bank_account.bank_account_id
+        WHERE journal_general_id = '$id' AND tb_journal_general_list.journal_cheque_pay_id > '0' 
+        GROUP BY check_pay_id 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getCheckPayViewListByjournalPaymentID($id){
         $sql = " SELECT *   
         FROM tb_journal_cash_payment_list 
         LEFT JOIN tb_check_pay ON tb_journal_cash_payment_list.journal_cheque_pay_id = tb_check_pay.check_pay_id
         LEFT JOIN tb_bank_account ON tb_check_pay.bank_account_id = tb_bank_account.bank_account_id
-        WHERE journal_cash_payment_id = '$id' AND tb_journal_cash_payment_list.journal_cheque_pay_id > 0
+        WHERE journal_cash_payment_id = '$id' AND tb_journal_cash_payment_list.journal_cheque_pay_id > '0' 
+        GROUP BY check_pay_id 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -159,7 +195,48 @@ class CheckPayModel extends BaseModel{
         FROM tb_journal_cash_receipt_list 
         LEFT JOIN tb_check_pay ON tb_journal_cash_receipt_list.journal_cheque_pay_id = tb_check_pay.check_pay_id
         LEFT JOIN tb_bank_account ON tb_check_pay.bank_account_id = tb_bank_account.bank_account_id
-        WHERE journal_cash_receipt_id = '$id' AND tb_journal_cash_receipt_list.journal_cheque_pay_id > 0
+        WHERE journal_cash_receipt_id = '$id' AND tb_journal_cash_receipt_list.journal_cheque_pay_id > '0' 
+        GROUP BY check_pay_id 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getCheckPayViewListByjournalPurchaseID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_purchase_list 
+        LEFT JOIN tb_check_pay ON tb_journal_purchase_list.journal_cheque_pay_id = tb_check_pay.check_pay_id
+        LEFT JOIN tb_bank_account ON tb_check_pay.bank_account_id = tb_bank_account.bank_account_id
+        WHERE journal_purchase_id = '$id' AND tb_journal_purchase_list.journal_cheque_pay_id > '0' 
+        GROUP BY check_pay_id 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data [] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getCheckPayViewListByjournalSaleID($id){
+        $sql = " SELECT *   
+        FROM tb_journal_sale_list 
+        LEFT JOIN tb_check_pay ON tb_journal_sale_list.journal_cheque_pay_id = tb_check_pay.check_pay_id
+        LEFT JOIN tb_bank_account ON tb_check_pay.bank_account_id = tb_bank_account.bank_account_id
+        WHERE journal_sale_id = '$id' AND tb_journal_sale_list.journal_cheque_pay_id > '0' 
+        GROUP BY check_pay_id 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -223,129 +300,11 @@ class CheckPayModel extends BaseModel{
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $cheque_pay = $this->getCheckPayPassViewByID($id);
             if($data['check_pay_status'] == '1'){
-                $cheque_pay = $this->getCheckPayPassViewByID($id);
-                $journal = $this->getJournalListByChequePayID($id);
-                for($i = 0 ; $i < count($journal) ; $i++){
-
-                    $sql = " INSERT INTO tb_journal_".$journal[$i]['tb_name']."_list (
-                        journal_".$journal[$i]['tb_name']."_id,
-                        journal_cheque_id,
-                        journal_cheque_pay_id,
-                        journal_invoice_customer_id,
-                        journal_invoice_supplier_id,
-                        account_id,
-                        journal_".$journal[$i]['tb_name']."_list_name,
-                        journal_".$journal[$i]['tb_name']."_list_debit,
-                        journal_".$journal[$i]['tb_name']."_list_credit,
-                        addby,
-                        adddate,
-                        updateby,
-                        lastupdate
-                    ) VALUES (
-                        '".$journal[$i]['journal_id']."',   
-                        '0',
-                        '".$cheque_pay['check_pay_id']."', 
-                        '0', 
-                        '0',  
-                        (SELECT account_id FROM tb_account_setting WHERE tb_account_setting.account_setting_id = '13' LIMIT 0 , 1), 
-                        '".$journal[$i]['journal_name']."', 
-                        '".$journal[$i]['journal_credit']."',
-                        '".$journal[$i]['journal_debit']."',
-                        '".$data['addby']."', 
-                        NOW(), 
-                        '".$data['updateby']."', 
-                        NOW() 
-                    ); 
-                    ";
-
-                    mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
-                    //echo $sql."<br><br>";
-
-                    $sql = " INSERT INTO tb_journal_".$journal[$i]['tb_name']."_list (
-                        journal_".$journal[$i]['tb_name']."_id,
-                        journal_cheque_id,
-                        journal_cheque_pay_id,
-                        journal_invoice_customer_id,
-                        journal_invoice_supplier_id,
-                        account_id,
-                        journal_".$journal[$i]['tb_name']."_list_name,
-                        journal_".$journal[$i]['tb_name']."_list_debit,
-                        journal_".$journal[$i]['tb_name']."_list_credit,
-                        addby,
-                        adddate,
-                        updateby,
-                        lastupdate
-                    ) VALUES (
-                        '".$journal[$i]['journal_id']."',   
-                        '0',
-                        '".$cheque_pay['check_pay_id']."', 
-                        '0', 
-                        '0',  
-                        '".$cheque_pay['account_id']."', 
-                        '".$journal[$i]['journal_name']."', 
-                        '0',
-                        '".$cheque_pay['check_pay_total']."',
-                        '".$data['addby']."', 
-                        NOW(), 
-                        '".$data['updateby']."', 
-                        NOW() 
-                    ); 
-                    ";
-
-                    mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
-
-                    //echo $sql."<br><br>";
-
-                }
+                $this->maintenance->passChequePayment($cheque_pay);
             }else{
-
-                $cheque_pay = $this->getCheckPayPassViewByID($id);
-                $journal = $this->getJournalListByChequePayID($id);
-
-                for($i = 0 ; $i < count($journal) ; $i++){
-                    if($journal[$i-1]['journal_code'] != $journal[$i]['journal_code']){
-                        $sql = " DELETE FROM tb_journal_".$journal[$i]['tb_name']."_list WHERE journal_cheque_pay_id = '".$cheque_pay['check_pay_id']."' AND journal_".$journal[$i]['tb_name']."_id = '".$journal[$i]['journal_id']."'";
-                        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
-    
-                        $sql = " INSERT INTO tb_journal_".$journal[$i]['tb_name']."_list (
-                            journal_".$journal[$i]['tb_name']."_id,
-                            journal_cheque_id,
-                            journal_cheque_pay_id,
-                            journal_invoice_customer_id,
-                            journal_invoice_supplier_id,
-                            account_id,
-                            journal_".$journal[$i]['tb_name']."_list_name,
-                            journal_".$journal[$i]['tb_name']."_list_debit,
-                            journal_".$journal[$i]['tb_name']."_list_credit,
-                            addby,
-                            adddate,
-                            updateby,
-                            lastupdate
-                        ) VALUES (
-                            '".$journal[$i]['journal_id']."', 
-                            '0',  
-                            '".$cheque_pay['check_pay_id']."', 
-                            '0', 
-                            '0', 
-                            (SELECT account_id FROM tb_account_setting WHERE tb_account_setting.account_setting_id = '13' LIMIT 0 , 1), 
-                            '".$journal[$i]['journal_name']."', 
-                            '0',
-                            '".$cheque_pay['check_pay_total']."',
-                            '".$data['addby']."', 
-                            NOW(), 
-                            '".$data['updateby']."', 
-                            NOW() 
-                        ); 
-                        ";
-    
-                        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
-                    }
-                   
-                    //echo $sql."<br><br>";
-
-                }
-
+                $this->maintenance->unpassChequePayment($cheque_pay['check_pay_code']);  
             }
            return true;
         }else {
@@ -454,133 +413,6 @@ class CheckPayModel extends BaseModel{
        }
    }
 
-    function getJournalListByChequePayID($id){
-        //------------------------- General Journal ------------------------------------------------------------- 
-        $sql_general = " SELECT 
-        tb_journal_general.journal_general_id as journal_id,
-        'general' as tb_name,
-        journal_general_code as journal_code, 
-        journal_general_date as journal_date,
-        journal_general_name  as journal_name,
-        account_id,
-        journal_general_list_name as journal_list_name,
-        IFNULL(SUM(journal_general_list_debit),0) as journal_debit,
-        IFNULL(SUM(journal_general_list_credit),0) as journal_credit 
-        FROM tb_journal_general  
-        LEFT JOIN tb_journal_general_list ON tb_journal_general_list.journal_general_id = tb_journal_general.journal_general_id  
-        WHERE  journal_cheque_pay_id = '$id' 
-        GROUP BY tb_journal_general_list.journal_general_list_id 
-        ORDER BY journal_general_code DESC 
-        "; 
-        //------------------------- End General Journal ------------------------------------------------------------- 
-
-
-
-        //------------------------- Purchase Journal -------------------------------------------------------------  
-        $sql_purchase = " SELECT 
-        tb_journal_purchase.journal_purchase_id as journal_id,
-        'purchase' as tb_name,
-        journal_purchase_code as journal_code, 
-        journal_purchase_date as journal_date,
-        journal_purchase_name  as journal_name,
-        account_id,
-        journal_purchase_list_name as journal_list_name,
-        IFNULL(SUM(journal_purchase_list_debit),0) as journal_debit,
-        IFNULL(SUM(journal_purchase_list_credit),0) as journal_credit
-        FROM tb_journal_purchase 
-        LEFT JOIN tb_journal_purchase_list ON tb_journal_purchase_list.journal_purchase_id = tb_journal_purchase.journal_purchase_id  
-        WHERE  journal_cheque_pay_id = '$id' 
-        GROUP BY tb_journal_purchase_list.journal_purchase_list_id 
-        ORDER BY journal_purchase_code DESC 
-        "; 
-        //------------------------- End Purchase Journal -------------------------------------------------------------
-
-
-
-        //------------------------- Sale Journal ------------------------------------------------------------- 
-        $sql_sale = " SELECT 
-        tb_journal_sale.journal_sale_id as journal_id,
-        'sale' as tb_name,
-        journal_sale_code as journal_code, 
-        journal_sale_date as journal_date,
-        journal_sale_name  as journal_name,
-        account_id,
-        journal_sale_list_name as journal_list_name,
-        IFNULL(SUM(journal_sale_list_debit),0) as journal_debit,
-        IFNULL(SUM(journal_sale_list_credit),0) as journal_credit
-        FROM tb_journal_sale 
-        LEFT JOIN tb_journal_sale_list ON tb_journal_sale_list.journal_sale_id = tb_journal_sale.journal_sale_id  
-        WHERE  journal_cheque_pay_id = '$id' 
-        GROUP BY tb_journal_sale_list.journal_sale_list_id 
-        ORDER BY journal_sale_code DESC 
-        "; 
-        //------------------------- End Sale Journal -------------------------------------------------------------
-
-
-
-        //------------------------- Cash Payment Journal ------------------------------------------------------------- 
-        $sql_cash_payment = " SELECT 
-        tb_journal_cash_payment.journal_cash_payment_id as journal_id,
-        'cash_payment' as tb_name, 
-        journal_cash_payment_code as journal_code, 
-        journal_cash_payment_date as journal_date,
-        journal_cash_payment_name  as journal_name,
-        account_id,
-        journal_cash_payment_list_name as journal_list_name,
-        IFNULL(SUM(journal_cash_payment_list_debit),0) as journal_debit,
-        IFNULL(SUM(journal_cash_payment_list_credit),0) as journal_credit
-        FROM tb_journal_cash_payment 
-        LEFT JOIN tb_journal_cash_payment_list ON tb_journal_cash_payment_list.journal_cash_payment_id = tb_journal_cash_payment.journal_cash_payment_id  
-        WHERE  journal_cheque_pay_id = '$id' 
-        GROUP BY tb_journal_cash_payment_list.journal_cash_payment_list_id 
-        ORDER BY journal_cash_payment_code DESC 
-        "; 
-        //------------------------- End Cash Payment Journal -------------------------------------------------------------
-
-
-
-        //------------------------- Cash Receipt Journal ------------------------------------------------------------- 
-        $sql_cash_receipt = " SELECT
-        tb_journal_cash_receipt.journal_cash_receipt_id as journal_id,
-        'cash_receipt' as tb_name, 
-        journal_cash_receipt_code as journal_code, 
-        journal_cash_receipt_date as journal_date,
-        journal_cash_receipt_name  as journal_name,
-        account_id,
-        journal_cash_receipt_list_name as journal_list_name,
-        IFNULL(SUM(journal_cash_receipt_list_debit),0) as journal_debit,
-        IFNULL(SUM(journal_cash_receipt_list_credit),0) as journal_credit
-        FROM tb_journal_cash_receipt 
-        LEFT JOIN tb_journal_cash_receipt_list ON tb_journal_cash_receipt_list.journal_cash_receipt_id = tb_journal_cash_receipt.journal_cash_receipt_id  
-        WHERE  journal_cheque_pay_id = '$id' 
-        GROUP BY tb_journal_cash_receipt_list.journal_cash_receipt_list_id 
-        ORDER BY journal_cash_receipt_code DESC 
-        "; 
-        //------------------------- End Cash Receipt Journal -------------------------------------------------------------
-
-
-       $sql =" SELECT *
-               FROM   (($sql_general)  
-               UNION   ALL  ($sql_purchase) 
-               UNION   ALL  ($sql_sale) 
-               UNION   ALL  ($sql_cash_payment) 
-               UNION   ALL  ($sql_cash_receipt)) as tb_journal    
-               ORDER BY journal_code ASC
-        "; 
-
-       //echo $sql."<br><br>";
-
-       if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-           $data = [];
-           while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-               $data [] = $row;
-           }
-           $result->close();
-           return $data;
-       }
-   }
-
-
 
     function insertCheckPay($data = []){
         $sql = " INSERT INTO tb_check_pay (
@@ -624,14 +456,6 @@ class CheckPayModel extends BaseModel{
     function deleteCheckPayByID($id){
         $sql = " DELETE FROM tb_check_pay WHERE check_pay_id = '$id' ";
         if ( mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)){
-            $journal = $this->getJournalListByChequePayID($id);
-
-            for($i = 0 ; $i < count($journal) ; $i++){
-                if($journal[$i-1]['journal_code'] != $journal[$i]['journal_code']){
-                    $sql = " DELETE FROM tb_journal_".$journal[$i]['tb_name']."_list WHERE journal_cheque_id = '".$id."' AND journal_".$journal[$i]['tb_name']."_id = '".$journal[$i]['journal_id']."'";
-                    mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
-                }
-            }
             return true;
         }else{
             return false;

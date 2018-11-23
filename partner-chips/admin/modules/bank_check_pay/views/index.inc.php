@@ -27,14 +27,47 @@ $paper = $paper_model->getPaperByID('24');
 
 $check_pay_id = $_GET['id'];
 
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action'])){
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
     $supplier_id = $_GET['supplier_id'];
-    $keyword = $_GET['keyword'];
 
     $suppliers=$supplier_model->getSupplierBy();
-    $checks = $check_model->getCheckPayBy('0',$date_start,$date_end,$supplier_id,$keyword);
+    $checks = $check_model->getCheckPayBy('0',$date_start,$date_end,$supplier_id,$keyword,'',$lock_1,$lock_2);
     $cheque_journals = [];
     for($i=0; $i < count($checks); $i++){
         $cheque_journals[$checks[$i]['check_pay_id']] = $check_model->getJournalByChequePayID($checks[$i]['check_pay_id']);
@@ -144,13 +177,32 @@ if(!isset($_GET['action'])){
     }
 
 }else{
-    $date_start = $_GET['date_start'];
-    $date_end = $_GET['date_end'];
-    $supplier_id = $_GET['supplier_id'];
-    $keyword = $_GET['keyword'];
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
 
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
+    $supplier_id = $_GET['supplier_id'];
     $suppliers=$supplier_model->getSupplierBy();
-    $checks = $check_model->getCheckPayBy('0',$date_start,$date_end,$supplier_id,$keyword);
+    $checks = $check_model->getCheckPayBy('0',$date_start,$date_end,$supplier_id,$keyword,'',$lock_1,$lock_2);
     for($i=0; $i < count($checks); $i++){
         $cheque_journals[$checks[$i]['check_pay_id']] = $check_model->getJournalByChequePayID($checks[$i]['check_pay_id']);
     }

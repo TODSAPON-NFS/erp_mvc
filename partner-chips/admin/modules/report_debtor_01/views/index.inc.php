@@ -13,9 +13,21 @@ $customer_model = new CustomerModel;
 $debtor_report_model = new DebtorReportModel;
 
 
+if(!isset($_GET['date_start'])){
+    $date_start = $_SESSION['date_start'];
+}else{
+    $date_start = $_GET['date_start'];
+    $_SESSION['date_start'] = $date_start;
+}
 
-$date_start = $_GET['date_start'];
-$date_end = $_GET['date_end'];
+
+if(!isset($_GET['date_end'])){
+    $date_end = $_SESSION['date_end'];
+}else{
+    $date_end = $_GET['date_end'];
+    $_SESSION['date_end'] = $date_end;
+}
+ 
 
 if($date_start == ""){
     $date_start = date('01-m-Y'); 

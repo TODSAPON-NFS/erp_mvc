@@ -9,10 +9,20 @@ class JournalPurchaseModel extends BaseModel{
         }
     }
 
-    function getJournalPurchaseBy($date_start = "", $date_end = "",$keyword = ""){
+    function getJournalPurchaseBy($date_start = "", $date_end = "",$keyword = "", $lock_1 = "0", $lock_2 = "0"){
 
 
         $str_date = "";
+
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0') ";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
 
         if($date_start != "" && $date_end != ""){
             $str_date = "AND STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
@@ -35,10 +45,12 @@ class JournalPurchaseModel extends BaseModel{
         FROM tb_journal_purchase  
         LEFT JOIN tb_journal_purchase_list ON tb_journal_purchase_list.journal_purchase_id = tb_journal_purchase.journal_purchase_id
         LEFT JOIN tb_invoice_supplier ON tb_journal_purchase.invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id 
+        LEFT JOIN tb_paper_lock ON SUBSTRING(tb_journal_purchase.journal_purchase_date,3,9)=SUBSTRING(tb_paper_lock.paper_lock_date,3,9) 
         WHERE ( 
                 journal_purchase_code LIKE ('%$keyword%') 
             OR  journal_purchase_name LIKE ('%$keyword%') 
         ) 
+        $str_lock 
         $str_date 
         GROUP BY tb_journal_purchase.journal_purchase_id 
         ORDER BY journal_purchase_code DESC 

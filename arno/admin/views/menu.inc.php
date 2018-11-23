@@ -559,13 +559,15 @@
                                     </ul>
                                 </li>
                                 
-
+<!--
                                 <li>
                                     <a href="?app=other_expense" <?PHP if($_GET['app'] == "other_expense"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ค่าใช้จ่ายอื่นๆ</a>
                                 </li>
+
                                 <li>
                                     <a href="?app=credit_purchasing" <?PHP if($_GET['app'] == "credit_purchasing"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ซื้อเงินเชื่อ</a>
                                 </li>
+-->
                                 <li>
                                     <a href="?app=journal_general" <?PHP if($_GET['app'] == "journal_general"){?> class="active" <?PHP } ?> ><i class="fa fa-book" aria-hidden="true"></i> สมุดรายวันทั่วไป</a>
                                 </li>

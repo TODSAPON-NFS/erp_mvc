@@ -13,7 +13,7 @@
                     <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีขาย</h4>
                 </div>
                 <div class="col-md-4"> 
-                      
+                    <input id="invoice_customer_code_search" name="invoice_customer_code_search" class="form-control"   >
                 </div>
                 <div class="col-md-1" align="right"> 
                     <button class="btn btn-danger"  onclick="get_invoice_customer_id(this)" >Get Invoice</button> 

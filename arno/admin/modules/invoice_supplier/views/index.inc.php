@@ -53,6 +53,19 @@ $sort = $_GET['sort'];
 $vat = 7;
 $first_char = "RR";
 $stock_group_id = 0;
+
+if($license_purchase_page == "Medium" || $license_purchase_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
 
     if(!isset($_GET['date_start'])){
@@ -82,7 +95,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 
     $suppliers=$supplier_model->getSupplierBy();
 
-    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy($date_start,$date_end,$supplier_id,$keyword);
+    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy($date_start,$date_end,$supplier_id,$keyword,"","0",$lock_1,$lock_2);
     $supplier_orders_in = $invoice_supplier_model->getSupplierOrder("ภายในประเทศ");
     $supplier_orders_out = $invoice_supplier_model->getSupplierOrder("ภายนอกประเทศ");
     $purchase_orders_in = $invoice_supplier_model->getPurchaseOrder("ภายในประเทศ");
@@ -548,7 +561,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 
     $suppliers=$supplier_model->getSupplierBy();
 
-    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy($date_start,$date_end,$supplier_id,$keyword);
+    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy($date_start,$date_end,$supplier_id,$keyword,"","0",$lock_1,$lock_2);
     $supplier_orders_in = $invoice_supplier_model->getSupplierOrder("ภายในประเทศ");
     $supplier_orders_out = $invoice_supplier_model->getSupplierOrder("ภายนอกประเทศ");
     $purchase_orders_in = $invoice_supplier_model->getPurchaseOrder("ภายในประเทศ");

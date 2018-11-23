@@ -14,11 +14,22 @@ class InvoiceCustomerModel extends BaseModel{
         $this->maintenance_stock =  new MaintenanceStockModel;
     }
 
-    function getInvoiceCustomerBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = "",$begin = "0"){
+    function getInvoiceCustomerBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = "",$begin = "0", $lock_1 = "0", $lock_2 = "0" ){
 
         $str_customer = "";
         $str_date = "";
         $str_user = "";
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0')";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
+
+
 
         if($date_start != "" && $date_end != ""){
             $str_date = "AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
@@ -52,16 +63,18 @@ class InvoiceCustomerModel extends BaseModel{
         LEFT JOIN tb_user as tb1 ON tb_invoice_customer.employee_id = tb1.user_id 
         LEFT JOIN tb_customer as tb2 ON tb_invoice_customer.customer_id = tb2.customer_id 
         LEFT JOIN tb_invoice_customer_list ON tb_invoice_customer.invoice_customer_id = tb_invoice_customer_list.invoice_customer_id 
-        LEFT JOIN tb_product ON tb_invoice_customer_list.product_id = tb_product.product_id  
+        LEFT JOIN tb_product ON tb_invoice_customer_list.product_id = tb_product.product_id   
+        LEFT JOIN tb_paper_lock ON SUBSTRING(tb_invoice_customer.invoice_customer_date,3,9)=SUBSTRING(tb_paper_lock.paper_lock_date,3,9) 
         WHERE ( 
             invoice_customer_code LIKE ('%$keyword%') 
             OR  product_code LIKE ('%$keyword%') 
             OR  product_name LIKE ('%$keyword%') 
         ) 
         AND invoice_customer_begin = '$begin' 
+        $str_lock 
         $str_customer 
         $str_date 
-        $str_user  
+        $str_user   
         GROUP BY tb_invoice_customer.invoice_customer_id
         ORDER BY invoice_customer_code ASC 
          ";

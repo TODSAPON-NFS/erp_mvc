@@ -28,6 +28,18 @@ $paper = $paper_model->getPaperByID('23');
 
 $check_id = $_GET['id'];
 
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action'])){
     if(!isset($_GET['date_start'])){
         $date_start = $_SESSION['date_start'];
@@ -55,7 +67,7 @@ if(!isset($_GET['action'])){
     $customer_id = $_GET['customer_id'];
     
     $customers=$customer_model->getCustomerBy();
-    $checks = $check_model->getCheckBy('0',$date_start,$date_end,$customer_id,$keyword);
+    $checks = $check_model->getCheckBy('0',$date_start,$date_end,$customer_id,$keyword,'','',$lock_1,$lock_2);
     $cheque_journals = [];
     for($i=0; $i < count($checks); $i++){
         $cheque_journals[$checks[$i]['check_id']] = $check_model->getJournalByChequeID($checks[$i]['check_id']);
@@ -195,7 +207,7 @@ if(!isset($_GET['action'])){
     $customer_id = $_GET['customer_id'];
     
     $customers=$customer_model->getCustomerBy();
-    $checks = $check_model->getCheckBy('0',$date_start,$date_end,$customer_id,$keyword);
+    $checks = $check_model->getCheckBy('0',$date_start,$date_end,$customer_id,$keyword,'','',$lock_1,$lock_2);
     $cheque_journals = [];
     for($i=0; $i < count($checks); $i++){
         $cheque_journals[$checks[$i]['check_id']] = $check_model->getJournalByChequeID($checks[$i]['check_id']);

@@ -53,6 +53,18 @@ $account_setting['vat_sale_account'] = $account_setting_model->getAccountSetting
 $journal_sale_id = $_GET['id'];
 $target_dir = "../upload/journal_sale/";
 
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action'])){
 
     if(!isset($_GET['date_start'])){
@@ -80,7 +92,7 @@ if(!isset($_GET['action'])){
 
     $page_size = 50;
 
-    $journal_sales = $journal_sale_model->getJournalSaleBy($date_start,$date_end,$keyword);
+    $journal_sales = $journal_sale_model->getJournalSaleBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_sales)/$page_size);
     if(count($journal_sales)%$page_size > 0){
@@ -142,7 +154,7 @@ if(!isset($_GET['action'])){
     $journal_sale_lists = $journal_sale_list_model->getJournalSaleListBy($journal_sale_id); 
 
     
-    $journal_sales = $journal_sale_model->getJournalSaleBy();
+    $journal_sales = $journal_sale_model->getJournalSaleBy('','','',$lock_1,$lock_2);
 
     for($i = 0 ; $i < count($journal_sales) ; $i++){
         if($journal_sale_id == $journal_sales[$i]['journal_sale_id']){
@@ -360,7 +372,7 @@ if(!isset($_GET['action'])){
 
     $page_size = 50;
 
-    $journal_sales = $journal_sale_model->getJournalSaleBy($date_start,$date_end,$keyword);
+    $journal_sales = $journal_sale_model->getJournalSaleBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_sales)/$page_size);
     if(count($journal_sales)%$page_size > 0){

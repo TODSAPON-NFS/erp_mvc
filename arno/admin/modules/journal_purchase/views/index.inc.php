@@ -53,6 +53,18 @@ $account_setting['vat_sale_account'] = $account_setting_model->getAccountSetting
 $journal_purchase_id = $_GET['id'];
 $target_dir = "../upload/journal_purchase/";
 
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action'])){
 
     if(!isset($_GET['date_start'])){
@@ -80,7 +92,7 @@ if(!isset($_GET['action'])){
 
     $page_size = 50;
 
-    $journal_purchases = $journal_purchase_model->getJournalPurchaseBy($date_start,$date_end,$keyword);
+    $journal_purchases = $journal_purchase_model->getJournalPurchaseBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_purchases)/$page_size);
     if(count($journal_purchases)%$page_size > 0){
@@ -142,7 +154,7 @@ if(!isset($_GET['action'])){
     $journal_purchase_lists = $journal_purchase_list_model->getJournalPurchaseListBy($journal_purchase_id); 
 
     
-    $journal_purchases = $journal_purchase_model->getJournalPurchaseBy();
+    $journal_purchases = $journal_purchase_model->getJournalPurchaseBy('','','',$lock_1,$lock_2);
 
     for($i = 0 ; $i < count($journal_purchases) ; $i++){
         if($journal_purchase_id == $journal_purchases[$i]['journal_purchase_id']){
@@ -361,7 +373,7 @@ if(!isset($_GET['action'])){
 
     $page_size = 50;
 
-    $journal_purchases = $journal_purchase_model->getJournalPurchaseBy($date_start,$date_end,$keyword);
+    $journal_purchases = $journal_purchase_model->getJournalPurchaseBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_purchases)/$page_size);
     if(count($journal_purchases)%$page_size > 0){

@@ -11,6 +11,17 @@ $currencies_model = new CurrencyModel;
 $date_time_function = new DateTimeFunction;
 $exchange_rate_baht_model = new ExchangeRateBahtModel;
 
+if($license_purchase_page == "Medium" || $license_purchase_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
 
 if(!isset($_GET['date_start'])){
     $date_start = $_SESSION['date_start'];
@@ -41,7 +52,7 @@ $end = $date_end;
 $exchange_rate_baht_id = $_GET['id'];
 
 if(!isset($_GET['action'])){
-    $exchange_rate_bahts = $exchange_rate_baht_model->getExchangeRateBahtByDate($start, $end);
+    $exchange_rate_bahts = $exchange_rate_baht_model->getExchangeRateBahtByDate($start, $end,$lock_1,$lock_2);
     $currencies = $currencies_model->getCurrencyBy();
     if($exchange_rate_baht_id != ""){
         $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtById($exchange_rate_baht_id); 
@@ -49,7 +60,7 @@ if(!isset($_GET['action'])){
     require_once($path.'view.inc.php');
 
 }else if($_GET['action'] == 'update'){
-    $exchange_rate_bahts = $exchange_rate_baht_model->getExchangeRateBahtByDate($start, $end);
+    $exchange_rate_bahts = $exchange_rate_baht_model->getExchangeRateBahtByDate($start, $end,$lock_1,$lock_2);
     $currencies = $currencies_model->getCurrencyBy();
     if($exchange_rate_baht_id != ""){
         $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtById($exchange_rate_baht_id); 
@@ -99,7 +110,7 @@ if(!isset($_GET['action'])){
 
 }else{
 
-    $exchange_rate_bahts = $exchange_rate_baht_model->getExchangeRateBahtByDate($start, $end);
+    $exchange_rate_bahts = $exchange_rate_baht_model->getExchangeRateBahtByDate($start, $end,$lock_1,$lock_2);
     $currencies = $currencies_model->getCurrencyBy();
     if($exchange_rate_baht_id != ""){
         $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtById($exchange_rate_baht_id);

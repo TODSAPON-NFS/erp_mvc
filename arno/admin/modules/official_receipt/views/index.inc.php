@@ -34,6 +34,18 @@ $notification_id = $_GET['notification'];
 $customer_id = $_GET['customer_id'];
 $vat = 7; 
 
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
 
     if(!isset($_GET['date_start'])){
@@ -62,7 +74,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $customer_id = $_GET['customer_id'];
     $customers=$customer_model->getCustomerBy();
 
-    $official_receipts = $official_receipt_model->getOfficialReceiptBy($date_start,$date_end,$customer_id,$keyword);
+    $official_receipts = $official_receipt_model->getOfficialReceiptBy($date_start,$date_end,$customer_id,$keyword,$lock_1,$lock_2);
     $customer_orders = $official_receipt_model->getCustomerOrder();
     require_once($path.'view.inc.php');
 
@@ -304,7 +316,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $customer_id = $_GET['customer_id'];
     $customers=$customer_model->getCustomerBy();
 
-    $official_receipts = $official_receipt_model->getOfficialReceiptBy($date_start,$date_end,$customer_id,$keyword);
+    $official_receipts = $official_receipt_model->getOfficialReceiptBy($date_start,$date_end,$customer_id,$keyword,$lock_1,$lock_2);
     $customer_orders = $official_receipt_model->getCustomerOrder();
     require_once($path.'view.inc.php');
 

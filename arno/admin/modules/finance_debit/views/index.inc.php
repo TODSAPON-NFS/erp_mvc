@@ -58,6 +58,18 @@ $notification_id = $_GET['notification'];
 $customer_id = $_GET['customer_id'];
 $vat = 7; 
 
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action'])){
 
     if(!isset($_GET['date_start'])){
@@ -88,7 +100,7 @@ if(!isset($_GET['action'])){
 
     $customers=$customer_model->getCustomerBy();
 
-    $finance_debits = $finance_debit_model->getFinanceDebitBy($date_start,$date_end,$customer_id,$keyword);
+    $finance_debits = $finance_debit_model->getFinanceDebitBy($date_start,$date_end,$customer_id,$keyword,"",$lock_1,$lock_2);
     $customer_orders = $finance_debit_model->getCustomerOrder();
 
     if($_GET['page'] == '' || $_GET['page'] == '0'){
@@ -839,7 +851,7 @@ if(!isset($_GET['action'])){
 
     $customers=$customer_model->getCustomerBy();
 
-    $finance_debits = $finance_debit_model->getFinanceDebitBy($date_start,$date_end,$customer_id,$keyword);
+    $finance_debits = $finance_debit_model->getFinanceDebitBy($date_start,$date_end,$customer_id,$keyword,"",$lock_1,$lock_2);
     $customer_orders = $finance_debit_model->getCustomerOrder();
 
     if($_GET['page'] == '' || $_GET['page'] == '0'){

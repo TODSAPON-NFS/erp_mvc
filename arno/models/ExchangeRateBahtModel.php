@@ -9,12 +9,24 @@ class ExchangeRateBahtModel extends BaseModel{
         }
     }
 
-    function getExchangeRateBahtByDate($date_start = '', $date_end = ''){
+    function getExchangeRateBahtByDate($date_start = '', $date_end = '', $lock_1 = "0", $lock_2 = "0"){
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0') ";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
+
         $sql = "SELECT * 
         FROM tb_exchange_rate_baht 
-        LEFT JOIN tb_currency ON tb_exchange_rate_baht.currency_id = tb_currency.currency_id  
+        LEFT JOIN tb_currency ON tb_exchange_rate_baht.currency_id = tb_currency.currency_id   
+        LEFT JOIN tb_paper_lock ON SUBSTRING(tb_exchange_rate_baht.exchange_rate_baht_date,3,9)=SUBSTRING(tb_paper_lock.paper_lock_date,3,9) 
         WHERE   STR_TO_DATE(exchange_rate_baht_date,'%d-%m-%Y') >= STR_TO_DATE('$date_start','%d-%m-%Y') 
         AND STR_TO_DATE(exchange_rate_baht_date,'%d-%m-%Y') <= STR_TO_DATE('$date_end','%d-%m-%Y') 
+        $str_lock
         ORDER BY STR_TO_DATE(exchange_rate_baht_date,'%d-%m-%Y')  
         ";
 

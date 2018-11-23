@@ -53,6 +53,18 @@ $account_setting['vat_sale_account'] = $account_setting_model->getAccountSetting
 $journal_general_id = $_GET['id'];
 $target_dir = "../upload/journal_general/";
 
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action'])){
 
     if(!isset($_GET['date_start'])){
@@ -80,7 +92,7 @@ if(!isset($_GET['action'])){
 
     $page_size = 50;
 
-    $journal_generals = $journal_general_model->getJournalGeneralBy($date_start,$date_end,$keyword);
+    $journal_generals = $journal_general_model->getJournalGeneralBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_generals)/$page_size);
     if(count($journal_generals)%$page_size > 0){
@@ -141,7 +153,7 @@ if(!isset($_GET['action'])){
     $journal_general = $journal_general_model->getJournalGeneralByID($journal_general_id);
     $journal_general_lists = $journal_general_list_model->getJournalGeneralListBy($journal_general_id); 
 
-    $journal_generals = $journal_general_model->getJournalGeneralBy();
+    $journal_generals = $journal_general_model->getJournalGeneralBy('','','',$lock_1,$lock_2);
 
     for($i = 0 ; $i < count($journal_generals) ; $i++){
         if($journal_general_id == $journal_generals[$i]['journal_general_id']){
@@ -359,7 +371,7 @@ if(!isset($_GET['action'])){
 
     $page_size = 50;
 
-    $journal_generals = $journal_general_model->getJournalGeneralBy($date_start,$date_end,$keyword);
+    $journal_generals = $journal_general_model->getJournalGeneralBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_generals)/$page_size);
     if(count($journal_generals)%$page_size > 0){

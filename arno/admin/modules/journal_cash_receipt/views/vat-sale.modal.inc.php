@@ -13,7 +13,7 @@
                     <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีขาย</h4>
                 </div>
                 <div class="col-md-4"> 
-                      
+                    <input id="invoice_customer_code_search" name="invoice_customer_code_search" class="form-control"   >
                 </div>
                 <div class="col-md-1" align="right"> 
                     <button class="btn btn-danger"  onclick="get_invoice_customer_id(this)" >Get Invoice</button> 
@@ -190,7 +190,7 @@ $('#invoice_customer_code_search').easyAutocomplete(invoice_customer_options);
 
 function sale_duty_date(){
     var d = $('#invoice_customer_date').val().toString().split("-");
-    $('#customer_vat_section').val(d[2].substr(2, 2) +  "/" + d[1]);
+    $('#customer_vat_section').val(d[1] +  "/" + d[2].substr(2, 2));
 }
 
 
@@ -256,8 +256,7 @@ function edit_invoice_customer_row(id,journal_id){
     }); 
 }
 
-function add_invoice_customer_row(id,journal_id){
-    
+function add_invoice_customer_row(id,journal_id){ 
     $('#invoice_customer_id').val('0'); 
     $('#invoice_customer_code').val(''); 
     $('#invoice_customer_date').val($('#journal_cash_receipt_date').val());  
@@ -290,6 +289,7 @@ function get_invoice_customer_id(id){
 
 
 function get_invoice_customer_data(id,code){ 
+    alert();
     $.post( "controllers/getInvoiceCustomerByCode.php", { 'invoice_customer_code': code }, function( data ) { 
         if(data !== null){
 

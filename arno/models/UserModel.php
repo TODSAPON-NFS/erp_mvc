@@ -19,9 +19,9 @@ class UserModel extends BaseModel{
         FROM tb_user LEFT JOIN tb_license ON tb_user.license_id = tb_license.license_id 
         WHERE user_username = '$username' 
         AND user_password = '$password' ", MYSQLI_USE_RESULT)) {
-            $data = [];
-            while ($row = mysqli_fetch_array($result,MYSQLI_NUM)){
-                $data[] = $row;
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
             }
             $result->close();
             return $data;

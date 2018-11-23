@@ -13,11 +13,20 @@ class InvoiceSupplierModel extends BaseModel{
         $this->maintenance_stock =  new MaintenanceStockModel;
     }
 
-    function getInvoiceSupplierBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = "",$begin = '0'){
+    function getInvoiceSupplierBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = "",$begin = '0', $lock_1 = "0", $lock_2 = "0" ){
 
         $str_supplier = "";
         $str_date = "";
         $str_user = "";
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0')";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
 
         if($date_start != "" && $date_end != ""){
             $str_date = "AND STR_TO_DATE(invoice_supplier_date_recieve,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(invoice_supplier_date_recieve,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
@@ -55,12 +64,14 @@ class InvoiceSupplierModel extends BaseModel{
         FROM tb_invoice_supplier 
         LEFT JOIN tb_user as tb1 ON tb_invoice_supplier.employee_id = tb1.user_id 
         LEFT JOIN tb_supplier as tb2 ON tb_invoice_supplier.supplier_id = tb2.supplier_id 
+        LEFT JOIN tb_paper_lock ON SUBSTRING(tb_invoice_supplier.invoice_supplier_date_recieve,3,9)=SUBSTRING(tb_paper_lock.paper_lock_date,3,9) 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
             OR  invoice_supplier_code LIKE ('%$keyword%') 
             OR  invoice_supplier_code_gen LIKE ('%$keyword%') 
         ) 
         AND invoice_supplier_begin = '$begin' 
+        $str_lock 
         $str_supplier 
         $str_date 
         $str_user  

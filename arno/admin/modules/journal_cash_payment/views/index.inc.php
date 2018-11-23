@@ -55,6 +55,18 @@ $account_setting['vat_sale_account'] = $account_setting_model->getAccountSetting
 $journal_cash_payment_id = $_GET['id'];
 $target_dir = "../upload/journal_cash_payment/";
 
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
 if(!isset($_GET['action'])){
  
 
@@ -91,7 +103,7 @@ if(!isset($_GET['action'])){
 
     $page_size = 50;
 
-    $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy($date_start,$date_end,$keyword);
+    $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_cash_payments)/$page_size);
     if(count($journal_cash_payments)%$page_size > 0){
@@ -153,7 +165,7 @@ if(!isset($_GET['action'])){
     $journal_cash_payment_lists = $journal_cash_payment_list_model->getJournalCashPaymentListBy($journal_cash_payment_id);
     //$journal_cash_payment_invoices = $journal_cash_payment_invoice_model->getJournalCashPaymentInvoiceBy($journal_cash_payment_id);
  
-    $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy();
+    $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy('','','',$lock_1,$lock_2);
 
     for($i = 0 ; $i < count($journal_cash_payments) ; $i++){
         if($journal_cash_payment_id == $journal_cash_payments[$i]['journal_cash_payment_id']){
@@ -372,7 +384,7 @@ if(!isset($_GET['action'])){
 
     $page_size = 50;
 
-    $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy($date_start,$date_end,$keyword);
+    $journal_cash_payments = $journal_cash_payment_model->getJournalCashPaymentBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
 
     $page_max = (int)(count($journal_cash_payments)/$page_size);
     if(count($journal_cash_payments)%$page_size > 0){

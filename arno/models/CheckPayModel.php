@@ -12,12 +12,22 @@ class CheckPayModel extends BaseModel{
         $this->maintenance = new MaintenanceFinanceModel;
     }
 
-    function getCheckPayBy($check_pay_type = "",$date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$check_pay_status = ""){
+    function getCheckPayBy($check_pay_type = "",$date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$check_pay_status = "", $lock_1 = "0", $lock_2 = "0" ){
 
         $str_supplier = "";
         $str_date = "";
         $str_type = "";
         $str_status = "";
+
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0') ";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
 
         if($date_start != "" && $date_end != ""){
             $str_date = "AND STR_TO_DATE(check_pay_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(check_pay_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
@@ -44,9 +54,11 @@ class CheckPayModel extends BaseModel{
         $sql = " SELECT *
         FROM tb_check_pay 
         LEFT JOIN tb_supplier as tb2 ON tb_check_pay.supplier_id = tb2.supplier_id 
+        LEFT JOIN tb_paper_lock ON SUBSTRING(tb_check_pay.check_pay_date,3,9)=SUBSTRING(tb_paper_lock.paper_lock_date,3,9) 
         WHERE ( 
              check_pay_code LIKE ('%$keyword%') 
         ) 
+        $str_lock 
         $str_type
         $str_status 
         $str_supplier 
@@ -444,14 +456,6 @@ class CheckPayModel extends BaseModel{
     function deleteCheckPayByID($id){
         $sql = " DELETE FROM tb_check_pay WHERE check_pay_id = '$id' ";
         if ( mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)){
-            $journal = $this->getJournalListByChequePayID($id);
-
-            for($i = 0 ; $i < count($journal) ; $i++){
-                if($journal[$i-1]['journal_code'] != $journal[$i]['journal_code']){
-                    $sql = " DELETE FROM tb_journal_".$journal[$i]['tb_name']."_list WHERE journal_cheque_id = '".$id."' AND journal_".$journal[$i]['tb_name']."_id = '".$journal[$i]['journal_id']."'";
-                    mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
-                }
-            }
             return true;
         }else{
             return false;

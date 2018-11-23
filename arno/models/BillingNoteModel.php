@@ -9,11 +9,22 @@ class BillingNoteModel extends BaseModel{
         }
     }
 
-    function getBillingNoteBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = ""){
+    function getBillingNoteBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = "", $lock_1 = "0", $lock_2 = "0"){
 
         $str_customer = "";
         $str_date = "";
         $str_user = "";
+
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0') ";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
+
 
         if($date_start != "" && $date_end != ""){
             $str_date = "AND STR_TO_DATE(billing_note_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(billing_note_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
@@ -39,11 +50,13 @@ class BillingNoteModel extends BaseModel{
         IFNULL(tb2.customer_name_en,'-') as customer_name  
         FROM tb_billing_note 
         LEFT JOIN tb_user as tb1 ON tb_billing_note.employee_id = tb1.user_id 
-        LEFT JOIN tb_customer as tb2 ON tb_billing_note.customer_id = tb2.customer_id 
+        LEFT JOIN tb_customer as tb2 ON tb_billing_note.customer_id = tb2.customer_id  
+        LEFT JOIN tb_paper_lock ON SUBSTRING(tb_billing_note.finance_credit_date,3,9)=SUBSTRING(tb_paper_lock.paper_lock_date,3,9) 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
             OR  billing_note_code LIKE ('%$keyword%') 
         ) 
+        $str_lock 
         $str_customer 
         $str_date 
         $str_user  

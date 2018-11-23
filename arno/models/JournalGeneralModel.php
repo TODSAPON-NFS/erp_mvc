@@ -9,10 +9,20 @@ class JournalGeneralModel extends BaseModel{
         }
     }
 
-    function getJournalGeneralBy($date_start = "", $date_end = "",$keyword = ""){
+    function getJournalGeneralBy($date_start = "", $date_end = "",$keyword = "", $lock_1 = "0", $lock_2 = "0"){
 
 
         $str_date = "";
+
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0') ";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
 
         if($date_start != "" && $date_end != ""){
             $str_date = "AND STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
@@ -32,10 +42,12 @@ class JournalGeneralModel extends BaseModel{
         IFNULL(SUM(journal_general_list_credit),0) as journal_credit
         FROM tb_journal_general 
         LEFT JOIN tb_journal_general_list ON tb_journal_general_list.journal_general_id = tb_journal_general.journal_general_id  
+        LEFT JOIN tb_paper_lock ON SUBSTRING(tb_journal_general.journal_general_date,3,9)=SUBSTRING(tb_paper_lock.paper_lock_date,3,9) 
         WHERE ( 
                 journal_general_code LIKE ('%$keyword%') 
             OR  journal_general_name LIKE ('%$keyword%') 
         ) 
+        $str_lock 
         $str_date 
         GROUP BY tb_journal_general.journal_general_id 
         ORDER BY  journal_general_code DESC 

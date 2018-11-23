@@ -57,6 +57,19 @@ $notification_id = $_GET['notification'];
 $supplier_id = $_GET['supplier_id'];
 $vat = 7; 
 
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_1 = "1";
+}else{
+    $lock_1 = "0";
+}
+
+if($license_account_page == "Medium" || $license_account_page == "High"){
+    $lock_2 = "1";
+}else{
+    $lock_2 = "0";
+}
+
+
 if(!isset($_GET['action'])){
 
     if(!isset($_GET['date_start'])){
@@ -90,7 +103,7 @@ if(!isset($_GET['action'])){
 
     $suppliers=$supplier_model->getSupplierBy();
 
-    $finance_credits = $finance_credit_model->getFinanceCreditBy($date_start,$date_end,$supplier_id,$keyword);
+    $finance_credits = $finance_credit_model->getFinanceCreditBy($date_start,$date_end,$supplier_id,$keyword,"",$lock_1,$lock_2);
     $supplier_orders = $finance_credit_model->getSupplierOrder();
 
     if($_GET['page'] == '' || $_GET['page'] == '0'){
@@ -831,7 +844,7 @@ if(!isset($_GET['action'])){
 
     $suppliers=$supplier_model->getSupplierBy();
 
-    $finance_credits = $finance_credit_model->getFinanceCreditBy($date_start,$date_end,$supplier_id,$keyword);
+    $finance_credits = $finance_credit_model->getFinanceCreditBy($date_start,$date_end,$supplier_id,$keyword,"",$lock_1,$lock_2);
     $supplier_orders = $finance_credit_model->getSupplierOrder();
 
     if($_GET['page'] == '' || $_GET['page'] == '0'){

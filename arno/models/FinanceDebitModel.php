@@ -9,11 +9,21 @@ class FinanceDebitModel extends BaseModel{
         }
     }
 
-    function getFinanceDebitBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = ""){
+    function getFinanceDebitBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = "", $lock_1 = "0", $lock_2 = "0" ){
 
         $str_customer = "";
         $str_date = "";
         $str_user = "";
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0')";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
+
 
         if($date_start != "" && $date_end != ""){
             $str_date = "AND STR_TO_DATE(finance_debit_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(finance_debit_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
@@ -45,16 +55,20 @@ class FinanceDebitModel extends BaseModel{
         LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
         LEFT JOIN tb_customer as tb2 ON tb.customer_id = tb2.customer_id 
         LEFT JOIN tb_journal_cash_receipt ON tb_journal_cash_receipt.finance_debit_id = tb.finance_debit_id 
+        LEFT JOIN tb_paper_lock ON SUBSTRING(tb.finance_debit_date,3,9)=SUBSTRING(tb_paper_lock.paper_lock_date,3,9) 
         WHERE ( 
             CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
             OR  finance_debit_code LIKE ('%$keyword%') 
         ) 
+        $str_lock 
         $str_customer 
         $str_date 
         $str_user  
         GROUP BY tb.finance_debit_id
         ORDER BY finance_debit_code ASC 
          ";
+
+         //echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

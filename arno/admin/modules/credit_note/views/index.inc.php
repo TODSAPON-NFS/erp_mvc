@@ -82,6 +82,15 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $_SESSION['keyword'] = $keyword;
     }
 
+    
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
+    }
+
     $customer_id = $_GET['customer_id'];
 
     $customers=$customer_model->getCustomerBy();
@@ -414,6 +423,16 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         
         $keyword = $_GET['keyword']; 
         $_SESSION['keyword'] = $keyword;
+    }
+
+
+    
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
     }
 
     $customer_id = $_GET['customer_id'];

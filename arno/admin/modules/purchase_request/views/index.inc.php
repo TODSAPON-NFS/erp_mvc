@@ -64,6 +64,14 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
         $_SESSION['keyword'] = $keyword;
     }
 
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
+    }
+
     $customers=$customer_model->getCustomerBy();
     $suppliers=$supplier_model->getSupplierBy();
 
@@ -404,6 +412,14 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
         
         $keyword = $_GET['keyword']; 
         $_SESSION['keyword'] = $keyword;
+    }
+
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
     }
 
     

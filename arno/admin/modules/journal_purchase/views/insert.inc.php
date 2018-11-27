@@ -73,12 +73,29 @@
         });
     } 
 
+    function check_date(id){
+        var val_date = $(id).val();
+        $.post( "controllers/checkPaperLockByDate.php", { 'date': val_date }, function( data ) {  
+            if(data.result){ 
+                alert("This "+val_date+" is locked in the system.");
+                
+                $("#date_check").val("1");
+                //$("#journal_purchase_date").val(data.date_now);
+                $( ".calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                document.getElementById("journal_purchase_date").focus();
+            } else{
+                $("#date_check").val("0"); 
+            }
+        });
+    }
+
     function check(){
 
         var journal_purchase_code = document.getElementById("journal_purchase_code").value;
         var journal_purchase_date = document.getElementById("journal_purchase_date").value;
         var journal_purchase_name = document.getElementById("journal_purchase_name").value;
         var journal_check = document.getElementById("journal_check").value;
+        var date_check = document.getElementById("date_check").value;
         
         var debit_total = parseFloat($('#journal_purchase_list_debit').val( ).toString().replace(new RegExp(',', 'g'),''));
         var credit_total = parseFloat($('#journal_purchase_list_credit').val( ).toString().replace(new RegExp(',', 'g'),''));
@@ -88,7 +105,11 @@
         journal_purchase_name = $.trim(journal_purchase_name);
         
 
-         if(journal_check != ""){
+         if(date_check == "1"){
+            alert("This "+journal_purchase_date+" is locked in the system.");
+            document.getElementById("journal_purchase_date").focus();
+            return false;
+        }else if(journal_check != ""){
             alert("This "+journal_purchase_code+" is already in the system.");
             document.getElementById("journal_purchase_code").focus();
             return false;
@@ -397,7 +418,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขสมุดรายวันซื้อ / Journal Purchase Code <font color="#F00"><b>*</b></font></label>
-                                <input id="journal_purchase_code" name="journal_purchase_code" class="form-control" onchange="check_code(this)" value="<?php echo $last_code;?>" >
+                                <input id="journal_purchase_code" name="journal_purchase_code" class="form-control" value="<?php echo $last_code;?>" onchange="check_code(this)" >
                                 <input id="journal_check" type="hidden" value="" />
                                 <p class="help-block">Example : JG1801001.</p>
                             </div>
@@ -405,7 +426,8 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>วันที่ออกสมุดรายวันซื้อ / Journal Purchase Date</label>
-                                <input type="text" id="journal_purchase_date" name="journal_purchase_date"  class="form-control calendar" value="<?PHP echo $first_date;?>" readonly/>
+                                <input type="text" id="journal_purchase_date" name="journal_purchase_date"  value="<?PHP echo $first_date;?>"  onchange="check_date(this);" class="form-control calendar" readonly/>
+                                <input id="date_check" type="hidden" value="" />
                                 <p class="help-block">31/01/2018</p>
                             </div>
                         </div>

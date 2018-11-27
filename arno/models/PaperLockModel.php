@@ -22,6 +22,39 @@ class PaperLockModel extends BaseModel{
         }
     }
 
+    function checkPaperLockByDate($date, $lock_1 = "0", $lock_2 = "0" ){
+
+        $str_lock = "";
+
+        if($lock_1 == "1" && $lock_2 == "1"){
+            $str_lock = "AND (paper_lock_1 = '0' OR paper_lock_2 = '0')";
+        }else if ($lock_1 == "1") {
+            $str_lock = "AND paper_lock_1 = '0' ";
+        }else if($lock_2 == "1"){
+            $str_lock = "AND paper_lock_2 = '0' ";
+        }
+
+        $sql = "SELECT * 
+                FROM tb_paper_lock 
+                WHERE SUBSTRING(tb_paper_lock.paper_lock_date,3,9) = SUBSTRING('$date',3,9)  
+                $str_lock ";
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            if(count($data) == 0){
+                return true;
+            }else{
+                return false;
+            }
+            
+        }else{
+            return false;
+        }
+    }
+
     function generatePaperLock($date_start){
         date_default_timezone_set('asia/bangkok');
         $sql = "TRUNCATE  tb_paper_lock ;";

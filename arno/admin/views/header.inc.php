@@ -35,9 +35,14 @@
     <!-- Main CSS -->
     <link href="../css/styles.css" rel="stylesheet">
 
+
     
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    
+
+    <script src="../template/dist/js/jquery-ui.js"></script>
 
     <!-- JS file -->
     <script src="../plugins/autocomplete/jquery.easy-autocomplete.min.js"></script> 
@@ -81,3 +86,4 @@
         });
     
     </script>
+

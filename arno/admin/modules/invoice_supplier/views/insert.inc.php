@@ -83,6 +83,23 @@
 
     var data_buffer = [];
 
+    function check_date(id){
+        var val_date = $(id).val();
+        $.post( "controllers/checkPaperLockByDate.php", { 'date': val_date }, function( data ) {  
+            if(data.result){ 
+                alert("This "+val_date+" is locked in the system.");
+                
+                $("#date_check").val("1");
+                //$("#invoice_supplier_date_recieve").val(data.date_now);
+                $( ".calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                document.getElementById("invoice_supplier_date_recieve").focus();
+            } else{
+                $("#date_check").val("0");
+                get_supplier_detail();
+            }
+        });
+    }
+
     function check_code(id){
         var code = $(id).val();
         $.post( "controllers/getInvoiceSupplierByCodeGen.php", { 'invoice_supplier_code': code }, function( data ) {  
@@ -107,7 +124,7 @@
         var invoice_supplier_due = document.getElementById("invoice_supplier_due").value;
         var employee_id = document.getElementById("employee_id").value;
         var invoice_check = document.getElementById("invoice_check").value;
-
+        var date_check = document.getElementById("date_check").value;
         
         supplier_id = $.trim(supplier_id);
         invoice_supplier_code = $.trim(invoice_supplier_code);
@@ -117,12 +134,16 @@
         invoice_supplier_due = $.trim(invoice_supplier_due);
         employee_id = $.trim(employee_id);
 
-        if(invoice_check != ""){
+         if(date_check == "1"){
+            alert("This "+invoice_supplier_date_recieve+" is locked in the system.");
+            document.getElementById("invoice_supplier_date_recieve").focus();
+            return false;
+        }else if(invoice_check != ""){
             alert("This "+invoice_supplier_code_gen+" is already in the system.");
             document.getElementById("invoice_supplier_code_gen").focus();
             return false;
         }else if(supplier_id.length == 0){
-            alert("Please input iupplier.");
+            alert("Please input supplier.");
             document.getElementById("supplier_id").focus();
             return false;
         }else if(invoice_supplier_code.length == 0){
@@ -875,7 +896,8 @@
                                  <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่รับสินค้า / Date recieve</label>
-                                        <input type="text" id="invoice_supplier_date_recieve" name="invoice_supplier_date_recieve" value="<?PHP echo $first_date;?>"  class="form-control calendar" onchange="get_supplier_detail()" readonly/>
+                                        <input type="text" id="invoice_supplier_date_recieve" name="invoice_supplier_date_recieve" value="<?PHP echo $first_date;?>"  class="form-control calendar" onchange="check_date(this);" readonly/>
+                                        <input id="date_check" type="hidden" value="" />
                                         <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>

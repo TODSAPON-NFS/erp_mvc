@@ -23,8 +23,6 @@
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 
-
-    <script src="../template/dist/js/jquery-ui.js"></script>
     <script src="../lib/functions.js"></script>
 
     <!-- Morris Charts JavaScript -->

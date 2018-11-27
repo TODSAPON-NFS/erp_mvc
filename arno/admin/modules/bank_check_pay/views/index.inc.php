@@ -64,6 +64,15 @@ if(!isset($_GET['action'])){
         $_SESSION['keyword'] = $keyword;
     }
 
+    
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
+    }
+
     $supplier_id = $_GET['supplier_id'];
 
     $suppliers=$supplier_model->getSupplierBy();
@@ -198,6 +207,15 @@ if(!isset($_GET['action'])){
         
         $keyword = $_GET['keyword']; 
         $_SESSION['keyword'] = $keyword;
+    }
+
+    
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
     }
 
     $supplier_id = $_GET['supplier_id'];

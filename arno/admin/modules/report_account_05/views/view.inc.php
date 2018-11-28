@@ -118,13 +118,16 @@
                             <td align="center" ><?PHP echo number_format($i + 1,0);?></td>
                             <td><?php echo $journal_reports[$i]['account_code']; ?></td>
                             <td><?php echo $journal_reports[$i]['account_name_th']; ?></td> 
-                            <td align="right"><?php echo number_format($journal_debit,2); ?> </td>
-                            <td align="right"><?php echo number_format($journal_credit,2); ?></td> 
+                            <td align="right"><?php if (number_format($journal_debit,2) != 0 ) {echo number_format($journal_debit,2);} ?> </td>
+                            <td align="right"><?php if (number_format($journal_credit,2) != 0 ){echo number_format($journal_credit,2);} ?></td> 
                             
                         </tr>
                         <?
                         }
+                     
                         ?>
+
+
                     </tbody>
                     <tfoot>
                         <tr>

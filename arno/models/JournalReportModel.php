@@ -560,9 +560,10 @@ class JournalReportModel extends BaseModel{
                 UNION   ALL  ($sql_cash_receipt)) as tb_journal  
                 ON tb_account.account_id = tb_journal.account_id  
                 GROUP BY tb_account.account_id 
+                HAVING  round(account_value,2)  != 0
                 ORDER BY account_code ASC
         ";  
-
+        //echo '<pre>'.$sql.'</pre>';
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

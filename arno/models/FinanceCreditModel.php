@@ -163,6 +163,7 @@ class FinanceCreditModel extends BaseModel{
                     SELECT DISTINCT supplier_id 
                     FROM tb_invoice_supplier
                     LEFT JOIN tb_finance_credit_list ON tb_invoice_supplier.invoice_supplier_id = tb_finance_credit_list.invoice_supplier_id 
+                    WHERE invoice_supplier_begin = 0 
                     GROUP BY tb_invoice_supplier.invoice_supplier_id 
                     HAVING MAX(IFNULL(tb_invoice_supplier.invoice_supplier_net_price,0)) > SUM(IFNULL(finance_credit_list_balance,0)) 
                 ) 
@@ -219,7 +220,7 @@ class FinanceCreditModel extends BaseModel{
         ) 
         GROUP BY tb_invoice_supplier.invoice_supplier_id 
         HAVING MAX(IFNULL(tb_invoice_supplier.invoice_supplier_net_price,0)) - SUM(IFNULL(finance_credit_list_balance,0)) != 0 
-        ORDER BY  invoice_supplier_code ";
+        ORDER BY invoice_supplier_code_gen ";
 
         //echo $sql_supplier;
 

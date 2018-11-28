@@ -376,6 +376,10 @@
                         <a class="btn btn-primary" href="?app=journal_special_02&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
                         <?PHP } ?>
 
+                        
+                        <a class="btn btn-danger" href="print.php?app=report_journal_02&type=id&action=pdf&id=<?php echo $journal_sale_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
+                        
+
                         <a class="btn btn-success" href="?app=journal_special_02&action=insert&id=<?php echo $journal_sale_id;?>" target="_blank" > <i class="fa fa-plus" aria-hidden="true"></i> Copy </a>
 
                         <?PHP if($next_id != ""){?>
@@ -387,7 +391,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <form role="form" method="post" onsubmit="return check();" action="index.php?app=journal_special_02&action=edit&id=<?PHP echo $journal_sale_id; ?>" enctype="multipart/form-data">
-                    <input id="journal_sale_id" name="journal_sale_id" value="<?PHP echo $journal_sale['journal_sale_id']; ?>" />
+                    <input id="journal_sale_id" name="journal_sale_id" value="<?PHP echo $journal_sale['journal_sale_id']; ?>" type="hidden" />
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">

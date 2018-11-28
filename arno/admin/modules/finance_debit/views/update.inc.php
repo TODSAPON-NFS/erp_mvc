@@ -194,8 +194,11 @@
                     document.getElementById("check_all").checked = false;
                     data_buffer = data;
                     var content = "";
+                    $('#table_popup').DataTable().destroy();
                     for(var i = 0; i < data.length ; i++){
-
+                        var finance_debit_list_amount = parseFloat(data[i].finance_debit_list_amount);
+                        var finance_debit_list_paid = parseFloat(data[i].finance_debit_list_paid);
+                        var finance_debit_list_balance = finance_debit_list_amount - finance_debit_list_paid;
                         content += '<tr class="odd gradeX">'+
                                         '<td>'+
                                             '<input type="checkbox" name="p_id" value="'+data[i].billing_note_list_id+'" />'+     
@@ -210,19 +213,28 @@
                                             data[i].finance_debit_list_due +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].finance_debit_list_amount +
+                                        finance_debit_list_amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].finance_debit_list_paid +
+                                        finance_debit_list_paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].finance_debit_list_amount - data[i].finance_debit_list_paid) +
+                                        finance_debit_list_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
                                         '</td>'+
                                     '</tr>';
 
                     }
                     $('#bodyAdd').html(content);
                     $('#modalAdd').modal('show');
+                    $('#table_popup').DataTable({
+                        "columnDefs": [ {
+                            "targets": 'no-sort',
+                            "orderable": false,
+                        } ],
+                        "lengthMenu": [[25, 50, 75, 100, 250, 500, -1 ],[25, 50, 75, 100, 250, 500, 'All' ]],
+                        "pageLength": 100,
+                        responsive: true
+                    });
 
                 }
                 
@@ -249,9 +261,12 @@
             console.log(data);
             if(data.length > 0){
                 data_buffer = data;
+                $('#table_popup').DataTable().destroy();
                 
                 for(var i = 0; i < data.length ; i++){
-
+                    var finance_debit_list_amount = parseFloat(data[i].finance_debit_list_amount);
+                    var finance_debit_list_paid = parseFloat(data[i].finance_debit_list_paid);
+                    var finance_debit_list_balance = finance_debit_list_amount - finance_debit_list_paid;
                     content += '<tr class="odd gradeX">'+
                                     '<td>'+
                                         '<input type="checkbox" name="p_id" value="'+data[i].billing_note_list_id+'" />'+     
@@ -266,20 +281,28 @@
                                         data[i].finance_debit_list_due +
                                     '</td>'+
                                     '<td align="right">'+
-                                        data[i].finance_debit_list_amount +
+                                    finance_debit_list_amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
                                     '</td>'+
                                     '<td align="right">'+
-                                        data[i].finance_debit_list_paid +
+                                    finance_debit_list_paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
                                     '</td>'+
                                     '<td align="right">'+
-                                        (data[i].finance_debit_list_amount - data[i].finance_debit_list_paid) +
+                                    finance_debit_list_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
                                     '</td>'+
                                 '</tr>';
 
                 }
             }
             $('#bodyAdd').html(content);
-            
+            $('#table_popup').DataTable({
+                "columnDefs": [ {
+                    "targets": 'no-sort',
+                    "orderable": false,
+                } ],
+                "lengthMenu": [[25, 50, 75, 100, 250, 500, -1 ],[25, 50, 75, 100, 250, 500, 'All' ]],
+                "pageLength": 100,
+                responsive: true
+            });
         });
         
     }
@@ -582,7 +605,24 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            เพิ่มใบรับชำระหนี้ / Add Finance Debit  
+                <div class="row">
+                    <div class="col-md-8">
+                        เพิ่มใบรับชำระหนี้ / Add Finance Debit  
+                    </div>
+                    <div class="col-md-4" align="right">
+                        <?PHP if($previous_id != ""){?>
+                        <a class="btn btn-primary" href="?app=finance_credit&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
+                        <?PHP } ?>
+
+                        <a class="btn btn-danger" href="print.php?app=report_journal_03&type=id&action=pdf&id=<?php echo $journal_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
+                        
+                        <a class="btn btn-warning" href="?app=journal_special_03&action=update&id=<?php echo $journal_id;?>" target="_blank" > <i class="fa fa-folder-open" aria-hidden="true"></i> สมุดรายวันขาย </a>
+                        
+                        <?PHP if($next_id != ""){?>
+                        <a class="btn btn-primary" href="?app=finance_credit&action=update&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
+                        <?PHP } ?>
+                    </div>
+                </div>  
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -760,28 +800,31 @@
                                             </div>
 
                                             <div  class="modal-body">
-                                            <div class="row">
-                                                <div class="col-md-offset-8 col-md-4" align="right">
-                                                    <input type="text" class="form-control" name="search_pop" onchange="search_pop_like(this)" placeholder="Search"/>
+                                                <div class="row">
+                                                    <div class="col-md-offset-8 col-md-4" align="right">
+                                                        <input type="text" class="form-control" name="search_pop" onchange="search_pop_like(this)" placeholder="Search"/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <br>
-                                            <table width="100%" class="table table-striped table-bordered table-hover" >
-                                                <thead>
-                                                    <tr>
-                                                        <th width="24"><input type="checkbox" value="all" id="check_all" onclick="checkAll(this)" /></th>
-                                                        <th style="text-align:center;">รหัสใบกำกับภาษี <br> (Invoice Number)</th>
-                                                        <th style="text-align:center;">วันที่ออก <br> (Date)</th>
-                                                        <th style="text-align:center;" width="150">กำหนดชำระ <br> (Due Date)</th>
-                                                        <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount) </th>
-                                                        <th style="text-align:center;" width="150">ชำระแล้ว <br> (Paid)</th>
-                                                        <th style="text-align:center;" width="150">ยอดชำระคงเหลือ <br> (Balance)</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="bodyAdd">
+                                                <br>
+                                                
+                                                <div align="left">
+                                                    <table width="100%" class="table table-striped table-bordered table-hover"  id="table_popup">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="24"  class="no-sort" ><input type="checkbox" value="all" id="check_all" onclick="checkAll(this)" /></th>
+                                                                <th style="text-align:center;" width="150">รหัสใบกำกับภาษี <br> (Invoice Number)</th>
+                                                                <th style="text-align:center;" width="150">วันที่ออก <br> (Date)</th>
+                                                                <th style="text-align:center;" width="150">กำหนดชำระ <br> (Due Date)</th>
+                                                                <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount) </th>
+                                                                <th style="text-align:center;" width="150">ชำระแล้ว <br> (Paid)</th>
+                                                                <th style="text-align:center;" width="150">ยอดชำระคงเหลือ <br> (Balance)</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="bodyAdd">
 
-                                                </tbody>
-                                            </table>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
 
                                             <div class="modal-footer">
@@ -911,41 +954,41 @@
                     <br>
                     <div class="row">
                         <div class="col-lg-2">
-                            <div class="form-group">
+                            <div class="form-group" style="display:none;">
                                 <label>ดอกเบี้ย</label>
                                 <input id="finance_debit_interest" name="finance_debit_interest" style="text-align:right;" class="form-control" value="<?PHP echo number_format($finance_debit['finance_debit_interest'],2);?>" onchange="calculatePay()" >
                                 <p class="help-block">Example : 0.00.</p>
                             </div>
                         </div>  
                         <div class="col-lg-2">
-                            <div class="form-group">
+                            <div class="form-group" style="display:none;">
                                 <label>เงินสด</label>
                                 <input id="finance_debit_cash" name="finance_debit_cash" style="text-align:right;" class="form-control" value="<?PHP echo number_format($finance_debit['finance_debit_cash'],2);?>" onchange="calculatePay()" >
                                 <p class="help-block">Example : 0.00.</p>
                             </div>
                         </div>
                         <div class="col-lg-2">
-                            <div class="form-group">
+                            <div class="form-group" style="display:none;">
                                 <label>ชำระโดย (ด้านบน)</label>
                                 <input id="finance_debit_other_pay" name="finance_debit_other_pay" style="text-align:right;" class="form-control" value="<?PHP echo number_format($total,2);?>" readonly >
                                 <p class="help-block">Example : 0.00.</p>
                             </div>
                         </div>
                         <div class="col-lg-2">
-                            <div class="form-group">
+                            <div class="form-group" style="display:none;">
                                 <label>ภาษีหัก ณ ที่รับ</label>
                                 <input id="finance_debit_tax_pay" name="finance_debit_tax_pay"  style="text-align:right;" class="form-control" value="<?PHP echo number_format($finance_debit['finance_debit_tax_pay'],2);?>" onchange="calculatePay()" >
                                 <p class="help-block">Example : 0.00.</p>
                             </div>
                         </div>
                         <div class="col-lg-2">
-                            <div class="form-group">
+                            <div class="form-group" style="display:none;">
                                 <label>ส่วนลดเงินสด</label>
                                 <input id="finance_debit_discount_cash" name="finance_debit_discount_cash" style="text-align:right;" class="form-control" value="<?PHP echo number_format($finance_debit['finance_debit_discount_cash'],2);?>" onchange="calculatePay()" >
                                 <p class="help-block">Example : 0.00.</p>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-2 col-lg-offset-10">
                             <div class="form-group">
                                 <label>ยอดรับจริง</label>
                                 <input id="finance_debit_pay" name="finance_debit_pay" style="text-align:right;" class="form-control" value="<?PHP echo number_format($finance_debit['finance_debit_pay'],2);?>" readonly>

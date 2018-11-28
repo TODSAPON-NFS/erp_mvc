@@ -180,6 +180,19 @@ if(!isset($_GET['action'])){
     $finance_debit_lists = $finance_debit_list_model->getFinanceDebitListBy($finance_debit_id);
     $finance_debit_pays = $finance_debit_pay_model->getFinanceDebitPayBy($finance_debit_id);
 
+    $finance_debits = $finance_debit_model->getFinanceDebitBy('','','','','',$lock_1,$lock_2);
+
+    for($i = 0 ; $i < count($finance_debits) ; $i++){
+        if($finance_debit_id == $finance_debits[$i]['finance_debit_id']){
+            $journal_id = $finance_debits[$i]['journal_cash_receipt_id'];
+            $previous_id = $finance_debits[$i-1]['finance_debit_id'];
+            $previous_code = $finance_debits[$i-1]['finance_debit_code'];
+            $next_id = $finance_debits[$i+1]['finance_debit_id'];
+            $next_code = $finance_debits[$i+1]['finance_debit_code'];
+
+        }
+    }
+
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){

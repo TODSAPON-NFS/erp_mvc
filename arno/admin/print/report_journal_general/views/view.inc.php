@@ -7,7 +7,8 @@ $dr_total = 0;
 $cr_total = 0;
  
  $row_max = count($journal_general_lists) + count($check_pays) + count($checks) + count($invoice_suppliers) + count($invoice_customers);
-
+ $break_page = false;
+ $row_blank = 0;
  while($i <  $row_max ){
     $page_index ++;
     $html[$page_index] = '<style>
@@ -20,7 +21,7 @@ $cr_total = 0;
             font-size:12px;
         }
 
-        th{
+        th , .table tfoot td{
             padding:8px 4px;
             font-size:14px;
             border-top: 1px solid black;
@@ -65,8 +66,8 @@ $cr_total = 0;
             <tr>  
                 <th width="120" align="center" >Account code</th>
                 <th align="center" >Description </th> 
-                <th width="120" align="center" >Dr.</th> 
-                <th width="120" align="center" >Cr.</th>  
+                <th width="120px" align="center" >Dr.</th> 
+                <th width="120px" align="center" >Cr.</th>  
             </tr>
         </thead>
 
@@ -76,98 +77,45 @@ $cr_total = 0;
   
     $dr_page = 0;
     $cr_page = 0;
-    for( ;$i < count($journal_general_lists) ; $i++){
-        $dr_page +=  $journal_general_lists[$i]['journal_general_list_debit'];
-        $cr_page +=  $journal_general_lists[$i]['journal_general_list_credit'];
-        $dr_total +=  $journal_general_lists[$i]['journal_general_list_debit'];
-        $cr_total +=  $journal_general_lists[$i]['journal_general_list_credit'];
 
-        if($journal_general_lists[$i]['journal_general_list_debit'] == 0){
-            $journal_list_debit = "";
-        }else{
-            $journal_list_debit = number_format($journal_general_lists[$i]['journal_general_list_debit'],2);
-        }
-
-        if($journal_general_lists[$i]['journal_general_list_credit'] == 0){
-            $journal_list_credit = "";
-        }else{
-            $journal_list_credit = number_format($journal_general_lists[$i]['journal_general_list_credit'],2);
-        }
-
-        $html[$page_index] .= ' 
-        <tr>  
-            <td  align="left" height="20px">'.$journal_general_lists[$i]['account_code'].'</td>
-            <td  align="left">'.$journal_general_lists[$i]['account_name_th'].'</td> 
-            <td  align="right" >
-                '.$journal_list_debit.'
-            </td>
-            <td  align="right" >
-                '. $journal_list_credit .' 
-            </td> 
-        </tr> 
-        ';
-
-        $line ++;
-        if($line % $lines == 0){
-            $i++;
-
-            $html[$page_index] .= ' 
-                    </tbody>
-                    <tfoot>
-                        <tr> 
-                            <td colspan="2" align="left" height="20px"  > <b>รวมแต่ละหน้า</b> </td>
-                            <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($dr_page,2).'</td>
-                            <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($cr_page,2).'</td> 
-                        </tr>
-                    </tfoot>
-                </table>
-            ';
-
-            break;
-        }
-
-    } 
-
-    if(count($checks) > 0){
-        $html[$page_index] .= ' 
-            <tr> 
-                <td width="120" align="center" height="20px"  > </td>
-                <td width="120" align="center" > </td> 
-                <td width="120" align="center" > </td> 
-                <td width="120" align="center" > </td>  
-            </tr> 
-            <tr> 
-                <td width="120" align="center" height="20px"  >Cheque Code .</td>
-                <td width="120" align="center" >Cheque Date. </td> 
-                <td width="120" align="center" >amount.</td> 
-                <td width="120" align="center" >Remark.</td>  
-            </tr> 
-            <tr> 
-                <td width="120" align="center" height="20px"  > </td>
-                <td width="120" align="center" > </td> 
-                <td width="120" align="center" > </td> 
-                <td width="120" align="center" > </td>  
-            </tr> 
-        ';
-        for(; $i < count($journal_general_lists)  + count($checks) ; $i++){
-            $ii = $i - count($journal_general_lists);
+    if(count($journal_general_lists) > 0 ){
+        $journal_row = 1;
+        for( ;$i < count($journal_general_lists) ; $i++){
+            $dr_page +=  $journal_general_lists[$i]['journal_general_list_debit'];
+            $cr_page +=  $journal_general_lists[$i]['journal_general_list_credit'];
+            $dr_total +=  $journal_general_lists[$i]['journal_general_list_debit'];
+            $cr_total +=  $journal_general_lists[$i]['journal_general_list_credit'];
+    
+    
+            if($journal_general_lists[$i]['journal_general_list_debit'] == 0){
+                $journal_list_debit = "";
+            }else{
+                $journal_list_debit = number_format($journal_general_lists[$i]['journal_general_list_debit'],2);
+            }
+    
+            if($journal_general_lists[$i]['journal_general_list_credit'] == 0){
+                $journal_list_credit = "";
+            }else{
+                $journal_list_credit = number_format($journal_general_lists[$i]['journal_general_list_credit'],2);
+            }
+    
             $html[$page_index] .= ' 
             <tr>  
-                <td  align="left" height="20px" >'.$checks[$ii]['check_code'].'</td>
-                <td  align="left">'.$checks[$ii]['check_date'].'</td> 
+                <td  align="left" height="20px">'.$journal_general_lists[$i]['account_code'].'</td>
+                <td  align="left">'.$journal_general_lists[$i]['account_name_th'].'</td> 
                 <td  align="right" >
-                    '.number_format($checks[$ii]['check_total'],2).'
+                    '.$journal_list_debit.'
                 </td>
                 <td  align="right" >
-                    '.$checks[$ii]['check_remark'] .' 
+                    '. $journal_list_credit .' 
                 </td> 
             </tr> 
             ';
-
+    
             $line ++;
             if($line % $lines == 0){
                 $i++;
-
+                $break_page = true;
                 $html[$page_index] .= ' 
                         </tbody>
                         <tfoot>
@@ -179,45 +127,52 @@ $cr_total = 0;
                         </tfoot>
                     </table>
                 ';
-
+    
                 break;
             }
+    
         } 
     }
-     
-    if(count($check_pays) > 0){
+    
+
+    if($break_page){
+        $break_page = false; 
+        continue;
+    }
+
+    if(count($checks) > 0){
+        $check_row = 1;
         $html[$page_index] .= ' 
             <tr> 
-                <td width="120" align="center" height="20px"  > </td>
+                <td width="120" align="center"  height="20px"> </td>
                 <td width="120" align="center" > </td> 
                 <td width="120" align="center" > </td> 
                 <td width="120" align="center" > </td>  
             </tr> 
             <tr> 
-                <td width="120" align="center"  height="20px" >Cheque Code .</td>
+                <td width="120" align="center"  height="20px">Cheque Code .</td>
                 <td width="120" align="center" >Cheque Date. </td> 
                 <td width="120" align="center" >amount.</td> 
                 <td width="120" align="center" >Remark.</td>  
             </tr> 
             <tr> 
-                <td width="120" align="center"  height="20px" > </td>
+                <td width="120" align="center"  height="20px"> </td>
                 <td width="120" align="center" > </td> 
                 <td width="120" align="center" > </td> 
                 <td width="120" align="center" > </td>  
             </tr> 
         ';
-        for(; $i < count($journal_general_lists)   + count($checks) + count($check_pays) ; $i++){
-            $ii = $i - count($journal_general_lists) + count($checks) ;
-
+        for(; $i < count($journal_general_lists)  + count($checks) ; $i++){
+            $ii = $i - count($journal_general_lists) ;
             $html[$page_index] .= ' 
             <tr>  
-                <td  align="left" height="20px" >'.$check_pays[$ii]['check_pay_code'].'</td>
-                <td  align="left">'.$check_pays[$ii]['check_pay_date'].'</td> 
+                <td  align="left">'.$checks[$ii]['check_code'].'</td>
+                <td  align="left">'.$checks[$ii]['check_date'].'</td> 
                 <td  align="right" >
-                    '.number_format($check_pays[$ii]['check_pay_total'],2).'
+                    '.number_format($checks[$ii]['check_total'],2).'
                 </td>
-                <td  align="right" >
-                    '.$check_pays[$ii]['check_pay_remark'] .' 
+                <td  style="width:120px" align="left">
+                    '.$checks[$ii]['check_remark'] .' 
                 </td> 
             </tr> 
             ';
@@ -225,12 +180,12 @@ $cr_total = 0;
             $line ++;
             if($line % $lines == 0){
                 $i++;
-
+                $break_page = true;
                 $html[$page_index] .= ' 
                         </tbody>
                         <tfoot>
                             <tr> 
-                                <td colspan="2" align="left" height="20px"  > <b>รวมแต่ละหน้า</b> </td>
+                                <td colspan="2" align="left"  height="20px"> <b>รวมแต่ละหน้า</b> </td>
                                 <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($dr_page,2).'</td>
                                 <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($cr_page,2).'</td> 
                             </tr>
@@ -242,33 +197,104 @@ $cr_total = 0;
             }
         } 
     }
+
+    if($break_page){
+        $break_page = false; 
+        continue;
+    }
      
-    if(count($invoice_suppliers) > 0){
-    
+    if(count($check_pays) > 0){
+        $check_pay_row = 1;
         $html[$page_index] .= ' 
             <tr> 
-                <td width="120" align="center" height="20px"  > </td>
-                <td width="120" align="center" >  </td> 
-                <td width="120" align="center" >  </td> 
+                <td width="120" align="center"  height="10px"> </td>
+                <td width="120" align="center" > </td> 
+                <td width="120" align="center" > </td> 
                 <td width="120" align="center" > </td>  
             </tr> 
             <tr> 
-                <td width="120" align="center" height="20px"  >Tax inv.no.</td>
-                <td width="120" align="center" >Doc dd. </td> 
+                <td width="120" align="center"  height="20px">Cheque Code .</td>
+                <td width="120" align="center" >Cheque Date. </td> 
                 <td width="120" align="center" >amount.</td> 
-                <td width="120" align="center" >VAT amount.</td>  
+                <td width="120" align="center" >Remark.</td>  
             </tr> 
             <tr> 
-                <td width="120" align="center" height="20px"  > </td>
+                <td width="120" align="center"  height="10px"> </td>
                 <td width="120" align="center" > </td> 
                 <td width="120" align="center" > </td> 
                 <td width="120" align="center" > </td>  
             </tr> 
         ';
+        for(; $i < count($journal_general_lists)   + count($checks) + count($check_pays) ; $i++){
+            $ii = $i - count($journal_general_lists) - count($checks) ;
+
+            $html[$page_index] .= ' 
+            <tr>  
+                <td  align="left"  height="20px">'.$check_pays[$ii]['check_pay_code'].'</td>
+                <td  align="left">'.$check_pays[$ii]['check_pay_date'].'</td> 
+                <td  align="right" >
+                    '.number_format($check_pays[$ii]['check_pay_total'],2).'
+                </td>
+                <td  style="width:120px" align="left" >
+                    '.$check_pays[$ii]['check_pay_remark'] .' 
+                </td> 
+            </tr> 
+            ';
+
+            $line ++;
+            if($line % $lines == 0){
+                $i++;
+                $break_page = true;
+                $html[$page_index] .= ' 
+                        </tbody>
+                        <tfoot>
+                            <tr> 
+                                <td colspan="2" align="left" height="20px" > <b>รวมแต่ละหน้า</b> </td>
+                                <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($dr_page,2).'</td>
+                                <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($cr_page,2).'</td> 
+                            </tr>
+                        </tfoot>
+                    </table>
+                ';
+
+                break;
+            }
+        } 
+    }
+
+    if($break_page){
+        $break_page = false; 
+        continue;
+    }
+     
+    if(count($invoice_suppliers) > 0){
+        $invoice_supplier_row = 1;
+        $html[$page_index] .= ' 
+            <tr> 
+                <td width="120" align="center" height="10px" > </td>
+                <td width="120" align="center" >  </td> 
+                <td width="120" align="center" >  </td> 
+                <td width="120" align="center" > </td>  
+            </tr> 
+            <tr> 
+                <td width="120" align="center" height="20px" >Tax inv.no.</td>
+                <td width="120" align="center" >Doc dd. </td> 
+                <td width="120" align="center" >amount.</td> 
+                <td width="120" align="center" >VAT amount.</td>  
+            </tr> 
+            <tr> 
+                <td width="120" align="center" height="10px" > </td>
+                <td width="120" align="center" > </td> 
+                <td width="120" align="center" > </td> 
+                <td width="120" align="center" > </td>  
+            </tr> 
+        ';
+
+        
         
     
         for(; $i < count($journal_general_lists)   + count($checks) + count($check_pays) + count($invoice_suppliers) ; $i++){
-            $ii = $i - count($journal_general_lists) + count($checks) + count($check_pays) ;
+            $ii = $i - count($journal_general_lists)  - count($checks)- count($check_pays) ;
             $html[$page_index] .= ' 
             <tr>   
                 <td  align="left" height="20px" >#ภาษีซื้อ '.$invoice_suppliers[$ii]['invoice_supplier_code'].'</td>
@@ -285,12 +311,12 @@ $cr_total = 0;
             $line ++;
             if($line % $lines == 0){
                 $i++;
-
+                $break_page = true;
                 $html[$page_index] .= ' 
                         </tbody>
                         <tfoot>
                             <tr> 
-                                <td colspan="2" align="left" height="20px"  > <b>รวมแต่ละหน้า</b> </td>
+                                <td colspan="2" align="left" height="20px" > <b>รวมแต่ละหน้า</b> </td>
                                 <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($dr_page,2).'</td>
                                 <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($cr_page,2).'</td> 
                             </tr>
@@ -303,34 +329,39 @@ $cr_total = 0;
         }  
     }
 
+    if($break_page){
+        $break_page = false; 
+        continue;
+    }
+
     
     if(count($invoice_customers) > 0){
-    
+        $invoice_customers = 1;
         $html[$page_index] .= '
             <tr> 
-                <td width="120" align="center" height="20px"  > </td>
+                <td width="120" align="center" height="10px" > </td>
                 <td width="120" align="center" >  </td> 
                 <td width="120" align="center" >  </td> 
                 <td width="120" align="center" > </td>  
             </tr>  
             <tr> 
-                <td width="120" align="center" height="20px"  >Tax inv.no.</td>
+                <td width="120" align="center" height="20px" >Tax inv.no.</td>
                 <td width="120" align="center" >Doc dd. </td> 
                 <td width="120" align="center" >amount.</td> 
                 <td width="120" align="center" >VAT amount.</td>  
             </tr> 
             <tr> 
-                <td width="120" align="center" height="20px"  > </td>
+                <td width="120" align="center" height="10px" > </td>
                 <td width="120" align="center" > </td> 
                 <td width="120" align="center" > </td> 
                 <td width="120" align="center" > </td>  
             </tr> 
         ';  
         for(; $i < count($journal_general_lists)  + count($checks) + count($check_pays) + count($invoice_suppliers) + count($invoice_customers) ; $i++){
-            $ii = $i - count($journal_general_lists) + count($checks) + count($check_pays) + count($invoice_suppliers) ;
+            $ii = $i - count($journal_general_lists)  - count($checks)- count($check_pays)-count($invoice_suppliers) ;
             $html[$page_index] .= ' 
             <tr>   
-                <td  align="left" height="20px" >#ภาษีซื้อ '.$invoice_customers[$i]['invoice_customer_code'].'</td>
+                <td  align="left" height="20px">#ภาษีซื้อ '.$invoice_customers[$i]['invoice_customer_code'].'</td>
                 <td  align="left">'.$invoice_customers[$ii]['invoice_customer_date'].'</td> 
                 <td  align="right" >
                     '.number_format($invoice_customers[$ii]['invoice_customer_total_price'],2).'
@@ -344,12 +375,12 @@ $cr_total = 0;
             $line ++;
             if($line % $lines == 0){
                 $i++;
-
+                $break_page = true;
                 $html[$page_index] .= ' 
                         </tbody>
                         <tfoot>
                             <tr> 
-                                <td colspan="2" align="left" height="20px"  > <b>รวมแต่ละหน้า</b> </td>
+                                <td colspan="2" align="left" height="20px" > <b>รวมแต่ละหน้า</b> </td>
                                 <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($dr_page,2).'</td>
                                 <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($cr_page,2).'</td> 
                             </tr>
@@ -360,8 +391,20 @@ $cr_total = 0;
                 break;
             }
         } 
-    } 
+    }
+    
+    if($break_page){
+        $break_page = false;
+        $page_index ++;
+        continue;
+    }
 
+}
+for(;$i % $lines != 0 ; $i++){
+    $html[$page_index] .= '
+    <tr>
+        <td colspan="4" align="center" height="20px"> </td>
+    </tr> ';
 }
 
 if($page_index == 0){
@@ -369,10 +412,10 @@ if($page_index == 0){
     </tbody>
     <tfoot> 
         <tr>
-            <td colspan="4" align="center" height="20px" > </td>
+            <td colspan="4" align="center" height="10px"> </td>
         </tr>
         <tr> 
-            <td colspan="2" align="left" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" height="20px" ><b>รวมทั้งสิ้น </b> </td>
+            <td colspan="2" align="left" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" height="20px"><b>รวมทั้งสิ้น </b> </td>
             <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($dr_total,2).'</td>
             <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($cr_total,2).'</td> 
         </tr>
@@ -384,15 +427,15 @@ if($page_index == 0){
     </tbody>
     <tfoot>
         <tr> 
-            <td colspan="2" align="left"  > <b>รวมแต่ละหน้า</b> </td>
-            <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;"  height="20px" >'.number_format($dr_page,2).'</td>
+            <td colspan="2" align="left"  height="20px" > <b>รวมแต่ละหน้า</b> </td>
+            <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($dr_page,2).'</td>
             <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($cr_page,2).'</td> 
         </tr>
         <tr>
-            <td colspan="4" align="center" height="20px" > </td>
+            <td colspan="4" align="center" height="10px"> </td>
         </tr>
         <tr> 
-            <td colspan="2" align="left" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" height="20px" ><b>รวมทั้งสิ้น </b> </td>
+            <td colspan="2" align="left" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" height="20px"><b>รวมทั้งสิ้น </b> </td>
             <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($dr_total,2).'</td>
             <td  align="right" style="border-top: 1px solid black;border-bottom: 1px solid black;padding:8px 0px;" >'.number_format($cr_total,2).'</td> 
         </tr>
@@ -408,7 +451,7 @@ $html[$page_index] .= '
 <br>
 <table width="100%">
     <tr> 
-        <td align="right" height="20px"  >
+        <td align="right" >
 
         </td>
         <td align="center" >
@@ -423,7 +466,7 @@ $html[$page_index] .= '
         <td></td>
     </tr>
     <tr> 
-        <td align="right" style="width:120px;" height="20px" >
+        <td align="right" style="width:120px;">
             Prepare by 
         </td>
         <td align="right" style="border-bottom: 1px solid black;width:120px;" >
@@ -438,7 +481,7 @@ $html[$page_index] .= '
         <td></td>
     </tr>
     <tr> 
-        <td colspan="5" align="left" height="20px"  >
+        <td colspan="5" align="left" >
         <br>
         <br>
             <b>Print date : </b>  '.$d1.'/'.$d2.'/'.$d3.' '.$d4.':'.$d5.':'.$d6.'

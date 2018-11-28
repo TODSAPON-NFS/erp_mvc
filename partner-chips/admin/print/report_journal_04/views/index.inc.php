@@ -50,7 +50,7 @@ if($_GET['type'] == "id"){
 }
  
 
-$lines = 23;
+$lines = 20;
  
 $page_max = 0;
 

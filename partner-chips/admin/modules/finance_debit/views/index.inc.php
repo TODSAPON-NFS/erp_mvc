@@ -94,6 +94,15 @@ if(!isset($_GET['action'])){
         $_SESSION['keyword'] = $keyword;
     }
 
+    
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
+    }
+
     $customer_id = $_GET['customer_id'];
 
     $url_search = "&date_start=$date_start&date_end=$date_end&customer_id=$customer_id&keyword=$keyword";
@@ -170,6 +179,19 @@ if(!isset($_GET['action'])){
     $customer=$customer_model->getCustomerByID($finance_debit['customer_id']);
     $finance_debit_lists = $finance_debit_list_model->getFinanceDebitListBy($finance_debit_id);
     $finance_debit_pays = $finance_debit_pay_model->getFinanceDebitPayBy($finance_debit_id);
+
+    $finance_debits = $finance_debit_model->getFinanceDebitBy('','','','','',$lock_1,$lock_2);
+
+    for($i = 0 ; $i < count($finance_debits) ; $i++){
+        if($finance_debit_id == $finance_debits[$i]['finance_debit_id']){
+            $journal_id = $finance_debits[$i]['journal_cash_receipt_id'];
+            $previous_id = $finance_debits[$i-1]['finance_debit_id'];
+            $previous_code = $finance_debits[$i-1]['finance_debit_code'];
+            $next_id = $finance_debits[$i+1]['finance_debit_id'];
+            $next_code = $finance_debits[$i+1]['finance_debit_code'];
+
+        }
+    }
 
     require_once($path.'update.inc.php');
 
@@ -843,6 +865,17 @@ if(!isset($_GET['action'])){
         $keyword = $_GET['keyword']; 
         $_SESSION['keyword'] = $keyword;
     }
+
+
+    
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
+    }
+    
 
     $customer_id = $_GET['customer_id'];
     $url_search = "&date_start=$date_start&date_end=$date_end&customer_id=$customer_id&keyword=$keyword";

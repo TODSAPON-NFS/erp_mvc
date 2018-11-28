@@ -90,6 +90,15 @@ if(!isset($_GET['action'])){
         $_SESSION['keyword'] = $keyword;
     }
 
+    
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
+    }
+
     $page_size = 50;
 
     $journal_generals = $journal_general_model->getJournalGeneralBy($date_start,$date_end,$keyword,$lock_1,$lock_2);
@@ -367,6 +376,15 @@ if(!isset($_GET['action'])){
         
         $keyword = $_GET['keyword']; 
         $_SESSION['keyword'] = $keyword;
+    }
+
+    
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
     }
 
     $page_size = 50;

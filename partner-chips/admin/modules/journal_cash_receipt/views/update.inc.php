@@ -59,11 +59,43 @@
 
     var vat_id  ;
 
+    function check_code(id){
+        var code = $(id).val();
+        $.post( "controllers/getJournalCashReceiptByCode.php", { 'journal_cash_receipt_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("journal_cash_receipt_code").focus();
+                $("#journal_check").val(data.journal_cash_receipt_id);
+                
+            } else{
+                $("#journal_check").val("");
+            }
+        });
+    } 
+
+    function check_date(id){
+        var val_date = $(id).val();
+        $.post( "controllers/checkPaperLockByDate.php", { 'date': val_date }, function( data ) {  
+            if(data.result){ 
+                alert("This "+val_date+" is locked in the system.");
+                
+                $("#date_check").val("1");
+                //$("#journal_cash_receipt_date").val(data.date_now);
+                $( ".calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                document.getElementById("journal_cash_receipt_date").focus();
+            } else{
+                $("#date_check").val("0"); 
+            }
+        });
+    }
+
     function check(){
 
         var journal_cash_receipt_code = document.getElementById("journal_cash_receipt_code").value;
         var journal_cash_receipt_date = document.getElementById("journal_cash_receipt_date").value;
         var journal_cash_receipt_name = document.getElementById("journal_cash_receipt_name").value;
+        var journal_cash_receipt_id = document.getElementById("journal_cash_receipt_id").value;
+        var journal_check = document.getElementById("journal_check").value;
         
         var debit_total = parseFloat($('#journal_cash_receipt_list_debit').val( ).toString().replace(new RegExp(',', 'g'),''));
         var credit_total = parseFloat($('#journal_cash_receipt_list_credit').val( ).toString().replace(new RegExp(',', 'g'),''));
@@ -73,12 +105,20 @@
         journal_cash_receipt_name = $.trim(journal_cash_receipt_name);
         
 
-        if(journal_cash_receipt_code.length == 0){
-            alert("Please input Journal Payment code");
+        if(date_check == "1"){
+            alert("This "+journal_cash_receipt_date+" is locked in the system.");
+            document.getElementById("journal_cash_receipt_date").focus();
+            return false;
+        }else if(journal_cash_receipt_code.length == 0){
+            alert("Please input Journal receipt code");
+            document.getElementById("journal_cash_receipt_code").focus();
+            return false;
+        }else if(journal_check != "" && journal_check != journal_cash_receipt_id){
+            alert("This "+journal_cash_receipt_code+" is already in the system.");
             document.getElementById("journal_cash_receipt_code").focus();
             return false;
         }else if(journal_cash_receipt_date.length == 0){
-            alert("Please input Journal Payment date");
+            alert("Please input Journal receipt date");
             document.getElementById("journal_cash_receipt_date").focus();
             return false;
         }else if(journal_cash_receipt_name.length == 0){
@@ -334,7 +374,11 @@
                         <?PHP if($previous_id != ""){?>
                         <a class="btn btn-primary" href="?app=journal_special_03&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
                         <?PHP } ?>
+                        
+                        <a class="btn btn-danger" href="print.php?app=report_journal_03&type=id&action=pdf&id=<?php echo $journal_cash_receipt_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
+                        
                         <a class="btn btn-success" href="?app=journal_special_03&action=insert&id=<?php echo $journal_cash_receipt_id;?>" target="_blank" > <i class="fa fa-plus" aria-hidden="true"></i> Copy </a>
+                        
                         <?PHP if($next_id != ""){?>
                         <a class="btn btn-primary" href="?app=journal_special_03&action=update&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
                         <?PHP } ?>
@@ -344,18 +388,21 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <form role="form" method="post" onsubmit="return check();" action="index.php?app=journal_special_03&action=edit&id=<?PHP echo $journal_cash_receipt_id; ?>" enctype="multipart/form-data">
+                    <input id="journal_cash_receipt_id" name="journal_cash_receipt_id" value="<?PHP echo $journal_cash_receipt['journal_cash_receipt_id']; ?>" type="hidden" />
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขสมุดรายวันรับเงิน / Journal Receipt Code <font color="#F00"><b>*</b></font></label>
-                                <input id="journal_cash_receipt_code" name="journal_cash_receipt_code" class="form-control" value="<?php echo $journal_cash_receipt['journal_cash_receipt_code'];?>" >
+                                <input id="journal_cash_receipt_code" name="journal_cash_receipt_code" class="form-control" onchange="check_code(this)" value="<?php echo $journal_cash_receipt['journal_cash_receipt_code'];?>" >
+                                <input id="journal_check" type="hidden" value="" />
                                 <p class="help-block">Example : JG1801001.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>วันที่ออกสมุดรายวันรับเงิน / Journal Receipt Date</label>
-                                <input type="text" id="journal_cash_receipt_date" name="journal_cash_receipt_date"  class="form-control calendar" value="<?php echo $journal_cash_receipt['journal_cash_receipt_date'];?>" readonly/>
+                                <input type="text" id="journal_cash_receipt_date" name="journal_cash_receipt_date"  value="<?php echo $journal_cash_receipt['journal_cash_receipt_date'];?>" onchange="check_date(this);" class="form-control calendar" readonly/>
+                                <input id="date_check" type="hidden" value="" />
                                 <p class="help-block">31/01/2018</p>
                             </div>
                         </div>

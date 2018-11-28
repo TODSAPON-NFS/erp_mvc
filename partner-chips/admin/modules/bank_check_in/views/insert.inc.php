@@ -62,6 +62,7 @@
                                     <div class="form-group">
                                         <label>เลขที่เช็ค <font color="#F00"><b>*</b></font></label>
                                         <input id="check_code" name="check_code" class="form-control" type="text" value="<?php echo $last_code;?>" >
+                                        
                                         <p class="help-block">Example : QR4411555.</p>
                                     </div>
                                 </div>

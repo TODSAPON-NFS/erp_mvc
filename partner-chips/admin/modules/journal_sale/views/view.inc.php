@@ -94,7 +94,7 @@
                     </thead>
                     <tbody>
                         <?php  
-                        for($i=$page * $page_size ; $i < count($journal_sales) && $i < $page * $page_size + $page_size; $i++){
+                        for($i = 0  ; $i < count($journal_sales) ; $i++){
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>

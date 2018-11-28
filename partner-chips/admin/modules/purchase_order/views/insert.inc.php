@@ -16,6 +16,23 @@
         });
     }
 
+    function check_date(id){
+        var val_date = $(id).val();
+        $.post( "controllers/checkPaperLockByDate.php", { 'date': val_date }, function( data ) {  
+            if(data.result){ 
+                alert("This "+val_date+" is locked in the system.");
+                
+                $("#date_check").val("1");
+                //$("#purchase_order_date").val(data.date_now);
+                $( ".calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                document.getElementById("purchase_order_date").focus();
+            } else{
+                $("#date_check").val("0");
+                //generate_credit_date();
+            }
+        });
+    }
+
 
     function check(){
 
@@ -27,14 +44,19 @@
         var purchase_order_credit_term = document.getElementById("purchase_order_credit_term").value;
         var employee_id = document.getElementById("employee_id").value;
         var purchase_check = document.getElementById("purchase_check").value;
-        
+        var date_check = document.getElementById("date_check").value;
+
         supplier_id = $.trim(supplier_id);
         purchase_order_code = $.trim(purchase_order_code);
         purchase_order_date = $.trim(purchase_order_date);
         purchase_order_credit_term = $.trim(purchase_order_credit_term);
         employee_id = $.trim(employee_id);
 
-        if(purchase_check != ""){
+        if(date_check == "1"){
+            alert("This "+purchase_order_date+" is locked in the system.");
+            document.getElementById("purchase_order_date").focus();
+            return false;
+        }else if(purchase_check != ""){
             alert("This "+purchase_order_code+" is already in the system.");
             document.getElementById("purchase_order_code").focus();
             return false;
@@ -585,7 +607,8 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>วันที่ออกใบสั่งซื้อสินค้า / Purchase Order Date</label>
-                                        <input type="text" id="purchase_order_date" name="purchase_order_date" value="<?PHP echo $first_date; ?>" class="form-control calendar" readonly/>
+                                        <input type="text" id="purchase_order_date" name="purchase_order_date" value="<?PHP echo $first_date; ?>" class="form-control calendar"  onchange="check_date(this);" readonly/>
+                                        <input id="date_check" type="hidden" value="" />
                                         <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>

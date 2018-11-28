@@ -138,64 +138,12 @@
                         </div>
                     </div>
                 </form>
-                <br>
-                <div class="row" style="margin:0px;">
-                    <div class="col-sm-6">
-                        <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format($list_size,0);?> entries</div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="dataTables_paginate paging_simple_numbers" >
-                            <ul class="pagination">
-
-                                <li class="paginate_button previous <?PHP if($page == 0){ ?>disabled<?PHP } ?>" >
-                                    <a href="<?PHP if($page == 0){?>javascript:;<?PHP }else{ ?>index.php?app=finance_debit<?PHP echo $url_search ;?>&page=<?PHP echo $page; }?>">Previous</a>
-                                </li>
-
-                                <?PHP if($page > 0){ ?>
-                                <li class="paginate_button "  >
-                                    <a href="index.php?app=finance_debit<?PHP echo $url_search ;?>&page=1">1</a>
-                                </li>
-                                <li class="paginate_button disabled"   >
-                                    <a href="#">…</a>
-                                </li>
-                                <?PHP } ?>
-
-                                    
-                                <li class="paginate_button active"  >
-                                    <a href="index.php?app=finance_debit<?PHP echo $url_search ;?>&page=<?PHP echo $page+1;?>"><?PHP echo number_format($page + 1);?></a>
-                                </li>
-
-                                <?PHP for($i = $page + 1 ; $i < $page_max && $i <= $page + 5 ; $i++ ){?>
-                                <li class="paginate_button "  >
-                                    <a href="index.php?app=finance_debit<?PHP echo $url_search ;?>&page=<?PHP echo $i + 1;?>"><?PHP echo number_format($i + 1,0);?></a>
-                                </li>
-                                <?PHP } ?>
-                                
-
-
-                                <?PHP if($page < $page_max){ ?>
-                                <li class="paginate_button disabled"   >
-                                    <a href="#">…</a>
-                                </li>
-                                <li class="paginate_button "  >
-                                    <a href="index.php?app=finance_debit<?PHP echo $url_search ;?>&page=<?PHP echo $page_max;?>"><?PHP echo number_format($page_max,0);?></a>
-                                </li>
-                                <?PHP } ?>
-
-                                <li class="paginate_button next <?PHP if($page+1 == $page_max){ ?>disabled<?PHP } ?>"   >
-                                    <a href="<?PHP if($page+1 == $page_max){?>javascript:;<?PHP }else{ ?>index.php?app=finance_debit<?PHP echo $url_search ;?>&page=<?PHP echo $page + 2; }?>" >Next</a>
-                                </li>
-
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                <br> 
 
                 <div class="row">
                     <div class="col-sm-12">
 
-                        <table width="100%" class="table table-striped table-bordered table-hover" >
+                        <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example" >
                             <thead>
                                 <tr>
                                     <th width="48"> ลำดับ <br>No.</th>
@@ -214,7 +162,7 @@
                                 <?php 
                                 $finance_debit_total = 0;
                                 $finance_debit_pay = 0;
-                                for($i=$page * $page_size ; $i < count($finance_debits) && $i < $page * $page_size + $page_size; $i++){
+                                for($i = 0  ; $i < count($finance_debits) && $i < $page * $page_size + $page_size; $i++){
                                     $finance_debit_total += $finance_debits[$i]['finance_debit_total'];
                                     $finance_debit_pay += $finance_debits[$i]['finance_debit_pay'];
                                 ?>
@@ -273,60 +221,7 @@
                             </tfoot>
                         </table>
                     </div>
-                </div>
-                
-                <div class="row" style="margin:0px;">
-                    <div class="col-sm-6">
-                        <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing <?PHP echo number_format($page * $page_size +1,0) ; ?> to <?PHP echo number_format($page * $page_size + $page_size,0) ; ?> of <?PHP echo number_format($list_size,0);?> entries</div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="dataTables_paginate paging_simple_numbers" >
-                            <ul class="pagination">
-
-                                <li class="paginate_button previous <?PHP if($page == 0){ ?>disabled<?PHP } ?>" >
-                                    <a href="<?PHP if($page == 0){?>javascript:;<?PHP }else{ ?>index.php?app=finance_debit<?PHP echo $url_search ;?>&page=<?PHP echo $page; }?>">Previous</a>
-                                </li>
-
-                                <?PHP if($page > 0){ ?>
-                                <li class="paginate_button "  >
-                                    <a href="index.php?app=finance_debit<?PHP echo $url_search ;?>&page=1">1</a>
-                                </li>
-                                <li class="paginate_button disabled"   >
-                                    <a href="#">…</a>
-                                </li>
-                                <?PHP } ?>
-
-                                    
-                                <li class="paginate_button active"  >
-                                    <a href="index.php?app=finance_debit<?PHP echo $url_search ;?>&page=<?PHP echo $page+1;?>"><?PHP echo number_format($page + 1);?></a>
-                                </li>
-
-                                <?PHP for($i = $page + 1 ; $i < $page_max && $i <= $page + 5 ; $i++ ){?>
-                                <li class="paginate_button "  >
-                                    <a href="index.php?app=finance_debit<?PHP echo $url_search ;?>&page=<?PHP echo $i + 1;?>"><?PHP echo number_format($i + 1,0);?></a>
-                                </li>
-                                <?PHP } ?>
-                                
-
-
-                                <?PHP if($page < $page_max){ ?>
-                                <li class="paginate_button disabled"   >
-                                    <a href="#">…</a>
-                                </li>
-                                <li class="paginate_button "  >
-                                    <a href="index.php?app=finance_debit<?PHP echo $url_search ;?>&page=<?PHP echo $page_max;?>"><?PHP echo number_format($page_max,0);?></a>
-                                </li>
-                                <?PHP } ?>
-
-                                <li class="paginate_button next <?PHP if($page+1 == $page_max){ ?>disabled<?PHP } ?>"   >
-                                    <a href="<?PHP if($page+1 == $page_max){?>javascript:;<?PHP }else{ ?>index.php?app=finance_debit<?PHP echo $url_search ;?>&page=<?PHP echo $page + 2; }?>" >Next</a>
-                                </li>
-
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                </div>  
                 
             </div>
             <!-- /.panel-body -->

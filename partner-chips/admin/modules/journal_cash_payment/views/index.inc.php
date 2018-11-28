@@ -100,6 +100,14 @@ if(!isset($_GET['action'])){
     }
 
     
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
+    }
+    
 
     $page_size = 50;
 
@@ -380,6 +388,15 @@ if(!isset($_GET['action'])){
         
         $keyword = $_GET['keyword']; 
         $_SESSION['keyword'] = $keyword;
+    }
+
+    
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
     }
 
     $page_size = 50;

@@ -95,6 +95,23 @@
         });
     }
 
+    function check_date(id){
+        var val_date = $(id).val();
+        $.post( "controllers/checkPaperLockByDate.php", { 'date': val_date }, function( data ) {  
+            if(data.result){ 
+                alert("This "+val_date+" is locked in the system.");
+                
+                $("#date_check").val("1");
+                //$("#invoice_customer_date").val(data.date_now);
+                $( ".calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                document.getElementById("invoice_customer_date").focus();
+            } else{
+                $("#date_check").val("0");
+                generate_credit_date();
+            }
+        });
+    }
+
     function check(){
         var customer_id = document.getElementById("customer_id").value;
         var invoice_customer_code = document.getElementById("invoice_customer_code").value;
@@ -103,6 +120,7 @@
         var invoice_customer_due = document.getElementById("invoice_customer_due").value;
         var employee_id = document.getElementById("employee_id").value;
         var invoice_check = document.getElementById("invoice_check").value;
+        var date_check = document.getElementById("date_check").value;
 
         
         customer_id = $.trim(customer_id);
@@ -112,12 +130,16 @@
         invoice_customer_due = $.trim(invoice_customer_due);
         employee_id = $.trim(employee_id);
 
-        if(invoice_check != ""){
+        if(date_check == "1"){
+            alert("This "+invoice_customer_date+" is locked in the system.");
+            document.getElementById("invoice_customer_date").focus();
+            return false;
+        }else  if(invoice_check != ""){
             alert("This "+invoice_customer_code+" is already in the system.");
             document.getElementById("invoice_customer_code").focus();
             return false;
         }else if(customer_id.length == 0){
-            alert("Please input iupplier.");
+            alert("Please input Customer.");
             document.getElementById("customer_id").focus();
             return false;
         }else if(invoice_customer_code.length == 0){
@@ -680,7 +702,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>วันที่ออกใบกำกับภาษี / Date</label>
-                                        <input type="text" id="invoice_customer_date" name="invoice_customer_date" value="<?PHP echo $first_date;?>" onchange="generate_credit_date();" class="form-control calendar" readonly/>
+                                        <input type="text" id="invoice_customer_date" name="invoice_customer_date" value="<?PHP echo $first_date;?>" onchange="check_date(this);" class="form-control calendar" readonly/>
+                                        <input id="date_check" type="hidden" value="" />
                                         <p class="help-block">01-03-2018</p>
                                     </div>
                                 </div>

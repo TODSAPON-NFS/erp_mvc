@@ -46,14 +46,33 @@
             }
         });
     }
+
+    function check_date(id){
+        var val_date = $(id).val();
+        $.post( "controllers/checkPaperLockByDate.php", { 'date': val_date }, function( data ) {  
+            if(data.result){ 
+                alert("This "+val_date+" is locked in the system.");
+                
+                $("#date_check").val("1");
+                //$("#purchase_request_date").val(data.date_now);
+                $( ".calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                document.getElementById("purchase_request_date").focus();
+            } else{
+                $("#date_check").val("0");
+                //generate_credit_date();
+            }
+        });
+    }
 	
     function check(){
 
 
         var purchase_request_code = document.getElementById("purchase_request_code").value;
+        var purchase_request_date = document.getElementById("purchase_request_date").value;
         var purchase_request_type = document.getElementById("purchase_request_type").value;
         var employee_id = document.getElementById("employee_id").value; 
         var purchase_check = document.getElementById("purchase_check").value;
+        var date_check = document.getElementById("date_check").value;
 
         
         purchase_request_code = $.trim(purchase_request_code);
@@ -61,7 +80,11 @@
         employee_id = $.trim(employee_id); 
         
         
-        if(purchase_check != ""){
+        if(date_check == "1"){
+            alert("This "+purchase_request_date+" is locked in the system.");
+            document.getElementById("purchase_request_date").focus();
+            return false;
+        }else if(purchase_check != ""){
             alert("This "+purchase_request_code+" is already in the system.");
             document.getElementById("purchase_request_code").focus();
             return false;
@@ -285,7 +308,8 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>วันที่ร้องขอ  / PR Date</label>
-                                <input type="text" id="purchase_request_date" name="purchase_requepurchase_request_datest_alert" value="<?PHP echo $purchase_request['purchase_request_date'];?>"  class="form-control calendar" readonly/>
+                                <input type="text" id="purchase_request_date" name="purchase_request_date" value="<?PHP echo $purchase_request['purchase_request_date'];?>"  class="form-control calendar" onchange="check_date(this);" readonly/>
+                                <input id="date_check" type="hidden" value="" />
                                 <p class="help-block">01-03-2018</p>
                             </div>
                         </div>

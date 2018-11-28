@@ -1,4 +1,5 @@
 <script>
+ 
     var row_update_id ;
     var options = {
         url: function(keyword) {
@@ -214,11 +215,17 @@
             $.post( "controllers/getFinanceCreditListBySupplierID.php", { 'supplier_id': supplier_id, 'invoice_supplier_id': JSON.stringify(invoice_supplier_id) }, function( data ) {
                
                 if(data.length > 0){
+                    $("#search_pop").val("");
                     document.getElementById("check_all").checked = false;
                     data_buffer = data;
                     var content = "";
-                    for(var i = 0; i < data.length ; i++){
 
+                    
+                    $('#table_popup').DataTable().destroy();
+                    for(var i = 0; i < data.length ; i++){
+                       var finance_credit_list_amount = parseFloat(data[i].finance_credit_list_amount);
+                       var finance_credit_list_paid = parseFloat(data[i].finance_credit_list_amount);
+                       var finance_credit_list_balance = finance_credit_list_amount - finance_credit_list_paid;
                         content += '<tr class="odd gradeX">'+
                                         '<td>'+
                                             '<input type="checkbox" name="p_id" value="'+data[i].invoice_supplier_id+'" />'+     
@@ -236,20 +243,28 @@
                                             data[i].finance_credit_list_due +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].finance_credit_list_amount +
+                                            finance_credit_list_amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
                                         '</td>'+
                                         '<td align="right">'+
-                                            data[i].finance_credit_list_paid +
+                                            finance_credit_list_paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
                                         '</td>'+
                                         '<td align="right">'+
-                                            (data[i].finance_credit_list_amount - data[i].finance_credit_list_paid) + 
+                                            finance_credit_list_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
                                         '</td>'+
                                     '</tr>';
 
                     }
-                    $('#bodyAdd').html(content);
+                    $('#bodyAdd').html(content); 
                     $('#modalAdd').modal('show');
-
+                    $('#table_popup').DataTable({
+                        "columnDefs": [ {
+                            "targets": 'no-sort',
+                            "orderable": false,
+                        } ],
+                        "lengthMenu": [[25, 50, 75, 100, 250, 500, -1 ],[25, 50, 75, 100, 250, 500, 'All' ]],
+                        "pageLength": 100,
+                        responsive: true
+                    });
                 }
                 
                 
@@ -276,8 +291,11 @@
             if(data.length > 0){
                 data_buffer = data;
                 
+                $('#table_popup').DataTable().destroy();
                 for(var i = 0; i < data.length ; i++){
-
+                    var finance_credit_list_amount = parseFloat(data[i].finance_credit_list_amount);
+                    var finance_credit_list_paid = parseFloat(data[i].finance_credit_list_amount);
+                    var finance_credit_list_balance = finance_credit_list_amount - finance_credit_list_paid;
                     content += '<tr class="odd gradeX">'+
                                     '<td>'+
                                         '<input type="checkbox" name="p_id" value="'+data[i].invoice_supplier_id+'" />'+     
@@ -295,20 +313,30 @@
                                         data[i].finance_credit_list_due +
                                     '</td>'+
                                     '<td align="right">'+
-                                        data[i].finance_credit_list_amount +
+                                        finance_credit_list_amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
                                     '</td>'+
                                     '<td align="right">'+
-                                        data[i].finance_credit_list_paid +
+                                        finance_credit_list_paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
                                     '</td>'+
                                     '<td align="right">'+
-                                        (data[i].finance_credit_list_amount - data[i].finance_credit_list_paid) +
+                                        finance_credit_list_balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
                                     '</td>'+
                                 '</tr>';
 
                 }
             }
-            $('#bodyAdd').html(content);
-            
+            $('#bodyAdd').html(content);  
+ 
+            $('#table_popup').DataTable({
+                "columnDefs": [ {
+                    "targets": 'no-sort',
+                    "orderable": false,
+                } ],
+                "lengthMenu": [[25, 50, 75, 100, 250, 500, -1 ],[25, 50, 75, 100, 250, 500, 'All' ]],
+                "pageLength": 100,
+                responsive: true
+            });
+
         });
         
     }
@@ -792,29 +820,31 @@
                                             </div>
 
                                             <div  class="modal-body">
-                                            <div class="row">
-                                                <div class="col-md-offset-8 col-md-4" align="right">
-                                                    <input type="text" class="form-control" name="search_pop" onchange="search_pop_like(this)" placeholder="Search"/>
+                                                <div class="row">
+                                                    <div class="col-md-offset-8 col-md-4" align="right">
+                                                        <input type="text" class="form-control" id="search_pop" name="search_pop" onchange="search_pop_like(this)" placeholder="Search"/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <br>
-                                            <table width="100%" class="table table-striped table-bordered table-hover" >
-                                                <thead>
-                                                    <tr>
-                                                        <th width="24"><input type="checkbox" value="all" id="check_all" onclick="checkAll(this)" /></th>
-                                                        <th style="text-align:center;" idth="150">รหัสใบกำกับภาษี <br> (Invoice Number)</th>
-                                                        <th style="text-align:center;" idth="150">รหัสใบรับสินค้า <br> (RR / RF)</th>
-                                                        <th style="text-align:center;">วันที่ออก <br> (Date)</th>
-                                                        <th style="text-align:center;" width="120">กำหนดชำระ <br> (Due Date)</th>
-                                                        <th style="text-align:center;" width="120">จำนวนเงิน <br> (Amount) </th>
-                                                        <th style="text-align:center;" width="120">ชำระแล้ว <br> (Paid)</th>
-                                                        <th style="text-align:center;" width="120">ยอดชำระคงเหลือ <br> (Balance)</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="bodyAdd">
+                                                <br>
+                                                <div align="left">
+                                                    <table width="100%" class="table table-striped table-bordered table-hover" id="table_popup" >
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="24" class="no-sort"><input type="checkbox" value="all" id="check_all" onclick="checkAll(this)"  /></th>
+                                                                <th style="text-align:center;" width="150">รหัสใบกำกับภาษี <br> (Invoice Number)</th>
+                                                                <th style="text-align:center;" width="150">รหัสใบรับสินค้า <br> (RR / RF)</th>
+                                                                <th style="text-align:center;" width="150">วันที่ออก <br> (Date)</th>
+                                                                <th style="text-align:center;" width="120">กำหนดชำระ <br> (Due Date)</th>
+                                                                <th style="text-align:center;" width="120">จำนวนเงิน <br> (Amount) </th>
+                                                                <th style="text-align:center;" width="120">ชำระแล้ว <br> (Paid)</th>
+                                                                <th style="text-align:center;" width="120">ยอดชำระคงเหลือ <br> (Balance)</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="bodyAdd">
 
-                                                </tbody>
-                                            </table>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
 
                                             <div class="modal-footer">
@@ -851,7 +881,7 @@
                     <b>รายการชำระเงิน :</b>
                     </div>
 
-                    <table width="100%" class="table table-striped table-bordered table-hover" >
+                    <table width="100%" class="table table-striped table-bordered table-hover"  >
                         <thead>
                             <tr>
                                 <th style="text-align:center;">ชำระโดยอื่นๆ <br>(Paid by)</th>
@@ -943,42 +973,42 @@
                     </table>
                     <br>
                     <div class="row">
-                        <div class="col-lg-2">
+                        <div class="col-lg-2" style="display:none;">
                             <div class="form-group">
                                 <label>ดอกเบี้ย</label>
                                 <input id="finance_credit_interest" name="finance_credit_interest" style="text-align:right;" class="form-control" value="<?PHP echo number_format($finance_credit['finance_credit_interest'],2);?>" onchange="calculatePay()" >
                                 <p class="help-block">Example : 0.00.</p>
                             </div>
                         </div>  
-                        <div class="col-lg-2">
+                        <div class="col-lg-2" style="display:none;">
                             <div class="form-group">
                                 <label>เงินสด</label>
                                 <input id="finance_credit_cash" name="finance_credit_cash" style="text-align:right;" class="form-control" value="<?PHP echo number_format($finance_credit['finance_credit_cash'],2);?>" onchange="calculatePay()" >
                                 <p class="help-block">Example : 0.00.</p>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-2" style="display:none;">
                             <div class="form-group">
                                 <label>ชำระโดย (ด้านบน)</label>
                                 <input id="finance_credit_other_pay" name="finance_credit_other_pay" style="text-align:right;" class="form-control" value="<?PHP echo number_format($total,2);?>" readonly >
                                 <p class="help-block">Example : 0.00.</p>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-2" style="display:none;">
                             <div class="form-group">
                                 <label>ภาษีหัก ณ ที่จ่าย</label>
                                 <input id="finance_credit_tax_pay" name="finance_credit_tax_pay"  style="text-align:right;" class="form-control" value="<?PHP echo number_format($finance_credit['finance_credit_tax_pay'],2);?>" onchange="calculatePay()" >
                                 <p class="help-block">Example : 0.00.</p>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-2" style="display:none;">
                             <div class="form-group">
                                 <label>ส่วนลดเงินสด</label>
                                 <input id="finance_credit_discount_cash" name="finance_credit_discount_cash" style="text-align:right;" class="form-control" value="<?PHP echo number_format($finance_credit['finance_credit_discount_cash'],2);?>" onchange="calculatePay()" >
                                 <p class="help-block">Example : 0.00.</p>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-offset-10 col-lg-2">
                             <div class="form-group">
                                 <label>ยอดจ่ายจริง</label>
                                 <input id="finance_credit_pay" name="finance_credit_pay" style="text-align:right;" class="form-control" value="<?PHP echo number_format($finance_credit['finance_credit_pay'],2);?>" readonly>
@@ -1292,4 +1322,5 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </form>
+ 
 

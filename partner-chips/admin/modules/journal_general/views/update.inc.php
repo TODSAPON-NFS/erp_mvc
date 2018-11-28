@@ -59,11 +59,45 @@
 
     var vat_id  ;
 
+
+    function check_code(id){
+        var code = $(id).val();
+        $.post( "controllers/getJournalGeneralByCode.php", { 'journal_general_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("journal_general_code").focus();
+                $("#journal_check").val(data.journal_general_id);
+                
+            } else{
+                $("#journal_check").val("");
+            }
+        });
+    } 
+
+
+    function check_date(id){
+        var val_date = $(id).val();
+        $.post( "controllers/checkPaperLockByDate.php", { 'date': val_date }, function( data ) {  
+            if(data.result){ 
+                alert("This "+val_date+" is locked in the system.");
+                
+                $("#date_check").val("1");
+                //$("#journal_general_date").val(data.date_now);
+                $( ".calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                document.getElementById("journal_general_date").focus();
+            } else{
+                $("#date_check").val("0"); 
+            }
+        });
+    }
+
     function check(){
 
         var journal_general_code = document.getElementById("journal_general_code").value;
         var journal_general_date = document.getElementById("journal_general_date").value;
         var journal_general_name = document.getElementById("journal_general_name").value;
+        var journal_general_id = document.getElementById("journal_general_id").value;
+        var journal_check = document.getElementById("journal_check").value;
         
         var debit_total = parseFloat($('#journal_general_list_debit').val( ).toString().replace(new RegExp(',', 'g'),''));
         var credit_total = parseFloat($('#journal_general_list_credit').val( ).toString().replace(new RegExp(',', 'g'),''));
@@ -73,8 +107,16 @@
         journal_general_name = $.trim(journal_general_name);
         
 
-        if(journal_general_code.length == 0){
-            alert("Please input Journal General code");
+        if(date_check == "1"){
+            alert("This "+journal_general_date+" is locked in the system.");
+            document.getElementById("journal_general_date").focus();
+            return false;
+        }else if(journal_general_code.length == 0){
+            alert("Please input Journal Payment code");
+            document.getElementById("journal_general_code").focus();
+            return false;
+        }else if(journal_check != "" && journal_check != journal_general_id){
+            alert("This "+journal_general_code+" is already in the system.");
             document.getElementById("journal_general_code").focus();
             return false;
         }else if(journal_general_date.length == 0){
@@ -333,7 +375,11 @@
                         <?PHP if($previous_id != ""){?>
                         <a class="btn btn-primary" href="?app=journal_general&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
                         <?PHP } ?>
+                        
+                        <a class="btn btn-danger" href="print.php?app=report_journal_general&type=id&action=pdf&id=<?php echo $journal_general_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
+                        
                         <a class="btn btn-success" href="?app=journal_general&action=insert&id=<?php echo $journal_general_id;?>" target="_blank" > <i class="fa fa-plus" aria-hidden="true"></i> Copy </a>
+                        
                         <?PHP if($next_id != ""){?>
                         <a class="btn btn-primary" href="?app=journal_general&action=update&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
                         <?PHP } ?>
@@ -343,18 +389,21 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <form role="form" method="post" onsubmit="return check();" action="index.php?app=journal_general&action=edit&id=<?PHP echo $journal_general_id; ?>" enctype="multipart/form-data">
+                <input id="journal_general_id" name="journal_general_id" value="<?PHP echo $journal_general['journal_general_id']; ?>" type="hidden" />
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขสมุดรายวันทั่วไป / Journal General Code <font color="#F00"><b>*</b></font></label>
-                                <input id="journal_general_code" name="journal_general_code" class="form-control" value="<?php echo $journal_general['journal_general_code'];?>" >
+                                <input id="journal_general_code" name="journal_general_code" class="form-control" onchange="check_code(this)" value="<?php echo $journal_general['journal_general_code'];?>" >
+                                <input id="journal_check" type="hidden" value="" />
                                 <p class="help-block">Example : JG1801001.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>วันที่ออกสมุดรายวันทั่วไป / Journal General Date</label>
-                                <input type="text" id="journal_general_date" name="journal_general_date"  class="form-control calendar" value="<?php echo $journal_general['journal_general_date'];?>" readonly/>
+                                <input type="text" id="journal_general_date" name="journal_general_date"  value="<?php echo $journal_general['journal_general_date'];?>" onchange="check_date(this);" class="form-control calendar" readonly/>
+                                <input id="date_check" type="hidden" value="" />
                                 <p class="help-block">31/01/2018</p>
                             </div>
                         </div>

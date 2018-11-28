@@ -59,12 +59,45 @@
 
     var vat_id  ;
 
+    function check_code(id){
+        var code = $(id).val();
+        $.post( "controllers/getJournalSaleByCode.php", { 'journal_sale_code': code }, function( data ) {  
+            if(data != null){ 
+                alert("This "+code+" is already in the system.");
+                document.getElementById("journal_sale_code").focus();
+                $("#journal_check").val(data.journal_general_id);
+                
+            } else{
+                $("#journal_check").val("");
+            }
+        });
+    } 
+
+    function check_date(id){
+        var val_date = $(id).val();
+        $.post( "controllers/checkPaperLockByDate.php", { 'date': val_date }, function( data ) {  
+            if(data.result){ 
+                alert("This "+val_date+" is locked in the system.");
+                
+                $("#date_check").val("1");
+                //$("#journal_sale_date").val(data.date_now);
+                $( ".calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                document.getElementById("journal_sale_date").focus();
+            } else{
+                $("#date_check").val("0"); 
+            }
+        });
+    }
+
     function check(){
 
         var journal_sale_code = document.getElementById("journal_sale_code").value;
         var journal_sale_date = document.getElementById("journal_sale_date").value;
         var journal_sale_name = document.getElementById("journal_sale_name").value;
-        
+        var journal_sale_id = document.getElementById("journal_sale_id").value;
+        var journal_check = document.getElementById("journal_check").value;
+        var date_check = document.getElementById("date_check").value;
+
         var debit_total = parseFloat($('#journal_sale_list_debit').val( ).toString().replace(new RegExp(',', 'g'),''));
         var credit_total = parseFloat($('#journal_sale_list_credit').val( ).toString().replace(new RegExp(',', 'g'),''));
 
@@ -73,12 +106,20 @@
         journal_sale_name = $.trim(journal_sale_name);
         
 
-        if(journal_sale_code.length == 0){
-            alert("Please input Journal Sale code");
+        if(date_check == "1"){
+            alert("This "+journal_sale_date+" is locked in the system.");
+            document.getElementById("journal_sale_date").focus();
+            return false;
+        }else if(journal_sale_code.length == 0){
+            alert("Please input Journal Payment code");
+            document.getElementById("journal_sale_code").focus();
+            return false;
+        }else if(journal_check != "" && journal_check != journal_sale_id){
+            alert("This "+journal_sale_code+" is already in the system.");
             document.getElementById("journal_sale_code").focus();
             return false;
         }else if(journal_sale_date.length == 0){
-            alert("Please input Journal Sale date");
+            alert("Please input Journal Payment date");
             document.getElementById("journal_sale_date").focus();
             return false;
         }else if(journal_sale_name.length == 0){
@@ -92,6 +133,7 @@
             $('#tb_journal').children('tbody').children('tr').children('td').children('div').children('select[name="account_id[]"]').prop('disabled', false);
             return true;
         }
+
 
     }
 
@@ -334,6 +376,10 @@
                         <a class="btn btn-primary" href="?app=journal_special_02&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
                         <?PHP } ?>
 
+                        
+                        <a class="btn btn-danger" href="print.php?app=report_journal_02&type=id&action=pdf&id=<?php echo $journal_sale_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
+                        
+
                         <a class="btn btn-success" href="?app=journal_special_02&action=insert&id=<?php echo $journal_sale_id;?>" target="_blank" > <i class="fa fa-plus" aria-hidden="true"></i> Copy </a>
 
                         <?PHP if($next_id != ""){?>
@@ -345,18 +391,21 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <form role="form" method="post" onsubmit="return check();" action="index.php?app=journal_special_02&action=edit&id=<?PHP echo $journal_sale_id; ?>" enctype="multipart/form-data">
+                    <input id="journal_sale_id" name="journal_sale_id" value="<?PHP echo $journal_sale['journal_sale_id']; ?>" type="hidden" />
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเลขสมุดรายวันขาย / Journal Sale Code <font color="#F00"><b>*</b></font></label>
-                                <input id="journal_sale_code" name="journal_sale_code" class="form-control" value="<?php echo $journal_sale['journal_sale_code'];?>" >
+                                <input id="journal_sale_code" name="journal_sale_code" class="form-control" value="<?php echo $journal_sale['journal_sale_code'];?>" onchange="check_code(this)" >
+                                <input id="journal_check" type="hidden" value="" />
                                 <p class="help-block">Example : JG1801001.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>วันที่ออกสมุดรายวันขาย / Journal Sale Date</label>
-                                <input type="text" id="journal_sale_date" name="journal_sale_date"  class="form-control calendar" value="<?php echo $journal_sale['journal_sale_date'];?>" readonly/>
+                                <input type="text" id="journal_sale_date" name="journal_sale_date"  value="<?php echo $journal_sale['journal_sale_date'];?>"  onchange="check_date(this);" class="form-control calendar" readonly/>
+                                <input id="date_check" type="hidden" value="" />
                                 <p class="help-block">31/01/2018</p>
                             </div>
                         </div>

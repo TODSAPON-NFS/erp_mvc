@@ -95,6 +95,15 @@ if(!isset($_GET['action'])){
         $_SESSION['keyword'] = $keyword;
     }
 
+    
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
+    }
+
 
     $supplier_id = $_GET['supplier_id'];
 
@@ -171,6 +180,19 @@ if(!isset($_GET['action'])){
     $supplier=$supplier_model->getSupplierByID($finance_credit['supplier_id']);
     $finance_credit_lists = $finance_credit_list_model->getFinanceCreditListBy($finance_credit_id);
     $finance_credit_pays = $finance_credit_pay_model->getFinanceCreditPayBy($finance_credit_id);
+
+    $finance_credits = $finance_credit_model->getFinanceCreditBy('','','','','',$lock_1,$lock_2);
+
+    for($i = 0 ; $i < count($finance_credits) ; $i++){
+        if($finance_credit_id == $finance_credits[$i]['finance_credit_id']){
+            $journal_id = $finance_credits[$i]['journal_cash_payment_id'];
+            $previous_id = $finance_credits[$i-1]['finance_credit_id'];
+            $previous_code = $finance_credits[$i-1]['finance_credit_code'];
+            $next_id = $finance_credits[$i+1]['finance_credit_id'];
+            $next_code = $finance_credits[$i+1]['finance_credit_code'];
+
+        }
+    }
 
     require_once($path.'update.inc.php');
 
@@ -837,6 +859,17 @@ if(!isset($_GET['action'])){
         $keyword = $_GET['keyword']; 
         $_SESSION['keyword'] = $keyword;
     }
+
+
+    
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
+    }
+    
 
     $supplier_id = $_GET['supplier_id'];
     $url_search = "&date_start=$date_start&date_end=$date_end&supplier_id=$supplier_id&keyword=$keyword";

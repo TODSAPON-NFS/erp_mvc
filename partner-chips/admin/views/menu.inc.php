@@ -5,7 +5,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Partner Chips</a>
+                <a class="navbar-brand" href="index.php">Partner Chips ERP</a>
             </div>
             <!-- /.navbar-header -->
 

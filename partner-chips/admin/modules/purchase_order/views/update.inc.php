@@ -16,10 +16,25 @@
         });
     }
 
+    function check_date(id){
+        var val_date = $(id).val();
+        $.post( "controllers/checkPaperLockByDate.php", { 'date': val_date }, function( data ) {  
+            if(data.result){ 
+                alert("This "+val_date+" is locked in the system.");
+                
+                $("#date_check").val("1");
+                //$("#purchase_order_date").val(data.date_now);
+                $( ".calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
+                document.getElementById("purchase_order_date").focus();
+            } else{
+                $("#date_check").val("0");
+                //generate_credit_date();
+            }
+        });
+    }
+
     function check(){
 
-
-  
         var supplier_id = document.getElementById("supplier_id").value;
         var purchase_order_code = document.getElementById("purchase_order_code").value;
         var purchase_order_date = document.getElementById("purchase_order_date").value;
@@ -27,6 +42,7 @@
         var employee_id = document.getElementById("employee_id").value;
         var purchase_check = document.getElementById("purchase_check").value;
         var purchase_order_id = document.getElementById("purchase_order_id").value;
+        var date_check = document.getElementById("date_check").value;
         
         supplier_id = $.trim(supplier_id);
         purchase_order_code = $.trim(purchase_order_code);
@@ -34,7 +50,11 @@
         purchase_order_credit_term = $.trim(purchase_order_credit_term);
         employee_id = $.trim(employee_id);
 
-        if(purchase_check != "" && purchase_order_id != purchase_check){
+        if(date_check == "1"){
+            alert("This "+purchase_order_date+" is locked in the system.");
+            document.getElementById("purchase_order_date").focus();
+            return false;
+        }else if(purchase_check != "" && purchase_order_id != purchase_check){
             alert("This "+purchase_order_code+" is already in the system.");
             document.getElementById("purchase_order_code").focus();
             return false;
@@ -53,9 +73,6 @@
         }else{
             return true;
         }
-
-
-
     }
 
     function get_supplier_detail(){
@@ -556,7 +573,7 @@
             <div class="panel-body">
                 <form role="form" method="post" onsubmit="return check();" action="index.php?app=purchase_order&action=edit&id=<?php echo $purchase_order_id;?>&type=<?PHP echo $type; ?>" >
                     <input type="hidden"  id="purchase_order_id" name="purchase_order_id" value="<?php echo $purchase_order_id; ?>" />
-                    <input type="hidden"  id="purchase_order_date" name="purchase_order_date" value="<?php echo $purchase_order['purchase_order_date']; ?>" />
+                    <input type="hidden"  id="purchase_order_date_old" name="purchase_order_date_old" value="<?php echo $purchase_order['purchase_order_date']; ?>" />
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="row">
@@ -609,7 +626,8 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>วันที่ออกใบสั่งซื้อสินค้า / Purchase Order Date</label>
-                                        <input type="text" id="purchase_order_date" name="purchase_order_date" value="<? echo $purchase_order['purchase_order_date'];?>"  class="form-control calendar" readonly/>
+                                        <input type="text" id="purchase_order_date" name="purchase_order_date" value="<? echo $purchase_order['purchase_order_date'];?>"  class="form-control calendar"   onchange="check_date(this);" readonly/>
+                                        <input id="date_check" type="hidden" value="" />
                                         <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>

@@ -19,7 +19,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">รายงานสมุดรายวัน</h1>
+        <h1 class="page-header">รายงานงบทดลอง</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -81,7 +81,7 @@
                         <button class="btn btn-danger" style="float:right; margin:0px 4px;" onclick="print('pdf','');">PDF</button>
                         <button class="btn btn-success" style="float:right; margin:0px 4px;" onclick="print('excel','');">Excel</button>
                         <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search('');">Search</button>
-                        <a href="index.php?app=report_account_04" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
+                        <a href="index.php?app=report_account_05" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
                     </div>
                 </div>
                 <br>
@@ -123,8 +123,7 @@
                             
                         </tr>
                         <?
-                        }
-                     
+                        }                  
                         ?>
 
 

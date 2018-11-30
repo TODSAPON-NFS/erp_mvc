@@ -829,6 +829,9 @@
                                         <li>
                                             <a href="?app=report_account_06" <?PHP if($_GET['app'] == "report_account_06"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> บัญชีแยกประเภท </a>
                                         </li>
+                                        <li>
+                                            <a href="?app=report_account_07" <?PHP if($_GET['app'] == "report_account_07"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายงานเช็คจ่ายคงเหลือ </a>
+                                        </li>
                                     </ul>
                                 </li>
 

@@ -15,7 +15,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         }
 
         th{
-            padding:4px 4px;
+            padding:5px 6px;
             font-size:10px;
         }
 
@@ -37,7 +37,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             </td>
         </tr>
     </table>
-    <div align="center" style="font-size:14px;color:#00F;"> <b>รายงานงบทดลอง</b></div>
+    <div align="center" style="font-size:14px;color:#00F;"> <b>รายงานเช็คจ่ายคงเหลือ</b></div>
     <table width="100%" border="0" cellspacing="0">
         <tr>
             <td align="left" width="140px" ><b>ชื่อสถานประกอบการ </b></td>
@@ -57,18 +57,20 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     </table>  
     ';
 
-    $html[$page_index] .= '
+    $html[$page_index] .= ' <br>
     <table width="100%"  cellspacing="0" >
-    <thead>
-        <tr>
-            <th width="48"  style="border-top:1px solid black;border-bottom: 1px solid black;">ลำดับ</th> 
-            <th width="100" style="border-top:1px solid black;border-bottom: 1px solid black;">เลขที่บัญชี</th>
-            <th width="150" style="border-top:1px solid black;border-bottom: 1px solid black;">ชื่อบัญชี</th>
-            <th width="150" style="border-top:1px solid black;border-bottom: 1px solid black;">เดบิต</th>
-            <th width="150" style="border-top:1px solid black;border-bottom: 1px solid black;">เครดิต</th>   
-            
-        </tr>
-    </thead>
+        <thead>
+             <tr>
+                
+                <th align="center" width="50" style="border-top:1px solid black;border-bottom: 1px solid black;">วันที่จ่าย</th>          
+                <th align="center" width="50" style="border-top:1px solid black;border-bottom: 1px solid black;">ลวท.</th>                                   
+                <th align="center" width="70" style="border-top:1px solid black;border-bottom: 1px solid black;">เลขที่เช็ค</th>
+                <th align="center" width="70" style="border-top:1px solid black;border-bottom: 1px solid black;">เงินหน้าเช็ค</th> 
+                <th width="170" style="border-top:1px solid black;border-bottom: 1px solid black;">หมายเหตุ</th> 
+                <th align="center" width="65" style="border-top:1px solid black;border-bottom: 1px solid black;"> ใบสำคัญ </th>
+    
+            </tr>
+        </thead>
         <tbody>
 
     ';

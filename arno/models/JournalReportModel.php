@@ -1115,7 +1115,7 @@ class JournalReportModel extends BaseModel{
             
               check_pay_code  as cheque_code,
               check_pay_total  as cheque_total,
-              check_pay_date_write,
+              check_pay_date_write,check_pay_date,
               account_id,
               IFNULL(SUM(journal_general_list_debit),0) as journal_debit,
               IFNULL(SUM(journal_general_list_credit),0) as journal_credit
@@ -1147,7 +1147,7 @@ class JournalReportModel extends BaseModel{
              
               check_pay_code  as cheque_code,
               check_pay_total  as cheque_total,
-              check_pay_date_write,
+              check_pay_date_write,check_pay_date,
               account_id,
               IFNULL(SUM(journal_purchase_list_debit),0) as journal_debit,
               IFNULL(SUM(journal_purchase_list_credit),0) as journal_credit
@@ -1180,7 +1180,7 @@ class JournalReportModel extends BaseModel{
              
               check_pay_code  as cheque_code,
               check_pay_total  as cheque_total,
-              check_pay_date_write,
+              check_pay_date_write,check_pay_date,
               account_id,
               IFNULL(SUM(journal_sale_list_debit),0) as journal_debit,
               IFNULL(SUM(journal_sale_list_credit),0) as journal_credit
@@ -1212,7 +1212,7 @@ class JournalReportModel extends BaseModel{
               journal_cash_payment_name  as journal_name,
               check_pay_code  as cheque_code,
               check_pay_total  as cheque_total,
-              check_pay_date_write,
+              check_pay_date_write,check_pay_date,
               account_id,
               IFNULL(SUM(journal_cash_payment_list_debit),0) as journal_debit,
               IFNULL(SUM(journal_cash_payment_list_credit),0) as journal_credit
@@ -1244,7 +1244,7 @@ class JournalReportModel extends BaseModel{
               journal_cash_receipt_name  as journal_name,
               check_pay_code  as cheque_code,
               check_pay_total  as cheque_total,
-              check_pay_date_write,
+              check_pay_date_write,check_pay_date,
               account_id,
               IFNULL(SUM(journal_cash_receipt_list_debit),0) as journal_debit,
               IFNULL(SUM(journal_cash_receipt_list_credit),0) as journal_credit
@@ -1261,7 +1261,7 @@ class JournalReportModel extends BaseModel{
       
       
               $sql =" SELECT account_code , account_name_th ,  MAX(IFNULL(account_debit_begin,0)) ,SUM(IFNULL(tb_journal.journal_debit,0)), MAX(IFNULL(account_credit_begin,0)) ,SUM(IFNULL(tb_journal.journal_credit,0)) , ( MAX(IFNULL(account_debit_begin,0)) + SUM(IFNULL(tb_journal.journal_debit,0)) ) - ( MAX(IFNULL(account_credit_begin,0)) + SUM(IFNULL(tb_journal.journal_credit,0)) ) as account_value,
-                      cheque_code , cheque_total,journal_name, check_pay_date_write,journal_code
+                      cheque_code , cheque_total,journal_name, check_pay_date_write,journal_code,check_pay_date
                       FROM tb_account 
                       LEFT JOIN  (($sql_general)  
                       UNION   ALL  ($sql_purchase) 

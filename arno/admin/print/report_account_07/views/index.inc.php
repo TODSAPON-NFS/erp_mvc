@@ -58,7 +58,9 @@ $page_max = (int)(count($journal_reports) / $lines);
 if(count($journal_reports) % $lines > 0){
     $page_max += 1;
 }
-
+//echo '<pre>';
+//print_r($journal_reports);
+//echo '</pre>';
 
 require_once($path.'view.inc.php');
 

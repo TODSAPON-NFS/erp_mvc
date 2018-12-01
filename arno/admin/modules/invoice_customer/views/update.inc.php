@@ -136,10 +136,15 @@
         var customer_id = document.getElementById('customer_id').value;
         $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
             document.getElementById('customer_code').value = data.customer_code;
-            document.getElementById('invoice_customer_name').value = data.customer_name_en;
-            document.getElementById('invoice_customer_branch').value = data.invoice_customer_branch ;
+            document.getElementById('invoice_customer_name').value = data.customer_name_en ;
+            document.getElementById('invoice_customer_branch').value = data.customer_branch ;
             document.getElementById('invoice_customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
             document.getElementById('invoice_customer_tax').value = data.customer_tax ;
+            document.getElementById('employee_id').value = data.sale_id ;
+            $('#employee_id').selectpicker('refresh');
+            document.getElementById('invoice_customer_due_day').value = data.credit_day ;
+            generate_credit_date();
+
         });
     }
 
@@ -656,11 +661,22 @@ generate_credit_date();
                                     </div>
                                 </div>
 
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>เงื่อนไขการชำระ / term </label>
                                         <input type="text" id="invoice_customer_term" name="invoice_customer_term"  class="form-control" value="<?PHP echo $invoice_customer['invoice_customer_term'];?>"  />
                                         <p class="help-block">Bank </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>ประเภทใบกำกับภาษี / Type </label>
+                                        <select id="invoice_customer_begin" name="invoice_customer_begin" class="form-control">
+                                            <option <?PHP if($invoice_customer['invoice_customer_term'] == '0'){ ?> SELECTED <?PHP } ?> value="0">ขายสินค้า</option>
+                                            <option <?PHP if($invoice_customer['invoice_customer_term'] == '3'){ ?> SELECTED <?PHP } ?> value="3">รับเงินมัดจำ</option> 
+                                        </select>
+                                        <p class="help-block">ขายสินค้า </p>
                                     </div>
                                 </div>
                                 

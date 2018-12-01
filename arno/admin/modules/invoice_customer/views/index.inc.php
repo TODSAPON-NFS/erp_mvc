@@ -189,6 +189,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['invoice_customer_tax'] = $_POST['invoice_customer_tax'];
         $data['invoice_customer_term'] = $_POST['invoice_customer_term'];
         $data['invoice_customer_due'] = $_POST['invoice_customer_due'];
+        $data['invoice_customer_begin'] = $_POST['invoice_customer_begin'];
         $data['addby'] = $admin_id;
         $data['updateby'] = $admin_id;
 
@@ -320,6 +321,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['invoice_customer_term'] = $_POST['invoice_customer_term'];
         $data['invoice_customer_due'] = $_POST['invoice_customer_due'];
         $data['invoice_customer_close'] = $_POST['invoice_customer_close'];
+        $data['invoice_customer_begin'] = $_POST['invoice_customer_begin'];
         $data['addby'] = $admin_id;
         $data['updateby'] = $admin_id;
 
@@ -421,9 +423,15 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
        //account setting id = 15 ภาษีขาย --> [2135-00] ภาษีขาย
        $account_vat_sale = $account_setting_model->getAccountSettingByID(15);
-                
-       //account setting id = 19 ขายเชื่อ --> [4100-01] รายได้-ขายอะไหล่ชิ้นส่วน
-       $account_sale = $account_setting_model->getAccountSettingByID(19);
+        
+       if($data["invoice_customer_begin"] == "3"){
+            //account setting id = 19 ขายเชื่อ --> [4100-01] รายได้-ขายอะไหล่ชิ้นส่วน
+            $account_sale = $account_setting_model->getAccountSettingByID(19);
+       }else{
+            //account setting id = 11 ขายเชื่อ --> [4100-01] รายได้-ขายอะไหล่ชิ้นส่วน
+            $account_sale = $account_setting_model->getAccountSettingByID(11);
+       }
+       
 
        $customer=$customer_model->getCustomerByID($_POST['customer_id']);
        $account_customer = $customer['account_id'];

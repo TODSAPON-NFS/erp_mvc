@@ -83,7 +83,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $customer_id = $_GET['customer_id'];
     $customers=$customer_model->getCustomerBy();
 
-    $official_receipts = $official_receipt_model->getOfficialReceiptBy($date_start,$date_end,$customer_id,$keyword,$lock_1,$lock_2);
+    $official_receipts = $official_receipt_model->getOfficialReceiptBy($date_start,$date_end,$customer_id,$keyword,'',$lock_1,$lock_2);
     $customer_orders = $official_receipt_model->getCustomerOrder();
     require_once($path.'view.inc.php');
 
@@ -91,7 +91,12 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
     $customers=$customer_model->getCustomerBy();
     $customer=$customer_model->getCustomerByID($customer_id);
-    $official_receipt_lists = $official_receipt_model->generateOfficialReceiptListByCustomerId($customer_id,$billing_note_list_id ,$_POST['search'],"" );
+
+    if($customer_id != ""){
+        $official_receipt_lists = $official_receipt_model->generateOfficialReceiptListByCustomerId($customer_id,$billing_note_list_id ,$_POST['search'] );
+    }
+    
+
     $users=$user_model->getUserBy();
 
     $user=$user_model->getUserByID($admin_id);
@@ -183,8 +188,8 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                     $data_sub = [];
                     $data_sub['official_receipt_id'] = $official_receipt_id;
                     $data_sub['billing_note_list_id'] = $billing_note_list_id[$i];
-                    $data_sub['official_receipt_inv_amount'] = $official_receipt_inv_amount[$i];
-                    $data_sub['official_receipt_bal_amount'] = $official_receipt_bal_amount[$i];
+                    $data_sub['official_receipt_inv_amount'] = (float)filter_var($official_receipt_inv_amount[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data_sub['official_receipt_bal_amount'] = (float)filter_var($official_receipt_bal_amount[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data_sub['official_receipt_list_remark'] = $official_receipt_list_remark[$i];
 
                     $id = $official_receipt_list_model->insertOfficialReceiptList($data_sub);
@@ -193,8 +198,8 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                 $data_sub = [];
                 $data_sub['official_receipt_id'] = $official_receipt_id;
                 $data_sub['billing_note_list_id'] = $billing_note_list_id;
-                $data_sub['official_receipt_inv_amount'] = $official_receipt_inv_amount;
-                $data_sub['official_receipt_bal_amount'] = $official_receipt_bal_amount;
+                $data_sub['official_receipt_inv_amount'] = (float)filter_var($official_receipt_inv_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data_sub['official_receipt_bal_amount'] = (float)filter_var($official_receipt_bal_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['official_receipt_list_remark'] = $official_receipt_list_remark;
     
                 $id = $official_receipt_list_model->insertOfficialReceiptList($data_sub);
@@ -249,8 +254,8 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                 $data_sub = [];
                 $data_sub['official_receipt_id'] = $official_receipt_id;
                 $data_sub['billing_note_list_id'] = $billing_note_list_id[$i];
-                $data_sub['official_receipt_inv_amount'] = $official_receipt_inv_amount[$i];
-                $data_sub['official_receipt_bal_amount'] = $official_receipt_bal_amount[$i];
+                $data_sub['official_receipt_inv_amount'] = (float)filter_var($official_receipt_inv_amount[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data_sub['official_receipt_bal_amount'] = (float)filter_var($official_receipt_bal_amount[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['official_receipt_list_remark'] = $official_receipt_list_remark[$i];
 
                 if($official_receipt_list_id[$i] != '0'){
@@ -264,8 +269,8 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             $data_sub = [];
             $data_sub['official_receipt_id'] = $official_receipt_id;
             $data_sub['billing_note_list_id'] = $billing_note_list_id;
-            $data_sub['official_receipt_inv_amount'] = $official_receipt_inv_amount;
-            $data_sub['official_receipt_bal_amount'] = $official_receipt_bal_amount;
+            $data_sub['official_receipt_inv_amount'] = (float)filter_var($official_receipt_inv_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data_sub['official_receipt_bal_amount'] = (float)filter_var($official_receipt_bal_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data_sub['official_receipt_list_remark'] = $official_receipt_list_remark;
 
             if($official_receipt_list_id != "0"){
@@ -334,7 +339,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $customer_id = $_GET['customer_id'];
     $customers=$customer_model->getCustomerBy();
 
-    $official_receipts = $official_receipt_model->getOfficialReceiptBy($date_start,$date_end,$customer_id,$keyword,$lock_1,$lock_2);
+    $official_receipts = $official_receipt_model->getOfficialReceiptBy($date_start,$date_end,$customer_id,$keyword,'',$lock_1,$lock_2);
     $customer_orders = $official_receipt_model->getCustomerOrder();
     require_once($path.'view.inc.php');
 

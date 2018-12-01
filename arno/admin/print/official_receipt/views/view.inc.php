@@ -64,13 +64,16 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
 </style>';
 
+/*
+<td width="120px">
+                <img src="../upload/company/'.$company['company_image'].'" width="120px" />
+            </td>
+*/
     $html[$page_index] .= '
 <div class="main">
     <table width="100%">
         <tr>
-            <td width="120px">
-                <img src="../upload/company/'.$company['company_image'].'" width="120px" />
-            </td>
+            
             <td>
                 <div style="font-size:12px;">'.$company['company_name_en'].'</div>
                 <div style="font-size:12px;">'.$company['company_name_th'].'</div>
@@ -92,7 +95,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <tr>
                 <td style="padding:4px;">
                     <div style="display:block;padding:8px;"> '.$official_receipt['official_receipt_name'].'  '.$branch.' </div>
-                    <div style="display:block;padding:8px;"> '. $official_receipt['official_receipt_address'].'</div>
+                    <div style="display:block;padding:8px;"> '. nl2br ( $official_receipt['official_receipt_address']).'</div>
                     <div style="display:block;padding:8px;"> เลขประจำตัวผู้เสียภาษี / Tax : '.$official_receipt['official_receipt_tax'].' </div>
                 </td>
                 <td width="240">

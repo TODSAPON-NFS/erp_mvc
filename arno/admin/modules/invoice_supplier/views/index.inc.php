@@ -238,6 +238,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         $data['invoice_supplier_tax'] = $_POST['invoice_supplier_tax'];
         $data['invoice_supplier_term'] = $_POST['invoice_supplier_term'];
         $data['invoice_supplier_due'] = $_POST['invoice_supplier_due']; 
+        $data['invoice_supplier_due_day'] = $_POST['invoice_supplier_due_day']; 
         $data['import_duty'] = (float)filter_var($_POST['import_duty'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['freight_in'] = (float)filter_var($_POST['freight_in'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['addby'] = $admin_id;
@@ -381,6 +382,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         $data['invoice_supplier_tax'] = $_POST['invoice_supplier_tax'];
         $data['invoice_supplier_term'] = $_POST['invoice_supplier_term'];
         $data['invoice_supplier_due'] = $_POST['invoice_supplier_due'];
+        $data['invoice_supplier_due_day'] = $_POST['invoice_supplier_due_day'];
         $data['import_duty'] = (float)filter_var($_POST['import_duty'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['freight_in'] = (float)filter_var($_POST['freight_in'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['addby'] = $admin_id;

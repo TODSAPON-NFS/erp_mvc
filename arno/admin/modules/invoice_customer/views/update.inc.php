@@ -519,9 +519,9 @@
 
     function generate_credit_date(){
         var day = parseInt($('#invoice_customer_due_day').val());
-        var date = $('#invoice_customer_date').val();
+        var date = $('#invoice_customer_date').val(); 
 
-        var current_date = new Date();
+        var current_date =new Date();
         var tomorrow = new Date();
 
         if(isNaN(day)){
@@ -529,7 +529,13 @@
             day = 0;
         }else if (date == ""){
             $('#invoice_customer_date').val(("0" + current_date.getDate() ) .slice(-2) + '-' + ("0" + current_date.getMonth() + 1).slice(-2) + '-' + current_date.getFullYear());
+        }else{
+            var date_arr = date.split('-'); 
+
+            current_date = new Date(date_arr[2],date_arr[1] - 1,date_arr[0]);
+            tomorrow = new Date(date_arr[2],date_arr[1] - 1,date_arr[0]);
         }
+
 
         if (day > 0){
             $('#invoice_customer_term').val("เครดิต");
@@ -537,7 +543,7 @@
             $('#invoice_customer_term').val("เงินสด");
         }
 
-        tomorrow.setDate(current_date.getDate()+day);
+        tomorrow.setDate(current_date.getDate()+day); 
         $('#invoice_customer_due').val(("0" + tomorrow.getDate() ) .slice(-2) + '-' + ("0" + (tomorrow.getMonth()+1) ).slice(-2) + '-' + tomorrow.getFullYear());
         
 
@@ -649,7 +655,7 @@ generate_credit_date();
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>เครดิต / Credit Day </label>
-                                        <input type="text" id="invoice_customer_due_day" name="invoice_customer_due_day"  class="form-control" value="<?php echo $customer['credit_day'];?>" onchange="generate_credit_date();"/>
+                                        <input type="text" id="invoice_customer_due_day" name="invoice_customer_due_day"  class="form-control" value="<?php echo $invoice_customer['invoice_customer_due_day'];?>" onchange="generate_credit_date();"/>
                                         <p class="help-block">01-03-2018 </p>
                                     </div>
                                 </div>

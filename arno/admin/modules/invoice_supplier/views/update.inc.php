@@ -198,7 +198,7 @@
             document.getElementById('invoice_supplier_branch').value = data.supplier_branch;
             document.getElementById('invoice_supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
             document.getElementById('invoice_supplier_tax').value = data.supplier_tax ;
-            document.getElementById('invoice_supplier_day').value = data.credit_day ;
+            document.getElementById('invoice_supplier_due_day').value = data.credit_day ;
             document.getElementById('invoice_supplier_term').value = data.condition_pay ;
         });
 
@@ -749,7 +749,7 @@
     } 
 
     function update_invoice_supplier_due(id){
-        var day = parseInt($('#invoice_supplier_day').val());
+        var day = parseInt($('#invoice_supplier_due_day').val());
         var date = $('#invoice_supplier_date').val();
 
         var current_date = new Date();
@@ -760,7 +760,12 @@
             day = 0;
         }else if (date == ""){
             $('#invoice_supplier_due').val(("0" + current_date.getDate() ) .slice(-2) + '-' + ("0" + current_date.getMonth() + 1).slice(-2) + '-' + current_date.getFullYear());
-        } 
+        } else{
+            var date_arr = date.split('-'); 
+
+            current_date = new Date(date_arr[2],date_arr[1] - 1,date_arr[0]);
+            tomorrow = new Date(date_arr[2],date_arr[1] - 1,date_arr[0]);
+        }
 
         tomorrow.setDate(current_date.getDate()+day);
         $('#invoice_supplier_due').val(("0" + tomorrow.getDate() ) .slice(-2) + '-' + ("0" + (tomorrow.getMonth()+1) ).slice(-2) + '-' + tomorrow.getFullYear());
@@ -910,11 +915,18 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-lg-12" style="display:none">
+                                <div class="col-lg-6" style="display:none">
+                                    <div class="form-group">
+                                        <label>เครดิต / Credit Day </label>
+                                        <input type="text" id="invoice_supplier_due_day" name="invoice_supplier_due_day"  class="form-control" value="<?PHP echo $invoice_supplier['invoice_supplier_due_day'];?>" /> 
+                                        <p class="help-block">30</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6" style="display:none">
                                     <div class="form-group">
                                         <label>กำหนดชำระ / Due </label>
-                                        <input type="text" id="invoice_supplier_due" name="invoice_supplier_due"  class="form-control calendar" value="<?PHP echo $invoice_supplier['invoice_supplier_due'];?>" readonly/>
-                                        <input type="hidden" id="invoice_supplier_day" name="invoice_supplier_day" value="<?PHP echo $supplier['credit_day']; ?>" />
+                                        <input type="text" id="invoice_supplier_due" name="invoice_supplier_due"  class="form-control calendar" value="<?PHP echo $invoice_supplier['invoice_supplier_due'];?>" readonly/> 
                                         <p class="help-block">01-03-2018 </p>
                                     </div>
                                 </div>

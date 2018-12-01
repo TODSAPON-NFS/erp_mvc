@@ -102,6 +102,8 @@ else if($_GET['app'] == "report_creditor_01"){
         require_once("print/report_account_05/views/index.inc.php");
     } else if($_GET['app'] == "report_account_06"){
         require_once("print/report_account_06/views/index.inc.php");
+    }else if($_GET['app'] == "report_account_07"){
+        require_once("print/report_account_07/views/index.inc.php");
     }
 
 

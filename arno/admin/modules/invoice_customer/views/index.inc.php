@@ -155,6 +155,18 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
     $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy($invoice_customer_id);
 
+    $invoice_customers = $invoice_customer_model->getInvoiceCustomerBy("","","","","","0",$lock_1,$lock_2);
+
+    for($i = 0 ; $i < count($invoice_customers) ; $i++){
+        if($invoice_customer_id == $invoice_customers[$i]['invoice_customer_id']){ 
+            $previous_id = $invoice_customers[$i-1]['invoice_customer_id'];
+            $previous_code = $invoice_customers[$i-1]['invoice_customer_code'];
+            $next_id = $invoice_customers[$i+1]['invoice_customer_id'];
+            $next_code = $invoice_customers[$i+1]['invoice_customer_code'];
+
+        }
+    }
+
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){

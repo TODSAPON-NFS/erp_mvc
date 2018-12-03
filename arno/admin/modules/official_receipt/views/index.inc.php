@@ -134,6 +134,18 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $invoice_customer=$invoice_customer_model->getInvoiceCustomerByID($official_receipt['invoice_customer_id']);
     $official_receipt_lists = $official_receipt_list_model->getOfficialReceiptListBy($official_receipt_id);
 
+    $official_receipts = $official_receipt_model->getOfficialReceiptBy("","","","","",$lock_1,$lock_2);
+
+    for($i = 0 ; $i < count($official_receipts) ; $i++){
+        if($official_receipt_id == $official_receipts[$i]['official_receipt_id']){ 
+            $previous_id = $official_receipts[$i-1]['official_receipt_id'];
+            $previous_code = $official_receipts[$i-1]['official_receipt_code'];
+            $next_id = $official_receipts[$i+1]['official_receipt_id'];
+            $next_code = $official_receipts[$i+1]['official_receipt_code'];
+
+        }
+    }
+
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){

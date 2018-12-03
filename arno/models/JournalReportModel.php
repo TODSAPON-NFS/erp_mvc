@@ -1092,7 +1092,7 @@ class JournalReportModel extends BaseModel{
      //#####################################################################################################################
     //
     //
-    //-------------------------------- ดึงรายสมุดรายวัน แบบย่อ รวมตามบัญชี เรียงตามบัญชี (เเสดงทั้งหมด)------------------------------
+    //-------------------------------- ดึงรายงานเซ็ค ตามวันที่ เเละ บัญชี ------------------------------
     //
     //
     //#####################################################################################################################
@@ -1269,7 +1269,7 @@ class JournalReportModel extends BaseModel{
                       UNION   ALL  ($sql_cash_payment) 
                       UNION   ALL  ($sql_cash_receipt)) as tb_journal  
                       ON tb_account.account_id = tb_journal.account_id  
-                      where tb_account.account_id = '$account_id' 
+                      where tb_account.account_id = '$account_id'  AND cheque_code IS NOT NULL
                       GROUP BY cheque_code     
                       ORDER BY cheque_code ASC
               ";  

@@ -13,19 +13,21 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     $html[$page_index] = '
 <style>
     .main{
-        font-size:10px;
+        font-size:13px;
     }
 
     div{
         display:block;
         padding:4px;
-        font-size:10px;
+        font-size:13px;
+        line-height:20px;
     }
 
     .table thead th , .table tfoot td{
         border :1px solid black; 
         border-collapse: collapse;
         height:16px;
+        font-size:12px;
     }
 
     .table, .table tbody td{
@@ -33,6 +35,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         border-right:1px solid black;
         border-collapse: collapse;
         height:16px;
+        font-size:12px;
     }
 
 
@@ -47,8 +50,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
     td{
         padding:4px;
-        font-size:10px;
-        height:14px;
+        font-size:12px;
+        height:13px;
     }
 
     
@@ -64,77 +67,74 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
 </style>';
 
-    $html[$page_index] .= '
-<div class="main">
-    <table width="100%">
-        <tr>
-            <td width="120px">
+/*
+<td width="120px">
                 <img src="../upload/company/'.$company['company_image'].'" width="120px" />
             </td>
-            <td>
-                <div style="font-size:12px;">'.$company['company_name_en'].'</div>
-                <div style="font-size:12px;">'.$company['company_name_th'].'</div>
-            </td>
-        </tr>
-    </table>
+*/
+    $html[$page_index] .= '
+<div class="main">
+ 
+    <div style="font-size:16px;line-height:20px;">'.$company['company_name_en'].'</div>
+    <div style="font-size:16px;line-height:20px;">'.$company['company_name_th'].'</div>
+            
 
-    <div>สำนักงานใหญ่ : '.$company['company_address_1'].' '.$company['company_address_2'].' <br>'.$company['company_address_3'].' 
+    <div style="font-size:12px;line-height:18px;" >สำนักงานใหญ่ : '.$company['company_address_1'].' '.$company['company_address_2'].' <br>'.$company['company_address_3'].' 
     Tel.'.$company['company_tel'].' Fax. '.$company['company_fax'].'</div>
-    <div align="center" style="font-size:12px;">ใบเสร็จรับเงิน</div>
-    <div align="center" style="font-size:12px;">OFFICIAL RECEIPT</div>
+    <div align="center" style="font-size:14px;line-height:18px;"><b>ใบเสร็จรับเงิน</b></div>
+    <div align="center" style="font-size:14px;line-height:18px;"><b>OFFICIAL RECEIPT</b></div>
 
-    <div style="display:block;padding:4px;">
+    <div style="padding:4px;line-height:22px;">
         Receipt by thanks from : -
     </div>
+ 
+    <table width="100%">
+        <tr>
+            <td style="padding:4px;line-height: 18px;">
+                <div style="padding:8px;font-size:12px;"> '.$official_receipt['official_receipt_name'].'  '.$branch.' <br> 
+                 '. nl2br ( $official_receipt['official_receipt_address']).' <br> 
+                เลขประจำตัวผู้เสียภาษี / Tax : '.$official_receipt['official_receipt_tax'].' 
+                </div>
+            </td>
+            <td width="240">
+                <table>
+                    <tr>
+                        <td width="100"  valign="middle" align="left">
+                        No.
+                        </td>
+                        <td width="100"  valign="middle" align="left">
+                            : '.$official_receipt['official_receipt_code'].'
+                        </td>
+                    </tr>
 
-    <div>
-        <table width="100%" heigth="180">
-            <tr>
-                <td style="padding:4px;">
-                    <div style="display:block;padding:8px;"> '.$official_receipt['official_receipt_name'].'  '.$branch.' </div>
-                    <div style="display:block;padding:8px;"> '. $official_receipt['official_receipt_address'].'</div>
-                    <div style="display:block;padding:8px;"> เลขประจำตัวผู้เสียภาษี / Tax : '.$official_receipt['official_receipt_tax'].' </div>
-                </td>
-                <td width="240">
-                    <table>
-                        <tr>
-                            <td width="100" height="24" valign="middle" align="left">
-                            No.
-                            </td>
-                            <td width="100" height="24" valign="middle" align="left">
-                               : '.$official_receipt['official_receipt_code'].'
-                            </td>
-                        </tr>
+                    
+                    <tr>
+                        
+                        <td width="100"  valign="middle" align="left">
+                        Date
+                        </td>
+                        <td width="100"  valign="middle" align="left">
+                        : '.$official_receipt['official_receipt_date'].'
+                        </td>
 
-                       
-                        <tr>
-                            
-                            <td width="100" height="24" valign="middle" align="left">
-                            Date
-                            </td>
-                            <td width="100" height="24" valign="middle" align="left">
-                            : '.$official_receipt['official_receipt_date'].'
-                            </td>
+                    </tr>
+                    <tr>
+                        
+                        <td width="100" valign="middle" align="left">
+                        Customer code
+                        </td>
+                        <td width="140"  valign="middle" align="left">
+                        : '.$official_receipt['customer_code'].'
+                        </td>
 
-                        </tr>
-                        <tr>
-                            
-                            <td width="100" height="24" valign="middle" align="left">
-                            Customer code
-                            </td>
-                            <td width="140" height="24" valign="middle" align="left">
-                            : '.$official_receipt['customer_code'].'
-                            </td>
+                    </tr>
+                </table>
 
-                        </tr>
-                    </table>
+            </td>
+        </tr>
+    </table> 
 
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    <div style="height:32px;" >
+    <div style="padding:4px;line-height:22px;" >
         Begin payment for the followings invoice : - 
     </div>
 
@@ -162,7 +162,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         $total += $official_receipt_lists[$i]['official_receipt_bal_amount'];
                 $html[$page_index] .= ' 
                 <tr class="odd gradeX">
-                        <td align="center">
+                        <td align="center" style="height:22px;">
                             '.($i+1).'
                         </td>
                         <td align="center">
@@ -193,8 +193,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             for($i = count($official_receipt_lists) % $lines ; $i < $lines; $i++){
                 $html[$page_index] .= ' 
                     <tr class="odd gradeX">
-                            <td align="center"> 
-
+                            <td align="center" style="height:22px;"> 
+                            
                             </td>
                             <td align="center">
                                  
@@ -248,13 +248,13 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         <tr>
         <tr>
             <td>[ ]</td>
-            <td>CASH  no._____________________</td>
+            <td>CASH  </td>
             <td>date ___________________</td>
             <td>Baht _________________</td>
         </tr>
         <tr>
             <td>[ ]</td>
-            <td>TRANSFER no.________________</td>
+            <td>TRANSFER  </td>
             <td>date ___________________</td>
             <td>Baht _________________</td>
         </tr>

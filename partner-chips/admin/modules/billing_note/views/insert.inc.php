@@ -387,6 +387,14 @@
                                         <p class="help-block">Example : Thana Tepchuleepornsil.</p>
                                     </div>
                                 </div>
+
+                                 <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>หมายเหตุ / Remark </label>
+                                        <textarea id="billing_note_remark" name="billing_note_remark" class="form-control" ><?php echo $billing_note['billing_note_remark'];?></textarea>
+                                        <p class="help-block">Example : -.</p>
+                                    </div>
+                                </div>
                                 
                             </div>
                         </div>

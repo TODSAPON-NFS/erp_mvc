@@ -8,6 +8,8 @@
         require_once("print/delivery_note_customer/views/index.inc.php");
     }elseif($_GET['app'] == "invoice_customer"){
         require_once("print/invoice_customer/views/index.inc.php");
+    }else if($_GET['app'] == "billing_note"){
+        require_once("print/billing_note/views/index.inc.php");
     }else if($_GET['app'] == "official_receipt"){
         require_once("print/official_receipt/views/index.inc.php");
     }else if($_GET['app'] == "finance_debit"){
@@ -100,6 +102,8 @@ else if($_GET['app'] == "report_creditor_01"){
         require_once("print/report_account_05/views/index.inc.php");
     } else if($_GET['app'] == "report_account_06"){
         require_once("print/report_account_06/views/index.inc.php");
+    }else if($_GET['app'] == "report_account_07"){
+        require_once("print/report_account_07/views/index.inc.php");
     }
 
 

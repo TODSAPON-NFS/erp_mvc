@@ -376,7 +376,7 @@
                         <a class="btn btn-primary" href="?app=journal_special_04&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
                         <?PHP } ?>
                         
-                        <a class="btn btn-danger" href="print.php?app=report_journal_03&type=id&action=pdf&id=<?php echo $journal_cash_payment_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
+                        <a class="btn btn-danger" href="print.php?app=report_journal_04&type=id&action=pdf&id=<?php echo $journal_cash_payment_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
                         
                         <a class="btn btn-success" href="?app=journal_special_04&action=insert&id=<?php echo $journal_cash_payment_id;?>" target="_blank" > <i class="fa fa-plus" aria-hidden="true"></i> Copy </a>
                        

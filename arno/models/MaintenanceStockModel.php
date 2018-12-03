@@ -487,7 +487,12 @@ class MaintenanceStockModel extends BaseModel{
             $stock_cost = $stock_report['stock_report_cost_avg'];
 
             $new_qty = $stock_qty + $qty;
-            $new_cost = (($stock_qty * $stock_cost) + ($qty * $cost))/$new_qty;
+            if($new_qty == 0){
+                $new_cost = 0 ;
+            }else{
+                $new_cost = (($stock_qty * $stock_cost) + ($qty * $cost))/$new_qty;
+            }
+            
  
             $sql = "UPDATE tb_stock_report 
                     SET stock_report_qty = '$new_qty', 

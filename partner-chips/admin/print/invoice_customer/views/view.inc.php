@@ -82,7 +82,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         </td>
 
                         <td width="100" height="48" valign="middle" align="right">
-                            '.$invoice_customer['credit_day'].' วัน
+                            '.$invoice_customer['invoice_customer_due_day'].' วัน
                         </td>
 
                         <td width="80" height="48" valign="middle" align="left">

@@ -62,6 +62,7 @@ class OfficialReceiptModel extends BaseModel{
         $str_user  
         ORDER BY STR_TO_DATE(official_receipt_date,'%d-%m-%Y %H:%i:%s'), official_receipt_code DESC 
          ";
+ 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -158,7 +159,7 @@ class OfficialReceiptModel extends BaseModel{
     }
 
 
-    function generateOfficialReceiptListByCustomerId($billing_note_list_id, $data = [],$search=""){
+    function generateOfficialReceiptListByCustomerId($customer_id, $data = [] ,$search=""){
 
         $str ='0';
 
@@ -191,6 +192,7 @@ class OfficialReceiptModel extends BaseModel{
             FROM tb_official_receipt_list 
             GROUP BY billing_note_list_id 
         ) 
+        AND tb_billing_note.customer_id = '$customer_id' 
         ORDER BY  invoice_customer_code ";
 
 

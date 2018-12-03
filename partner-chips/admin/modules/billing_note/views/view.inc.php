@@ -178,7 +178,7 @@
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                 </a>
 
-                                 <a href="index.php?app=billing_note&action=print&id=<?PHP echo $billing_notes[$i]['billing_note_id'];?>" >
+                                 <a href="print.php?app=billing_note&action=pdf&id=<?PHP echo $billing_notes[$i]['billing_note_id'];?>" target="_blank" >
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                 </a>
 

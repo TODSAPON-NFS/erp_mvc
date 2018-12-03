@@ -11,21 +11,23 @@ $total = 0;
 for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
     $html[$page_index] = '
-<style>
+    <style>
     .main{
-        font-size:10px;
+        font-size:13px;
     }
 
     div{
         display:block;
         padding:4px;
-        font-size:10px;
+        font-size:13px;
+        line-height:20px;
     }
 
     .table thead th , .table tfoot td{
         border :1px solid black; 
         border-collapse: collapse;
         height:16px;
+        font-size:12px;
     }
 
     .table, .table tbody td{
@@ -33,6 +35,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         border-right:1px solid black;
         border-collapse: collapse;
         height:16px;
+        font-size:12px;
     }
 
 
@@ -47,8 +50,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
     td{
         padding:4px;
-        font-size:10px;
-        height:14px;
+        font-size:12px;
+        height:13px;
     }
 
     
@@ -65,75 +68,68 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 </style>';
 
     $html[$page_index] .= '
-<div class="main">
-    <table width="100%">
-        <tr>
-            <td width="120px">
-                <img src="../upload/company/'.$company['company_image'].'" width="120px" />
-            </td>
-            <td>
-                <div style="font-size:12px;">'.$company['company_name_en'].'</div>
-                <div style="font-size:12px;">'.$company['company_name_th'].'</div>
-            </td>
-        </tr>
-    </table>
+    <div class="main">
+ 
+    <div style="font-size:16px;line-height:20px;">'.$company['company_name_en'].'</div>
+    <div style="font-size:16px;line-height:20px;">'.$company['company_name_th'].'</div>
+            
 
-    <div>สำนักงานใหญ่ : '.$company['company_address_1'].' '.$company['company_address_2'].' <br>'.$company['company_address_3'].' 
-    Tel.'.$company['company_tel'].' Fax. '.$company['company_fax'].' Tax. '.$company['company_tax'].'</div>
-    <div align="center" style="font-size:14px;">ใบเสร็จรับเงิน <br>OFFICIAL RECEIPT</div>
+    <div style="font-size:12px;line-height:18px;" >สำนักงานใหญ่ : '.$company['company_address_1'].' '.$company['company_address_2'].' <br>'.$company['company_address_3'].' 
+    Tel.'.$company['company_tel'].' Fax. '.$company['company_fax'].'</div>
+    <div align="center" style="font-size:14px;line-height:18px;"><b>ใบเสร็จรับเงิน</b></div>
+    <div align="center" style="font-size:14px;line-height:18px;"><b>OFFICIAL RECEIPT</b></div>
 
-    <div style="display:block;padding:4px;">
+    <div style="padding:4px;line-height:22px;">
         Receipt by thanks from : -
     </div>
+ 
+    <table width="100%">
+        <tr>
+            <td style="padding:4px;line-height: 18px;">
+                <div style="padding:8px;font-size:12px;"> '.$finance_debit['finance_debit_name'].'  '.$branch.' <br> 
+                 '. nl2br ( $finance_debit['finance_debit_address']).' <br> 
+                เลขประจำตัวผู้เสียภาษี / Tax : '.$finance_debit['finance_debit_tax'].' 
+                </div>
+            </td>
+            <td width="240">
+                <table>
+                    <tr>
+                        <td width="100"  valign="middle" align="left">
+                        No.
+                        </td>
+                        <td width="100"  valign="middle" align="left">
+                            : '.$finance_debit['finance_debit_code'].'
+                        </td>
+                    </tr>
 
-    <div>
-        <table width="100%" heigth="180">
-            <tr>
-                <td style="padding:4px;">
-                    <div style="display:block;padding:8px;"> '.$finance_debit['finance_debit_name'].'  '.$branch.' </div>
-                    <div style="display:block;padding:8px;"> '.nl2br ( $finance_debit['finance_debit_address']).'</div>
-                    <div style="display:block;padding:8px;"> เลขประจำตัวผู้เสียภาษี / Tax : '.$finance_debit['finance_debit_tax'].' </div>
-                </td>
-                <td width="240">
-                    <table>
-                        <tr>
-                            <td width="100" height="24" valign="middle" align="left">
-                            No.
-                            </td>
-                            <td width="100" height="24" valign="middle" align="left">
-                               : '.$finance_debit['finance_debit_code'].'
-                            </td>
-                        </tr>
+                    
+                    <tr>
+                        
+                        <td width="100"  valign="middle" align="left">
+                        Date
+                        </td>
+                        <td width="100"  valign="middle" align="left">
+                        : '.$finance_debit['finance_debit_date'].'
+                        </td>
 
-                       
-                        <tr>
-                            
-                            <td width="100" height="24" valign="middle" align="left">
-                            Date
-                            </td>
-                            <td width="100" height="24" valign="middle" align="left">
-                            : '.$finance_debit['finance_debit_date'].'
-                            </td>
+                    </tr>
+                    <tr>
+                        
+                        <td width="100" valign="middle" align="left">
+                        Customer code
+                        </td>
+                        <td width="140"  valign="middle" align="left">
+                        : '.$finance_debit['customer_code'].'
+                        </td>
 
-                        </tr>
-                        <tr>
-                            
-                            <td width="100" height="24" valign="middle" align="left">
-                            Customer code
-                            </td>
-                            <td width="140" height="24" valign="middle" align="left">
-                            : '.$finance_debit['customer_code'].'
-                            </td>
+                    </tr>
+                </table>
 
-                        </tr>
-                    </table>
+            </td>
+        </tr>
+    </table> 
 
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    <div >
+    <div style="padding:4px;line-height:22px;" >
         Begin payment for the followings invoice : - 
     </div>
 
@@ -161,25 +157,25 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         $total += $finance_debit_lists[$i]['finance_debit_list_balance'];
                 $html[$page_index] .= ' 
                 <tr >
-                        <td align="center" style="height:24px">
+                        <td align="center" style="height:22px">
                             '.($i+1).'
                         </td>
-                        <td align="center" style="height:24px">
+                        <td align="center" style="height:22px">
                             '. $finance_debit_lists[$i]['invoice_customer_code'].'
                         </td>
-                        <td align="center" style="height:24px">
+                        <td align="center" style="height:22px">
                             '. $finance_debit_lists[$i]['finance_debit_list_date'].'
                         </td>
-                        <td align="center" style="height:24px">
+                        <td align="center" style="height:22px">
                             '. $finance_debit_lists[$i]['finance_debit_list_due'].'
                         </td>
-                        <td align="center" style="height:24px">
+                        <td align="center" style="height:22px">
                             '. $finance_debit_lists[$i]['billing_note_code'].'
                         </td>
-                        <td align="right" style="height:24px">
+                        <td align="right" style="height:22px">
                             '. number_format($finance_debit_lists[$i]['finance_debit_list_amount'],2).'
                         </td>
-                        <td align="right" style="height:24px">
+                        <td align="right" style="height:22px">
                             '. number_format($finance_debit_lists[$i]['finance_debit_list_balance'],2).'
                         </td>
                     </tr>
@@ -192,25 +188,25 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             for($i = count($finance_debit_lists) % $lines ; $i < $lines; $i++){
                 $html[$page_index] .= ' 
                     <tr>
-                            <td align="center" style="height:24px"> 
+                            <td align="center" style="height:22px"> 
 
                             </td>
-                            <td align="center" style="height:24px">
+                            <td align="center" style="height:22px">
                                  
                             </td>
-                            <td align="center" style="height:24px">
+                            <td align="center" style="height:22px">
                                  
                             </td>
-                            <td align="center" style="height:24px">
+                            <td align="center" style="height:22px">
                                 
                             </td>
-                            <td align="center" style="height:24px">
+                            <td align="center" style="height:22px">
                                
                             </td>
-                            <td align="right" style="height:24px">
+                            <td align="right" style="height:22px">
                                  
                             </td>
-                            <td align="right" style="height:24px">
+                            <td align="right" style="height:22px">
                                  
                             </td>
                         </tr>

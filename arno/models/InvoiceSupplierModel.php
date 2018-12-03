@@ -286,6 +286,7 @@ class InvoiceSupplierModel extends BaseModel{
         invoice_supplier_branch = '".static::$db->real_escape_string($data['invoice_supplier_branch'])."', 
         invoice_supplier_term = '".static::$db->real_escape_string($data['invoice_supplier_term'])."', 
         invoice_supplier_due = '".static::$db->real_escape_string($data['invoice_supplier_due'])."',  
+        invoice_supplier_due_day = '".static::$db->real_escape_string($data['invoice_supplier_due_day'])."',  
         invoice_supplier_begin = '".$data['invoice_supplier_begin']."', 
         import_duty = '".$data['import_duty']."', 
         freight_in = '".$data['freight_in']."', 
@@ -521,6 +522,7 @@ class InvoiceSupplierModel extends BaseModel{
             invoice_supplier_branch,
             invoice_supplier_term,
             invoice_supplier_due, 
+            invoice_supplier_due_day, 
             invoice_supplier_begin,
             import_duty, 
             freight_in, 
@@ -552,6 +554,7 @@ class InvoiceSupplierModel extends BaseModel{
         static::$db->real_escape_string($data['invoice_supplier_branch'])."','".
         static::$db->real_escape_string($data['invoice_supplier_term'])."','".
         static::$db->real_escape_string($data['invoice_supplier_due'])."','".  
+        static::$db->real_escape_string($data['invoice_supplier_due_day'])."','".  
         $data['invoice_supplier_begin']."','". 
         $data['import_duty']."','".
         $data['freight_in']."','".

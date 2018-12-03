@@ -289,7 +289,23 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            แก้ใบวางบิล / Edit Billing Note  
+                <div class="row">
+                    <div class="col-md-8">
+                        แก้ใบวางบิล / Edit Billing Note  
+                    </div>
+                    <div class="col-md-4" align="right">
+                        <?PHP if($previous_id != ""){?>
+                        <a class="btn btn-primary" href="?app=billing_note&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
+                        <?PHP } ?>
+
+                        <a class="btn btn-success "  href="?app=billing_note&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                        <a class="btn btn-danger" href="print.php?app=billing_note&action=pdf&id=<?php echo $billing_note_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
+                         
+                        <?PHP if($next_id != ""){?>
+                        <a class="btn btn-primary" href="?app=billing_note&action=update&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
+                        <?PHP } ?>
+                    </div>
+                </div> 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -386,6 +402,14 @@
                                             ?>
                                         </select>
                                         <p class="help-block">Example : Thana Tepchuleepornsil.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>หมายเหตุ / Remark </label>
+                                        <textarea id="billing_note_remark" name="billing_note_remark" class="form-control" ><?php echo $billing_note['billing_note_remark'];?></textarea>
+                                        <p class="help-block">Example : -.</p>
                                     </div>
                                 </div>
                                 

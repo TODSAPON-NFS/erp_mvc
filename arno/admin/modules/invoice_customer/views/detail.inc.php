@@ -69,7 +69,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>เครดิต / Credit Day </label>
-                                         <p class="help-block"><?php echo $customer['credit_day'];?></p>
+                                         <p class="help-block"><?php echo $invoice_customer['invoice_customer_due_day'];?></p>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">

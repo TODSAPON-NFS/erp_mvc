@@ -130,6 +130,19 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $invoice_customer=$invoice_customer_model->getInvoiceCustomerByID($billing_note['invoice_customer_id']);
     $billing_note_lists = $billing_note_list_model->getBillingNoteListBy($billing_note_id);
 
+    $billing_notes = $billing_note_model->getBillingNoteBy("","","","","",$lock_1,$lock_2);
+
+    for($i = 0 ; $i < count($billing_notes) ; $i++){
+        if($billing_note_id == $billing_notes[$i]['billing_note_id']){ 
+            $previous_id = $billing_notes[$i-1]['billing_note_id'];
+            $previous_code = $billing_notes[$i-1]['billing_note_code'];
+            $next_id = $billing_notes[$i+1]['billing_note_id'];
+            $next_code = $billing_notes[$i+1]['billing_note_code'];
+
+        }
+    }
+
+
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
@@ -168,10 +181,10 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['billing_note_recieve_name'] = $_POST['billing_note_recieve_name'];
         $data['addby'] = $user[0][0];
 
-        $output = $billing_note_model->insertBillingNote($data);
+        $billing_note_id = $billing_note_model->insertBillingNote($data);
 
         
-        if($output > 0){
+        if($billing_note_id > 0){
             $data = [];
             $invoice_customer_id = $_POST['invoice_customer_id'];
             $billing_note_list_amount = $_POST['billing_note_list_amount'];
@@ -183,29 +196,29 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             if(is_array($invoice_customer_id)){
                 for($i=0; $i < count($invoice_customer_id) ; $i++){
                     $data_sub = [];
-                    $data_sub['billing_note_id'] = $output;
+                    $data_sub['billing_note_id'] = $billing_note_id;
                     $data_sub['invoice_customer_id'] = $invoice_customer_id[$i];
-                    $data_sub['billing_note_list_amount'] = $billing_note_list_amount[$i];
-                    $data_sub['billing_note_list_paid'] = $billing_note_list_paid[$i];
-                    $data_sub['billing_note_list_balance'] = $billing_note_list_balance[$i];
+                    $data_sub['billing_note_list_amount'] = (float)filter_var($billing_note_list_amount[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data_sub['billing_note_list_paid'] = (float)filter_var($billing_note_list_paid[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data_sub['billing_note_list_balance'] = (float)filter_var($billing_note_list_balance[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data_sub['billing_note_list_remark'] = $billing_note_list_remark[$i];
 
                     $id = $billing_note_list_model->insertBillingNoteList($data_sub);
                 }
             }else if($invoice_customer_id != ""){
                 $data_sub = [];
-                $data_sub['billing_note_id'] = $output;
+                $data_sub['billing_note_id'] = $billing_note_id;
                 $data_sub['invoice_customer_id'] = $invoice_customer_id;
-                $data_sub['billing_note_list_amount'] = $billing_note_list_amount;
-                $data_sub['billing_note_list_paid'] = $billing_note_list_paid;
-                $data_sub['billing_note_list_balance'] = $billing_note_list_balance;
+                $data_sub['billing_note_list_amount'] = (float)filter_var($billing_note_list_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data_sub['billing_note_list_paid'] = (float)filter_var($billing_note_list_paid, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data_sub['billing_note_list_balance'] =(float)filter_var($billing_note_list_balance, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['billing_note_list_remark'] = $billing_note_list_remark;
     
                 $id = $billing_note_list_model->insertBillingNoteList($data_sub);
             }
 
 ?>
-        <script>window.location="index.php?app=billing_note"</script>
+        <script>window.location="index.php?app=billing_note&action=update&id=<?PHP echo $billing_note_id ; ?>"</script>
 <?php
         }else{
 ?>
@@ -239,6 +252,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
 
         $invoice_customer_id = $_POST['invoice_customer_id'];
+        $billing_note_list_id = $_POST['billing_note_list_id'];
         $billing_note_list_amount = $_POST['billing_note_list_amount'];
         $billing_note_list_paid = $_POST['billing_note_list_paid'];
         $billing_note_list_balance = $_POST['billing_note_list_balance'];
@@ -254,9 +268,9 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                 $data_sub = [];
                 $data_sub['billing_note_id'] = $billing_note_id;
                 $data_sub['invoice_customer_id'] = $invoice_customer_id[$i];
-                $data_sub['billing_note_list_amount'] = $billing_note_list_amount[$i];
-                $data_sub['billing_note_list_paid'] = $billing_note_list_paid[$i];
-                $data_sub['billing_note_list_balance'] = $billing_note_list_balance[$i];
+                $data_sub['billing_note_list_amount'] = (float)filter_var($billing_note_list_amount[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data_sub['billing_note_list_paid'] = (float)filter_var($billing_note_list_paid[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $data_sub['billing_note_list_balance'] = (float)filter_var($billing_note_list_balance[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['billing_note_list_remark'] = $billing_note_list_remark[$i];
 
                 if($billing_note_list_id[$i] != '0'){
@@ -270,9 +284,9 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             $data_sub = [];
             $data_sub['billing_note_id'] = $billing_note_id;
             $data_sub['invoice_customer_id'] = $invoice_customer_id;
-            $data_sub['billing_note_list_amount'] = $billing_note_list_amount;
-            $data_sub['billing_note_list_paid'] = $billing_note_list_paid;
-            $data_sub['billing_note_list_balance'] = $billing_note_list_balance;
+            $data_sub['billing_note_list_amount'] = (float)filter_var($billing_note_list_amount, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data_sub['billing_note_list_paid'] = (float)filter_var($billing_note_list_paid, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data_sub['billing_note_list_balance'] = (float)filter_var($billing_note_list_balance, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data_sub['billing_note_list_remark'] = $billing_note_list_remark;
 
             if($billing_note_list_id != "0"){
@@ -288,7 +302,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         if($output){
         
 ?>
-        <script>window.location="index.php?app=billing_note"</script>
+        <script>window.location="index.php?app=billing_note&action=update&id=<?PHP echo $billing_note_id ; ?>"</script>
 <?php
         }else{
 ?>

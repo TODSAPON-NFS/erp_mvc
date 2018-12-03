@@ -136,10 +136,15 @@
         var customer_id = document.getElementById('customer_id').value;
         $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
             document.getElementById('customer_code').value = data.customer_code;
-            document.getElementById('invoice_customer_name').value = data.customer_name_en;
-            document.getElementById('invoice_customer_branch').value = data.invoice_customer_branch ;
+            document.getElementById('invoice_customer_name').value = data.customer_name_en ;
+            document.getElementById('invoice_customer_branch').value = data.customer_branch ;
             document.getElementById('invoice_customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
             document.getElementById('invoice_customer_tax').value = data.customer_tax ;
+            document.getElementById('employee_id').value = data.sale_id ;
+            $('#employee_id').selectpicker('refresh');
+            document.getElementById('invoice_customer_due_day').value = data.credit_day ;
+            generate_credit_date();
+
         });
     }
 
@@ -514,9 +519,9 @@
 
     function generate_credit_date(){
         var day = parseInt($('#invoice_customer_due_day').val());
-        var date = $('#invoice_customer_date').val();
+        var date = $('#invoice_customer_date').val(); 
 
-        var current_date = new Date();
+        var current_date =new Date();
         var tomorrow = new Date();
 
         if(isNaN(day)){
@@ -524,7 +529,13 @@
             day = 0;
         }else if (date == ""){
             $('#invoice_customer_date').val(("0" + current_date.getDate() ) .slice(-2) + '-' + ("0" + current_date.getMonth() + 1).slice(-2) + '-' + current_date.getFullYear());
+        }else{
+            var date_arr = date.split('-'); 
+
+            current_date = new Date(date_arr[2],date_arr[1] - 1,date_arr[0]);
+            tomorrow = new Date(date_arr[2],date_arr[1] - 1,date_arr[0]);
         }
+
 
         if (day > 0){
             $('#invoice_customer_term').val("เครดิต");
@@ -532,7 +543,7 @@
             $('#invoice_customer_term').val("เงินสด");
         }
 
-        tomorrow.setDate(current_date.getDate()+day);
+        tomorrow.setDate(current_date.getDate()+day); 
         $('#invoice_customer_due').val(("0" + tomorrow.getDate() ) .slice(-2) + '-' + ("0" + (tomorrow.getMonth()+1) ).slice(-2) + '-' + tomorrow.getFullYear());
         
 
@@ -556,7 +567,23 @@ generate_credit_date();
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-            แก้ไขใบกำกับภาษี / Edit Invoice Customer 
+                <div class="row">
+                    <div class="col-md-8">
+                    แก้ไขใบกำกับภาษี / Edit Invoice Customer 
+                    </div>
+                    <div class="col-md-4" align="right">
+                        <?PHP if($previous_id != ""){?>
+                        <a class="btn btn-primary" href="?app=invoice_customer&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
+                        <?PHP } ?>
+
+                        <a class="btn btn-success "  href="?app=invoice_customer&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                        <a class="btn btn-danger" href="print.php?app=invoice_customer&action=pdf&id=<?php echo $invoice_customer_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
+                         
+                        <?PHP if($next_id != ""){?>
+                        <a class="btn btn-primary" href="?app=invoice_customer&action=update&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
+                        <?PHP } ?>
+                    </div>
+                </div> 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -644,7 +671,7 @@ generate_credit_date();
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>เครดิต / Credit Day </label>
-                                        <input type="text" id="invoice_customer_due_day" name="invoice_customer_due_day"  class="form-control" value="<?php echo $customer['credit_day'];?>" onchange="generate_credit_date();"/>
+                                        <input type="text" id="invoice_customer_due_day" name="invoice_customer_due_day"  class="form-control" value="<?php echo $invoice_customer['invoice_customer_due_day'];?>" onchange="generate_credit_date();"/>
                                         <p class="help-block">01-03-2018 </p>
                                     </div>
                                 </div>
@@ -656,11 +683,22 @@ generate_credit_date();
                                     </div>
                                 </div>
 
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>เงื่อนไขการชำระ / term </label>
                                         <input type="text" id="invoice_customer_term" name="invoice_customer_term"  class="form-control" value="<?PHP echo $invoice_customer['invoice_customer_term'];?>"  />
                                         <p class="help-block">Bank </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>ประเภทใบกำกับภาษี / Type </label>
+                                        <select id="invoice_customer_begin" name="invoice_customer_begin" class="form-control">
+                                            <option <?PHP if($invoice_customer['invoice_customer_term'] == '0'){ ?> SELECTED <?PHP } ?> value="0">ขายสินค้า</option>
+                                            <option <?PHP if($invoice_customer['invoice_customer_term'] == '3'){ ?> SELECTED <?PHP } ?> value="3">รับเงินมัดจำ</option> 
+                                        </select>
+                                        <p class="help-block">ขายสินค้า </p>
                                     </div>
                                 </div>
                                 

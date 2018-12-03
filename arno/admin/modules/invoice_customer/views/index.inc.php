@@ -155,6 +155,18 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
     $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy($invoice_customer_id);
 
+    $invoice_customers = $invoice_customer_model->getInvoiceCustomerBy("","","","","","0",$lock_1,$lock_2);
+
+    for($i = 0 ; $i < count($invoice_customers) ; $i++){
+        if($invoice_customer_id == $invoice_customers[$i]['invoice_customer_id']){ 
+            $previous_id = $invoice_customers[$i-1]['invoice_customer_id'];
+            $previous_code = $invoice_customers[$i-1]['invoice_customer_code'];
+            $next_id = $invoice_customers[$i+1]['invoice_customer_id'];
+            $next_code = $invoice_customers[$i+1]['invoice_customer_code'];
+
+        }
+    }
+
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
@@ -189,6 +201,8 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['invoice_customer_tax'] = $_POST['invoice_customer_tax'];
         $data['invoice_customer_term'] = $_POST['invoice_customer_term'];
         $data['invoice_customer_due'] = $_POST['invoice_customer_due'];
+        $data['invoice_customer_due_day'] = $_POST['invoice_customer_due_day'];
+        $data['invoice_customer_begin'] = $_POST['invoice_customer_begin'];
         $data['addby'] = $admin_id;
         $data['updateby'] = $admin_id;
 
@@ -319,7 +333,9 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['invoice_customer_tax'] = $_POST['invoice_customer_tax'];
         $data['invoice_customer_term'] = $_POST['invoice_customer_term'];
         $data['invoice_customer_due'] = $_POST['invoice_customer_due'];
+        $data['invoice_customer_due_day'] = $_POST['invoice_customer_due_day'];
         $data['invoice_customer_close'] = $_POST['invoice_customer_close'];
+        $data['invoice_customer_begin'] = $_POST['invoice_customer_begin'];
         $data['addby'] = $admin_id;
         $data['updateby'] = $admin_id;
 
@@ -421,9 +437,15 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
        //account setting id = 15 ภาษีขาย --> [2135-00] ภาษีขาย
        $account_vat_sale = $account_setting_model->getAccountSettingByID(15);
-                
-       //account setting id = 19 ขายเชื่อ --> [4100-01] รายได้-ขายอะไหล่ชิ้นส่วน
-       $account_sale = $account_setting_model->getAccountSettingByID(19);
+        
+       if($data["invoice_customer_begin"] == "3"){
+            //account setting id = 19 ขายเชื่อ --> [4100-01] รายได้-ขายอะไหล่ชิ้นส่วน
+            $account_sale = $account_setting_model->getAccountSettingByID(19);
+       }else{
+            //account setting id = 11 ขายเชื่อ --> [4100-01] รายได้-ขายอะไหล่ชิ้นส่วน
+            $account_sale = $account_setting_model->getAccountSettingByID(11);
+       }
+       
 
        $customer=$customer_model->getCustomerByID($_POST['customer_id']);
        $account_customer = $customer['account_id'];

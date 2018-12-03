@@ -174,9 +174,15 @@
         $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
             document.getElementById('customer_code').value = data.customer_code;
             document.getElementById('invoice_customer_name').value = data.customer_name_en ;
-            document.getElementById('invoice_customer_branch').value = data.invoice_customer_branch ;
+            document.getElementById('invoice_customer_branch').value = data.customer_branch ;
             document.getElementById('invoice_customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
             document.getElementById('invoice_customer_tax').value = data.customer_tax ;
+            document.getElementById('employee_id').value = data.sale_id ;
+            console.log(data.sale_id);
+            $('#employee_id').selectpicker('refresh');
+            document.getElementById('invoice_customer_due_day').value = data.credit_day ;
+            generate_credit_date();
+
         });
     }
 
@@ -573,9 +579,9 @@
 
     function generate_credit_date(){
         var day = parseInt($('#invoice_customer_due_day').val());
-        var date = $('#invoice_customer_date').val();
+        var date = $('#invoice_customer_date').val(); 
 
-        var current_date = new Date();
+        var current_date =new Date();
         var tomorrow = new Date();
 
         if(isNaN(day)){
@@ -583,7 +589,13 @@
             day = 0;
         }else if (date == ""){
             $('#invoice_customer_date').val(("0" + current_date.getDate() ) .slice(-2) + '-' + ("0" + current_date.getMonth() + 1).slice(-2) + '-' + current_date.getFullYear());
+        }else{
+            var date_arr = date.split('-'); 
+
+            current_date = new Date(date_arr[2],date_arr[1] - 1,date_arr[0]);
+            tomorrow = new Date(date_arr[2],date_arr[1] - 1,date_arr[0]);
         }
+
 
         if (day > 0){
             $('#invoice_customer_term').val("เครดิต");
@@ -591,7 +603,7 @@
             $('#invoice_customer_term').val("เงินสด");
         }
 
-        tomorrow.setDate(current_date.getDate()+day);
+        tomorrow.setDate(current_date.getDate()+day); 
         $('#invoice_customer_due').val(("0" + tomorrow.getDate() ) .slice(-2) + '-' + ("0" + (tomorrow.getMonth()+1) ).slice(-2) + '-' + tomorrow.getFullYear());
         
 
@@ -733,11 +745,22 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>เงื่อนไขการชำระ / term </label>
                                         <input type="text" id="invoice_customer_term" name="invoice_customer_term"  class="form-control"  />
                                         <p class="help-block">Bank </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>ประเภทใบกำกับภาษี / Type </label>
+                                        <select id="invoice_customer_begin" name="invoice_customer_begin" class="form-control">
+                                            <option value="0">ขายสินค้า</option>
+                                            <option value="3">รับเงินมัดจำ</option> 
+                                        </select>
+                                        <p class="help-block">ขายสินค้า </p>
                                     </div>
                                 </div>
                                 

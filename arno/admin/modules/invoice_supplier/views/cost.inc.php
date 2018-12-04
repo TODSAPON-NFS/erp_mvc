@@ -267,7 +267,7 @@ function calculate(id,all_duty){
                                                 <span><b>Price.</b></span>
                                             </td>
                                             <td>
-                                                <input name="invoice_supplier_list_duty[]" type="text" style="text-align:right;" class="form-control" value="<?php echo  number_format($cost_price_ex_total * $invoice_supplier_lists[$i]['invoice_supplier_list_duty_percent'] / 100,2); ?>"  readonly />
+                                                <input name="invoice_supplier_list_duty[]" type="text" style="text-align:right;" class="form-control" value="<?php echo  number_format($cost_price_ex_total * $invoice_supplier_lists[$i]['invoice_supplier_list_duty_percent'] / 100,2); ?>"  />
                                             </td>
                                         </tr>
                                     </table>

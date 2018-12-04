@@ -19,6 +19,12 @@ if($billing_note['customer_tel'] != ""){
     $tel = "";
 }
 
+if($billing_note['customer_zipcode'] != ""){
+    $zipcode = " ".$billing_note['customer_zipcode'];
+}else{
+    $zipcode = "";
+}
+
 $total = 0;
 for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
@@ -107,7 +113,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     '. $billing_note['billing_note_name'].'  '.$branch.'
                     </div>
                     <div style="padding:8px;line-height:2;"> 
-                    '. nl2br ( $billing_note['billing_note_address'] ).'
+                    '. nl2br ( $billing_note['billing_note_address'] ).' '.$zipcode.'
                         
                     </div>
                     <div style="padding:8px;">  

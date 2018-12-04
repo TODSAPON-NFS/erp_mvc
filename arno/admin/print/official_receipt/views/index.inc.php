@@ -33,7 +33,7 @@ $official_receipt_lists = $official_receipt_list_model->getOfficialReceiptListBy
 //     $tax_reports[] = $tax_reports[0];
 // }
 
-$lines = 13;
+$lines = 11;
 
 $page_max = (int)(count($official_receipt_lists) / $lines);
 if(count($official_receipt_lists) % $lines > 0){

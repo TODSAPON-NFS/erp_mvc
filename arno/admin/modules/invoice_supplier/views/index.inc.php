@@ -20,6 +20,7 @@ require_once('../models/AccountSettingModel.php');
 
 require_once('../functions/CodeGenerateFunction.func.php');
 require_once('../models/PaperModel.php');
+require_once('../models/MaintenanceSaleModel.php');
 
 date_default_timezone_set('asia/bangkok');
 
@@ -41,6 +42,7 @@ $account_setting_model = new AccountSettingModel;
 
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
+$maintenance_model = new MaintenanceSaleModel;
 
 // 9 = key ของ purchase request ใน tb_paper
 $paper = $paper_model->getPaperByID('13');

@@ -17,8 +17,8 @@
         }else { 
             var str_pass = val_date.split("-");
             var str_pay = check_date.split("-"); 
-            var check_pay_date_pass = new Date (str_pass[1]+'-'+str_pass[0]+'-'+str_pass[2]);
-            var check_pay_date = new Date(str_pay[1]+'-'+str_pay[0]+'-'+str_pay[2]);
+            var check_pay_date_pass = new Date (str_pass[2],str_pass[1],str_pass[0]);
+            var check_pay_date = new Date(str_pay[2],str_pay[1],str_pay[0]);
             
             if (check_pay_date_pass <  check_pay_date){
                 alert("วันที่ผ่านเช็คต้องมากกว่าหรือเท่ากับ วันที่จ่ายเช็ค");
@@ -29,6 +29,25 @@
             }
         }
         
+    }
+
+    function checkDate(id){
+        var val_date_pass = $(id).val();  
+        var val_date = $(id).attr('date');
+
+        var str_date_pass = val_date_pass.split("-");
+        var str_date = val_date.split("-"); 
+        var data_date_pass = new Date (str_date_pass[2],str_date_pass[1]-1,str_date_pass[0]);
+        var data_date = new Date(str_date[2],str_date[1]-1,str_date[0]);
+       
+
+        if (data_date_pass <  data_date){
+            alert("วันที่ผ่านเช็คต้องมากกว่าหรือเท่ากับ วันที่จ่ายเช็ค");
+            $(id).focus();
+            return false;
+        }else{
+            return true;
+        }
     }
 </script>
 
@@ -168,8 +187,8 @@
                                 <form role="form" method="post" onsubmit="return check(this,'<?PHP echo $checks[$i]['check_pay_date']; ?>');" action="?app=bank_check_pay_pass&action=pass&id=<?php echo $checks[$i]['check_pay_id'];?>" enctype="multipart/form-data">
                                     <table width="100%">
                                         <tr>
-                                            <td style="padding:0px 4px;"> 
-                                                <input type="text" name="check_pay_date_pass" class="form-control calendar"  readonly />
+                                            <td style="padding:0px 4px;">  
+                                                <input type="text" name="check_pay_date_pass" class="form-control calendar" pass-status="<?PHP echo $checks[$i]['check_pay_status']; ?>" date="<?PHP echo $checks[$i]['check_pay_date']; ?>" onchange="checkDate(this);"  readonly />
                                             </td>
                                             <td style="padding:0px 4px;" > 
                                                 <button type="summit" class="btn btn-success" ><i class="fa fa-check" aria-hidden="true"></i> ผ่านเช็ค</button>
@@ -197,6 +216,14 @@
                         }
                         ?>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="8"></td>
+                            <td >
+                                <!-- <button type="button" class="btn btn-success" ><i class="fa fa-check" aria-hidden="true"></i> ผ่านเช็ค</button> -->
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
                 
             </div>

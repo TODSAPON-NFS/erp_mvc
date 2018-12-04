@@ -13,7 +13,7 @@
         var supplier_id = $("#supplier_id").val();
         var keyword = $("#keyword").val();
 
-        window.location = "print.php?app=report_tax_01&action="+type+"&date_start="+date_start+"&date_end="+date_end+"&supplier_id="+supplier_id+"&keyword="+keyword;
+        window.open("print.php?app=report_tax_01&action="+type+"&date_start="+date_start+"&date_end="+date_end+"&supplier_id="+supplier_id+"&keyword="+keyword,'_blank');
     }
 
     function checkAll(id)

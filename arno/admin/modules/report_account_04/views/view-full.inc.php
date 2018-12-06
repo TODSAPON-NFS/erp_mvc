@@ -153,12 +153,14 @@
                         ?>
                     </tbody>
                     <tfoot>
+                    <!--
                         <tr>
-                            <td colspan="3" align="center">รวม</td>
+                            <td colspan="4" align="center">รวม</td>
                             <td  align="right" ><?php echo number_format($net_total,2); ?></td>
                             <td  align="right" ><?php echo number_format($vat_total,2); ?></td>
                             <td></td>
                         </tr>
+                    -->
                     </tfoot>
                 </table>
                 

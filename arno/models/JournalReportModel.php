@@ -217,6 +217,7 @@ class JournalReportModel extends BaseModel{
         } 
 
         $sql_general = " SELECT
+        CONCAT('general',journal_general_list_id) as journal_id,
         journal_general_code as journal_code, 
         journal_general_date as journal_date,
         journal_general_name  as journal_name,
@@ -252,6 +253,7 @@ class JournalReportModel extends BaseModel{
         } 
 
         $sql_purchase = " SELECT
+        CONCAT('purchase',journal_purchase_list_id) as journal_id,
         journal_purchase_code as journal_code, 
         journal_purchase_date as journal_date,
         journal_purchase_name  as journal_name,
@@ -287,6 +289,7 @@ class JournalReportModel extends BaseModel{
         } 
 
         $sql_sale = " SELECT
+        CONCAT('sale',journal_sale_list_id) as journal_id,
         journal_sale_code as journal_code, 
         journal_sale_date as journal_date,
         journal_sale_name  as journal_name,
@@ -321,7 +324,8 @@ class JournalReportModel extends BaseModel{
             $str_cash_payment_date = "AND STR_TO_DATE(journal_cash_payment_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
         } 
 
-        $sql_cash_payment = " SELECT
+        $sql_cash_payment = " SELECT 
+        CONCAT('payment',journal_cash_payment_list_id) as journal_id,
         journal_cash_payment_code as journal_code, 
         journal_cash_payment_date as journal_date,
         journal_cash_payment_name  as journal_name,
@@ -357,6 +361,7 @@ class JournalReportModel extends BaseModel{
         } 
 
         $sql_cash_receipt = " SELECT
+        CONCAT('receipt',journal_cash_receipt_list_id) as journal_id,
         journal_cash_receipt_code as journal_code, 
         journal_cash_receipt_date as journal_date,
         journal_cash_receipt_name  as journal_name,
@@ -384,9 +389,10 @@ class JournalReportModel extends BaseModel{
                 UNION  ($sql_purchase)
                 UNION  ($sql_sale)
                 UNION  ($sql_cash_payment)
-                UNION  ($sql_cash_receipt)) as tb_journal
+                UNION  ($sql_cash_receipt)) as tb_journal 
                 ORDER BY journal_date, journal_code ASC
         "; 
+ 
         
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -559,7 +565,7 @@ class JournalReportModel extends BaseModel{
                 UNION   ALL  ($sql_cash_payment) 
                 UNION   ALL  ($sql_cash_receipt)) as tb_journal  
                 ON tb_account.account_id = tb_journal.account_id  
-                GROUP BY tb_account.account_id 
+                GROUP BY journal_code 
                 HAVING  round(account_value,2)  != 0
                 ORDER BY account_code ASC
         ";  
@@ -732,8 +738,7 @@ class JournalReportModel extends BaseModel{
                 UNION   ALL  ($sql_cash_payment) 
                 UNION   ALL  ($sql_cash_receipt)) as tb_journal  
                 ON tb_account.account_id = tb_journal.account_id  
-
-                GROUP BY tb_account.account_id                
+               
                 ORDER BY account_code ASC
         ";  
         //echo '<pre>'.$sql.'</pre>';

@@ -3,15 +3,21 @@
 
 
         var stock_group_detail = document.getElementById("stock_group_detail").value;
+        var stock_group_code = document.getElementById("stock_group_code").value;
         var stock_group_name = document.getElementById("stock_group_name").value;
        
         
         stock_group_detail = $.trim(stock_group_detail);
+        stock_group_code = $.trim(stock_group_code);
         stock_group_name = $.trim(stock_group_name);
         
         
 
-        if(stock_group_name.length == 0){
+        if(stock_group_code.length == 0){
+            alert("Please input stock group code");
+            document.getElementById("stock_group_code").focus();
+            return false;
+        }else if(stock_group_name.length == 0){
             alert("Please input stock group name");
             document.getElementById("stock_group_name").focus();
             return false;
@@ -49,6 +55,13 @@
             <div class="panel-body">
                 <form role="form" method="post" onsubmit="return check();" action="index.php?app=stock_group&stock_type_id=<?php echo $stock_type_id;?>&action=add" enctype="multipart/form-data">
                     <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>รหัสคลังสินค้า / Stock Group Code. <font color="#F00"><b>*</b></font></label>
+                                <input type="number" id="stock_group_code" name="stock_group_code" class="form-control">
+                                <p class="help-block">Example : 01</p>
+                            </div>
+                        </div>
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>ชื่อคลังสินค้า / Stock Name. <font color="#F00"><b>*</b></font></label>

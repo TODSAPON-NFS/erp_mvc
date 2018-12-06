@@ -1,4 +1,5 @@
 <?php
+//ALTER TABLE `tb_stock_group` ADD `stock_group_code` VARCHAR(50) NOT NULL COMMENT 'หมายเลขคลังสินค้า' AFTER `stock_type_id`;
 
 require_once("BaseModel.php");
 class StockGroupModel extends BaseModel{
@@ -149,7 +150,8 @@ class StockGroupModel extends BaseModel{
         $sql = " UPDATE tb_stock_group SET 
         stock_type_id= '".$data['stock_type_id']."' , 
         employee_id = '".$data['employee_id']."' , 
-        stock_group_name = '".$data['stock_group_name']."' , 
+        stock_group_code = '".$data['stock_group_code']."' , 
+        stock_group_name = '".$data['stock_group_name']."' ,  
         stock_group_detail = '".$data['stock_group_detail']."' , 
         stock_group_notification = '".$data['stock_group_notification']."' , 
         stock_group_day = '".$data['stock_group_day']."' , 
@@ -169,7 +171,8 @@ class StockGroupModel extends BaseModel{
         $sql = " INSERT INTO tb_stock_group ( 
             stock_type_id,
             employee_id, 
-            stock_group_name, 
+            stock_group_code,  
+            stock_group_name,  
             stock_group_detail, 
             stock_group_notification, 
             stock_group_day, 
@@ -179,6 +182,7 @@ class StockGroupModel extends BaseModel{
         ) VALUES (  
             '".$data['stock_type_id']."', 
             '".$data['employee_id']."', 
+            '".$data['stock_group_code']."', 
             '".$data['stock_group_name']."', 
             '".$data['stock_group_detail']."', 
             '".$data['stock_group_notification']."', 

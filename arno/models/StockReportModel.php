@@ -200,7 +200,50 @@ class StockReportModel extends BaseModel{
 
     }
 
+   //#####################################################################################################################
+    //
+    //
+    //------------------------------------------ ดึงรายสมุดรายวัน แบบย่อ เรียงตามวัน --------------------------------------------
+    //
+    //
+    //#####################################################################################################################
+    function getStockReportBy($stock_start = "",$stock_end = "",$product_start = "",$product_end = ""){
+      
+        $str_stock = "";  
+        $str_product = "";  
+
+        if($stock_start != "" && $stock_end != ""){
+            $str_stock = " AND CAST(stock_group_code AS UNSIGNED) >= '$stock_start' AND CAST(stock_group_code AS UNSIGNED) <=  '$stock_end' "; 
+        }else if ($stock_start != "" && $stock_end == ""){
+            $str_stock = " AND stock_group_code = '$stock_start' ";  
+        } 
+
+        if($product_start != "" && $product_end != ""){
+            $str_product = " AND product_code >= '$product_start' AND product_code <=  '$product_end' "; 
+        }else if ($product_start != "" && $product_end == ""){
+            $str_product = " AND product_code = '$product_start' ";  
+        } 
 
 
+        $sql =" SELECT stock_group_name ,product_code,product_name ,stock_report_qty,stock_report_cost_avg, (stock_report_qty*stock_report_cost_avg) AS  stock_report_total 
+                FROM tb_stock_report 
+                LEFT JOIN tb_product ON tb_stock_report.product_id = tb_product.product_id 
+                LEFT JOIN tb_stock_group ON tb_stock_report.stock_group_id = tb_stock_group.stock_group_id 
+                WHERE tb_product.product_id IS NOT NULL 
+                $str_stock
+                $str_product
+                ORDER BY stock_group_name,product_code ASC
+        "; 
+        // echo $sql;
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    } 
 }
 ?>

@@ -272,6 +272,10 @@
         require_once("modules/report_account_07/views/index.inc.php");
     }
 
+    else if($_GET['app'] == "report_stock_02"){
+        require_once("modules/report_stock_02/views/index.inc.php");
+    }  
+
     /* ----------------------------------- //ระบบรายงาน// ---------------------------------------------- */
    
 

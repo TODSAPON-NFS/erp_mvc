@@ -138,7 +138,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=supplier&action=add" enctype="multipart/form-data">
+                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=supplier&action=add" enctype="multipart/form-data">
                     
                     
                 <div class="row">
@@ -387,7 +387,7 @@
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="?app=supplie" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

@@ -28,7 +28,7 @@ function setFormat(id){
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post"  action="index.php?app=summit_account&action=edit"  enctype="multipart/form-data">
+                <form  id="form_target" role="form" method="post"  action="index.php?app=summit_account&action=edit"  enctype="multipart/form-data">
                     
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
@@ -79,7 +79,7 @@ function setFormat(id){
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="?app=summit_account&action=view" class="btn btn-primary">Reset</a>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                     <br>

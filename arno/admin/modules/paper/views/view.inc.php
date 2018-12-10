@@ -107,7 +107,7 @@
 
 
 <!-- /.row -->
-<form role="form" method="post"  action="index.php?app=paper&action=edit"  enctype="multipart/form-data">
+<form role="form" method="post"  id="form_target"  action="index.php?app=paper&action=edit"  enctype="multipart/form-data">
     <div id="modalAdd" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg " role="document">
             <div class="modal-content">
@@ -199,7 +199,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-success">Save</button>
+                <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
             </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

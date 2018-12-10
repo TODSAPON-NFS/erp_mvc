@@ -246,7 +246,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <form role="form" method="post" onsubmit="return check();" <?php if($customer_holiday_id == ''){ ?>action="index.php?app=customer_holiday&action=add&id=<?php echo $customer_id;?>"<?php }else{?> action="index.php?app=customer_holiday&action=edit&id=<?php echo $customer_id;?>" <?php }?> enctype="multipart/form-data">
+                            <form  id="form_target" role="form" method="post" onsubmit="return check();" <?php if($customer_holiday_id == ''){ ?>action="index.php?app=customer_holiday&action=add&id=<?php echo $customer_id;?>"<?php }else{?> action="index.php?app=customer_holiday&action=edit&id=<?php echo $customer_id;?>" <?php }?> enctype="multipart/form-data">
                                 <input type="hidden" id="customer_holiday_id" name="customer_holiday_id" value="<?php echo $customer_holiday_id?>"/>
                                 <div class="row">
                                     <div class="col-lg-4">
@@ -283,7 +283,7 @@
                                 <div class="row">
                                     <div class="col-lg-offset-9 col-lg-3" align="right">
                                         <a href="?app=customer_holiday&action=view&id=<?php echo $customer_id;?>" class="btn btn-primary">Reset</a>
-                                        <button type="submit" class="btn btn-success">Save</button>
+                                        <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                                     </div>
                                 </div>
                                 <br>
@@ -342,7 +342,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <form role="form" method="post" onsubmit="return check_invoice();"  action="index.php?app=customer_holiday&action=edit_invoice&id=<?php echo $customer_id;?>"  enctype="multipart/form-data">
+                            <form  id="form_target" role="form" method="post" onsubmit="return check_invoice();"  action="index.php?app=customer_holiday&action=edit_invoice&id=<?php echo $customer_id;?>"  enctype="multipart/form-data">
                                 <input type="hidden" id="customer_id" name="customer_id" value="<?php echo $customer_id?>"/>
                                 <div class="row">
                                     <div class="col-lg-4">
@@ -367,7 +367,7 @@
                                 <div class="row">
                                     <div class="col-lg-offset-9 col-lg-3" align="right">
                                         <a href="?app=customer_holiday&action=view&id=<?php echo $customer_id;?>" class="btn btn-primary">Reset</a>
-                                        <button type="submit" class="btn btn-success">Save</button>
+                                        <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                                     </div>
                                 </div>
                                 <br>
@@ -415,7 +415,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <form role="form" method="post" onsubmit="return check_bill();"  action="index.php?app=customer_holiday&action=edit_bill&id=<?php echo $customer_id;?>"  enctype="multipart/form-data">
+                            <form  id="form_target" role="form" method="post" onsubmit="return check_bill();"  action="index.php?app=customer_holiday&action=edit_bill&id=<?php echo $customer_id;?>"  enctype="multipart/form-data">
                                 <input type="hidden" id="customer_id" name="customer_id" value="<?php echo $customer_id?>"/>
                                 <div class="row">
                                     <div class="col-lg-4">
@@ -440,7 +440,7 @@
                                 <div class="row">
                                     <div class="col-lg-offset-9 col-lg-3" align="right">
                                         <a href="?app=customer_holiday&action=view&id=<?php echo $customer_id;?>" class="btn btn-primary">Reset</a>
-                                        <button type="submit" class="btn btn-success">Save</button>
+                                        <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                                     </div>
                                 </div>
                                 <br>

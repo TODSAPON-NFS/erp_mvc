@@ -118,7 +118,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=summit_dedit&action=edit&id=<?php echo $invoice_customer_id;?>" >
+                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=summit_dedit&action=edit&id=<?php echo $invoice_customer_id;?>" >
                     <input type="hidden"  id="invoice_customer_id" name="invoice_customer_id" value="<?php echo $invoice_customer_id; ?>" />
                     <input type="hidden"  id="invoice_customer_date" name="invoice_customer_date" value="<?php echo $invoice_customer['invoice_customer_date']; ?>" />
                     <div class="row">
@@ -296,7 +296,7 @@
                             <a href="index.php?app=summit_dedit" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             <a href="index.php?app=summit_dedit&action=print&id=<?PHP echo $invoice_customer_id?>" class="btn btn-danger">Print</a>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

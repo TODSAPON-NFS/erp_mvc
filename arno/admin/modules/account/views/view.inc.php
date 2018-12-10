@@ -58,7 +58,7 @@
 
                                 <div class="col-lg-4">
                                     <?PHP if($account_id != ""){?>
-                                    <form role="form" method="post" onsubmit="return check();" <?php if($_GET['action'] == 'view' || $_GET['action'] == ''){ ?>action="index.php?app=account&action=add"<?php }else{?> action="index.php?app=account&action=edit&id=<?PHP echo $account_id;?>" <?php }?> enctype="multipart/form-data">
+                                    <form  id="form_target" role="form" method="post" onsubmit="return check();" <?php if($_GET['action'] == 'view' || $_GET['action'] == ''){ ?>action="index.php?app=account&action=add"<?php }else{?> action="index.php?app=account&action=edit&id=<?PHP echo $account_id;?>" <?php }?> enctype="multipart/form-data">
                                         <input type="hidden" id="account_id" name="account_id" value="<?php echo $account_id?>"/>
                                         <div class="row">
                                             <div class="col-lg-12">
@@ -125,7 +125,7 @@
                                         <div class="row">
                                             <div class="col-lg-offset-6 col-lg-6" align="right">
                                                 <a href="?app=account&action=view" class="btn btn-primary">Reset</a>
-                                                <button type="submit" class="btn btn-success">Save</button>
+                                                <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                                             </div>
                                         </div>
                                         <br>

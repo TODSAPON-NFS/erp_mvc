@@ -200,7 +200,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=customer_contact&action=edit&id=<?php echo $customer_id?>" enctype="multipart/form-data">
+                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=customer_contact&action=edit&id=<?php echo $customer_id?>" enctype="multipart/form-data">
                     <input type="hidden" id="customer_contact_id" name="customer_contact_id" value="<?php echo $customer_contact_id?>"/>
                     
 

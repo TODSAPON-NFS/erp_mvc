@@ -389,9 +389,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         $data['invoice_supplier_due_day'] = $_POST['invoice_supplier_due_day'];
         $data['import_duty'] = (float)filter_var($_POST['import_duty'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['freight_in'] = (float)filter_var($_POST['freight_in'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $data['addby'] = $admin_id;
-
-       
+        $data['addby'] = $admin_id; 
        
         $product_id = $_POST['product_id'];
         $invoice_supplier_list_id = $_POST['invoice_supplier_list_id'];
@@ -531,15 +529,25 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     
 
     $invoice_supplier_list_id = $_POST['invoice_supplier_list_id'];
+    $invoice_supplier_list_freight_fix = $_POST['invoice_supplier_list_freight_fix'];
+    $invoice_supplier_list_duty_fix = $_POST['invoice_supplier_list_duty_fix'];
     $invoice_supplier_list_duty_percent = $_POST['invoice_supplier_list_duty_percent'];
+    $invoice_supplier_list_cost = $_POST['invoice_supplier_list_cost'];
     
     if(is_array($invoice_supplier_list_id)){
         for($i=0; $i < count($invoice_supplier_list_id) ; $i++){
-            $invoice_supplier_list_model->updateDutyPercentListById($invoice_supplier_list_duty_percent[$i],$invoice_supplier_list_id[$i]); 
+            $data['invoice_supplier_list_freight_fix'] = $invoice_supplier_list_freight_fix[$i];
+            $data['invoice_supplier_list_duty_fix'] = $invoice_supplier_list_duty_fix[$i];
+            $data['invoice_supplier_list_duty_percent'] = $invoice_supplier_list_duty_percent[$i];
+            $data['invoice_supplier_list_cost'] = $invoice_supplier_list_cost[$i];
+            $invoice_supplier_list_model->updateCostListById($data,$invoice_supplier_list_id[$i]); 
         }
     }else if($invoice_supplier_list_id != ""){
-        
-            $invoice_supplier_list_model->updateDutyPercentListById($invoice_supplier_list_duty_percent,$invoice_supplier_list_id);
+            $data['invoice_supplier_list_freight_fix'] = $invoice_supplier_list_freight_fix;
+            $data['invoice_supplier_list_duty_fix'] = $invoice_supplier_list_duty_fix;
+            $data['invoice_supplier_list_duty_percent'] = $invoice_supplier_list_duty_percent;
+            $data['invoice_supplier_list_cost'] = $invoice_supplier_list_cost;
+            $invoice_supplier_list_model->updateCostListById($data,$invoice_supplier_list_id);
         
     }
 ?>

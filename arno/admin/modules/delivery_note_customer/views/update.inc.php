@@ -150,7 +150,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=delivery_note_customer&action=edit&id=<?php echo $delivery_note_customer_id;?>" enctype="multipart/form-data">
+                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=delivery_note_customer&action=edit&id=<?php echo $delivery_note_customer_id;?>" enctype="multipart/form-data">
                 <input type="hidden"  id="delivery_note_customer_file_o" name="delivery_note_customer_file_o" value="<?php echo $delivery_note_customer['delivery_note_customer_file']; ?>" /> 
                 <div class="row">
                         <div class="col-lg-5">
@@ -296,7 +296,7 @@
                             <a href="print.php?app=delivery_note_customer&action=pdf&id=<?PHP echo $delivery_note_customers[$i]['delivery_note_customer_id'];?>" target="blank" class="btn btn-danger">Print</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

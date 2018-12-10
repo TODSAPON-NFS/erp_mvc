@@ -390,7 +390,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=journal_special_02&action=edit&id=<?PHP echo $journal_sale_id; ?>" enctype="multipart/form-data">
+                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=journal_special_02&action=edit&id=<?PHP echo $journal_sale_id; ?>" enctype="multipart/form-data">
                     <input id="journal_sale_id" name="journal_sale_id" value="<?PHP echo $journal_sale['journal_sale_id']; ?>" type="hidden" />
                     <div class="row">
                         <div class="col-lg-4">
@@ -558,7 +558,7 @@
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="index.php?app=journal_special_02" class="btn btn-default">Back</a>
                             <a href="index.php?app=journal_special_02&action=insert" class="btn btn-primary">Reset</a>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div> 
                 </form>

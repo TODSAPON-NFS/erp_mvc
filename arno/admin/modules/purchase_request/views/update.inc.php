@@ -305,7 +305,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=purchase_request&action=edit&id=<?php echo $purchase_request_id;?>" >
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=purchase_request&action=edit&id=<?php echo $purchase_request_id;?>" >
                     <input type="hidden"  id="purchase_request_id" name="purchase_request_id" value="<?php echo $purchase_request_id; ?>" />
                     <input type="hidden"  id="purchase_request_date" name="purchase_request_date" value="<?php echo $purchase_request['purchase_request_date']; ?>" />
                     <div class="row">
@@ -542,7 +542,7 @@
                             <a href="index.php?app=purchase_request" class="btn btn-default">Back</a>
                         
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
 
                         </div>
                     </div>

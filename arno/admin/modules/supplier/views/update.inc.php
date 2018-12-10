@@ -139,7 +139,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=supplier&action=edit" enctype="multipart/form-data" >
+                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=supplier&action=edit" enctype="multipart/form-data" >
                 <input type="hidden"  id="supplier_id" name="supplier_id" value="<?php echo $supplier_id ?>" />
                 <input type="hidden"  id="supplier_logo_o" name="supplier_logo_o" value="<?php echo $supplier['supplier_logo']; ?>" />    
                     
@@ -388,7 +388,7 @@
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="?app=supplier" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

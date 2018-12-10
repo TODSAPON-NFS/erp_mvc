@@ -275,6 +275,9 @@
     else if($_GET['app'] == "report_stock_02"){
         require_once("modules/report_stock_02/views/index.inc.php");
     }  
+    else if($_GET['app'] == "report_stock_03"){
+        require_once("modules/report_stock_03/views/index.inc.php");
+    }  
 
     /* ----------------------------------- //ระบบรายงาน// ---------------------------------------------- */
    

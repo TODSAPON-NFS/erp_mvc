@@ -62,7 +62,7 @@ class MaintenanceStockModel extends BaseModel{
                 // print_r($data[$i]);
                 // echo "</pre>";
 
-                $this->addSummitProduct('', $data[$i]['stock_group_id'], $data[$i]['summit_product_id'], $data[$i]['product_id'], $data[$i]['summit_product_qty'], $data[$i]['summit_product_cost']);
+                $this->addSummitProduct($data[$i]['summit_product_date'], $data[$i]['stock_group_id'], $data[$i]['summit_product_id'], $data[$i]['product_id'], $data[$i]['summit_product_qty'], $data[$i]['summit_product_cost']);
             }
         }
 

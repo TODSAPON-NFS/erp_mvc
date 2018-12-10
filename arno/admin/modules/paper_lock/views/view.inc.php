@@ -7,7 +7,7 @@
 </div>
 <!-- /.row -->
 
-<form role="form" method="post" action="index.php?app=paper_lock&action=generate">
+<form id="form_target_1" role="form" method="post" action="index.php?app=paper_lock&action=generate">
     <div class="row"> 
         <div class="col-lg-6 col-md-6">
             <div class="form-group">
@@ -17,7 +17,7 @@
                         <input name="date_start" type="text" class="form-control calendar" value="<?PHP echo $date_start?>" /> 
                     </div>
                     <div class="col-lg-4 col-md-4">
-                        <button type="submit" class="btn btn-success" onclick="" > สร้างรอบบัญชี </button> 
+                        <button type="button" onclick="check_login('form_target_1');" class="btn btn-success" onclick="" > สร้างรอบบัญชี </button> 
                     </div>
                 </div>
             </div>
@@ -25,7 +25,7 @@
     </div>
 </form>
 
-<form role="form" method="post" action="index.php?app=paper_lock&action=update">
+<form id="form_target_2" role="form" method="post" action="index.php?app=paper_lock&action=update">
 <div class="row">
     <div class="col-lg-12 col-md-12">
         <table width="100%" class="table table-striped table-bordered table-hover" >
@@ -71,7 +71,7 @@
 
 <div class="row"> 
     <div class="col-lg-12 col-md-12" align="right">
-        <button type="submit" class="btn btn-success" onclick="" > บันทึก </button> 
+        <button type="button" onclick="check_login('form_target_2');" class="btn btn-success" onclick="" > บันทึก </button> 
     </div>
 </div>
 </form>

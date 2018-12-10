@@ -40,7 +40,17 @@ session_start();
     <script>
 
         function refresh(){
+        <?php 
+            if($_SESSION['url']!=''){ 
+        ?>
+            window.location = "<?PHP echo $_SESSION['url']; ?>";
+        <?php 
+           } else{
+        ?>
             window.location = "admin/index.php"
+        <?php 
+            }
+        ?>
         }
 
         function error(){

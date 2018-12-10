@@ -42,7 +42,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body"> 
-                <form role="form" method="post" onsubmit="return check();" <?php if($exchange_rate_baht_id == ''){ ?>action="index.php?app=exchange_rate_baht&action=add"<?php }else{?> action="index.php?app=exchange_rate_baht&action=edit&id=<? echo $exchange_rate_baht_id; ?>" <?php }?> enctype="multipart/form-data">
+                <form id="form_target" role="form" method="post" onsubmit="return check();" <?php if($exchange_rate_baht_id == ''){ ?>action="index.php?app=exchange_rate_baht&action=add"<?php }else{?> action="index.php?app=exchange_rate_baht&action=edit&id=<? echo $exchange_rate_baht_id; ?>" <?php }?> enctype="multipart/form-data">
                     <input type="hidden" id="exchange_rate_baht_id" name="exchange_rate_baht_id" value="<?php echo $exchange_rate_baht_id?>"/>
 
                     <div class="row">
@@ -78,7 +78,7 @@
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="?app=currency_type&action=view" class="btn btn-primary">Reset</a>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                     <br>

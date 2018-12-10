@@ -53,7 +53,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=stock_group&action=edit&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_group["stock_group_id"];?>" enctype="multipart/form-data">
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=stock_group&action=edit&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_group["stock_group_id"];?>" enctype="multipart/form-data">
                     <input type="hidden" name="stock_group_id" value="<?PHP echo $stock_group["stock_group_id"];?>" />
                     <div class="row">
                         <div class="col-lg-4">
@@ -133,7 +133,7 @@
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="?app=stock_group&stock_type_id=<?php echo $stock_type_id;?>" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

@@ -206,7 +206,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=supplier_contact&action=add&id=<?php echo $supplier_id?>" enctype="multipart/form-data">
+                <form role="form"  id="form_target" method="post" onsubmit="return check();" action="index.php?app=supplier_contact&action=add&id=<?php echo $supplier_id?>" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
@@ -249,7 +249,7 @@
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="?app=supplier_contact&action=view&id=<?php echo $supplier_id?>" class="btn btn-primary">Back</a>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

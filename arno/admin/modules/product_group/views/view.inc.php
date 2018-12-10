@@ -45,7 +45,7 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                         <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
-                            <form role="form" method="post" onsubmit="return check();" <?php if($product_group_id == ''){ ?>action="index.php?app=product_group&action=add"<?php }else{?> action="index.php?app=product_group&action=edit" <?php }?> enctype="multipart/form-data">
+                            <form id="form_target" role="form" method="post" onsubmit="return check();" <?php if($product_group_id == ''){ ?>action="index.php?app=product_group&action=add"<?php }else{?> action="index.php?app=product_group&action=edit" <?php }?> enctype="multipart/form-data">
                                 <input type="hidden" id="product_group_id" name="product_group_id" value="<?php echo $product_group_id?>"/>
                                 <div class="row">
                                     <div class="col-lg-4">
@@ -66,7 +66,7 @@
                                 <div class="row">
                                     <div class="col-lg-offset-9 col-lg-3" align="right">
                                         <a href="?app=product_group&action=view" class="btn btn-primary">Reset</a>
-                                        <button type="submit" class="btn btn-success">Save</button>
+                                        <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                                     </div>
                                 </div>
                                 <br>

@@ -202,7 +202,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
             <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=customer_end_users&action=add&customer_id=<?PHP echo $customer_id; ?>" enctype="multipart/form-data">                             
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=customer_end_users&action=add&customer_id=<?PHP echo $customer_id; ?>" enctype="multipart/form-data">                             
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -228,7 +228,7 @@
                         <div class="col-md-4">
                         </div>
                         <div class="col-md-4">
-                            <button type="summit" class="btn btn-primary" style="float:right; margin:0px 4px;" >Add</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-primary" style="float:right; margin:0px 4px;" >Add</button>
                             <a href="index.php?app=customer_end_users" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
                         </div>
                     </div>

@@ -344,7 +344,7 @@ function getProductDetail(id){
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();"   action="index.php?app=summit_product&action=add-stock&stock_group_id=<?php echo $stock_group_id?>"   enctype="multipart/form-data">
+                <form id="form_target" role="form" method="post" onsubmit="return check();"   action="index.php?app=summit_product&action=add-stock&stock_group_id=<?php echo $stock_group_id?>"   enctype="multipart/form-data">
                 <input type="hidden"  id="stock_group_id" name="stock_group_id" value="<?php echo $stock_group_id ?>" />
                    
                    <div class="row">
@@ -384,7 +384,7 @@ function getProductDetail(id){
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="?app=product&action=update&id=<? echo $product_id;?>" class="btn btn-primary" >Reset</a>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

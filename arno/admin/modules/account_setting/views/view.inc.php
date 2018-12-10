@@ -11,7 +11,7 @@
 <?php  for($i =  0 ; $i < count($account_groups) ; $i++){ ?>
 
 <!-- /.row -->
-<form role="form" method="post"  action="index.php?app=account_setting&action=edit"  enctype="multipart/form-data">
+<form role="form"  id="form_target" method="post"  action="index.php?app=account_setting&action=edit"  enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
@@ -57,7 +57,7 @@
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="?app=account_setting&action=view" class="btn btn-primary">Reset</a>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                     <br>

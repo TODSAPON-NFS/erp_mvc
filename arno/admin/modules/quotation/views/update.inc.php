@@ -241,7 +241,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=quotation&action=edit&id=<?php echo $quotation_id;?>" >
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=quotation&action=edit&id=<?php echo $quotation_id;?>" >
                 <input type="hidden"  id="quotation_id" name="quotation_id" value="<?php echo $quotation_id; ?>" />
                     <div class="row">
                         <div class="col-lg-6">
@@ -484,7 +484,7 @@
                             <a href="index.php?app=quotation" class="btn btn-default">Back</a>
                         
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

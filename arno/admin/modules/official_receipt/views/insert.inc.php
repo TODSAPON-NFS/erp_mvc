@@ -263,7 +263,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=official_receipt&action=add" >
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=official_receipt&action=add" >
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="row">
@@ -485,7 +485,7 @@
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="index.php?app=official_receipt" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

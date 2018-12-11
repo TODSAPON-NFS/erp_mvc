@@ -454,7 +454,7 @@
 
                 $(".example-ajax-post").easyAutocomplete(options);
 
-                var str_stock = "<option value=''>Select Stock</option>";
+                var str_stock = "";
                 $.each(stock_group_data, function (index, value) {
                     if(value['stock_group_id'] == data_buffer[i].stock_group_id ){
                         str_stock += "<option value='" + value['stock_group_id'] + "' SELECTED >" +  value['stock_group_name'] + "</option>";
@@ -514,7 +514,7 @@
 
         $(".example-ajax-post").easyAutocomplete(options);
         
-        var str_stock = "<option value=''>Select Stock</option>";
+        var str_stock = "";
         $.each(stock_group_data, function (index, value) {
             str_stock += "<option value='" + value['stock_group_id'] + "'>"+value['stock_group_name']+"</option>";
         });
@@ -821,8 +821,7 @@
                                     <input type="text" class="form-control" name="invoice_customer_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_remark']; ?>" />
                                 </td>
                                 <td>
-                                    <select  class="form-control" name="stock_group_id[]"  >
-                                        <option value="">Select</option>
+                                    <select  class="form-control" name="stock_group_id[]"  > 
                                         <?php 
                                         for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
                                         ?>

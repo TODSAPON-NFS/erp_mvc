@@ -147,48 +147,62 @@
                                 </tr>
                                 <tr class="">
                                     <td colspan="2" >
-                                        <b><?php echo $stock_reports[$i]['product_code']; ?>&nbsp;<?php echo $stock_reports[$i]['product_name']; ?></b>
+                                        <b><?php echo $stock_reports[$i]['product_code']; ?></b>
                                     </td> 
                                     <td colspan="9" >
-                                        <b style="color:blue;"><?php echo $stock_reports[$i]['product_code']; ?>&nbsp;<?php echo $stock_reports[$i]['product_name']; ?></b>
+                                        <b style="color:blue;"><?php echo $stock_reports[$i]['product_name']; ?></b>
                                     </td> 
                                     
                                 </tr>
+                                <tr class="">
+                                    <td colspan="1" >
+                                        <b><?php echo $stock_reports[$i]['stock_group_code']; ?></b>
+                                    </td> 
+                                    <td colspan="7" >
+                                        <b><span style="color:blue;"><?php echo $stock_reports[$i]['stock_group_name']; ?></span></b>
+                                    </td>   
+                                    <td align="right"><?php if($stock_reports[$i]['paper_code']=="initial"){ echo number_format(0,0);} ?></td> 
+                                    <td align="right"><?php if($stock_reports[$i]['paper_code']=="initial"){ echo number_format(0,2);} ?></td>
+                                    <td align="right"><?php if($stock_reports[$i]['paper_code']=="initial"){ echo number_format(0,2);} ?></td> 
+                                </tr>
                                 
                                 <?PHP
-                            } 
+                            }  
+                            if($stock_reports[$i]['paper_code']=="initial"){
+                                if($stock_reports[$i]['paper_code']=="initial"){
+                                    $stock_report_qty +=  $stock_reports[$i]['in_qty'];
+                                    $stock_report_cost_avg =  $stock_reports[$i]['in_stock_cost_avg'];
+                                    $stock_report_total =  $stock_reports[$i]['in_stock_cost_avg_total']; 
+                                }else{
+                                    $stock_report_qty -=  $stock_reports[$i]['out_qty'];
+                                    $stock_report_cost_avg =  $stock_reports[$i]['out_stock_cost_avg'];
+                                    $stock_report_total =  $stock_reports[$i]['out_stock_cost_avg_total']; 
+                                }
+                                
+                            }else{
+                                
+                            }
+                            
+                                ?>
+                                <tr class="">
+                                    <td><?php echo $stock_reports[$i]['stock_date']; ?></td>
+                                    <td><?php echo $stock_reports[$i]['paper_code']; ?></td>
+                                    <td align="right"><?php if($stock_reports[$i]['in_qty']>0){ echo number_format($stock_reports[$i]['in_qty'],0); } ?></td> 
+                                    <td align="right"><?php if($stock_reports[$i]['in_qty']>0){ echo number_format($stock_reports[$i]['in_stock_cost_avg'],2);} ?></td>
+                                    <td align="right"><?php if($stock_reports[$i]['in_qty']>0){ echo number_format($stock_reports[$i]['in_stock_cost_avg_total'],2);} ?></td> 
+                                    <td align="right"><?php if($stock_reports[$i]['out_qty']>0){ echo number_format($stock_reports[$i]['out_qty'],0);} ?></td> 
+                                    <td align="right"><?php if($stock_reports[$i]['out_qty']>0){ echo number_format($stock_reports[$i]['out_stock_cost_avg'],2);} ?></td>
+                                    <td align="right"><?php if($stock_reports[$i]['out_qty']>0){ echo number_format($stock_reports[$i]['out_stock_cost_avg_total'],2);} ?></td> 
+                                    <td align="right"><?php echo number_format($stock_reports[$i]['balance_qty'],0); ?></td> 
+                                    <td align="right"><?php echo number_format($stock_reports[$i]['balance_stock_cost_avg'],2); ?></td>
+                                    <td align="right"><?php echo number_format($stock_reports[$i]['balance_stock_cost_avg_total'],2); ?></td> 
+                                </tr>
+                                <?PHP  
 
-                            $stock_report_qty +=  $stock_reports[$i]['stock_report_qty'];
-                            $stock_report_cost_avg +=  $stock_reports[$i]['stock_report_cost_avg'];
-                            $stock_report_total +=  $stock_reports[$i]['stock_report_total'];
-                        ?>
-                        <tr class="">
-                            <td><?php echo $stock_reports[$i]['product_code'].' '.$stock_reports[$i]['product_name']; ?></td>
-                            <td align="right"><?php echo number_format($stock_reports[$i]['stock_report_qty'],0); ?> Pc.</td> 
-                            <td align="right"><?php echo number_format($stock_reports[$i]['stock_report_cost_avg'],2); ?></td>
-                            <td align="right"><?php echo number_format($stock_reports[$i]['stock_report_total'],2); ?></td> 
-                        </tr>
-                        <?PHP
 
+                            if($stock_reports[$i]['product_name'] != $stock_reports[$i+1]['product_name']){ 
 
-
-
-
-                            if($stock_reports[$i]['stock_group_name'] != $stock_reports[$i+1]['stock_group_name']){ 
-
-                                $stock_report_qty_sum += $stock_report_qty;
-                                $stock_report_cost_avg_sum +=  $stock_report_cost_avg; 
-                                $stock_report_total_sum +=  $stock_report_total; 
-                        ?>
-                        <tr class="">
-                            <td align="center" >
-                               <b><font color="black"> ยอดคงเหลือ</font> </b>
-                            </td> 
-                            <td align="right"><b><font color="black"><?php echo number_format($stock_report_qty,0); ?> </font></b> </td>
-                            <td align="right"><b><font color="black"><?php echo number_format($stock_report_cost_avg,2); ?> </font></b> </td> 
-                            <td align="right"><b><font color="black"><?php echo number_format($stock_report_total,2); ?> </font></b> </td>  
-                        </tr>
-                        <?PHP  
+                          
                                 $stock_report_qty = 0;
                                 $stock_report_cost_avg = 0;
                                 $stock_report_total = 0;

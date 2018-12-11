@@ -33,6 +33,22 @@ class StockReportModel extends BaseModel{
             return $data;
         }
     }
+    function getStockReportBalanceBy($product_id,$table_name,$stock_date){ 
+         
+        $sql = "SELECT MAX(stock_id) AS max_stock_id 
+        FROM $table_name
+        WHERE product_id = '$product_id' 
+        AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') < STR_TO_DATE('$stock_date','%d-%m-%Y %H:%i:%s') "; 
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
 
     function updateCostWhenInsert($stock_group_id, $product_id, $qty, $cost){
         $stock_qty = 0;
@@ -252,14 +268,21 @@ class StockReportModel extends BaseModel{
     //
     //
     //#####################################################################################################################
-    function getStockReportProductMovementBy($date_start = "",$date_end = "",$stock_start = "",$stock_end = ""){
+    function getStockReportProductMovementBy($date_start = "",$date_end = "",$stock_start = "",$stock_end = "",$product_start = "",$product_end = ""){
 
         $str_stock = "";   
+        $str_product = "";   
 
         if($stock_start != "" && $stock_end != ""){
             $str_stock = " AND CAST(stock_group_code AS UNSIGNED) >= '$stock_start' AND CAST(stock_group_code AS UNSIGNED) <=  '$stock_end' "; 
         }else if ($stock_start != "" && $stock_end == ""){
             $str_stock = " AND stock_group_code = '$stock_start' ";  
+        } 
+
+        if($product_start != "" && $product_end != ""){
+            $str_product = " AND CAST(product_code AS UNSIGNED) >= '$product_start' AND CAST(product_code AS UNSIGNED) <=  '$product_end' "; 
+        }else if ($product_start != "" && $product_end == ""){
+            $str_product = " AND product_code = '$product_start' ";  
         } 
 
         $sql ="SELECT table_name 
@@ -294,7 +317,7 @@ class StockReportModel extends BaseModel{
                 ( 
                 ";
             }
-            $sql .="(SELECT concat('".$data[$i]['table_name']."_',stock_id) AS from_stock ,product_code ,product_name ,(SELECT stock_group_name FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_name ,stock_type ,stock_date ,in_qty ,`in_stock_cost_avg`,`in_stock_cost_avg_total`,`out_qty`,`out_stock_cost_avg`,`out_stock_cost_avg_total`,`balance_qty`,`balance_stock_cost_avg`,`balance_stock_cost_avg_total`,
+            $sql .="(SELECT concat('".$data[$i]['table_name']."_',stock_id) AS from_stock ,product_code ,product_name ,(SELECT stock_group_name FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_name ,(SELECT stock_group_code FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_code ,stock_type ,stock_date ,in_qty ,in_stock_cost_avg,in_stock_cost_avg_total,out_qty,out_stock_cost_avg,out_stock_cost_avg_total,balance_qty,balance_stock_cost_avg,balance_stock_cost_avg_total,
             IFNULL(
                     invoice_supplier_code_gen,
                 IFNULL(
@@ -352,6 +375,7 @@ class StockReportModel extends BaseModel{
             LEFT JOIN tb_stock_change_product_list ON ".$data[$i]['table_name'].".stock_change_product_list_id = tb_stock_change_product_list.stock_change_product_list_id 
             LEFT JOIN tb_stock_change_product ON tb_stock_change_product_list.stock_change_product_id = tb_stock_change_product.stock_change_product_id  
             $str_date
+            $str_product
             ORDER BY ".$data[$i]['table_name'].".product_id ,STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'),from_stock  ASC ) 
             ";
             if(($i+1)<count($data)){

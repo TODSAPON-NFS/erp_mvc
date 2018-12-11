@@ -314,7 +314,7 @@ class StockReportModel extends BaseModel{
             }else if ($date_end != ""){
                 $str_date = " AND STR_TO_DATE(".$data[$i]['table_name'].".stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
             }
-            
+
             if($i == 0){
                 $sql .=" SELECT * FROM 
                 ( 
@@ -377,6 +377,7 @@ class StockReportModel extends BaseModel{
             
             LEFT JOIN tb_stock_change_product_list ON ".$data[$i]['table_name'].".stock_change_product_list_id = tb_stock_change_product_list.stock_change_product_list_id 
             LEFT JOIN tb_stock_change_product ON tb_stock_change_product_list.stock_change_product_id = tb_stock_change_product.stock_change_product_id  
+            WHERE 1 
             $str_date
             $str_product
             ORDER BY ".$data[$i]['table_name'].".product_id ,STR_TO_DATE(".$data[$i]['table_name'].".stock_date,'%d-%m-%Y %H:%i:%s'),from_stock  ASC ) 

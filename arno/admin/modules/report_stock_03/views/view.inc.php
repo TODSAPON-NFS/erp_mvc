@@ -2,14 +2,22 @@
     function search(){ 
         var date_start = $("#date_start").val();
         var date_end = $("#date_end").val(); 
+        var stock_start = $("#stock_start").val();
+        var stock_end = $("#stock_end").val(); 
+        var product_start = $("#product_start").val();
+        var product_end = $("#product_end").val(); 
 
-        window.location = "index.php?app=report_stock_03&date_start="+date_start+"&date_end="+date_end ;
+        window.location = "index.php?app=report_stock_03&date_start="+date_start+"&date_end="+date_end+"&stock_start="+stock_start+"&stock_end="+stock_end+"&product_start="+product_start+"&product_end="+product_end ;
     }
     function print(type){
         var date_start = $("#date_start").val();
         var date_end = $("#date_end").val(); 
+        var stock_start = $("#stock_start").val();
+        var stock_end = $("#stock_end").val(); 
+        var product_start = $("#product_start").val();
+        var product_end = $("#product_end").val(); 
 
-        window.open("print.php?app=report_stock_03&action="+type+"&date_start="+date_start+"&date_end="+date_end ,'_blank');
+        window.open("print.php?app=report_stock_03&action="+type+"&date_start="+date_start+"&date_end="+date_end+"&stock_start="+stock_start+"&stock_end="+stock_end+"&product_start="+product_start+"&product_end="+product_end ,'_blank');
     }
 </script>
 

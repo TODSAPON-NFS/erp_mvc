@@ -301,17 +301,20 @@ class StockReportModel extends BaseModel{
         }
 
       
-        $str_date = "";
-
-        if($date_start != "" && $date_end != ""){
-            $str_date = " AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
-        }else if ($date_start != ""){
-            $str_date = " AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
-        }else if ($date_end != ""){
-            $str_date = " AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
-        }
+        
         $sql = '';
         for($i = 0 ;$i<count($data)&&count($data)>0;$i++){
+
+            $str_date = "";
+
+            if($date_start != "" && $date_end != ""){
+                $str_date = " AND STR_TO_DATE(".$data[$i]['table_name'].".stock_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(".$data[$i]['table_name'].".stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+            }else if ($date_start != ""){
+                $str_date = " AND STR_TO_DATE(".$data[$i]['table_name'].".stock_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+            }else if ($date_end != ""){
+                $str_date = " AND STR_TO_DATE(".$data[$i]['table_name'].".stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+            }
+            
             if($i == 0){
                 $sql .=" SELECT * FROM 
                 ( 
@@ -376,7 +379,7 @@ class StockReportModel extends BaseModel{
             LEFT JOIN tb_stock_change_product ON tb_stock_change_product_list.stock_change_product_id = tb_stock_change_product.stock_change_product_id  
             $str_date
             $str_product
-            ORDER BY ".$data[$i]['table_name'].".product_id ,STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'),from_stock  ASC ) 
+            ORDER BY ".$data[$i]['table_name'].".product_id ,STR_TO_DATE(".$data[$i]['table_name'].".stock_date,'%d-%m-%Y %H:%i:%s'),from_stock  ASC ) 
             ";
             if(($i+1)<count($data)){
                 $sql .=" union";
@@ -388,7 +391,7 @@ class StockReportModel extends BaseModel{
         )
         AS tb_stock
         "; 
-        // echo $sql;
+        echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

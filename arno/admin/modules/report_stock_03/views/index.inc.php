@@ -58,9 +58,10 @@ if(!isset($_GET['product_end'])){
 if($date_start!=''||$date_end!=''||$stock_start!=''||$stock_end!=''||$product_start!=''||$product_end!=''){ 
     // $stock_reports = $stock_report_model->getStockReportProductMovementBy($product_start,$product_end,$stock_start,$stock_end);
     $stock_reports = $stock_report_model->getStockReportProductMovementBy($date_start,$date_end,$stock_start,$stock_end,$product_start,$product_end);
-    echo "<pre>";
-    print_r($stock_reports);
-    echo "</pre>";
+    
+    // echo "<pre>";
+    // print_r($stock_reports);
+    // echo "</pre>";
 }
 
 

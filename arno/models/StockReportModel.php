@@ -35,11 +35,13 @@ class StockReportModel extends BaseModel{
     }
     function getStockReportBalanceBy($product_id,$table_name,$stock_date){ 
          
-        $sql = "SELECT MAX(stock_id) AS max_stock_id 
+        $sql = "SELECT balance_qty,balance_stock_cost_avg,balance_stock_cost_avg_total 
+        FROM $table_name
+        WHERE stock_id = (SELECT MAX(stock_id)  
         FROM $table_name
         WHERE product_id = '$product_id' 
-        AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') < STR_TO_DATE('$stock_date','%d-%m-%Y %H:%i:%s') "; 
-
+        AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') < STR_TO_DATE('$stock_date','%d-%m-%Y %H:%i:%s') )"; 
+        echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -320,7 +322,22 @@ class StockReportModel extends BaseModel{
                 ( 
                 ";
             }
-            $sql .="(SELECT concat('".$data[$i]['table_name']."_',stock_id) AS from_stock ,product_code ,product_name ,(SELECT stock_group_name FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_name ,(SELECT stock_group_code FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_code ,stock_type ,stock_date ,in_qty ,in_stock_cost_avg,in_stock_cost_avg_total,out_qty,out_stock_cost_avg,out_stock_cost_avg_total,balance_qty,balance_stock_cost_avg,balance_stock_cost_avg_total,
+            $sql .="(SELECT concat('".$data[$i]['table_name']."_',stock_id) AS from_stock ,
+            ".$data[$i]['table_name'].".product_id ,product_code ,product_name ,
+            '".$data[$i]['table_name']."' AS table_name ,
+            (SELECT stock_group_name FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_name ,
+            (SELECT stock_group_code FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_code ,
+            stock_type ,
+            stock_date ,
+            in_qty ,
+            in_stock_cost_avg,
+            in_stock_cost_avg_total,
+            out_qty,
+            out_stock_cost_avg,
+            out_stock_cost_avg_total,
+            balance_qty,
+            balance_stock_cost_avg,
+            balance_stock_cost_avg_total,
             IFNULL(
                     invoice_supplier_code_gen,
                 IFNULL(
@@ -391,6 +408,7 @@ class StockReportModel extends BaseModel{
         $sql .="  
         )
         AS tb_stock
+        ORDER BY  product_code,stock_group_code,STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'),from_stock ASC
         "; 
         echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

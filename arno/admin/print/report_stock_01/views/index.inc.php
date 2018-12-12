@@ -11,7 +11,7 @@ $d4=date("h");
 $d5=date("i");
 $d6=date("s");  
 
-$path = "print/report_stock_02/views/";
+$path = "print/report_stock_01/views/";
  
 $stock_report_model = new StockReportModel;
 
@@ -22,7 +22,7 @@ $product_start = $_GET['product_start'];
 $product_end = $_GET['product_end'];    
 
 
-$stock_reports = $stock_report_model->getStockReportBalanceListBy($stock_start,$stock_end,$product_start,$product_end);
+$stock_reports = $stock_report_model->getStockReportBy($stock_start,$stock_end,$product_start,$product_end);
 
 
 $lines = 35;
@@ -67,7 +67,7 @@ if($_GET['action'] == "pdf"){
     header("Content-type: application/vnd.ms-excel");
     // header('Content-type: application/csv'); //*** CSV ***//
     
-    header("Content-Disposition: attachment; filename=Stock $d1-$d2-$d3 $d4:$d5:$d6.xls");
+    header("Content-Disposition: attachment; filename=Product $d1-$d2-$d3 $d4:$d5:$d6.xls");
 
     
         echo $html_head_excel.$html."<div> </div> <br>"; 

@@ -189,7 +189,7 @@
                                 if(count($balance)>0){  
                                 ?> 
                                 <tr class="">
-                                    <td colspan="1" >
+                                    <td colspan="1" align="center">
                                         <b><?php echo $stock_reports[$i]['stock_group_code']; ?></b>
                                     </td> 
                                     <td colspan="7" >
@@ -203,7 +203,7 @@
                                 }else{
                                 ?> 
                                 <tr class="">
-                                    <td colspan="1" >
+                                    <td colspan="1" align="center">
                                         <b><?php echo $stock_reports[$i]['stock_group_code']; ?></b>
                                     </td> 
                                     <td colspan="7" >
@@ -244,7 +244,7 @@
                                     <td align="right"><?php echo number_format($stock_reports[$i]['balance_stock_cost_avg_total'],2); ?></td> 
                                 </tr>
                                 <?PHP   
-                            if($stock_reports[$i]['stock_group_code'] != $stock_reports[$i+1]['stock_group_code']){ 
+                            if($stock_reports[$i]['stock_group_code'] != $stock_reports[$i+1]['stock_group_code']||($stock_reports[$i+1]['product_name'] != $stock_reports[$i]['product_name']&&$stock_reports[$i+1]['stock_group_code'] == $stock_reports[$i]['stock_group_code'])){ 
   
                                 $stock_report_in_qty_sum += $stock_report_in_qty;
                                 $stock_report_in_cost_avg_sum += $stock_report_in_cost_avg;
@@ -292,18 +292,22 @@
                         ?>
                     </tbody>
                     <tfoot>
+                        <tr class="">
+                            <td colspan="11" >
+                            </td>
+                        </tr>
                         <tr>
-                            <td align="left">รวมทั้งสิ้น</td>
-                            <td align="right" ><?php echo $product_list;?> สินค้า</td>
-                            <td align="right"><?php echo number_format($stock_report_in_qty_sum,0);  ?></td> 
-                            <td align="right"><?php echo number_format($stock_report_in_cost_avg_sum,2); ?></td>
-                            <td align="right"><?php echo number_format($stock_report_in_total_sum,2); ?></td> 
-                            <td align="right"><?php echo number_format($stock_report_out_qty_sum,0); ?></td> 
-                            <td align="right"><?php echo number_format($stock_report_out_cost_avg_sum,2); ?></td>
-                            <td align="right"><?php echo number_format($stock_report_out_total_sum,2); ?></td> 
-                            <td align="right"><?php echo number_format($stock_report_balance_qty_sum,0); ?></td> 
-                            <td align="right"></td>
-                            <td align="right"><?php echo number_format($stock_report_balance_total_sum,2); ?></td> 
+                            <td align="left"><b>รวมทั้งสิ้น</b></td>
+                            <td align="right"><b><?php echo $product_list;?> สินค้า</b></td>
+                            <td align="right"><b><?php echo number_format($stock_report_in_qty_sum,0);  ?></b></td> 
+                            <td align="right"><b><?php echo number_format($stock_report_in_cost_avg_sum,2); ?></b></td>
+                            <td align="right"><b><?php echo number_format($stock_report_in_total_sum,2); ?></b></td> 
+                            <td align="right"><b><?php echo number_format($stock_report_out_qty_sum,0); ?></b></td> 
+                            <td align="right"><b><?php echo number_format($stock_report_out_cost_avg_sum,2); ?></b></td>
+                            <td align="right"><b><?php echo number_format($stock_report_out_total_sum,2); ?></b></td> 
+                            <td align="right"><b><?php echo number_format($stock_report_balance_qty_sum,0); ?></b></td> 
+                            <td align="right"><b></b></td>
+                            <td align="right"><b><?php echo number_format($stock_report_balance_total_sum,2); ?></b></td> 
                         </tr>
                     </tfoot>
                 </table>

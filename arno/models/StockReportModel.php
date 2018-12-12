@@ -41,7 +41,7 @@ class StockReportModel extends BaseModel{
         FROM $table_name
         WHERE product_id = '$product_id' 
         AND STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') < STR_TO_DATE('$stock_date','%d-%m-%Y %H:%i:%s') )"; 
-        echo $sql;
+        // echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data;
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -410,7 +410,7 @@ class StockReportModel extends BaseModel{
         AS tb_stock
         ORDER BY  product_code,stock_group_code,STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'),from_stock ASC
         "; 
-        echo $sql;
+        // echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

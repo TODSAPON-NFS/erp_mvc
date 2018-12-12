@@ -52,7 +52,7 @@ if($_GET['action'] == "pdf"){
     '', '', '', '',
     10, // margin_left
     10, // margin right
-    40, // margin top
+    45, // margin top
     20, // margin bottom
     10, // margin header
     0); // margin footer  

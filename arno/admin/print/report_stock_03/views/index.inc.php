@@ -11,18 +11,20 @@ $d4=date("h");
 $d5=date("i");
 $d6=date("s");  
 
-$path = "print/report_stock_02/views/";
+$path = "print/report_stock_03/views/";
  
 $stock_report_model = new StockReportModel;
 
 
+$date_start = $_GET['date_start'];
+$date_end = $_GET['date_end'];
 $stock_start = $_GET['stock_start'];
 $stock_end = $_GET['stock_end'];
 $product_start = $_GET['product_start'];
 $product_end = $_GET['product_end'];    
 
 
-$stock_reports = $stock_report_model->getStockReportBy($stock_start,$stock_end,$product_start,$product_end);
+$stock_reports = $stock_report_model->getStockReportProductMovementBy($date_start,$date_end,$stock_start,$stock_end,$product_start,$product_end);
 
 
 $lines = 35;
@@ -48,11 +50,11 @@ if($_GET['action'] == "pdf"){
     $mpdf->SetHTMLHeader($html_head_pdf,'O');
     $mpdf->SetHTMLHeader($html_head_pdf,'E'); 
 
-    $mpdf->AddPage('P', // L - landscape, P - portrait 
+    $mpdf->AddPage('L', // L - landscape, P - portrait 
     '', '', '', '',
     10, // margin_left
     10, // margin right
-    40, // margin top
+    52, // margin top
     20, // margin bottom
     10, // margin header
     0); // margin footer  
@@ -67,7 +69,7 @@ if($_GET['action'] == "pdf"){
     header("Content-type: application/vnd.ms-excel");
     // header('Content-type: application/csv'); //*** CSV ***//
     
-    header("Content-Disposition: attachment; filename=Stock $d1-$d2-$d3 $d4:$d5:$d6.xls");
+    header("Content-Disposition: attachment; filename=StockMove $d1-$d2-$d3 $d4:$d5:$d6.xls");
 
     
         echo $html_head_excel.$html."<div> </div> <br>"; 

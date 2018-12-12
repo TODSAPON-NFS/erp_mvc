@@ -156,8 +156,8 @@
                             <td><?php if ($journal_reports[$i-1]['journal_date'] != $journal_reports[$i]['journal_date']) {echo $journal_reports[$i]['journal_date'];} ?></td>
                             <td><?php echo $journal_reports[$i]['journal_code']; ?></td> 
                             <td><?php echo $journal_reports[$i]['journal_list_name']; ?></td>
-                            <td align="right" ><?php echo number_format($journal_reports[$i]['journal_debit'],2); ?> </td>
-                            <td align="right" ><?php echo number_format($journal_reports[$i]['journal_credit'],2); ?></td> 
+                            <td align="right" ><?php if($journal_reports[$i]['journal_debit'] != "0"){ echo number_format($journal_reports[$i]['journal_debit'],2);} ?> </td>
+                            <td align="right" ><?php if($journal_reports[$i]['journal_credit'] != "0"){ echo number_format($journal_reports[$i]['journal_credit'],2);} ?></td> 
                             <td  align="right" ><?php echo number_format($balance,2); ?></td> 
                         </tr>
                         <?PHP

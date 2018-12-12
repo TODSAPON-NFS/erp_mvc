@@ -8,6 +8,15 @@
 
         window.location = "index.php?app=purchase_order&date_start="+date_start+"&date_end="+date_end+"&supplier_id="+supplier_id+"&keyword="+keyword;
     }
+
+    function export_excel(){
+        var date_start = $("#date_start").val();
+        var date_end = $("#date_end").val();
+        var supplier_id = $("#supplier_id").val();
+        var keyword = $("#keyword").val();
+
+        window.location = "print.php?app=purchase_order&action=excel&date_start="+date_start+"&date_end="+date_end+"&supplier_id="+supplier_id+"&keyword="+keyword;
+    }
 </script>
 <div class="row">
     <div class="col-lg-12">
@@ -301,6 +310,7 @@
                     </div>
                     <div class="col-md-4">
                         <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search();">Search</button>
+                        <button class="btn btn-danger" style="float:right; margin:0px 4px;" onclick="export_excel();"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Excel</button>
                         <a href="index.php?app=purchase_order" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
                     </div>
                 </div>
@@ -349,6 +359,9 @@
                                             <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                         </a>
 
+                                        <a href="print.php?app=purchase_order&action=excel&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>" target="_blank"  title="นำออกข้อมูล" style="color:green;">
+                                            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                        </a> 
 
                                         <?php if($purchase_orders[$i]['purchase_order_status'] == "New" || $purchase_orders[$i]['purchase_order_status'] == "Approved"){ ?>
                                             

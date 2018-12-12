@@ -6,6 +6,8 @@
 
     if($_GET['app'] == "delivery_note_customer"){
         require_once("print/delivery_note_customer/views/index.inc.php");
+    }elseif($_GET['app'] == "purchase_order"){
+        require_once("print/purchase_order/views/index.inc.php");
     }elseif($_GET['app'] == "invoice_customer"){
         require_once("print/invoice_customer/views/index.inc.php");
     }else if($_GET['app'] == "billing_note"){

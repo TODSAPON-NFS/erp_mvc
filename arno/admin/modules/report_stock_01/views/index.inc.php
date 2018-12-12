@@ -5,7 +5,7 @@ require_once('../models/StockReportModel.php');
 
 date_default_timezone_set('asia/bangkok');
 
-$path = "modules/report_stock_02/views/";
+$path = "modules/report_stock_01/views/";
  
 $stock_report_model = new StockReportModel;
  
@@ -42,7 +42,7 @@ if(!isset($_GET['product_end'])){
 
 if($stock_start!=''||$stock_end!=''||$product_start!=''||$product_end!=''){
 
-    $stock_reports = $stock_report_model->getStockReportBalanceListBy($stock_start,$stock_end,$product_start,$product_end);
+    $stock_reports = $stock_report_model->getStockReportBy($stock_start,$stock_end,$product_start,$product_end);
 }
 
 require_once($path.'view.inc.php');

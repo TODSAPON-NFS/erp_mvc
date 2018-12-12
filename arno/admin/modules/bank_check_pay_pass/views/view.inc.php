@@ -184,27 +184,27 @@
 
                             <td>
                                 <?PHP if($checks[$i]['check_pay_status'] == '0'){ ?>
-                                <form id="form_target" role="form" method="post" onsubmit="return check(this,'<?PHP echo $checks[$i]['check_pay_date']; ?>');" action="?app=bank_check_pay_pass&action=pass&id=<?php echo $checks[$i]['check_pay_id'];?>" enctype="multipart/form-data">
+                                <form id="form_target_<?PHP echo $checks[$i]['check_pay_id']; ?>" role="form" method="post" onsubmit="return check(this,'<?PHP echo $checks[$i]['check_pay_date']; ?>');" action="?app=bank_check_pay_pass&action=pass&id=<?php echo $checks[$i]['check_pay_id'];?>" enctype="multipart/form-data">
                                     <table width="100%">
                                         <tr>
                                             <td style="padding:0px 4px;">  
                                                 <input type="text" name="check_pay_date_pass" class="form-control calendar" pass-status="<?PHP echo $checks[$i]['check_pay_status']; ?>" date="<?PHP echo $checks[$i]['check_pay_date']; ?>" onchange="checkDate(this);"  readonly />
                                             </td>
                                             <td style="padding:0px 4px;" > 
-                                                <button type="button" onclick="check_login('form_target');" class="btn btn-success" ><i class="fa fa-check" aria-hidden="true"></i> ผ่านเช็ค</button>
+                                                <button type="button" onclick="check_login('form_target_<?PHP echo $checks[$i]['check_pay_id']; ?>');" class="btn btn-success" ><i class="fa fa-check" aria-hidden="true"></i> ผ่านเช็ค</button>
                                             </td>
                                         </tr>
                                     </table> 
                                 </form>
                                 <?PHP } else { ?>
-                                <form id="form_target" role="form" method="post" action="?app=bank_check_pay_pass&action=unpass&id=<?php echo $checks[$i]['check_pay_id'];?>" enctype="multipart/form-data"> 
+                                <form id="form_target_<?PHP echo $checks[$i]['check_pay_id']; ?>" role="form" method="post" action="?app=bank_check_pay_pass&action=unpass&id=<?php echo $checks[$i]['check_pay_id'];?>" enctype="multipart/form-data"> 
                                     <table width="100%">
                                         <tr>
                                             <td style="padding:0px 4px;"> 
                                                 <input type="text" name="check_pay_date_pass" class="form-control" value="<?PHP echo $checks[$i]['check_pay_date_pass']; ?>"  readonly />
                                             </td>
                                             <td style="padding:0px 4px;" > 
-                                                <button type="button" onclick="check_login('form_target');" class="btn btn-danger" ><i class="fa fa-times" aria-hidden="true"></i> ยกเลิก</button>
+                                                <button type="button" onclick="check_login('form_target_<?PHP echo $checks[$i]['check_pay_id']; ?>');" class="btn btn-danger" ><i class="fa fa-times" aria-hidden="true"></i> ยกเลิก</button>
                                             </td>
                                         </tr>
                                     </table> 

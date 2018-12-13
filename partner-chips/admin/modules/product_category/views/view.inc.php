@@ -45,7 +45,7 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                         <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
-                            <form role="form" method="post" onsubmit="return check();" <?php if($product_category_id == ''){ ?>action="index.php?app=product_category&action=add"<?php }else{?> action="index.php?app=product_category&action=edit" <?php }?> enctype="multipart/form-data">
+                            <form id="form_target" role="form" method="post" onsubmit="return check();" <?php if($product_category_id == ''){ ?>action="index.php?app=product_category&action=add"<?php }else{?> action="index.php?app=product_category&action=edit" <?php }?> enctype="multipart/form-data">
                                 <input type="hidden" id="product_category_id" name="product_category_id" value="<?php echo $product_category_id?>"/>
                                 <div class="row">
                                     <div class="col-lg-4">

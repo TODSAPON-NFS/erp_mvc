@@ -204,7 +204,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=customer_logistic&action=edit&id=<?php echo $customer_id?>" enctype="multipart/form-data">
+                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=customer_logistic&action=edit&id=<?php echo $customer_id?>" enctype="multipart/form-data">
                     <input type="hidden" id="customer_logistic_id" name="customer_logistic_id" value="<?php echo $customer_logistic_id?>"/>
                     <div class="row">
                         <div class="col-lg-4">
@@ -232,7 +232,7 @@
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="?app=customer_logistic&action=view&id=<?php echo $customer_id?>" class="btn btn-primary">Back</a>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

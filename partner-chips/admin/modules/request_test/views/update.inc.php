@@ -277,7 +277,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=request_test&action=add" >
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=request_test&action=add" >
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="row">
@@ -459,7 +459,7 @@
                             <a href="index.php?app=request_test" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             <a href="index.php?app=request_test&action=sending&id=<?php echo $request_test_id;?>&supplier_id=<?PHP echo $request_test['supplier_id']; ?>" class="btn btn-warning" >Send Request</a>
-                            <button type="submit" class="btn btn-success">Save</button> 
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button> 
                         </div>
                     </div>
                 </form>

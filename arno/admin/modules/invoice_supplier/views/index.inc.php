@@ -127,6 +127,37 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 
     require_once($path.'view.inc.php');
 
+}else if ($_GET['action'] == 'import-view' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
+    
+    $products=$product_model->getProductBy('','','','');
+    $stock_groups=$stock_group_model->getStockGroupBy();
+    $suppliers=$supplier_model->getSupplierBy($sort);
+    $users=$user_model->getUserBy();
+
+    if($sort == "ภายในประเทศ"){
+        $paper = $paper_model->getPaperByID('12');
+    }else{
+        $paper = $paper_model->getPaperByID('13');
+    }
+    
+    if($supplier_id > 0){
+        $supplier=$supplier_model->getSupplierByID($supplier_id);
+        $invoice_supplier_lists = $invoice_supplier_model->generateInvoiceSupplierListBySupplierId($supplier_id,"","",$purchase_order_id);
+        $suppliers=$supplier_model->getSupplierBy($supplier['supplier_domestic']);
+        $sort = $supplier['supplier_domestic'];
+        if($supplier['supplier_domestic'] == "ภายในประเทศ"){
+            $paper = $paper_model->getPaperByID('12');
+        }else{
+            $paper = $paper_model->getPaperByID('13');
+        }
+    }
+    
+    $user=$user_model->getUserByID($admin_id);
+   
+    $first_date = date("d")."-".date("m")."-".date("Y");
+    $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($first_date,$supplier['currency_id']);
+    require_once($path.'import.inc.php');
+
 }else if ($_GET['action'] == 'insert' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     $products=$product_model->getProductBy('','','','');
@@ -415,7 +446,9 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
                 $data_sub = [];
                 $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
                 $data_sub['invoice_supplier_list_id'] = $invoice_supplier_id.date("YmdHisu").$i;
+
                 $data_sub['product_id'] = $product_id[$i];
+
                 $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
                 
                 $data_sub['old_cost'] = $old_cost[$i];
@@ -524,6 +557,197 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     }
         
         
+    
+}else if ($_GET['action'] == 'import-save' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
+    if(isset($_POST['invoice_supplier_code'])){
+
+        $supplier=$supplier_model->getSupplierByID($_POST['supplier_id']);
+        $sort = $supplier['supplier_domestic'];
+
+        $invoice_supplier_code = $_POST['invoice_supplier_code'];
+        $invoice_supplier_code_gen = $_POST['invoice_supplier_code_gen'];
+        $invoice_supplier_date = $_POST['invoice_supplier_date'];
+        $invoice_supplier_vat = $_POST['invoice_supplier_vat'];
+        $invoice_supplier_total_price = $_POST['invoice_supplier_total_price'];
+        $invoice_supplier_vat_price = $_POST['invoice_supplier_vat_price'];
+        $invoice_supplier_net_price = $_POST['invoice_supplier_net_price'];
+        $invoice_supplier_list_count = $_POST['invoice_supplier_list_count'];
+        
+        $count_index = 0;
+
+        for($index=0; $index < count( $invoice_supplier_code );$index++){
+            $data = [];
+            $data['supplier_id'] = $_POST['supplier_id'];
+            $data['employee_id'] = $_POST['employee_id'];
+            $data['invoice_supplier_code'] = $invoice_supplier_code[$index];
+            $data['invoice_supplier_code_gen'] = $invoice_supplier_code_gen[$index];
+
+            $data['invoice_supplier_total_price'] = (float)filter_var($invoice_supplier_total_price[$index], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['invoice_supplier_vat'] = (float)filter_var($invoice_supplier_vat[$index], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['invoice_supplier_vat_price'] =(float)filter_var( $invoice_supplier_vat_price[$index], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['invoice_supplier_net_price'] = (float)filter_var($invoice_supplier_net_price[$index], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+
+
+            $data['invoice_supplier_date'] = $invoice_supplier_date[$index];
+            $data['invoice_supplier_date_recieve'] = $_POST['invoice_supplier_date_recieve'];
+            $data['invoice_supplier_name'] = $_POST['invoice_supplier_name'];
+            $data['invoice_supplier_branch'] = $_POST['invoice_supplier_branch'];
+            $data['invoice_supplier_address'] = $_POST['invoice_supplier_address'];
+            $data['invoice_supplier_tax'] = $_POST['invoice_supplier_tax'];
+            $data['invoice_supplier_term'] = $_POST['invoice_supplier_term'];
+            $data['invoice_supplier_due'] = $_POST['invoice_supplier_due']; 
+            $data['invoice_supplier_due_day'] = $_POST['invoice_supplier_due_day']; 
+            $data['import_duty'] = 0;
+            $data['freight_in'] = 0;
+            $data['addby'] = $admin_id;
+
+            $invoice_supplier_id = $invoice_supplier_model->insertInvoiceSupplier($data);
+
+            $invoice_supplier = $data;
+            $invoice_supplier['invoice_supplier_id'] = $invoice_supplier_id;
+
+
+            if($invoice_supplier_id > 0){ 
+            
+
+                $data = [];
+
+                $product_id = $_POST['product_id'];
+
+                $product_code = $_POST['product_code'];
+                $purchase_order_code = $_POST['purchase_order_code'];
+                $purchase_order_list_no = $_POST['purchase_order_list_no'];
+
+                $invoice_supplier_list_product_name = $_POST['invoice_supplier_list_product_name'];
+                $invoice_supplier_list_product_detail = $_POST['invoice_supplier_list_product_detail'];
+                $invoice_supplier_list_qty = $_POST['invoice_supplier_list_qty'];
+                $invoice_supplier_list_cost = $_POST['invoice_supplier_list_cost'];
+                $invoice_supplier_list_price = $_POST['invoice_supplier_list_price'];
+                $invoice_supplier_list_total = $_POST['invoice_supplier_list_total'];
+                $invoice_supplier_list_remark = $_POST['invoice_supplier_list_remark'];
+
+                $purchase_order_list_id = $_POST['purchase_order_list_id'];
+
+                $stock_group_id = $_POST['stock_group_id'];
+                
+                $journal_list = [];
+
+                if(is_array($product_id)){
+                    for($i= $count_index ;  $i < count($product_id) && $i < $count_index + $invoice_supplier_list_count[$index]  ; $i++){
+                        $data_sub = [];
+
+                        $val_list = $purchase_order_list_model->getPurchaseOrderListIDByOther($purchase_order_code[$i],$purchase_order_list_no[$i]);
+                        $val_product = $product_model->getProductByCode($product_code[$i]);
+
+                        $product_id[$i] = $val_product['product_id'];
+
+                        // echo "<pre>";
+                        // print_r($val_list);
+                        // echo "</pre>";
+                        // echo "<pre>";
+                        // print_r($purchase_order_list_no);
+                        // echo "</pre>";
+
+                        $purchase_order_list_id[$i] = $val_list;
+
+                        $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
+                        $data_sub['invoice_supplier_list_id'] = $invoice_supplier_id.date("YmdHisu").$i;
+
+                        
+
+                        $data_sub['product_id'] = $product_id[$i];
+
+                        $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
+                        
+                        $data_sub['invoice_supplier_list_product_name'] = $invoice_supplier_list_product_name[$i];
+                        $data_sub['invoice_supplier_list_product_detail'] = $invoice_supplier_list_product_detail[$i];
+                        $data_sub['invoice_supplier_list_qty'] = (float)filter_var($invoice_supplier_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                        $data_sub['invoice_supplier_list_price'] = (float)filter_var($invoice_supplier_list_price[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                        $data_sub['invoice_supplier_list_total'] = (float)filter_var($invoice_supplier_list_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                        $data_sub['invoice_supplier_list_cost'] = (float)filter_var($invoice_supplier_list_cost[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                        $data_sub['invoice_supplier_list_remark'] = $invoice_supplier_list_remark[$i];
+
+
+                        
+
+                        $data_sub['purchase_order_list_id'] = $purchase_order_list_id[$i];
+
+
+                        $data_sub['stock_group_id'] = $stock_group_id[$i];
+
+                        //echo "****";
+                        $id = $invoice_supplier_list_model->insertInvoiceSupplierList($data_sub);
+
+                        $has_account = false;
+                        for($ii = 0 ; $ii < count($journal_list); $ii++){
+                            if($journal_list[$ii]['account_id'] == $product['buy_account_id']){
+                                $has_account = true;
+                                $journal_list[$ii]['invoice_customer_list_total'] += $data_sub['invoice_customer_list_total'];
+                                break;
+                            }
+                        }
+
+                        if($has_account == false){
+                            $journal_list[] = array (
+                                "account_id"=>$product['buy_account_id'], 
+                                "invoice_customer_list_total"=>$data_sub['invoice_customer_list_total'] 
+                            ); 
+                        } 
+                    }
+                }else if($product_id != ""){
+                    $data_sub = [];
+                    $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
+                    $data_sub['invoice_supplier_list_id'] = $invoice_supplier_id.date("YmdHisu").$i;
+                    $data_sub['product_id'] = $product_id;
+                    $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
+                    
+                    $data_sub['invoice_supplier_list_product_name'] = $invoice_supplier_list_product_name;
+                    $data_sub['invoice_supplier_list_product_detail'] = $invoice_supplier_list_product_detail;
+                    $data_sub['invoice_supplier_list_qty'] = (float)filter_var($invoice_supplier_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data_sub['invoice_supplier_list_price'] = (float)filter_var($invoice_supplier_list_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data_sub['invoice_supplier_list_total'] = (float)filter_var($invoice_supplier_list_total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data_sub['invoice_supplier_list_cost'] = (float)filter_var($invoice_supplier_list_cost, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $data_sub['invoice_supplier_list_remark'] = $invoice_supplier_list_remark;
+                    $data_sub['purchase_order_list_id'] = $purchase_order_list_id;
+                    $data_sub['stock_group_id'] = $stock_group_id;
+                    //echo "----";
+                    $id = $invoice_supplier_list_model->insertInvoiceSupplierList($data_sub);
+
+                    $product = $product_model->getProductByID( $product_id );
+                    $journal_list[] = array (
+                        "account_id"=>$product['buy_account_id'], 
+                        "invoice_customer_list_total"=>$data_sub['invoice_customer_list_total'] 
+                    ); 
+                
+                }
+
+                //account setting id = 9 ภาษีซื้อ  --> [1154-00] ภาษีซื้อ
+                $account_vat_buy = $account_setting_model->getAccountSettingByID(9);
+                    
+                //account setting id = 26 ซื้อสินค้า --> [5130-01] ซื้อ
+                $account_buy = $account_setting_model->getAccountSettingByID(26);
+
+                $supplier=$supplier_model->getSupplierByID($_POST['supplier_id']);
+
+                $account_supplier = $supplier['account_id'];
+
+                $maintenance_model->updateJournal($invoice_supplier,$journal_list, $account_supplier, $account_vat_buy['account_id'],$account_buy['account_id']);
+
+                $count_index = $count_index + $invoice_supplier_list_count[$index];
+            }
+        } 
+            
+?>
+        <script>
+            //window.location="index.php?app=invoice_supplier&action=update&id=<?php echo $invoice_supplier_id;?>";
+            window.location="index.php?app=invoice_supplier";
+        </script>
+    <?PHP
+    }else{
+        ?>
+    <script>window.history.back();</script>
+        <?php
+    }
     
 }else if ($_GET['action'] == 'edit_cost' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     

@@ -13,7 +13,7 @@
         var customer_id = $("#customer_id").val();
         var keyword = $("#keyword").val();
 
-        window.location = "print.php?app=report_tax_02&action="+type+"&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword;
+        window.open("print.php?app=report_tax_02&action="+type+"&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&keyword="+keyword,'_blank');
     }
 </script>
 

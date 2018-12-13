@@ -454,7 +454,7 @@
 
                 $(".example-ajax-post").easyAutocomplete(options);
 
-                var str_stock = "<option value=''>Select Stock</option>";
+                var str_stock = "";
                 $.each(stock_group_data, function (index, value) {
                     if(value['stock_group_id'] == data_buffer[i].stock_group_id ){
                         str_stock += "<option value='" + value['stock_group_id'] + "' SELECTED >" +  value['stock_group_name'] + "</option>";
@@ -514,7 +514,7 @@
 
         $(".example-ajax-post").easyAutocomplete(options);
         
-        var str_stock = "<option value=''>Select Stock</option>";
+        var str_stock = "";
         $.each(stock_group_data, function (index, value) {
             str_stock += "<option value='" + value['stock_group_id'] + "'>"+value['stock_group_name']+"</option>";
         });
@@ -649,7 +649,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=invoice_customer&action=add" >
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=invoice_customer&action=add" >
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="row">
@@ -821,8 +821,7 @@
                                     <input type="text" class="form-control" name="invoice_customer_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_remark']; ?>" />
                                 </td>
                                 <td>
-                                    <select  class="form-control" name="stock_group_id[]"  >
-                                        <option value="">Select</option>
+                                    <select  class="form-control" name="stock_group_id[]"  > 
                                         <?php 
                                         for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
                                         ?>
@@ -954,7 +953,7 @@
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="index.php?app=invoice_customer" class="btn btn-default">Back</a>
                             <a href="index.php?app=invoice_customer&action=insert" class="btn btn-primary">Reset</a>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

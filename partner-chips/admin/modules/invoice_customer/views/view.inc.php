@@ -215,7 +215,7 @@
                                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                 </a>
 
-                                 <a href="print.php?app=invoice_customer&action=pdf&id=<?PHP echo $invoice_customers[$i]['invoice_customer_id'];?>" >
+                                 <a href="print.php?app=invoice_customer&action=pdf&id=<?PHP echo $invoice_customers[$i]['invoice_customer_id'];?>" target="_blank" >
                                     <i class="fa fa-print" aria-hidden="true"></i>
                                 </a>
 

@@ -185,7 +185,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=request_special&action=edit&id=<?php echo $request_special_id;?>" >
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=request_special&action=edit&id=<?php echo $request_special_id;?>" >
                     <input type="hidden"  id="request_special_id" name="request_special_id" value="<?php echo $request_special_id; ?>" />
                     <input type="hidden"  id="request_special_date" name="request_special_date" value="<?php echo $request_special['request_special_date']; ?>" />
                     <div class="row">
@@ -308,7 +308,7 @@
                             <a href="index.php?app=request_special" class="btn btn-default">Back</a>
                         
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

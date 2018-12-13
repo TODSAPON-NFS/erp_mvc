@@ -63,7 +63,7 @@ if(!isset($_GET['action']) && ($license_inventery_page == "Low" || $license_inve
         $data = [];
         $data['stock_type_id'] = $_POST['stock_type_id'];
         $data['employee_id'] = $_POST['employee_id'];
-        $data['stock_group_name'] = $_POST['stock_group_name'];
+        $data['stock_group_code'] = $_POST['stock_group_code'];
         $data['stock_group_name'] = $_POST['stock_group_name'];
         $data['stock_group_detail'] = $_POST['stock_group_detail'];
         $data['stock_group_notification'] = $_POST['stock_group_notification'];
@@ -98,6 +98,7 @@ if(!isset($_GET['action']) && ($license_inventery_page == "Low" || $license_inve
         $data = [];
         $data['stock_type_id'] = $_POST['stock_type_id'];
         $data['employee_id'] = $_POST['employee_id'];
+        $data['stock_group_code'] = $_POST['stock_group_code'];
         $data['stock_group_name'] = $_POST['stock_group_name'];
         $data['stock_group_detail'] = $_POST['stock_group_detail'];
         $data['stock_group_notification'] = $_POST['stock_group_notification'];

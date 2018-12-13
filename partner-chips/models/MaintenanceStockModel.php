@@ -62,7 +62,7 @@ class MaintenanceStockModel extends BaseModel{
                 // print_r($data[$i]);
                 // echo "</pre>";
 
-                $this->addSummitProduct('', $data[$i]['stock_group_id'], $data[$i]['summit_product_id'], $data[$i]['product_id'], $data[$i]['summit_product_qty'], $data[$i]['summit_product_cost']);
+                $this->addSummitProduct($data[$i]['summit_product_date'], $data[$i]['stock_group_id'], $data[$i]['summit_product_id'], $data[$i]['product_id'], $data[$i]['summit_product_qty'], $data[$i]['summit_product_cost']);
             }
         }
 
@@ -90,8 +90,9 @@ class MaintenanceStockModel extends BaseModel{
         FROM tb_invoice_supplier 
         LEFT JOIN tb_invoice_supplier_list ON tb_invoice_supplier.invoice_supplier_id = tb_invoice_supplier_list.invoice_supplier_id 
         LEFT JOIN tb_product ON tb_invoice_supplier_list.product_id = tb_product.product_id 
-        LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
-        WHERE invoice_supplier_begin = '0' AND stock_event = '1' 
+        LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id  
+        WHERE invoice_supplier_begin = '0' AND stock_event = '1'  
+        AND invoice_supplier_list_id IS NOT NULL 
         GROUP BY invoice_supplier_list_id 
         ORDER BY STR_TO_DATE(invoice_supplier_date_recieve,'%d-%m-%Y %H:%i:%s') , invoice_supplier_code_gen  ";
 
@@ -117,6 +118,8 @@ class MaintenanceStockModel extends BaseModel{
         '0' as cost 
         FROM tb_stock_move 
         LEFT JOIN tb_stock_move_list ON tb_stock_move.stock_move_id = tb_stock_move_list.stock_move_id 
+        WHERE stock_move_list_id IS NOT NULL 
+        GROUP BY stock_move_list_id 
         ORDER BY STR_TO_DATE(stock_move_date,'%d-%m-%Y %H:%i:%s') , stock_move_code ";
 
 
@@ -141,6 +144,8 @@ class MaintenanceStockModel extends BaseModel{
         stock_change_product_list_price as cost 
         FROM tb_stock_change_product 
         LEFT JOIN tb_stock_change_product_list ON tb_stock_change_product.stock_change_product_id = tb_stock_change_product_list.stock_change_product_id 
+        WHERE stock_change_product_list_id IS NOT NULL 
+        GROUP BY stock_change_product_list_id 
         ORDER BY STR_TO_DATE(stock_change_product_date,'%d-%m-%Y %H:%i:%s') , stock_change_product_code";
 
 
@@ -169,6 +174,7 @@ class MaintenanceStockModel extends BaseModel{
         LEFT JOIN tb_product ON tb_invoice_customer_list.product_id = tb_product.product_id 
         LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
         WHERE invoice_customer_begin = '0' AND stock_event = '1' 
+        AND invoice_customer_list_id IS NOT NULL  
         GROUP BY invoice_customer_list_id 
         ORDER BY STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') , invoice_customer_code  ";
 
@@ -184,8 +190,8 @@ class MaintenanceStockModel extends BaseModel{
         '0' as invoice_supplier_list_id, 
         '0' as stock_move_list_id, 
         '0' as stock_change_product_list_id, 
-        invoice_customer_list_id,   
-        '0' as stock_issue_list_id,  
+        '0' as invoice_customer_list_id,   
+        stock_issue_list_id,  
         product_id, 
         '0' as product_id_old, 
         '0' as product_id_new, 
@@ -193,6 +199,8 @@ class MaintenanceStockModel extends BaseModel{
         '0' as cost 
         FROM tb_stock_issue 
         LEFT JOIN tb_stock_issue_list ON tb_stock_issue.stock_issue_id = tb_stock_issue_list.stock_issue_id 
+        WHERE stock_issue_list_id IS NOT NULL 
+        GROUP BY stock_issue_list_id 
         ORDER BY STR_TO_DATE(stock_issue_date,'%d-%m-%Y %H:%i:%s') , stock_issue_code  ";
 
 
@@ -236,6 +244,10 @@ class MaintenanceStockModel extends BaseModel{
                 if($data[$i]['transaction_type'] == '1_purchase'){ // คำนวนคลังสินค้าในรูปแบบของการซื้อ
                     $this->addPurchase($data[$i]['stock_date'], $data[$i]['stock_group_id'], $data[$i]['invoice_supplier_list_id'], $data[$i]['product_id'], $data[$i]['qty'], $data[$i]['cost']);
                 }else if($data[$i]['transaction_type'] == '2_move'){// คำนวนคลังสินค้าในรูปแบบของการย้ายคลังสินค้า
+                   // echo "<br><br><b>".$data[$i]['transaction_code']."</b><br>";
+                   // echo "<pre>";
+                   // print_r($data[$i]);
+                   // echo "</pre>";
                     $this->addMoveStock($data[$i]['stock_date'], $data[$i]['stock_group_id_out'],$data[$i]['stock_group_id_in'],$data[$i]['stock_move_list_id'], $data[$i]['product_id'], $data[$i]['qty']);
                 }else if($data[$i]['transaction_type'] == '3_rename'){// คำนวนคลังสินค้าในรูปแบบของการย้ายสินค้าไปยังสินค้าชื่ออื่น 
                     $this->addStockChangeProduct($data[$i]['stock_date'],$data[$i]['stock_group_id_out'],$data[$i]['stock_group_id_in'] ,$data[$i]['stock_change_product_list_id'], $data[$i]['product_id_old'], $data[$i]['product_id_new'], $data[$i]['qty']);
@@ -331,6 +343,8 @@ class MaintenanceStockModel extends BaseModel{
                     WHERE stock_group_id = '$stock_group_id' 
                     AND product_id = '$product_id' ; "; 
 
+            //echo "<br><br>SQL calculatePurchaseCostIn : ".$sql;
+
             mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT); 
 
             $stock_report['stock_report_qty'] = $new_qty;
@@ -364,7 +378,13 @@ class MaintenanceStockModel extends BaseModel{
             $stock_cost = $stock_report['stock_report_cost_avg'];
 
             $new_qty = $stock_qty - $qty;
-            $new_cost = (($stock_qty * $stock_cost) - ($qty * $cost))/$new_qty;
+
+            if($new_qty == 0){
+                $new_cost = 0;
+            }else{
+                $new_cost = (($stock_qty * $stock_cost) - ($qty * $cost))/$new_qty;
+            }
+            
  
             $sql = "UPDATE tb_stock_report 
                     SET stock_report_qty = '$new_qty', 
@@ -452,6 +472,8 @@ class MaintenanceStockModel extends BaseModel{
                     WHERE stock_group_id = '$stock_group_id' 
                     AND product_id = '$product_id' ; "; 
 
+            //echo "<br><br>SQL calculateSaleCostIn : ".$sql;
+
             mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT); 
 
             $stock_report['stock_report_qty'] = $new_qty;
@@ -487,7 +509,12 @@ class MaintenanceStockModel extends BaseModel{
             $stock_cost = $stock_report['stock_report_cost_avg'];
 
             $new_qty = $stock_qty + $qty;
-            $new_cost = (($stock_qty * $stock_cost) + ($qty * $cost))/$new_qty;
+            if($new_qty == 0){
+                $new_cost = 0 ;
+            }else{
+                $new_cost = (($stock_qty * $stock_cost) + ($qty * $cost))/$new_qty;
+            }
+            
  
             $sql = "UPDATE tb_stock_report 
                     SET stock_report_qty = '$new_qty', 
@@ -820,7 +847,7 @@ class MaintenanceStockModel extends BaseModel{
 
         $this->createRowStockReport($stock_out['stock_group_id'],$product_id);
 
-        $stock_report = $this->calculateSaleCostIn($stock['stock_group_id'],$product_id,$qty); 
+        $stock_report = $this->calculateSaleCostIn($stock_out['stock_group_id'],$product_id,$qty); 
  
         $sql = "INSERT INTO ". $stock_out['table_name'] ." (
             stock_type,
@@ -851,7 +878,11 @@ class MaintenanceStockModel extends BaseModel{
         ($stock_report['stock_report_qty'] * $stock_report['stock_report_cost_avg'])."','".
         $stock_move_list_id."'); "; 
 
+        //echo "<br><br><b>SQL OUT : </b>".$sql;
+
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+
 
 
         //------------------------------------------------ คำณวนต้นทุนของคลังสินค้าขาเข้า -------------------------------------------
@@ -888,6 +919,8 @@ class MaintenanceStockModel extends BaseModel{
         ($stock_report['stock_report_cost_avg'])."','".
         ($stock_report['stock_report_qty'] * $stock_report['stock_report_cost_avg'])."','".
         $stock_move_list_id."'); "; 
+
+        //echo "<br><br><b>SQL IN : </b>".$sql;
 
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 

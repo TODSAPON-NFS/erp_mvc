@@ -795,7 +795,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=invoice_supplier&action=edit&id=<?php echo $invoice_supplier_id;?>" >
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=invoice_supplier&action=edit&id=<?php echo $invoice_supplier_id;?>" >
                     <input type="hidden"  id="invoice_supplier_id" name="invoice_supplier_id" value="<?php echo $invoice_supplier_id; ?>" />
                     <input type="hidden"  id="invoice_supplier_date_old" name="invoice_supplier_date_old" value="<?php echo $invoice_supplier['invoice_supplier_date_recieve']; ?>" />
                     <div class="row">
@@ -1217,7 +1217,7 @@
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="index.php?app=invoice_supplier" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

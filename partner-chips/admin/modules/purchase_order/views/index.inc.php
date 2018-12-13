@@ -703,9 +703,12 @@ if(!isset($_GET['action'])){
 
         
         $supplier=$supplier_model->getSupplierByID($supplier_id);
+
         //echo "<pre>";
         //print_r($supplier);
         //echo "</pre>";
+
+
         if($supplier_id > 0){
             /******** setmail ********************************************/
             require("../controllers/mail/class.phpmailer.php");
@@ -717,8 +720,7 @@ if(!isset($_GET['action'])){
                 Before I send you a purchase order.
                 <br>
                 <br>
-                <b> Best regards,</b><br><br>
-
+                <b> Best regards,</b><br><br> 
                 <b> Vittawat Bussara</b><br>
                 <b> Head Office : </b> 2/27 Bangna Complex Office Tower,7th Flr.,Soi Bangna-Trad 25, Bangna-Trad Rd.,<br>
                 Bangna, Bangna, Bangkok 10260, THAILAND, Tel : +662 399 2784  Fax : +662 399 2327 <br>
@@ -779,9 +781,11 @@ if(!isset($_GET['action'])){
 
         
         $supplier=$supplier_model->getSupplierByID($supplier_id);
+        
         //echo "<pre>";
         //print_r($supplier);
         //echo "</pre>";
+
         if($supplier_id > 0){
             /******** setmail ********************************************/
             require("../controllers/mail/class.phpmailer.php");

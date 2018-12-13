@@ -26,7 +26,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
     td{
         padding:4px;
-        font-size:12px;
+        font-size:14px;
     }
 
     @page *{
@@ -53,11 +53,11 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 <div>
     <table width="100%" >
         <tr>
-            <td style="padding-left:84px;font-size:14px;" width = "580" valign="middle">
+            <td style="padding-left:84px;font-size:14px;line-height: 18px;" width = "580" valign="middle">
             <b>
                 '.$invoice_customer['invoice_customer_name'].' '.$branch.'
                 <br>
-                '.$invoice_customer['invoice_customer_address'].'<br>
+                '.nl2br ($invoice_customer['invoice_customer_address']).'<br>
                 เลขประจำตัวผู้เสียภาษี / Tax : '.$invoice_customer['invoice_customer_tax'].'
             </b>
             </td>

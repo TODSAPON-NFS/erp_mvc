@@ -6,6 +6,24 @@ if( (int)$official_receipt['customer_branch'] * 1 == 0){
     $branch =  "สาขา " . ((int)$official_receipt['customer_branch'] * 1) ;
 } 
 
+if($official_receipt['customer_fax'] != ""){
+    $fax = "Fax. ".$official_receipt['customer_fax'];
+}else{
+    $fax = "";
+}
+
+if($official_receipt['customer_tel'] != ""){
+    $tel = "Tel. ".$official_receipt['customer_fax'];
+}else{
+    $tel = "";
+}
+
+if($official_receipt['customer_zipcode'] != ""){
+    $zipcode = " ".$official_receipt['customer_zipcode'];
+}else{
+    $zipcode = "";
+}
+
 
 $total = 0;
 for($page_index=0 ; $page_index < $page_max ; $page_index++){
@@ -73,18 +91,18 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             </td>
 */
     $html[$page_index] .= '
-<div class="main">
+<div class="main" style="padding-left:32px;">
  
     <div style="font-size:16px;line-height:20px;">'.$company['company_name_en'].'</div>
     <div style="font-size:16px;line-height:20px;">'.$company['company_name_th'].'</div>
             
 
-    <div style="font-size:12px;line-height:18px;" >สำนักงานใหญ่ : '.$company['company_address_1'].' '.$company['company_address_2'].' <br>'.$company['company_address_3'].' 
-    Tel.'.$company['company_tel'].' Fax. '.$company['company_fax'].'</div>
+    <div style="line-height: 18px;" style="font-size:13px;" >สำนักงานใหญ่ : '.$company['company_address_1'].' '.$company['company_address_2'].' <br>'.$company['company_address_3'].' 
+    Tel.'.$company['company_tel'].' Fax. '.$company['company_fax'].' Tax. '.$company['company_tax'].'</div>
     <div align="center" style="font-size:14px;line-height:18px;"><b>ใบเสร็จรับเงิน</b></div>
     <div align="center" style="font-size:14px;line-height:18px;"><b>OFFICIAL RECEIPT</b></div>
 
-    <div style="padding:4px;line-height:22px;">
+    <div style="padding:4px;line-height:20px;">
         Receipt by thanks from : -
     </div>
  
@@ -92,8 +110,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         <tr>
             <td style="padding:4px;line-height: 18px;">
                 <div style="padding:8px;font-size:12px;"> '.$official_receipt['official_receipt_name'].'  '.$branch.' <br> 
-                 '. nl2br ( $official_receipt['official_receipt_address']).' <br> 
-                เลขประจำตัวผู้เสียภาษี / Tax : '.$official_receipt['official_receipt_tax'].' 
+                 '. nl2br ( $official_receipt['official_receipt_address']).' '.$zipcode.'<br> 
+                 '.$tel.' '.$fax.' Tax : '.$official_receipt['official_receipt_tax'].' 
                 </div>
             </td>
             <td width="240">
@@ -162,7 +180,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         $total += $official_receipt_lists[$i]['official_receipt_bal_amount'];
                 $html[$page_index] .= ' 
                 <tr class="odd gradeX">
-                        <td align="center" style="height:22px;">
+                        <td align="center" style="height:20px;">
                             '.($i+1).'
                         </td>
                         <td align="center">
@@ -193,7 +211,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             for($i = count($official_receipt_lists) % $lines ; $i < $lines; $i++){
                 $html[$page_index] .= ' 
                     <tr class="odd gradeX">
-                            <td align="center" style="height:22px;"> 
+                            <td align="center" style="height:20px;"> 
                             
                             </td>
                             <td align="center">

@@ -63,7 +63,7 @@
                             <label>รหัสลูกค้า</label>
                             <div class="row">
                                 <div class="col-md-5">
-                                    <input type="text" id="code_start" name=code_start" value="<?PHP echo $code_start;?>"  class="form-control " />
+                                    <input type="text" id="code_start" name="code_start" value="<?PHP echo $code_start;?>"  class="form-control " />
                                 </div>
                                 <div class="col-md-1" align="center">
                                     -

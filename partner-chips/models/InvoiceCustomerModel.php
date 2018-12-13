@@ -318,8 +318,7 @@ class InvoiceCustomerModel extends BaseModel{
         lastupdate = '".$data['lastupdate']."' 
         WHERE invoice_customer_id = $id 
         ";
-
-        //echo $sql;
+ 
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;

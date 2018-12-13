@@ -56,6 +56,21 @@ class PurchaseOrderListModel extends BaseModel{
 
     }
 
+    function getPurchaseOrderListIDByOther($purchase_order_code,$purchase_order_list_no){
+        $sql ="SELECT * 
+        FROM tb_purchase_order_list 
+        LEFT JOIN tb_purchase_order ON tb_purchase_order_list.purchase_order_id = tb_purchase_order.purchase_order_id 
+        WHERE purchase_order_code = '$purchase_order_code'"; 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data=[];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data[$purchase_order_list_no-1]['purchase_order_list_id'];
+        }
+    }
+
 
     function insertPurchaseOrderList($data = []){
         $sql = " INSERT INTO tb_purchase_order_list ( 

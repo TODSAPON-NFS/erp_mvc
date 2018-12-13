@@ -32,8 +32,9 @@
                         รายการใบกำกับภาษีรับเข้าตามผู้ขายในประเทศ
                     </div>
                     <?PHP if($license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?>
-                    <div class="col-md-4">
-                        <a class="btn btn-success " style="float:right;" href="?app=invoice_supplier&action=insert&sort=ภายในประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                    <div class="col-md-4" align="right">
+                        <a class="btn btn-danger " style="margin:4px;" href="?app=invoice_supplier&action=import-view&sort=ภายในประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Import</a>
+                        <a class="btn btn-success " style="margin:4px;" href="?app=invoice_supplier&action=insert&sort=ภายในประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                     </div>
                     <?PHP } ?>
                 </div>
@@ -113,11 +114,10 @@
                     <div class="col-md-6">
                         รายการใบกำกับภาษีรับเข้าตามผู้ขายนอกประเทศ
                     </div>
-                    <div class="col-md-4" align="right">
-                        <a class="btn btn-primary "  href="?app=exchange_rate_baht&action=view" ><i class="fa fa-plus" aria-hidden="true"></i> Exchange rate</a>
-                    </div>
-                    <div class="col-md-2" align="right">
-                        <a class="btn btn-success "  href="?app=invoice_supplier&action=insert&sort=ภายนอกประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                    <div class="col-md-6" align="right">
+                        <a class="btn btn-primary " style="margin:4px;"  href="?app=exchange_rate_baht&action=view" ><i class="fa fa-plus" aria-hidden="true"></i> Exchange rate</a> 
+                        <a class="btn btn-danger " style="margin:4px;" href="?app=invoice_supplier&action=import-view&sort=ภายนอกประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Import</a>
+                        <a class="btn btn-success " style="margin:4px;"  href="?app=invoice_supplier&action=insert&sort=ภายนอกประเทศ" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
                     </div>
                     
                 </div>

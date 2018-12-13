@@ -288,9 +288,11 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             //account setting id = 15 ภาษีขาย --> [2135-00] ภาษีขาย
             $account_vat_sale = $account_setting_model->getAccountSettingByID(15);
                 
+
             //account setting id = 19 ขายเชื่อ --> [4100-01] รายได้-ขายอะไหล่ชิ้นส่วน
             $account_sale = $account_setting_model->getAccountSettingByID(19);
 
+            
             $customer=$customer_model->getCustomerByID($_POST['customer_id']);
             $account_customer = $customer['account_id'];
 

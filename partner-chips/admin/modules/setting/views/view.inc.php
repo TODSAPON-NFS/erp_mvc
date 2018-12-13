@@ -114,7 +114,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=setting&action=edit" enctype="multipart/form-data" >
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=setting&action=edit" enctype="multipart/form-data" >
                 <input type="hidden"  id="company_image_o" name="company_image_o" value="<?php echo $company['company_image']; ?>" />    
                 <input type="hidden"  id="company_image_rectangle_o" name="company_image_rectangle_o" value="<?php echo $company['company_image_rectangle']; ?>" />     
                 <div class="row">
@@ -255,7 +255,7 @@
                 <div class="row">
                     <div class="col-lg-offset-9 col-lg-3" align="right"> 
                         <button type="reset" class="btn btn-primary">Reset</button>
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                     </div>
                 </div>
             </form>

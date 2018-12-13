@@ -38,7 +38,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <form role="form" method="post" onsubmit="return check();" <?php if($finance_debit_account_id == ''){ ?>action="index.php?app=finance_debit_account&action=add"<?php }else{?> action="index.php?app=finance_debit_account&action=edit" <?php }?> enctype="multipart/form-data">
+                            <form  id="form_target" role="form" method="post" onsubmit="return check();" <?php if($finance_debit_account_id == ''){ ?>action="index.php?app=finance_debit_account&action=add"<?php }else{?> action="index.php?app=finance_debit_account&action=edit" <?php }?> enctype="multipart/form-data">
                                 <input type="hidden" id="finance_debit_account_id" name="finance_debit_account_id" value="<?php echo $finance_debit_account_id?>"/>
                                 <div class="row">
                                     <div class="col-lg-2">
@@ -103,7 +103,7 @@
                                 <div class="row">
                                     <div class="col-lg-offset-9 col-lg-3" align="right">
                                         <a href="?app=finance_debit_account&action=view" class="btn btn-primary">Reset</a>
-                                        <button type="submit" class="btn btn-success">Save</button>
+                                        <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                                     </div>
                                 </div>
                                 <br>

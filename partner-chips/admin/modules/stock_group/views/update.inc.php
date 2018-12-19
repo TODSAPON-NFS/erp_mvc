@@ -3,15 +3,21 @@
 
 
         var stock_group_detail = document.getElementById("stock_group_detail").value;
+        var stock_group_code = document.getElementById("stock_group_code").value;
         var stock_group_name = document.getElementById("stock_group_name").value;
        
         
         stock_group_detail = $.trim(stock_group_detail);
+        stock_group_code = $.trim(stock_group_code);
         stock_group_name = $.trim(stock_group_name);
         
         
 
-        if(stock_group_name.length == 0){
+        if(stock_group_code.length == 0){
+            alert("Please input stock group code");
+            document.getElementById("stock_group_code").focus();
+            return false;
+        }else if(stock_group_name.length == 0){
             alert("Please input stock group name");
             document.getElementById("stock_group_name").focus();
             return false;
@@ -47,9 +53,16 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=stock_group&action=edit&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_group["stock_group_id"];?>" enctype="multipart/form-data">
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=stock_group&action=edit&stock_type_id=<?php echo $stock_type_id;?>&id=<?php echo $stock_group["stock_group_id"];?>" enctype="multipart/form-data">
                     <input type="hidden" name="stock_group_id" value="<?PHP echo $stock_group["stock_group_id"];?>" />
                     <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>รหัสคลังสินค้า / Stock Group Code. <font color="#F00"><b>*</b></font></label>
+                                <input id="stock_group_code" name="stock_group_code" class="form-control" value="<?PHP echo $stock_group['stock_group_code'];?>">
+                                <p class="help-block">Example : 01</p>
+                            </div>
+                        </div>
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>ชื่อคลังสินค้า / Stock Name. <font color="#F00"><b>*</b></font></label>
@@ -120,7 +133,7 @@
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="?app=stock_group&stock_type_id=<?php echo $stock_type_id;?>" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

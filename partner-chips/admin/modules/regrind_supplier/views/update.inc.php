@@ -152,7 +152,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=regrind_supplier&action=edit&id=<?php echo $regrind_supplier_id;?>" enctype="multipart/form-data">
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=regrind_supplier&action=edit&id=<?php echo $regrind_supplier_id;?>" enctype="multipart/form-data">
                 <input type="hidden"  id="regrind_supplier_file_o" name="regrind_supplier_file_o" value="<?php echo $regrind_supplier['regrind_supplier_file']; ?>" /> 
                 <div class="row">
                         <div class="col-lg-5">
@@ -303,7 +303,7 @@
                             <a href="index.php?app=regrind_supplier&action=print&id=<?PHP echo $regrind_supplier_id?>" class="btn btn-danger">Print</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

@@ -78,6 +78,62 @@ class PurchaseOrderModel extends BaseModel{
 
     }
 
+
+    function getPurchaseOrderExport($purchase_order_id = "",$supplier_id = "",$date_start = "",$date_end = "",$keyword=""){
+
+        $str_id = "";
+        $str_supplier = "";
+        $str_date = ""; 
+
+        if($purchase_order_id == ""){
+
+            if($date_start != "" && $date_end != ""){
+                $str_date = "AND STR_TO_DATE(purchase_order_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(purchase_order_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+            }else if ($date_start != ""){
+                $str_date = "AND STR_TO_DATE(purchase_order_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+            }else if ($date_end != ""){
+                $str_date = "AND STR_TO_DATE(purchase_order_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+            }
+
+            if($supplier_id != ""){
+                $str_supplier = "AND tb_purchase_order.supplier_id = '$supplier_id' ";
+            }
+
+        }else{
+            $str_id = "AND tb_purchase_order.purchase_order_id = '$purchase_order_id' ";
+        }
+
+        
+
+
+
+        $sql = " SELECT *
+        FROM tb_purchase_order_list 
+        LEFT JOIN tb_purchase_order ON tb_purchase_order_list.purchase_order_id = tb_purchase_order.purchase_order_id 
+        LEFT JOIN tb_supplier ON  tb_purchase_order.supplier_id = tb_supplier.supplier_id 
+        LEFT JOIN tb_product ON tb_purchase_order_list.product_id = tb_product.product_id 
+        WHERE  purchase_order_code LIKE '%$keyword%' 
+        $str_id  
+        $str_date 
+        $str_supplier 
+        
+        ORDER BY purchase_order_code , purchase_order_list_id DESC 
+         ";
+ 
+
+    
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+
     function getPurchaseOrderByKeyword($keyword = ""){
 
         $sql = " SELECT *
@@ -100,7 +156,6 @@ class PurchaseOrderModel extends BaseModel{
         }
 
     }
-
     function getPurchaseOrderByID($id){
         $sql = " SELECT * 
         FROM tb_purchase_order 

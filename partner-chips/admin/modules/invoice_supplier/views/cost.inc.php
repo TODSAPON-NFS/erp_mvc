@@ -251,7 +251,7 @@ function calculate(id,all_duty){
                                                 <span><b>Fix.</b></span>
                                             </td>
                                             <td>
-                                                <input name="invoice_supplier_list_duty_fix[]" type="checkbox" value="1" />
+                                                <input name="invoice_supplier_list_duty_fix[]" type="checkbox" value="<?php echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id']; ?>" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -267,13 +267,34 @@ function calculate(id,all_duty){
                                                 <span><b>Price.</b></span>
                                             </td>
                                             <td>
-                                                <input name="invoice_supplier_list_duty[]" type="text" style="text-align:right;" class="form-control" value="<?php echo  number_format($cost_price_ex_total * $invoice_supplier_lists[$i]['invoice_supplier_list_duty_percent'] / 100,2); ?>"  readonly />
+                                                <input name="invoice_supplier_list_duty_fix[]" type="text" style="text-align:right;" class="form-control" value="<?php 
+                                                if($invoice_supplier_lists[$i]['invoice_supplier_list_duty_fix'] != '0'){ 
+                                                    echo number_format( $invoice_supplier_lists[$i]['invoice_supplier_list_duty_fix'] , 2);
+                                                }else{
+                                                    echo  number_format($cost_price_ex_total * $invoice_supplier_lists[$i]['invoice_supplier_list_duty_percent'] / 100,2);
+                                                 } ?>"  />
                                             </td>
                                         </tr>
                                     </table>
                                     
                                 </td>
-                                <td align="right"><?php echo  number_format($cost_price_f,2); ?></td>
+                                <td >
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <span><b>Fix.</b></span>
+                                            </td>
+                                            <td>
+                                                <input name="invoice_supplier_list_duty_fix[]" type="checkbox" value="<?php echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id']; ?>" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input name="invoice_supplier_list_freight_fix[]" type="text" style="text-align:right;" class="form-control" value="<?php echo  number_format($cost_price_f,2); ?>"  />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
                                 <td align="right"><?php echo  number_format($cost_total,2); ?></td>
                             </tr>
                             <?

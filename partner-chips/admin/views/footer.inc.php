@@ -115,3 +115,93 @@
             display: none;
         }
     </style>
+
+
+
+
+    <!-- Modal for use check login --->
+    
+<script type="text/javascript">
+    function login(){
+        var username = document.getElementById("username").value;
+        var psw = document.getElementById("psw").value;
+        var userold = document.getElementById("userold").value;
+        username = $.trim(username);
+        psw = $.trim(psw);
+        userold = $.trim(userold);
+        if(userold == username){
+            if(username.length == 0){
+                alert("Please input username.");
+                document.getElementById("username").focus();
+                return false;
+            }else if(psw.length == 0){
+                alert("Please input password.");
+                document.getElementById("psw").focus();
+                return false;
+            }else{
+                
+                $.post("controllers/checkLogin.php", {username:username,password:psw,userold:userold}, function(data){
+                    if(data.result == true){
+                        $("#mylogin").modal('hide');
+                    }else {
+                        alert("username or password invalid.");
+                    }
+                });
+            }
+        }
+        else {
+            alert("User invalid.")
+        }
+    }
+    $(document).ready(function(){
+        $('#psw').keypress(function(event){
+            
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                login();	
+            }
+
+        });
+    });
+
+
+    function check_login(form_name){
+        $.post("controllers/checkSession.php", {}, function(data){
+            //console.log(data.result); 
+            if(data.result == true){
+                $("#"+form_name).submit();
+            }else {
+                $("#mylogin").modal();
+            }
+        });
+
+
+    }
+</script>
+
+<!-- Trigger the modal with a button -->
+<!-- Modal -->
+<div class="modal fade" id="mylogin" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body" style="padding:40px 50px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button> 
+                <div align="center" style="padding:8px;"><img class="img-responsive logo" src="../../uploads/logo/partner-chips.jpg"></div>
+                <div class="form-group">
+                    <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter username">
+                    <input type="hidden" id="userold" value="<?php echo $_SESSION['user']['user_username'] ?>" >
+                </div>
+                <div class="form-group">
+                    <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
+                    <input type="password" class="form-control" id="psw" placeholder="Enter password" >
+                </div>
+                <button type="button" onclick="login();" class="btn btn-danger btn-block"><span class="fa fa-sign-in"></span> Login</button>
+            </div>
+        </div>
+
+    </div>
+</div> 
+    <!-- /Modal for use check login --->

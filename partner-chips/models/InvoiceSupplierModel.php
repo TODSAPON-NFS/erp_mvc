@@ -269,6 +269,8 @@ class InvoiceSupplierModel extends BaseModel{
 
    
     function updateInvoiceSupplierByID($id,$data = []){
+
+
         $sql = " UPDATE tb_invoice_supplier SET  
         supplier_id = '".$data['supplier_id']."', 
         employee_id = '".$data['employee_id']."', 
@@ -301,8 +303,6 @@ class InvoiceSupplierModel extends BaseModel{
         lastupdate = '".$data['lastupdate']."' 
         WHERE invoice_supplier_id = '$id' 
         ";
-
-        //echo $sql;
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;

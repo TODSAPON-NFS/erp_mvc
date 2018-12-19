@@ -78,8 +78,7 @@ class InvoiceSupplierListModel extends BaseModel{
             invoice_supplier_list_remark,
             stock_group_id,
             purchase_order_list_id,
-            invoice_supplier_list_cost,
-            invoice_supplier_list_cost_fix,
+            invoice_supplier_list_cost, 
             addby,
             adddate,
             updateby,
@@ -96,8 +95,7 @@ class InvoiceSupplierListModel extends BaseModel{
             '".$data['invoice_supplier_list_remark']."',
             '".$data['stock_group_id']."', 
             '".$data['purchase_order_list_id']."', 
-            '".$data['invoice_supplier_list_cost']."',
-            '".$data['invoice_supplier_list_cost_fix']."',
+            '".$data['invoice_supplier_list_cost']."', 
             '".$data['addby']."', 
             NOW(), 
             '".$data['updateby']."', 
@@ -150,10 +148,13 @@ class InvoiceSupplierListModel extends BaseModel{
     }
 
 
-    function updateDutyPercentListById($invoice_supplier_list_duty_percent,$id){
+    function updateCostListById($data,$id){
 
         $sql = " UPDATE tb_invoice_supplier_list 
-            SET invoice_supplier_list_duty_percent = '".$invoice_supplier_list_duty_percent."' 
+            SET invoice_supplier_list_freight_fix = '".$data['invoice_supplier_list_freight_fix']."',  
+                invoice_supplier_list_duty_fix = '".$data['invoice_supplier_list_duty_fix']."', 
+                invoice_supplier_list_duty_percent = '".$data['invoice_supplier_list_duty_percent']."', 
+                invoice_supplier_list_cost = '".$data['invoice_supplier_list_cost']."' 
             WHERE invoice_supplier_list_id = '$id' 
         ";
 

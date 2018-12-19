@@ -661,7 +661,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=customer_purchase_order&action=edit&id=<?php echo $customer_purchase_order_id;?>" enctype="multipart/form-data">
+                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=customer_purchase_order&action=edit&id=<?php echo $customer_purchase_order_id;?>" enctype="multipart/form-data">
                     <input type="hidden"  id="customer_purchase_order_id" name="customer_purchase_order_id" value="<?php echo $customer_purchase_order_id; ?>" />
                     <input type="hidden"  id="customer_purchase_order_date" name="customer_purchase_order_date" value="<?php echo $customer_purchase_order['customer_purchase_order_date']; ?>" />
                     <input type="hidden"  id="customer_purchase_order_file_o" name="customer_purchase_order_file_o" value="<?php echo $delivery_note_customer['customer_purchase_order_file_o']; ?>" /> 
@@ -1045,7 +1045,7 @@
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="index.php?app=customer_purchase_order" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

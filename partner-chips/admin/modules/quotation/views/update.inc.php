@@ -36,27 +36,23 @@
      function check(){
 
 
-        var quotation_code = document.getElementById("quotation_code").value;
-        var quotation_type = document.getElementById("quotation_type").value;
-        var employee_id = document.getElementById("employee_id").value;
-        var urgent_time = document.getElementById("urgent_time").value;
-        var urgent_status = document.getElementById("urgent_status").value;
+        var quotation_code = document.getElementById("quotation_code").value; 
+        var employee_id = document.getElementById("employee_id").value; 
+        var customer_id = document.getElementById("customer_id").value; 
 
         
-        quotation_code = $.trim(quotation_code);
-        quotation_type = $.trim(quotation_type);
-        employee_id = $.trim(employee_id);
-        urgent_time = $.trim(urgent_time);
-        urgent_status = $.trim(urgent_status);
+        quotation_code = $.trim(quotation_code); 
+        employee_id = $.trim(employee_id); 
+        customer_id = $.trim(customer_id); 
         
 
         if(quotation_code.length == 0){
             alert("Please input Quotation code");
             document.getElementById("quotation_code").focus();
             return false;
-        }else if(quotation_type.length == 0){
-            alert("Please input Quotation type");
-            document.getElementById("quotation_type").focus();
+        }else if(customer_id.length == 0){
+            alert("Please input customer");
+            document.getElementById("customer_id").focus();
             return false;
         }else if(employee_id.length == 0){
             alert("Please input employee");
@@ -241,7 +237,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=quotation&action=edit&id=<?php echo $quotation_id;?>" >
+                <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=quotation&action=edit&id=<?php echo $quotation_id;?>" >
                 <input type="hidden"  id="quotation_id" name="quotation_id" value="<?php echo $quotation_id; ?>" />
                     <div class="row">
                         <div class="col-lg-6">
@@ -484,7 +480,7 @@
                             <a href="index.php?app=quotation" class="btn btn-default">Back</a>
                         
                             <button type="reset" class="btn btn-primary">Reset</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

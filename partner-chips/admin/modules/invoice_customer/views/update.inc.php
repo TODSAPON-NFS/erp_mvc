@@ -405,7 +405,7 @@
 
                 $(".example-ajax-post").easyAutocomplete(options);
 
-                var str_stock = "<option value=''>Select Stock</option>";
+                var str_stock = "";
                 $.each(stock_group_data, function (index, value) {
                     if(value['stock_group_id'] == data_buffer[i].stock_group_id ){
                         str_stock += "<option value='" + value['stock_group_id'] + "' SELECTED >" +  value['stock_group_name'] + "</option>";
@@ -466,7 +466,7 @@
 
          $(".example-ajax-post").easyAutocomplete(options);
 
-        var str_stock = "<option value=''>Select Stock</option>";
+        var str_stock = "";
         $.each(stock_group_data, function (index, value) {
             str_stock += "<option value='" + value['stock_group_id'] + "'>"+value['stock_group_name']+"</option>";
         });
@@ -587,7 +587,7 @@ generate_credit_date();
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();" action="index.php?app=invoice_customer&action=edit&id=<?php echo $invoice_customer_id;?>" >
+                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=invoice_customer&action=edit&id=<?php echo $invoice_customer_id;?>" >
                     <input type="hidden"  id="invoice_customer_id" name="invoice_customer_id" value="<?php echo $invoice_customer_id; ?>" />
                     <input type="hidden"  id="invoice_customer_date_old" name="invoice_customer_date_old" value="<?php echo $invoice_customer['invoice_customer_date']; ?>" />
                     <div class="row">
@@ -772,8 +772,7 @@ generate_credit_date();
                                     <input type="text" class="form-control" name="invoice_customer_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_remark']; ?>" />
                                 </td>
                                 <td>
-                                    <select  class="form-control" name="stock_group_id[]"  >
-                                        <option value="">Select</option>
+                                    <select  class="form-control" name="stock_group_id[]"  > 
                                         <?php 
                                         for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
                                         ?>
@@ -908,7 +907,7 @@ generate_credit_date();
                             <a href="index.php?app=invoice_customer" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             <a href="print.php?app=invoice_customer&action=pdf&id=<?PHP echo $invoice_customer_id?>" class="btn btn-danger">Print</a>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

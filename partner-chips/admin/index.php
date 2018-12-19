@@ -3,14 +3,7 @@ session_start();
 
 require_once('../models/NotificationModel.php');
 $user_admin = $_SESSION['user'];
-$notification_id = $_GET['notification'];
-/*
-echo "<pre>";
-print_r($_SESSION['user']);
-echo "</pre>";
-
-echo "[".$admin_id."]"; 
-*/
+$notification_id = $_GET['notification']; 
 $admin_id = $user_admin['user_id'];
 $license_admin_page =  $user_admin['license_admin_page'];
 $license_sale_employee_page =  $user_admin['license_sale_employee_page']; 
@@ -39,17 +32,15 @@ $notifications_po = $model_notification->getNotificationByType($admin_id,'Purcha
 $notifications_cpo = $model_notification->getNotificationByType($admin_id,'Customer Order',"1");
 $notifications_ns = $model_notification->getNotificationByType($admin_id,'Supplier Approve',"1");
 
-if($admin_id == ""){
-?>
-<script>window.location="../index.php";</script>
-<?PHP 
+if(!isset($_SESSION['user'])){ 
+    $_SESSION['url'] = $_SERVER[REQUEST_URI];
+    header('Location: ../index.php');
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <?php require_once('views/header.inc.php') ?>
 
 </head>

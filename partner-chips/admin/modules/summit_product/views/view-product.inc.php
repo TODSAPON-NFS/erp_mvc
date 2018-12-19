@@ -252,7 +252,7 @@ function update_sum(){
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form role="form" method="post" onsubmit="return check();"   action="index.php?app=summit_product&action=add-product&product_id=<?php echo $product_id?>"   enctype="multipart/form-data">
+                <form id="form_target" role="form" method="post" onsubmit="return check();"   action="index.php?app=summit_product&action=add-product&product_id=<?php echo $product_id?>"   enctype="multipart/form-data">
                 <input type="hidden"  id="product_id" name="product_id" value="<?php echo $product_id ?>" />
                    
                    <div class="row">
@@ -300,7 +300,7 @@ function update_sum(){
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="?app=product&action=update&id=<? echo $product_id;?>" class="btn btn-primary" >Reset</a>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

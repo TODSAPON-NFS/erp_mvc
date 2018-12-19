@@ -25,11 +25,7 @@ $product_end = $_GET['product_end'];
 
 
 $stock_reports = $stock_report_model->getStockReportProductMovementBy($date_start,$date_end,$stock_start,$stock_end,$product_start,$product_end);
-
-
-$lines = 35;
  
-$page_max = 0;
 
 include($path."view.inc.php");
 

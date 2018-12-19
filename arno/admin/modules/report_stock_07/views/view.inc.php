@@ -5,7 +5,7 @@
         var product_start = $("#product_start").val(); 
         var product_end = $("#product_end").val();  
 
-        window.location = "index.php?app=report_stock_05&product_category_id="+product_category_id+"&product_type_id="+product_type_id+"&product_start="+product_start+"&product_end="+product_end ;
+        window.location = "index.php?app=report_stock_07&product_category_id="+product_category_id+"&product_type_id="+product_type_id+"&product_start="+product_start+"&product_end="+product_end ;
     }
     function print(type){  
         var product_category_id = $("#product_category_id").val(); 
@@ -13,7 +13,7 @@
         var product_start = $("#product_start").val(); 
         var product_end = $("#product_end").val();  
 
-        window.open("print.php?app=report_stock_05&action="+type+"&product_category_id="+product_category_id+"&product_type_id="+product_type_id+"&product_start="+product_start+"&product_end="+product_end ,'_blank');
+        window.open("print.php?app=report_stock_07&action="+type+"&product_category_id="+product_category_id+"&product_type_id="+product_type_id+"&product_start="+product_start+"&product_end="+product_end ,'_blank');
     }
 </script>
 
@@ -55,23 +55,7 @@
                             </div>
                             <p class="help-block">0000-00 - 9999-99</p>
                         </div>
-                    </div>   
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>ลักษณะ / Category </label>
-                            <select id="product_category_id" name="product_category_id" class="form-control" >
-                                <option value="">ทั้งหมด</option>
-                                <?php 
-                                for($i =  0 ; $i < count($product_category) ; $i++){
-                                ?>
-                                <option <?php if($product_category[$i]['product_category_id'] == $product_category_id){?> selected <?php }?> value="<?php echo $product_category[$i]['product_category_id'] ?>"><?php echo $product_category[$i]['product_category_name'] ?> </option>
-                                <?
-                                }
-                                ?>
-                            </select>
-                            <p class="help-block">Example : - .</p>
-                        </div>
-                    </div>
+                    </div>    
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>ประเภท / Type </label>
@@ -88,8 +72,38 @@
                             <p class="help-block">Example : - .</p>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>ผู้ขาย / Supplier </label>
+                            <select id="supplier_id" name="supplier_id" class="form-control"  data-live-search="true">
+                                <option value="">ทั้งหมด</option>
+                                <?php 
+                                for($i =  0 ; $i < count($suppliers) ; $i++){
+                                ?>
+                                <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> </option>
+                                <?
+                                }
+                                ?>
+                            </select>
+                            <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
+                        </div>
+                    </div>
+                    
                 </div>
-
+                <div class="row"> 
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>จุดสั่งซื้อ </label>
+                            <select id="product_qty" name="product_qty" class="form-control "  data-live-search="true">
+                                <option value="">ทั้งหมด</option>
+                                <option value="low">ต่ำกว่าเกณฑ์</option>
+                                <option value="normal">ภายในเกณฑ์</option>
+                                <option value="high">สูงกว่าเกณฑ์</option> 
+                            </select>
+                            <p class="help-block">Example : -</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-4">
                     </div>
@@ -99,7 +113,7 @@
                         <button class="btn btn-danger" style="float:right; margin:0px 4px;" onclick="print('pdf','');">PDF</button>
                         <button class="btn btn-success" style="float:right; margin:0px 4px;" onclick="print('excel','');">Excel</button>
                         <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search('');">Search</button>
-                        <a href="index.php?app=report_stock_05" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
+                        <a href="index.php?app=report_stock_07" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
                     </div>
                 </div>
                 <br>
@@ -108,15 +122,12 @@
                     <thead>
                         <tr> 
                             <th width="5%" >No.</th>  
-                            <th width="23%" >รหัสสินค้า</th>  
-                            <th align="23%">ชื่อสินค้า </th>
-                            <th width="7%" align="">พิเศษ</th>
-                            <th width="7%" align="">ตัวแทน</th>   
-                            <th width="7%" align="">ผู้จำหน่าย</th>   
-                            <th width="7%" align="">องค์กร</th>   
-                            <th width="7%" align="">ใหญ่</th>   
-                            <th width="7%" align="">กลาง</th>   
-                            <th width="7%" align="">เล็ก</th>   
+                            <th width="20%" >รหัสสินค้า</th>  
+                            <th align="20%">ชื่อสินค้า </th>
+                            <th width="25%" align="">ผู้ขาย</th>
+                            <th width="10%" align="center">จุดต่ำสุด</th>   
+                            <th width="10%" align="center">จำนวนคงเหลือทั้งหมด</th>   
+                            <th width="10%" align="center">จำนวนที่ต้องสั่งซื้อ</th>    
                         </tr>
                     </thead>
                     <tbody>
@@ -132,13 +143,10 @@
                             <td><?php echo ($i+1); ?></td> 
                             <td><?php echo $stock_reports[$i]['product_code']; ?></td> 
                             <td><?php echo $stock_reports[$i]['product_name']; ?></td> 
-                            <td align="right"><?php echo number_format($stock_reports[$i]['product_price_1'],2); ?></td>
-                            <td align="right"><?php echo number_format($stock_reports[$i]['product_price_2'],2); ?></td>
-                            <td align="right"><?php echo number_format($stock_reports[$i]['product_price_3'],2); ?></td>
-                            <td align="right"><?php echo number_format($stock_reports[$i]['product_price_4'],2); ?></td>
-                            <td align="right"><?php echo number_format($stock_reports[$i]['product_price_5'],2); ?></td>
-                            <td align="right"><?php echo number_format($stock_reports[$i]['product_price_6'],2); ?></td>
-                            <td align="right"><?php echo number_format($stock_reports[$i]['product_price_7'],2); ?></td> 
+                            <td><?php echo $stock_reports[$i]['supplier_name_en']; ?></td> 
+                            <td align="right"><?php echo number_format($stock_reports[$i]['minimum_stock'],0); ?></td>
+                            <td align="right"><?php echo number_format($stock_reports[$i]['stock_report_qty'],0); ?></td>
+                            <td align="right"><?php echo number_format($stock_reports[$i]['product_buy'],0); ?></td> 
                         </tr>
                         <?PHP 
 

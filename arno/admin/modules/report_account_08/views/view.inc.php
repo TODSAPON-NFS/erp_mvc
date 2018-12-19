@@ -5,7 +5,7 @@
         var account_ = $("#account_id").val();
 
       
-            window.location = "index.php?app=report_account_07&date_end="+date_end+"&account_id="+account_ ;
+            window.location = "index.php?app=report_account_08&date_end="+date_end+"&account_id="+account_ ;
       
     }
     function print(type){ 
@@ -15,14 +15,14 @@
         var code_end = $("#code_end").val(); 
          
         var account_ = $("#account_id").val();
-        window.open("print.php?app=report_account_07&action="+type+"&date_end="+date_end+"&code_start="+code_start+"&code_end="+code_end+"&account_id="+account_,'_blank');
+        window.open("print.php?app=report_account_08&action="+type+"&date_end="+date_end+"&code_start="+code_start+"&code_end="+code_end+"&account_id="+account_,'_blank');
     }
 </script>
 
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">รายงานเช็คจ่ายคงเหลือ</h1>
+        <h1 class="page-header">รายงานเช็ครับ</h1>
     </div>
 
             <div class="panel-body">
@@ -77,11 +77,12 @@
                             <th align="center" width="30" >ลำดับ</th> 
                             <th align="center" width="70" >เลขที่บัญชี</th>
                             <th align="center" width="90" >ชื่อบัญชี</th>
-                            <th align="center" width="80" >วันที่จ่าย</th>                                           
+                            <th align="center" width="80" >วันที่รับ</th>                                           
                             <th align="center" width="70" >เลขที่เช็ค</th>
-                            <th align="center" width="70" >เงินหน้าเช็ค</th>   
+                            <th align="center" width="70" >เงินหน้าเช็ค</th>
+                            <th width="165" >รับจาก</th>  
                             <th align="center" width="65" > ใบสำคัญ </th>
-                            <th width="165" >หมายเหตุ</th>
+                            
                         </tr>
                     </thead>
 
@@ -95,11 +96,13 @@
                       <td align="center" ><?PHP echo number_format($i + 1,0);?></td>
                       <td align="center" ><?PHP echo $journal_reports[$i]['account_code'];?></td> 
                       <td align="center" ><?PHP echo $journal_reports[$i]['account_name_th'];?></td> 
-                      <td align="center" ><?PHP echo $journal_reports[$i]['check_pay_date_write'];?></td> 
+                      <td align="center" ><?PHP echo $journal_reports[$i]['check_date_recieve'];?></td> 
                       <td align="center" ><?PHP echo $journal_reports[$i]['cheque_code'];?></td> 
                       <td align="right"  ><?PHP echo number_format($journal_reports[$i]['cheque_total'],2);?></td> 
-                      <td align="center" ><?PHP echo $journal_reports[$i]['journal_code'];?> </td>                     
                       <td ><?PHP echo $journal_reports[$i]['journal_name'];?></td>
+                      <td align="center" ><?PHP echo $journal_reports[$i]['journal_code'];?> </td>   
+
+                      
                       </tr>
                     <?
                         }                  

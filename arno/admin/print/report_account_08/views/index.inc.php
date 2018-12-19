@@ -14,7 +14,7 @@ $d4=date("h");
 $d5=date("i");
 $d6=date("s"); 
 
-$path = "print/report_account_07/views/";
+$path = "print/report_account_08/views/";
  
 $company_model = new CompanyModel;
 $journal_report_model = new JournalReportModel;
@@ -56,7 +56,7 @@ $company=$company_model->getCompanyByID('1');
 $lines =24;
 $account = $account_model->getAccountAll();
 
-$journal_reports = $journal_report_model->getJournalAcountReportShowpayAllBy($date_end,$account_id);
+$journal_reports = $journal_report_model->getJournalAcountReportShowRceiptsAllBy($date_end,$account_id);
 
 //print_r($journal_reports);
 
@@ -96,7 +96,7 @@ if($_GET['action'] == "pdf"){
        // //ob_end_clean();
 
         $mpdf->WriteHTML($html[$page_index]);
-        //echo $html[$page_index];
+      // echo $html[$page_index];
     }
     
     

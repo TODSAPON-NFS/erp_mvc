@@ -20,6 +20,7 @@ require_once('../models/AccountSettingModel.php');
 
 require_once('../functions/CodeGenerateFunction.func.php');
 require_once('../models/PaperModel.php');
+require_once('../models/MaintenanceSaleModel.php');
 
 date_default_timezone_set('asia/bangkok');
 
@@ -41,6 +42,7 @@ $account_setting_model = new AccountSettingModel;
 
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
+$maintenance_model = new MaintenanceSaleModel;
 
 // 9 = key ของ purchase request ใน tb_paper
 $paper = $paper_model->getPaperByID('13');
@@ -124,6 +126,37 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     }
 
     require_once($path.'view.inc.php');
+
+}else if ($_GET['action'] == 'import-view' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
+    
+    $products=$product_model->getProductBy('','','','');
+    $stock_groups=$stock_group_model->getStockGroupBy();
+    $suppliers=$supplier_model->getSupplierBy($sort);
+    $users=$user_model->getUserBy();
+
+    if($sort == "ภายในประเทศ"){
+        $paper = $paper_model->getPaperByID('12');
+    }else{
+        $paper = $paper_model->getPaperByID('13');
+    }
+    
+    if($supplier_id > 0){
+        $supplier=$supplier_model->getSupplierByID($supplier_id);
+        $invoice_supplier_lists = $invoice_supplier_model->generateInvoiceSupplierListBySupplierId($supplier_id,"","",$purchase_order_id);
+        $suppliers=$supplier_model->getSupplierBy($supplier['supplier_domestic']);
+        $sort = $supplier['supplier_domestic'];
+        if($supplier['supplier_domestic'] == "ภายในประเทศ"){
+            $paper = $paper_model->getPaperByID('12');
+        }else{
+            $paper = $paper_model->getPaperByID('13');
+        }
+    }
+    
+    $user=$user_model->getUserByID($admin_id);
+   
+    $first_date = date("d")."-".date("m")."-".date("Y");
+    $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($first_date,$supplier['currency_id']);
+    require_once($path.'import.inc.php');
 
 }else if ($_GET['action'] == 'insert' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
@@ -387,9 +420,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         $data['invoice_supplier_due_day'] = $_POST['invoice_supplier_due_day'];
         $data['import_duty'] = (float)filter_var($_POST['import_duty'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['freight_in'] = (float)filter_var($_POST['freight_in'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $data['addby'] = $admin_id;
-
-       
+        $data['addby'] = $admin_id; 
        
         $product_id = $_POST['product_id'];
         $invoice_supplier_list_id = $_POST['invoice_supplier_list_id'];
@@ -529,15 +560,25 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     
 
     $invoice_supplier_list_id = $_POST['invoice_supplier_list_id'];
+    $invoice_supplier_list_freight_fix = $_POST['invoice_supplier_list_freight_fix'];
+    $invoice_supplier_list_duty_fix = $_POST['invoice_supplier_list_duty_fix'];
     $invoice_supplier_list_duty_percent = $_POST['invoice_supplier_list_duty_percent'];
+    $invoice_supplier_list_cost = $_POST['invoice_supplier_list_cost'];
     
     if(is_array($invoice_supplier_list_id)){
         for($i=0; $i < count($invoice_supplier_list_id) ; $i++){
-            $invoice_supplier_list_model->updateDutyPercentListById($invoice_supplier_list_duty_percent[$i],$invoice_supplier_list_id[$i]); 
+            $data['invoice_supplier_list_freight_fix'] = $invoice_supplier_list_freight_fix[$i];
+            $data['invoice_supplier_list_duty_fix'] = $invoice_supplier_list_duty_fix[$i];
+            $data['invoice_supplier_list_duty_percent'] = $invoice_supplier_list_duty_percent[$i];
+            $data['invoice_supplier_list_cost'] = $invoice_supplier_list_cost[$i];
+            $invoice_supplier_list_model->updateCostListById($data,$invoice_supplier_list_id[$i]); 
         }
     }else if($invoice_supplier_list_id != ""){
-        
-            $invoice_supplier_list_model->updateDutyPercentListById($invoice_supplier_list_duty_percent,$invoice_supplier_list_id);
+            $data['invoice_supplier_list_freight_fix'] = $invoice_supplier_list_freight_fix;
+            $data['invoice_supplier_list_duty_fix'] = $invoice_supplier_list_duty_fix;
+            $data['invoice_supplier_list_duty_percent'] = $invoice_supplier_list_duty_percent;
+            $data['invoice_supplier_list_cost'] = $invoice_supplier_list_cost;
+            $invoice_supplier_list_model->updateCostListById($data,$invoice_supplier_list_id);
         
     }
 ?>

@@ -18,7 +18,7 @@ $account_model = new AccountModel;
 
 
 
-if(!isset($_GET['date_end'])){
+if(!isset($_GET['date_end']) || $_GET['account_id'] =='' ){
     $date_end = $_SESSION['date_end'];
 }else{
     $date_end = $_GET['date_end'];
@@ -29,9 +29,9 @@ if(!isset($_GET['date_end'])){
 
 if(!isset($_GET['account_id']) || $_GET['account_id'] =='' ){
     $account_id = $_SESSION['account_id'];
-    echo 'dsad';
+    
 }else{  
-    echo 'dsadsssssss';
+  
     $account_id= $_GET['account_id']; 
     $_SESSION['account_id'] = $account_id;
 }
@@ -42,8 +42,7 @@ if(!isset($_GET['account_id']) || $_GET['account_id'] =='' ){
 $type = $_GET['type'];
 
 
-echo $date_end.'<br>';
-echo $account_id.'<br>';
+
 
 $company=$company_model->getCompanyByID('1');
 
@@ -90,11 +89,11 @@ if($_GET['action'] == "pdf"){
        // //ob_end_clean();
 
         $mpdf->WriteHTML($html[$page_index]);
-        echo $html[$page_index];
+        //echo $html[$page_index];
     }
     
     
-    //$mpdf->Output();
+    $mpdf->Output();
 
     //exit;
 }else if ($_GET['action'] == "excel") {

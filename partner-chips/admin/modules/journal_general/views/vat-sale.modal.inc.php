@@ -5,145 +5,145 @@
     <div class="modal-dialog modal-lg " role="document">
         <div class="modal-content">
 
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีขาย</h4>
+                    </div>
+                    <div class="col-md-4"> 
+                        <input id="invoice_customer_code_search" name="invoice_customer_code_search" class="form-control"   >
+                    </div>
+                    <div class="col-md-1" align="right"> 
+                        <button class="btn btn-danger"  onclick="get_invoice_customer_id(this)" >Get Invoice</button> 
+                        
+                    </div> 
+                </div>
+            </div>
+
+            <div  class="modal-body" align="left">
+
+                <div class="row"> 
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>เลขที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
+                            <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" value="<?php echo $invoice_customer['invoice_customer_code']; ?>"  >
+                            <p class="help-block">Example : -.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>วันที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
+                            <input id="invoice_customer_date" name="invoice_customer_date" class="form-control calendar" value="<?php echo $invoice_customer['invoice_customer_date']; ?>" onchange="sale_duty_date();" readonly />
+                            <p class="help-block">Example : -.</p>
+                        </div>
+                    </div> 
+                </div>
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="form-group">
+                            <label>รหัสผู้ซื้อ / Customer Code <font color="#F00"><b>*</b></font></label>
+                            <input id="customer_code" name="customer_code" class="form-control" value="<? echo $customer['customer_code'];?>" readonly>
+                            <p class="help-block">Example : A0001.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="form-group">
+                            <label>ผู้ซื้อ / Customer  <font color="#F00"><b>*</b></font> </label>
+                            <select id="vat_customer_id" name="vat_customer_id" class="form-control select" onchange="get_customer_invoice()" data-live-search="true">
+                                <option value="">Select</option>
+                                <?php 
+                                for($i =  0 ; $i < count($customers) ; $i++){
+                                ?>
+                                <option <?php if($customers[$i]['customer_id'] == $invoice_customer['customer_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> </option>
+                                <?
+                                }
+                                ?>
+                            </select>
+                            <input id="invoice_customer_name" name="invoice_customer_name" class="form-control" value="<?php echo $invoice_customer['invoice_customer_name']; ?>"/>
+                            <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>เลขประจำตัวผู้เสียภาษี / Tax ID. <font color="#F00"><b>*</b></font></label>
+                            <input id="invoice_customer_tax" name="invoice_customer_tax" class="form-control" value="<?php echo $invoice_customer['invoice_customer_tax']; ?>" />
+                            <p class="help-block">Example : Somchai Wongnai.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>สาขา / Branch. <font color="#F00"><b>*</b></font></label>
+                            <input id="invoice_customer_branch" name="invoice_customer_branch" class="form-control" value="<?php echo $invoice_customer['invoice_customer_branch']; ?>" />
+                            <p class="help-block">Example : Somchai Wongnai.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>ที่อยู่ / Address <font color="#F00"><b>*</b></font></label>
+                            <textarea  id="invoice_customer_address" name="invoice_customer_address" class="form-control" rows="5" ><?php echo $invoice_customer['invoice_customer_address']; ?></textarea >
+                            <p class="help-block">Example : -.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row"> 
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>ยื่นภาษีรวมในงวด <font color="#F00"><b>*</b></font> </label>
+                            <input id="customer_vat_section" name="customer_vat_section" class="form-control" value="<?php echo $invoice_customer['vat_section']; ?>" >
+                            <p class="help-block">Example : 08/61.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>ยื่นเพิ่มเติม <font color="#F00"><b>*</b></font> </label>
+                            <input id="customer_vat_section_add" name="customer_vat_section_add" class="form-control" value="<?php echo $invoice_customer['vat_section_add']; ?>" >
+                            <p class="help-block">Example : -.</p>
+                        </div>
+                    </div>
+                </div>  
+                <table width="100%" class="table table-striped table-bordered table-hover" >
+                    <thead> 
+                        <tr>
+                            <th style="text-align:center;" >มูลค่าสินค้า</th>
+                            <th style="text-align:center;" >จำนวนภาษี</th> 
+                        </tr>
+                    </thead>
+                    <tbody> 
+                        <tr class="odd gradeX">
+                            <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_total_price" name="invoice_customer_total_price" onchange="update_sale_vat()" value="<?php echo $invoice_customer['invoice_customer_total_price']; ?>" /></td>
+                            <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_vat_price" name="invoice_customer_vat_price"  value="<?php echo $invoice_customer['invoice_customer_vat_price']; ?>" /></td>
+                        </tr> 
+                    </tbody> 
+                </table> 
+                <div class="row"> 
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>รายละเอียด <font color="#F00"><b>*</b></font> </label>
+                            <input id="invoice_customer_description" name="invoice_customer_description" class="form-control" value="<?php echo $invoice_customer['invoice_customer_description']; ?>" >
+                            <p class="help-block">Example : -.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>หมายเหตุ <font color="#F00"><b>*</b></font> </label>
+                            <input id="invoice_customer_remark" name="invoice_customer_remark" class="form-control" value="<?php echo $invoice_customer['invoice_customer_remark']; ?>" >
+                            <p class="help-block">Example : -.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             
-            <div class="row">
-                <div class="col-md-6">
-                    <h4 class="modal-title">ป้อนรายละเอียดรายการภาษีขาย</h4>
-                </div>
-                <div class="col-md-4"> 
-                    <input id="invoice_customer_code_search" name="invoice_customer_code_search" class="form-control"   >
-                </div>
-                <div class="col-md-1" align="right"> 
-                    <button class="btn btn-danger"  onclick="get_invoice_customer_id(this)" >Get Invoice</button> 
-                      
-                </div> 
-            </div>
-        </div>
 
-        <div  class="modal-body" align="left">
-
-            <div class="row"> 
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>เลขที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
-                        <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" value="<?php echo $invoice_customer['invoice_customer_code']; ?>"  >
-                        <p class="help-block">Example : -.</p>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>วันที่ใบกำกับภาษี <font color="#F00"><b>*</b></font> </label>
-                        <input id="invoice_customer_date" name="invoice_customer_date" class="form-control calendar" value="<?php echo $invoice_customer['invoice_customer_date']; ?>" onchange="sale_duty_date();" readonly />
-                        <p class="help-block">Example : -.</p>
-                    </div>
-                </div> 
+            <div class="modal-footer">
+                <input type="hidden" id="invoice_customer_id" name="invoice_customer_id" value="" />
+                <input type="hidden" id="invoice_customer_action" name="invoice_customer_action" value="" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="invoice_customer_delete" class="btn btn-danger" onclick="delete_invoice_customer();" >Delete Invoice</button>
+                <button type="button" id="invoice_customer_submit" class="btn btn-primary" onclick="invoice_customer_post();" >Add Invoice</button>
             </div>
-            <div class="row">
-                <div class="col-lg-5">
-                    <div class="form-group">
-                        <label>รหัสผู้ซื้อ / Customer Code <font color="#F00"><b>*</b></font></label>
-                        <input id="customer_code" name="customer_code" class="form-control" value="<? echo $customer['customer_code'];?>" readonly>
-                        <p class="help-block">Example : A0001.</p>
-                    </div>
-                </div>
-                <div class="col-lg-7">
-                    <div class="form-group">
-                        <label>ผู้ซื้อ / Customer  <font color="#F00"><b>*</b></font> </label>
-                        <select id="vat_customer_id" name="vat_customer_id" class="form-control select" onchange="get_customer_invoice()" data-live-search="true">
-                            <option value="">Select</option>
-                            <?php 
-                            for($i =  0 ; $i < count($customers) ; $i++){
-                            ?>
-                            <option <?php if($customers[$i]['customer_id'] == $invoice_customer['customer_id']){?> selected <?php }?> value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?> </option>
-                            <?
-                            }
-                            ?>
-                        </select>
-                        <input id="invoice_customer_name" name="invoice_customer_name" class="form-control" value="<?php echo $invoice_customer['invoice_customer_name']; ?>"/>
-                        <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>เลขประจำตัวผู้เสียภาษี / Tax ID. <font color="#F00"><b>*</b></font></label>
-                        <input id="invoice_customer_tax" name="invoice_customer_tax" class="form-control" value="<?php echo $invoice_customer['invoice_customer_tax']; ?>" />
-                        <p class="help-block">Example : Somchai Wongnai.</p>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>สาขา / Branch. <font color="#F00"><b>*</b></font></label>
-                        <input id="invoice_customer_branch" name="invoice_customer_branch" class="form-control" value="<?php echo $invoice_customer['invoice_customer_branch']; ?>" />
-                        <p class="help-block">Example : Somchai Wongnai.</p>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="form-group">
-                        <label>ที่อยู่ / Address <font color="#F00"><b>*</b></font></label>
-                        <textarea  id="invoice_customer_address" name="invoice_customer_address" class="form-control" rows="5" ><?php echo $invoice_customer['invoice_customer_address']; ?></textarea >
-                        <p class="help-block">Example : -.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row"> 
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>ยื่นภาษีรวมในงวด <font color="#F00"><b>*</b></font> </label>
-                        <input id="customer_vat_section" name="customer_vat_section" class="form-control" value="<?php echo $invoice_customer['vat_section']; ?>" >
-                        <p class="help-block">Example : 08/61.</p>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>ยื่นเพิ่มเติม <font color="#F00"><b>*</b></font> </label>
-                        <input id="customer_vat_section_add" name="customer_vat_section_add" class="form-control" value="<?php echo $invoice_customer['vat_section_add']; ?>" >
-                        <p class="help-block">Example : -.</p>
-                    </div>
-                </div>
-            </div>  
-            <table width="100%" class="table table-striped table-bordered table-hover" >
-                <thead> 
-                    <tr>
-                        <th style="text-align:center;" >มูลค่าสินค้า</th>
-                        <th style="text-align:center;" >จำนวนภาษี</th> 
-                    </tr>
-                </thead>
-                <tbody> 
-                    <tr class="odd gradeX">
-                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_total_price" name="invoice_customer_total_price" onchange="update_sale_vat()" value="<?php echo $invoice_customer['invoice_customer_total_price']; ?>" /></td>
-                        <td align="right"><input type="text" class="form-control" style="text-align: right;" id="invoice_customer_vat_price" name="invoice_customer_vat_price"  value="<?php echo $invoice_customer['invoice_customer_vat_price']; ?>" /></td>
-                    </tr> 
-                </tbody> 
-            </table> 
-            <div class="row"> 
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>รายละเอียด <font color="#F00"><b>*</b></font> </label>
-                        <input id="invoice_customer_description" name="invoice_customer_description" class="form-control" value="<?php echo $invoice_customer['invoice_customer_description']; ?>" >
-                        <p class="help-block">Example : -.</p>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>หมายเหตุ <font color="#F00"><b>*</b></font> </label>
-                        <input id="invoice_customer_remark" name="invoice_customer_remark" class="form-control" value="<?php echo $invoice_customer['invoice_customer_remark']; ?>" >
-                        <p class="help-block">Example : -.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        
-
-        <div class="modal-footer">
-            <input type="hidden" id="invoice_customer_id" name="invoice_customer_id" value="" />
-            <input type="hidden" id="invoice_customer_action" name="invoice_customer_action" value="" />
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" id="invoice_customer_delete" class="btn btn-danger" onclick="delete_invoice_customer();" >Delete Invoice</button>
-            <button type="button" id="invoice_customer_submit" class="btn btn-primary" onclick="invoice_customer_post();" >Add Invoice</button>
-        </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

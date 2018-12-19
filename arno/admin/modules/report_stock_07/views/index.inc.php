@@ -2,16 +2,14 @@
 session_start();
 
 require_once('../models/StockReportModel.php'); 
-require_once('../models/ProductTypeModel.php');
-require_once('../models/ProductCategoryModel.php'); 
+require_once('../models/ProductTypeModel.php'); 
 
 date_default_timezone_set('asia/bangkok');
 
-$path = "modules/report_stock_05/views/";
+$path = "modules/report_stock_07/views/";
  
-$stock_report_model = new StockReportModel;
-$product_type_model = new ProductTypeModel;
-$product_category_model = new ProductCategoryModel;
+$stock_report_model = new StockReportModel; 
+$product_type_model = new ProductTypeModel; 
  
 
 if(!isset($_GET['product_category_id'])){
@@ -44,14 +42,13 @@ if(!isset($_GET['product_end'])){
     $_SESSION['product_end'] = $product_end;
 }
 
-$product_type = $product_type_model->getProductTypeBy();
-$product_category = $product_category_model->getProductCategoryBy();
-if($product_start!=''||$product_category_id!=''||$product_type_id!=''){
-    $stock_reports = $stock_report_model->getStockReportProductBy($product_category_id, $product_type_id,$product_start,$product_end);
-    // echo '<pre>';
-    // print_r($stock_reports);
-    // echo '</pre>';
-}
+$product_type = $product_type_model->getProductTypeBy(); 
+// if($product_start!=''||$product_category_id!=''||$product_type_id!=''){
+    $stock_reports = $stock_report_model->getStockReportMinPointBy($product_start = "",$product_end = "",$product_type = "",$supplier_id = "",$product_qty);
+    echo '<pre>';
+    print_r($stock_reports);
+    echo '</pre>';
+// }
 
 require_once($path.'view.inc.php');
   

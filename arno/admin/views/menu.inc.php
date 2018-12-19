@@ -24,26 +24,34 @@
                         <i class="fa fa-caret-down"></i>
                         
                     </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                    <?php 
-                    for($i=0 ; $i < count($notifications) ;$i++){ ?>
-                        <li <?php if($notifications[$i]['notification_seen_date'] == ""){ ?>class="notify-active"<?php }else{ ?> class="notify" <?php } ?> >
-                            <a href="<?php echo $notifications[$i]['notification_url'];?>&notification=<?php echo $notifications[$i]['notification_id'];?>" >
-                                <div>
-                                    <i class="fa fa-comment fa-fw"></i> <?php echo $notifications[$i]['notification_detail'];?> 
-                                    <span class="pull-right text-muted small"><?php echo $notifications[$i]['notification_date'];?></span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                    <?php
-                        if($i == 10){break;}
-                    } 
+                    <ul class="dropdown-menu dropdown-alerts scroll1">
+                        
+                        <?php 
+
+                        for($i=0 ; $i < count($notifications) ;$i++){ ?>
+                            <li <?php if($notifications[$i]['notification_seen_date'] == ""){ ?>class="notify-active"<?php }else{ ?> class="notify" <?php } ?> >
+                                <a href="<?php echo $notifications[$i]['notification_url'];?>&notification=<?php echo $notifications[$i]['notification_id'];?>" >
+                                    <div>
+                                        <?php if($notifications[$i]['notification_type'] =='Purchase Request'){ ?><i class="fa fa-commenting fa-fw fa-notify"></i> <?php }
+                                            else if ($notifications[$i]['notification_type'] =='Purchase Order'){?><i class="fa fa-cart-plus fa-fw fa-notify"></i> <?php }
+                                            ?>
+                                        
+                                        <?php echo $notifications[$i]['notification_detail'];?> 
+                                        <div class=" text-muted small"><?php echo $notifications[$i]['notification_date'];?></div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                        <?php
+                            // if($i == 10){break;}
+                        } 
                 
-                    ?>
-                        <li>
-                            <a class="text-center" href="index.php?app=notification">
+                        ?>
+                        <li class="sticky-bot">
+                            <a class="see_all" href="index.php?app=notification">
                                 <strong>See All Alerts</strong>
+                                <i class="fa fa-angle-right"></i>
+                                <i class="fa fa-angle-right"></i>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </li>
@@ -864,3 +872,4 @@
                 </div>
                 <!-- /.sidebar-collapse -->
             </div>
+

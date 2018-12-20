@@ -1097,7 +1097,7 @@ class JournalReportModel extends BaseModel{
      //#####################################################################################################################
     //
     //
-    //-------------------------------- ดึงรายงานเซ็ค ตามวันที่ เเละ บัญชี ------------------------------
+    //-------------------------------- ดึงรายงานเช็คจ่ายคงเหลือ ตามวันที่ เเละ บัญชี ------------------------------
     //
     //
     //#####################################################################################################################
@@ -1267,6 +1267,205 @@ class JournalReportModel extends BaseModel{
       
               $sql =" SELECT account_code , account_name_th ,  MAX(IFNULL(account_debit_begin,0)) ,SUM(IFNULL(tb_journal.journal_debit,0)), MAX(IFNULL(account_credit_begin,0)) ,SUM(IFNULL(tb_journal.journal_credit,0)) , ( MAX(IFNULL(account_debit_begin,0)) + SUM(IFNULL(tb_journal.journal_debit,0)) ) - ( MAX(IFNULL(account_credit_begin,0)) + SUM(IFNULL(tb_journal.journal_credit,0)) ) as account_value,
                       cheque_code , cheque_total,journal_name, check_pay_date_write,journal_code,check_pay_date
+                      FROM tb_account 
+                      LEFT JOIN  (($sql_general)  
+                      UNION   ALL  ($sql_purchase) 
+                      UNION   ALL  ($sql_sale) 
+                      UNION   ALL  ($sql_cash_payment) 
+                      UNION   ALL  ($sql_cash_receipt)) as tb_journal  
+                      ON tb_account.account_id = tb_journal.account_id  
+                      where tb_account.account_id = '$account_id'  AND cheque_code IS NOT NULL
+                      GROUP BY cheque_code     
+                      ORDER BY cheque_code ASC
+              ";  
+            //echo '<pre>'.$sql.'</pre>';
+              if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                  $data = [];
+                  while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                      $data[] = $row;
+                  }
+                  $result->close();
+                  return $data;
+              }
+      
+          }
+          
+          
+
+          
+     //#####################################################################################################################
+    //
+    //
+    //-------------------------------- ดึงรายงานเช็คจ่ายคงเหลือ ตามวันที่ เเละ บัญชี ------------------------------
+    //
+    //
+    //#####################################################################################################################
+
+    function getJournalAcountReportShowRceiptsAllBy($date_end = "", $account_id ){
+        //------------------------- General Journal -------------------------------------------------------------
+              $str_general_date = "";
+              
+              if ($date_end != ""){
+                  $str_general_date = " WHERE STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') = STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+              }else{
+                  $date_  = date('t-m-Y');
+                  $str_general_date = " WHERE STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_','%d-%m-%Y %H:%i:%s') ";
+              } 
+              
+              $sql_general = " SELECT
+              journal_general_code as journal_code, 
+              journal_general_date as journal_date,
+              check_remark  as journal_name,
+            
+              check_code  as cheque_code,
+              check_total  as cheque_total,
+              check_date_write,check_date_recieve,
+              account_id,
+              IFNULL(SUM(journal_general_list_debit),0) as journal_debit,
+              IFNULL(SUM(journal_general_list_credit),0) as journal_credit
+              FROM tb_journal_general 
+              LEFT JOIN tb_journal_general_list ON tb_journal_general_list.journal_general_id = tb_journal_general.journal_general_id  
+              LEFT JOIN tb_check ON tb_journal_general_list.journal_cheque_id= tb_check.check_id  
+              $str_general_date 
+              GROUP BY tb_journal_general_list.journal_general_list_id 
+              ORDER BY STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s'), journal_general_code DESC 
+              "; 
+              //------------------------- End General Journal -------------------------------------------------------------
+      
+      
+      
+              //------------------------- Purchase Journal -------------------------------------------------------------
+              $str_purchase_date = "";
+      
+              if ($date_end != ""){
+                  $str_purchase_date = "WHERE STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s') = STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+              }else{
+                $date_  = date('t-m-Y');
+                $str_general_date = " WHERE STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_','%d-%m-%Y %H:%i:%s') ";
+            }  
+      
+              $sql_purchase = " SELECT
+              journal_purchase_code as journal_code, 
+              journal_purchase_date as journal_date,
+              check_remark  as journal_name,
+             
+              check_code  as cheque_code,
+              check_total  as cheque_total,
+              check_date_write,check_date_recieve,
+              account_id,
+              IFNULL(SUM(journal_purchase_list_debit),0) as journal_debit,
+              IFNULL(SUM(journal_purchase_list_credit),0) as journal_credit
+              FROM tb_journal_purchase 
+              LEFT JOIN tb_journal_purchase_list ON tb_journal_purchase_list.journal_purchase_id = tb_journal_purchase.journal_purchase_id 
+              LEFT JOIN tb_check ON tb_journal_purchase_list.journal_cheque_id = tb_check.check_id  
+             
+              $str_purchase_date 
+              GROUP BY tb_journal_purchase_list.journal_purchase_list_id 
+              ORDER BY STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s'), journal_purchase_code DESC 
+              "; 
+              //------------------------- End Purchase Journal -------------------------------------------------------------
+      
+      
+      
+              //------------------------- Sale Journal -------------------------------------------------------------
+              $str_sale_date = "";
+            
+              if ($date_end != ""){
+                  $str_sale_date = "WHERE STR_TO_DATE(journal_sale_date,'%d-%m-%Y %H:%i:%s') = STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+              } else{
+                $date_  = date('t-m-Y');
+                $str_general_date = " WHERE STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_','%d-%m-%Y %H:%i:%s') ";
+            } 
+            
+              $sql_sale = " SELECT
+              check_code as journal_code, 
+              journal_sale_date as journal_date,
+              check_remark  as journal_name,
+             
+              check_code  as cheque_code,
+              check_total  as cheque_total,
+              check_date_write,check_date_recieve,
+              account_id,
+              IFNULL(SUM(journal_sale_list_debit),0) as journal_debit,
+              IFNULL(SUM(journal_sale_list_credit),0) as journal_credit
+              FROM tb_journal_sale 
+              LEFT JOIN tb_journal_sale_list ON tb_journal_sale_list.journal_sale_id = tb_journal_sale.journal_sale_id  
+              LEFT JOIN tb_check ON tb_journal_sale_list.journal_cheque_id = tb_check.check_id  
+              
+              $str_sale_date 
+              GROUP BY tb_journal_sale_list.journal_sale_list_id 
+              ORDER BY STR_TO_DATE(journal_sale_date,'%d-%m-%Y %H:%i:%s'), journal_sale_code DESC 
+              "; 
+              //------------------------- End Sale Journal -------------------------------------------------------------
+      
+      
+      
+              //------------------------- Cash Payment Journal -------------------------------------------------------------
+              $str_cash_payment_date = "";
+      
+              if ($date_end != ""){
+                  $str_cash_payment_date = "WHERE STR_TO_DATE(journal_cash_payment_date,'%d-%m-%Y %H:%i:%s') = STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+              }else{
+                $date_  = date('t-m-Y');
+                $str_general_date = " WHERE STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_','%d-%m-%Y %H:%i:%s') ";
+            }  
+      
+              $sql_cash_payment = " SELECT
+              journal_cash_payment_code as journal_code, 
+              journal_cash_payment_date as journal_date,
+              check_remark  as journal_name,
+              check_code  as cheque_code,
+              check_total  as cheque_total,
+              check_date_write,check_date_recieve,
+              account_id,
+              IFNULL(SUM(journal_cash_payment_list_debit),0) as journal_debit,
+              IFNULL(SUM(journal_cash_payment_list_credit),0) as journal_credit
+              FROM tb_journal_cash_payment 
+              LEFT JOIN tb_journal_cash_payment_list ON tb_journal_cash_payment_list.journal_cash_payment_id = tb_journal_cash_payment.journal_cash_payment_id  
+              LEFT JOIN tb_check ON tb_journal_cash_payment_list.journal_cheque_id = tb_check.check_id   
+              
+              $str_cash_payment_date 
+              GROUP BY tb_journal_cash_payment_list.journal_cash_payment_list_id 
+              ORDER BY STR_TO_DATE(journal_cash_payment_date,'%d-%m-%Y %H:%i:%s'), journal_cash_payment_code DESC 
+              "; 
+              //------------------------- End Cash Payment Journal -------------------------------------------------------------
+      
+      
+      
+              //------------------------- Cash Receipt Journal -------------------------------------------------------------
+              $str_cash_receipt_date = "";
+      
+              if ($date_end != ""){
+                  $str_cash_receipt_date = "WHERE STR_TO_DATE(journal_cash_receipt_date,'%d-%m-%Y %H:%i:%s') = STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+              }else{
+                $date_  = date('t-m-Y');
+                $str_general_date = " WHERE STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_','%d-%m-%Y %H:%i:%s') ";
+            }  
+      
+              $sql_cash_receipt = " SELECT
+              journal_cash_receipt_code as journal_code, 
+              journal_cash_receipt_date as journal_date,
+              check_remark  as journal_name,
+              check_code  as cheque_code,
+              check_total  as cheque_total,
+              check_date_write,check_date_recieve,
+              account_id,
+              IFNULL(SUM(journal_cash_receipt_list_debit),0) as journal_debit,
+              IFNULL(SUM(journal_cash_receipt_list_credit),0) as journal_credit
+              FROM tb_journal_cash_receipt 
+              LEFT JOIN tb_journal_cash_receipt_list ON tb_journal_cash_receipt_list.journal_cash_receipt_id = tb_journal_cash_receipt.journal_cash_receipt_id  
+              LEFT JOIN tb_check ON tb_journal_cash_receipt_list.journal_cheque_id = tb_check.check_id   
+              
+             
+              $str_cash_receipt_date 
+              GROUP BY tb_journal_cash_receipt_list.journal_cash_receipt_list_id 
+              ORDER BY STR_TO_DATE(journal_cash_receipt_date,'%d-%m-%Y %H:%i:%s'), journal_cash_receipt_code DESC 
+              "; 
+              //------------------------- End Cash Receipt Journal -------------------------------------------------------------
+      
+      
+              $sql =" SELECT account_code , account_name_th ,  MAX(IFNULL(account_debit_begin,0)) ,SUM(IFNULL(tb_journal.journal_debit,0)), MAX(IFNULL(account_credit_begin,0)) ,SUM(IFNULL(tb_journal.journal_credit,0)) , ( MAX(IFNULL(account_debit_begin,0)) + SUM(IFNULL(tb_journal.journal_debit,0)) ) - ( MAX(IFNULL(account_credit_begin,0)) + SUM(IFNULL(tb_journal.journal_credit,0)) ) as account_value,
+                      cheque_code , cheque_total,journal_name, check_date_write,journal_code,check_date_recieve
                       FROM tb_account 
                       LEFT JOIN  (($sql_general)  
                       UNION   ALL  ($sql_purchase) 

@@ -32,9 +32,11 @@
                             <li <?php if($notifications[$i]['notification_seen_date'] == ""){ ?>class="notify-active"<?php }else{ ?> class="notify" <?php } ?> >
                                 <a href="<?php echo $notifications[$i]['notification_url'];?>&notification=<?php echo $notifications[$i]['notification_id'];?>" >
                                     <div>
-                                        <?php if($notifications[$i]['notification_type'] =='Purchase Request'){ ?><i class="fa fa-commenting fa-fw fa-notify"></i> <?php }
-                                            else if ($notifications[$i]['notification_type'] =='Purchase Order'){?><i class="fa fa-cart-plus fa-fw fa-notify"></i> <?php }
-                                            ?>
+                                    <?php if($notifications[$i]['notification_type'] =='Purchase Request'){ ?><i class="fa fa-comments fa-fw fa-notify"></i> <?php }
+                                        else if ($notifications[$i]['notification_type'] =='Purchase Order'){?><i class="fa fa-tasks fa-fw fa-notify"></i> <?php }
+                                        else if ($notifications[$i]['notification_type'] =='Customer Order'){?><i class="fa fa-cart-plus fa-fw fa-notify"></i> <?php }
+                                        else {?><i class="fa fa-support fa-fw fa-notify"></i> <?php }
+                                        ?>
                                         
                                         <?php echo $notifications[$i]['notification_detail'];?> 
                                         <div class=" text-muted small"><?php echo $notifications[$i]['notification_date'];?></div>
@@ -65,7 +67,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <li><a href="index.php?app=user"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>

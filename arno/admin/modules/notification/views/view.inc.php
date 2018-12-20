@@ -8,15 +8,15 @@
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-12">
-        <a href="index.php?app=notification&type=Purchase Request" class="btn btn-success">Purchase Request</a>
-        <a href="index.php?app=notification&type=Purchase Order" class="btn btn-warning">Purchase Order</a>
-        <a href="index.php?app=notification&type=Customer Order" class="btn btn-info">Customer Order</a>
-        <a href="index.php?app=notification&type=Supplier Approve" class="btn btn-primary">Supplier Approve</a>
+        <a href="index.php?app=notification&type=Purchase Request" class="btn btn-success"><i style="margin-right:4px;" class="fa fa-comments fa-fw fa-notify"></i>Purchase Request</a>
+        <a href="index.php?app=notification&type=Purchase Order" class="btn btn-warning"><i style="margin-right:4px;" class="fa fa-tasks fa-fw fa-notify"></i>Purchase Order</a>
+        <a href="index.php?app=notification&type=Customer Order" class="btn btn-info"><i class="fa fa-cart-plus fa-fw fa-notify"></i> Customer Order</a>
+        <a href="index.php?app=notification&type=Supplier Approve" class="btn btn-primary"><i style="margin-right:4px;"class="fa fa-support fa-fw fa-notify"></i>Supplier Approve</a>
     </div>
     <!-- /.col-lg-12 -->
 </div>
 <div class="row ">
-    <div class="col-lg-5 ">
+    <div class="col-lg-7 ">
         <div class="panel panel-primary ">
             <div class="panel-heading panel-notify ">
                 <i class="fa fa-bell fa-fw"></i> Notifications list
@@ -37,10 +37,10 @@
                 
                 <a href="<?php echo $notifications[$i]['notification_url'];?>" class="list-group-item <?php if($notifications[$i]['notification_seen_date'] != ""){ ?>notify<? }else{ ?> notify-active <?php } ?>">
 
-                <?php if($notifications[$i]['notification_type'] =='Purchase Request'){ ?><i class="fa fa-commenting fa-fw fa-notify"></i> <?php }
-                 else if ($notifications[$i]['notification_type'] =='Purchase Order'){?><i class="fa fa-cart-plus fa-fw fa-notify"></i> <?php }
-                 else if ($notifications[$i]['notification_type'] =='Customer Order'){?><i class="fa fa-user-plus fa-fw fa-notify"></i> <?php }
-                 else {?><i class="fa fa-user-plus fa-fw fa-notify"></i> <?php }
+                <?php if($notifications[$i]['notification_type'] =='Purchase Request'){ ?><i class="fa fa-comments fa-fw fa-notify"></i> <?php }
+                 else if ($notifications[$i]['notification_type'] =='Purchase Order'){?><i class="fa fa-tasks fa-fw fa-notify"></i> <?php }
+                 else if ($notifications[$i]['notification_type'] =='Customer Order'){?><i class="fa fa-cart-plus fa-fw fa-notify"></i> <?php }
+                 else {?><i class="fa fa-support fa-fw fa-notify"></i> <?php }
                  ?>
                         <?php echo $notifications[$i]['notification_detail'];?> 
                         <div class="text-muted small"><em><?php echo $notifications[$i]['notification_date'];?></em>

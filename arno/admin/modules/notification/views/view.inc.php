@@ -17,25 +17,25 @@
 </div>
 <div class="row ">
     <div class="col-lg-7 ">
-        <div class="panel panel-primary ">
+        <div class="panel panel-<?php if($type =="Purchase Request"){ echo "success";} else if($type =="Purchase Order"){ echo "warning";}else if($type =="Customer Order"){ echo "info";}else { echo "primary";} ?> ">
             <div class="panel-heading panel-notify ">
                 <i class="fa fa-bell fa-fw"></i> Notifications list
                 <span class="pull-right "  >
-                    <a href="index.php?app=notification&action=all"style="color:white">All </a> 
+                    <a href="index.php?app=notification&action=all">All </a> 
                 </span>
                 <span class="pull-right" style="margin-right: 30px;">
-                    <a href="index.php?app=notification&action=seen&type=<?php echo $type;?>" style="color:white "> seen</a>
+                    <a href="index.php?app=notification&action=seen&type=<?php echo $type;?>" > seen</a>
                 </span>
                 <span class="pull-right" style="margin-right: 30px;">
-                    <a href="index.php?app=notification&action=unseen&type=<?php echo $type;?>" style="color:white "> unseen</a>
+                    <a href="index.php?app=notification&action=unseen&type=<?php echo $type;?>" > unseen</a>
                 </span>
             </div>
             <!-- /.panel-heading -->
-            <div class="panel-body scroll1">
+            <div class="panel-body-notify  scroll1">
                 <div class="list-group">
                 <?php for($i=0 ; $i < count($notifications) ;$i++){ ?>
                 
-                <a href="<?php echo $notifications[$i]['notification_url'];?>" class="list-group-item <?php if($notifications[$i]['notification_seen_date'] != ""){ ?>notify<? }else{ ?> notify-active <?php } ?>">
+                <a href="<?php echo $notifications[$i]['notification_url'];?>&notification=<?php echo $notifications[$i]['notification_id'];?>" class="list-group-item <?php if($notifications[$i]['notification_seen_date'] != ""){ ?>notify<? }else{ ?> notify-active <?php } ?>">
 
                 <?php if($notifications[$i]['notification_type'] =='Purchase Request'){ ?><i class="fa fa-comments fa-fw fa-notify"></i> <?php }
                  else if ($notifications[$i]['notification_type'] =='Purchase Order'){?><i class="fa fa-tasks fa-fw fa-notify"></i> <?php }

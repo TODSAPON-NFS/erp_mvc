@@ -71,9 +71,7 @@
         var purchase_request_code = document.getElementById("purchase_request_code").value;
         var purchase_request_date = document.getElementById("purchase_request_date").value;
         var purchase_request_type = document.getElementById("purchase_request_type").value;
-        var employee_id = document.getElementById("employee_id").value;
-        var urgent_time = document.getElementById("urgent_time").value;
-        var urgent_status = document.getElementById("urgent_status").value;
+        var employee_id = document.getElementById("employee_id").value; 
         var purchase_check = document.getElementById("purchase_check").value;
         var purchase_request_id = document.getElementById("purchase_request_id").value;
         var date_check = document.getElementById("date_check").value;
@@ -81,9 +79,7 @@
         
         purchase_request_code = $.trim(purchase_request_code);
         purchase_request_type = $.trim(purchase_request_type);
-        employee_id = $.trim(employee_id);
-        urgent_time = $.trim(urgent_time);
-        urgent_status = $.trim(urgent_status);
+        employee_id = $.trim(employee_id); 
         
 
         if(date_check == "1"){
@@ -306,8 +302,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=purchase_request&action=edit&id=<?php echo $purchase_request_id;?>" >
-                    <input type="hidden"  id="purchase_request_id" name="purchase_request_id" value="<?php echo $purchase_request_id; ?>" />
-                    <input type="hidden"  id="purchase_request_date" name="purchase_request_date" value="<?php echo $purchase_request['purchase_request_date']; ?>" />
+                    <input type="hidden"  id="purchase_request_id" name="purchase_request_id" value="<?php echo $purchase_request_id; ?>" /> 
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">

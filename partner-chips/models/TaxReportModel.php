@@ -111,15 +111,12 @@ class TaxReportModel extends BaseModel{
         FROM tb_invoice_customer 
         LEFT JOIN tb_user as tb1 ON tb_invoice_customer.employee_id = tb1.user_id 
         LEFT JOIN tb_customer as tb2 ON tb_invoice_customer.customer_id = tb2.customer_id 
-        WHERE ( 
-            CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')  
-            OR  invoice_customer_code LIKE ('%$keyword%') 
-        ) 
+        WHERE   invoice_customer_code LIKE ('%$keyword%')  
         AND invoice_customer_vat_price != 0
         $str_customer 
         $str_date 
         $str_user  
-        ORDER BY invoice_customer_code  
+        ORDER BY STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s'), invoice_customer_code  
          ";
  
 

@@ -75,14 +75,14 @@
 
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>รหัสผู้ขาย / Supplier Code <font color="#F00"><b>*</b></font></label>
+                                        <label>Supplier Code <font color="#F00"><b>*</b></font></label>
                                         <input id="supplier_code" name="supplier_code" class="form-control" value="<? echo $supplier['supplier_code'];?>" readonly>
                                         <p class="help-block">Example : A0001.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="form-group">
-                                        <label>ผู้ขาย / Supplier  <font color="#F00"><b>*</b></font> </label>
+                                        <label>Supplier  <font color="#F00"><b>*</b></font> </label>
                                         <select  class="form-control select" onchange="get_supplier_detail()" data-live-search="true" disabled>
                                             <option value="">Select</option>
                                             <?php 
@@ -93,12 +93,12 @@
                                             }
                                             ?>
                                         </select>
-                                        <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
+                                        <p class="help-block">Example : Revel Soft.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>ที่อยู่ / Address <font color="#F00"><b>*</b></font></label>
+                                        <label>Address <font color="#F00"><b>*</b></font></label>
                                         <textarea  id="supplier_address" name="supplier_address" class="form-control" rows="5" readonly><? echo $supplier['supplier_address_1'] ."\n". $supplier['supplier_address_2'] ."\n". $supplier['supplier_address_3'];?></textarea >
                                         <p class="help-block">Example : IN.</p>
                                     </div>
@@ -111,28 +111,28 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>รหัสใบสั่งซื้อสินค้า / Purchase Order Code <font color="#F00"><b>*</b></font></label>
+                                        <label>Purchase Order Code <font color="#F00"><b>*</b></font></label>
                                         <input id="purchase_order_code" name="purchase_order_code" class="form-control" value="<? echo $purchase_order['purchase_order_code'];?>" readonly>
                                         <p class="help-block">Example : PO1801001.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>วันที่ออกใบสั่งซื้อสินค้า / Purchase Order Date</label>
+                                        <label>Purchase Order Date</label>
                                         <input type="text" id="purchase_order_date" name="purchase_order_date" value="<? echo $purchase_order['purchase_order_date'];?>"  class="form-control" readonly/>
                                         <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>เครดิต (วัน) / Credit term (Day)</label>
+                                        <label>Credit term (Day)</label>
                                         <input type="text" id="purchase_order_credit_term" name="purchase_order_credit_term" value="<? echo $purchase_order['purchase_order_credit_term'];?>" readonly class="form-control"/>
                                         <p class="help-block">10 </p>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>ผู้ออกใบสั่งซื้อ / Employee  <font color="#F00"><b>*</b></font> </label>
+                                        <label>Employee  <font color="#F00"><b>*</b></font> </label>
                                         <select  class="form-control select" data-live-search="true" disabled>
                                             <option value="">Select</option>
                                             <?php 
@@ -148,7 +148,7 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>จัดส่งโดย /Delivery by</label>
+                                        <label>Delivery by</label>
                                         <input type="text" id="purchase_order_delivery_by" name="purchase_order_delivery_by" value="<? echo $purchase_order['purchase_order_delivery_by'];?>"  class="form-control"/>
                                         <p class="help-block">DHL </p>
                                     </div>
@@ -162,12 +162,12 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th style="text-align:center;" width="150">รหัสสินค้า <br> (Product Code)</th>
-                                <th style="text-align:center;" >ชื่อสินค้า / หมายเหตุ <br> (Product Name / Remark)</th>
-                                <th style="text-align:center;" width="120">จำนวน <br> (Qty)</th>
-                                <th style="text-align:center;" width="120">ราคาต่หน่วย <br> (Unit price)</th>
-                                <th style="text-align:center;" width="120">จำนวนเงิน <br> (Amount)</th>
-                                <th style="text-align:center;" width="120">วันที่จัดส่ง <br> (Delivery)</th>
+                                <th style="text-align:center;" width="150">EDP</th>
+                                <th style="text-align:center;" >Product Name / Remark</th>
+                                <th style="text-align:center;" width="120"> Qty </th>
+                                <th style="text-align:center;" width="120"> Unit price </th>
+                                <th style="text-align:center;" width="120"> Amount </th>
+                                <th style="text-align:center;" width="120"> Delivery </th>
                                 
                             </tr>
                         </thead>

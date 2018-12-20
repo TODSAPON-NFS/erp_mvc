@@ -270,13 +270,30 @@
         require_once("modules/report_account_06/views/index.inc.php");
     }else if($_GET['app'] == "report_account_07"){
         require_once("modules/report_account_07/views/index.inc.php");
+    }else if($_GET['app'] == "report_account_08"){
+        require_once("modules/report_account_08/views/index.inc.php");
     }
 
+    else if($_GET['app'] == "report_stock_01"){
+        require_once("modules/report_stock_01/views/index.inc.php");
+    }  
     else if($_GET['app'] == "report_stock_02"){
         require_once("modules/report_stock_02/views/index.inc.php");
     }  
     else if($_GET['app'] == "report_stock_03"){
         require_once("modules/report_stock_03/views/index.inc.php");
+    }  
+    else if($_GET['app'] == "report_stock_04"){
+        require_once("modules/report_stock_04/views/index.inc.php");
+    }  
+    else if($_GET['app'] == "report_stock_05"){
+        require_once("modules/report_stock_05/views/index.inc.php");
+    }  
+    else if($_GET['app'] == "report_stock_06"){
+        require_once("modules/report_stock_06/views/index.inc.php");
+    }  
+    else if($_GET['app'] == "report_stock_07"){
+        require_once("modules/report_stock_07/views/index.inc.php");
     }  
 
     /* ----------------------------------- //ระบบรายงาน// ---------------------------------------------- */

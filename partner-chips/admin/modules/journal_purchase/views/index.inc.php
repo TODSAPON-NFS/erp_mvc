@@ -154,10 +154,10 @@ if(!isset($_GET['action'])){
     $banks=$bank_model->getBankBy();
     $bank_accounts=$bank_account_model->getBankAccountBy();
 
-    $checks = $check_model->getCheckViewListByjournalPaymentID($journal_purchase_id);
-    $check_pays = $check_pay_model->getCheckPayViewListByjournalPaymentID($journal_purchase_id);
-    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierViewListByjournalPaymentID($journal_purchase_id);
-    $invoice_customers = $invoice_customer_model->getInvoiceCustomerViewListByjournalPaymentID($journal_purchase_id);
+    $checks = $check_model->getCheckViewListByjournalPurchaseID($journal_purchase_id);
+    $check_pays = $check_pay_model->getCheckPayViewListByjournalPurchaseID($journal_purchase_id);
+    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierViewListByjournalPurchaseID($journal_purchase_id);
+    $invoice_customers = $invoice_customer_model->getInvoiceCustomerViewListByjournalPurchaseID($journal_purchase_id);
 
     $journal_purchase = $journal_purchase_model->getJournalPurchaseByID($journal_purchase_id);
     $journal_purchase_lists = $journal_purchase_list_model->getJournalPurchaseListBy($journal_purchase_id); 

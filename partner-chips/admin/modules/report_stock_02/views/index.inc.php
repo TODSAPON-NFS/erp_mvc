@@ -42,7 +42,7 @@ if(!isset($_GET['product_end'])){
 
 if($stock_start!=''||$stock_end!=''||$product_start!=''||$product_end!=''){
 
-    $stock_reports = $stock_report_model->getStockReportBy($stock_start,$stock_end,$product_start,$product_end);
+    $stock_reports = $stock_report_model->getStockReportBalanceListBy($stock_start,$stock_end,$product_start,$product_end);
 }
 
 require_once($path.'view.inc.php');

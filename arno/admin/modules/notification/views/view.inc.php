@@ -17,7 +17,7 @@
 </div>
 <div class="row ">
     <div class="col-lg-7 ">
-        <div class="panel panel-<?php if($type =="Purchase Request"){ echo "success";} else if($type =="Purchase Order"){ echo "warning";}else if($type =="Customer Order"){ echo "info";}else { echo "primary";} ?> ">
+        <div class="panel panel-notify-<?php if($type =="Purchase Request"){ echo "success";} else if($type =="Purchase Order"){ echo "warning";}else if($type =="Customer Order"){ echo "info";}else { echo "primary";} ?> ">
             <div class="panel-heading panel-notify ">
                 <i class="fa fa-bell fa-fw"></i> Notifications list
                 <span class="pull-right "  >

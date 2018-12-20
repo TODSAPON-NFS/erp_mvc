@@ -27,6 +27,16 @@
 
     }
 
+    function format_number(id){
+        var val =  parseFloat($(id).val(  ).replace(',','')); 
+
+        if(isNaN(val)){
+            val = 0;
+        }  
+        $(id).val( val.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+
+    }
+
 </script>
 
 <div class="row">
@@ -110,7 +120,7 @@
                                 <div class="col-lg-2">
                                     <div class="form-group">
                                         <label>จำนวนเงิน</label>
-                                        <input id="check_pay_total" name="check_pay_total" class="form-control " value="<?PHP echo $check['check_pay_total']; ?>" >
+                                        <input id="check_pay_total" name="check_pay_total" class="form-control " onchange="format_number(this);" style="text-align:right;" value="<?PHP echo number_format($check['check_pay_total'],2); ?>" >
                                         <p class="help-block">80000 </p>
                                     </div>
                                 </div>

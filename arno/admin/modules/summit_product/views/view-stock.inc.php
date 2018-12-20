@@ -187,16 +187,20 @@ function BindTable(jsondata,id) {
 
 function get_product_row(product_code,qty,price){
     $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
+        qty = parseFloat(qty.replace(',',''));
+        price = parseFloat(price.replace(',',''));
+        var total = qty * price;
         if(data != null){
+            
             $("#bodyAdd").append(
                 '<tr class="odd gradeX find">'+ 
                     '<td>'+  
                         '<input type="hidden" name="product_id[]" value="'+data.product_id+'" />'+
                         '['+ data.product_code_first + data.product_code +'] ' + data.product_name +
                     '</td>'+
-                    '<td align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_qty[]" value="'+qty+'" readonly /></td>'+
-                    '<td><input type="text" class="form-control" style="text-align: right;" name="product_price[]"   value="'+price+'" readonly /></td>'+
-                    '<td><input type="text" class="form-control" style="text-align: right;" name="product_price_total[]"  value="'+ ( parseFloat(qty.replace(',','')) * parseFloat(price.replace(',','')) )+'" readonly /></td>'+
+                    '<td align="right"><input type="text" class="form-control" style="text-align: right;"  name="product_qty[]" value="'+qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'" readonly /></td>'+
+                    '<td><input type="text" class="form-control" style="text-align: right;" name="product_price[]"   value="'+price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'" readonly /></td>'+
+                    '<td><input type="text" class="form-control" style="text-align: right;" name="product_price_total[]"  value="'+ total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'" readonly /></td>'+
                     '<td>'+
                         '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                             '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -212,9 +216,9 @@ function get_product_row(product_code,qty,price){
                     '<td style="background:#888;">'+   
                         'ไม่มีสินค้าชื่อ "' +  product_code + '" นี้' +
                     '</td>'+
-                    '<td style="background:#888;" align="right">'+qty+'</td>'+
-                    '<td style="background:#888;" align="right">'+price+'</td>'+
-                    '<td style="background:#888;" align="right">'+ ( parseFloat(qty.replace(',','')) * parseFloat(price.replace(',','')) )+'</td>'+
+                    '<td style="background:#888;" align="right">'+qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'</td>'+
+                    '<td style="background:#888;" align="right">'+price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'</td>'+
+                    '<td style="background:#888;" align="right">'+ total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'</td>'+
                     '<td style="background:#888;" >'+
                         '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                             '<i class="fa fa-times" aria-hidden="true"></i>'+

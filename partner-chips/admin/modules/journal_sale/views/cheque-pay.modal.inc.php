@@ -15,6 +15,7 @@
                 <div class="col-md-1" align="right"> 
                     <button class="btn btn-danger"  onclick="get_cheque_pay_id(this)" >Get cheque</button> 
                 </div>
+            </div>
         </div>
 
         <div  class="modal-body">

@@ -151,7 +151,11 @@ class MaintenancePurchaseModel extends BaseModel{
                                 WHERE invoice_supplier_id = '".$data[$i]['invoice_supplier_id']."' 
                     ";
             
-                    //echo "<B> ".$data[$i]['invoice_supplier_code_gen']." </B> : ".$sql ."<br><br>";
+                    // echo "<B> ".$data[$i]['invoice_supplier_code_gen']." </B> : ".$sql ."<br><br>"; 
+                    // echo "<pre>";
+                    // print_r($sql);
+                    // echo "</pre>"; 
+
             
                     mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 

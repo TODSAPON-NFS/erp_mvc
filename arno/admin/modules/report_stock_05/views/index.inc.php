@@ -2,26 +2,30 @@
 session_start();
 
 require_once('../models/StockReportModel.php'); 
+require_once('../models/ProductTypeModel.php');
+require_once('../models/ProductCategoryModel.php'); 
 
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/report_stock_05/views/";
  
 $stock_report_model = new StockReportModel;
+$product_type_model = new ProductTypeModel;
+$product_category_model = new ProductCategoryModel;
  
 
-if(!isset($_GET['stock_start'])){
-    $stock_start = $_SESSION['stock_start'];
+if(!isset($_GET['product_category_id'])){
+    $product_category_id = $_SESSION['product_category_id'];
 }else{
-    $stock_start = $_GET['stock_start'];
-    $_SESSION['stock_start'] = $stock_start;
+    $product_category_id = $_GET['product_category_id'];
+    $_SESSION['product_category_id'] = $product_category_id;
 }
 
-if(!isset($_GET['stock_end'])){
-    $stock_end = $_SESSION['stock_end'];
+if(!isset($_GET['product_type_id'])){
+    $product_type_id = $_SESSION['product_type_id'];
 }else{
-    $stock_end = $_GET['stock_end'];
-    $_SESSION['stock_end'] = $stock_end;
+    $product_type_id = $_GET['product_type_id'];
+    $_SESSION['product_type_id'] = $product_type_id;
 }
 
 
@@ -40,9 +44,13 @@ if(!isset($_GET['product_end'])){
     $_SESSION['product_end'] = $product_end;
 }
 
-if($stock_start!=''||$stock_end!=''||$product_start!=''||$product_end!=''){
-
-    $stock_reports = $stock_report_model->getStockReportBy($stock_start,$stock_end,$product_start,$product_end);
+$product_type = $product_type_model->getProductTypeBy();
+$product_category = $product_category_model->getProductCategoryBy();
+if($product_start!=''||$product_category_id!=''||$product_type_id!=''){
+    $stock_reports = $stock_report_model->getStockReportProductBy($product_category_id, $product_type_id,$product_start,$product_end);
+    // echo '<pre>';
+    // print_r($stock_reports);
+    // echo '</pre>';
 }
 
 require_once($path.'view.inc.php');

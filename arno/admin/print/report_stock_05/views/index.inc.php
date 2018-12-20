@@ -2,6 +2,8 @@
 
 session_start();
 require_once('../models/StockReportModel.php'); 
+require_once('../models/ProductTypeModel.php');
+require_once('../models/ProductCategoryModel.php'); 
 
 date_default_timezone_set('asia/bangkok');
 $d1=date("d");
@@ -13,25 +15,22 @@ $d6=date("s");
 
 $path = "print/report_stock_05/views/";
  
-$stock_report_model = new StockReportModel;
+$stock_report_model = new StockReportModel; 
+$product_type_model = new ProductTypeModel;
+$product_category_model = new ProductCategoryModel;
 
-
-$stock_start = $_GET['stock_start'];
-$stock_end = $_GET['stock_end'];
+$product_category_id = $_GET['product_category_id'];
+$product_type_id = $_GET['product_type_id'];
 $product_start = $_GET['product_start'];
 $product_end = $_GET['product_end'];    
 
-
-$stock_reports = $stock_report_model->getStockReportBy($stock_start,$stock_end,$product_start,$product_end);
-
-
-$lines = 35;
+$product_type = $product_type_model->getProductTypeByID($product_type_id);
+$product_category = $product_category_model->getProductCategoryByID($product_category_id);
+$stock_reports = $stock_report_model->getStockReportProductBy($product_category_id, $product_type_id,$product_start,$product_end);
  
-$page_max = 0;
 
 include($path."view.inc.php");
-
-
+ 
 
 if($_GET['action'] == "pdf"){
     /*############################### FPDF ##############################*/
@@ -48,12 +47,12 @@ if($_GET['action'] == "pdf"){
     $mpdf->SetHTMLHeader($html_head_pdf,'O');
     $mpdf->SetHTMLHeader($html_head_pdf,'E'); 
 
-    $mpdf->AddPage('P', // L - landscape, P - portrait 
+    $mpdf->AddPage('L', // L - landscape, P - portrait 
     '', '', '', '',
     10, // margin_left
     10, // margin right
-    45, // margin top
-    20, // margin bottom
+    43, // margin top
+    10, // margin bottom
     10, // margin header
     0); // margin footer  
     
@@ -67,7 +66,7 @@ if($_GET['action'] == "pdf"){
     header("Content-type: application/vnd.ms-excel");
     // header('Content-type: application/csv'); //*** CSV ***//
     
-    header("Content-Disposition: attachment; filename=Product $d1-$d2-$d3 $d4:$d5:$d6.xls");
+    header("Content-Disposition: attachment; filename=ProductPrice $d1-$d2-$d3 $d4:$d5:$d6.xls");
 
     
         echo $html_head_excel.$html."<div> </div> <br>"; 

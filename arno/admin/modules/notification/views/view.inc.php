@@ -8,10 +8,10 @@
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-12">
-        <a href="index.php?app=notification&type=Purchase Request" class="btn btn-success"><i style="margin-right:4px;" class="fa fa-comments fa-fw fa-notify"></i>Purchase Request</a>
-        <a href="index.php?app=notification&type=Purchase Order" class="btn btn-warning"><i style="margin-right:4px;" class="fa fa-tasks fa-fw fa-notify"></i>Purchase Order</a>
-        <a href="index.php?app=notification&type=Customer Order" class="btn btn-info"><i class="fa fa-cart-plus fa-fw fa-notify"></i> Customer Order</a>
-        <a href="index.php?app=notification&type=Supplier Approve" class="btn btn-primary"><i style="margin-right:4px;"class="fa fa-support fa-fw fa-notify"></i>Supplier Approve</a>
+        <a href="index.php?app=notification&type=Purchase Request" class="btn btn-primary"><i style="margin-right:4px;" class="fa fa-comments fa-fw fa-notify"></i>Purchase Request</a>
+        <a href="index.php?app=notification&type=Purchase Order" class="btn btn-success"><i style="margin-right:4px;" class="fa fa-tasks fa-fw fa-notify"></i>Purchase Order</a>
+        <a href="index.php?app=notification&type=Customer Order" class="btn btn-warning"><i class="fa fa-cart-plus fa-fw fa-notify"></i> Customer Order</a>
+        <a href="index.php?app=notification&type=Supplier Approve" class="btn btn-danger"><i style="margin-right:4px;"class="fa fa-support fa-fw fa-notify"></i>Supplier Approve</a>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -67,7 +67,7 @@
                     <?php if($notifications[$i]['notification_type'] =='Purchase Request'){ ?><i class="fa fa-comments fa-fw fa-notify"></i> <?php }
                     else if ($notifications[$i]['notification_type'] =='Purchase Order'){?><i class="fa fa-tasks fa-fw fa-notify"></i> <?php }
                     else if ($notifications[$i]['notification_type'] =='Customer Order'){?><i class="fa fa-cart-plus fa-fw fa-notify"></i> <?php }
-                    else {?><i class="fa fa-support fa-fw fa-notify"></i> <?php }
+                    else {?><i class="fa fa-<?php echo $icon_type;?> fa-fw fa-notify"></i> <?php }
                     ?>
                             <?php echo $notifications[$i]['notification_detail'];?> 
                             <div class="text-muted small"><em><?php echo $notifications[$i]['notification_date'];?></em>

@@ -9,7 +9,6 @@ $type = $_GET['type'];
 $seen_type=$_GET['action'];
 $type_color = "primary";
 
-
 if($_GET['action-set']=='setseen'){
     $notification_id = $_POST['notification_id'];
     for($i=0;$i<count($notification_id);$i++){
@@ -34,16 +33,16 @@ if($type==""){
     $notifications = $model_notification->getNotificationBy($user['user_id']);
 }else{
     if($type=="Purchase Request"){
-        $type_color = "success";
+        $type_color = "primary";
     }
     else if($type=="Purchase Order"){
-        $type_color = "warning";
+        $type_color = "success";
     }
     else if($type=="Customer Order"){
-        $type_color = "info";
+        $type_color = "warning";
     }
     else{
-        $type_color = "primary";
+        $type_color = "danger";
     }
     $notifications = $model_notification->getNotificationByType($user['user_id'],$type);
 }

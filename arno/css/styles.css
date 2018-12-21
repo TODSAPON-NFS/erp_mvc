@@ -12,8 +12,8 @@
 
 .notify-active {
     color: #2e2e2e !important;
-    /* padding-top: 4px;
-padding-bottom: 4px; */
+    padding-top: 4px;
+padding-bottom: 4px;
     background: rgba(148, 196, 235, 0.877);
 }
 
@@ -23,11 +23,20 @@ padding-bottom: 4px; */
 }
 
 .notify {
-    /* padding-top: 4px;
-padding-bottom: 4px; */
+    padding-top: 4px;
+padding-bottom: 4px;
     background: rgb(255, 255, 255);
 }
 
+/******์Start Notification modify ******/
+.notify {
+    padding-top: 0px;
+padding-bottom: 0px;
+}
+.notify-active {
+    padding-top: 0px;
+padding-bottom: 0px;
+}
 .dropdown-alerts {
     height: 500px;
     overflow: hidden;
@@ -111,7 +120,7 @@ padding-bottom: 4px; */
 .panel-notify-primary>.panel-heading {
     background-color: #337ab7;
     border-color: #2e6da4;
-    color: #fff;
+    /* color: #fff; */
 }
 
 .panel-notify-primary>.panel-heading a {
@@ -143,6 +152,8 @@ padding-bottom: 4px; */
     background-color: #337ab7 !important;
 }
 
+
+/******์End Notification******/
 .alert {
     position: absolute;
     background: rgb(247, 15, 15);

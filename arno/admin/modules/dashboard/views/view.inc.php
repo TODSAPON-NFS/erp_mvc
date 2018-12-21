@@ -193,7 +193,7 @@
                 <i class="fa fa-bell fa-fw"></i> Notifications Panel
             </div>
             <!-- /.panel-heading -->
-            <div class="panel-body scroll1">
+            <div class="panel-body-notify scroll1">
                 <div class="list-group">
                 <?php for($i=0 ; $i < count($notifications) ;$i++){ ?>
                 <a href="<?php echo $notifications[$i]['notification_url'];?>" class="list-group-item <?php if($notifications[$i]['notification_seen_date'] != ""){ ?>notify<? }else{ ?> notify-active <?php } ?>">

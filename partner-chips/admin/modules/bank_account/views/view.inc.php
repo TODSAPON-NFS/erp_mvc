@@ -1,20 +1,14 @@
 <script>
     function check(){   
-        var bank_account_name = document.getElementById("bank_account_name").value;
-        var stock_event = document.getElementById("stock_event").value;
+        var bank_account_name = document.getElementById("bank_account_name").value; 
        
-        bank_account_name = $.trim(bank_account_name);
-        stock_event = $.trim(stock_event);
+        bank_account_name = $.trim(bank_account_name); 
         
        if(bank_account_name.length == 0){
             alert("Please input category name");
             document.getElementById("bank_account_name").focus();
             return false;
-        }else  if(stock_event.length == 0){
-            alert("Please input detail name english");
-            document.getElementById("stock_event").focus();
-            return false;
-        }else{
+        } else{
             return true;
         }
     }

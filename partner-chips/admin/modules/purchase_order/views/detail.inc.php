@@ -191,10 +191,15 @@
                             <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     <?php } else { ?>
-                        <div class="col-lg-offset-8 col-lg-2" align="right">
-                            
+                        <div class="col-lg-offset-8 col-lg-2" align="right"> 
+                            <select id="purchase_order_accept_status" name="purchase_order_accept_status" class="form-control" data-live-search="true" >
+                                <option <?php if($purchase_order['purchase_order_accept_status'] == "Waitting"){?> selected <?php }?> >Waitting</option>
+                                <option <?php if($purchase_order['purchase_order_accept_status'] == "Approve"){?> selected <?php }?> >Approve</option>
+                                <option <?php if($purchase_order['purchase_order_accept_status'] == "Not Approve"){?> selected <?php }?> >Not Approve</option>
+                            </select> 
                         </div>
                         <div class="col-lg-2" align="right">
+                            <button type="submit" class="btn btn-success">Save</button>
                             <a href="index.php?app=purchase_order&action=balance&id=<?PHP echo $purchase_order_id; ?>" class="btn btn-danger">Close</a>
                             <a href="index.php?app=purchase_order" class="btn btn-default">Back</a>
                         </div>

@@ -3,6 +3,8 @@
         require_once("modules/dashboard/views/index.inc.php");
     }else if($_GET['app'] == "notification"){
         require_once("modules/notification/views/index.inc.php");
+    }else if($_GET['app'] == "user_profile"){
+        require_once("modules/user_profile/views/index.inc.php");
     }
     
     /* ----------------------------------- ระบบพื้นฐาน --------------------------------- */

@@ -188,29 +188,40 @@
     </div>
     <!-- /.col-lg-8 -->
     <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="panel panel-primary">
+            <div class="panel-heading " style="min-height:0px;">
                 <i class="fa fa-bell fa-fw"></i> Notifications Panel
             </div>
             <!-- /.panel-heading -->
-            <div class="panel-body">
+            <div class="panel-body-notify scroll1">
                 <div class="list-group">
                 <?php for($i=0 ; $i < count($notifications) ;$i++){ ?>
-                <a href="<?php echo $notifications[$i]['notification_url'];?>" class="list-group-item <?php if($notifications[$i]['notification_seen_date'] != ""){ ?>notify<? }else{ ?> notify-active <?php } ?>">
+                <a href="<?php echo $notifications[$i]['notification_url'];?>&notification=<?php echo $notifications[$i]['notification_id'];?>" class="list-group-item <?php if($notifications[$i]['notification_seen_date'] != ""){ ?>notify<? }else{ ?> notify-active <?php } ?>">
 
-                        <i class="fa fa-comment fa-fw"></i>
+                        <?php if($notifications[$i]['notification_type'] =='Purchase Request'){ ?><i class="fa fa-comments fa-fw fa-notify"></i> <?php }
+                            else if ($notifications[$i]['notification_type'] =='Purchase Order'){?><i class="fa fa-tasks fa-fw fa-notify"></i> <?php }
+                            else if ($notifications[$i]['notification_type'] =='Customer Order'){?><i class="fa fa-cart-plus fa-fw fa-notify"></i> <?php }
+                            else {?><i class="fa fa-support fa-fw fa-notify"></i> <?php }
+                            ?>
                         <?php echo $notifications[$i]['notification_detail'];?> 
-                        <span class="pull-right text-muted small"><em><?php echo $notifications[$i]['notification_date'];?></em>
-                        </span>
+                        <div class=" text-muted small"><em><?php echo $notifications[$i]['notification_date'];?></em>
+                        </div>
                     </a>
                 <?
-                    if($i >= 10){break;}    
+                    //if($i >= 10){break;}    
                 }
                 
                 ?>
                 </div>
                 <!-- /.list-group -->
-                <a href="?app=notification" class="btn btn-default btn-block">View All Alerts</a>
+                <div class="sticky-bot">
+                    <a class="see_all" href="index.php?app=notification">
+                        <strong>See All Alerts</strong>
+                        <i class="fa fa-angle-right"></i>
+                        <i class="fa fa-angle-right"></i>
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
             </div>
             <!-- /.panel-body -->
         </div>

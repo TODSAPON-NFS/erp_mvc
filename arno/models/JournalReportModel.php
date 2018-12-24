@@ -730,7 +730,7 @@ class JournalReportModel extends BaseModel{
         //------------------------- End Cash Receipt Journal -------------------------------------------------------------
 
 
-        $sql =" SELECT account_code , account_name_th ,  MAX(IFNULL(account_debit_begin,0)) ,SUM(IFNULL(tb_journal.journal_debit,0)), MAX(IFNULL(account_credit_begin,0)) ,SUM(IFNULL(tb_journal.journal_credit,0)) , ( MAX(IFNULL(account_debit_begin,0)) + SUM(IFNULL(tb_journal.journal_debit,0)) ) - ( MAX(IFNULL(account_credit_begin,0)) + SUM(IFNULL(tb_journal.journal_credit,0)) ) as account_value
+        $sql =" SELECT *
                 FROM tb_account 
                 LEFT JOIN  (($sql_general)  
                 UNION   ALL  ($sql_purchase) 

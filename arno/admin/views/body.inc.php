@@ -262,6 +262,8 @@
     
     else if($_GET['app'] == "report_account_01"){
         require_once("modules/report_account_01/views/index.inc.php");
+    }else if($_GET['app'] == "report_account_03"){
+        require_once("modules/report_account_03/views/index.inc.php");
     }else if($_GET['app'] == "report_account_04"){
         require_once("modules/report_account_04/views/index.inc.php");
     }else if($_GET['app'] == "report_account_05"){

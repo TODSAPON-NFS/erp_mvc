@@ -5,7 +5,7 @@ require_once('../models/JournalReportModel.php');
 
 date_default_timezone_set('asia/bangkok');
 
-$path = "modules/report_account_01/views/";
+$path = "modules/report_account_03/views/";
  
 $journal_report_model = new JournalReportModel;
 
@@ -62,7 +62,7 @@ $type = $_GET['type'];
 
 
  
-$journal_reports = $journal_report_model->getJournalAcountReportShowAllBy($date_end,$code_start,$code_end,$keyword);
+$journal_reports = $journal_report_model->getJournalAssetsReportBy($date_end,$code_start,$code_end,$keyword);
 //echo '<pre>' ;
 //print_r($journal_reports);
 //echo '</pre>' ;

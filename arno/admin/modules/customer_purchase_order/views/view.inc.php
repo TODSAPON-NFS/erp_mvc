@@ -257,8 +257,7 @@
                                     <th>วันที่รับใบสั่งซื้อ<br>PO Date</th>
                                     <th>หมายเลขใบสั่งซื้อ<br>PO No.</th>
                                     <th>ลูกค้า<br>Customer</th>
-                                    <th>พนักงาน<br>Employee</th>
-                                    <th>สถานะ<br>Status</th>
+                                    <th>พนักงาน<br>Employee</th> 
                                     <th>หมายเหตุ<br>Remark</th>
                                     <th>ใบกำกับภาษี<br>Invoice</th>
                                     <th></th>
@@ -273,8 +272,7 @@
                                     <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_date']; ?></td>
                                     <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?></td>
                                     <td><?php echo $customer_purchase_orders[$i]['customer_name']; ?></td>
-                                    <td><?php echo $customer_purchase_orders[$i]['employee_name']; ?></td>
-                                    <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_status']; ?></td>
+                                    <td><?php echo $customer_purchase_orders[$i]['employee_name']; ?></td> 
                                     <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_remark']; ?></td>
                                     <td>-</td>
                                     <td>

@@ -306,6 +306,21 @@ class NotificationModel extends BaseModel{
 
 
     }
+    function setNotificationUnSeenByID($id){
+        $sql = " UPDATE tb_notification SET 
+        notification_seen_date = '' , 
+        notification_seen = '0'  
+        WHERE notification_id = $id 
+        ";
+
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+           return false;
+        }
+
+
+    }
 
     function setNotificationSeenByURL($url){
         $sql = " UPDATE tb_notification SET 

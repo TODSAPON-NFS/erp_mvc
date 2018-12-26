@@ -732,6 +732,8 @@ class JournalReportModel extends BaseModel{
 
         $sql =" SELECT *
                 FROM tb_account 
+                JOIN tb_account_group
+                ON tb_account.account_group = tb_account_group.account_group_id
                 LEFT JOIN  (($sql_general)  
                 UNION   ALL  ($sql_purchase) 
                 UNION   ALL  ($sql_sale) 
@@ -753,6 +755,35 @@ class JournalReportModel extends BaseModel{
 
     } 
 
+    
+    //#####################################################################################################################
+    //
+    //
+    //-------------------------------- ดึงยอดขายทั้งหมด (เเสดงทั้งหมด)------------------------------
+    //
+    //
+    //#####################################################################################################################
+
+    function getJournalSalesReportShowAllBy($date_start="", $date_end = ""){
+        
+              $sql =" SELECT *
+                      FROM tb_invoice_customer 
+                      LEFT JOIN tb_customer  ON (tb_invoice_customer.customer_id = tb_customer.customer_id)
+                      LEFT JOIN tb_user ON (tb_invoice_customer.employee_id = tb_user.user_id)
+                      ORDER BY `tb_user`.`user_username` ASC
+              ";  
+            //   echo '<pre>'.$sql.'</pre>';
+              if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                  $data = [];
+                  while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                      $data[] = $row;
+                  }
+                  $result->close();
+                  return $data;
+              }
+      
+          } 
+      
 
 
 

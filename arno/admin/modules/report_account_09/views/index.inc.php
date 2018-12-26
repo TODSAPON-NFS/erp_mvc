@@ -28,7 +28,7 @@ if(!isset($_GET['date_end'])){
 
 
 if($date_start == ""){
-    $date_start = date('01-m-Y'); 
+    $date_start = date('01-11-2018'); 
 }
 
 if($date_end == ""){ 

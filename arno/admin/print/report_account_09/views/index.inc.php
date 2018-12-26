@@ -1,74 +1,44 @@
 <?PHP 
-
 session_start();
 
-require_once('../models/JournalReportModel.php'); 
-require_once('../models/CompanyModel.php'); 
-require_once('../models/AccountModel.php');
-date_default_timezone_set('asia/bangkok');
+require_once('../models/CompanyModel.php');
+require_once('../models/JournalReportModel.php'); ;
 
+date_default_timezone_set('asia/bangkok');
 $d1=date("d");
 $d2=date("m");
 $d3=date("Y");
 $d4=date("h");
 $d5=date("i");
-$d6=date("s"); 
+$d6=date("s");  
 
 $path = "print/report_account_09/views/";
  
-$company_model = new CompanyModel;
+
+$company_model = new CompanyModel; 
 $journal_report_model = new JournalReportModel;
-$account_model = new AccountModel;
+// $stock_report_model = new StockReportModel;
 
 
-
-
-
-
-if(!isset($_GET['date_end']) || $_GET['account_id'] =='' ){
-    $date_end = $_SESSION['date_end'];
-}else{
-    $date_end = $_GET['date_end'];
-    $_SESSION['date_end'] = $date_end;
-}
-
-
-
-if(!isset($_GET['account_id']) || $_GET['account_id'] =='' ){
-    $account_id = $_SESSION['account_id'];
-    
-}else{  
-  
-    $account_id= $_GET['account_id']; 
-    $_SESSION['account_id'] = $account_id;
-}
-
-
-
-
-$type = $_GET['type'];
-
-
+$date_start =$_GET['date_start'];
+$date_end =$_GET['date_end'];
 
 
 $company=$company_model->getCompanyByID('1');
+$journal_reports = $journal_report_model->getJournalSalesReportShowAllBy($date_start,$date_end);
 
-$lines =24;
-$account = $account_model->getAccountAll();
 
-$journal_reports = $journal_report_model->getJournalAcountReportShowRceiptsAllBy($date_end,$account_id);
+// echo "<pre>";
+// print_r($journal_reports);
+// echo "</pre>";
 
-//print_r($journal_reports);
 
-$page_max = (int)(count($journal_reports) / $lines);
-if(count($journal_reports) % $lines > 0){
-    $page_max += 1;
-}
-//echo '<pre>';
-//print_r($journal_reports);
-//echo '</pre>';
 
-require_once($path.'view.inc.php');
+
+// $stock_reports = $stock_report_model->getStockReportBy($stock_start,$stock_end,$product_start,$product_end);
+ 
+
+include($path."view.inc.php");
 
 
 
@@ -83,22 +53,20 @@ if($_GET['action'] == "pdf"){
 
     include("../plugins/mpdf/mpdf.php");
     $mpdf=new mPDF('th', 'A4', '0', 'garuda');  
+    $mpdf->mirrorMargins = true;
+    $mpdf->SetHTMLHeader($html_head_pdf,'O');
+    $mpdf->SetHTMLHeader($html_head_pdf,'E'); 
+
+    $mpdf->AddPage('P', // L - landscape, P - portrait 
+    '', '', '', '',
+    10, // margin_left
+    10, // margin right
+    45, // margin top
+    10, // margin bottom
+    10, // margin header
+    0); // margin footer  
     
-    for($page_index=0 ; $page_index < $page_max ; $page_index++){
-
-        $mpdf->AddPage('P');
-        $mpdf->mirrorMargins = true;
-        
-        $mpdf->SetDisplayMode('fullpage','two');
-        
-
-        ////$html = ob_get_contents();  
-       // //ob_end_clean();
-
-        $mpdf->WriteHTML($html[$page_index]);
-      // echo $html[$page_index];
-    }
-    
+    $mpdf->WriteHTML($html);  
     
     $mpdf->Output();
 
@@ -106,12 +74,12 @@ if($_GET['action'] == "pdf"){
 }else if ($_GET['action'] == "excel") {
     
     header("Content-type: application/vnd.ms-excel");
-    //// header('Content-type: application/csv'); //*** CSV ***//
+    // header('Content-type: application/csv'); //*** CSV ***//
     
-    header("Content-Disposition: attachment; filename=pay_$d1-$d2-$d3-$d4:$d5:$d6.xls");
- 
-    for($page_index=0 ; $page_index < $page_max ; $page_index++){
-        echo $html[$page_index] ."<div> </div> <br>"; 
-    }
+    header("Content-Disposition: attachment; filename=Product $d1-$d2-$d3 $d4:$d5:$d6.xls");
+
+    
+        echo $html_head_excel.$html."<div> </div> <br>"; 
+     
 }
 ?>

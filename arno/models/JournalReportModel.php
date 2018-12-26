@@ -766,10 +766,22 @@ class JournalReportModel extends BaseModel{
 
     function getJournalSalesReportShowAllBy($date_start="", $date_end = ""){
         
+        $str_date = ""; 
+
+        if($date_start != "" && $date_end != ""){
+            $str_date = "AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+        }else if ($date_start != ""){
+            $str_date = "AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+        }else if ($date_end != ""){
+            $str_date = "AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        } 
+
               $sql =" SELECT *
                       FROM tb_invoice_customer 
                       LEFT JOIN tb_customer  ON (tb_invoice_customer.customer_id = tb_customer.customer_id)
                       LEFT JOIN tb_user ON (tb_invoice_customer.employee_id = tb_user.user_id)
+                      WHERE 1 
+                      $str_date 
                       ORDER BY `tb_user`.`user_username` ASC
               ";  
             //   echo '<pre>'.$sql.'</pre>';

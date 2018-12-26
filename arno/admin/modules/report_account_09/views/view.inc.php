@@ -9,7 +9,7 @@
         var date_start = $("#date_start").val(); 
         var date_end = $("#date_end").val(); 
 
-        window.open("print.php?app=report_account_09&action="+type,'_blank');
+        window.open("print.php?app=report_account_09&action="+type+"&date_start="+date_start+"&date_end="+date_end,'_blank');
     }
 </script>
 
@@ -36,7 +36,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-4">
-                       <!--  <div class="form-group">
+                        <div class="form-group">
                             <label>ถึงวันที่</label> 
                             <div class="row">
                                 <div class="col-md-5">
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                             <p class="help-block">31-12-2018</p>
-                        </div> -->
+                        </div>
                     </div> 
                 </div>
 
@@ -58,13 +58,13 @@
                     <div class="col-md-4">
                     </div>
                     <div class="col-md-4">
-                    </div><!-- 
+                    </div>
                     <div class="col-md-4">
                         <button class="btn btn-danger" style="float:right; margin:0px 4px;" onclick="print('pdf','');">PDF</button>
                         <button class="btn btn-success" style="float:right; margin:0px 4px;" onclick="print('excel','');">Excel</button>
                         <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search('');">Search</button>
                         <a href="index.php?app=report_account_09" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
-                    </div> -->
+                    </div>
                 </div>
                 <br>
 

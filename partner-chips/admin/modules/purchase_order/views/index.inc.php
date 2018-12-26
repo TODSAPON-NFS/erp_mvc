@@ -738,7 +738,7 @@ if(!isset($_GET['action'])){
 
             $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
             $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");
-            $mail->Subject = "Partner Chips order recheck to ".$supplier['supplier_name_en'];
+            $mail->Subject = "Partner chips order recheck to ".$supplier['supplier_name_en'];
 
             $mail->MsgHTML($body);
 
@@ -816,7 +816,7 @@ if(!isset($_GET['action'])){
 
             $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
             $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");
-            $mail->Subject = "Partner Chips order confirm to ".$supplier['supplier_name_en'];
+            $mail->Subject = "Partner chips order confirm to ".$supplier['supplier_name_en'];
 
             $mail->MsgHTML($body);
 

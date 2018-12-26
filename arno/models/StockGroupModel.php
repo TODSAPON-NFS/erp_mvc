@@ -33,17 +33,15 @@ class StockGroupModel extends BaseModel{
     }
 
     function getStockGroupByProductID($product_id = ""){
-        
-        $str = "";
-        if($product_id != ""){
-            $str = " WHERE tb_stock_report.product_id = '$product_id' ";
-        }
+         
 
         $sql = "  SELECT * 
                   FROM tb_stock_group 
                   LEFT JOIN tb_stock_type ON tb_stock_group.stock_type_id = tb_stock_type.stock_type_id 
                   LEFT JOIN tb_stock_report ON tb_stock_group.stock_group_id = tb_stock_report.stock_group_id 
-                  $str ";
+                  WHERE tb_stock_report.product_id = '$product_id' 
+                  AND stock_report_qty > 0 
+                  GROUP BY tb_stock_group.stock_group_id ";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -67,45 +65,16 @@ class StockGroupModel extends BaseModel{
 
 
     function getQtyBy($stock_group_id,$product_id){
-        $sql = "SELECT * FROM tb_stock_group WHERE stock_group_id = $stock_group_id ";
+        $sql = "SELECT * FROM tb_stock_report WHERE stock_group_id = '$stock_group_id' AND product_id = '$product_id'  "; 
+
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-            $data = mysqli_fetch_array($result,MYSQLI_ASSOC);
-            $result->close();
-
-            $sql_in = "SELECT SUM(qty) 
-            FROM ".$data['table_name']."  
-            WHERE ".$data['table_name'].".product_id = tb.product_id 
-            AND stock_type = 'in' ";
-
-
-            $sql_out = "SELECT SUM(qty) 
-            FROM ".$data['table_name']."  
-            WHERE ".$data['table_name'].".product_id = tb.product_id 
-            AND stock_type = 'out' ";
-
-
-    
-
-            $sql = "SELECT product_id,  CONCAT(product_code_first,product_code) as product_code, 
-            product_name, product_type, product_status ,
-            (IFNULL(($sql_in),0) - IFNULL(($sql_out),0)) as stock_old 
-            FROM tb_product as  tb
-            WHERE product_status = 'Active' 
-            AND product_id = '$product_id' 
-            ORDER BY CONCAT(product_code_first,product_code) 
-            ";
-
-            //echo $sql;
-
-            if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-               
-                while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                    $data = $row;
-                }
-                $result->close();
-                return $data;
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
             }
-        }
+            $result->close();
+            return $data;
+        } 
 
     }
 

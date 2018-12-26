@@ -828,7 +828,7 @@
                                             <a href="?app=report_account_02" <?PHP if($_GET['app'] == "report_account_02"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ยอดเคลื่อนไหว </a>
                                         </li>
                                         <li>
-                                            <a href="?app=report_account_03" <?PHP if($_GET['app'] == "report_account_03"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายการงบประมาณ </a>
+                                            <a href="?app=report_account_03" <?PHP if($_GET['app'] == "report_account_03"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> งบเเสดงสถานะการเงิน </a>
                                         </li>
                                         <li>
                                             <a href="?app=report_account_04" <?PHP if($_GET['app'] == "report_account_04"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวัน </a>

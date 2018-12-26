@@ -81,7 +81,7 @@
                         <button class="btn btn-danger" style="float:right; margin:0px 4px;" onclick="print('pdf','');">PDF</button>
                         <button class="btn btn-success" style="float:right; margin:0px 4px;" onclick="print('excel','');">Excel</button>
                         <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search('');">Search</button>
-                        <a href="index.php?app=report_account_04" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
+                        <a href="index.php?app=report_account_01" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
                     </div>
                 </div>
                 <br>
@@ -92,25 +92,21 @@
                             <th width="48" >ลำดับ</th> 
                             <th width="100" >เลขที่บัญชี</th>
                             <th width="150" >ชื่อบัญชี</th>
-                            <th width="150" >เดบิต</th>
-                            <th width="150" >เครดิต</th>   
+                            <th width="150" >หมวดบัญชี</th>
+                            <th width="150" >ประเภทบัญชี</th>
                             
                         </tr>
                     </thead>
                     <tbody>
                         <?php 
-                        $journal_debit_sum = 0;
-                        $journal_credit_sum = 0;
                         
                         for($i=0; $i < count($journal_reports); $i++){
                             $journal_debit = 0;
                             $journal_credit = 0;
                             if($journal_reports[$i]['account_value'] < 0){
                                 $journal_credit = abs($journal_reports[$i]['account_value']);
-                                $journal_credit_sum += $journal_credit;
                             }else{
                                 $journal_debit = abs($journal_reports[$i]['account_value']);
-                                $journal_debit_sum += $journal_debit;
                             }
                              
                         ?>
@@ -118,9 +114,15 @@
                             <td align="center" ><?PHP echo number_format($i + 1,0);?></td>
                             <td><?php echo $journal_reports[$i]['account_code']; ?></td>
                             <td><?php echo $journal_reports[$i]['account_name_th']; ?></td> 
-                            <td align="right"><?php echo number_format($journal_debit,2) ?> </td>
-                            <td align="right"><?php echo number_format($journal_credit,2)?></td> 
-                            
+                            <td><?php echo $journal_reports[$i]['account_group_name']; ?></td> 
+                            <td><?php 
+                                if ($journal_reports[$i]['account_type'] == 1) {
+                                    echo "บัญชีควบคุม";
+                                } else {
+                                    echo "บัญชีย่อย";
+                                }
+                                ?>
+                            </td> 
                         </tr>
                         <?
                         }
@@ -129,13 +131,7 @@
 
 
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3" align="center">รวม</td>
-                            <td  align="right" ><?php echo number_format($journal_debit_sum,2); ?></td>
-                            <td  align="right" ><?php echo number_format($journal_credit_sum,2); ?></td> 
-                        </tr>
-                    </tfoot>
+                    
                 </table>
                 
             </div>

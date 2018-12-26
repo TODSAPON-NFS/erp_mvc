@@ -150,9 +150,7 @@
             alert("Please input invoice Customer date.");
             document.getElementById("invoice_customer_date").focus();
             return false;
-        }
-
-        else if(invoice_customer_term.length == 0){
+        }else if(invoice_customer_term.length == 0){
             alert("Please input invoice Customer term.");
             document.getElementById("invoice_customer_term").focus();
             return false;
@@ -165,6 +163,16 @@
             document.getElementById("employee_id").focus();
             return false;
         }else{
+
+            var stock_groupt_id = $('select[name="stock_group_id[]"]')
+            for(var i = 0 ; i < stock_groupt_id.length; i++){
+                if(stock_groupt_id[i].value == ""){
+                    alert("กรุณาเลือกคลังสินค้า");
+                    $(stock_groupt_id[i]).focus();
+                    return false;
+                }
+            }
+
             return true;
         }
     }
@@ -192,32 +200,98 @@
         calculateAll();
      }
 
-     function show_qty(id){
+    function show_qty(id){
         var stock_group_id = $(id).closest('tr').children('td').children('select[name="stock_group_id[]"]').val();
         var product_id = $(id).closest('tr').children('td').children('div').children('select[name="product_id[]"]').val();
 
         $.post( "controllers/getQtyBy.php", { 'stock_group_id': stock_group_id,'product_id': product_id }, function( data ) {
-            $(id).closest('tr').children('td').children('span[name="qty[]"]').html( data.stock_old );
+            if (data != null){
+                if( data.stock_report_qty == null){
+                    $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').attr( 'stock_report_qty', 0 );
+                }else{
+                    $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').attr( 'stock_report_qty', data.stock_report_qty );
+                }
+            }
+            
         });
-        
-     }
+    
+    }
 
-     function show_data (id){
-        var product_code = $(id).val();
+    function show_stock(id){ 
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+
+        $.post( "controllers/getStockGroupByProductID.php", { 'product_id': product_id }, function( data ) {
+                var str_stock = "";
+                console.log(data);
+                $.each(data, function (index, value) { 
+                    if(index == 0){
+                        $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').attr( 'stock_report_qty' , value['stock_report_qty'] );
+                    }
+                    str_stock += "<option value='" + value['stock_group_id'] + "'>" +  value['stock_group_name'] + "["+value['stock_report_qty']+"]</option>"; 
+                });
+                $(id).closest('tr').children('td').children('div').children('select[name="stock_group_id[]"]').html(str_stock);
+                $(id).closest('tr').children('td').children('div').children('select[name="stock_group_id[]"]').selectpicker('refresh');
+        });
+    
+    } 
+
+    function show_data (id){
+        var product_code = $(id).val(); 
         $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
             if(data != null){
                 $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
-                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)
+                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)  
+                $(id).closest('tr').children('td').children('input[name="save_product_price[]"]').val(data.product_id)  
+                
+                show_stock(id);
+                var customer_id = $('#customer_id').val(); 
+                $.post( "controllers/getProductCustomerPriceByID.php", { 'product_id': $.trim(data.product_id),'customer_id': $.trim(customer_id)}, function( data ) { 
+                    if (data != null){
+                        if( data.product_id == null ){
+                            $(id).closest('tr').children('td').children('input[name="product_name[]"]').attr('checked',true) ; 
+                        }else{
+                            var product_price = parseFloat(data.product_price);
+                            $(id).closest('tr').children('td').children('input[name="invoice_customer_list_price[]"]').val( product_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+                        }
+                    }
+                    update_sum(id);
+                });
             }
         });
-        
-     }
+    
+    }
 
-     function update_sum(id){
+    function check_price (id){
+        var customer_id = $('#customer_id').val(); 
+        var product_id =  $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+        $.post( "controllers/getProductCustomerPriceByID.php", { 'product_id': $.trim(product_id),'customer_id': $.trim(customer_id)}, function( data ) {
+            if (data != null){
+                if( data.product_id == null ){
+                    $(id).closest('tr').children('td').children('input[name="product_name[]"]').attr('checked',true) ; 
+                }else{
+                    $(id).closest('tr').children('td').children('input[name="product_name[]"]').attr('checked',false) ;
+                }
+            }
+            update_sum(id);
+        });
+    
+    }
 
-          var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val(  ).replace(',',''));
-          var price =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_price[]"]').val( ).replace(',',''));
-          var sum =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_total[]"]').val( ).replace(',',''));
+    function check_qty(id){
+        var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val(  ).replace(',',''));
+        var stock_qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').attr('stock_report_qty').replace(',',''));
+        if(qty > stock_qty){
+            alert("คลังสินค้านี้มีสินค้าเพียง " + stock_qty + " pcs. ");
+            $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val( stock_qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")  )
+        }
+        update_sum(id);
+    }
+
+    function update_sum(id){
+
+        var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val(  ).replace(',',''));
+        var price =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_price[]"]').val( ).replace(',',''));
+        var sum =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_total[]"]').val( ).replace(',',''));
 
         if(isNaN(qty)){
             qty = 0;
@@ -435,14 +509,17 @@
                             '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark" value="'+ data_buffer[i].invoice_customer_list_remark +'"/>'+
                         '</td>'+
                         '<td>'+
-                            '<select  name="stock_group_id[]" class="form-control select" data-live-search="true">'+ 
+                            '<select  name="stock_group_id[]" onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
                                 '<option value="0">Select</option>'+ 
                             '</select>'+ 
                         '</td>'+
                         '<td align="right">'+  
-                            '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="'+ qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" />'+
+                            '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="check_qty(this);" value="'+ qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" />'+
                         '</td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" value="'+ price.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" /></td>'+
+                        '<td>'+
+                            '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="check_price(this);" value="'+ price.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" />'+
+                            '<input type="checkbox" name="save_product_price[]" value="'+ data_buffer[i].product_id +'" /> บันทึกราคาขาย'+ 
+                        '</td>'+      
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);"  value="'+ sum.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly /></td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -495,14 +572,17 @@
                     '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark"/>'+
                 '</td>'+
                 '<td>'+
-                    '<select  name="stock_group_id[]" class="form-control select" data-live-search="true">'+ 
+                    '<select  name="stock_group_id[]"  onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
                         '<option value="0">Select</option>'+ 
                     '</select>'+ 
                 '</td>'+
                 '<td align="right">'+ 
-                    '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" />'+
+                    '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="check_qty(this);" />'+
                 '</td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" /></td>'+
+                '<td  >'+
+                    '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="check_price(this);" />'+
+                    '<input type="checkbox" name="save_product_price[]" value="" /> บันทึกราคาขาย'+
+                '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);" readonly /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -821,20 +901,28 @@
                                     <input type="text" class="form-control" name="invoice_customer_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_remark']; ?>" />
                                 </td>
                                 <td>
-                                    <select  class="form-control" name="stock_group_id[]"  > 
+                                    <select   name="stock_group_id[]"  onchange="show_qty(this)" class="form-control select" data-live-search="true" > 
                                         <?php 
+                                        $stock_groups = $stock_group_model->getStockGroupByProductID($invoice_customer_lists[$i]['product_id']);
+                                        $stock_report_qty = 0;
                                         for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
+                                            if($stock_groups[$ii]['stock_group_id'] == $invoice_customer_lists[$i]['stock_group_id'] || $ii ==  0){  
+                                                $stock_report_qty = $stock_groups[$ii]['stock_report_qty'];
+                                            }
                                         ?>
-                                        <option <?php if($stock_groups[$ii]['stock_group_id'] == $invoice_customer_lists[$i]['stock_group_id']){?> selected <?php }?> value="<?php echo $stock_groups[$ii]['stock_group_id'] ?>"><?php echo $stock_groups[$ii]['stock_group_name'] ?></option>
+                                        <option <?php if($stock_groups[$ii]['stock_group_id'] == $invoice_customer_lists[$i]['stock_group_id']){?> selected <?php }?> value="<?php echo $stock_groups[$ii]['stock_group_id'] ?>"><?php echo $stock_groups[$ii]['stock_group_name'] ?> [<?php echo $stock_groups[$ii]['stock_report_qty'] ?>] </option>
                                         <?
                                         }
                                         ?>
                                     </select> 
                                 </td>
                                 <td align="right">  
-                                    <input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_qty[]" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_qty']; ?>" />
+                                    <input type="text" class="form-control" style="text-align: right;"  onchange="check_qty(this);" name="invoice_customer_list_qty[]" value="<?php if ($stock_report_qty >= $invoice_customer_lists[$i]['invoice_customer_list_qty']) { echo number_format($invoice_customer_lists[$i]['invoice_customer_list_qty'],0); } else { echo number_format($stock_report_qty,0); } ?>" stock_report_qty = "<?php echo $stock_report_qty; ?>" />
                                 </td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_price[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" /></td>
+                                <td >
+                                    <input type="text" class="form-control" style="text-align: right;"  onchange="check_price(this);" name="invoice_customer_list_price[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" />
+                                    <input type="checkbox" name="save_product_price[]" value="<?php echo $invoice_customer_lists[$i]['product_id']; ?>"/> บันทึกราคาขาย
+                                </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="invoice_customer_list_total[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_qty'] * $invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" /></td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">

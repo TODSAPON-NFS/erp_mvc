@@ -101,7 +101,9 @@ if(!isset($_GET['action'])){
                 $check = false;
             }else if (move_uploaded_file($_FILES["user_image"]["tmp_name"], $target_file)) {
 
+                //-----------------------------------
                 $data['user_image'] = $date.$newname;
+                //-----------------------------------
 
 
                 if( $_POST['user_image_o'] != null){

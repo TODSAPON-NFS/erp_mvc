@@ -125,12 +125,22 @@
             document.getElementById("employee_id").focus();
             return false;
         }else{
+            var stock_groupt_id = $('select[name="stock_group_id[]"]')
+            for(var i = 0 ; i < stock_groupt_id.length; i++){
+                if(stock_groupt_id[i].value == ""){
+                    alert("กรุณาเลือกคลังสินค้า");
+                    $(stock_groupt_id[i]).focus();
+                    return false;
+                }
+            }
             return true;
         }
 
 
 
     }
+
+
 
     function get_customer_detail(){
         var customer_id = document.getElementById('customer_id').value;
@@ -141,6 +151,7 @@
             document.getElementById('invoice_customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
             document.getElementById('invoice_customer_tax').value = data.customer_tax ;
             document.getElementById('employee_id').value = data.sale_id ;
+            console.log(data.sale_id);
             $('#employee_id').selectpicker('refresh');
             document.getElementById('invoice_customer_due_day').value = data.credit_day ;
             generate_credit_date();
@@ -154,22 +165,96 @@
         calculateAll();
      }
 
-     function show_data(id){
-        var product_code = $(id).val();
+    function show_qty(id){
+        var stock_group_id = $(id).closest('tr').children('td').children('select[name="stock_group_id[]"]').val();
+        var product_id = $(id).closest('tr').children('td').children('div').children('select[name="product_id[]"]').val();
+
+        $.post( "controllers/getQtyBy.php", { 'stock_group_id': stock_group_id,'product_id': product_id }, function( data ) {
+            if (data != null){
+                if(  data.stock_report_qty == null){
+                    $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').attr( 'stock_report_qty', 0 );
+                }else{
+                    $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').attr( 'stock_report_qty', data.stock_report_qty );
+                }
+            } 
+        });
+    
+    }
+
+    function show_stock(id){ 
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+
+        $.post( "controllers/getStockGroupByProductID.php", { 'product_id': product_id }, function( data ) {
+                var str_stock = ""; 
+                $.each(data, function (index, value) { 
+                    if(index == 0){
+                        $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').attr( 'stock_report_qty' , value['stock_report_qty'] );
+                    }
+                    str_stock += "<option value='" + value['stock_group_id'] + "'>" +  value['stock_group_name'] + "["+value['stock_report_qty']+"]</option>"; 
+                });
+                $(id).closest('tr').children('td').children('div').children('select[name="stock_group_id[]"]').html(str_stock);
+                $(id).closest('tr').children('td').children('div').children('select[name="stock_group_id[]"]').selectpicker('refresh');
+        });
+    
+    } 
+
+    function show_data (id){
+        var product_code = $(id).val(); 
         $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
             if(data != null){
                 $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
-                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)
+                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)   
+                $(id).closest('tr').children('td').children('input[name="save_product_price[]"]').val(data.product_id) 
+                
+                show_stock(id);
+                var customer_id = $('#customer_id').val(); 
+                $.post( "controllers/getProductCustomerPriceByID.php", { 'product_id': $.trim(data.product_id),'customer_id': $.trim(customer_id)}, function( data ) { 
+                    if (data != null){
+                        if( data.product_id == null ){
+                            $(id).closest('tr').children('td').children('input[name="product_name[]"]').attr('checked',true) ; 
+                        }else{
+                            var product_price = parseFloat(data.product_price);
+                            $(id).closest('tr').children('td').children('input[name="invoice_customer_list_price[]"]').val( product_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+                        }
+                    }
+                    update_sum(id);
+                });
             }
         });
-        
-     }
+    
+    }
 
-     function update_sum(id){
+    function check_price (id){
+        var customer_id = $('#customer_id').val(); 
+        var product_id =  $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+        $.post( "controllers/getProductCustomerPriceByID.php", { 'product_id': $.trim(product_id),'customer_id': $.trim(customer_id)}, function( data ) {
+            if (data != null){
+                if( data.product_id == null ){
+                    $(id).closest('tr').children('td').children('input[name="product_name[]"]').attr('checked',true) ; 
+                }else{
+                    $(id).closest('tr').children('td').children('input[name="product_name[]"]').attr('checked',false) ;
+                }
+            }
+            update_sum(id);
+        });
+    
+    }
 
-          var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val(  ).replace(',',''));
-          var price =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_price[]"]').val( ).replace(',',''));
-          var sum =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_total[]"]').val( ).replace(',',''));
+    function check_qty(id){
+        var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val(  ).replace(',',''));
+        var stock_qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').attr('stock_report_qty').replace(',',''));
+        if(qty > stock_qty){
+            alert("คลังสินค้านี้มีสินค้าเพียง " + stock_qty + " pcs. ");
+            $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val( stock_qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")  )
+        }
+        update_sum(id);
+    }
+
+    function update_sum(id){
+
+        var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val(  ).replace(',',''));
+        var price =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_price[]"]').val( ).replace(',',''));
+        var sum =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_total[]"]').val( ).replace(',',''));
 
         if(isNaN(qty)){
             qty = 0;
@@ -193,7 +278,8 @@
 
         
     }
- 
+
+
 
     function show_purchase_order(id){
         var customer_id = document.getElementById('customer_id').value;
@@ -386,14 +472,17 @@
                             '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark" value="'+ data_buffer[i].invoice_customer_list_remark +'"/>'+
                         '</td>'+
                         '<td>'+
-                            '<select  name="stock_group_id[]" class="form-control select" data-live-search="true">'+ 
+                            '<select  name="stock_group_id[]" onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
                                 '<option value="0">Select</option>'+ 
                             '</select>'+ 
                         '</td>'+
                         '<td align="right">'+  
-                            '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="'+ qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" />'+
+                            '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="check_qty(this);" value="'+ qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" />'+
                         '</td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" value="'+ price.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" /></td>'+
+                        '<td>'+
+                            '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="check_price(this);" value="'+ price.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" />'+
+                            '<input type="checkbox" name="save_product_price[]" value="'+ data_buffer[i].product_id +'" /> บันทึกราคาขาย'+ 
+                        '</td>'+      
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);"  value="'+ sum.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly /></td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -435,9 +524,8 @@
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
-                    '<input type="hidden" name="invoice_customer_list_id[]" value="0" />'+  
                     '<input type="hidden" name="customer_purchase_order_list_id[]" value="0" />'+     
-                    '<input type="hidden" name="product_id[]" class="form-control" />'+
+                    '<input type="hidden" name="product_id[]" class="form-control" value="0" />'+
                     '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" />'+ 
                 '</td>'+
                 '<td>'+
@@ -447,14 +535,17 @@
                     '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark"/>'+
                 '</td>'+
                 '<td>'+
-                    '<select  name="stock_group_id[]" class="form-control select" data-live-search="true">'+ 
+                    '<select  name="stock_group_id[]"  onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
                         '<option value="0">Select</option>'+ 
                     '</select>'+ 
                 '</td>'+
                 '<td align="right">'+ 
-                    '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="update_sum(this);" value="0" />'+
+                    '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_qty[]" onchange="check_qty(this);" />'+
                 '</td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="update_sum(this);" /></td>'+
+                '<td  >'+
+                    '<input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_price[]" onchange="check_price(this);" />'+
+                    '<input type="checkbox" name="save_product_price[]" value="" /> บันทึกราคาขาย'+
+                '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" onchange="update_sum(this);" readonly /></td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -464,8 +555,8 @@
             '</tr>'
         );
 
-         $(".example-ajax-post").easyAutocomplete(options);
-
+        $(".example-ajax-post").easyAutocomplete(options);
+        
         var str_stock = "";
         $.each(stock_group_data, function (index, value) {
             str_stock += "<option value='" + value['stock_group_id'] + "'>"+value['stock_group_name']+"</option>";
@@ -475,7 +566,7 @@
     }
 
 
-    function checkAll(id)
+   function checkAll(id)
     {
         var checkbox = document.getElementById('check_all');
         if (checkbox.checked == true){
@@ -517,6 +608,18 @@
 
     }
 
+    function get_customer_purchase(){
+        var code = $('#customer_purchase_order_code').val();
+        $.post( "controllers/getCustomerPurchaseOrderByCode.php", {'customer_purchase_order_code': code }, function( data ) {  
+            if(data !== null){  
+                window.location = "?app=invoice_customer&action=insert&customer_id="+data.customer_id+"&customer_purchase_order_id="+data.customer_purchase_order_id; 
+            }else{  
+                alert("Can not find purchase order : "+ code );
+            } 
+        });
+    } 
+
+
     function generate_credit_date(){
         var day = parseInt($('#invoice_customer_due_day').val());
         var date = $('#invoice_customer_date').val(); 
@@ -550,7 +653,9 @@
     }
 
 
-generate_credit_date();
+
+
+
 </script>
 
 <div class="row">
@@ -772,7 +877,7 @@ generate_credit_date();
                                     <input type="text" class="form-control" name="invoice_customer_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_remark']; ?>" />
                                 </td>
                                 <td>
-                                    <select  class="form-control" name="stock_group_id[]"  > 
+                                    <select  name="stock_group_id[]"  onchange="show_qty(this)" class="form-control select" data-live-search="true"  > 
                                         <?php 
                                         for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
                                         ?>
@@ -785,7 +890,10 @@ generate_credit_date();
                                 <td align="right">  
                                     <input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_qty[]" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_qty']; ?>" />
                                 </td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_price[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" /></td>
+                                <td >
+                                    <input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_customer_list_price[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" />
+                                    <input type="checkbox" name="save_product_price[]" value="<?php echo $invoice_customer_lists[$i]['product_id']; ?>"/> บันทึกราคาขาย
+                                </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="invoice_customer_list_total[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_qty'] * $invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" /></td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">

@@ -135,7 +135,8 @@
             <div class="panel-body">
                 <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=user_profile&action=edit" enctype="multipart/form-data">
                     <input type="hidden"  id="user_id" name="user_id" value="<?php echo $user_id ?>" />
-
+                    <input type="hidden"  id="user_image_o" name="user_image_o" value="<?php echo $user['user_image']; ?>" />    
+                        
                     <div class="row center-block">
                         <div class="col-lg-12">
                             <div class="form-group" align="center">

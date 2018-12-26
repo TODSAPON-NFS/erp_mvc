@@ -195,6 +195,7 @@ function calculate(id,all_duty){
                             $cost_price_total_s = 0;
                             $cost_price_ex_total_s = 0;
                             for($i=0; $i < count($invoice_supplier_lists); $i++){
+                                $invoice_supplier_lists[$i]['invoice_supplier_list_price']  = $invoice_supplier_lists[$i]['purchase_order_list_price'];
                                 $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
                                 $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
                                 $cost_duty += $cost_qty * $cost_price;
@@ -291,6 +292,7 @@ function calculate(id,all_duty){
                                 </td>
                                 <td style="text-align: right;">
                                 <?PHP
+                                    $total =  $total + $invoice_supplier['import_duty'] + $invoice_supplier['freight_in'];
                                     if($invoice_supplier['vat_type'] == 1){
                                         $total_val = $total - (($invoice_supplier['vat']/( 100 + $invoice_supplier['vat'] )) * $total);
                                     } else if($invoice_supplier['vat_type'] == 2){
@@ -386,3 +388,7 @@ function calculate(id,all_duty){
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+<script>
+calculate('<?php echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id']; ?>','<?php echo $invoice_supplier['import_duty'];?>');
+</script>

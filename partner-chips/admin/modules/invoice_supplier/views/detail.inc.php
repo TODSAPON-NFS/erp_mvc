@@ -127,12 +127,13 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th style="text-align:center;">ลำดับ <br> (์No.)</th>
-                                <th style="text-align:center;">รหัสสินค้า <br> (Product Code)</th>
-                                <th style="text-align:center;">รายละเอียดสินค้า <br> (Product Detail)</th>
-                                <th style="text-align:center;" width="150">จำนวน <br> (Qty)</th>
-                                <th style="text-align:center;" width="150">ราคาต่อหน่วย <br> (Unit price) </th>
-                                <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount)</th>
+                                <th style="text-align:center;">ลำดับ </th>
+                                <th style="text-align:center;">รหัสสินค้า </th>
+                                <th style="text-align:center;">รายละเอียดสินค้า </th>
+                                <th style="text-align:center;" width="150">คลังสินค้า </th>
+                                <th style="text-align:center;" width="150">จำนวน </th>
+                                <th style="text-align:center;" width="150">ราคาต่อหน่วย </th>
+                                <th style="text-align:center;" width="150">จำนวนเงิน </th>
                             </tr>
                         </thead>
 
@@ -157,6 +158,7 @@
                                     <span>Remark : </span><?php echo $invoice_supplier_lists[$i]['invoice_supplier_list_remark']; ?><br>
                                 </td>
 
+                                <td align="left"><?php echo $invoice_supplier_lists[$i]['stock_group_name']; ?></td>
                                 <td align="right"><?php echo $invoice_supplier_lists[$i]['invoice_supplier_list_qty']; ?></td>
                                 <td align="right"><?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_price'],2); ?></td>
                                 <td align="right"><?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_qty'] * $invoice_supplier_lists[$i]['invoice_supplier_list_price'],2); ?></td>
@@ -170,7 +172,7 @@
 
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td colspan="3" rowspan="3">
+                                <td colspan="4" rowspan="3">
                                     
                                 </td>
                                 <td colspan="2" align="left" style="vertical-align: middle;">

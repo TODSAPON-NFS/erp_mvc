@@ -239,6 +239,7 @@ if(!isset($_GET['action'])){
         if($purchase_order_id != ""){
             $data = [];
             $product_id = $_POST['product_id'];
+            $stock_group_id = $_POST['stock_group_id'];
 
             $purchase_request_list_id = $_POST['purchase_request_list_id'];
             $customer_purchase_order_list_detail_id = $_POST['customer_purchase_order_list_detail_id'];
@@ -262,6 +263,8 @@ if(!isset($_GET['action'])){
                     $data_sub['purchase_order_list_id'] = $purchase_order_id.date("YmdHisu").$i;
                     $data_sub['purchase_order_id'] = $purchase_order_id;
                     $data_sub['product_id'] = $product_id[$i];
+                    $data_sub['stock_group_id'] = $stock_group_id[$i];
+                    $data_sub['purchase_order_list_no'] = $i;
                     
                     $data_sub['purchase_order_list_qty'] = (float)filter_var($purchase_order_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     $data_sub['purchase_order_list_price'] = (float)filter_var($purchase_order_list_price[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -294,7 +297,9 @@ if(!isset($_GET['action'])){
                 $data_sub = [];
                 $data_sub['purchase_order_list_id'] = $purchase_order_id.date("YmdHisu").$i;
                 $data_sub['purchase_order_id'] = $purchase_order_id;
+                $data_sub['purchase_order_list_no'] = 0;
                 $data_sub['product_id'] = $product_id;
+                $data_sub['stock_group_id'] = $stock_group_id;
                 $data_sub['purchase_order_list_qty'] = (float)filter_var($purchase_order_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['purchase_order_list_price'] = (float)filter_var($purchase_order_list_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['purchase_order_list_price_sum'] = (float)filter_var($purchase_order_list_price_sum, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -362,6 +367,7 @@ if(!isset($_GET['action'])){
         
      
         $product_id = $_POST['product_id'];
+        $stock_group_id = $_POST['stock_group_id'];
         
         $purchase_request_list_id = $_POST['purchase_request_list_id'];
         $customer_purchase_order_list_detail_id = $_POST['customer_purchase_order_list_detail_id'];
@@ -385,8 +391,10 @@ if(!isset($_GET['action'])){
             for($i=0; $i < count($product_id) ; $i++){
                 $data_sub = [];
                 $data_sub['purchase_order_list_id'] = $purchase_order_id.date("YmdHisu").$i;
+                $data_sub['purchase_order_list_no'] = $i;
                 $data_sub['purchase_order_id'] = $purchase_order_id;
                 $data_sub['product_id'] = $product_id[$i];
+                $data_sub['stock_group_id'] = $stock_group_id[$i];
                 
                 $data_sub['purchase_order_list_qty'] = (float)filter_var($purchase_order_list_qty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 $data_sub['purchase_order_list_price'] = (float)filter_var($purchase_order_list_price[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -423,8 +431,10 @@ if(!isset($_GET['action'])){
         }else if($product_id != ""){
             $data_sub = [];
             $data_sub['purchase_order_list_id'] = $purchase_order_id.date("YmdHisu").$i;
+            $data_sub['purchase_order_list_no'] = 0;
             $data_sub['purchase_order_id'] = $purchase_order_id;
             $data_sub['product_id'] = $product_id;
+            $data_sub['stock_group_id'] = $stock_group_id;
             $data_sub['purchase_order_list_qty'] = (float)filter_var($purchase_order_list_qty, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data_sub['purchase_order_list_price'] = (float)filter_var($purchase_order_list_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data_sub['purchase_order_list_price_sum'] = (float)filter_var($purchase_order_list_price_sum, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -525,8 +535,10 @@ if(!isset($_GET['action'])){
             for($i=0; $i < count($purchase_order_lists) ; $i++){
                 $data_sub = [];
                 $data_sub['purchase_order_list_id'] = $purchase_order_id.date("YmdHisu").$i;
+                $data_sub['purchase_order_list_no'] =  $purchase_order_lists[$i]['purchase_order_list_no'];
                 $data_sub['purchase_order_id'] = $purchase_order_id;
                 $data_sub['product_id'] = $purchase_order_lists[$i]['product_id'];
+                $data_sub['stock_group_id'] = $purchase_order_lists[$i]['stock_group_id'];
                 $data_sub['purchase_order_list_qty'] = $purchase_order_lists[$i]['purchase_order_list_qty'];
                 $data_sub['purchase_order_list_price'] = $purchase_order_lists[$i]['purchase_order_list_price'];
                 $data_sub['purchase_order_list_price_sum'] = $purchase_order_lists[$i]['purchase_order_list_price_sum'];
@@ -716,7 +728,7 @@ if(!isset($_GET['action'])){
             $body = '
                 We are opening the purchase order.
                 Can you please confirm the order details?. 
-                At <a href="http://arno-thailand.revelsoft.co.th/partner-chips/supplier/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
+                At <a href="http://arno-thailand.revelsoft.co.th/arno/supplier/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
                 Before I send you a purchase order.
                 <br>
                 <br>
@@ -738,7 +750,7 @@ if(!isset($_GET['action'])){
 
             $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
             $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");
-            $mail->Subject = "Partner chips order recheck to ".$supplier['supplier_name_en'];
+            $mail->Subject = "Arno order recheck to ".$supplier['supplier_name_en'];
 
             $mail->MsgHTML($body);
 
@@ -793,7 +805,7 @@ if(!isset($_GET['action'])){
             $body = '
                 We are opened the purchase order.
                 Can you confirm the order details?. 
-                At <a href="http://arno-thailand.revelsoft.co.th/partner-chips/supplier/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
+                At <a href="http://arno-thailand.revelsoft.co.th/arno/supplier/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
 
                 <br>
                 <br>
@@ -816,7 +828,7 @@ if(!isset($_GET['action'])){
 
             $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
             $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");
-            $mail->Subject = "Partner chips order confirm to ".$supplier['supplier_name_en'];
+            $mail->Subject = "Arno order confirm to ".$supplier['supplier_name_en'];
 
             $mail->MsgHTML($body);
 

@@ -264,6 +264,8 @@
     
     else if($_GET['app'] == "report_account_01"){
         require_once("modules/report_account_01/views/index.inc.php");
+    }else if($_GET['app'] == "report_account_03"){
+        require_once("modules/report_account_03/views/index.inc.php");
     }else if($_GET['app'] == "report_account_04"){
         require_once("modules/report_account_04/views/index.inc.php");
     }else if($_GET['app'] == "report_account_05"){
@@ -274,6 +276,8 @@
         require_once("modules/report_account_07/views/index.inc.php");
     }else if($_GET['app'] == "report_account_08"){
         require_once("modules/report_account_08/views/index.inc.php");
+    }else if($_GET['app'] == "report_account_09"){
+        require_once("modules/report_account_09/views/index.inc.php");
     }
 
     else if($_GET['app'] == "report_stock_01"){

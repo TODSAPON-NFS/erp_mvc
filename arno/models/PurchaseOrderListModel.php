@@ -22,7 +22,7 @@ class PurchaseOrderListModel extends BaseModel{
         IFNULL(request_special_list_id,0) as request_special_list_id,
         IFNULL(request_regrind_list_id,0) as request_regrind_list_id,
         IFNULL(( SELECT SUM(IFNULL(invoice_supplier_list_qty,0)) FROM tb_invoice_supplier_list WHERE  purchase_order_list_id = tb.purchase_order_list_id),0) as purchase_order_list_qty_recieve , 
-        tb_purchase_order_list.stock_group_id, 
+        tb.stock_group_id, 
         purchase_order_list_qty, 
         purchase_order_list_price, 
         purchase_order_list_price_sum, 
@@ -45,7 +45,7 @@ class PurchaseOrderListModel extends BaseModel{
         WHERE purchase_order_id = '$purchase_order_id' 
         ORDER BY purchase_order_list_no, tb.purchase_order_list_id 
         ";
-
+ 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

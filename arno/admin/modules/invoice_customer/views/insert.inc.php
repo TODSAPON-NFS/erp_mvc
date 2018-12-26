@@ -505,7 +505,7 @@
 
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
-                        '<td>'+
+                        '<td class="sorter">'+
                         '</td>'+ 
                         '<td>'+
                             '<input type="hidden" name="customer_purchase_order_list_id[]" value="'+ data_buffer[i].customer_purchase_order_list_id +'" readonly />'+     
@@ -569,7 +569,7 @@
         }
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
-                '<td>'+
+                '<td class="sorter">'+
                 '</td>'+ 
                 '<td>'+
                     '<input type="hidden" name="customer_purchase_order_list_id[]" value="0" />'+     
@@ -898,7 +898,7 @@
                             for($i=0; $i < count($invoice_customer_lists); $i++){
                             ?>
                             <tr class="odd gradeX">
-                                <td>
+                                <td class="sorter">
                                     <?PHP echo ($i + 1); ?>.
                                 </td>
                                 <td>

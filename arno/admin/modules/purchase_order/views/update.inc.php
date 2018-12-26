@@ -434,7 +434,7 @@
 
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
-                        '<td>'+
+                        '<td class="sorter">'+
                         index+
                         '.</td>'+
                         '<td>'+
@@ -490,7 +490,7 @@
         }
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
-                '<td>'+
+                '<td class="sorter">'+
                 index+
                 '.</td>'+
                 '<td>'+
@@ -672,13 +672,13 @@
                     <table name="tb_list" width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th style="text-align:center;" width="60">ลำดับ<br>(No.)</th>
-                                <th style="text-align:center;" width="150">รหัสสินค้า <br> (Product Code)</th>
-                                <th style="text-align:center;" >ชื่อสินค้า / หมายเหตุ <br> (Product Name / Remark)</th>
-                                <th style="text-align:center;" width="120">วันที่จัดส่ง <br> (Delivery)</th>
-                                <th style="text-align:center;" width="120">จำนวน <br> (Qty)</th>
-                                <th style="text-align:center;" width="120">ราคาต่หน่วย <br> (Unit price)</th>
-                                <th style="text-align:center;" width="120">จำนวนเงิน <br> (Amount)</th>
+                                <th style="text-align:center;" width="60">ลำดับ </th>
+                                <th style="text-align:center;" width="150">รหัสสินค้า </th>
+                                <th style="text-align:center;" >ชื่อสินค้า / หมายเหตุ </th>
+                                <th style="text-align:center;" width="120">วันที่จัดส่ง </th>
+                                <th style="text-align:center;" width="120">จำนวน </th>
+                                <th style="text-align:center;" width="120">ราคาต่หน่วย </th>
+                                <th style="text-align:center;" width="120">จำนวนเงิน  </th>
                                 <th width="24"></th>
                             </tr>
                         </thead>
@@ -688,7 +688,7 @@
                             for($i=0; $i < count($purchase_order_lists); $i++){
                             ?>
                             <tr class="odd gradeX">
-                                <td>
+                                <td class="sorter">
                                     <?PHP echo ($i + 1); ?>.
                                 </td>
                                 <td>

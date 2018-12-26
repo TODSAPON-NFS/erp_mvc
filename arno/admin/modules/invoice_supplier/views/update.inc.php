@@ -545,7 +545,7 @@
 
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
-                        '<td>'+
+                        '<td class="sorter">'+
                         '</td>'+ 
                         '<td>'+
                             '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'" readonly />'+   
@@ -612,7 +612,7 @@
         }
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
-                '<td>'+
+                '<td class="sorter">'+
                 '</td>'+ 
                 '<td>'+
                     '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+      
@@ -1068,7 +1068,7 @@
                                 }
                             ?>
                             <tr class="odd gradeX">
-                                <td>
+                                <td class="sorter">
                                     <?PHP echo ($i + 1); ?>.
                                 </td>
                                 <td><input type="hidden" name="purchase_order_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['purchase_order_list_id'];?>" />

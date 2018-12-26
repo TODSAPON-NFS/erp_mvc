@@ -173,7 +173,7 @@
 
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
-                '<td>'+
+                '<td class="sorter">'+
                 index+
                 '.</td>'+
                 '<td>'+
@@ -270,7 +270,7 @@
 
                         $(id).closest('table').children('tbody').append(
                             '<tr class="odd gradeX">'+
-                                '<td>'+
+                                '<td class="sorter">'+
                                 index+
                                 '.</td>'+
                                 '<td>'+
@@ -481,7 +481,7 @@
                             for($i=0; $i < count($purchase_request_lists); $i++){
                             ?>
                             <tr class="odd gradeX">
-                                <td>
+                                <td class="sorter">
                                     <?PHP echo ($i + 1); ?>.
                                 </td>
                                 <td>

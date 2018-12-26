@@ -22,6 +22,7 @@ class PurchaseOrderListModel extends BaseModel{
         IFNULL(request_special_list_id,0) as request_special_list_id,
         IFNULL(request_regrind_list_id,0) as request_regrind_list_id,
         IFNULL(( SELECT SUM(IFNULL(invoice_supplier_list_qty,0)) FROM tb_invoice_supplier_list WHERE  purchase_order_list_id = tb.purchase_order_list_id),0) as purchase_order_list_qty_recieve , 
+        tb_purchase_order_list.stock_group_id, 
         purchase_order_list_qty, 
         purchase_order_list_price, 
         purchase_order_list_price_sum, 
@@ -42,7 +43,7 @@ class PurchaseOrderListModel extends BaseModel{
         LEFT JOIN tb_request_special_list ON tb.purchase_order_list_id = tb_request_special_list.purchase_order_list_id
         LEFT JOIN tb_request_regrind_list ON tb.purchase_order_list_id = tb_request_regrind_list.purchase_order_list_id
         WHERE purchase_order_id = '$purchase_order_id' 
-        ORDER BY tb.purchase_order_list_id 
+        ORDER BY purchase_order_list_no, tb.purchase_order_list_id 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -75,7 +76,9 @@ class PurchaseOrderListModel extends BaseModel{
     function insertPurchaseOrderList($data = []){
         $sql = " INSERT INTO tb_purchase_order_list ( 
             purchase_order_id,
+            purchase_order_list_no,
             product_id,
+            stock_group_id,
             purchase_order_list_qty,
             purchase_order_list_price, 
             purchase_order_list_price_sum,
@@ -88,7 +91,9 @@ class PurchaseOrderListModel extends BaseModel{
             lastupdate
         ) VALUES ( 
             '".$data['purchase_order_id']."', 
+            '".$data['purchase_order_list_no']."', 
             '".$data['product_id']."', 
+            '".$data['stock_group_id']."', 
             '".$data['purchase_order_list_qty']."', 
             '".$data['purchase_order_list_price']."', 
             '".$data['purchase_order_list_price_sum']."', 
@@ -133,6 +138,8 @@ class PurchaseOrderListModel extends BaseModel{
 
         $sql = " UPDATE tb_purchase_order_list 
             SET product_id = '".$data['product_id']."', 
+            stock_group_id = '".$data['stock_group_id']."',
+            purchase_order_list_no = '".$data['purchase_order_list_no']."',
             purchase_order_list_qty = '".$data['purchase_order_list_qty']."',
             purchase_order_list_price = '".$data['purchase_order_list_price']."', 
             purchase_order_list_price_sum = '".$data['purchase_order_list_price_sum']."',

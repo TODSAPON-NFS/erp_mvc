@@ -31,6 +31,26 @@
 
         requestDelay: 400
     };
+
+    var stock_group_data = [
+    <?php for($i = 0 ; $i < count($stock_groups) ; $i++ ){?>
+        {
+            stock_group_id:'<?php echo $stock_groups[$i]['stock_group_id'];?>',
+            stock_group_name:'<?php echo $stock_groups[$i]['stock_group_name'];?>' 
+        },
+    <?php }?>
+    ];
+
+
+    var supplier_data = [
+    <?php for($i = 0 ; $i < count($suppliers) ; $i++ ){?>
+        {
+            supplier_id:'<?php echo $suppliers[$i]['supplier_id'];?>',
+            supplier_name_th:'<?php echo $suppliers[$i]['supplier_name_th'];?>',
+            supplier_name_en:'<?php echo $suppliers[$i]['supplier_name_en'];?>' 
+        },
+    <?php }?>
+    ];
 	
 
     function check_code(id){
@@ -108,7 +128,7 @@
 
     }
 
-    function show_data(id){
+    function show_data_blanked(id){
         var product_code = $(id).val();
         $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
             if(data != null){
@@ -118,67 +138,105 @@
         }); 
     }
 
-    function delete_row(id){
-        $(id).closest('tr').remove();
-        update_line(id);
+    function show_data(id){
+        var product_code = $(id).val();
+        $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
+            if(data != null){
+                $(id).closest('tr').children('td').children('span[name="product_description[]"]').html(data.product_description)
+                $(id).closest('tr').children('td').children('span[name="product_name[]"]').html(data.product_name)
+                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)
+            }
+        });
     }
 
-    function update_line(id){
+    function delete_row(id){
+        $(id).closest('tr').remove();
+        update_line();
+    }
+
+    function update_line(){
         var td_number = $('table[name="tb_list"]').children('tbody').children('tr').children('td:first-child');
         for(var i = 0; i < td_number.length ;i++){
             td_number[i].innerHTML = (i+1);
         }
     }
 
-    function add_row(id){
+    function add_row(id){ 
+        <?PHP if($type == "STANDARD"){ ?>
 
-        
+        var index = 0;
+        if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
+            index = 1;
+        }else{
+            index = $(id).closest('table').children('tbody').children('tr').length + 1;
+        }
+
+        $(id).closest('table').children('tbody').append(
+            '<tr class="odd gradeX">'+
+                '<td>'+
+                index+
+                '.</td>'+
+                '<td>'+
+                    '<input type="hidden" class="form-control" name="purchase_request_list_id[]" value="0" />'+
+                    '<input type="hidden" class="form-control" name="product_id[]" value="0" />'+
+                    '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="" />'+
+                    'Name : <span name="product_name[]"></span><br>'+
+                    'Description : <span name="product_description[]"></span>'+
+                '</td>'+ 
+                '<td>'+
+                    '<select  name="supplier_id[]" class="form-control select" data-live-search="true">'+  
+                    '</select>'+ 
+                '</td>'+
+                '<td>'+
+                    '<select  name="stock_group_id[]" class="form-control select" data-live-search="true">'+  
+                    '</select>'+ 
+                '</td>'+
+                '<td>'+
+                    '<input type="text" class="form-control" style="text-align:right;"  autocomplete="off" name="purchase_request_list_qty[]"  value="1"/>'+ 
+                '</td>'+
+                '<td><input type="text" class="form-control" name="purchase_request_list_delivery[]" readonly /></td>'+
+                '<td><input type="text" class="form-control" name="purchase_request_list_remark[]" /></td>'+
+                '<td>'+
+                    '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
+                        '<i class="fa fa-times" aria-hidden="true"></i>'+
+                    '</a>'+
+                '</td>'+
+            '</tr>'
+        );
+
+        $(".example-ajax-post").easyAutocomplete(options);
+
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="supplier_id[]"]').empty();
+        var str = "<option value='0'>ไม่ระบุ</option>";
+        $.each(supplier_data, function (index, value) { 
+            str += "<option value='" + value['supplier_id'] + "'>" +  value['supplier_name_en'] + "</option>";  
+        });
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="supplier_id[]"]').html(str);
+
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="supplier_id[]"]').selectpicker();
+
+
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="stock_group_id[]"]').empty();
+        var str = "";
+        $.each(stock_group_data, function (index, value) { 
+            str += "<option value='" + value['stock_group_id'] + "'>" +  value['stock_group_name'] + "</option>"; 
+        });
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').html(str);
+
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').selectpicker();
+
+
+        $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_request_list_delivery[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
+         
+        <?PHP } else if($type == "BLANKED") { ?>
+
         if($('#order_product').val() == ""){
             alert("กรุณาเลือกสินค้า");
             document.getElementById("order_product").focus();
         }else{
             var product_id = $('#order_product').val();
             $.post( "controllers/getProductByID.php", { 'product_id': product_id }, function( data ) {
-                
-                <?PHP if($type == "STANDARD"){ ?>
 
-                var index = 0;
-                if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
-                    index = 1;
-                }else{
-                    index = $(id).closest('table').children('tbody').children('tr').length + 1;
-                }
-
-                $(id).closest('table').children('tbody').append(
-                    '<tr class="odd gradeX">'+
-                        '<td>'+
-                        index+
-                        '.</td>'+
-                        '<td>'+
-                            '<input type="hidden" class="form-control" name="purchase_request_list_id[]" value="0" />'+
-                            '<input type="hidden" class="form-control" name="product_id[]" value="'+data.product_id+'" />'+
-                            '<span>'+data.product_code+'</span>'+
-                        '</td>'+
-                        '<td>'+
-                            'Name : <span>'+data.product_name+'</span><br>'+
-                            'Description : <span>'+data.product_description+'</span>'+
-                        '</td>'+
-                        '<td>'+
-                            '<input type="text" class="form-control" style="text-align:right;" name="purchase_request_list_qty[]"  value="1"/>'+ 
-                        '</td>'+
-                        '<td><input type="text" class="form-control" name="purchase_request_list_delivery[]" readonly /></td>'+
-                        '<td><input type="text" class="form-control" name="purchase_request_list_remark[]" /></td>'+
-                        '<td>'+
-                            '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
-                                '<i class="fa fa-times" aria-hidden="true"></i>'+
-                            '</a>'+
-                        '</td>'+
-                    '</tr>'
-                );
-                $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_request_list_delivery[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
-                $('#modalAdd').modal('hide');
-
-                <?PHP } else if($type == "BLANKED") { ?>
                 if(isNaN($("#order_number").val())){
                     alert("กรุณากรอกจำนวนครั้งการสั่งสินค้า");
                     document.getElementById("order_number").focus();
@@ -218,14 +276,20 @@
                                 '<td>'+
                                     '<input type="hidden" class="form-control" name="purchase_request_list_id[]" value="0" />'+
                                     '<input type="hidden" class="form-control" name="product_id[]" value="'+data.product_id+'" />'+
-                                    '<span>'+data.product_code+'</span>'+
+                                    '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="'+data.product_code+'" />'+
+                                    'Name : <span name="product_name[]" >'+data.product_name+'</span><br>'+
+                                    'Description : <span name="product_description[]" >'+data.product_description+'</span>'+
+                                '</td>'+ 
+                                '<td>'+
+                                    '<select  name="supplier_id[]" class="form-control select" data-live-search="true">'+  
+                                    '</select>'+ 
                                 '</td>'+
                                 '<td>'+
-                                    'Name : <span>'+data.product_name+'</span><br>'+
-                                    'Description : <span>'+data.product_description+'</span>'+
+                                    '<select  name="stock_group_id[]" class="form-control select" data-live-search="true">'+  
+                                    '</select>'+ 
                                 '</td>'+
                                 '<td>'+
-                                    '<input type="text" class="form-control" style="text-align:right;" name="purchase_request_list_qty[]"  value="'+ $('#order_qty').val() +'"/>'+ 
+                                    '<input type="text" class="form-control" style="text-align:right;"  autocomplete="off" name="purchase_request_list_qty[]"  value="'+ $('#order_qty').val() +'"/>'+ 
                                 '</td>'+
                                 '<td><input type="text" class="form-control" name="purchase_request_list_delivery[]" readonly /></td>'+
                                 '<td><input type="text" class="form-control" name="purchase_request_list_remark[]" /></td>'+
@@ -236,6 +300,28 @@
                                 '</td>'+
                             '</tr>'
                         );
+                        
+                        $(".example-ajax-post").easyAutocomplete(options);
+
+                        $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="supplier_id[]"]').empty();
+                        var str = "<option value='0'>ไม่ระบุ</option>";
+                        $.each(supplier_data, function (index, value) { 
+                            str += "<option value='" + value['supplier_id'] + "'>" +  value['supplier_name_en'] + "</option>";  
+                        });
+                        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="supplier_id[]"]').html(str);
+
+                        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="supplier_id[]"]').selectpicker();
+
+
+                        $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="stock_group_id[]"]').empty();
+                        var str = "";
+                        $.each(stock_group_data, function (index, value) { 
+                            str += "<option value='" + value['stock_group_id'] + "'>" +  value['stock_group_name'] + "</option>"; 
+                        });
+                        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').html(str);
+
+                        $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').selectpicker();
+ 
                         $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_request_list_delivery[]"]').datepicker({ dateFormat: 'dd-mm-yy' }).datepicker('setDate', startDate);
 
                         startDate.setDate(startDate.getDate() + parseInt($('#order_day').val()));
@@ -245,10 +331,10 @@
                     }
                     $('#modalAdd').modal('hide');
                 }
-
-                <?PHP } ?>
             });
         }
+        <?PHP } ?>
+           
     }
 
     function split_product(id){
@@ -297,25 +383,25 @@
             <div class="panel-body">
                 <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=purchase_request&action=add" >
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-group">
-                                <label>รหัสใบร้องขอสั่งซื้อสินค้า / PR Code <font color="#F00"><b>*</b></font></label>
+                                <label>รหัสใบร้องขอสั่งซื้อสินค้า <font color="#F00"><b>*</b></font></label>
                                 <input id="purchase_request_code" name="purchase_request_code" class="form-control"   onchange="check_code(this)" value="<?php echo $last_code;?>" >
                                 <input id="purchase_check" type="hidden" value="" />
                                 <p class="help-block">Example : PR1801001.</p>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-group">
-                                <label>วันที่ร้องขอ  / PR Date</label>
+                                <label>วันที่ร้องขอ</label>
                                 <input type="text" id="purchase_request_date" name="purchase_request_date" value="<?PHP echo $purchase_request['purchase_request_date'];?>"  class="form-control calendar" onchange="check_date(this);" readonly/>
                                 <input id="date_check" type="hidden" value="" />
                                 <p class="help-block">01-03-2018</p>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-group">
-                                <label>ประเภทใบร้องขอสั่งซื้อสินค้า / PR Type <font color="#F00"><b>*</b></font></label>
+                                <label>ประเภทใบร้องขอสั่งซื้อสินค้า <font color="#F00"><b>*</b></font></label>
                                 <select id="purchase_request_type" name="purchase_request_type" class="form-control">
                                         <?PHP if($type == "STANDARD"){ ?>
                                         <option value="">Select</option>
@@ -328,9 +414,9 @@
                                 <p class="help-block">Example : Low.</p>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-group">
-                                <label>ผู้ร้องขอ / Request by  <font color="#F00"><b>*</b></font> </label>
+                                <label>ผู้ร้องขอ  <font color="#F00"><b>*</b></font> </label>
                                 <input id="employee_id" name="employee_id" type="hidden"  value="<?PHP echo $admin_id;?>" />
                                 <select id="employee_name" name="employee_name" onchange="set_employee();" class="form-control" <?PHP if($license_purchase_page != "Medium" && $license_purchase_page != "High"){ ?> disabled <?PHP } ?> >
                                     <option value="">Select</option>
@@ -344,53 +430,33 @@
                                 </select>
                                 <p class="help-block">Example : Thana Tepchuleepornsil.</p>
                             </div>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="row">
+                        </div> 
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>สำหรับลูกค้า / Customer </label>
+                                <label>สำหรับลูกค้า </label>
                                 <select id="customer_id" name="customer_id" class="form-control" >
                                     <option value="0">Select</option>
                                     <?php 
                                     for($i =  0 ; $i < count($customers) ; $i++){
                                     ?>
-                                    <option  value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_th'] ?>  </option>
+                                    <option  value="<?php echo $customers[$i]['customer_id'] ?>"><?php echo $customers[$i]['customer_name_en'] ?>  </option>
                                     <?
                                     }
                                     ?>
                                 </select>
                                 <p class="help-block">Example : บริษัท เรเวลซอฟต์ จำกัด (Revel Soft co,ltd).</p>
                             </div>
-                        </div>
+                        </div> 
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>ผู้ขาย / Supplier  <font color="#F00"><b>*</b></font> </label>
-                                <select id="supplier_id" name="supplier_id" class="form-control select" data-live-search="true">
-                                    <option value="">Select</option>
-                                    <?php 
-                                    for($i =  0 ; $i < count($suppliers) ; $i++){
-                                    ?>
-                                    <option  value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?>  </option>
-                                    <?
-                                    }
-                                    ?>
-                                </select>
-                                <p class="help-block">Example : Revel Soft (บริษัท เรเวลซอฟต์ จำกัด).</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label>หมายเหตุ / Remark</label>
+                                <label>หมายเหตุ</label>
                                 <input id="purchase_request_remark" name="purchase_request_remark" class="form-control" />
                                 <p class="help-block">Example : -.</p>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label>วันที่แจ้งเตือน  / Alert Date</label>
+                                <label>วันที่แจ้งเตือน </label>
                                 <input type="text" id="purchase_request_alert" name="purchase_request_alert" value="<?PHP echo $purchase_request['purchase_request_alert'];?>"  class="form-control calendar" readonly/>
                                 <p class="help-block">01-03-2018</p>
                             </div>
@@ -400,16 +466,17 @@
                     <table name="tb_list" width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th style="text-align:center;" width="60">ลำดับ<br>(No.)</th>
-                                <th style="text-align:center;">รหัสสินค้า <br>(Product Code)</th>
-                                <th style="text-align:center;">ชื่อสินค้า<br>(Product Name)</th>
-                                <th style="text-align:center;max-width:100px;">จำนวน<br>(Qty)</th>
-                                <th style="text-align:center;">วันที่ใช้สินค้า<br>(Delivery Min)</th>
-                                <th style="text-align:center;">หมายเหตุ<br>(Remark)</th>
+                                <th style="text-align:center;" width="60">ลำดับ </th>
+                                <th style="text-align:center;">รายละเอียดสินค้า  </th> 
+                                <th style="text-align:center;">ผู้ขาย </th>
+                                <th style="text-align:center;">คลังสินค้า </th>
+                                <th style="text-align:center;max-width:80px;">จำนวน </th>
+                                <th style="text-align:center;max-width:80px;">วันที่ใช้สินค้า </th>
+                                <th style="text-align:center;">หมายเหตุ </th>
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody  class="sorted_table">
                             <?php 
                             for($i=0; $i < count($purchase_request_lists); $i++){
                             ?>
@@ -420,17 +487,38 @@
                                 <td>
                                     <input type="hidden" class="form-control" name="purchase_request_list_id[]" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_id']; ?>" />
                                     <input type="hidden" class="form-control" name="product_id[]" value="<?php echo $purchase_request_lists[$i]['product_id']; ?>" />
-                                    <span><?php echo $purchase_request_lists[$i]['product_code']; ?></span>
-                                </td>
-                                <td>
-                                    Name : <span><?php echo $purchase_request_lists[$i]['product_name']; ?></span><br>
-                                    Description : <span><?php echo $purchase_request_lists[$i]['product_description']; ?></span>
+                                    <input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="<?php echo $purchase_request_lists[$i]['product_code']; ?>" />
+                                    Name : <span name="product_name[]"><?php echo $purchase_request_lists[$i]['product_name']; ?></span><br>
+                                    Description : <span name="product_description[]" ><?php echo $purchase_request_lists[$i]['product_description']; ?></span>
+                                </td> 
+                                <td> 
+                                    <select  name="supplier_id[]" class="form-control select" data-live-search="true"> 
+                                        <option value='0'>ไม่ระบุ</option>
+                                        <?php 
+                                        for($ii =  0 ; $ii < count($suppliers) ; $ii++){
+                                        ?>
+                                        <option <?PHP if($suppliers[$ii]['supplier_id'] == $purchase_request_lists[$i]['supplier_id'] ){ ?> SELECTED <?PHP } ?> value="<?php echo $suppliers[$ii]['supplier_id'] ?>"><?php echo $suppliers[$ii]['supplier_name_en'] ?>  </option>
+                                        <?
+                                        }
+                                        ?>
+                                    </select>
                                 </td>
                                 <td> 
-                                    <input type="text" class="form-control" style="text-align:right;" name="purchase_request_list_qty[]" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_qty']; ?>" />
+                                    <select  name="stock_group_id[]" class="form-control select" data-live-search="true"> 
+                                        <?php 
+                                        for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
+                                        ?>
+                                        <option  <?PHP if($stock_groups[$ii]['stock_group_id'] == $purchase_request_lists[$i]['stock_group_id'] ){ ?> SELECTED <?PHP } ?> value="<?php echo $stock_groups[$ii]['stock_group_id'] ?>"><?php echo $stock_groups[$ii]['stock_group_name'] ?>  </option>
+                                        <?
+                                        }
+                                        ?>
+                                    </select>
+                                </td> 
+                                <td> 
+                                    <input type="text" class="form-control" style="text-align:right;" name="purchase_request_list_qty[]" autocomplete="off" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_qty']; ?>" />
                                 </td>
                                 <td><input type="text" class="form-control calendar" name="purchase_request_list_delivery[]" readonly value="<?php echo $purchase_request_lists[$i]['purchase_request_list_delivery']; ?>" /></td>
-                               <td><input type="text" class="form-control" name="purchase_request_list_remark[]" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_remark']; ?>" /></td>
+                                <td><input type="text" class="form-control" name="purchase_request_list_remark[]" value="<?php echo $purchase_request_lists[$i]['purchase_request_list_remark']; ?>" /></td>
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
@@ -443,8 +531,8 @@
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td colspan="7" align="center">
-                                    <a href="javascript:;" onclick="split_product(this);" style="color:red;">
+                                <td colspan="8" align="center">
+                        <a href="javascript:;" <?PHP if($type == "STANDARD"){ ?> onclick="add_row(this);" <?PHP } else if($type=="BLANKED"){ ?> onclick="split_product(this);" <?PHP } ?> style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                         <span>เพิ่มสินค้า / Add product</span>
                                     </a>
@@ -466,7 +554,7 @@
 															<input type="hidden" id="order_product" name="order_product" class="form-control" value="0" />
 															<div class="row">
 																<div class="col-lg-6">
-																	<input class="example-ajax-post form-control" name="order_product_code" onchange="show_data(this);" placeholder="Product Code" />
+																	<input class="example-ajax-post form-control" name="order_product_code" onchange="show_data_blanked(this);" placeholder="Product Code" />
 																</div>
 																<div class="col-lg-6">
 																	<input class="form-control" id="order_product_name" name="order_product_name"  placeholder="Product Name" readonly />
@@ -541,4 +629,11 @@
 
 <script>
     $(".example-ajax-post").easyAutocomplete(options);
+    // Sortable rows
+    $('.sorted_table').sortable({
+        handle: ".sorter" , 
+        update: function( event, ui ) {
+            update_line(); 
+        }
+    });
 </script>

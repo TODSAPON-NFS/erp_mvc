@@ -97,11 +97,11 @@
     
     function delete_row(id){
         $(id).closest('tr').remove();
-        update_line(id);
+        update_line();
         calculateAll();
      }
 
-     function update_line(id){
+     function update_line(){
         var td_number = $('table[name="tb_list"]').children('tbody').children('tr').children('td:first-child');
         for(var i = 0; i < td_number.length ;i++){
             td_number[i].innerHTML = (i+1);
@@ -440,6 +440,7 @@
                         '<td>'+
                             '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+ 
                             '<input type="hidden" name="product_id[]" value="'+data_buffer[i].product_id+'" />'+
+                            '<input type="hidden" name="stock_group_id[]" value="'+data_buffer[i].stock_group_id+'" />'+
                             '<input type="hidden" name="customer_purchase_order_list_detail_id[]" value="'+customer_purchase_order_list_detail_id+'" />'+
                             '<input type="hidden" name="purchase_request_list_id[]" value="'+purchase_request_list_id+'" />'+     
                             '<input type="hidden" name="delivery_note_supplier_list_id[]" value="'+delivery_note_supplier_list_id+'" />'+  
@@ -456,9 +457,9 @@
                         '<input type="text" class="form-control" name="purchase_order_list_remark[]" value="'+data_buffer[i].purchase_order_list_remark+'" />'+
                         '</td>'+
                         '<td><input type="text" class="form-control" name="purchase_order_list_delivery_min[]" readonly /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_qty[]" onchange="update_sum(this);" value="'+data_buffer[i].purchase_order_list_qty+'"/></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_price[]" onchange="update_sum(this);" value="'+data_buffer[i].purchase_order_list_price+'"/></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" value="'+(data_buffer[i].purchase_order_list_qty * data_buffer[i].purchase_order_list_price)+'"/></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_qty[]" onchange="update_sum(this);" value="'+data_buffer[i].purchase_order_list_qty+'"/></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price[]" onchange="update_sum(this);" value="'+data_buffer[i].purchase_order_list_price+'"/></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" value="'+(data_buffer[i].purchase_order_list_qty * data_buffer[i].purchase_order_list_price)+'"/></td>'+
                         
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -495,6 +496,7 @@
                 '<td>'+
                     '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+ 
                     '<input type="hidden" name="product_id[]" value="0" />'+ 
+                    '<input type="hidden" name="stock_group_id[]" value="0" />'+ 
                     '<input type="hidden" name="customer_purchase_order_list_detail_id[]" value="0" />'+ 
                     '<input type="hidden" name="purchase_request_list_id[]" value="0" />'+     
                     '<input type="hidden" name="delivery_note_supplier_list_id[]" value="0" />'+   
@@ -511,9 +513,9 @@
                 '<input type="text" class="form-control" name="purchase_order_list_remark[]" />'+
                 '</td>'+
                 '<td><input type="text" class="form-control" name="purchase_order_list_delivery_min[]" readonly /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_qty[]"  onchange="update_sum(this);" value="1"/></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_price[]" onchange="update_sum(this);" /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_qty[]"  onchange="update_sum(this);" value="1"/></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price[]" onchange="update_sum(this);" /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
                 
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -680,7 +682,7 @@
                                 <th width="24"></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody  class="sorted_table">
                             <?php 
                             $total = 0;
                             for($i=0; $i < count($purchase_order_lists); $i++){
@@ -700,6 +702,7 @@
                                     <input type="hidden" name="request_special_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['request_special_list_id'];?>" />
                                     <input type="hidden" name="request_regrind_list_id[]" value="<?PHP echo  $purchase_order_lists[$i]['request_regrind_list_id'];?>" />
                                     <input type="hidden" name="product_id[]" value="<?PHP echo  $purchase_order_lists[$i]['product_id'];?>" />
+                                    <input type="hidden" name="stock_group_id[]" value="<?PHP echo  $purchase_order_lists[$i]['stock_group_id'];?>" />
 
                                     <span><?PHP echo  $purchase_order_lists[$i]['product_code'];?></span>
                                 </td>
@@ -712,9 +715,9 @@
                                 <td>
                                     <input type="text" class="form-control calendar" name="purchase_order_list_delivery_min[]" readonly value="<?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']; ?>" />
                                 </td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="purchase_order_list_qty[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_qty']; ?>" /></td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="purchase_order_list_price[]" value="<?php echo number_format($purchase_order_lists[$i]['purchase_order_list_price'],2); ?>" /></td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="purchase_order_list_price_sum[]" value="<?php echo number_format($purchase_order_lists[$i]['purchase_order_list_qty'] * $purchase_order_lists[$i]['purchase_order_list_price'],2); ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off"  onchange="update_sum(this);" name="purchase_order_list_qty[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_qty']; ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off"  onchange="update_sum(this);" name="purchase_order_list_price[]" value="<?php echo number_format($purchase_order_lists[$i]['purchase_order_list_price'],2); ?>" /></td>
+                                <td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" readonly onchange="update_sum(this);" name="purchase_order_list_price_sum[]" value="<?php echo number_format($purchase_order_lists[$i]['purchase_order_list_qty'] * $purchase_order_lists[$i]['purchase_order_list_price'],2); ?>" /></td>
                                 
                                 <td>
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -888,3 +891,13 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+
+<script> 
+    $('.sorted_table').sortable({
+        handle: ".sorter" , 
+        update: function( event, ui ) {
+            update_line(); 
+        }
+    });
+</script>

@@ -5,7 +5,7 @@ require_once('../models/StockReportModel.php');
 
 date_default_timezone_set('asia/bangkok');
 
-$path = "modules/report_stock_03/views/";
+$path = "modules/report_stock_08/views/";
  
 $stock_report_model = new StockReportModel;
  

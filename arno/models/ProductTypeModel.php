@@ -15,6 +15,7 @@ class ProductTypeModel extends BaseModel{
         WHERE product_type_name LIKE ('%$product_type_name%') 
         ORDER BY product_type_name  
         ";
+        // echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

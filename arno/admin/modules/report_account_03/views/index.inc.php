@@ -8,7 +8,7 @@ date_default_timezone_set('asia/bangkok');
 $path = "modules/report_account_03/views/";
  
 $journal_report_model = new JournalReportModel;
-
+$journal_reports_debit= new JournalReportModel;
 
 
 if(!isset($_GET['date_start'])){
@@ -61,11 +61,15 @@ if($date_end == ""){
 $type = $_GET['type'];
 
 
- 
-$journal_reports = $journal_report_model->getJournalAssetsReportBy($date_end,$code_start,$code_end,$keyword);
+$keyword = 1;
+$journal_reports = $journal_report_model->getJournalAssetsReportBy($date_end,$code_start,$code_end, $keyword);
+
+$keyword = 2;
+$journal_reports_debit = $journal_report_model->getJournalAssetsReportBy($date_end,$code_start,$code_end, $keyword);
 //echo '<pre>' ;
-//print_r($journal_reports);
+//print_r($journal_reports_debit);
 //echo '</pre>' ;
+
 require_once($path.'view.inc.php');
  
 

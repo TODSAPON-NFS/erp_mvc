@@ -26,6 +26,26 @@ $target_dir = "../upload/product/";
 $product_id = $_GET['id'];
 $product_supplier_id = $_GET['product_supplier_id'];
 $product_customer_id = $_GET['product_customer_id'];
+
+
+    //---------------------ฟังก์ชั่นวันที่------------------------------------
+    date_default_timezone_set("Asia/Bangkok");
+    $d1=date("d");
+    $d2=date("m");
+    $d3=date("Y");
+    $d4=date("H");
+    $d5=date("i");
+    $d6=date("s");
+    $date="$d1$d2$d3$d4$d5$d6";
+    //---------------------------------------------------------------------
+
+
+    //-----------------ฟังก์ชั่นสุ่มตัวเลข----------------
+    $numrand = (mt_rand());
+    //-----------------------------------------------
+
+
+
 if(!isset($_GET['action'])){
 
     $supplier_id = $_GET['supplier_id'];
@@ -131,7 +151,23 @@ if(!isset($_GET['action'])){
             $data['product_drawing'] = '';
         }else{
             
-            $target_file = $target_dir . strtolower(basename($_FILES["product_drawing"]["name"]));
+            
+            //---------เอาชื่อไฟล์เก่าออกให้เหลือแต่นามสกุล----------
+            $type = strrchr($_FILES['product_drawing']['name'],".");
+            //--------------------------------------------------
+            
+            //-----ตั้งชื่อไฟล์ใหม่โดยเอาเวลาไว้หน้าชื่อไฟล์เดิม---------
+            $newname = $date.$numrand.$type;
+            $path_copy=$path.$newname;
+            $path_link=$target_dir.$newname;
+            //-------------------------------------------------
+
+
+            //-----------------------------------------
+            $target_file = $target_dir .$date.$newname;
+            //-----------------------------------------
+
+
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
             // Check if file already exists
             if (file_exists($target_file)) {
@@ -144,7 +180,13 @@ if(!isset($_GET['action'])){
                 $error_msg = "Sorry, only PDF files are allowed.";
                 $check = false;
             }else if (move_uploaded_file($_FILES["product_drawing"]["tmp_name"], $target_file)) {
-                $data['product_drawing'] = strtolower($_FILES['product_drawing']['name']);
+               
+                
+                //--------------------------------------------------------------------
+                $data['product_drawing'] = $date.$newname;
+                //--------------------------------------------------------------------
+                
+
             } else {
                 $error_msg =  "Sorry, there was an error uploading your file.";
                 $check = false;
@@ -154,7 +196,25 @@ if(!isset($_GET['action'])){
         if($_FILES['product_logo']['name'] == ""){
             $data['product_logo'] = "default.png";
         }else {
-            $target_file = $target_dir . strtolower(basename($_FILES["product_logo"]["name"]));
+            
+            
+            //---------เอาชื่อไฟล์เก่าออกให้เหลือแต่นามสกุล----------
+            $type = strrchr($_FILES['product_logo']['name'],".");
+            //--------------------------------------------------
+            
+            //-----ตั้งชื่อไฟล์ใหม่โดยเอาเวลาไว้หน้าชื่อไฟล์เดิม---------
+            $newname = $date.$numrand.$type;
+            $path_copy=$path.$newname;
+            $path_link=$target_dir.$newname;
+            //-------------------------------------------------
+
+
+            //-----------------------------------------
+            $target_file = $target_dir .$date.$newname;
+            //-----------------------------------------
+
+
+
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
             // Check if file already exists
             if (file_exists($target_file)) {
@@ -167,7 +227,11 @@ if(!isset($_GET['action'])){
                 $error_msg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
                 $check = false;
             }else if (move_uploaded_file($_FILES["product_logo"]["tmp_name"], $target_file)) {
-                $data['product_logo'] = strtolower($_FILES['product_logo']['name']);
+               
+                //--------------------------------------------------------------------
+                $data['product_logo'] = $date.$newname;
+                //--------------------------------------------------------------------
+                
             } else {
                 $error_msg =  "Sorry, there was an error uploading your file.";
                 $check = false;
@@ -255,7 +319,24 @@ if(!isset($_GET['action'])){
         if($_FILES['product_drawing']['name'] == ""){
             $data['product_drawing'] = $_POST['product_drawing_o'];
         }else {
-            $target_file = $target_dir . strtolower(basename($_FILES["product_drawing"]["name"]));
+            
+            
+            //---------เอาชื่อไฟล์เก่าออกให้เหลือแต่นามสกุล----------
+            $type = strrchr($_FILES['product_drawing']['name'],".");
+            //--------------------------------------------------
+            
+            //-----ตั้งชื่อไฟล์ใหม่โดยเอาเวลาไว้หน้าชื่อไฟล์เดิม---------
+            $newname = $date.$numrand.$type;
+            $path_copy=$path.$newname;
+            $path_link=$target_dir.$newname;
+            //-------------------------------------------------
+
+
+            //-----------------------------------------
+            $target_file = $target_dir .$date.$newname;
+            //-----------------------------------------
+
+            
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
             // Check if file already exists
             if (file_exists($target_file)) {
@@ -268,7 +349,12 @@ if(!isset($_GET['action'])){
                 $error_msg = "Sorry, only PDF files are allowed.";
                 $check = false;
             }else if (move_uploaded_file($_FILES["product_drawing"]["tmp_name"], $target_file)) {
-                $data['product_drawing'] = strtolower($_FILES['product_drawing']['name']);
+               
+                
+                //--------------------------------------------------------------------
+                $data['product_drawing'] = $date.$newname;
+                //--------------------------------------------------------------------
+
                 $target_file = $target_dir . $_POST["product_drawing_o"];
                 if($_POST["product_logo_o"] != 'default.png'){
                     if (file_exists($target_file)) {
@@ -285,7 +371,24 @@ if(!isset($_GET['action'])){
         if($_FILES['product_logo']['name'] == ""){
             $data['product_logo'] = $_POST['product_logo_o'];
         }else {
-            $target_file = $target_dir . strtolower(basename($_FILES["product_logo"]["name"]));
+            
+            
+            //---------เอาชื่อไฟล์เก่าออกให้เหลือแต่นามสกุล----------
+            $type = strrchr($_FILES['product_logo']['name'],".");
+            //--------------------------------------------------
+            
+            //-----ตั้งชื่อไฟล์ใหม่โดยเอาเวลาไว้หน้าชื่อไฟล์เดิม---------
+            $newname = $date.$numrand.$type;
+            $path_copy=$path.$newname;
+            $path_link=$target_dir.$newname;
+            //-------------------------------------------------
+
+
+            //-----------------------------------------
+            $target_file = $target_dir .$date.$newname;
+            //-----------------------------------------
+
+            
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
             // Check if file already exists
             if (file_exists($target_file)) {
@@ -298,7 +401,12 @@ if(!isset($_GET['action'])){
                 $error_msg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
                 $check = false;
             }else if (move_uploaded_file($_FILES["product_logo"]["tmp_name"], $target_file)) {
-                $data['product_logo'] = strtolower($_FILES['product_logo']['name']);
+
+                
+                //--------------------------------------------------------------------
+                $data['product_logo'] = $date.$newname;
+                //--------------------------------------------------------------------
+
                 $target_file = $target_dir . $_POST["product_logo_o"];
                 if (file_exists($target_file)) {
                     unlink($target_file);
@@ -349,6 +457,7 @@ else if ($_GET['action'] == 'add_customer' && ($license_admin_page == 'Medium' |
         $data['product_id'] = $product_id;
         $data['minimum_stock'] = $_POST['minimum_stock'];
         $data['safety_stock'] = $_POST['safety_stock'];
+        $data['maximum_stock'] = $_POST['maximum_stock'];
         $data['product_status'] = $_POST['product_status'];
 
 
@@ -373,6 +482,7 @@ else if ($_GET['action'] == 'add_customer' && ($license_admin_page == 'Medium' |
         $data['product_id'] = $product_id;
         $data['minimum_stock'] = $_POST['minimum_stock'];
         $data['safety_stock'] = $_POST['safety_stock'];
+        $data['maximum_stock'] = $_POST['maximum_stock'];
         $data['product_status'] = $_POST['product_status'];
 
 

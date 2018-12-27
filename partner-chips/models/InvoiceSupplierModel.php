@@ -453,7 +453,7 @@ class InvoiceSupplierModel extends BaseModel{
         tb2.purchase_order_list_id, 
         '' as regrind_supplier_list_id,
         CONCAT(product_code_first,product_code) as product_code, 
-        IFNULL(tb_customer_purchase_order_list_detail.stock_group_id,(SELECT IFNULL(MIN(stock_group_id),0) FROM tb_stock_group WHERE 1)) as stock_group_id,
+        stock_group_id,
         product_name,  
         IFNULL(purchase_order_list_qty 
         - IFNULL((
@@ -462,13 +462,13 @@ class InvoiceSupplierModel extends BaseModel{
             WHERE purchase_order_list_id = tb2.purchase_order_list_id 
         ),0) ,0) as invoice_supplier_list_qty, 
         purchase_order_list_price,
+        purchase_order_list_price_sum,
         '0' as invoice_supplier_list_price, 
-        purchase_order_list_price_sum as invoice_supplier_list_total,
+        '0' as invoice_supplier_list_total,
         '0' as invoice_supplier_list_cost, 
         CONCAT('PO : ',purchase_order_code) as invoice_supplier_list_remark 
         FROM tb_purchase_order 
-        LEFT JOIN tb_purchase_order_list as tb2 ON tb_purchase_order.purchase_order_id = tb2.purchase_order_id 
-        LEFT JOIN tb_customer_purchase_order_list_detail ON tb2.purchase_order_list_id = tb_customer_purchase_order_list_detail.purchase_order_list_id
+        LEFT JOIN tb_purchase_order_list as tb2 ON tb_purchase_order.purchase_order_id = tb2.purchase_order_id  
         LEFT JOIN tb_product ON tb2.product_id = tb_product.product_id 
         WHERE tb_purchase_order.supplier_id = '$supplier_id' 
         $str_po 
@@ -481,7 +481,8 @@ class InvoiceSupplierModel extends BaseModel{
             HAVING IFNULL(SUM(invoice_supplier_list_qty),0) < AVG(purchase_order_list_qty)  
         ) 
         AND (product_name LIKE ('%$search%') OR purchase_order_code LIKE ('%$search%')) 
-        AND purchase_order_status = 'Confirm' ";
+        AND purchase_order_status = 'Confirm'
+        ORDER BY purchase_order_code , purchase_order_list_no  ";
 
         //echo $sql_customer;
 

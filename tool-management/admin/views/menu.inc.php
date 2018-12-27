@@ -5,7 +5,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Tool Management Thailand ERP</a>
+                <a class="navbar-brand" href="index.php">Tool Management ERP</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -67,7 +67,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="index.php?app=user"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <li><a href="index.php?app=user_profile"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
@@ -828,7 +828,7 @@
                                             <a href="?app=report_account_02" <?PHP if($_GET['app'] == "report_account_02"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> ยอดเคลื่อนไหว </a>
                                         </li>
                                         <li>
-                                            <a href="?app=report_account_03" <?PHP if($_GET['app'] == "report_account_03"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายการงบประมาณ </a>
+                                            <a href="?app=report_account_03" <?PHP if($_GET['app'] == "report_account_03"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> งบเเสดงสถานะการเงิน </a>
                                         </li>
                                         <li>
                                             <a href="?app=report_account_04" <?PHP if($_GET['app'] == "report_account_04"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> สมุดรายวัน </a>
@@ -844,6 +844,9 @@
                                         </li>
                                         <li>
                                             <a href="?app=report_account_08" <?PHP if($_GET['app'] == "report_account_08"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายงานเช็ครับ </a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_account_09" <?PHP if($_GET['app'] == "report_account_09"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายงานยอดขาย </a>
                                         </li>
                                     </ul>
                                 </li>

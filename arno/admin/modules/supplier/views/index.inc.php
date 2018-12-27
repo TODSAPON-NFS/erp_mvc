@@ -17,6 +17,29 @@ $account_model = new AccountModel;
 $supplier_id = $_GET['id'];
 $notification_id = $_GET['notification'];
 
+
+
+
+        //---------------------ฟังก์ชั่นวันที่------------------------------------
+        date_default_timezone_set("Asia/Bangkok");
+        $d1=date("d");
+        $d2=date("m");
+        $d3=date("Y");
+        $d4=date("H");
+        $d5=date("i");
+        $d6=date("s");
+        $date="$d1$d2$d3$d4$d5$d6";
+        //---------------------------------------------------------------------
+
+
+        //-----------------ฟังก์ชั่นสุ่มตัวเลข----------------
+        $numrand = (mt_rand());
+        //-----------------------------------------------
+
+
+
+
+
 if(!isset($_GET['action'])){
 
     $supplier = $model_supplier->getSupplierBy();
@@ -96,7 +119,23 @@ if(!isset($_GET['action'])){
             $data['supplier_logo'] = 'default.png';
         }else{
             
-            $target_file = $target_dir . strtolower(basename($_FILES["supplier_logo"]["name"]));
+
+            
+            
+            //---------เอาชื่อไฟล์เก่าออกให้เหลือแต่นามสกุล----------
+            $type = strrchr($_FILES['supplier_logo']['name'],".");
+            //--------------------------------------------------
+            
+            //-----ตั้งชื่อไฟล์ใหม่โดยเอาเวลาไว้หน้าชื่อไฟล์เดิม---------
+            $newname = $date.$numrand.$type;
+            $path_copy=$path.$newname;
+            $path_link=$target_dir.$newname;
+            //-------------------------------------------------
+
+            $target_file = $target_dir .$date.$newname;
+
+
+
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
             // Check if file already exists
             if (file_exists($target_file)) {
@@ -109,7 +148,15 @@ if(!isset($_GET['action'])){
                 $error_msg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
                 $check = false;
             }else if (move_uploaded_file($_FILES["supplier_logo"]["tmp_name"], $target_file)) {
-                $data['supplier_logo'] = strtolower($_FILES['supplier_logo']['name']);
+                
+                
+                //-----------------------------------
+                $data['supplier_logo'] = $date.$newname;
+                //-----------------------------------
+
+
+
+                
             } else {
                 $error_msg =  "Sorry, there was an error uploading your file.";
                 $check = false;
@@ -178,7 +225,19 @@ if(!isset($_GET['action'])){
             $data['supplier_logo'] = $_POST['supplier_logo_o'];
         }else  {
             
-            $target_file = $target_dir . strtolower(basename($_FILES["supplier_logo"]["name"]));
+
+            
+            //---------เอาชื่อไฟล์เก่าออกให้เหลือแต่นามสกุล----------
+            $type = strrchr($_FILES['supplier_logo']['name'],".");
+            //--------------------------------------------------
+            
+            //-----ตั้งชื่อไฟล์ใหม่โดยเอาเวลาไว้หน้าชื่อไฟล์เดิม---------
+            $newname = $date.$numrand.$type;
+            $path_copy=$path.$newname;
+            $path_link=$target_dir.$newname;
+            //-------------------------------------------------
+
+            $target_file = $target_dir .$date.$newname;
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
             // Check if file already exists
             if (file_exists($target_file)) {
@@ -191,7 +250,11 @@ if(!isset($_GET['action'])){
                 $error_msg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
                 $check = false;
             }else if (move_uploaded_file($_FILES["supplier_logo"]["tmp_name"], $target_file)) {
-                $data['supplier_logo'] = strtolower($_FILES['supplier_logo']['name']);
+
+                //-----------------------------------
+                $data['supplier_logo'] = $date.$newname;
+                //-----------------------------------
+
                 $target_file = $target_dir . $_POST["supplier_logo_o"];
                 if($_POST["supplier_logo_o"] != 'default.png'){
                     if (file_exists($target_file)) {

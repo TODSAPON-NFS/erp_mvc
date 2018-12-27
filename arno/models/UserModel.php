@@ -88,6 +88,8 @@ class UserModel extends BaseModel{
 
     function updateUserByID($id,$data = []){
         $sql = " UPDATE tb_user SET 
+        
+        user_image = '".static::$db->real_escape_string($data['user_image'])."',  
         user_code = '".static::$db->real_escape_string($data['user_code'])."',  
         user_prefix = '".static::$db->real_escape_string($data['user_prefix'])."', 
         user_name = '".static::$db->real_escape_string($data['user_name'])."', 
@@ -104,6 +106,62 @@ class UserModel extends BaseModel{
         user_position_id = '".static::$db->real_escape_string($data['user_position_id'])."',
         license_id = '".static::$db->real_escape_string($data['license_id'])."', 
         user_status_id = '".static::$db->real_escape_string($data['user_status_id'])."' 
+        WHERE user_id = '".static::$db->real_escape_string($id)."'
+        ";
+
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+
+
+    }
+
+    function updateUserProfileByID($id,$data = []){
+        $sql = " UPDATE tb_user SET 
+        
+        user_image = '".static::$db->real_escape_string($data['user_image'])."',  
+        user_prefix = '".static::$db->real_escape_string($data['user_prefix'])."', 
+        user_name = '".static::$db->real_escape_string($data['user_name'])."', 
+        user_lastname = '".static::$db->real_escape_string($data['user_lastname'])."', 
+        user_mobile = '".static::$db->real_escape_string($data['user_mobile'])."', 
+        user_email = '".static::$db->real_escape_string($data['user_email'])."', 
+        user_username = '".static::$db->real_escape_string($data['user_username'])."', 
+        user_password = '".static::$db->real_escape_string($data['user_password'])."', 
+        user_address = '".static::$db->real_escape_string($data['user_address'])."', 
+        user_province = '".static::$db->real_escape_string($data['user_province'])."', 
+        user_amphur = '".static::$db->real_escape_string($data['user_amphur'])."', 
+        user_district = '".static::$db->real_escape_string($data['user_district'])."', 
+        user_zipcode = '".static::$db->real_escape_string($data['user_zipcode'])."'
+        WHERE user_id = '".static::$db->real_escape_string($id)."'
+        ";
+
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+
+
+    }
+
+    
+    function updateUserProfileNoIMGByID($id,$data = []){
+        $sql = " UPDATE tb_user SET 
+        
+        user_prefix = '".static::$db->real_escape_string($data['user_prefix'])."', 
+        user_name = '".static::$db->real_escape_string($data['user_name'])."', 
+        user_lastname = '".static::$db->real_escape_string($data['user_lastname'])."', 
+        user_mobile = '".static::$db->real_escape_string($data['user_mobile'])."', 
+        user_email = '".static::$db->real_escape_string($data['user_email'])."', 
+        user_username = '".static::$db->real_escape_string($data['user_username'])."', 
+        user_password = '".static::$db->real_escape_string($data['user_password'])."', 
+        user_address = '".static::$db->real_escape_string($data['user_address'])."', 
+        user_province = '".static::$db->real_escape_string($data['user_province'])."', 
+        user_amphur = '".static::$db->real_escape_string($data['user_amphur'])."', 
+        user_district = '".static::$db->real_escape_string($data['user_district'])."', 
+        user_zipcode = '".static::$db->real_escape_string($data['user_zipcode'])."'
         WHERE user_id = '".static::$db->real_escape_string($id)."'
         ";
 
@@ -151,6 +209,7 @@ class UserModel extends BaseModel{
             user_code,
             user_prefix,
             user_name,
+            user_image,
             user_lastname,
             user_mobile,
             user_email,
@@ -165,6 +224,7 @@ class UserModel extends BaseModel{
             license_id,
             user_status_id
             )  VALUES ('". 
+            $data['user_image']."','".
             $data['user_code']."','".
             $data['user_prefix']."','".
             $data['user_name']."','".

@@ -55,7 +55,7 @@ if(!isset($_GET['product_end'])){
     $_SESSION['product_end'] = $product_end;
 }
 
-if($date_start!=''||$date_end!=''||$stock_start!=''||$stock_end!=''||$product_start!=''||$product_end!=''){ 
+if($date_start!=''||$date_end!=''||$stock_start!=''||$stock_end!=''||$product_start!=''){ 
     // $stock_reports = $stock_report_model->getStockReportProductMovementBy($product_start,$product_end,$stock_start,$stock_end);
     $stock_reports = $stock_report_model->getStockReportProductMovementBy($date_start,$date_end,$stock_start,$stock_end,$product_start,$product_end);
     

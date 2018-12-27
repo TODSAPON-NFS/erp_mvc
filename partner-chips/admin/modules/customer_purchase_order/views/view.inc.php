@@ -112,9 +112,9 @@
                     </div>
                 </div>
             </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
 
+            <!-- /.panel-heading -->
+            <div class="panel-body"> 
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -149,7 +149,7 @@
                             <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>แยกตามประเภท </label>
                             <select id="status" name="status" class="form-control select" data-live-search="true">
@@ -159,10 +159,20 @@
                                 <option <?php if($status == '3'){?> selected <?php }?> value="3">ส่งสินค้ายังไม่ครบ</option>
                                 <option <?php if($status == '4'){?> selected <?php }?> value="4">ส่งสินค้าครบแล้ว</option>
                             </select>
-                            <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
+                            <p class="help-block">Example : ยังไม่มีการสั่งสินค้า.</p>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>แสดง </label>
+                            <select id="view_type" name="view_type" class="form-control select" data-live-search="true"> 
+                                <option <?php if($view_type == 'paper'){?> selected <?php }?> value="paper">ตามใบสั่งซื้อ</option> 
+                                <option <?php if($view_type == 'product'){?> selected <?php }?> value="product">ตามรายการสั่งซื้อ</option> 
+                            </select>
+                            <p class="help-block">Example : ตามใบสั่งซื้อ.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>คำค้น <font color="#F00"><b>*</b></font></label>
                             <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >
@@ -257,8 +267,7 @@
                                     <th>วันที่รับใบสั่งซื้อ<br>PO Date</th>
                                     <th>หมายเลขใบสั่งซื้อ<br>PO No.</th>
                                     <th>ลูกค้า<br>Customer</th>
-                                    <th>พนักงาน<br>Employee</th>
-                                    <th>สถานะ<br>Status</th>
+                                    <th>พนักงาน<br>Employee</th> 
                                     <th>หมายเหตุ<br>Remark</th>
                                     <th>ใบกำกับภาษี<br>Invoice</th>
                                     <th></th>
@@ -273,8 +282,7 @@
                                     <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_date']; ?></td>
                                     <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?></td>
                                     <td><?php echo $customer_purchase_orders[$i]['customer_name']; ?></td>
-                                    <td><?php echo $customer_purchase_orders[$i]['employee_name']; ?></td>
-                                    <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_status']; ?></td>
+                                    <td><?php echo $customer_purchase_orders[$i]['employee_name']; ?></td> 
                                     <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_remark']; ?></td>
                                     <td>-</td>
                                     <td>

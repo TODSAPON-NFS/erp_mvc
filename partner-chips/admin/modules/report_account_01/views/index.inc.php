@@ -60,8 +60,12 @@ if($date_end == ""){
  
 $type = $_GET['type'];
 
+
  
 $journal_reports = $journal_report_model->getJournalAcountReportShowAllBy($date_end,$code_start,$code_end,$keyword);
+//echo '<pre>' ;
+//print_r($journal_reports);
+//echo '</pre>' ;
 require_once($path.'view.inc.php');
  
 

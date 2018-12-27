@@ -6,13 +6,13 @@ abstract class BaseModel{
     public static $db;
     protected $host="localhost";
     
-    protected $username="revelsof_erppc";
+    protected $username="revelsof_erp-pc";
     //protected $username="revelsof_erp";
     
     protected $password="root123456";
 
     //protected $db_name="revelsoft_erp_arno";
-    protected $db_name="revelsof_erppc";
+    protected $db_name="revelsof_erp-pc";
 
     function __construct(){
         static::$db = mysqli_connect($host, $username, $password, $db_name);

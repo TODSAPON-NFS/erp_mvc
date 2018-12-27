@@ -72,10 +72,12 @@ $type = $_GET['type'];
 $company=$company_model->getCompanyByID('1');
 
 $lines = 52;
+
 $journal_reports = $journal_report_model->getJournalAcountReportBy($date_end,$code_start,$code_end,$keyword);
 
 //print_r($journal_reports);
 $page_max = (int)(count($journal_reports) / $lines);
+
 if(count($journal_reports) % $lines > 0){
     $page_max += 1;
 }
@@ -109,7 +111,7 @@ if($_GET['action'] == "pdf"){
        // //ob_end_clean();
 
         $mpdf->WriteHTML($html[$page_index]);
-        //echo $html[$page_index];
+      //  echo $html[$page_index];
     }
     
     

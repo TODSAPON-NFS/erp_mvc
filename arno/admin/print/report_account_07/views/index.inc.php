@@ -7,6 +7,13 @@ require_once('../models/CompanyModel.php');
 require_once('../models/AccountModel.php');
 date_default_timezone_set('asia/bangkok');
 
+$d1=date("d");
+$d2=date("m");
+$d3=date("Y");
+$d4=date("h");
+$d5=date("i");
+$d6=date("s"); 
+
 $path = "print/report_account_07/views/";
  
 $company_model = new CompanyModel;
@@ -46,7 +53,7 @@ $type = $_GET['type'];
 
 $company=$company_model->getCompanyByID('1');
 
-$lines = 52;
+$lines =24;
 $account = $account_model->getAccountAll();
 
 $journal_reports = $journal_report_model->getJournalAcountReportShowpayAllBy($date_end,$account_id);
@@ -101,8 +108,8 @@ if($_GET['action'] == "pdf"){
     header("Content-type: application/vnd.ms-excel");
     //// header('Content-type: application/csv'); //*** CSV ***//
     
-    header("Content-Disposition: attachment; filename=Sale_vat $d1-$d2-$d3 $d4:$d5:$d6.xls");
-
+    header("Content-Disposition: attachment; filename=pay_$d1-$d2-$d3-$d4:$d5:$d6.xls");
+ 
     for($page_index=0 ; $page_index < $page_max ; $page_index++){
         echo $html[$page_index] ."<div> </div> <br>"; 
     }

@@ -9,6 +9,7 @@ require_once('../models/CustomerPurchaseOrderListModel.php');
 require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
+require_once('../models/ProductCustomerPriceModel.php');
 require_once('../models/StockGroupModel.php');
 require_once('../models/CustomerModel.php');
 require_once('../models/AccountSettingModel.php');
@@ -31,6 +32,7 @@ $invoice_customer_model = new InvoiceCustomerModel;
 $invoice_customer_list_model = new InvoiceCustomerListModel;
 $customer_purchase_order_list_model = new CustomerPurchaseOrderListModel;
 $product_model = new ProductModel;
+$product_customer_price_model = new ProductCustomerPriceModel;
 $stock_group_model = new StockGroupModel;
 $journal_sale_model = new JournalSaleModel;
 $journal_sale_list_model = new JournalSaleListModel;
@@ -229,6 +231,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                 for($i=0; $i < count($product_id) ; $i++){
                     $data_sub = [];
                     $data_sub['invoice_customer_id'] = $invoice_customer_id;
+                    $data_sub['invoice_customer_list_no'] = $i;
                     $data_sub['product_id'] = $product_id[$i];
                     $data_sub['customer_purchase_order_list_id'] = $customer_purchase_order_list_id[$i];
                     $data_sub['stock_group_id'] = $stock_group_id[$i];
@@ -265,6 +268,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                 $data_sub = [];
                 $data_sub['invoice_customer_id'] = $invoice_customer_id;
                 $data_sub['product_id'] = $product_id;
+                $data_sub['invoice_customer_list_no'] = 0;
                 $data_sub['customer_purchase_order_list_id'] = $customer_purchase_order_list_id;
                 $data_sub['stock_group_id'] = $stock_group_id;
                 $data_sub['stock_date'] = $_POST['invoice_customer_date'];
@@ -297,6 +301,30 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             $account_customer = $customer['account_id'];
 
             $maintenance_model->updateJournal($invoice_customer,$journal_list, $account_customer, $account_vat_sale['account_id'],$account_sale['account_id']);
+
+
+            $save_product_price = $_POST['save_product_price'];
+            for($i=0; $i < count($save_product_price); $i++){
+                $product_price = 0;
+                for($j=0; $j < count($product_id); $j++){
+                    if($product_id[$j] == $save_product_price[$i]){
+                        $product_price = (float)filter_var($invoice_customer_list_price[$j], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    }
+                }
+                $product_customer_prices =  $product_customer_price_model->getProductCustomerPriceByID($save_product_price[$i],$_POST['customer_id']);
+
+                $data = [];
+                $data['product_id'] = $save_product_price[$i];
+                $data['customer_id'] =$_POST['customer_id'];
+                $data['product_price'] = $product_price;
+
+                if(count($product_customer_prices) > 0){ 
+                    $product_customer_price_model->updateProductCustomerPriceByID($data);
+                }else{
+                    $product_customer_price_model->insertProductCustomerPrice($data);
+                }
+            }
+            
 
             
 ?>
@@ -366,6 +394,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
             for($i=0; $i < count($product_id) ; $i++){
                 $data_sub = [];
                 $data_sub['invoice_customer_id'] = $invoice_customer_id;
+                $data_sub['invoice_customer_list_no'] = $i;
                 $data_sub['product_id'] = $product_id[$i];
                 $data_sub['customer_purchase_order_list_id'] = $customer_purchase_order_list_id[$i];
                 $data_sub['stock_group_id'] = $stock_group_id[$i];
@@ -407,6 +436,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         }else if($product_id != ""){
             $data_sub = [];
             $data_sub['invoice_customer_id'] = $invoice_customer_id;
+            $data_sub['invoice_customer_list_no'] = 0;
             $data_sub['product_id'] = $product_id;
             $data_sub['customer_purchase_order_list_id'] = $customer_purchase_order_list_id;
             $data_sub['stock_group_id'] = $stock_group_id;
@@ -455,6 +485,28 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
        $maintenance_model->updateJournal($invoice_customer,$journal_list, $account_customer, $account_vat_sale['account_id'],$account_sale['account_id']);
 
         
+       
+       $save_product_price = $_POST['save_product_price'];
+       for($i=0; $i < count($save_product_price); $i++){
+           $product_price = 0;
+           for($j=0; $j < count($product_id); $j++){
+               if($product_id[$j] == $save_product_price[$i]){
+                   $product_price = (float)filter_var($invoice_customer_list_price[$j], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+               }
+           }
+           $product_customer_prices =  $product_customer_price_model->getProductCustomerPriceByID($save_product_price[$i],$_POST['customer_id']);
+
+           $data = [];
+           $data['product_id'] = $save_product_price[$i];
+           $data['customer_id'] =$_POST['customer_id'];
+           $data['product_price'] = $product_price;
+
+           if(count($product_customer_prices) > 0){ 
+               $product_customer_price_model->updateProductCustomerPriceByID($data);
+           }else{
+               $product_customer_price_model->insertProductCustomerPrice($data);
+           }
+       }
 
         if($output){
         

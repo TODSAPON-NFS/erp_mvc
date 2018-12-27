@@ -55,10 +55,16 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <td >  </td>
         </tr>
         <tr>
+            <td align="left" ><b> เลขที่บัญชี </b> </td>
+            <td>'.$journal_reports[0]['account_code'].'&nbsp;&nbsp;'.$journal_reports[0]['account_name_th'].' </td>
+            <td >  </td>
+        </tr>
+        <tr>
             <td align="left" ><b>ณ. วันที่</b> </td>
             <td> '.$date_end.' </td>
             <td >  </td>
         </tr>
+        
 
 
     </table>  
@@ -71,12 +77,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
              <tr>
                 
                 <th align="center" width="35" style="border-top:1px dotted black;border-bottom: 1px dotted black;">วันที่จ่าย</th>          
-                <th align="center" width="80" style="border-top:1px dotted black;border-bottom: 1px dotted black;">ลวท.</th>                                   
-                <th align="center" width="60" style="border-top:1px dotted black;border-bottom: 1px dotted black;">เลขที่เช็ค</th>
+                <th align="center" width="110" style="border-top:1px dotted black;border-bottom: 1px dotted black;">ลวท.</th>                                   
+                <th align="center" width="50" style="border-top:1px dotted black;border-bottom: 1px dotted black;">เลขที่เช็ค</th>
                 <th align="center" width="100" style="border-top:1px dotted black;border-bottom: 1px dotted black;">เงินหน้าเช็ค</th> 
                 
-                <th width="180" style="border-top:1px dotted black;border-bottom: 1px dotted black;">หมายเหตุ</th> 
-                <th align="center" width="50" style="border-top:1px dotted black;border-bottom: 1px dotted black;"> ใบสำคัญ </th>
+                <th width="200" style="border-top:1px dotted black;border-bottom: 1px dotted black;">หมายเหตุ</th> 
+                <th align="center" width="110" style="border-top:1px dotted black;border-bottom: 1px dotted black;"> ใบสำคัญ </th>
     
             </tr>
         </thead>
@@ -107,7 +113,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 ';
                 $cheque_total_page += $journal_reports[$i]['cheque_total'];
                 $cheque_total += $journal_reports[$i]['cheque_total'];
-                $count_pay ++;
+                $count_pay +=1;
     }
 
     if($page_index+1 < $page_max){
@@ -124,11 +130,11 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 </tr>
                 <tr>
                     <td  align="right" style="padding:20    px 20px;"><b>รวมบัญชี </d></td>
-                    <td  align="left"  style="padding:20px 20px;" ><b>เช็คจ่ายล่วงหน้า </b></td>
+                    <td  align="left"  style="padding:20px 20px;" >เช็คจ่ายล่วงหน้า </td>
                     <td  align="right"  ></td>             
                     <td  align="right" style="border-top: 2px  double ;border-bottom: 2px  double ;" >'.number_format($cheque_total_page,2).'</td> 
-                    <td  ><div><b> ยอดเช็คลงบัญชีสุทธิ  &emsp; = </b>&emsp;'.number_format($cheque_total_page,2).'&emsp; ( จำนวนเช็ค </div></td> 
-                    <td align="left"> '. count($count_pay) .'&nbsp; ใบ )  </td>
+                    <td  ><div><b> ยอดเช็คลงบัญชีสุทธิ  &emsp; = </b>&emsp;'.number_format($cheque_total_page,2).'&emsp;  </div></td> 
+                    <td align="left"> ( จำนวนเช็ค&nbsp;'. $count_pay .'&nbsp; ใบ )  </td>
                 </tr>
                 </tfoot>
             </table>
@@ -139,25 +145,25 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <tfoot>  
                 <tr>
                 <td><br></td><td></td><td></td><td></td><td></td><td></td>
-                </tr>             
-                    <tr>
-                        <td  align="right" style="padding:20    px 20px;"><b>รวมบัญชี </d></td>
-                        <td  align="left"  style="padding:20px 20px;" ><b>เช็คจ่ายล่วงหน้า </b></td>
-                        <td  align="right"  ></td>             
-                        <td  align="right" style="border-top: 2px  double ;border-bottom: 2px  double ;" >'.number_format($cheque_total_page,2).'</td> 
-                        <td  ><div><b> ยอดเช็คลงบัญชีสุทธิ  &emsp; = </b>&emsp;'.number_format($cheque_total_page,2).'&emsp; ( จำนวนเช็ค </div></td> 
-                        <td align="left"> '. count($journal_reports) .'&nbsp; ใบ )  </td>
-                    </tr>
-
-                    <tr>
-                        <td  align="right" style="padding:20    px 20px;"><b>รวมทั้งสิ้น </d></td>
-                        <td  align="left"  style="padding:20px 20px;" ><b> </b></td>
-                        <td  align="right"  ></td>             
-                        <td  align="right" style="border-bottom: 2px  double ;" >'.number_format($cheque_total,2).'</td> 
-                        <td  ><div><b> ยอดเช็คลงบัญชีสุทธิ  &emsp; = </b>&emsp;'.number_format($cheque_total,2).'&emsp; ( จำนวนเช็ค </div></td> 
-                        <td align="left"> '. count($journal_reports) .'&nbsp; ใบ )  </td>
-                    </tr>
-
+                </tr> 
+                
+                <tr>
+                    <td  align="right" style="padding:20    px 20px;"><b>รวมบัญชี </d></td>
+                    <td  align="left"  style="padding:20px 20px;" >เช็คจ่ายล่วงหน้า </td>
+                    <td  align="right"  ></td>             
+                    <td  align="right" style="border-top: 2px  double ;border-bottom: 2px  double ;" >'.number_format($cheque_total_page,2).'</td> 
+                    <td  ><div><b> ยอดเช็คลงบัญชีสุทธิ  &nbsp;&nbsp; = </b>&nbsp;&nbsp;'.number_format($cheque_total_page,2).'  </div></td> 
+                <td align="left"> ( จำนวนเช็ค&nbsp;'. $count_pay.'&nbsp; ใบ )  </td>
+            </tr>
+                <tr>
+                    <td  align="right" style="padding:20    px 20px;"><b>รวมทั้งสิ้น </d></td>
+                    <td  align="left"  style="padding:20px 20px;" ><b> </b></td>
+                    <td  align="right"  ></td>             
+                    <td  align="right" style="border-bottom: 2px  double ;" >'.number_format($cheque_total,2).'</td> 
+                    <td  ><div><b> ยอดเช็คลงบัญชีสุทธิ  &nbsp;&nbsp; = </b>&nbsp;&nbsp;'.number_format($cheque_total,2).'  </div></td> 
+                    <td align="left">( จำนวนเช็ค &nbsp;'. count($journal_reports) .' &nbsp; ใบ)  </td>
+                </tr>
+                
                 </tfoot>
             </table>
         ';
@@ -165,33 +171,37 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         $html[$page_index] .= ' 
                 </tbody>
                 <tfoot>
+
                     <tr>
                     <td><br></td><td></td><td></td><td></td><td></td><td></td>
                     </tr>
+
                      <tr>
                         <td colspan="11" align="center"> </td>
                     </tr>
-                    </tr>
+
+                 
                     <tr>
                         <td  align="right" style="padding:20    px 20px;"><b>รวมบัญชี </d></td>
-                        <td  align="left"  style="padding:20px 20px;" ><b>เช็คจ่ายล่วงหน้า </b></td>
+                        <td  align="left"  style="padding:20px 20px;" >เช็คจ่ายล่วงหน้า </td>
                         <td  align="right"  ></td>             
-                        <td  align="right" style="border-top: 2px  double ;border-bottom: 2px  double ;" >'.number_format($cheque_total,2).'</td> 
-                        <td  ><div><b> ยอดเช็คลงบัญชีสุทธิ  &emsp;&emsp; = </b>&emsp;'.number_format($cheque_total_page,2).'&emsp; (จำนวนเช็ค </div></td> 
-                        <td align="left"> '. count($count_pay) .'&nbsp; ใบ)  </td>
+                        <td  align="right" style="border-top: 2px  double ;border-bottom: 2px  double ;" >'.number_format($cheque_total_page,2).'</td> 
+                        <td  ><div><b> ยอดเช็คลงบัญชีสุทธิ  &emsp; = </b>&nbsp;&nbsp;'.number_format($cheque_total_page,2).'&nbsp;&nbsp;
+                          </div></td> 
+                        <td align="left"> ( จำนวนเช็ค&nbsp;'. $count_pay.'&nbsp; ใบ )  </td>
                     </tr>
 
                     <tr>
                         <td colspan="11" align="center"> </td>
                     </tr>
-                    </tr>
+                  
                     <tr>
-                        <td  align="right" style="padding:20    px 20px;"><b>รวมบัญชี </d></td>
-                        <td  align="left"  style="padding:20px 20px;" ><b>เช็คจ่ายล่วงหน้า </b></td>
+                        <td  align="right" style="padding:20    px 20px;"><b>รวมทั้งสิ้น </d></td>
+                        <td  align="left"  style="padding:20px 20px;" ><b> </b></td>
                         <td  align="right"  ></td>             
-                        <td  align="right" style="border-top: 2px  double ;border-bottom: 2px  double ;" >'.number_format($cheque_total,2).'</td> 
-                        <td  ><div><b> ยอดเช็คลงบัญชีสุทธิ  &emsp;&emsp; = </b>&emsp;'.number_format($cheque_total_page,2).'&emsp; (จำนวนเช็ค </div></td> 
-                        <td align="left"> '. count($journal_reports) .'&nbsp; ใบ)  </td>
+                        <td  align="right" style="border-bottom: 2px  double ;" >'.number_format($cheque_total,2).'</td> 
+                        <td  ><div><b> ยอดเช็คลงบัญชีสุทธิ  &nbsp;&nbsp; = </b>&nbsp;&nbsp;'.number_format($cheque_total,2).'  </div></td> 
+                        <td align="left">( จำนวนเช็ค &nbsp;'. count($journal_reports) .' &nbsp; ใบ)  </td>
                     </tr>
                 </tfoot>
             </table>

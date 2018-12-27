@@ -94,6 +94,54 @@ class NotificationModel extends BaseModel{
         }
 
     }
+    function getNotificationByUnseen($user_id,$type ='',$str =''){
+        if($str != ""){
+            $str = "AND notification_seen_date ='' ";
+        }
+        if($type != "" ){
+            $str = "AND notification_type ='$type' ";
+        }
+        $sql = " SELECT * 
+        FROM tb_notification 
+        WHERE notification_seen='0' AND user_id = '$user_id' 
+        $str
+        ORDER BY STR_TO_DATE(notification_date,'%Y-%m-%d %H:%i:%s') DESC 
+         ";
+        
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+    function getNotificationBySeen($user_id,$type ='',$str =''){
+        if($str != ""){
+            $str = "AND notification_seen_date ='' ";
+        }
+        if($type != "" ){
+            $str = "AND notification_type ='$type' ";
+        }
+        $sql = " SELECT * 
+        FROM tb_notification 
+        WHERE notification_seen='1' AND user_id = '$user_id' 
+        $str
+        ORDER BY STR_TO_DATE(notification_date,'%Y-%m-%d %H:%i:%s') DESC 
+         ";
+        
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
 
 
     function getNotificationByType($user_id,$type,$str =''){
@@ -247,6 +295,21 @@ class NotificationModel extends BaseModel{
         $sql = " UPDATE tb_notification SET 
         notification_seen_date = NOW() , 
         notification_seen = '1'  
+        WHERE notification_id = $id 
+        ";
+
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+           return false;
+        }
+
+
+    }
+    function setNotificationUnSeenByID($id){
+        $sql = " UPDATE tb_notification SET 
+        notification_seen_date = '' , 
+        notification_seen = '0'  
         WHERE notification_id = $id 
         ";
 

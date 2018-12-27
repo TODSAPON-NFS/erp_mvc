@@ -495,11 +495,11 @@
                             '<span>Remark.</span>'+
                             '<input type="text" class="form-control" name="customer_purchase_order_list_remark[]" value="'+data_buffer[i].customer_purchase_order_list_remark+'" />'+
                         '</td>'+
-                        '<td><input type="text" class="form-control" name="customer_purchase_order_list_qty[]" value="'+data_buffer[i].customer_purchase_order_list_qty+'" onchange="update_sum(this);" /></td>'+
+                        '<td><input type="text" class="form-control" name="customer_purchase_order_list_qty[]" autocomplete="off" value="'+data_buffer[i].customer_purchase_order_list_qty+'" onchange="update_sum(this);" /></td>'+
                         '<td>'+
-                            '<input type="text" class="form-control" name="customer_purchase_order_list_price[]" onchange="update_sum(this);" />'+
+                            '<input type="text" class="form-control" name="customer_purchase_order_list_price[]" autocomplete="off" onchange="update_sum(this);" />'+
                         '</td>'+
-                        '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
+                        '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" autocomplete="off" onchange="update_sum(this);" /></td>'+
                         '<td></td>'+
                         '<td>'+
                             '<input type="hidden" name="end_user_id[]" class="form-control" />'+
@@ -566,11 +566,11 @@
                     '<span>Remark.</span>'+
                     '<input type="text" class="form-control" name="customer_purchase_order_list_remark[]" />'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_qty[]" onchange="update_sum(this);" /></td>'+
+                '<td><input type="text" class="form-control" name="customer_purchase_order_list_qty[]" autocomplete="off" onchange="update_sum(this);" /></td>'+
                 '<td>'+
-                    '<input type="text" class="form-control" name="customer_purchase_order_list_price[]" onchange="update_sum(this);" />'+
+                    '<input type="text" class="form-control" name="customer_purchase_order_list_price[]" autocomplete="off" onchange="update_sum(this);" />'+
                 '</td>'+
-                '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
+                '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" autocomplete="off" onchange="update_sum(this);" /></td>'+
                 '<td></td>'+
                 '<td>'+
                     '<input type="hidden" name="end_user_id[]" class="form-control" />'+
@@ -663,7 +663,6 @@
             <div class="panel-body">
                 <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=customer_purchase_order&action=edit&id=<?php echo $customer_purchase_order_id;?>" enctype="multipart/form-data">
                     <input type="hidden"  id="customer_purchase_order_id" name="customer_purchase_order_id" value="<?php echo $customer_purchase_order_id; ?>" />
-                    <input type="hidden"  id="customer_purchase_order_date" name="customer_purchase_order_date" value="<?php echo $customer_purchase_order['customer_purchase_order_date']; ?>" />
                     <input type="hidden"  id="customer_purchase_order_file_o" name="customer_purchase_order_file_o" value="<?php echo $delivery_note_customer['customer_purchase_order_file_o']; ?>" /> 
                 
                     <div class="row">
@@ -825,9 +824,9 @@
                                     <span>Remark.</span>
                                     <input type="text" class="form-control" name="customer_purchase_order_list_remark[]" value="<?php echo $customer_purchase_order_lists[$i]['customer_purchase_order_list_remark']; ?>" />
                                 </td>
-                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_qty[]" value="<?php echo number_format($customer_purchase_order_lists[$i]['customer_purchase_order_list_qty'],2); ?>" /></td>
-                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_price[]" value="<?php echo number_format($customer_purchase_order_lists[$i]['customer_purchase_order_list_price'],2); ?>" /></td>
-                                <td><input type="text" class="form-control" onchange="update_sum(this);" name="customer_purchase_order_list_price_sum[]" value="<?php echo number_format($customer_purchase_order_lists[$i]['customer_purchase_order_list_price_sum'],2); ?>" /></td>
+                                <td><input type="text" class="form-control" onchange="update_sum(this);" autocomplete="off" name="customer_purchase_order_list_qty[]" value="<?php echo number_format($customer_purchase_order_lists[$i]['customer_purchase_order_list_qty'],2); ?>" /></td>
+                                <td><input type="text" class="form-control" onchange="update_sum(this);" autocomplete="off" name="customer_purchase_order_list_price[]" value="<?php echo number_format($customer_purchase_order_lists[$i]['customer_purchase_order_list_price'],2); ?>" /></td>
+                                <td><input type="text" class="form-control" onchange="update_sum(this);" autocomplete="off" name="customer_purchase_order_list_price_sum[]" value="<?php echo number_format($customer_purchase_order_lists[$i]['customer_purchase_order_list_price_sum'],2); ?>" /></td>
                                 <td>
                                     <a href="javascript:;" onclick="show_row_from(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> 

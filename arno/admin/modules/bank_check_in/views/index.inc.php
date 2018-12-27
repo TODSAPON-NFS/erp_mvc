@@ -146,7 +146,7 @@ if(!isset($_GET['action'])){
         $data['bank_branch'] = $_POST['bank_branch'];
         $data['customer_id'] = $_POST['customer_id'];
         $data['check_remark'] = $_POST['check_remark'];
-        $data['check_total'] = $_POST['check_total'];
+        $data['check_total'] = (float)filter_var($_POST['check_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['check_type'] = '0';
         $data['addby'] = $user[0][0];
 
@@ -173,7 +173,7 @@ if(!isset($_GET['action'])){
         $data['bank_branch'] = $_POST['bank_branch'];
         $data['customer_id'] = $_POST['customer_id'];
         $data['check_remark'] = $_POST['check_remark'];
-        $data['check_total'] = $_POST['check_total'];
+        $data['check_total'] = (float)filter_var($_POST['check_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['check_type'] = '0';
         $data['lastupdate'] = $user[0][0];
 

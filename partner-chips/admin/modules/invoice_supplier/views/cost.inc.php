@@ -1,12 +1,10 @@
 <script>
-
 function calculate(id,all_duty){
     var cost_price_ex_total =  document.getElementsByName("cost_price_ex_total[]");
     var invoice_supplier_list_id =  document.getElementsByName("invoice_supplier_list_id[]");
     var invoice_supplier_list_duty_fix =  document.getElementsByName("invoice_supplier_list_duty_fix[]");
     var invoice_supplier_list_duty_percent = document.getElementsByName("invoice_supplier_list_duty_percent[]");
     var invoice_supplier_list_duty = document.getElementsByName("invoice_supplier_list_duty[]");
-
     var sum = 0.0;
     var total = 0.0;
     var count = 0;
@@ -24,9 +22,7 @@ function calculate(id,all_duty){
         }
         sum += duty;
     }
-
     all_duty = all_duty - sum;
-
     for(var i = 0 ; i < (invoice_supplier_list_duty_fix.length); i++){
         var duty = 0.0;
         var ex_total = parseFloat(cost_price_ex_total[i].value.replace(',',''));
@@ -36,9 +32,6 @@ function calculate(id,all_duty){
             invoice_supplier_list_duty_percent[i].value = (duty/ex_total*100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"); 
         }
     }
-
-
-
 }
 </script>
 <div class="row">
@@ -202,25 +195,18 @@ function calculate(id,all_duty){
                             $cost_price_total_s = 0;
                             $cost_price_ex_total_s = 0;
                             for($i=0; $i < count($invoice_supplier_lists); $i++){
+                                $invoice_supplier_lists[$i]['invoice_supplier_list_price']  = $invoice_supplier_lists[$i]['purchase_order_list_price'];
                                 $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
-                                $cost_price = $invoice_supplier_lists[$i]['purchase_order_list_price'] ;
+                                $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
                                 $cost_duty += $cost_qty * $cost_price;
                             }
-
                             for($i=0; $i < count($invoice_supplier_lists); $i++){
                                 $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
-
-                                $cost_price = $invoice_supplier_lists[$i]['purchase_order_list_price'] ;
-
-                                $cost_price_ex = $invoice_supplier_lists[$i]['purchase_order_list_price'] * $exchange_rate_baht['exchange_rate_baht_value'];
-
+                                $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
+                                $cost_price_ex = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] * $exchange_rate_baht['exchange_rate_baht_value'];
                                 $cost_price_total = $cost_qty * $cost_price;
-
                                 $cost_price_ex_total = $cost_qty * $cost_price_ex;
-
-
                                 $cost_price_duty = $cost_price_ex_total * $invoice_supplier_lists[$i]['invoice_supplier_list_duty_percent']/100;
-
                                 $cost_price_f = $cost_price_total / $cost_duty * $invoice_supplier['freight_in'];
                                 $cost_total = $cost_price_f + $cost_price_duty + $cost_price_ex_total;
                             ?>
@@ -251,7 +237,7 @@ function calculate(id,all_duty){
                                                 <span><b>Fix.</b></span>
                                             </td>
                                             <td>
-                                                <input name="invoice_supplier_list_duty_fix[]" type="checkbox" value="<?php echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id']; ?>" />
+                                                <input name="invoice_supplier_list_duty_fix[]" type="checkbox" value="1" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -267,34 +253,13 @@ function calculate(id,all_duty){
                                                 <span><b>Price.</b></span>
                                             </td>
                                             <td>
-                                                <input name="invoice_supplier_list_duty_fix[]" type="text" style="text-align:right;" class="form-control" value="<?php 
-                                                if($invoice_supplier_lists[$i]['invoice_supplier_list_duty_fix'] != '0'){ 
-                                                    echo number_format( $invoice_supplier_lists[$i]['invoice_supplier_list_duty_fix'] , 2);
-                                                }else{
-                                                    echo  number_format($cost_price_ex_total * $invoice_supplier_lists[$i]['invoice_supplier_list_duty_percent'] / 100,2);
-                                                 } ?>"  />
+                                                <input name="invoice_supplier_list_duty[]" type="text" style="text-align:right;" class="form-control" value="<?php echo  number_format($cost_price_ex_total * $invoice_supplier_lists[$i]['invoice_supplier_list_duty_percent'] / 100,2); ?>"  readonly />
                                             </td>
                                         </tr>
                                     </table>
                                     
                                 </td>
-                                <td >
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <span><b>Fix.</b></span>
-                                            </td>
-                                            <td>
-                                                <input name="invoice_supplier_list_duty_fix[]" type="checkbox" value="<?php echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id']; ?>" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <input name="invoice_supplier_list_freight_fix[]" type="text" style="text-align:right;" class="form-control" value="<?php echo  number_format($cost_price_f,2); ?>"  />
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
+                                <td align="right"><?php echo  number_format($cost_price_f,2); ?></td>
                                 <td align="right"><?php echo  number_format($cost_total,2); ?></td>
                             </tr>
                             <?
@@ -327,7 +292,7 @@ function calculate(id,all_duty){
                                 </td>
                                 <td style="text-align: right;">
                                 <?PHP
-                                    $total = $cost_price_ex_total_s + $invoice_supplier['import_duty'] + $invoice_supplier['freight_in'];
+                                    $total =  $total + $invoice_supplier['import_duty'] + $invoice_supplier['freight_in'];
                                     if($invoice_supplier['vat_type'] == 1){
                                         $total_val = $total - (($invoice_supplier['vat']/( 100 + $invoice_supplier['vat'] )) * $total);
                                     } else if($invoice_supplier['vat_type'] == 2){
@@ -336,7 +301,7 @@ function calculate(id,all_duty){
                                         $total_val = $total;
                                     }
                                 ?>
-                                    <?PHP echo number_format( $total_val ,2) ;?>
+                                    <?PHP echo number_format($total_val,2) ;?>
                                 </td>
                             </tr>
                             <tr class="odd gradeX">
@@ -423,3 +388,7 @@ function calculate(id,all_duty){
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+<script>
+calculate('<?php echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id']; ?>','<?php echo $invoice_supplier['import_duty'];?>');
+</script>

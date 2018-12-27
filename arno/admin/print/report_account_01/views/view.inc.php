@@ -2,8 +2,6 @@
 
 
 $total_total = 0;
-$total_credit = 0;
-$total_debit = 0;
 for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
     $html[$page_index] = '<style>
@@ -64,8 +62,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <th width="48"  style="border-top:1px solid black;border-bottom: 1px solid black;">ลำดับ</th> 
             <th width="100" style="border-top:1px solid black;border-bottom: 1px solid black;">เลขที่บัญชี</th>
             <th width="150" style="border-top:1px solid black;border-bottom: 1px solid black;">ชื่อบัญชี</th>
-            <th width="150" style="border-top:1px solid black;border-bottom: 1px solid black;">เดบิต</th>
-            <th width="150" style="border-top:1px solid black;border-bottom: 1px solid black;">เครดิต</th>   
+            <th width="150" style="border-top:1px solid black;border-bottom: 1px solid black;">หมวดบัญชี</th>
+            <th width="150" style="border-top:1px solid black;border-bottom: 1px solid black;">ประเภทบัญชี</th>
             
         </tr>
     </thead>
@@ -76,48 +74,23 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     
     //count($journal_reports)
     $total_page = 0;
-    $total_credit_page = 0;
-    $total_debit_page = 0;
     for($i=$page_index * $lines; $i < count($journal_reports) && $i < $page_index * $lines + $lines; $i++){
     
         
+        if ($journal_reports[$i]['account_type'] == 1) {
+            $zc =  "บัญชีควบคุม";
+        } else {
+            $zc = "บัญชีย่อย";
+        }
         
-
-    $journal_debit = 0;
-    $journal_credit = 0;
-    $debit='';
-    $credit='';
-            if($journal_reports[$i]['account_value'] < 0){
-                $journal_credit = abs($journal_reports[$i]['account_value']);
-                $journal_credit_sum += $journal_credit;
-               
-            }else{
-                 $journal_debit = abs($journal_reports[$i]['account_value']);
-                 $journal_debit_sum += $journal_debit;
-                 
-            }
-
-        $total_credit_page += $journal_credit;    
-        $total_debit_page +=  $journal_debit;
-        
-
-
-        $total_credit = $journal_credit_sum ;    
-        $total_debit =  $journal_debit_sum; 
-
-        
-      
-
-            $debit=number_format($journal_debit,2);          
-            $credit= number_format($journal_credit,2);
                 $html[$page_index] .= ' 
                 <tr >
                             <td align="center" >'.number_format($i + 1,0).'</td>
                             <td>'.$journal_reports[$i]['account_code'].'</td>
                             <td>'. $journal_reports[$i]['account_name_th'].'</td> 
-                            <td align="right"> '.$debit.' </td>
-                            <td align="right">'.$credit.'</td> 
-                            
+                            <td>'. $journal_reports[$i]['account_group_name'].'</td> 
+                            <td>'.$zc.'</td> 
+                    
                         </tr>
                 ';
 
@@ -127,56 +100,16 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     if($page_index+1 < $page_max){
         $html[$page_index] .= ' 
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td   style="border-top:1px solid black;border-bottom: 1px solid black;"></td>
-                        <td  align="left"  style="border-top:1px solid black;border-bottom: 1px solid black;"> <b>รวมแต่ละหน้า</b> </td>
-                        <td  align="right"  style="border-top:1px solid black;border-bottom: 1px solid black;" ></td>                     
-                        <td  align="right"  style="border-top:1px solid black;border-bottom: 1px solid black;" >'.number_format($total_debit_page,2).'</td> 
-                        <td  align="right"  style="border-top:1px solid black;border-bottom: 1px solid black;">'.number_format($total_credit_page,2).'</td>
-                    </tr>
-                </tfoot>
             </table>
         ';
     }else if($page_index == 0){
         $html[$page_index] .= ' 
                 </tbody>
-                <tfoot>  
-                    <tr>
-                        <td style="border-top:1px solid black;border-bottom: 1px solid black;"></td>
-                        <td  align="left"><div><b>รวมทั้งสิ้น งวด </b> '.$section_date.' (<b>เริ่มจาก</b> '.$date_start.' <b>ถึง</b> '.$date_end.') </div> </td>
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" ></td>
-                        
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($total_debit,2).'</td> 
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($total_credit,2).'</td>
-                    </tr>
-                </tfoot>
             </table>
         ';
     }else{
         $html[$page_index] .= ' 
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td  style="border-top:1px solid black;border-bottom: 1px dotted black;"></td>
-                        <td  align="left"   style="border-top:1px solid black;border-bottom: 1px dotted black;"><b>รวมแต่ละหน้า</b> </td>
-                        <td  align="right"  style="border-top:1px solid black;border-bottom: 1px dotted black;" ></td>
-                       
-                        <td  align="right"  style="border-top:1px solid black;border-bottom: 1px dotted black;" >'.number_format($total_debit_page,2).'</td> 
-                        <td  align="right"  style="border-top:1px solid black;border-bottom: 1px dotted black;" >'.number_format($total_credit_page,2).'</td>
-                    </tr>
-                    <tr>
-                        <td colspan="11" align="center"> </td>
-                    </tr>
-                    <tr>
-                        <td align="right"  style="border-bottom: 1px solid black;" > </td>
-                        <td align="left" style="border-bottom: 1px solid black;" ><div><b>รวมทั้งหมด </b></div> </td>
-                        <td style="border-bottom: 1px solid black;"  ></td>
-                        
-                        <td  align="right" style="border-bottom: 1px solid black;" >'.number_format($total_debit,2).'</td> 
-                        <td  align="right" style="border-bottom: 1px solid black;" >'.number_format($total_credit,2).'</td>
-                    </tr>
-                </tfoot>
             </table>
         ';
     }

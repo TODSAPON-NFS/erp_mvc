@@ -28,7 +28,7 @@
             <div class="panel-body">
                   <div class="col-lg-6">
                         <div class="form-group">
-                            <label>ถึงวันที่</label> 
+                            <label>วันที่</label> 
                             <div class="row">
                                 <div class="col-md-6">
                                     <input type="text" id="date_end" name="date_end" value="<?PHP echo $date_start;?>"  class="form-control calendar" readonly/>

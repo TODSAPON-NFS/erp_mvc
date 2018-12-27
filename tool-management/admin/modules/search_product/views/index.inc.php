@@ -20,6 +20,10 @@ if($_GET['page'] == '' || $_GET['page'] == '0'){
 $page_size = 100;
 
 $stock_group = $model_group->getStockGroupBy();
+
+if ($stock_group_id == ""){
+    $stock_group_id = $stock_group[0]["stock_group_id"];
+}
 $stock_list = $model_stock->getStockReportListBy($stock_group_id, $keyword);
 
 

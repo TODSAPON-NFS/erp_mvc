@@ -24,6 +24,7 @@
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 
     <script src="../lib/functions.js"></script>
+ 
 
     <!-- Morris Charts JavaScript -->
     <?php if($_GET['app'] =="" ){?>
@@ -103,19 +104,26 @@
     } );
 
 
+</script>
+
+
+<style>    
+div.dataTables_filter{
+    display: none;
+}
+</style>
+
+<script>
 
     $( function() {
+
+        
+
         $( "#draggable" ).draggable();
     } );
 
     
     </script>
-    <style>
-        div.dataTables_filter{
-            display: none;
-        }
-    </style>
-
 
 
 
@@ -188,7 +196,7 @@
         <div class="modal-content">
             <div class="modal-body" style="padding:40px 50px;">
                 <button type="button" class="close" data-dismiss="modal">&times;</button> 
-                <div align="center" style="padding:8px;"><img class="img-responsive logo" src="../../uploads/logo/partner-chips.jpg"></div>
+                <div align="center" style="padding:8px;"><img class="img-responsive logo" src="../../uploads/logo/arno.jpg"></div>
                 <div class="form-group">
                     <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
                     <input type="text" class="form-control" id="username" placeholder="Enter username">

@@ -497,10 +497,10 @@ function set_invoice_customer_row(data){
     var invoice_customer_vat_price_credit = 0 ;
     var invoice_customer_vat_price_debit = 0 ;
 
-    if(invoice_customer_vat_price >= 0){
-        invoice_customer_vat_price_debit = invoice_customer_vat_price
+    if(invoice_customer_vat_price <= 0){
+        invoice_customer_vat_price_debit = Math.abs(invoice_customer_vat_price)
     }else{
-        invoice_customer_vat_price_credit = Math.abs(invoice_customer_vat_price);
+        invoice_customer_vat_price_credit = invoice_customer_vat_price;
     }
 
     if(row_invoice_customer_add_id != null){

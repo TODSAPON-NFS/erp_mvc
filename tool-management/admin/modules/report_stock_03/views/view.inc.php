@@ -105,7 +105,7 @@
                         <button class="btn btn-danger" style="float:right; margin:0px 4px;" onclick="print('pdf','');">PDF</button>
                         <button class="btn btn-success" style="float:right; margin:0px 4px;" onclick="print('excel','');">Excel</button>
                         <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search('');">Search</button>
-                        <a href="index.php?app=report_stock_02" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
+                        <a href="index.php?app=report_stock_03" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
                     </div>
                 </div>
                 <br>

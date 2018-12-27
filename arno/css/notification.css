@@ -1,0 +1,148 @@
+/******์Start Notification modify ******/
+
+.notify {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.notify-active {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.dropdown-alerts {
+    height: 500px;
+    overflow: hidden;
+}
+
+.dropdown-alerts:hover {
+    overflow-y: scroll;
+}
+
+.scroll1::-webkit-scrollbar {
+    width: 5px;
+}
+
+.scroll1::-webkit-scrollbar-track {
+    background: #ddd;
+}
+
+.scroll1::-webkit-scrollbar-thumb {
+    background: #666;
+}
+
+.sticky-bot {
+    position: sticky;
+    bottom: 0;
+    background: #337ab7;
+    padding: 10px;
+    z-index: 1000;
+}
+
+.fa-notify {
+    font-size: 1.5em;
+}
+
+.panel-body-notify {
+    height: 700px;
+    overflow: hidden;
+    padding: 0px;
+}
+
+.panel-body-notify-dash {
+    height: 450px;
+    overflow: hidden;
+    padding: 0px;
+}
+
+.panel-body-notify:hover {
+    overflow-y: scroll;
+}
+
+.panel-body-notify-dash:hover {
+    overflow-y: scroll;
+}
+
+.panel-notify {
+    min-height: 0px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.panel-notify-success>.panel-heading {
+    color: #ffffff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+
+.panel-notify-success>.panel-heading a {
+    color: #ffffff;
+}
+
+.panel-notify-warning>.panel-heading {
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #eea236;
+}
+
+.panel-notify-warning>.panel-heading a {
+    color: #fff;
+}
+
+.panel-notify-info>.panel-heading {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
+.panel-notify-info>.panel-heading a {
+    color: #fff;
+}
+
+.panel-notify-danger>.panel-heading {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+
+.panel-notify-danger>.panel-heading a {
+    color: #fff;
+}
+
+.panel-notify-primary>.panel-heading {
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    /* color: #fff; */
+}
+
+.panel-notify-primary>.panel-heading a {
+    color: #fff;
+}
+
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    /* reset the text-align */
+    text-align: left;
+    /* inline-block space fix */
+    margin-right: -4px;
+}
+
+.see_all {
+    color: white !important;
+    width: 100%;
+}
+
+.see_all:focus,
+.see_all:hover {
+    color: white !important;
+    text-decoration: none;
+    background-color: #337ab7 !important;
+}
+
+/******์End Notification******/

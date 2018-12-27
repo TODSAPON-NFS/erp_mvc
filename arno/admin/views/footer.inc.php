@@ -19,7 +19,7 @@
 
     <!-- Custom Dropdown Theme JavaScript -->
     <script src="../template/dist/js/bootstrap-select.min.js"></script>
-
+    
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 
@@ -27,9 +27,11 @@
 
     <!-- Morris Charts JavaScript -->
     <?php if($_GET['app'] =="" ){?>
-    <script src="../template/vendor/raphael/raphael.min.js"></script>
+    <!-- <script src="../template/vendor/raphael/raphael.min.js"></script>
     <script src="../template/vendor/morrisjs/morris.min.js"></script>
-    <script src="../template/data/morris-data.js"></script>
+    <script src="../template/data/morris-data.js"></script> -->
+    <script src="../template/dist/js/Chart.min.js"></script>
+    <script src="../template/dist/js/Chart.bundle.min.js"></script>
     <?php }?>
 
     <script>

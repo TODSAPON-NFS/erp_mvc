@@ -433,12 +433,12 @@ class PurchaseOrderModel extends BaseModel{
 
         $sql = "SELECT  tb_purchase_request.purchase_request_id, purchase_request_code, tb_supplier.supplier_id, supplier_name_en , supplier_name_th 
                 FROM tb_purchase_request
-                LEFT JOIN tb_supplier  ON  tb_purchase_request.supplier_id = tb_supplier.supplier_id 
+                LEFT JOIN tb_supplier  ON  tb_purchase_request_list.supplier_id = tb_supplier.supplier_id 
                 LEFT JOIN tb_purchase_request_list ON  tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id
                 WHERE purchase_order_list_id = 0 
                 AND purchase_request_accept_status = 'Approve' 
                 AND purchase_request_type = 'Sale Blanked' 
-                GROUP BY tb_purchase_request.supplier_id , tb_purchase_request.purchase_request_id 
+                GROUP BY tb_purchase_request_list.supplier_id , tb_purchase_request.purchase_request_id 
                 
         ";
         $data = [];
@@ -574,6 +574,7 @@ class PurchaseOrderModel extends BaseModel{
             
 
             $sql_request = "SELECT tb_purchase_request_list.product_id, 
+            stock_group_id,
             purchase_request_list_id,
             '0' as customer_purchase_order_list_detail_id,
             '0' as delivery_note_supplier_list_id,
@@ -591,7 +592,7 @@ class PurchaseOrderModel extends BaseModel{
             LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id 
             LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id 
             LEFT JOIN tb_product_supplier ON tb_purchase_request_list.product_id = tb_product_supplier.product_id 
-            WHERE tb_purchase_request.supplier_id = '$supplier_id' 
+            WHERE tb_purchase_request_list.supplier_id = '$supplier_id' 
             AND tb_purchase_request.purchase_request_id = '$purchase_request_id' 
             AND purchase_order_list_id = 0  
             AND purchase_request_list_id NOT IN ($str_pr)  
@@ -684,6 +685,7 @@ class PurchaseOrderModel extends BaseModel{
             }
 
             $sql_dn = "SELECT tb_delivery_note_supplier_list.product_id, 
+            '0' as stock_group_id,
             '0' as purchase_request_list_id,
             '0' as customer_purchase_order_list_detail_id,
             delivery_note_supplier_list_id,
@@ -743,7 +745,8 @@ class PurchaseOrderModel extends BaseModel{
             }
 
 
-            $sql_rspt = "SELECT tb_request_standard_list.product_id, 
+            $sql_rspt = "SELECT tb_request_standard_list.product_id,  
+            '0' as stock_group_id,
             '0' as purchase_request_list_id,
             '0' as customer_purchase_order_list_detail_id,
             '0' as delivery_note_supplier_list_id,
@@ -781,7 +784,8 @@ class PurchaseOrderModel extends BaseModel{
             }
 
 
-            $sql_rst = "SELECT tb_request_special_list.product_id, 
+            $sql_rst = "SELECT tb_request_special_list.product_id,  
+            '0' as stock_group_id,
             '0' as purchase_request_list_id,
             '0' as customer_purchase_order_list_detail_id,
             '0' as delivery_note_supplier_list_id,
@@ -819,7 +823,8 @@ class PurchaseOrderModel extends BaseModel{
             }
 
 
-            $sql_rst = "SELECT tb_request_regrind_list.product_id, 
+            $sql_rst = "SELECT tb_request_regrind_list.product_id,  
+            '0' as stock_group_id,
             '0' as purchase_request_list_id,
             '0' as customer_purchase_order_list_detail_id,
             '0' as delivery_note_supplier_list_id,
@@ -910,7 +915,8 @@ class PurchaseOrderModel extends BaseModel{
 
 
 
-            $sql_request = "SELECT tb_purchase_request_list.product_id, 
+            $sql_request = "SELECT tb_purchase_request_list.product_id,  
+            stock_group_id,
             purchase_request_list_id,
             '0' as customer_purchase_order_list_detail_id,
             '0' as delivery_note_supplier_list_id,
@@ -922,16 +928,19 @@ class PurchaseOrderModel extends BaseModel{
             product_name, 
             purchase_request_list_delivery as purchase_order_list_delivery_min, 
             purchase_request_list_qty as purchase_order_list_qty, 
-            IFNULL(product_buyprice,0) as purchase_order_list_price ,
+            IFNULL(product_buyprice,0) as purchase_order_list_price , 
             CONCAT('PR : ',purchase_request_code) as purchase_order_list_remark 
             FROM tb_purchase_request 
             LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id 
             LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id 
             LEFT JOIN tb_product_supplier ON tb_purchase_request_list.product_id = tb_product_supplier.product_id 
-            WHERE tb_purchase_request.supplier_id = '$supplier_id' 
-            AND purchase_order_list_id = 0 
+            WHERE tb_purchase_request_list.supplier_id = '$supplier_id' 
+            AND purchase_order_list_id = '0' 
             AND purchase_request_list_id NOT IN ($str_pr) 
-            AND ( purchase_request_code LIKE ('%$search%') OR CONCAT(product_code_first,product_code) LIKE ('%$search%') )  
+            AND ( 
+                    purchase_request_code LIKE ('%$search%') 
+                    OR CONCAT(product_code_first,product_code) LIKE ('%$search%') 
+                )  
             AND purchase_request_type IN ('Sale','Use') 
             AND purchase_request_accept_status = 'Approve' 
             GROUP BY purchase_request_list_id 
@@ -953,7 +962,8 @@ class PurchaseOrderModel extends BaseModel{
 
         
 
-            $sql_customer = "SELECT tb_customer_purchase_order_list.product_id, 
+            $sql_customer = "SELECT tb_customer_purchase_order_list.product_id,  
+            stock_group_id,
             '0' as purchase_request_list_id,
             customer_purchase_order_list_detail_id,
             '0' as delivery_note_supplier_list_id,
@@ -988,7 +998,8 @@ class PurchaseOrderModel extends BaseModel{
                 
             }
 
-            $sql_dn = "SELECT tb_delivery_note_supplier_list.product_id, 
+            $sql_dn = "SELECT tb_delivery_note_supplier_list.product_id,   
+            '0' as stock_group_id,
             '0' as purchase_request_list_id,
             '0' as customer_purchase_order_list_detail_id,
             delivery_note_supplier_list_id,
@@ -1047,7 +1058,8 @@ class PurchaseOrderModel extends BaseModel{
 
 
             
-            $sql_customer = "SELECT tb_regrind_supplier_receive_list.product_id, 
+            $sql_customer = "SELECT tb_regrind_supplier_receive_list.product_id,   
+            '0' as stock_group_id,
             '0' as purchase_request_list_id,
             '0' as customer_purchase_order_list_detail_id,
             '0' as delivery_note_supplier_list_id,

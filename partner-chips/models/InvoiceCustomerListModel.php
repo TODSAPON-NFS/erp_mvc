@@ -29,7 +29,7 @@ class InvoiceCustomerListModel extends BaseModel{
         stock_group_id
         FROM tb_invoice_customer_list LEFT JOIN tb_product ON tb_invoice_customer_list.product_id = tb_product.product_id 
         WHERE invoice_customer_id = '$invoice_customer_id' 
-        ORDER BY invoice_customer_list_id 
+        ORDER BY invoice_customer_list_no , invoice_customer_list_id 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -65,6 +65,7 @@ class InvoiceCustomerListModel extends BaseModel{
     function insertInvoiceCustomerList($data = []){
         $sql = " INSERT INTO tb_invoice_customer_list (
             invoice_customer_id,
+            invoice_customer_list_no,
             product_id,
             invoice_customer_list_product_name,
             invoice_customer_list_product_detail,
@@ -80,6 +81,7 @@ class InvoiceCustomerListModel extends BaseModel{
             lastupdate
         ) VALUES (
             '".$data['invoice_customer_id']."', 
+            '".$data['invoice_customer_list_no']."', 
             '".$data['product_id']."', 
             '".$data['invoice_customer_list_product_name']."', 
             '".$data['invoice_customer_list_product_detail']."', 
@@ -128,6 +130,7 @@ class InvoiceCustomerListModel extends BaseModel{
 
         $sql = " UPDATE tb_invoice_customer_list 
             SET product_id = '".$data['product_id']."', 
+            invoice_customer_list_no = '".$data['invoice_customer_list_no']."', 
             invoice_customer_list_product_name = '".$data['invoice_customer_list_product_name']."', 
             invoice_customer_list_product_detail = '".$data['invoice_customer_list_product_detail']."',
             invoice_customer_list_qty = '".$data['invoice_customer_list_qty']."',

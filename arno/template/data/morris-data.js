@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
     Morris.Area({
         element: 'morris-area-chart',
@@ -61,8 +61,10 @@ $(function() {
         resize: true
     });
 
+
+
     Morris.Donut({
-        element: 'morris-donut-chart',
+        element: 'morris-donut-chart113',
         data: [{
             label: "Download Sales",
             value: 12
@@ -77,7 +79,7 @@ $(function() {
     });
 
     Morris.Bar({
-        element: 'morris-bar-chart',
+        element: 'morris-bar-chart11',
         data: [{
             y: '2006',
             a: 100,
@@ -113,5 +115,5 @@ $(function() {
         hideHover: 'auto',
         resize: true
     });
-    
+
 });

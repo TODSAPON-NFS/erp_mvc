@@ -9,6 +9,7 @@ require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/CustomerModel.php');
 require_once('../models/SupplierModel.php');
+require_once('../models/StockGroupModel.php');
 
 require_once('../functions/CodeGenerateFunction.func.php');
 require_once('../models/PaperModel.php');
@@ -26,6 +27,7 @@ $purchase_request_model = new PurchaseRequestModel;
 $purchase_request_list_model = new PurchaseRequestListModel;
 $product_model = new ProductModel;
 $supplier_model = new SupplierModel; 
+$stock_group_model = new StockGroupModel; 
 
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
@@ -92,6 +94,7 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
     $suppliers=$supplier_model->getSupplierBy();
+    $stock_groups=$stock_group_model->getStockGroupBy();
     $users=$user_model->getUserBy();
 
     $user=$user_model->getUserByID($admin_id);
@@ -120,6 +123,7 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
     $products=$product_model->getProductBy();
     $customers=$customer_model->getCustomerBy();
     $suppliers=$supplier_model->getSupplierBy();
+    $stock_groups=$stock_group_model->getStockGroupBy();
     $users=$user_model->getUserBy();
     $purchase_request = $purchase_request_model->getPurchaseRequestByID($purchase_request_id);
     $purchase_request_lists = $purchase_request_list_model->getPurchaseRequestListBy($purchase_request_id);
@@ -170,7 +174,6 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
         $data['purchase_request_accept_status'] = "Waiting";
         $data['employee_id'] = $_POST['employee_id'];
         $data['customer_id'] = $_POST['customer_id'];
-        $data['supplier_id'] = $_POST['supplier_id'];
         $data['purchase_request_remark'] = $_POST['purchase_request_remark'];
 
         $purchase_request_id = $purchase_request_model->insertPurchaseRequest($data); 
@@ -178,6 +181,8 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
         if($purchase_request_id != ''){
 
             $product_id = $_POST['product_id'];
+            $supplier_id = $_POST['supplier_id'];
+            $stock_group_id = $_POST['stock_group_id'];
             $purchase_request_list_id = $_POST['purchase_request_list_id'];
             $purchase_request_list_qty = $_POST['purchase_request_list_qty'];
             $purchase_request_list_delivery_min = $_POST['purchase_request_list_delivery'];
@@ -190,8 +195,11 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
                 for($i=0; $i < count($product_id) ; $i++){
                     $data = [];
                     $data['purchase_request_id'] = $purchase_request_id;
+                    $data['purchase_request_list_no'] = $i;
                     $data['purchase_request_list_id'] = $purchase_request_id.date("YmdHisu").$i;
                     $data['product_id'] = $product_id[$i];
+                    $data['supplier_id'] = $supplier_id[$i];
+                    $data['stock_group_id'] = $stock_group_id[$i];
                     $data['purchase_request_list_qty'] = $purchase_request_list_qty[$i];
                     $data['purchase_request_list_delivery'] = $purchase_request_list_delivery_min[$i];
                     $data['purchase_request_list_remark'] = $purchase_request_list_remark[$i];
@@ -207,8 +215,11 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
             }else{
                 $data = [];
                 $data['purchase_request_list_id'] = $purchase_request_id.date("YmdHisu").$i;
+                $data['purchase_request_list_no'] = 0;
                 $data['purchase_request_id'] = $purchase_request_id;
                 $data['product_id'] = $product_id;
+                $data['supplier_id'] = $supplier_id;
+                $data['stock_group_id'] = $stock_group_id;
                 $data['purchase_request_list_qty'] = $purchase_request_list_qty;
                 $data['purchase_request_list_delivery'] = $purchase_request_list_delivery_min;
                 $data['purchase_request_list_remark'] = $purchase_request_list_remark;
@@ -224,7 +235,7 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
 <?php
         }else{
 ?>
-        <script>//window.history.back();</script>
+        <script>window.history.back();</script>
 <?php
         }
     }else{
@@ -250,8 +261,9 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
 
         $output = $purchase_request_model->updatePurchaseRequestByID($purchase_request_id,$data);
 
-       
         $product_id = $_POST['product_id'];
+        $supplier_id = $_POST['supplier_id'];
+        $stock_group_id = $_POST['stock_group_id'];
         $purchase_request_list_id = $_POST['purchase_request_list_id'];
         $purchase_request_list_qty = $_POST['purchase_request_list_qty'];
         $purchase_request_list_delivery_min = $_POST['purchase_request_list_delivery'];
@@ -265,6 +277,8 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
                 $data['purchase_request_list_id'] = $purchase_request_id.date("YmdHisu").$i;
                 $data['purchase_request_id'] = $purchase_request_id;
                 $data['product_id'] = $product_id[$i];
+                $data['supplier_id'] = $supplier_id[$i];
+                $data['stock_group_id'] = $stock_group_id[$i];
                 $data['purchase_request_list_qty'] = $purchase_request_list_qty[$i];
                 $data['purchase_request_list_delivery'] = $purchase_request_list_delivery_min[$i];
                 $data['purchase_request_list_remark'] = $purchase_request_list_remark[$i];
@@ -280,6 +294,8 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
             $data['purchase_request_list_id'] = $purchase_request_id.date("YmdHisu").$i;
             $data['purchase_request_id'] = $purchase_request_id;
             $data['product_id'] = $product_id;
+            $data['supplier_id'] = $supplier_id;
+            $data['stock_group_id'] = $stock_group_id;
             $data['purchase_request_list_qty'] = $purchase_request_list_qty;
             $data['purchase_request_list_delivery'] = $purchase_request_list_delivery_min;
             $data['purchase_request_list_remark'] = $purchase_request_list_remark;
@@ -339,6 +355,8 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
                     $data['purchase_request_id'] = $purchase_request_id;
                     $data['purchase_request_list_id'] = $purchase_request_id.date("YmdHisu").$i;
                     $data['product_id'] = $purchase_request_lists[$i]['product_id'];
+                    $data['supplier_id'] = $purchase_request_lists[$i]['supplier_id'];
+                    $data['stock_group_id'] = $purchase_request_lists[$i]['stock_group_id'];
                     $data['purchase_request_list_qty'] = $purchase_request_lists[$i]['purchase_request_list_qty'];
                     $data['purchase_request_list_delivery'] = $purchase_request_lists[$i]['purchase_request_list_delivery_min'];
                     $data['purchase_request_list_remark'] = $purchase_request_lists[$i]['purchase_request_list_remark'];

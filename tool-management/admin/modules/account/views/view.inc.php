@@ -1,18 +1,18 @@
 <script>
     function check(){   
-        var account_name = document.getElementById("account_name").value;
-        var account_detail = document.getElementById("account_detail").value;
+        var account_name_th = document.getElementById("account_name_th").value;
+        var account_code = document.getElementById("account_code").value;
        
-        account_name = $.trim(account_name);
-        account_detail = $.trim(account_detail);
+        account_name_th = $.trim(account_name_th);
+        account_code = $.trim(account_code);
         
-       if(account_name.length == 0){
+       if(account_name_th.length == 0){
             alert("Please input logistic name");
-            document.getElementById("account_name").focus();
+            document.getElementById("account_name_th").focus();
             return false;
-        }else  if(account_detail.length == 0){
+        }else  if(account_code.length == 0){
             alert("Please input detail name english");
-            document.getElementById("account_detail").focus();
+            document.getElementById("account_code").focus();
             return false;
         }else{
             return true;

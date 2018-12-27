@@ -18,8 +18,10 @@ class InvoiceSupplierListModel extends BaseModel{
         invoice_supplier_list_id,
         CONCAT(product_code_first,product_code) as product_code, 
         product_name, 
+        stock_group_name, 
         tb_invoice_supplier_list.purchase_order_list_id,
         purchase_order_list_price,
+        purchase_order_list_price_sum,
         tb_invoice_supplier_list.stock_group_id,
         invoice_supplier_list_product_name, 
         invoice_supplier_list_product_detail, 
@@ -31,9 +33,10 @@ class InvoiceSupplierListModel extends BaseModel{
         invoice_supplier_list_remark 
         FROM tb_invoice_supplier_list 
         LEFT JOIN tb_product ON tb_invoice_supplier_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_stock_group ON tb_invoice_supplier_list.stock_group_id = tb_stock_group.stock_group_id 
         LEFT JOIN tb_purchase_order_list ON tb_invoice_supplier_list.purchase_order_list_id = tb_purchase_order_list.purchase_order_list_id 
         WHERE invoice_supplier_id = '$invoice_supplier_id' 
-        ORDER BY invoice_supplier_list_id 
+        ORDER BY invoice_supplier_list_no ,invoice_supplier_list_id 
         "; 
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -68,6 +71,7 @@ class InvoiceSupplierListModel extends BaseModel{
     function insertInvoiceSupplierList($data = []){
         $sql = " INSERT INTO tb_invoice_supplier_list ( 
             invoice_supplier_id,
+            invoice_supplier_list_no,
             product_id,
             invoice_supplier_list_product_name,
             invoice_supplier_list_product_detail,
@@ -85,6 +89,7 @@ class InvoiceSupplierListModel extends BaseModel{
             lastupdate
         ) VALUES ( 
             '".$data['invoice_supplier_id']."', 
+            '".$data['invoice_supplier_list_no']."', 
             '".$data['product_id']."', 
             '".$data['invoice_supplier_list_product_name']."', 
             '".$data['invoice_supplier_list_product_detail']."', 
@@ -124,6 +129,7 @@ class InvoiceSupplierListModel extends BaseModel{
 
         $sql = " UPDATE tb_invoice_supplier_list 
             SET product_id = '".$data['product_id']."', 
+            invoice_supplier_list_no = '".$data['invoice_supplier_list_no']."',  
             invoice_supplier_list_product_name = '".$data['invoice_supplier_list_product_name']."',  
             invoice_supplier_list_product_detail = '".$data['invoice_supplier_list_product_detail']."', 
             invoice_supplier_list_qty = '".$data['invoice_supplier_list_qty']."', 

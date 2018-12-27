@@ -32,14 +32,14 @@ $html_head_pdf = '
         </tr> 
         <tr> 
             <td colspan="1" align="left" width="80px" ><b>ลักษณะ </b></td>
-            <td colspan="1" > '.$product_category.' </td>
+            <td colspan="1" > '.$product_category['product_category_name'].' </td>
             <td colspan="1" align="center"></td>
             <td colspan="1" ></td>
             <td colspan="7" ></td> 
         </tr>
         <tr> 
             <td colspan="1" align="left" width="80px" ><b>ประเภท </b></td>
-            <td colspan="1" > '.$product_type.' </td>
+            <td colspan="1" > '.$product_type['product_type_name'].' </td>
             <td colspan="1" align="center"></td>
             <td colspan="1" ></td>
             <td colspan="7" ></td> 

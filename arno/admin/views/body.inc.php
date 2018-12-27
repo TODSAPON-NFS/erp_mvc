@@ -276,6 +276,8 @@
         require_once("modules/report_account_07/views/index.inc.php");
     }else if($_GET['app'] == "report_account_08"){
         require_once("modules/report_account_08/views/index.inc.php");
+    }else if($_GET['app'] == "report_account_09"){
+        require_once("modules/report_account_09/views/index.inc.php");
     }
 
     else if($_GET['app'] == "report_stock_01"){

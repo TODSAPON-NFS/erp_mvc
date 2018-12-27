@@ -845,6 +845,9 @@
                                         <li>
                                             <a href="?app=report_account_08" <?PHP if($_GET['app'] == "report_account_08"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายงานเช็ครับ </a>
                                         </li>
+                                        <li>
+                                            <a href="?app=report_account_09" <?PHP if($_GET['app'] == "report_account_09"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายงานยอดขาย </a>
+                                        </li>
                                     </ul>
                                 </li>
 

@@ -306,6 +306,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
                     $data_sub = [];
                     $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
                     $data_sub['invoice_supplier_list_id'] = $invoice_supplier_id.date("YmdHisu").$i;
+                    $data_sub['invoice_supplier_list_no'] = $i;
                     $data_sub['product_id'] = $product_id[$i];
                     $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
                     
@@ -344,6 +345,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
                 $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
                 $data_sub['invoice_supplier_list_id'] = $invoice_supplier_id.date("YmdHisu").$i;
                 $data_sub['product_id'] = $product_id;
+                $data_sub['invoice_supplier_list_no'] = 0;
                 $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
                 
                 $data_sub['invoice_supplier_list_product_name'] = $invoice_supplier_list_product_name;
@@ -446,7 +448,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
                 $data_sub = [];
                 $data_sub['invoice_supplier_id'] = $invoice_supplier_id;
                 $data_sub['invoice_supplier_list_id'] = $invoice_supplier_id.date("YmdHisu").$i;
-
+                $data_sub['invoice_supplier_list_no'] = $i;
                 $data_sub['product_id'] = $product_id[$i];
 
                 $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
@@ -493,7 +495,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
             $data_sub['invoice_supplier_list_id'] = $invoice_supplier_id.date("YmdHisu").$i;
             $data_sub['product_id'] = $product_id;
             $data_sub['stock_date'] = $data['invoice_supplier_date_recieve'];
-
+            $data_sub['invoice_supplier_list_no'] = 0;
             $data_sub['old_cost'] = $old_cost;
             $data_sub['old_qty'] = $old_qty;
             $data_sub['invoice_supplier_list_product_name'] = $invoice_supplier_list_product_name;

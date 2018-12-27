@@ -732,6 +732,8 @@ class JournalReportModel extends BaseModel{
 
         $sql =" SELECT *
                 FROM tb_account 
+                JOIN tb_account_group
+                ON tb_account.account_group = tb_account_group.account_group_id
                 LEFT JOIN  (($sql_general)  
                 UNION   ALL  ($sql_purchase) 
                 UNION   ALL  ($sql_sale) 
@@ -753,6 +755,47 @@ class JournalReportModel extends BaseModel{
 
     } 
 
+    
+    //#####################################################################################################################
+    //
+    //
+    //-------------------------------- ดึงยอดขายทั้งหมด (เเสดงทั้งหมด)------------------------------
+    //
+    //
+    //#####################################################################################################################
+
+    function getJournalSalesReportShowAllBy($date_start="", $date_end = ""){
+        
+        $str_date = ""; 
+
+        if($date_start != "" && $date_end != ""){
+            $str_date = "AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+        }else if ($date_start != ""){
+            $str_date = "AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+        }else if ($date_end != ""){
+            $str_date = "AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        } 
+
+              $sql =" SELECT *
+                      FROM tb_invoice_customer 
+                      LEFT JOIN tb_customer  ON (tb_invoice_customer.customer_id = tb_customer.customer_id)
+                      LEFT JOIN tb_user ON (tb_invoice_customer.employee_id = tb_user.user_id)
+                      WHERE 1 
+                      $str_date 
+                      ORDER BY `tb_user`.`user_username` ASC
+              ";  
+            //   echo '<pre>'.$sql.'</pre>';
+              if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                  $data = [];
+                  while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                      $data[] = $row;
+                  }
+                  $result->close();
+                  return $data;
+              }
+      
+          } 
+      
 
 
 

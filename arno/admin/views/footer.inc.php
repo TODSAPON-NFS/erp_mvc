@@ -24,6 +24,7 @@
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 
     <script src="../lib/functions.js"></script>
+ 
 
     <!-- Morris Charts JavaScript -->
     <?php if($_GET['app'] =="" ){?>
@@ -103,19 +104,26 @@
     } );
 
 
+</script>
+
+
+<style>    
+div.dataTables_filter{
+    display: none;
+}
+</style>
+
+<script>
 
     $( function() {
+
+        
+
         $( "#draggable" ).draggable();
     } );
 
     
     </script>
-    <style>
-        div.dataTables_filter{
-            display: none;
-        }
-    </style>
-
 
 
 

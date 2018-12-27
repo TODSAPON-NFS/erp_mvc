@@ -13,13 +13,16 @@ class PurchaseRequestListModel extends BaseModel{
         $sql = " SELECT tb_purchase_request_list.product_id, 
         CONCAT(product_code_first,product_code) as product_code, 
         product_name,   
+        product_description,   
         purchase_request_list_id, 
-        purchase_request_list_qty,
+        purchase_request_list_qty, 
+        stock_group_id,
+        supplier_id,
         purchase_request_list_delivery,
         purchase_request_list_remark 
         FROM tb_purchase_request_list LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id 
         WHERE purchase_request_id = '$purchase_request_id' 
-        ORDER BY purchase_request_list_id 
+        ORDER BY purchase_request_list_no, purchase_request_list_id 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -37,6 +40,9 @@ class PurchaseRequestListModel extends BaseModel{
     function insertPurchaseRequestList($data = []){
         $sql = " INSERT INTO tb_purchase_request_list ( 
             purchase_request_id,
+            purchase_request_list_no,
+            stock_group_id,
+            supplier_id,
             product_id,
             purchase_request_list_qty,
             purchase_request_list_delivery,
@@ -47,6 +53,9 @@ class PurchaseRequestListModel extends BaseModel{
             lastupdate
         ) VALUES ( 
             '".$data['purchase_request_id']."', 
+            '".$data['purchase_request_list_no']."', 
+            '".$data['stock_group_id']."', 
+            '".$data['supplier_id']."', 
             '".$data['product_id']."', 
             '".$data['purchase_request_list_qty']."', 
             '".$data['purchase_request_list_delivery']."', 
@@ -57,6 +66,8 @@ class PurchaseRequestListModel extends BaseModel{
             NOW() 
         ); 
         ";
+
+        //echo $sql."<br>";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             return mysqli_insert_id(static::$db);
@@ -70,6 +81,9 @@ class PurchaseRequestListModel extends BaseModel{
 
         $sql = " UPDATE tb_purchase_request_list 
             SET product_id = '".$data['product_id']."', 
+            purchase_request_list_no = '".$data['purchase_request_list_no']."',
+            stock_group_id = '".$data['stock_group_id']."',
+            supplier_id = '".$data['supplier_id']."',
             purchase_request_list_qty = '".$data['purchase_request_list_qty']."',
             purchase_request_list_delivery = '".$data['purchase_request_list_delivery']."', 
             purchase_request_list_remark = '".$data['purchase_request_list_remark']."' 

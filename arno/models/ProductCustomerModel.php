@@ -1,5 +1,7 @@
 <?php
 
+//ALTER TABLE `tb_product_customer` ADD `maximum_stock` INT NOT NULL AFTER `safety_stock`;
+
 require_once("BaseModel.php");
 class ProductCustomerModel extends BaseModel{
 
@@ -10,7 +12,7 @@ class ProductCustomerModel extends BaseModel{
     }
 
     function getProductCustomerBy($product_id,$customer_name_th = '',$customer_name_en = ''){
-        $sql = " SELECT product_customer_id, customer_name_th, customer_name_en, minimum_stock, safety_stock, product_status    
+        $sql = " SELECT product_customer_id, customer_name_th, customer_name_en, minimum_stock, safety_stock ,maximum_stock, product_status    
         FROM tb_product_customer LEFT JOIN tb_customer ON (tb_product_customer.customer_id = tb_customer.customer_id)
         WHERE product_id = '$product_id' 
         AND ( customer_name_th LIKE ('%$customer_name_th%') 
@@ -52,6 +54,7 @@ class ProductCustomerModel extends BaseModel{
         customer_id = '".$data['customer_id']."',   
         minimum_stock = '".$data['minimum_stock']."', 
         safety_stock = '".$data['safety_stock']."', 
+        maximum_stock = '".$data['maximum_stock']."', 
         product_status = '".$data['product_status']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = NOW() 
@@ -74,6 +77,7 @@ class ProductCustomerModel extends BaseModel{
             customer_id,
             minimum_stock,
             safety_stock,
+            maximum_stock,
             product_status,
             addby,
             adddate,
@@ -84,6 +88,7 @@ class ProductCustomerModel extends BaseModel{
             '".$data['customer_id']."', 
             '".$data['minimum_stock']."', 
             '".$data['safety_stock']."', 
+            '".$data['maximum_stock']."', 
             '".$data['product_status']."', 
             '".$data['addby']."', 
             NOW(), 

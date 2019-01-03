@@ -458,9 +458,11 @@
                         '</td>'+
                         '<td><input type="text" class="form-control" name="purchase_order_list_delivery_min[]" readonly /></td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_qty[]" onchange="update_sum(this);" value="'+data_buffer[i].purchase_order_list_qty+'"/></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price[]" onchange="update_sum(this);" value="'+data_buffer[i].purchase_order_list_price+'"/></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" value="'+(data_buffer[i].purchase_order_list_qty * data_buffer[i].purchase_order_list_price)+'"/></td>'+
-                        
+                        '<td >'+
+                            '<input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price[]" onchange="update_sum(this);" value="'+data_buffer[i].purchase_order_list_price+'"/>'+
+                            '<input type="checkbox" name="save_product_price[]" value="'+ data_buffer[i].product_id +'" /> บันทึกราคาซื้อ'+ 
+                        '</td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" value="'+(data_buffer[i].purchase_order_list_qty * data_buffer[i].purchase_order_list_price)+'"/></td>'+ 
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
@@ -474,6 +476,7 @@
             }
             
         }
+        update_line();
         calculateAll();
     }
 
@@ -514,7 +517,10 @@
                 '</td>'+
                 '<td><input type="text" class="form-control" name="purchase_order_list_delivery_min[]" readonly /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_qty[]"  onchange="update_sum(this);" value="1"/></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price[]" onchange="update_sum(this);" /></td>'+
+                '<td >'+
+                    '<input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price[]" onchange="update_sum(this);" />'+ 
+                    '<input type="checkbox" name="save_product_price[]" value="" /> บันทึกราคาซื้อ'+
+                '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
                 
                 '<td>'+
@@ -525,6 +531,7 @@
             '</tr>'
         );
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('input[name="purchase_order_list_delivery_min[]"]').datepicker({ dateFormat: 'dd-mm-yy' });
+        update_line();
     }
 
 
@@ -716,7 +723,10 @@
                                     <input type="text" class="form-control calendar" name="purchase_order_list_delivery_min[]" readonly value="<?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']; ?>" />
                                 </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off"  onchange="update_sum(this);" name="purchase_order_list_qty[]" value="<?php echo $purchase_order_lists[$i]['purchase_order_list_qty']; ?>" /></td>
-                                <td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off"  onchange="update_sum(this);" name="purchase_order_list_price[]" value="<?php echo number_format($purchase_order_lists[$i]['purchase_order_list_price'],2); ?>" /></td>
+                                <td>
+                                    <input type="text" class="form-control" style="text-align: right;" autocomplete="off"  onchange="update_sum(this);" name="purchase_order_list_price[]" value="<?php echo number_format($purchase_order_lists[$i]['purchase_order_list_price'],2); ?>" />
+                                    <input type="checkbox" name="save_product_price[]" value="<?php echo $invoice_customer_lists[$i]['product_id']; ?>"/> บันทึกราคาซื้อ
+                                </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" readonly onchange="update_sum(this);" name="purchase_order_list_price_sum[]" value="<?php echo number_format($purchase_order_lists[$i]['purchase_order_list_qty'] * $purchase_order_lists[$i]['purchase_order_list_price'],2); ?>" /></td>
                                 
                                 <td>
@@ -758,11 +768,11 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="24"><input type="checkbox" value="all" id="check_all" onclick="checkAll(this)" /></th>
-                                                        <th style="text-align:center;">รหัสสินค้า <br> (Product Code)</th>
-                                                        <th style="text-align:center;">ชื่อสินค้า <br> (Product Detail)</th>
-                                                        <th style="text-align:center;" width="150">จำนวน <br> (Qty)</th>
-                                                        <th style="text-align:center;" width="150">ราคาต่อหน่วย <br> (Unit price) </th>
-                                                        <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount)</th>
+                                                        <th style="text-align:center;">รหัสสินค้า </th>
+                                                        <th style="text-align:center;">ชื่อสินค้า </th>
+                                                        <th style="text-align:center;" width="150">จำนวน </th>
+                                                        <th style="text-align:center;" width="150">ราคาต่อหน่วย </th>
+                                                        <th style="text-align:center;" width="150">จำนวนเงิน </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="bodyAdd">

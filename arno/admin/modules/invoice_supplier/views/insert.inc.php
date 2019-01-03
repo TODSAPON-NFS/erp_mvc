@@ -199,6 +199,9 @@
                 document.getElementById('invoice_supplier_tax').value = data.supplier_tax ;
                 document.getElementById('invoice_supplier_due_day').value = data.credit_day ;
                 document.getElementById('invoice_supplier_term').value = data.condition_pay ;
+                <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+                    $('span[name="currency"]').html(data.currency_sign);
+                <?PHP } ?>
             }
         });
 
@@ -525,8 +528,9 @@
                 var exchange_rate = parseFloat(document.getElementById('exchange_rate_baht').value.replace(',',''));
                 var qty =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="qty"]').val(  ).replace(',',''));
                 var purchase_price =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="price"]').val( ).replace(',',''));
+                var purchase_total = qty * purchase_price;
                 var price = purchase_price * exchange_rate;
-                var sum =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="total"]').val( ).replace(',',''));
+                var sum =  price * qty;
             <?PHP }else{ ?>
                 var qty =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="qty"]').val(  ).replace(',',''));
                 var price =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="price"]').val( ).replace(',',''));
@@ -595,6 +599,7 @@
             
         }
         calculateAll();
+        update_line();
     }
 
     
@@ -654,6 +659,7 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').selectpicker();
+        update_line();
     }
 
     
@@ -1025,8 +1031,8 @@
                                 <th style="text-align:center;">คลังสินค้า </th>
                                 <th style="text-align:center;" width="150">จำนวน </th>
                                 <?PHP if($sort == "ภายนอกประเทศ"){ ?>
-                                <th style="text-align:center;" width="150">ราคาต่อหน่วย <span nane="currency"><?PHP echo $supplier['currency_sign']; ?></span> </th>
-                                <th style="text-align:center;" width="150">ราคารวม <span nane="currency"><?PHP echo $supplier['currency_sign']; ?></span> </th>
+                                <th style="text-align:center;" width="150">ราคาต่อหน่วย <span name="currency"><?PHP echo $supplier['currency_sign']; ?></span> </th>
+                                <th style="text-align:center;" width="150">ราคารวม <span name="currency"><?PHP echo $supplier['currency_sign']; ?></span> </th>
                                 <?PHP } ?>
                                 <th style="text-align:center;" width="150">ราคาต่อหน่วยบาท </th>
                                 <th style="text-align:center;" width="150">จำนวนเงินบาท </th>
@@ -1164,11 +1170,11 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="24"><input type="checkbox" value="all" id="check_all" onclick="checkAll(this)" /></th>
-                                                        <th style="text-align:center;">รหัสสินค้า <br> (Product Code)</th>
-                                                        <th style="text-align:center;">ชื่อสินค้า <br> (Product Detail)</th>
-                                                        <th style="text-align:center;" width="150">จำนวน <br> (Qty)</th>
-                                                        <th style="text-align:center;" width="150">ราคาต่อหน่วย <br> (Unit price) </th>
-                                                        <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount)</th>
+                                                        <th style="text-align:center;">รหัสสินค้า </th>
+                                                        <th style="text-align:center;">ชื่อสินค้า </th>
+                                                        <th style="text-align:center;" width="150">จำนวน </th>
+                                                        <th style="text-align:center;" width="150">ราคาต่อหน่วย </th>
+                                                        <th style="text-align:center;" width="150">จำนวนเงิน </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="bodyAdd">
@@ -1195,7 +1201,7 @@
                                     
                                 </td>
                                 <td align="left" style="vertical-align: middle;">
-                                    <span>จำนวนเงินรวม <span nane="currency"><?PHP echo $supplier['currency_sign']; ?></span> </span>
+                                    <span>จำนวนเงินรวม <span name="currency"><?PHP echo $supplier['currency_sign']; ?></span> </span>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" style="text-align: right;" id="purchase_order_total_price" name="purchase_order_total_price" value="<?PHP echo number_format($purchase_order_total_price,2) ;?>"  readonly/>

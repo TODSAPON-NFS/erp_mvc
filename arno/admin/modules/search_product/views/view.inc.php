@@ -153,7 +153,11 @@
                                         <td><?php echo $stock_list[$i]['product_type_name']; ?></td>
                                         <td><?php echo $stock_list[$i]['product_status']; ?></td>
                                         <td><?php echo $stock_list[$i]['stock_group_name']; ?></td>
-                                        <td><?php echo $stock_list[$i]['stock_report_qty']; ?></td>
+                                        <td><?php echo $stock_list[$i]['stock_report_qty']; ?>
+                                            <a href="?app=detail_product&product_id=<?php echo $stock_list[$i]['product_id'];?>&stock_group_id=<?php echo $stock_list[$i]['stock_group_id']; ?>">
+                                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                            </a> 
+                                        </td>
                                     </tr>
                                    <?
                                     }

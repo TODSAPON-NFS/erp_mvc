@@ -26,7 +26,8 @@ class InvoiceSupplierListModel extends BaseModel{
         invoice_supplier_list_product_name, 
         invoice_supplier_list_product_detail, 
         invoice_supplier_list_qty, 
-        invoice_supplier_list_duty_percent, 
+        invoice_supplier_list_duty, 
+        invoice_supplier_list_fix_type, 
         invoice_supplier_list_price, 
         invoice_supplier_list_total, 
         invoice_supplier_list_cost, 
@@ -75,7 +76,7 @@ class InvoiceSupplierListModel extends BaseModel{
             product_id,
             invoice_supplier_list_product_name,
             invoice_supplier_list_product_detail,
-            invoice_supplier_list_duty_percent,
+            invoice_supplier_list_duty,
             invoice_supplier_list_qty,
             invoice_supplier_list_price, 
             invoice_supplier_list_total,
@@ -93,7 +94,7 @@ class InvoiceSupplierListModel extends BaseModel{
             '".$data['product_id']."', 
             '".$data['invoice_supplier_list_product_name']."', 
             '".$data['invoice_supplier_list_product_detail']."', 
-            '".$data['invoice_supplier_list_duty_percent']."', 
+            '".$data['invoice_supplier_list_duty']."', 
             '".$data['invoice_supplier_list_qty']."', 
             '".$data['invoice_supplier_list_price']."', 
             '".$data['invoice_supplier_list_total']."', 
@@ -157,14 +158,12 @@ class InvoiceSupplierListModel extends BaseModel{
     function updateCostListById($data,$id){
 
         $sql = " UPDATE tb_invoice_supplier_list 
-            SET invoice_supplier_list_freight_fix = '".$data['invoice_supplier_list_freight_fix']."',  
-                invoice_supplier_list_duty_fix = '".$data['invoice_supplier_list_duty_fix']."', 
-                invoice_supplier_list_duty_percent = '".$data['invoice_supplier_list_duty_percent']."', 
+            SET invoice_supplier_list_duty = '".$data['invoice_supplier_list_duty']."', 
+                invoice_supplier_list_fix_type = '".$data['invoice_supplier_list_fix_type']."' , 
                 invoice_supplier_list_cost = '".$data['invoice_supplier_list_cost']."' 
             WHERE invoice_supplier_list_id = '$id' 
         ";
-
-        //echo $sql . "<br><br>";
+ 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {

@@ -31,6 +31,7 @@
     <!-- <script src="../template/vendor/raphael/raphael.min.js"></script>
     <script src="../template/vendor/morrisjs/morris.min.js"></script>
     <script src="../template/data/morris-data.js"></script> -->
+    <script src="../template/dist/js/numeral.min.js"></script>
     <script src="../template/dist/js/Chart.min.js"></script>
     <script src="../template/dist/js/Chart.bundle.min.js"></script>
     <?php }?>

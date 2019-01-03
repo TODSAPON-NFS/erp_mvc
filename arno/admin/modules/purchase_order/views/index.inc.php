@@ -487,6 +487,28 @@ if(!isset($_GET['action'])){
         $output = $purchase_order_model->updatePurchaseOrderByID($purchase_order_id , $data);
         
 
+        $save_product_price = $_POST['save_product_price'];
+        for($i=0; $i < count($save_product_price); $i++){
+            $product_price = 0;
+            for($j=0; $j < count($product_id); $j++){
+                if($product_id[$j] == $save_product_price[$i]){
+                    $product_price = (float)filter_var($purchase_order_list_price[$j], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                }
+            }
+            $product_supplier_prices =  $product_supplier_model->getProductSupplierPriceByID($save_product_price[$i],$_POST['supplier_id']);
+
+            $data = [];
+            $data['product_id'] = $save_product_price[$i];
+            $data['supplier_id'] =$_POST['supplier_id'];
+            $data['product_price'] = $product_price;
+
+            if(count($product_supplier_prices) > 0){ 
+                $product_supplier_model->updateProductSupplierPriceByID($data);
+            }else{
+                $product_supplier_model->insertProductSupplierPrice($data);
+            }
+        }
+
         if($output){ 
 ?>
         <script>window.location="index.php?app=purchase_order&action=update&id=<?php echo $purchase_order_id;?>"</script>

@@ -314,7 +314,12 @@
     
     else if($_GET['app'] == "search_product"){
         require_once("modules/search_product/views/index.inc.php");
-    }else if($_GET['app'] == "stock_move"){
+    }
+    else if($_GET['app'] == "detail_product"){
+        require_once("modules/detail_product/views/index.inc.php");
+    }
+    
+    else if($_GET['app'] == "stock_move"){
         require_once("modules/stock_move/views/index.inc.php");
     }else if($_GET['app'] == "stock_change_product"){
         require_once("modules/stock_change_product/views/index.inc.php");

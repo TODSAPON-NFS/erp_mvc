@@ -34,6 +34,42 @@ class StockReportModel extends BaseModel{
             return $data;
         }
     }
+
+    
+    function getStockReportProductByID($product_id){
+
+        if($product_id != ""){
+            $str_product = " tb_stock_report.product_id = '$product_id' ";
+        }
+        
+
+        $sql = " SELECT *
+        FROM tb_stock_report 
+        LEFT JOIN tb_product ON tb_product.product_id = tb_stock_report.product_id 
+        LEFT JOIN tb_stock_group ON tb_stock_report.stock_group_id = tb_stock_group.stock_group_id 
+        LEFT JOIN tb_product_type ON tb_product.product_type = tb_product_type.product_type_id 
+        LEFT JOIN tb_product_supplier ON tb_product_supplier.product_id = tb_stock_report.product_id
+        LEFT JOIN tb_product_customer ON tb_product_customer.product_id = tb_stock_report.product_id
+        LEFT JOIN tb_supplier ON tb_supplier.supplier_id = tb_product_supplier.supplier_id
+        LEFT JOIN tb_product_customer_price ON tb_stock_report.product_id = tb_product_customer_price.product_id
+        LEFT JOIN tb_customer ON tb_customer.customer_id = tb_product_customer_price.customer_id
+        WHERE     $str_product
+                    
+         ";
+
+        // echo "<pre>";
+        // print_r($sql);
+        // echo "</pre>";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
     function getStockReportBalanceBy($product_id,$table_name,$stock_date){ 
          
         $sql = "SELECT balance_qty,balance_stock_cost_avg,balance_stock_cost_avg_total 
@@ -708,7 +744,8 @@ class StockReportModel extends BaseModel{
                 ";
             }
             $sql .="(SELECT concat('".$data[$i]['table_name']."_',stock_id) AS from_stock ,
-            ".$data[$i]['table_name'].".product_id ,CONCAT(product_code_first,product_code) as product_code ,product_name ,
+            ".$data[$i]['table_name'].".product_id ,
+            CONCAT(product_code_first,product_code) as product_code ,product_name ,
             '".$data[$i]['table_name']."' AS table_name ,
             (SELECT stock_group_name FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_name ,
             (SELECT stock_group_code FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_code ,
@@ -792,10 +829,10 @@ class StockReportModel extends BaseModel{
         
         $sql .="  
         )
-        AS tb_stock
+        AS tb_stock 
         ORDER BY  product_code,stock_group_code,STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'),from_stock ASC
         "; 
-        // echo $sql;
+        echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

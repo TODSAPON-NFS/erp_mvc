@@ -133,6 +133,16 @@
                     return false;
                 }
             }
+
+            var invoice_customer_list_qty = $('input[name="invoice_customer_list_qty[]"]')
+            for(var i = 0 ; i < invoice_customer_list_qty.length; i++){
+               var val = parseFloat(invoice_customer_list_qty[i].value.replace(',',''))
+                if( val < 1){
+                    alert("จำนวนสินค้าต้องมีค่ามากกว่า 0");
+                    $(invoice_customer_list_qty[i]).focus();
+                    return false;
+                }
+            }
             return true;
         }
 
@@ -946,11 +956,11 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="24"><input type="checkbox" value="all" id="check_all" onclick="checkAll(this)" /></th>
-                                                        <th style="text-align:center;">รหัสสินค้า <br> (Product Code)</th>
-                                                        <th style="text-align:center;">ชื่อสินค้า <br> (Product Detail)</th>
-                                                        <th style="text-align:center;" width="150">จำนวน <br> (Qty)</th>
-                                                        <th style="text-align:center;" width="150">ราคาต่อหน่วย <br> (Unit price) </th>
-                                                        <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount)</th>
+                                                        <th style="text-align:center;">รหัสสินค้า </th>
+                                                        <th style="text-align:center;">ชื่อสินค้า </th>
+                                                        <th style="text-align:center;" width="150">จำนวน </th>
+                                                        <th style="text-align:center;" width="150">ราคาต่อหน่วย </th>
+                                                        <th style="text-align:center;" width="150">จำนวนเงิน  </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="bodyAdd">

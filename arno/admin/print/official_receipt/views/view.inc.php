@@ -42,15 +42,14 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     }
 
     .table thead th , .table tfoot td{
-        border :1px solid black; 
+        border-top :1px solid black; 
+        border-bottom :1px solid black; 
         border-collapse: collapse;
         height:16px;
         font-size:12px;
     }
 
-    .table, .table tbody td{
-        border-left:1px solid black;
-        border-right:1px solid black;
+    .table, .table tbody td{ 
         border-collapse: collapse;
         height:16px;
         font-size:12px;
@@ -77,7 +76,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     @page *{
         margin-top: 2.54cm;
         margin-bottom: 2.54cm;
-        margin-left: 3.175cm;
+        margin-left: 2.54cm;
         margin-right: 3.175cm;
         margin-header: 5mm; /* <any of the usual CSS values for margins> */
 	    margin-footer: 5mm; /* <any of the usual CSS values for margins> */
@@ -91,16 +90,16 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             </td>
 */
     $html[$page_index] .= '
-<div class="main" style="padding-left:32px;">
+<div class="main" style="padding-left:8px;">
  
-    <div style="font-size:16px;line-height:20px;">'.$company['company_name_en'].'</div>
-    <div style="font-size:16px;line-height:20px;">'.$company['company_name_th'].'</div>
+    <div style="font-size:18px;line-height:20px;padding-left:128px;">'.$company['company_name_en'].'</div>
+    <div style="font-size:18px;line-height:20px;padding-left:128px;">'.$company['company_name_th'].'</div>
             
 
     <div style="line-height: 18px;" style="font-size:13px;" >สำนักงานใหญ่ : '.$company['company_address_1'].' '.$company['company_address_2'].' <br>'.$company['company_address_3'].' 
     Tel.'.$company['company_tel'].' Fax. '.$company['company_fax'].' Tax. '.$company['company_tax'].'</div>
-    <div align="center" style="font-size:14px;line-height:18px;"><b>ใบเสร็จรับเงิน</b></div>
-    <div align="center" style="font-size:14px;line-height:18px;"><b>OFFICIAL RECEIPT</b></div>
+    <div align="center" style="font-size:16px;line-height:18px;"><b>ใบเสร็จรับเงิน</b></div>
+    <div align="center" style="font-size:16px;line-height:18px;"><b>OFFICIAL RECEIPT</b></div>
 
     <div style="padding:4px;line-height:20px;">
         Receipt by thanks from : -

@@ -8,6 +8,8 @@ $path = "modules/search_product/views/";
 $model_stock = new StockReportModel;
 $model_group = new StockGroupModel;
 
+
+
 $stock_group_id = $_GET['stock_group_id'];
 $keyword = $_GET['keyword'];
 
@@ -24,8 +26,11 @@ $stock_group = $model_group->getStockGroupBy();
 if ($stock_group_id == ""){
     $stock_group_id = $stock_group[0]["stock_group_id"];
 }
-$stock_list = $model_stock->getStockReportListBy($stock_group_id, $keyword);
+// echo "<pre>";
+// print_r( $stock_list = $model_stock->getStockReportListBy($stock_group_id, $keyword));
+// echo "</pre>";
 
+$stock_list = $model_stock->getStockReportListBy($stock_group_id, $keyword);
 
 $page_max = (int)(count($stock_list)/$page_size);
 if(count($stock_list)%$page_size > 0){
@@ -33,5 +38,4 @@ if(count($stock_list)%$page_size > 0){
 }
 
 require_once($path.'view.inc.php');
-
 ?>

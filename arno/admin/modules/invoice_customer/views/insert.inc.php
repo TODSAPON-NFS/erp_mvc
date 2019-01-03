@@ -165,8 +165,9 @@
         }else{
 
             var stock_groupt_id = $('select[name="stock_group_id[]"]')
+            var stock_event = $('select[name="stock_event[]"]')
             for(var i = 0 ; i < stock_groupt_id.length; i++){
-                if(stock_groupt_id[i].value == ""){
+                if(stock_groupt_id[i].value == "" && stock_event[i].value == '1'){
                     alert("กรุณาเลือกคลังสินค้า");
                     $(stock_groupt_id[i]).focus();
                     return false;
@@ -259,6 +260,7 @@
                 $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
                 $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)  
                 $(id).closest('tr').children('td').children('input[name="save_product_price[]"]').val(data.product_id)  
+                $(id).closest('tr').children('td').children('input[name="stock_event[]"]').val(data.stock_event)  
                 
                 show_stock(id);
                 var customer_id = $('#customer_id').val(); 
@@ -526,6 +528,7 @@
                             '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark" value="'+ data_buffer[i].invoice_customer_list_remark +'"/>'+
                         '</td>'+ 
                         '<td>'+
+                            '<input type="hidden" name="stock_event[]" class="form-control" value="'+ data_buffer[i].stock_event +'" />'+
                             '<select  name="stock_group_id[]" onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
                                 '<option value="0">Select</option>'+ 
                             '</select>'+ 
@@ -590,6 +593,7 @@
                     '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark"/>'+
                 '</td>'+ 
                 '<td>'+
+                    '<input type="hidden" name="stock_event[]" class="form-control" value="0" />'+
                     '<select  name="stock_group_id[]"  onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
                         '<option value="0">Select</option>'+ 
                     '</select>'+ 
@@ -872,7 +876,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($users) ; $i++){
                                             ?>
-                                            <option <?PHP if($admin_id == $users[$i]['user_id']){?> SELECTED <?PHP }?> value="<?php echo $users[$i]['user_id'] ?>"><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
+                                            <option <?PHP if($customer['sale_id'] == $users[$i]['user_id']){?> SELECTED <?PHP }?> value="<?php echo $users[$i]['user_id'] ?>"><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
                                             <?
                                             }
                                             ?>
@@ -919,7 +923,8 @@
                                     <input type="text" class="form-control" name="invoice_customer_list_product_detail[]"  placeholder="Product Detail (Customer)" value="<?PHP echo $invoice_customer_lists[$i]['invoice_customer_list_product_detail'];?>"/>
                                     <input type="text" class="form-control" name="invoice_customer_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_remark']; ?>" />
                                 </td> 
-                                <td>
+                                <td>  
+                                    <input type="hidden" name="stock_event[]" class="form-control" value="<?php echo $invoice_customer_lists[$i]['stock_event']; ?>" />
                                     <select   name="stock_group_id[]"  onchange="show_qty(this)" class="form-control select" data-live-search="true" > 
                                         <?php 
                                         $stock_groups = $stock_group_model->getStockGroupByProductID($invoice_customer_lists[$i]['product_id']);
@@ -935,7 +940,7 @@
                                         ?>
                                     </select> 
                                 </td>
-                                <td align="right">  
+                                <td align="right">
                                     <input type="text" class="form-control" style="text-align: right;"  onchange="check_qty(this);" autocomplete="off" name="invoice_customer_list_qty[]" value="<?php if ($stock_report_qty >= $invoice_customer_lists[$i]['invoice_customer_list_qty']) { echo number_format($invoice_customer_lists[$i]['invoice_customer_list_qty'],0); } else { echo number_format($stock_report_qty,0); } ?>" stock_report_qty = "<?php echo $stock_report_qty; ?>" />
                                 </td>
                                 <td >

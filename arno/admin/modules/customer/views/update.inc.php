@@ -407,12 +407,12 @@
                                 <label>ประเภทลูกค้า / Customer type </label>
                                 <select id="customer_type_id" name="customer_type_id" class="form-control">
                                     <option value="">เลือก / Select</option>
-                                    <?PHP /*
+                                    <?PHP  
                                         for($i=0; $i < count($customer_types) ; $i++){
                                     ?>
                                         <option value="<?PHP echo $customer_types[$i]['customer_type_id'];?>" <?PHP if($customer_types[$i]['customer_type_id'] == $customer['customer_type_id']){?> Selected <?PHP }?>> <?PHP echo $customer_types[$i]['customer_type_name'];?></option>
-                                    <?PHP
-                                        }*/
+                                    <?PHP 
+                                        }
                                     ?>
                                 </select>
                                 <p class="help-block">Example : Dealer.</p>

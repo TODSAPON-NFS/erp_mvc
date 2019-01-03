@@ -232,6 +232,7 @@
     <!-- /.col-lg-4 -->
 </div>
 <!-- /.row -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script>
     
     $(function () {
@@ -256,7 +257,7 @@
                 datasets: [
                     {
                     data: [],
-                    label: "ยอดขาย :",
+                    label: "ยอดขายทั้งปี",
                     backgroundColor: Color ,
                     
                     }
@@ -331,15 +332,25 @@
                     backgroundColor: 'rgba(38, 166, 154, 0.5)',
                     }]
                 },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            stepSize: 2000000
-                        }
-                    }]
-                },
                 options: {
                     maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true,
+                                callback: function (data) {
+                                    return numeral(data).format('0,0.00')
+                                }
+                            }
+                        }]
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                return "ยอดขาย: "+tooltipItem.yLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')+" บาท";
+                            }
+                        }
+                    }
                 }
             });
 
@@ -394,21 +405,19 @@
             if(data != null){ 
                 var labels=[];
                 var net_price = [];  
-                // barChart.data.labels.pop();
-                // barChart.data.datasets.forEach((dataset) => {
-                //     dataset.data.pop();
-                // });
-                
                 for(var i=0;i<data.length;i++){
                         net_price[i]=data[i].net_price;
                         labels[i]=data[i].invoice_date;
-                        
-                        // barChart.data.labels.push(data[i].code);
-                        // barChart.data.datasets[0].data.push(data[i].net_price);
                     }
-                    console.log(net_price);
                     barChart.data.labels =labels;
                     barChart.data.datasets[0].data = net_price;
+                    barChart.options.scales.yAxes[0].ticks.beginAtZero=true;
+                    barChart.options.tooltips.callbacks.label = function(tooltipItem, net_price) {
+                                return "ยอดขาย: "+tooltipItem.yLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')+" บาท";
+                            }
+                    barChart.options.scales.yAxes[0].ticks.callback = function (net_price) {
+                                    return numeral(net_price).format('0,0')
+                                }
                     barChart.update();
             }
         });        

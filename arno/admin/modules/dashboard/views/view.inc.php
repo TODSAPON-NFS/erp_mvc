@@ -174,7 +174,7 @@
                                 
                                     <?php for($i=0;$i<count($customer);$i++){?>
                                         <tr>
-                                            <td class="text-center"><?php echo $i;?></td>
+                                            <td class="text-center"><?php echo $i+1;?></td>
                                             <td class="text-center"><?php echo $customer[$i]['code']?></td>
                                             <td><?php echo $customer[$i]['customer_name']?></td>
                                         </tr>
@@ -241,10 +241,10 @@
         <!-- /.panel -->
         <div class="panel panel-green">
             <div class="panel-heading">
-                <i class="fa fa-bar-chart-o fa-fw"></i> Donut Chart Example
+                <i class="fa fa-bar-chart-o fa-fw"></i> Pie Chart Example
             </div>
             <div class="panel-body">
-                <canvas id="DonutChart"></canvas>
+                <canvas id="PieChart"></canvas>
                 <!-- <a href="#" class="btn btn-default btn-block">View Details</a> -->
             </div>
             <!-- /.panel-body -->
@@ -255,6 +255,7 @@
     <!-- /.col-lg-4 -->
 </div>
 <!-- /.row -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script>
     
     $(function () {
@@ -263,6 +264,7 @@
         $('#myTable').dataTable({
             "bInfo" : false,
             "pagingType": "simple",
+            "pageLength": 5,
             "lengthChange": false
         });
 
@@ -280,8 +282,7 @@
                     {
                     data: [],
                     label: "ยอดขาย :",
-                    backgroundColor: Color ,
-                    
+                    backgroundColor: Color ,                    
                     }
                 ]
                 },
@@ -290,15 +291,15 @@
                     title: {
                         display: true,
                         text: 'ยอดขายตามลูกค้า 2018'
-                    },
-                    
+                    },   
+                                     
                 }
         }); 
 
         $('#myTable').on( 'page.dt', function () {
             var info = table.page.info();
             // $('#pageInfo').html( 'Showing page: '+info.page+' of '+info.pages );
-            console.log("Showing page: "+info.page);
+            // console.log("Showing page: "+info.page);
             UpdateBarChart(info.page,barChart);
             
         } );
@@ -307,8 +308,7 @@
     }); 
     $(document).ready( function () {
             UpdateLineChart();            
-            UpdateDonutChart();
-
+            UpdatePieChart();
     });   
     function addData(chart, label, data) {
         chart.data.labels.push(label);
@@ -317,7 +317,6 @@
         });
         chart.update();
     }
-
     function removeData(chart) {
         chart.data.labels.pop();
         chart.data.datasets.forEach((dataset) => {
@@ -337,18 +336,28 @@
                         borderColor: 'rgba(169, 50, 38,0.0)',
                         borderWidth:0,
                         fill: true,
-                    backgroundColor: 'rgba(38, 166, 154, 0.5)',
+                        backgroundColor: 'rgba(38, 166, 154, 0.5)',
                     }]
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            stepSize: 2000000
-                        }
-                    }]
-                },
+                },                
                 options: {
                     maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true,
+                                callback: function (data) {
+                                    return numeral(data).format('0,0.00')
+                                }
+                            }
+                        }]
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                return "ยอดขาย: "+tooltipItem.yLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')+" บาท";
+                            }
+                        }
+                    }
                 }
             });
 
@@ -361,14 +370,14 @@
         }
         return color;
     }
-    function renderDonutChart(data, labels){
-        var donut = document.getElementById("DonutChart");
+    function renderPieChart(data, labels){
+        var Pie = document.getElementById("PieChart");
         var color = [];
         for(var i=0;i<data.length;i++){
             color[i] = getRandomColor();
         }
         
-        var donutChart =  new Chart(donut, {
+        var PieChart =  new Chart(Pie, {
             type: 'pie',
             data: {
             labels: labels,
@@ -386,24 +395,31 @@
                     text: 'ยอดขายตาม sales'
                 },
                 maintainAspectRatio: true,
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var indice = tooltipItem.index; 
+                                return "ยอดขาย: "+parseFloat(data.datasets[0].data[indice]).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')+" บาท";
+                            }
+                        }
+                    }
             }
         });
     }
     function UpdateLineChart(){ //*****function Update Event Line chart And Update data****** */
-            $.post( "controllers/getNetPriceGroupByDate.php", function( result ) {    
-                if(result != null){   
-                    var data = [];
-                    var labels = [];
-                    // data.push(result.net_price);
-                    for(var i=0;i<result.length;i++){
-                        data[i]=result[i].net_price;
-                        labels[i]=result[i].invoice_date;
-                    }
-                    renderLineChart(data, labels); //****Update Line Chart Data****** */
+        $.post( "controllers/getNetPriceGroupByDate.php", function( result ) {    
+            if(result != null){   
+                var data = [];
+                var labels = [];
+                // data.push(result.net_price);
+                for(var i=0;i<result.length;i++){
+                    data[i]=result[i].net_price;
+                    labels[i]=result[i].invoice_date;
                 }
-            });        
-        }
-
+                renderLineChart(data, labels); //****Update Line Chart Data****** */
+            }
+        });        
+    }
     function UpdateBarChart(limit,barChart){ //*****function Next Event Bar chart And Update data****** */
         $.post( "controllers/getNetPriceGroupByCustomer.php",{ 'limit': limit }, function( data ) {    
             if(data != null){ 
@@ -416,31 +432,31 @@
                 for(var i=0;i<data.length;i++){
                         net_price[i]=data[i].net_price;
                         labels[i]=data[i].code;
-                        
-                        // barChart.data.labels.push(data[i].code);
-                        // barChart.data.datasets[0].data.push(data[i].net_price);
                     }
                     barChart.data.labels =labels;
                     barChart.data.datasets[0].data = net_price;
+                    barChart.options.scales.xAxes[0].ticks.beginAtZero=true;
+                    barChart.options.tooltips.callbacks.label = function(tooltipItem, net_price) {
+                                return "ยอดขาย: "+tooltipItem.xLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')+" บาท";
+                            }
+                    barChart.options.scales.xAxes[0].ticks.callback = function (net_price) {
+                                    return numeral(net_price).format('0,0')
+                                }
                     barChart.update();
             }
         });        
     }
-    function UpdateDonutChart(){ //*****function Update Event Donut chart And Update data****** */
-            $.post( "controllers/getNetPriceGroupByAllSales.php", function( data ) {    
-                if(data != null){  
-                    var labels=[];
-                    var net_price = [];  
-                    for(var i=0;i<data.length;i++){
-                        net_price[i]=data[i].net_price;
-                        labels[i]=data[i].sales_name;
-                    } 
-                    renderDonutChart(net_price,labels); //****Update Donut Chart Data****** */
-                }
-            });        
-        }
-    
-    
-
-
+    function UpdatePieChart(){ //*****function Update Event Pie chart And Update data****** */
+        $.post( "controllers/getNetPriceGroupByAllSales.php", function( data ) {    
+            if(data != null){  
+                var labels=[];
+                var net_price = [];  
+                for(var i=0;i<data.length;i++){
+                    net_price[i]=data[i].net_price;
+                    labels[i]=data[i].sales_name;
+                } 
+                renderPieChart(net_price,labels); //****Update Pie Chart Data****** */
+            }
+        });        
+    }
 </script>

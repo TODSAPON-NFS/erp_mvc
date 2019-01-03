@@ -42,7 +42,7 @@ class StockReportModel extends BaseModel{
         }
         
 
-        $sql = " SELECT * 
+        $sql = " SELECT *
         FROM tb_stock_report 
         LEFT JOIN tb_product ON tb_product.product_id = tb_stock_report.product_id 
         LEFT JOIN tb_stock_group ON tb_stock_report.stock_group_id = tb_stock_group.stock_group_id 
@@ -50,7 +50,8 @@ class StockReportModel extends BaseModel{
         LEFT JOIN tb_product_supplier ON tb_product_supplier.product_id = tb_stock_report.product_id
         LEFT JOIN tb_product_customer ON tb_product_customer.product_id = tb_stock_report.product_id
         LEFT JOIN tb_supplier ON tb_supplier.supplier_id = tb_product_supplier.supplier_id
-        LEFT JOIN tb_customer ON tb_customer.customer_id = tb_product_customer.customer_id
+        LEFT JOIN tb_product_customer_price ON tb_stock_report.product_id = tb_product_customer_price.product_id
+        LEFT JOIN tb_customer ON tb_customer.customer_id = tb_product_customer_price.customer_id
         WHERE     $str_product
                     
          ";

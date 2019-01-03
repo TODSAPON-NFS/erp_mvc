@@ -157,7 +157,12 @@
                                 </tr>
                             </thead>
 
-                            <?for ($i=0; $i <count( $stock_report ); $i++) { ?>
+                            <?for ($i=0; $i <count( $stock_report ); $i++) {
+                                
+                                if ( $stock_report[$i+1] ['stock_group_name'] !=  $stock_report[$i] ['stock_group_name']) {
+                                    # code...
+                                    
+                            ?>
                             <tbody class="odd gradeX">
                                 <td>
                                     <?php echo  $stock_report[$i] ['stock_group_name']?>
@@ -167,7 +172,8 @@
                                 </td>
                             
                             </tbody>
-                            <?}?>
+                            <?}
+                            }?>
                         </table>
 
                     </div>
@@ -220,8 +226,8 @@
                         <thead>
                             <tr>
                                 <th>รหัส</th>
-                                <th>ชื่อลูกค้า TH</th>
-                                <th>ชื่อลูกค้า EN</th>
+                                <th>ชื่อลูกค้า</th>
+                                <th>ราคา</th>
                             </tr>
                         </thead>
 
@@ -235,11 +241,11 @@
                                 <?php echo  $stock_report[$i] ['customer_code']?>
                             </td>
                             <td>
-                                <?php echo$stock_report[$i] ['customer_name_th'] ?>
+                                <?php echo$stock_report[$i] ['customer_name_en'] ?>
                             </td>
                             </td>
                             <td>
-                                <?php echo ($stock_report[$i] ['customer_name_en']) ?>
+                                <?php echo ($stock_report[$i] ['product_price']) ?>
                             </td>
 
                         </tbody>

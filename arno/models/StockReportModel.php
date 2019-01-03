@@ -7,6 +7,7 @@ class StockReportModel extends BaseModel{
         if(!static::$db){
             static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
         }
+        mysqli_set_charset(static::$db,"utf8");
     }
 
     function getStockReportListBy($stock_group_id = '', $keyword = ''){
@@ -42,7 +43,7 @@ class StockReportModel extends BaseModel{
         }
         
 
-        $sql = " SELECT * 
+        $sql = " SELECT *
         FROM tb_stock_report 
         LEFT JOIN tb_product ON tb_product.product_id = tb_stock_report.product_id 
         LEFT JOIN tb_stock_group ON tb_stock_report.stock_group_id = tb_stock_group.stock_group_id 
@@ -50,7 +51,8 @@ class StockReportModel extends BaseModel{
         LEFT JOIN tb_product_supplier ON tb_product_supplier.product_id = tb_stock_report.product_id
         LEFT JOIN tb_product_customer ON tb_product_customer.product_id = tb_stock_report.product_id
         LEFT JOIN tb_supplier ON tb_supplier.supplier_id = tb_product_supplier.supplier_id
-        LEFT JOIN tb_customer ON tb_customer.customer_id = tb_product_customer.customer_id
+        LEFT JOIN tb_product_customer_price ON tb_stock_report.product_id = tb_product_customer_price.product_id
+        LEFT JOIN tb_customer ON tb_customer.customer_id = tb_product_customer_price.customer_id
         WHERE     $str_product
                     
          ";
@@ -58,6 +60,77 @@ class StockReportModel extends BaseModel{
         // echo "<pre>";
         // print_r($sql);
         // echo "</pre>";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+    
+    function getStockReportProductPaperByID($product_id){
+
+        
+        if($product_id != "" ){
+            $str_sup = " tb_invoice_supplier_list.product_id = '$product_id' ";
+            $str_mov = " tb_stock_move_list.product_id = '$product_id' ";
+            $str_cus =  " tb_invoice_customer_list.product_id = '$product_id' ";
+        }
+
+        $sql = "SELECT
+                    product_id ,
+                    tb_invoice_supplier.invoice_supplier_id AS paper_id,
+                    tb_invoice_supplier.invoice_supplier_code_gen AS paper_code,
+                    '1' AS paper_type,
+                    'รับสินค้าเข้า' AS paper_type_name,
+                    `invoice_supplier_date` AS paper_date,
+                    tb_invoice_supplier_list.invoice_supplier_list_qty AS paper_qty,
+                    tb_stock_group.stock_group_name,
+                    tb_stock_group.stock_group_id
+                FROM `tb_invoice_supplier` 
+                LEFT JOIN tb_invoice_supplier_list ON tb_invoice_supplier.invoice_supplier_id = tb_invoice_supplier_list.invoice_supplier_id 
+                LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_supplier_list.stock_group_id
+                WHERE   $str_sup
+
+                UNION  SELECT
+                        product_id ,
+                        tb_stock_move.stock_move_id AS paper_id,
+                        stock_move_code AS paper_code,
+                        '2' AS paper_type,
+                        'โอนคลังสินค้า' AS paper_type_name,
+                        `stock_move_date` AS paper_date,
+                        stock_move_list_qty AS paper_qty,
+                        tb_stock_group.stock_group_name,
+                        tb_stock_group.stock_group_id
+                    FROM `tb_stock_move` 
+                   LEFT JOIN tb_stock_move_list ON tb_stock_move.stock_move_id = tb_stock_move_list.stock_move_id 
+                   LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_stock_move.stock_group_id_in
+                    WHERE   $str_mov
+
+                UNION SELECT
+                        product_id ,
+                        tb_invoice_customer.invoice_customer_id AS paper_id,
+                        invoice_customer_code AS paper_code,
+                        '3' AS paper_type,
+                        'ขายสินค้า' AS paper_type_name,
+                        `invoice_customer_date` AS paper_date,
+                        invoice_customer_list_qty AS paper_qty,
+                        tb_stock_group.stock_group_name,
+                        tb_stock_group.stock_group_id
+                    FROM `tb_invoice_customer` 
+                    LEFT JOIN tb_invoice_customer_list ON tb_invoice_customer.invoice_customer_id = tb_invoice_customer_list.invoice_customer_id 
+                    LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_customer_list.stock_group_id
+                    WHERE   $str_cus 
+
+                ORDER BY paper_date, paper_type
+        ";
+
+        // echo "<pre>";
+        // print_r($sql);
+        // echo"</pre>";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -742,7 +815,8 @@ class StockReportModel extends BaseModel{
                 ";
             }
             $sql .="(SELECT concat('".$data[$i]['table_name']."_',stock_id) AS from_stock ,
-            ".$data[$i]['table_name'].".product_id ,CONCAT(product_code_first,product_code) as product_code ,product_name ,
+            ".$data[$i]['table_name'].".product_id ,
+            CONCAT(product_code_first,product_code) as product_code ,product_name ,
             '".$data[$i]['table_name']."' AS table_name ,
             (SELECT stock_group_name FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_name ,
             (SELECT stock_group_code FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_code ,
@@ -826,10 +900,10 @@ class StockReportModel extends BaseModel{
         
         $sql .="  
         )
-        AS tb_stock
+        AS tb_stock 
         ORDER BY  product_code,stock_group_code,STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'),from_stock ASC
         "; 
-        // echo $sql;
+        echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

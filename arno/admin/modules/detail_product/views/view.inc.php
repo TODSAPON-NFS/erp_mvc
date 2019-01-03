@@ -157,7 +157,12 @@
                                 </tr>
                             </thead>
 
-                            <?for ($i=0; $i <count( $stock_report ); $i++) { ?>
+                            <?for ($i=0; $i <count( $stock_report ); $i++) {
+                                
+                                if ( $stock_report[$i+1] ['stock_group_name'] !=  $stock_report[$i] ['stock_group_name']) {
+                                    # code...
+                                    
+                            ?>
                             <tbody class="odd gradeX">
                                 <td>
                                     <?php echo  $stock_report[$i] ['stock_group_name']?>
@@ -167,7 +172,8 @@
                                 </td>
                             
                             </tbody>
-                            <?}?>
+                            <?}
+                            }?>
                         </table>
 
                     </div>
@@ -220,8 +226,8 @@
                         <thead>
                             <tr>
                                 <th>รหัส</th>
-                                <th>ชื่อลูกค้า TH</th>
-                                <th>ชื่อลูกค้า EN</th>
+                                <th>ชื่อลูกค้า</th>
+                                <th>ราคา</th>
                             </tr>
                         </thead>
 
@@ -235,11 +241,11 @@
                                 <?php echo  $stock_report[$i] ['customer_code']?>
                             </td>
                             <td>
-                                <?php echo$stock_report[$i] ['customer_name_th'] ?>
+                                <?php echo$stock_report[$i] ['customer_name_en'] ?>
                             </td>
                             </td>
                             <td>
-                                <?php echo ($stock_report[$i] ['customer_name_en']) ?>
+                                <?php echo ($stock_report[$i] ['product_price']) ?>
                             </td>
 
                         </tbody>
@@ -252,7 +258,66 @@
 
                     <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
                     
-                         เอกสาร         
+                            
+                            
+                        <table width="100%" class="table table-striped table-bordered table-hover" >
+
+                            <thead>
+                                <tr>
+                                    <th>วันที่</th>
+                                    <th>รหัสเอกสาร</th>
+                                    <th>คลังสินค้า</th>
+                                    <th>จำนวน</th>
+
+                                </tr>
+                            </thead>
+
+                            <?for ($i=0; $i <count( $paper ); $i++) { 
+                                if ( $paper[$i+1] ['paper_code'] !=  $paper[$i] ['paper_code']) {
+                                    # code...
+                                
+                                ?>
+                            <tbody class="odd gradeX">
+                                <td>
+                                    <?php echo  $paper[$i] ['paper_date']?>
+                                </td>
+                                <td>
+                                <?
+                                if($paper[$i] ['paper_type'] == 1 ){
+                                ?>
+                                   <a
+                                   href="index.php?app=invoice_supplier&action=detail&id=<?php echo$paper[$i] ['paper_id'] ?>"
+                                   >
+                                <?
+                                }else if($paper[$i] ['paper_type'] == 2 ){
+                                ?>
+                                <a
+                                   href="index.php?app=stock_move&action=detail&id=<?php echo$paper[$i] ['paper_id'] ?>"
+                                >
+                                <?
+                                 }else if($paper[$i] ['paper_type'] == 3 ){
+                                ?>
+                                 <a
+                                   href="index.php?app=invoice_customer&action=detail&id=<?php echo$paper[$i] ['paper_id'] ?>"
+                                >
+                                <?
+                                }
+                                ?>
+                                     <?php echo$paper[$i] ['paper_code'] ?>
+                                      </a>
+                                </td>
+                                <td>
+                                    <?php echo ($paper[$i] ['stock_group_name']) ?>
+                                </td>
+                                <td>
+                                    <?php echo ($paper[$i] ['paper_qty']) ?>
+                                </td>
+
+                            </tbody>
+                            <?
+                                }
+                            }?>
+                        </table>
 
                     </div>
 

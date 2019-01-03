@@ -26,10 +26,10 @@ $product_description = $product['product_description'];
 $stock_report_model = new StockReportModel;
 $product_id = $_GET['product_id'];
 $stock_report = $stock_report_model->getStockReportProductByID($product_id);
-
+$paper = $stock_report_model->getStockReportProductPaperByID($product_id);
 
 // echo "<pre>";
-// print_r($stock_report);
+// print_r($paper);
 // echo "</pre>";
 
 require_once($path.'view.inc.php');

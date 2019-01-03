@@ -258,7 +258,44 @@
 
                     <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
                     
-                         เอกสาร         
+                            
+                            
+                        <table width="100%" class="table table-striped table-bordered table-hover" >
+
+                            <thead>
+                                <tr>
+                                    <th>วันที่</th>
+                                    <th>รหัสเอกสาร</th>
+                                    <th>คลังสินค้า</th>
+                                    <th>จำนวน</th>
+
+                                </tr>
+                            </thead>
+
+                            <?for ($i=0; $i <count( $paper ); $i++) { 
+                                if ( $paper[$i+1] ['paper_code'] !=  $paper[$i] ['paper_code']) {
+                                    # code...
+                                
+                                ?>
+                            <tbody class="odd gradeX">
+                                <td>
+                                    <?php echo  $paper[$i] ['paper_date']?>
+                                </td>
+                                <td>
+                                    <?php echo$paper[$i] ['paper_code'] ?>
+                                </td>
+                                <td>
+                                    <?php echo ($paper[$i] ['stock_group_name']) ?>
+                                </td>
+                                <td>
+                                    <?php echo ($paper[$i] ['paper_qty']) ?>
+                                </td>
+
+                            </tbody>
+                            <?
+                                }
+                            }?>
+                        </table>
 
                     </div>
 

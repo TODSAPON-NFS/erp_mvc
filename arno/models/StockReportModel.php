@@ -69,6 +69,77 @@ class StockReportModel extends BaseModel{
             return $data;
         }
     }
+    
+    function getStockReportProductPaperByID($product_id){
+
+        
+        if($product_id != "" ){
+            $str_sup = " tb_invoice_supplier_list.product_id = '$product_id' ";
+            $str_mov = " tb_stock_move_list.product_id = '$product_id' ";
+            $str_cus =  " tb_invoice_customer_list.product_id = '$product_id' ";
+        }
+
+        $sql = "SELECT
+                    product_id ,
+                    tb_invoice_supplier.invoice_supplier_id AS paper_id,
+                    tb_invoice_supplier.invoice_supplier_code AS paper_code,
+                    '1' AS paper_type,
+                    'รับสินค้าเข้า' AS paper_type_name,
+                    `invoice_supplier_date` AS paper_date,
+                    tb_invoice_supplier_list.invoice_supplier_list_qty AS paper_qty,
+                    tb_stock_group.stock_group_name,
+                    tb_stock_group.stock_group_id
+                FROM `tb_invoice_supplier` 
+                JOIN tb_invoice_supplier_list ON tb_invoice_supplier.invoice_supplier_id = tb_invoice_supplier_list.invoice_supplier_id 
+                JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_supplier_list.stock_group_id
+                WHERE   $str_sup
+
+                UNION  SELECT
+                        product_id ,
+                        tb_stock_move.stock_move_id AS paper_id,
+                        stock_move_code AS paper_code,
+                        '2' AS paper_type,
+                        'โอนคลังสินค้า' AS paper_type_name,
+                        `stock_move_date` AS paper_date,
+                        stock_move_list_qty AS paper_qty,
+                        tb_stock_group.stock_group_name,
+                        tb_stock_group.stock_group_id
+                    FROM `tb_stock_move` 
+                    JOIN tb_stock_move_list ON tb_stock_move.stock_move_id = tb_stock_move.stock_move_id 
+                    JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_stock_move.stock_group_id_in
+                    WHERE   $str_mov
+
+                UNION SELECT
+                        product_id ,
+                        tb_invoice_customer.invoice_customer_id AS paper_id,
+                        invoice_customer_code AS paper_code,
+                        '3' AS paper_type,
+                        'ขายสินค้า' AS paper_type_name,
+                        `invoice_customer_date` AS paper_date,
+                        invoice_customer_list_qty AS paper_qty,
+                        tb_stock_group.stock_group_name,
+                        tb_stock_group.stock_group_id
+                    FROM `tb_invoice_customer` 
+                    JOIN tb_invoice_customer_list ON tb_invoice_customer.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
+                    JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_customer_list.stock_group_id
+                    WHERE   $str_cus 
+
+                ORDER BY paper_date, paper_type
+        ";
+
+        // echo "<pre>";
+        // print_r($sql);
+        // echo"</pre>";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
     function getStockReportBalanceBy($product_id,$table_name,$stock_date){ 
          
         $sql = "SELECT balance_qty,balance_stock_cost_avg,balance_stock_cost_avg_total 

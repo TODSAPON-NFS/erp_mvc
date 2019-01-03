@@ -367,6 +367,7 @@
                                 || $_GET["app"]=='stock_type'
                                 || $_GET["app"]=='stock_move'
                                 || $_GET["app"]=='stock_issue'
+                                || $_GET["app"]=='maintenance_stock'
                             ){
                                 echo ' class="active" ';
                             }
@@ -396,6 +397,9 @@
                                 </li>
                                 <li>
                                     <a href="?app=stock_issue" <?PHP if($_GET['app'] == "stock_issue"){?> class="active" <?PHP } ?> ><i class="fa  fa-file-o" aria-hidden="true"></i> ใบนำออกสินค้า (Issue Stock)</a>
+                                </li>
+                                <li>
+                                    <a href="?app=maintenance_stock" <?PHP if($_GET['app'] == "maintenance_stock"){?> class="active" <?PHP } ?> ><i class="fa fa-refresh" aria-hidden="true"></i> ซ่อมแซมระบบคลังสินค้า </a>
                                 </li>
                                 <?PHP } ?>
 

@@ -361,6 +361,77 @@ class InvoiceCustomerModel extends BaseModel{
     }
 
 
+    function getCustomerPurchaseOrderStock($customer_id, $data = [],$search="",$customer_purchase_order_id="",$stock_group_id = '1'){
+
+        $str ='0';
+
+        if(is_array($data)){ 
+            for($i=0; $i < count($data) ;$i++){
+                $str .= $data[$i];
+                if($i + 1 < count($data)){
+                    $str .= ',';
+                }
+            }
+        }else if ($data != ''){
+            $str = $data;
+        }else{
+            $str='0';
+        }
+
+        if($customer_purchase_order_id != ""){
+            $str_po = "AND tb_customer_purchase_order.customer_purchase_order_id = '$customer_purchase_order_id' ";
+        }
+
+        $sql_customer = "SELECT tb2.product_id, 
+        tb2.customer_purchase_order_list_id, 
+        CONCAT(product_code_first,product_code) as product_code, 
+        product_name,  
+        IFNULL(customer_purchase_order_list_qty 
+        - IFNULL((
+            SELECT SUM(invoice_customer_list_qty) 
+            FROM tb_invoice_customer_list 
+            WHERE customer_purchase_order_list_id = tb2.customer_purchase_order_list_id 
+        ),0) ,0) as invoice_customer_list_qty,  
+        customer_purchase_order_product_name as invoice_customer_list_product_name,
+        customer_purchase_order_product_detail as invoice_customer_list_product_detail,
+        customer_purchase_order_list_price as invoice_customer_list_price, 
+        customer_purchase_order_list_price_sum as invoice_customer_list_total, 
+        customer_purchase_order_list_price_sum as invoice_customer_list_cost,
+        stock_event,
+        CONCAT('Order for customer PO : ',customer_purchase_order_code) as invoice_customer_list_remark ,
+        tb_stock_report.* 
+        FROM tb_customer_purchase_order 
+        LEFT JOIN tb_customer_purchase_order_list as tb2 ON tb_customer_purchase_order.customer_purchase_order_id = tb2.customer_purchase_order_id 
+        LEFT JOIN tb_product ON tb2.product_id = tb_product.product_id 
+        LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
+        LEFT JOIN tb_stock_report ON tb_product.product_id = tb_stock_report.product_id 
+        WHERE tb_customer_purchase_order.customer_id = '$customer_id' 
+        AND tb_stock_report.stock_group_id = '1'  
+        AND stock_report_qty > 0 
+        $str_po 
+        AND tb2.customer_purchase_order_list_id NOT IN ($str) 
+        AND tb2.customer_purchase_order_list_id IN (
+            SELECT tb_customer_purchase_order_list.customer_purchase_order_list_id 
+            FROM tb_customer_purchase_order_list  
+            LEFT JOIN tb_invoice_customer_list ON  tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_invoice_customer_list.customer_purchase_order_list_id 
+            GROUP BY tb_customer_purchase_order_list.customer_purchase_order_list_id 
+            HAVING IFNULL(SUM(invoice_customer_list_qty),0) < AVG(customer_purchase_order_list_qty)  
+        ) 
+        AND (product_name LIKE ('%$search%') OR customer_purchase_order_code LIKE ('%$search%')) "; 
+        $data = [];
+        if ($result = mysqli_query(static::$db,$sql_customer, MYSQLI_USE_RESULT)) {
+            
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            
+        }
+
+        return $data;
+    }
+
+
     function getCustomerPurchaseOrderByCode($customer_purchase_order_code = ""){
 
         $sql = "SELECT tb_customer_purchase_order.customer_purchase_order_id, customer_purchase_order_code, tb_customer.customer_id, customer_name_en , customer_name_th 
@@ -458,10 +529,12 @@ class InvoiceCustomerModel extends BaseModel{
         customer_purchase_order_list_price as invoice_customer_list_price, 
         customer_purchase_order_list_price_sum as invoice_customer_list_total, 
         customer_purchase_order_list_price_sum as invoice_customer_list_cost,
+        stock_event,
         CONCAT('Order for customer PO : ',customer_purchase_order_code) as invoice_customer_list_remark 
         FROM tb_customer_purchase_order 
         LEFT JOIN tb_customer_purchase_order_list as tb2 ON tb_customer_purchase_order.customer_purchase_order_id = tb2.customer_purchase_order_id 
         LEFT JOIN tb_product ON tb2.product_id = tb_product.product_id 
+        LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
         WHERE tb_customer_purchase_order.customer_id = '$customer_id' 
         $str_po 
         AND tb2.customer_purchase_order_list_id NOT IN ($str) 

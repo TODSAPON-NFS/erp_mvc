@@ -457,6 +457,7 @@ else if ($_GET['action'] == 'add_customer' && ($license_admin_page == 'Medium' |
         $data['product_id'] = $product_id;
         $data['minimum_stock'] = $_POST['minimum_stock'];
         $data['safety_stock'] = $_POST['safety_stock'];
+        $data['maximum_stock'] = $_POST['maximum_stock'];
         $data['product_status'] = $_POST['product_status'];
 
 
@@ -481,6 +482,7 @@ else if ($_GET['action'] == 'add_customer' && ($license_admin_page == 'Medium' |
         $data['product_id'] = $product_id;
         $data['minimum_stock'] = $_POST['minimum_stock'];
         $data['safety_stock'] = $_POST['safety_stock'];
+        $data['maximum_stock'] = $_POST['maximum_stock'];
         $data['product_status'] = $_POST['product_status'];
 
 

@@ -65,6 +65,23 @@ class ProductSupplierModel extends BaseModel{
         }
 
     }
+    
+    function getProductSupplierPriceByID($product_id,$supplier_id){
+        $sql = " SELECT * 
+        FROM tb_product_supplier 
+        WHERE product_id = '$product_id' AND supplier_id = '$supplier_id' 
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
 
     function updateProductSupplierByID($id,$data = []){
         $sql = " UPDATE tb_product_supplier SET     
@@ -78,6 +95,22 @@ class ProductSupplierModel extends BaseModel{
         ";
 
 
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+
+
+    }
+    
+    function updateProductSupplierPriceByID($data = []){
+        $sql = " UPDATE tb_product_supplier SET      
+        product_buyprice = '".$data['product_buyprice']."',   
+        product_supplier_status = 'Active' 
+        WHERE supplier_id = '".$data['supplier_id']."' AND product_id = '".$data['product_id']."' 
+        "; 
+        
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
@@ -118,7 +151,6 @@ class ProductSupplierModel extends BaseModel{
         }
 
     }
-
 
     function deleteProductSupplierByID($id){
         $sql = " DELETE FROM tb_product_supplier WHERE product_supplier_id = '$id' ";

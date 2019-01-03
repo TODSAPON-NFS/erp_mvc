@@ -463,7 +463,7 @@ class InvoiceSupplierModel extends BaseModel{
         ),0) ,0) as invoice_supplier_list_qty, 
         purchase_order_list_price,
         purchase_order_list_price_sum,
-        '0' as invoice_supplier_list_price, 
+        purchase_order_list_price as invoice_supplier_list_price, 
         '0' as invoice_supplier_list_total,
         '0' as invoice_supplier_list_cost, 
         CONCAT('PO : ',purchase_order_code) as invoice_supplier_list_remark 

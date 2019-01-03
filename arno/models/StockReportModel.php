@@ -83,7 +83,7 @@ class StockReportModel extends BaseModel{
         $sql = "SELECT
                     product_id ,
                     tb_invoice_supplier.invoice_supplier_id AS paper_id,
-                    tb_invoice_supplier.invoice_supplier_code AS paper_code,
+                    tb_invoice_supplier.invoice_supplier_code_gen AS paper_code,
                     '1' AS paper_type,
                     'รับสินค้าเข้า' AS paper_type_name,
                     `invoice_supplier_date` AS paper_date,
@@ -91,8 +91,8 @@ class StockReportModel extends BaseModel{
                     tb_stock_group.stock_group_name,
                     tb_stock_group.stock_group_id
                 FROM `tb_invoice_supplier` 
-                JOIN tb_invoice_supplier_list ON tb_invoice_supplier.invoice_supplier_id = tb_invoice_supplier_list.invoice_supplier_id 
-                JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_supplier_list.stock_group_id
+                LEFT JOIN tb_invoice_supplier_list ON tb_invoice_supplier.invoice_supplier_id = tb_invoice_supplier_list.invoice_supplier_id 
+                LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_supplier_list.stock_group_id
                 WHERE   $str_sup
 
                 UNION  SELECT
@@ -106,8 +106,8 @@ class StockReportModel extends BaseModel{
                         tb_stock_group.stock_group_name,
                         tb_stock_group.stock_group_id
                     FROM `tb_stock_move` 
-                    JOIN tb_stock_move_list ON tb_stock_move.stock_move_id = tb_stock_move.stock_move_id 
-                    JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_stock_move.stock_group_id_in
+                   LEFT JOIN tb_stock_move_list ON tb_stock_move.stock_move_id = tb_stock_move_list.stock_move_id 
+                   LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_stock_move.stock_group_id_in
                     WHERE   $str_mov
 
                 UNION SELECT
@@ -121,8 +121,8 @@ class StockReportModel extends BaseModel{
                         tb_stock_group.stock_group_name,
                         tb_stock_group.stock_group_id
                     FROM `tb_invoice_customer` 
-                    JOIN tb_invoice_customer_list ON tb_invoice_customer.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
-                    JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_customer_list.stock_group_id
+                    LEFT JOIN tb_invoice_customer_list ON tb_invoice_customer.invoice_customer_id = tb_invoice_customer_list.invoice_customer_id 
+                    LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_customer_list.stock_group_id
                     WHERE   $str_cus 
 
                 ORDER BY paper_date, paper_type

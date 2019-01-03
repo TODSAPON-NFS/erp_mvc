@@ -282,7 +282,29 @@
                                     <?php echo  $paper[$i] ['paper_date']?>
                                 </td>
                                 <td>
-                                    <?php echo$paper[$i] ['paper_code'] ?>
+                                <?
+                                if($paper[$i] ['paper_type'] == 1 ){
+                                ?>
+                                   <a
+                                   href="index.php?app=invoice_supplier&action=detail&id=<?php echo$paper[$i] ['paper_id'] ?>"
+                                   >
+                                <?
+                                }else if($paper[$i] ['paper_type'] == 2 ){
+                                ?>
+                                <a
+                                   href="index.php?app=stock_move&action=detail&id=<?php echo$paper[$i] ['paper_id'] ?>"
+                                >
+                                <?
+                                 }else if($paper[$i] ['paper_type'] == 3 ){
+                                ?>
+                                 <a
+                                   href="index.php?app=invoice_customer&action=detail&id=<?php echo$paper[$i] ['paper_id'] ?>"
+                                >
+                                <?
+                                }
+                                ?>
+                                     <?php echo$paper[$i] ['paper_code'] ?>
+                                      </a>
                                 </td>
                                 <td>
                                     <?php echo ($paper[$i] ['stock_group_name']) ?>

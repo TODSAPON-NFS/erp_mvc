@@ -7,6 +7,7 @@ class StockReportModel extends BaseModel{
         if(!static::$db){
             static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
         }
+        mysqli_set_charset(static::$db,"utf8");
     }
 
     function getStockReportListBy($stock_group_id = '', $keyword = ''){

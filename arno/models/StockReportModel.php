@@ -707,7 +707,8 @@ class StockReportModel extends BaseModel{
                 ";
             }
             $sql .="(SELECT concat('".$data[$i]['table_name']."_',stock_id) AS from_stock ,
-            ".$data[$i]['table_name'].".product_id ,CONCAT(product_code_first,product_code) as product_code ,product_name ,
+            ".$data[$i]['table_name'].".product_id ,
+            CONCAT(product_code_first,product_code) as product_code ,product_name ,
             '".$data[$i]['table_name']."' AS table_name ,
             (SELECT stock_group_name FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_name ,
             (SELECT stock_group_code FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_code ,
@@ -791,10 +792,10 @@ class StockReportModel extends BaseModel{
         
         $sql .="  
         )
-        AS tb_stock
+        AS tb_stock 
         ORDER BY  product_code,stock_group_code,STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'),from_stock ASC
         "; 
-        // echo $sql;
+        echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

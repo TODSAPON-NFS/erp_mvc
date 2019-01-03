@@ -23,7 +23,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">รายงานสรุปยอดเคลื่อนไหวสินค้า </h1>
+        <h1 class="page-header">รายงานสินค้าที่ไม่เคลื่อนไหว </h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -36,7 +36,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-8">
-                    รายงานสรุปยอดเคลื่อนไหวสินค้า  
+                    รายงานสินค้าที่ไม่เคลื่อนไหว  
                     </div>
                 </div>
             </div>

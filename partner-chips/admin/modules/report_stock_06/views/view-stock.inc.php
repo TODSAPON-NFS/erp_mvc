@@ -4,8 +4,8 @@
         var table_name = $("#table_name").val(); 
         var stock_start = $("#stock_start").val();
         var stock_end = $("#stock_end").val(); 
-        var product_start = $("#product_start").val();
-        var product_end = $("#product_end").val(); 
+        var product_start = encodeURIComponent($("#product_start").val()); 
+        var product_end = encodeURIComponent($("#product_end").val());  
         var group_by = $("#group_by").val(); 
         var paper_code = $("#paper_code").val(); 
 
@@ -19,8 +19,8 @@
         var table_name = $("#table_name").val(); 
         var stock_start = $("#stock_start").val();
         var stock_end = $("#stock_end").val(); 
-        var product_start = $("#product_start").val();
-        var product_end = $("#product_end").val(); 
+        var product_start = encodeURIComponent($("#product_start").val()); 
+        var product_end = encodeURIComponent($("#product_end").val());  
         var group_by = $("#group_by").val(); 
         var paper_code = $("#paper_code").val(); 
 

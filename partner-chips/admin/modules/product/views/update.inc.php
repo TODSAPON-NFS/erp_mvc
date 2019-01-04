@@ -77,12 +77,14 @@
 
         var customer_id = document.getElementById("customer_id").value;
         var product_name = document.getElementById("minimum_stock").value;
-        var product_group = document.getElementById("safety_stock").value;
+        var safety_stock = document.getElementById("safety_stock").value;
+        var maximum_stock = document.getElementById("maximum_stock").value;
         var product_barcode = document.getElementById("product_status").value;
 
         customer_id = $.trim(customer_id);
         minimum_stock = $.trim(minimum_stock);
         safety_stock = $.trim(safety_stock);
+        maximum_stock = $.trim(maximum_stock);
         product_status = $.trim(product_status);
 
 
@@ -98,6 +100,10 @@
         }else if(safety_stock.length == 0){
             alert("Please input safety stock");
             document.getElementById("safety_stock").focus();
+            return false;
+        }else if(maximum_stock.length == 0){
+            alert("Please input maximum stock");
+            document.getElementById("maximum_stock").focus();
             return false;
         }else if(product_status.length == 0){
             alert("Please input product status");
@@ -585,22 +591,29 @@
                      <!-- /.row (nested) -->
                      <div class="row">
                        
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-group">
                                 <label>Minimum Stock <font color="#F00"><b>*</b></font></label>
                                 <input id="minimum_stock" name="minimum_stock" type="text" class="form-control" value="<?php echo $product_customer['minimum_stock']?>">
-                                <p class="help-block">Example : 120.</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label>Safety Stock <font color="#F00"><b>*</b></font></label>
-                                <input id="safety_stock" name="safety_stock" type="text" class="form-control" value="<?php echo $product_customer['safety_stock']?>">
                                 <p class="help-block">Example : 50.</p>
                             </div>
                         </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Safety Stock <font color="#F00"><b>*</b></font></label>
+                                <input id="safety_stock" name="safety_stock" type="text" class="form-control" value="<?php echo $product_customer['safety_stock']?>">
+                                <p class="help-block">Example : 75.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Maximum Stock <font color="#F00"><b>*</b></font></label>
+                                <input id="maximum_stock" name="maximum_stock" type="text" class="form-control" value="<?php echo $product_customer['maximum_stock']?>">
+                                <p class="help-block">Example : 100.</p>
+                            </div>
+                        </div>
                        
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="form-group">
                                 <label>Customer Status  <font color="#F00"><b>*</b></font></label>
                                 <select id="product_status" name="product_status" class="form-control">
@@ -628,6 +641,7 @@
                                 <th>Customer</th>
                                 <th>Minmum Stock</th>
                                 <th>Safety Stock</th>
+                                <th>Maximum Stock</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>
@@ -641,6 +655,7 @@
                                 <td><?php echo $product_customers[$i]['customer_name_en']; ?> (<?php echo $product_customers[$i]['customer_name_th']; ?>) </td>
                                 <td class="center"><?php echo $product_customers[$i]['minimum_stock']; ?></td>
                                 <td class="center"><?php echo $product_customers[$i]['safety_stock']; ?></td>
+                                <td class="center"><?php echo $product_customers[$i]['maximum_stock']; ?></td>
                                 <td class="center"><?php echo $product_customers[$i]['product_status']; ?></td>
                                 <td>
                                 <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 

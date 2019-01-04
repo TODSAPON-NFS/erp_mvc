@@ -254,8 +254,7 @@
         $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
             if(data != null){
                 $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name);
-                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id);
-                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id);
+                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id); 
                 
                 $(id).closest('tr').children('td').children('input[name="customer_purchase_order_list_qty[]"]').val('1');
 
@@ -298,6 +297,10 @@
                 customer_type = data.customer_type_id;
                 document.getElementById('customer_code').value = data.customer_code;
                 document.getElementById('customer_tax').value = data.customer_tax;
+                document.getElementById('employee_id').value = data.sale_id ;
+                console.log(data.sale_id);
+                $('#employee_id').selectpicker('refresh');
+                document.getElementById('customer_purchase_order_credit_term').value = data.credit_day; 
                 document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
                
             });

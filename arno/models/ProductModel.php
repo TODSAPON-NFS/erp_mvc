@@ -133,6 +133,10 @@ class ProductModel extends BaseModel{
     function getProductByCode($product_code){
         $sql = "SELECT * 
         FROM tb_product 
+        LEFT JOIN tb_product_type ON tb_product.product_type = tb_product_type.product_type_id 
+        LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
+        LEFT JOIN tb_product_group ON tb_product.product_group = tb_product_group.product_group_id 
+        LEFT JOIN tb_product_unit ON tb_product.product_unit = tb_product_unit.product_unit_id 
         WHERE product_code = '$product_code' 
         ";
 

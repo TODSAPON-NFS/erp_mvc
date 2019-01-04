@@ -34,6 +34,7 @@
 
     <!-- Main CSS -->
     <link href="../css/styles.css" rel="stylesheet">
+    <link href="../css/notification.css" rel="stylesheet">
 
 
     
@@ -43,6 +44,7 @@
     
 
     <script src="../template/dist/js/jquery-ui.js"></script>
+    
 
     <!-- JS file -->
     <script src="../plugins/autocomplete/jquery.easy-autocomplete.min.js"></script> 

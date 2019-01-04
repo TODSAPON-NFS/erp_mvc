@@ -1,13 +1,13 @@
 <script>
     function search(){     
-        var product_start = $("#product_start").val(); 
-        var product_end = $("#product_end").val();  
+        var product_start = encodeURIComponent($("#product_start").val()); 
+        var product_end = encodeURIComponent($("#product_end").val());  
 
         window.location = "index.php?app=report_stock_04&product_start="+product_start+"&product_end="+product_end ;
     }
     function print(type){     
-        var product_start = $("#product_start").val(); 
-        var product_end = $("#product_end").val();  
+        var product_start = encodeURIComponent($("#product_start").val()); 
+        var product_end = encodeURIComponent($("#product_end").val());   
 
         window.open("print.php?app=report_stock_04&action="+type+"&product_start="+product_start+"&product_end="+product_end ,'_blank');
     }

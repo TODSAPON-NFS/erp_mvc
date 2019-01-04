@@ -74,11 +74,18 @@
                             <tbody>
                                 <?php 
                                 for($i=0; $i < count($customer_purchase_orders); $i++){
+                                    $invoice_customer_list_has = $invoice_customer_model->getCustomerPurchaseOrderStock($customer_purchase_orders[$i]['customer_id'],'','',$customer_purchase_orders[$i]['customer_purchase_order_id']);
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?> (<?php echo $customer_purchase_orders[$i]['customer_name_en'];  ?>)</td>
+                                    <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?> (<?php echo $customer_purchase_orders[$i]['customer_name_en'];  ?>) 
+                                    </td>
                                     <td>
+                                        <?PHP if(count($invoice_customer_list_has) > 0){ ?>
+                                        <a href="?app=invoice_customer&action=insert&customer_id=<?php echo $customer_purchase_orders[$i]['customer_id'];?>&open-type=ready&customer_purchase_order_id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>" style="color:green;">
+                                            <i class="fa fa-check-square" aria-hidden="true"></i>
+                                        </a>
+                                        <?PHP } ?>
                                         <a href="?app=invoice_customer&action=insert&customer_id=<?php echo $customer_purchase_orders[$i]['customer_id'];?>&customer_purchase_order_id=<?php echo $customer_purchase_orders[$i]['customer_purchase_order_id'];?>">
                                             <i class="fa fa-plus-square" aria-hidden="true"></i>
                                         </a>

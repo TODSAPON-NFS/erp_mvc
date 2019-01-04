@@ -201,6 +201,9 @@
                 document.getElementById('invoice_supplier_tax').value = data.supplier_tax ;
                 document.getElementById('invoice_supplier_due_day').value = data.credit_day ;
                 document.getElementById('invoice_supplier_term').value = data.condition_pay ;
+                <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+                    $('span[name="currency"]').html(data.currency_sign);
+                <?PHP } ?>
             }
         });
 
@@ -528,7 +531,8 @@
                 var qty =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="qty"]').val(  ).replace(',',''));
                 var purchase_price =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="price"]').val( ).replace(',',''));
                 var price = purchase_price * exchange_rate;
-                var sum =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="total"]').val( ).replace(',',''));
+                var purchase_total = qty * purchase_price;
+                var sum =  price * qty;
             <?PHP }else{ ?>
                 var qty =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="qty"]').val(  ).replace(',',''));
                 var price =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="price"]').val( ).replace(',',''));
@@ -570,6 +574,9 @@
             <?PHP } ?>  '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_price[]" onchange="update_sum(this);" value="'+ price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" /></td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_total[]" onchange="update_sum(this);"  value="'+ sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly /></td>'+
                         '<td>'+
+                            '<a href="javascript:;" onclick="product_detail_blank(this);">'+
+                                '<i class="fa fa-file-text-o" aria-hidden="true"></i>'+
+                            '</a> '+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
                             '</a>'+
@@ -592,11 +599,12 @@
                 $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').html(str);
 
                 $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').selectpicker();
-
+                
             }
             
         }
         calculateAll();
+        update_line();
     }
 
     
@@ -639,6 +647,9 @@
     <?PHP } ?>  '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_price[]" value="0" onchange="update_sum(this);" /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_total[]" value="0" onchange="update_sum(this);" readonly /></td>'+
                 '<td>'+
+                    '<a href="javascript:;" onclick="product_detail_blank(this);">'+
+                        '<i class="fa fa-file-text-o" aria-hidden="true"></i>'+
+                    '</a> '+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
                     '</a>'+
@@ -656,6 +667,7 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="stock_group_id[]"]').selectpicker();
+        update_line();
     }
 
     
@@ -812,7 +824,15 @@
         console.log($('#invoice_supplier_due').val());
     }
 
-
+    function product_detail_blank(id){
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+        if(product_id == ''){
+            alert('ไม่มีข้อมูลสินค้านี้');
+            $(id).closest('tr').children('td').children('input[name="product_code[]"]').focus();
+        }else{
+            window.open("?app=product_detail&product_id="+product_id);
+        }
+    }
 
 </script>
 
@@ -1013,8 +1033,8 @@
                                 <th style="text-align:center;">คลังสินค้า </th>
                                 <th style="text-align:center;" width="150">จำนวน </th>
                                 <?PHP if($sort == "ภายนอกประเทศ"){ ?>
-                                <th style="text-align:center;" width="150">ราคาต่อหน่วย <span nane="currency"><?PHP echo $supplier['currency_sign']; ?></span> </th>
-                                <th style="text-align:center;" width="150">ราคารวม <span nane="currency"><?PHP echo $supplier['currency_sign']; ?></span> </th>
+                                <th style="text-align:center;" width="150">ราคาต่อหน่วย <span name="currency"><?PHP echo $supplier['currency_sign']; ?></span> </th>
+                                <th style="text-align:center;" width="150">ราคารวม <span name="currency"><?PHP echo $supplier['currency_sign']; ?></span> </th>
                                 <?PHP } ?>
                                 <th style="text-align:center;" width="150">ราคาต่อหน่วยบาท </th>
                                 <th style="text-align:center;" width="150">จำนวนเงินบาท </th>
@@ -1106,7 +1126,10 @@
                                 <?PHP } ?>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  autocomplete="off" onchange="update_sum(this);" name="invoice_supplier_list_price[]" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_price'],4); ?>" /></td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" readonly onchange="update_sum(this);" name="invoice_supplier_list_total[]" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_qty'] * $invoice_supplier_lists[$i]['invoice_supplier_list_price'],2); ?>" /></td>
-                                <td>
+                                <td> 
+                                    <a href="javascript:;" onclick="product_detail_blank(this);">
+                                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                    </a> 
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>
@@ -1152,11 +1175,11 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="24"><input type="checkbox" value="all" id="check_all" onclick="checkAll(this)" /></th>
-                                                        <th style="text-align:center;">รหัสสินค้า <br> (Product Code)</th>
-                                                        <th style="text-align:center;">ชื่อสินค้า <br> (Product Detail)</th>
-                                                        <th style="text-align:center;" width="150">จำนวน <br> (Qty)</th>
-                                                        <th style="text-align:center;" width="150">ราคาต่อหน่วย <br> (Unit price) </th>
-                                                        <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount)</th>
+                                                        <th style="text-align:center;">รหัสสินค้า </th>
+                                                        <th style="text-align:center;">ชื่อสินค้า </th>
+                                                        <th style="text-align:center;" width="150">จำนวน </th>
+                                                        <th style="text-align:center;" width="150">ราคาต่อหน่วย </th>
+                                                        <th style="text-align:center;" width="150">จำนวนเงิน </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="bodyAdd">
@@ -1183,7 +1206,7 @@
                                     
                                 </td>
                                 <td align="left" style="vertical-align: middle;">
-                                    <span>จำนวนเงินรวม <span nane="currency"><?PHP echo $supplier['currency_sign']; ?></span> </span>
+                                    <span>จำนวนเงินรวม <span name="currency"><?PHP echo $supplier['currency_sign']; ?></span> </span>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" style="text-align: right;" id="purchase_order_total_price" name="purchase_order_total_price" value="<?PHP echo number_format($purchase_order_total_price,2) ;?>"  readonly/>

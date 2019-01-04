@@ -101,7 +101,7 @@
     <div class="col-lg-8">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+                <i class="fa fa-bar-chart-o fa-fw"></i> แสดงยอดขายตามปี
                 <div class="pull-right">
                     <div class="btn-group">
                         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -124,14 +124,19 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <div id="morris-area-chart"></div>
+                <!-- <div id="morris-area-chart"></div> -->
+                <canvas id="myChart" width="400" height="400"></canvas>
             </div>
             <!-- /.panel-body -->
         </div>
         <!-- /.panel -->
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
-                <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example
+
+                <i class="fa fa-bar-chart-o fa-fw"></i> Chart แสดงยอดขายตามลูกค้า
+                <!-- <div id="pageInfo">
+                    
+                </div> -->
                 <div class="pull-right">
                     <div class="btn-group">
                         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -155,27 +160,33 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped">
+                    <div class="col-lg-5">
+                        <div class="table ">
+                            <table id="myTable" class="table table-bordered table-hover table-striped">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>Amount</th>
+                                        <th class="text-center" width="25px;">#</th>
+                                        <th class="text-center" width="60px;">Code</th>
+                                        <th class="text-center">Name</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 
+                                    <?php for($i=0;$i<count($customer);$i++){?>
+                                        <tr>
+                                            <td class="text-center"><?php echo $i+1;?></td>
+                                            <td class="text-center"><?php echo $customer[$i]['code']?></td>
+                                            <td><?php echo $customer[$i]['customer_name']?></td>
+                                        </tr>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
                         <!-- /.table-responsive -->
                     </div>
                     <!-- /.col-lg-4 (nested) -->
-                    <div class="col-lg-8">
-                        <div id="morris-bar-chart"></div>
+                    <div class="col-lg-7">
+                    <canvas id="BarChart" width="400" height="400"></canvas>
                     </div>
                     <!-- /.col-lg-8 (nested) -->
                 </div>
@@ -187,13 +198,15 @@
         
     </div>
     <!-- /.col-lg-8 -->
+
+
     <div class="col-lg-4">
         <div class="panel panel-primary">
             <div class="panel-heading " style="min-height:0px;">
                 <i class="fa fa-bell fa-fw"></i> Notifications Panel
             </div>
             <!-- /.panel-heading -->
-            <div class="panel-body-notify scroll1">
+            <div class="panel-body-notify-dash scroll1">
                 <div class="list-group">
                 <?php for($i=0 ; $i < count($notifications) ;$i++){ ?>
                 <a href="<?php echo $notifications[$i]['notification_url'];?>&notification=<?php echo $notifications[$i]['notification_id'];?>" class="list-group-item <?php if($notifications[$i]['notification_seen_date'] != ""){ ?>notify<? }else{ ?> notify-active <?php } ?>">
@@ -226,13 +239,13 @@
             <!-- /.panel-body -->
         </div>
         <!-- /.panel -->
-        <div class="panel panel-default">
+        <div class="panel panel-green">
             <div class="panel-heading">
-                <i class="fa fa-bar-chart-o fa-fw"></i> Donut Chart Example
+                <i class="fa fa-bar-chart-o fa-fw"></i> Pie Chart Example
             </div>
             <div class="panel-body">
-                <div id="morris-donut-chart"></div>
-                <a href="#" class="btn btn-default btn-block">View Details</a>
+                <canvas id="PieChart"></canvas>
+                <!-- <a href="#" class="btn btn-default btn-block">View Details</a> -->
             </div>
             <!-- /.panel-body -->
         </div>
@@ -242,4 +255,207 @@
     <!-- /.col-lg-4 -->
 </div>
 <!-- /.row -->
+<script>
+    
+    $(function () {
+        var dataLineChart;
+        // UpdateLineChart();
+        $('#myTable').dataTable({
+            "bInfo" : false,
+            "pagingType": "simple",
+            "pageLength": 5,
+            "lengthChange": false
+        });
 
+        var table = $('#myTable').DataTable();
+    
+        
+        
+        var Color = ["#004D40", "#00695C","#00796B","#00897B","#009688","#26A69A", "#4DB6AC","#80CBC4","#B2DFDB","#81C784"];
+        var bar = document.getElementById("BarChart");
+        var barChart = new Chart(bar, {
+                type: 'horizontalBar',
+                data: {
+                labels: [],
+                datasets: [
+                    {
+                    data: [],
+                    label: "ยอดขาย :",
+                    backgroundColor: Color ,                    
+                    }
+                ]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'ยอดขายตามลูกค้า 2018'
+                    },   
+                                     
+                }
+        }); 
+
+        $('#myTable').on( 'page.dt', function () {
+            var info = table.page.info();
+            // $('#pageInfo').html( 'Showing page: '+info.page+' of '+info.pages );
+            // console.log("Showing page: "+info.page);
+            UpdateBarChart(info.page,barChart);
+            
+        } );
+        UpdateBarChart(0,barChart);
+    
+    }); 
+    $(document).ready( function () {
+            UpdateLineChart();            
+            UpdatePieChart();
+    });   
+    function addData(chart, label, data) {
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(data);
+        });
+        chart.update();
+    }
+    function removeData(chart) {
+        chart.data.labels.pop();
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.pop();
+        });
+        chart.update();
+    }
+    function renderLineChart(data, labels) {
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'ยอดขาย',
+                        data: data,
+                        borderColor: 'rgba(169, 50, 38,0.0)',
+                        borderWidth:0,
+                        fill: true,
+                        backgroundColor: 'rgba(38, 166, 154, 0.5)',
+                    }]
+                },                
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true,
+                                callback: function (data) {
+                                    return numeral(data).format('0,0.00')
+                                }
+                            }
+                        }]
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                return "ยอดขาย: "+tooltipItem.yLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')+" บาท";
+                            }
+                        }
+                    }
+                }
+            });
+
+    }
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+    function renderPieChart(data, labels){
+        var Pie = document.getElementById("PieChart");
+        var color = [];
+        for(var i=0;i<data.length;i++){
+            color[i] = getRandomColor();
+        }
+        
+        var PieChart =  new Chart(Pie, {
+            type: 'pie',
+            data: {
+            labels: labels,
+            datasets: [{
+                // label: "Population (millions)",
+                // backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                backgroundColor:color,
+                data: data,
+                borderWidth:0
+            }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'ยอดขายตาม sales'
+                },
+                maintainAspectRatio: true,
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var indice = tooltipItem.index; 
+                                return "ยอดขาย: "+parseFloat(data.datasets[0].data[indice]).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')+" บาท";
+                            }
+                        }
+                    }
+            }
+        });
+    }
+    function UpdateLineChart(){ //*****function Update Event Line chart And Update data****** */
+        $.post( "controllers/getNetPriceGroupByDate.php", function( result ) {    
+            if(result != null){   
+                var data = [];
+                var labels = [];
+                // data.push(result.net_price);
+                for(var i=0;i<result.length;i++){
+                    data[i]=result[i].net_price;
+                    labels[i]=result[i].invoice_date;
+                }
+                renderLineChart(data, labels); //****Update Line Chart Data****** */
+            }
+        });        
+    }
+    function UpdateBarChart(limit,barChart){ //*****function Next Event Bar chart And Update data****** */
+        $.post( "controllers/getNetPriceGroupByCustomer.php",{ 'limit': limit }, function( data ) {    
+            if(data != null){ 
+                var labels=[];
+                var net_price = [];  
+                barChart.data.labels.pop();
+                barChart.data.datasets.forEach((dataset) => {
+                    dataset.data.pop();
+                });
+                for(var i=0;i<data.length;i++){
+                        net_price[i]=data[i].net_price;
+                        labels[i]=data[i].code;
+                    }
+                    barChart.data.labels =labels;
+                    barChart.data.datasets[0].data = net_price;
+                    barChart.options.scales.xAxes[0].ticks.beginAtZero=true;
+                    barChart.options.tooltips.callbacks.label = function(tooltipItem, net_price) {
+                                return "ยอดขาย: "+tooltipItem.xLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')+" บาท";
+                            }
+                    barChart.options.scales.xAxes[0].ticks.callback = function (net_price) {
+                                    return numeral(net_price).format('0,0')
+                                }
+                    barChart.update();
+            }
+        });        
+    }
+    function UpdatePieChart(){ //*****function Update Event Pie chart And Update data****** */
+        $.post( "controllers/getNetPriceGroupByAllSales.php", function( data ) {    
+            if(data != null){  
+                var labels=[];
+                var net_price = [];  
+                for(var i=0;i<data.length;i++){
+                    net_price[i]=data[i].net_price;
+                    labels[i]=data[i].sales_name;
+                } 
+                renderPieChart(net_price,labels); //****Update Pie Chart Data****** */
+            }
+        });        
+    }
+</script>

@@ -448,6 +448,9 @@
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" value="'+(data_buffer[i].purchase_order_list_qty * data_buffer[i].purchase_order_list_price)+'"/></td>'+
                         
                         '<td>'+
+                            '<a href="javascript:;" onclick="product_detail_blank(this);">'+
+                                '<i class="fa fa-file-text-o" aria-hidden="true"></i>'+
+                            '</a> '+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
                             '</a>'+
@@ -509,6 +512,9 @@
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" /></td>'+
                 
                 '<td>'+
+                    '<a href="javascript:;" onclick="product_detail_blank(this);">'+
+                        '<i class="fa fa-file-text-o" aria-hidden="true"></i>'+
+                    '</a> '+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
                     '</a>'+
@@ -545,6 +551,16 @@
         $('#purchase_order_vat_price').val((total * ($('#purchase_order_vat').val()/100.0)).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
         $('#purchase_order_net_price').val((total * ($('#purchase_order_vat').val()/100.0) + total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
 
+    }
+
+    function product_detail_blank(id){
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+        if(product_id == ''){
+            alert('ไม่มีข้อมูลสินค้านี้');
+            $(id).closest('tr').children('td').children('input[name="product_code[]"]').focus();
+        }else{
+            window.open("?app=product_detail&product_id="+product_id);
+        }
     }
 
 
@@ -713,6 +729,9 @@
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" readonly onchange="update_sum(this);" name="purchase_order_list_price_sum[]" value="<?php echo number_format($purchase_order_lists[$i]['purchase_order_list_qty'] * $purchase_order_lists[$i]['purchase_order_list_price'],2); ?>" /></td>
                                 
                                 <td>
+                                    <a href="javascript:;" onclick="product_detail_blank(this);">
+                                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                    </a> 
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>

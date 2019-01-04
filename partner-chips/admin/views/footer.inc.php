@@ -19,7 +19,7 @@
 
     <!-- Custom Dropdown Theme JavaScript -->
     <script src="../template/dist/js/bootstrap-select.min.js"></script>
-
+    
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 
@@ -28,9 +28,12 @@
 
     <!-- Morris Charts JavaScript -->
     <?php if($_GET['app'] =="" ){?>
-    <script src="../template/vendor/raphael/raphael.min.js"></script>
+    <!-- <script src="../template/vendor/raphael/raphael.min.js"></script>
     <script src="../template/vendor/morrisjs/morris.min.js"></script>
-    <script src="../template/data/morris-data.js"></script>
+    <script src="../template/data/morris-data.js"></script> -->
+    <script src="../template/dist/js/numeral.min.js"></script>
+    <script src="../template/dist/js/Chart.min.js"></script>
+    <script src="../template/dist/js/Chart.bundle.min.js"></script>
     <?php }?>
 
     <script>
@@ -196,7 +199,7 @@ div.dataTables_filter{
         <div class="modal-content">
             <div class="modal-body" style="padding:40px 50px;">
                 <button type="button" class="close" data-dismiss="modal">&times;</button> 
-                <div align="center" style="padding:8px;"><img class="img-responsive logo" src="../../uploads/logo/arno.jpg"></div>
+                <div align="center" style="padding:8px;"><img class="img-responsive logo" src="../../uploads/logo/partner-chips.jpg"></div>
                 <div class="form-group">
                     <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
                     <input type="text" class="form-control" id="username" placeholder="Enter username">
@@ -206,7 +209,7 @@ div.dataTables_filter{
                     <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
                     <input type="password" class="form-control" id="psw" placeholder="Enter password" >
                 </div>
-                <button type="button" onclick="login();" class="btn btn-danger btn-block"><span class="fa fa-sign-in"></span> Login</button>
+                <button type="button" onclick="login();" class="btn btn-lg btn-success btn-block"><span class="fa fa-sign-in"></span> Login</button>
             </div>
         </div>
 

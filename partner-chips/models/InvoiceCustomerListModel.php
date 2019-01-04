@@ -26,8 +26,11 @@ class InvoiceCustomerListModel extends BaseModel{
         invoice_customer_list_total, 
         invoice_customer_list_remark,
         customer_purchase_order_list_id,
+        stock_event,
         stock_group_id
-        FROM tb_invoice_customer_list LEFT JOIN tb_product ON tb_invoice_customer_list.product_id = tb_product.product_id 
+        FROM tb_invoice_customer_list 
+        LEFT JOIN tb_product ON tb_invoice_customer_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
         WHERE invoice_customer_id = '$invoice_customer_id' 
         ORDER BY invoice_customer_list_no , invoice_customer_list_id 
         ";

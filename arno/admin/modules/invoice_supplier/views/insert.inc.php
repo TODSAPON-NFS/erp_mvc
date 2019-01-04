@@ -572,6 +572,9 @@
             <?PHP } ?>  '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_price[]" onchange="update_sum(this);" value="'+ price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" /></td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_total[]" onchange="update_sum(this);"  value="'+ sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly /></td>'+
                         '<td>'+
+                            '<a href="javascript:;" onclick="product_detail_blank(this);">'+
+                                '<i class="fa fa-file-text-o" aria-hidden="true"></i>'+
+                            '</a> '+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
                             '</a>'+
@@ -642,6 +645,9 @@
     <?PHP } ?>  '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_price[]" value="0" onchange="update_sum(this);" /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_total[]" value="0" onchange="update_sum(this);" readonly /></td>'+
                 '<td>'+
+                    '<a href="javascript:;" onclick="product_detail_blank(this);">'+
+                        '<i class="fa fa-file-text-o" aria-hidden="true"></i>'+
+                    '</a> '+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
                     '</a>'+
@@ -816,7 +822,15 @@
         console.log($('#invoice_supplier_due').val());
     }
 
-
+    function product_detail_blank(id){
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+        if(product_id == ''){
+            alert('ไม่มีข้อมูลสินค้านี้');
+            $(id).closest('tr').children('td').children('input[name="product_code[]"]').focus();
+        }else{
+            window.open("?app=product_detail&product_id="+product_id);
+        }
+    }
 
 </script>
 
@@ -1124,7 +1138,10 @@
                                 <?PHP } ?>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="invoice_supplier_list_price[]" autocomplete="off" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_price'],4); ?>" /></td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" name="invoice_supplier_list_total[]" autocomplete="off" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_qty'] * $invoice_supplier_lists[$i]['invoice_supplier_list_price'],2); ?>" /></td>
-                                <td>
+                                <td> 
+                                    <a href="javascript:;" onclick="product_detail_blank(this);">
+                                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                    </a> 
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>

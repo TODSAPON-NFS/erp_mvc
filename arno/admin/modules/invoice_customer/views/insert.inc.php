@@ -165,8 +165,9 @@
         }else{
 
             var stock_groupt_id = $('select[name="stock_group_id[]"]')
+            var stock_event = $('select[name="stock_event[]"]')
             for(var i = 0 ; i < stock_groupt_id.length; i++){
-                if(stock_groupt_id[i].value == ""){
+                if(stock_groupt_id[i].value == "" && stock_event[i].value == '1'){
                     alert("กรุณาเลือกคลังสินค้า");
                     $(stock_groupt_id[i]).focus();
                     return false;
@@ -259,6 +260,7 @@
                 $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
                 $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)  
                 $(id).closest('tr').children('td').children('input[name="save_product_price[]"]').val(data.product_id)  
+                $(id).closest('tr').children('td').children('input[name="stock_event[]"]').val(data.stock_event)  
                 
                 show_stock(id);
                 var customer_id = $('#customer_id').val(); 
@@ -526,6 +528,7 @@
                             '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark" value="'+ data_buffer[i].invoice_customer_list_remark +'"/>'+
                         '</td>'+ 
                         '<td>'+
+                            '<input type="hidden" name="stock_event[]" class="form-control" value="'+ data_buffer[i].stock_event +'" />'+
                             '<select  name="stock_group_id[]" onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
                                 '<option value="0">Select</option>'+ 
                             '</select>'+ 
@@ -539,6 +542,9 @@
                         '</td>'+      
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" autocomplete="off" onchange="update_sum(this);"  value="'+ sum.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly /></td>'+
                         '<td>'+
+                            '<a href="javascript:;" onclick="product_detail_blank(this);">'+
+                                '<i class="fa fa-file-text-o" aria-hidden="true"></i>'+
+                            '</a> '+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
                             '</a>'+
@@ -590,6 +596,7 @@
                     '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark"/>'+
                 '</td>'+ 
                 '<td>'+
+                    '<input type="hidden" name="stock_event[]" class="form-control" value="0" />'+
                     '<select  name="stock_group_id[]"  onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
                         '<option value="0">Select</option>'+ 
                     '</select>'+ 
@@ -603,6 +610,9 @@
                 '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_customer_list_total[]" onchange="update_sum(this);" readonly /></td>'+
                 '<td>'+
+                    '<a href="javascript:;" onclick="product_detail_blank(this);">'+
+                        '<i class="fa fa-file-text-o" aria-hidden="true"></i>'+
+                    '</a> '+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
                     '</a>'+
@@ -706,6 +716,16 @@
         $('#invoice_customer_due').val(("0" + tomorrow.getDate() ) .slice(-2) + '-' + ("0" + (tomorrow.getMonth()+1) ).slice(-2) + '-' + tomorrow.getFullYear());
         
 
+    }
+
+    function product_detail_blank(id){
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+        if(product_id == ''){
+            alert('ไม่มีข้อมูลสินค้านี้');
+            $(id).closest('tr').children('td').children('input[name="product_code[]"]').focus();
+        }else{
+            window.open("?app=product_detail&product_id="+product_id);
+        }
     }
 
 
@@ -872,7 +892,7 @@
                                             <?php 
                                             for($i =  0 ; $i < count($users) ; $i++){
                                             ?>
-                                            <option <?PHP if($admin_id == $users[$i]['user_id']){?> SELECTED <?PHP }?> value="<?php echo $users[$i]['user_id'] ?>"><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
+                                            <option <?PHP if($customer['sale_id'] == $users[$i]['user_id']){?> SELECTED <?PHP }?> value="<?php echo $users[$i]['user_id'] ?>"><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
                                             <?
                                             }
                                             ?>
@@ -919,7 +939,8 @@
                                     <input type="text" class="form-control" name="invoice_customer_list_product_detail[]"  placeholder="Product Detail (Customer)" value="<?PHP echo $invoice_customer_lists[$i]['invoice_customer_list_product_detail'];?>"/>
                                     <input type="text" class="form-control" name="invoice_customer_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_remark']; ?>" />
                                 </td> 
-                                <td>
+                                <td>  
+                                    <input type="hidden" name="stock_event[]" class="form-control" value="<?php echo $invoice_customer_lists[$i]['stock_event']; ?>" />
                                     <select   name="stock_group_id[]"  onchange="show_qty(this)" class="form-control select" data-live-search="true" > 
                                         <?php 
                                         $stock_groups = $stock_group_model->getStockGroupByProductID($invoice_customer_lists[$i]['product_id']);
@@ -935,7 +956,7 @@
                                         ?>
                                     </select> 
                                 </td>
-                                <td align="right">  
+                                <td align="right">
                                     <input type="text" class="form-control" style="text-align: right;"  onchange="check_qty(this);" autocomplete="off" name="invoice_customer_list_qty[]" value="<?php if ($stock_report_qty >= $invoice_customer_lists[$i]['invoice_customer_list_qty']) { echo number_format($invoice_customer_lists[$i]['invoice_customer_list_qty'],0); } else { echo number_format($stock_report_qty,0); } ?>" stock_report_qty = "<?php echo $stock_report_qty; ?>" />
                                 </td>
                                 <td >
@@ -943,7 +964,10 @@
                                     <input type="checkbox" name="save_product_price[]" value="<?php echo $invoice_customer_lists[$i]['product_id']; ?>"/> บันทึกราคาขาย
                                 </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly onchange="update_sum(this);" autocomplete="off" name="invoice_customer_list_total[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_qty'] * $invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" /></td>
-                                <td>
+                                <td> 
+                                    <a href="javascript:;" onclick="product_detail_blank(this);">
+                                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                    </a> 
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>

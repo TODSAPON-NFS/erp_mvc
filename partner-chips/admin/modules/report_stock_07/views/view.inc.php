@@ -1,25 +1,30 @@
 <script>
     function search(){  
-        var product_category_id = $("#product_category_id").val(); 
-        var product_type_id = $("#product_type_id").val();  
-        var product_start = $("#product_start").val(); 
-        var product_end = $("#product_end").val();  
-
-        window.location = "index.php?app=report_stock_07&product_category_id="+product_category_id+"&product_type_id="+product_type_id+"&product_start="+product_start+"&product_end="+product_end ;
+        // alert();
+        var supplier_id = encodeURIComponent($("#supplier_id").val()); 
+        var product_type_id = encodeURIComponent($("#product_type_id").val());  
+        var product_start = encodeURIComponent($("#product_start").val()); 
+        var product_end = encodeURIComponent($("#product_end").val());   
+        var product_qty = encodeURIComponent($("#product_qty").val());    
+        var product_qty_text = document.getElementById('product_qty').options[document.getElementById('product_qty').selectedIndex ].text 
+        
+        window.location = "index.php?app=report_stock_07&product_type_id="+product_type_id+"&supplier_id="+supplier_id+"&product_start="+product_start+"&product_end="+product_end+"&product_qty="+product_qty+"&product_qty_text="+product_qty_text ;
     }
     function print(type){  
-        var product_category_id = $("#product_category_id").val(); 
-        var product_type_id = $("#product_type_id").val();  
-        var product_start = $("#product_start").val(); 
-        var product_end = $("#product_end").val();  
+        var supplier_id = encodeURIComponent($("#supplier_id").val()); 
+        var product_type_id = encodeURIComponent($("#product_type_id").val());  
+        var product_start = encodeURIComponent($("#product_start").val()); 
+        var product_end = encodeURIComponent($("#product_end").val());  
+        var product_qty = encodeURIComponent($("#product_qty").val());   
+        var product_qty_text = document.getElementById('product_qty').options[document.getElementById('product_qty').selectedIndex ].text 
 
-        window.open("print.php?app=report_stock_07&action="+type+"&product_category_id="+product_category_id+"&product_type_id="+product_type_id+"&product_start="+product_start+"&product_end="+product_end ,'_blank');
+        window.open("print.php?app=report_stock_07&action="+type+"&product_type_id="+product_type_id+"&supplier_id="+supplier_id+"&product_start="+product_start+"&product_end="+product_end+"&product_qty="+product_qty+"&product_qty_text="+product_qty_text ,'_blank');
     }
 </script>
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">รายงานราคาขายสินค้า</h1>
+        <h1 class="page-header">รายงานจุดสั่งซื้อ</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -32,7 +37,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-8">
-                    รายงานราคาขายสินค้า 
+                    รายงานจุดสั่งซื้อ 
                     </div>
                 </div>
             </div>
@@ -96,9 +101,9 @@
                             <label>จุดสั่งซื้อ </label>
                             <select id="product_qty" name="product_qty" class="form-control "  data-live-search="true">
                                 <option value="">ทั้งหมด</option>
-                                <option value="low">ต่ำกว่าเกณฑ์</option>
-                                <option value="normal">ภายในเกณฑ์</option>
-                                <option value="high">สูงกว่าเกณฑ์</option> 
+                                <option <?php if($product_qty == 'low'){?> selected <?php }?> value="low">ต่ำกว่าเกณฑ์</option>
+                                <option <?php if($product_qty == 'normal'){?> selected <?php }?> value="normal">ภายในเกณฑ์</option>
+                                <option <?php if($product_qty == 'high'){?> selected <?php }?> value="high">สูงกว่าเกณฑ์</option> 
                             </select>
                             <p class="help-block">Example : -</p>
                         </div>
@@ -122,12 +127,14 @@
                     <thead>
                         <tr> 
                             <th width="5%" >No.</th>  
-                            <th width="20%" >รหัสสินค้า</th>  
-                            <th align="20%">ชื่อสินค้า </th>
+                            <th width="17.5%" >รหัสสินค้า</th>  
+                            <th align="17.5%">ชื่อสินค้า </th>
                             <th width="25%" align="">ผู้ขาย</th>
-                            <th width="10%" align="center">จุดต่ำสุด</th>   
-                            <th width="10%" align="center">จำนวนคงเหลือทั้งหมด</th>   
-                            <th width="10%" align="center">จำนวนที่ต้องสั่งซื้อ</th>    
+                            <th width="7%" align="center">จุดต่ำสุด</th>   
+                            <th width="7%" align="center">จุดสั่งซื้อ</th>   
+                            <th width="7%" align="center">จุดสูงสุด</th>   
+                            <th width="7%" align="center">คงเหลือ</th>   
+                            <th width="7%" align="center">ต้องสั่งซื้อ</th>    
                         </tr>
                     </thead>
                     <tbody>
@@ -145,6 +152,8 @@
                             <td><?php echo $stock_reports[$i]['product_name']; ?></td> 
                             <td><?php echo $stock_reports[$i]['supplier_name_en']; ?></td> 
                             <td align="right"><?php echo number_format($stock_reports[$i]['minimum_stock'],0); ?></td>
+                            <td align="right"><?php echo number_format($stock_reports[$i]['safety_stock'],0); ?></td>
+                            <td align="right"><?php echo number_format($stock_reports[$i]['maximum_stock'],0); ?></td>
                             <td align="right"><?php echo number_format($stock_reports[$i]['stock_report_qty'],0); ?></td>
                             <td align="right"><?php echo number_format($stock_reports[$i]['product_buy'],0); ?></td> 
                         </tr>

@@ -139,7 +139,11 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     
     if($customer_id > 0){
         $customer=$customer_model->getCustomerByID($customer_id);
-        $invoice_customer_lists = $invoice_customer_model->generateInvoiceCustomerListByCustomerId($customer_id,'','',$customer_purchase_order_id);
+        if($_GET['open-type'] == 'ready'){
+            $invoice_customer_lists = $invoice_customer_model->getCustomerPurchaseOrderStock($customer_id,'','',$customer_purchase_order_id); 
+        }else{
+            $invoice_customer_lists = $invoice_customer_model->generateInvoiceCustomerListByCustomerId($customer_id,'','',$customer_purchase_order_id); 
+        }
     }
    
 
@@ -330,7 +334,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 ?>
         <script>
              
-            window.location="index.php?app=invoice_customer&action=insert";
+            window.location="index.php?app=invoice_customer&action=update&id=<?php echo $invoice_customer_id;?>";
         </script>
 <?php
         }else{

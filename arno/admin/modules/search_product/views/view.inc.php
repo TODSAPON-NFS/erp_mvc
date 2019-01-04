@@ -132,13 +132,14 @@
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>รหัสสินค้า <br> Product Code</th>
-                                        <th>ชื่อสินค้า <br> Product Name</th>
-                                        <th>รายละเอียดสินค้า <br> Product Description</th>
-                                        <th>ประเภทสินค้า <br> Product Type</th>
-                                        <th>สถานะสินค้า <br> Product Status</th>
-                                        <th>คลังสินค้า <br> Stock</th>
-                                        <th>จำนวน <br> Qty</th>
+                                        <th>รหัสสินค้า </th>
+                                        <th>ชื่อสินค้า </th>
+                                        <th>รายละเอียดสินค้า </th>
+                                        <th>ประเภทสินค้า </th>
+                                        <th>สถานะสินค้า </th>
+                                        <th>คลังสินค้า </th>
+                                        <th>จำนวน </th>
+                                        <th>รายละเอียด</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -154,7 +155,10 @@
                                         <td><?php echo $stock_list[$i]['product_status']; ?></td>
                                         <td><?php echo $stock_list[$i]['stock_group_name']; ?></td>
                                         <td><?php echo $stock_list[$i]['stock_report_qty']; ?>
-                                            <a href="?app=detail_product&product_id=<?php echo $stock_list[$i]['product_id'];?>&stock_group_id=<?php echo $stock_list[$i]['stock_group_id']; ?>">
+                                           
+                                        </td>
+                                        <td>
+                                            <a target="_blank" href="?app=product_detail&product_id=<?php echo $stock_list[$i]['product_id'];?>">
                                                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                             </a> 
                                         </td>

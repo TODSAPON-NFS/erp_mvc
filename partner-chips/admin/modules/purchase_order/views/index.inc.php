@@ -487,6 +487,28 @@ if(!isset($_GET['action'])){
         $output = $purchase_order_model->updatePurchaseOrderByID($purchase_order_id , $data);
         
 
+        $save_product_price = $_POST['save_product_price'];
+        for($i=0; $i < count($save_product_price); $i++){
+            $product_price = 0;
+            for($j=0; $j < count($product_id); $j++){
+                if($product_id[$j] == $save_product_price[$i]){
+                    $product_price = (float)filter_var($purchase_order_list_price[$j], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                }
+            }
+            $product_supplier_prices =  $product_supplier_model->getProductSupplierPriceByID($save_product_price[$i],$_POST['supplier_id']);
+
+            $data = [];
+            $data['product_id'] = $save_product_price[$i];
+            $data['supplier_id'] =$_POST['supplier_id'];
+            $data['product_price'] = $product_price;
+
+            if(count($product_supplier_prices) > 0){ 
+                $product_supplier_model->updateProductSupplierPriceByID($data);
+            }else{
+                $product_supplier_model->insertProductSupplierPrice($data);
+            }
+        }
+
         if($output){ 
 ?>
         <script>window.location="index.php?app=purchase_order&action=update&id=<?php echo $purchase_order_id;?>"</script>
@@ -728,7 +750,7 @@ if(!isset($_GET['action'])){
             $body = '
                 We are opening the purchase order.
                 Can you please confirm the order details?. 
-                At <a href="http://arno-thailand.revelsoft.co.th/arno/supplier/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
+                At <a href="http://arno-thailand.revelsoft.co.th/partner-chips/supplier/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
                 Before I send you a purchase order.
                 <br>
                 <br>
@@ -750,7 +772,7 @@ if(!isset($_GET['action'])){
 
             $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
             $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");
-            $mail->Subject = "Arno order recheck to ".$supplier['supplier_name_en'];
+            $mail->Subject = "Partner Chips order recheck to ".$supplier['supplier_name_en'];
 
             $mail->MsgHTML($body);
 
@@ -805,7 +827,7 @@ if(!isset($_GET['action'])){
             $body = '
                 We are opened the purchase order.
                 Can you confirm the order details?. 
-                At <a href="http://arno-thailand.revelsoft.co.th/arno/supplier/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
+                At <a href="http://arno-thailand.revelsoft.co.th/partner-chips/supplier/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
 
                 <br>
                 <br>
@@ -828,7 +850,7 @@ if(!isset($_GET['action'])){
 
             $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
             $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");
-            $mail->Subject = "Arno order confirm to ".$supplier['supplier_name_en'];
+            $mail->Subject = "Partner Chips order confirm to ".$supplier['supplier_name_en'];
 
             $mail->MsgHTML($body);
 

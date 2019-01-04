@@ -54,7 +54,7 @@ class PurchaseRequestModel extends BaseModel{
         $str_user  
         ORDER BY STR_TO_DATE(purchase_request_date,'%d-%m-%Y %H:%i:%s') DESC 
          ";
-
+        // echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -65,6 +65,43 @@ class PurchaseRequestModel extends BaseModel{
         }
 
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    function getPurchaseRequestLitsBy($date_start = "",$date_end = "",$keyword = "",$user_id = ""){
+
+        $str_date = "";
+        $str_user = "";
+
+        if($date_start != "" && $date_end != ""){
+            $str_date = "AND STR_TO_DATE(purchase_request_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(purchase_request_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+        }else if ($date_start != ""){
+            $str_date = "AND STR_TO_DATE(purchase_request_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+        }else if ($date_end != ""){
+            $str_date = "AND STR_TO_DATE(purchase_request_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        }
+
+        if($user_id != ""){
+            $str_user = "AND tb.employee_id  = '$user_id' ";
+        }
+
+
+        $sql =  "   SELECT tb_purchase_request.purchase_request_id,purchase_request_date,purchase_request_code,purchase_request_remark,purchase_request_list_qty,product_name,product_code FROM tb_purchase_request
+                    LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id
+                    LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id
+                ";
+        // echo $sql;
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
 
     function getPurchaseRequestByID($id){
         $sql = " SELECT * 

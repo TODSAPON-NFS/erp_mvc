@@ -739,7 +739,8 @@ class StockReportModel extends BaseModel{
             }
 
             if($i == 0){
-                $sql .=" SELECT * FROM 
+                $sql .=" SELECT tb_product.product_code,tb_product.product_name ,COUNT(tb_stock.from_stock) AS count_from_stock FROM tb_product
+                LEFT JOIN 
                 ( 
                 ";
             }
@@ -829,7 +830,9 @@ class StockReportModel extends BaseModel{
         
         $sql .="  
         )
-        AS tb_stock 
+        AS tb_stock ON tb_product.product_id = tb_stock.product_id 
+        GROUP BY product_code 
+        HAVING count_from_stock = '0' 
         ORDER BY  product_code,stock_group_code,STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'),from_stock ASC
         "; 
         echo $sql;

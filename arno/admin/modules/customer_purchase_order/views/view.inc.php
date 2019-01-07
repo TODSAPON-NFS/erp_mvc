@@ -273,6 +273,7 @@
                                     <th>หมายเลขใบสั่งซื้อ<br>PO No.</th>
                                     <th>ลูกค้า<br>Customer</th>
                                     <th>พนักงาน<br>Employee</th> 
+                                    <th>รหัสเอกสาร<br>Invoice Code</th>
                                     <th>หมายเหตุ<br>Remark</th>
                                     <th>ใบกำกับภาษี<br>Invoice</th>
                                     <th></th>
@@ -288,6 +289,33 @@
                                     <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?></td>
                                     <td><?php echo $customer_purchase_orders[$i]['customer_name']; ?></td>
                                     <td><?php echo $customer_purchase_orders[$i]['employee_name']; ?></td> 
+                                    
+                                    <td><?PHP   
+                                    
+                                    $invoice_customers = $invoice_customer_model -> getInvoiceCustomerByCustomerPurchaseId($customer_purchase_orders[$i]['customer_purchase_order_id']);
+                                   
+                                        // echo "<pre>";
+                                        // print_r($invoice_customers);
+                                        // echo"</pre>";
+
+                                    for($j = 0; $j<count($invoice_customers); $j++){
+                                        ?>
+                                    <ul class="list-inline">
+                                     <li class="list-inline-item">
+                                            <a href="index.php?app=invoice_customer&action=detail&id=<?PHP echo $invoice_customers[$j]['invoice_customer_id']; ?>" target="_blank">
+                                                <?PHP
+                                                echo $invoice_customers[$j]['invoice_customer_code']; 
+                                                ?>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                        <?PHP
+                                    }
+                                    
+                                    
+                                    
+                                    ?></td> 
+
                                     <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_remark']; ?></td>
                                     <td>-</td>
                                     <td>

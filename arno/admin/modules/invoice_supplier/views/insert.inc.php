@@ -923,31 +923,7 @@
                                         <p class="help-block">Example : 0305559003597.</p>
                                     </div>
                                 </div>
-                            <?PHP if($sort == "ภายนอกประเทศ"){ ?>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label>Exchange rate Baht<font color="#F00"><b>*</b></font></label>
-                                        <input  id="exchange_rate_baht" name="exchange_rate_baht" onchange="calculateCost();" class="form-control" value="<?php echo number_format($exchange_rate_baht['exchange_rate_baht_value'],5);?>" onchange="calculateCost()" >
-                                        <p class="help-block">Example : 0.</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label>Import duty<font color="#F00"><b>*</b></font></label>
-                                        <input  id="import_duty" name="import_duty" onchange="calculateCost();" class="form-control" value="<?php echo number_format($invoice_supplier['import_duty'],2);?>" onchange="calculateCost()" >
-                                        <p class="help-block">Example : 0.</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label>Freight in<font color="#F00"><b>*</b></font></label>
-                                        <input  id="freight_in" name="freight_in" onchange="calculateCost();" class="form-control" value="<?php echo number_format($invoice_supplier['freight_in'],2);?>" onchange="calculateCost()" >
-                                        <p class="help-block">Example : 0.</p>
-                                    </div>
-                                </div>
-                            <?PHP } ?>
+                            
                             </div>
                         </div>
                         <div class="col-lg-5">
@@ -1028,6 +1004,34 @@
                                         <p class="help-block">Example : Thana Tepchuleepornsil.</p>
                                     </div>
                                 </div>
+
+                                <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Exchange rate Baht<font color="#F00"><b>*</b></font></label>
+                                        <input  id="exchange_rate_baht" name="exchange_rate_baht" onchange="calculateCost();" class="form-control" value="<?php echo number_format($exchange_rate_baht['exchange_rate_baht_value'],5);?>" onchange="calculateCost()" >
+                                        <p class="help-block">Example : 0.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Import duty<font color="#F00"><b>*</b></font></label>
+
+                                        <input  id="import_duty" name="import_duty" onchange="calculateCost();" class="form-control" value="<?php echo number_format($invoice_supplier['import_duty'],2);?>" onchange="calculateCost()" >
+                                        <p class="help-block">Example : 0.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Freight in<font color="#F00"><b>*</b></font></label>
+                                        
+                                        <input  id="freight_in" name="freight_in" onchange="calculateCost();" class="form-control" value="<?php echo number_format($invoice_supplier['freight_in'],2);?>" onchange="calculateCost()" >
+                                        <p class="help-block">Example : 0.</p>
+                                    </div>
+                                </div>
+                                <?PHP } ?>
                                 
                             </div>
                         </div>

@@ -1,5 +1,5 @@
 <?php
-
+ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 require_once("BaseModel.php");
 class StockReportModel extends BaseModel{
 
@@ -7,12 +7,15 @@ class StockReportModel extends BaseModel{
         if(!static::$db){
             static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
         }
+        mysqli_set_charset(static::$db,"utf8");
     }
 
     function getStockReportListBy($stock_group_id = '', $keyword = ''){
 
-        if($stock_group_id != ""){
+        if($stock_group_id != "" && $stock_group_id != "ALL"){
             $str_stock = " AND tb_stock_report.stock_group_id = '$stock_group_id' ";
+        }else if ($stock_group_id == "ALL"){
+            $str_stock = "  ";
         }
         $sql = "    SELECT * 
                     FROM tb_product 
@@ -23,6 +26,115 @@ class StockReportModel extends BaseModel{
                     $str_stock 
                     GROUP BY  tb_product.product_id, tb_stock_report.stock_group_id 
                     ORDER BY  tb_product.product_id, tb_stock_report.stock_group_id ";
+// echo $sql;
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+
+    
+    function getStockReportProductByID($product_id){
+
+        if($product_id != ""){
+            $str_product = " tb_stock_report.product_id = '$product_id' ";
+        }
+        
+
+        $sql = " SELECT *
+        FROM tb_stock_report 
+        LEFT JOIN tb_product ON tb_product.product_id = tb_stock_report.product_id 
+        LEFT JOIN tb_stock_group ON tb_stock_report.stock_group_id = tb_stock_group.stock_group_id 
+        LEFT JOIN tb_product_type ON tb_product.product_type = tb_product_type.product_type_id 
+        LEFT JOIN tb_product_supplier ON tb_product_supplier.product_id = tb_stock_report.product_id
+        LEFT JOIN tb_product_customer ON tb_product_customer.product_id = tb_stock_report.product_id
+        LEFT JOIN tb_supplier ON tb_supplier.supplier_id = tb_product_supplier.supplier_id
+        LEFT JOIN tb_product_customer_price ON tb_stock_report.product_id = tb_product_customer_price.product_id
+        LEFT JOIN tb_customer ON tb_customer.customer_id = tb_product_customer_price.customer_id
+        LEFT JOIN tb_currency ON tb_supplier.currency_id = tb_currency.currency_id      
+
+        WHERE     $str_product
+                    
+         ";
+
+        // echo "<pre>";
+        // print_r($sql);
+        // echo "</pre>";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+    
+    function getStockReportProductPaperByID($product_id){
+
+        
+        if($product_id != "" ){
+            $str_sup = " tb_invoice_supplier_list.product_id = '$product_id' ";
+            $str_mov = " tb_stock_move_list.product_id = '$product_id' ";
+            $str_cus =  " tb_invoice_customer_list.product_id = '$product_id' ";
+        }
+
+        $sql = "SELECT
+                    product_id ,
+                    tb_invoice_supplier.invoice_supplier_id AS paper_id,
+                    tb_invoice_supplier.invoice_supplier_code_gen AS paper_code,
+                    '1' AS paper_type,
+                    'รับสินค้าเข้า' AS paper_type_name,
+                    `invoice_supplier_date` AS paper_date,
+                    tb_invoice_supplier_list.invoice_supplier_list_qty AS paper_qty,
+                    tb_stock_group.stock_group_name,
+                    tb_stock_group.stock_group_id
+                FROM `tb_invoice_supplier` 
+                LEFT JOIN tb_invoice_supplier_list ON tb_invoice_supplier.invoice_supplier_id = tb_invoice_supplier_list.invoice_supplier_id 
+                LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_supplier_list.stock_group_id
+                WHERE   $str_sup
+
+                UNION  SELECT
+                        product_id ,
+                        tb_stock_move.stock_move_id AS paper_id,
+                        stock_move_code AS paper_code,
+                        '2' AS paper_type,
+                        'โอนคลังสินค้า' AS paper_type_name,
+                        `stock_move_date` AS paper_date,
+                        stock_move_list_qty AS paper_qty,
+                        tb_stock_group.stock_group_name,
+                        tb_stock_group.stock_group_id
+                    FROM `tb_stock_move` 
+                   LEFT JOIN tb_stock_move_list ON tb_stock_move.stock_move_id = tb_stock_move_list.stock_move_id 
+                   LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_stock_move.stock_group_id_in
+                    WHERE   $str_mov
+
+                UNION SELECT
+                        product_id ,
+                        tb_invoice_customer.invoice_customer_id AS paper_id,
+                        invoice_customer_code AS paper_code,
+                        '3' AS paper_type,
+                        'ขายสินค้า' AS paper_type_name,
+                        `invoice_customer_date` AS paper_date,
+                        invoice_customer_list_qty AS paper_qty,
+                        tb_stock_group.stock_group_name,
+                        tb_stock_group.stock_group_id
+                    FROM `tb_invoice_customer` 
+                    LEFT JOIN tb_invoice_customer_list ON tb_invoice_customer.invoice_customer_id = tb_invoice_customer_list.invoice_customer_id 
+                    LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_customer_list.stock_group_id
+                    WHERE   $str_cus 
+
+                ORDER BY paper_date, paper_type
+        ";
+
+        // echo "<pre>";
+        // print_r($sql);
+        // echo"</pre>";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
@@ -702,85 +814,28 @@ class StockReportModel extends BaseModel{
             }
 
             if($i == 0){
-                $sql .=" SELECT * FROM 
+                $sql .=" SELECT product_code,product_name,stock_group_name,stock_group_code FROM 
                 ( 
                 ";
             }
             $sql .="(SELECT concat('".$data[$i]['table_name']."_',stock_id) AS from_stock ,
-            ".$data[$i]['table_name'].".product_id ,CONCAT(product_code_first,product_code) as product_code ,product_name ,
+            ".$data[$i]['table_name'].".product_id ,
+            CONCAT(product_code_first,product_code) as product_code ,product_name ,
             '".$data[$i]['table_name']."' AS table_name ,
             (SELECT stock_group_name FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_name ,
-            (SELECT stock_group_code FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_code ,
-            stock_type ,
-            stock_date ,
-            in_qty ,
-            in_stock_cost_avg,
-            in_stock_cost_avg_total,
-            out_qty,
-            out_stock_cost_avg,
-            out_stock_cost_avg_total,
-            balance_qty,
-            balance_stock_cost_avg,
-            balance_stock_cost_avg_total,
-            IFNULL(
-                    invoice_supplier_code_gen,
-                IFNULL(
-                        invoice_customer_code,
-                    IFNULL(
-                            delivery_note_supplier_code,
-                        IFNULL(
-                                delivery_note_customer_code,
-                            IFNULL(
-                                    stock_move_code,
-                                IFNULL(
-                                        stock_issue_code,
-                                    IFNULL(
-                                            credit_note_code,
-                                        IFNULL(
-                                                regrind_supplier_code,
-                                            IFNULL(
-                                                    stock_change_product_code,'initial'
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            ) AS paper_code
+            (SELECT stock_group_code FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_code 
             FROM ".$data[$i]['table_name']." 
             LEFT JOIN tb_product ON ".$data[$i]['table_name'].".product_id = tb_product.product_id  
             
-            LEFT JOIN tb_delivery_note_supplier_list ON ".$data[$i]['table_name'].".delivery_note_supplier_list_id = tb_delivery_note_supplier_list.delivery_note_supplier_list_id 
-            LEFT JOIN tb_delivery_note_supplier ON tb_delivery_note_supplier_list.delivery_note_supplier_id = tb_delivery_note_supplier.delivery_note_supplier_id  
-            
-            LEFT JOIN tb_delivery_note_customer_list ON ".$data[$i]['table_name'].".delivery_note_customer_list_id = tb_delivery_note_customer_list.delivery_note_customer_list_id 
-            LEFT JOIN tb_delivery_note_customer ON tb_delivery_note_customer_list.delivery_note_customer_id = tb_delivery_note_customer.delivery_note_customer_id 
-            
-            LEFT JOIN tb_invoice_supplier_list ON ".$data[$i]['table_name'].".invoice_supplier_list_id = tb_invoice_supplier_list.invoice_supplier_list_id 
-            LEFT JOIN tb_invoice_supplier ON tb_invoice_supplier_list.invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id 
-            
-            LEFT JOIN tb_invoice_customer_list ON ".$data[$i]['table_name'].".invoice_customer_list_id = tb_invoice_customer_list.invoice_customer_list_id 
-            LEFT JOIN tb_invoice_customer ON tb_invoice_customer_list.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
-            
-            LEFT JOIN tb_stock_move_list ON ".$data[$i]['table_name'].".stock_move_list_id = tb_stock_move_list.stock_move_list_id 
-            LEFT JOIN tb_stock_move ON tb_stock_move_list.stock_move_id = tb_stock_move.stock_move_id 
-            
-            LEFT JOIN tb_stock_issue_list ON ".$data[$i]['table_name'].".stock_issue_list_id = tb_stock_issue_list.stock_issue_list_id 
-            LEFT JOIN tb_stock_issue ON tb_stock_issue_list.stock_issue_id = tb_stock_issue.stock_issue_id 
-            
-            LEFT JOIN tb_credit_note_list ON ".$data[$i]['table_name'].".credit_note_list_id = tb_credit_note_list.credit_note_list_id 
-            LEFT JOIN tb_credit_note ON tb_credit_note_list.credit_note_id = tb_credit_note.credit_note_id 
-            
-            LEFT JOIN tb_regrind_supplier_list ON ".$data[$i]['table_name'].".regrind_supplier_list_id = tb_regrind_supplier_list.regrind_supplier_list_id 
-            LEFT JOIN tb_regrind_supplier ON tb_regrind_supplier_list.regrind_supplier_id = tb_regrind_supplier.regrind_supplier_id 
-            
-            LEFT JOIN tb_stock_change_product_list ON ".$data[$i]['table_name'].".stock_change_product_list_id = tb_stock_change_product_list.stock_change_product_list_id 
-            LEFT JOIN tb_stock_change_product ON tb_stock_change_product_list.stock_change_product_id = tb_stock_change_product.stock_change_product_id  
-            WHERE 1 
-            $str_date
-            $str_product
+            WHERE ".$data[$i]['table_name'].".product_id NOT IN (
+                SELECT  ".$data[$i]['table_name'].".product_id 
+                FROM ".$data[$i]['table_name']." 
+                LEFT JOIN tb_product ON ".$data[$i]['table_name'].".product_id = tb_product.product_id  
+                WHERE 1 
+                $str_date
+                
+                ) $str_product
+                GROUP BY product_code 
             ORDER BY ".$data[$i]['table_name'].".product_id ,STR_TO_DATE(".$data[$i]['table_name'].".stock_date,'%d-%m-%Y %H:%i:%s'),from_stock  ASC ) 
             ";
             if(($i+1)<count($data)){
@@ -791,10 +846,16 @@ class StockReportModel extends BaseModel{
         
         $sql .="  
         )
-        AS tb_stock
-        ORDER BY  product_code,stock_group_code,STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'),from_stock ASC
+        AS tb_stock 
         "; 
-        // echo $sql;
+
+        /********************   */
+
+        /** */
+        echo "<pre>";
+        print_r($sql) ;
+        echo "</pre>";
+        
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -1009,4 +1070,7 @@ class StockReportModel extends BaseModel{
         }
     }
 }
+
+
+
 ?>

@@ -15,6 +15,7 @@ require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/ProductSupplierModel.php');
 require_once('../models/SupplierModel.php');
+require_once('../models/CompanyModel.php');
 
 require_once('../functions/CodeGenerateFunction.func.php');
 require_once('../models/PaperModel.php');
@@ -35,6 +36,7 @@ $request_special_list_model = new RequestSpecialListModel;
 $request_regrind_list_model = new RequestRegrindListModel;
 $customer_purchase_order_list_detail_model = new CustomerPurchaseOrderListDetailModel;
 $product_supplier_model = new ProductSupplierModel;
+$company_model = new CompanyModel;
 
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
@@ -49,8 +51,7 @@ $purchase_order_list_id = $_GET['purchase_order_list_id'];
 $supplier_id = $_GET['supplier_id'];
 $purchase_request_id = $_GET['purchase_request_id'];
 $type = strtoupper($_GET['type']);
-
-
+ 
 
 if(!isset($_GET['action'])){
 
@@ -191,7 +192,7 @@ if(!isset($_GET['action'])){
     if($supplier['vat_type'] == '0'){
         $vat= '0';
     }else{
-        $vat = $invoice_supplier['vat'];
+        $vat = $purchase_order['vat'];
     }
     require_once($path.'detail.inc.php');
 
@@ -487,6 +488,28 @@ if(!isset($_GET['action'])){
         $output = $purchase_order_model->updatePurchaseOrderByID($purchase_order_id , $data);
         
 
+        $save_product_price = $_POST['save_product_price'];
+        for($i=0; $i < count($save_product_price); $i++){
+            $product_price = 0;
+            for($j=0; $j < count($product_id); $j++){
+                if($product_id[$j] == $save_product_price[$i]){
+                    $product_price = (float)filter_var($purchase_order_list_price[$j], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                }
+            }
+            $product_supplier_prices =  $product_supplier_model->getProductSupplierPriceByID($save_product_price[$i],$_POST['supplier_id']);
+
+            $data = [];
+            $data['product_id'] = $save_product_price[$i];
+            $data['supplier_id'] =$_POST['supplier_id'];
+            $data['product_price'] = $product_price;
+
+            if(count($product_supplier_prices) > 0){ 
+                $product_supplier_model->updateProductSupplierPriceByID($data);
+            }else{
+                $product_supplier_model->insertProductSupplierPrice($data);
+            }
+        }
+
         if($output){ 
 ?>
         <script>window.location="index.php?app=purchase_order&action=update&id=<?php echo $purchase_order_id;?>"</script>
@@ -707,6 +730,7 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'checking' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     if(isset($purchase_order_id)){
+        $company=$company_model->getCompanyByID('1'); 
         $data = [];
 
         $data['purchase_order_status'] = 'Checking';
@@ -728,29 +752,28 @@ if(!isset($_GET['action'])){
             $body = '
                 We are opening the purchase order.
                 Can you please confirm the order details?. 
-                At <a href="http://arno-thailand.revelsoft.co.th/arno/supplier/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
+                At <a href="'.$company_model->supplier_page_url.'/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
                 Before I send you a purchase order.
                 <br>
                 <br>
                 <b> Best regards,</b><br><br> 
-                <b> Vittawat Bussara</b><br>
-                <b> Head Office : </b> 2/27 Bangna Complex Office Tower,7th Flr.,Soi Bangna-Trad 25, Bangna-Trad Rd.,<br>
-                Bangna, Bangna, Bangkok 10260, THAILAND, Tel : +662 399 2784  Fax : +662 399 2327 <br>
-                <b> Tax ID :</b> 0105558002033 
+                <b> '.$user_admin['user_name'].' '.$user_admin['user_lastname'].'</b><br>
+                <b>Head Office :</b> '.$company['company_address_en_1'].' '.$company['company_address_en_2'].' <br>'.$company['company_address_en_3'].' 
+                Tel.'.$company['company_tel'].' Fax. '.$company['company_fax'].' Tax. '.$company['company_tax'].'
                 
             ';
             $mail->CharSet = "utf-8";
             $mail->IsSMTP();
             $mail->SMTPDebug = 0;
             $mail->SMTPAuth = true;
-            $mail->Host = "mail.revelsoft.co.th"; // SMTP server
-            $mail->Port = 587; 
-            $mail->Username = "support@revelsoft.co.th"; // account SMTP
-            $mail->Password = "revelsoft1234@"; //  SMTP
+            $mail->Host = $company['company_email_smtp']; // SMTP server
+            $mail->Port = $company['company_email_port']; 
+            $mail->Username = $company['company_email_user']; // account SMTP
+            $mail->Password = $company['company_email_password']; //  SMTP
 
-            $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
-            $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");
-            $mail->Subject = "Arno order recheck to ".$supplier['supplier_name_en'];
+            $mail->SetFrom( $company['company_email'], $company['company_name_en']);
+            $mail->AddReplyTo( $company['company_email'],$company['company_name_en']);
+            $mail->Subject = $company['	company_name_en']." order recheck to ".$supplier['supplier_name_en'];
 
             $mail->MsgHTML($body);
 
@@ -785,6 +808,7 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'sending' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     if(isset($purchase_order_id)){
+        $company=$company_model->getCompanyByID('1'); 
         $data = [];
 
         $data['purchase_order_status'] = 'Sending';
@@ -805,30 +829,29 @@ if(!isset($_GET['action'])){
             $body = '
                 We are opened the purchase order.
                 Can you confirm the order details?. 
-                At <a href="http://arno-thailand.revelsoft.co.th/arno/supplier/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
+                At <a href="'.$company_model->supplier_page_url.'/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
 
                 <br>
                 <br>
                 <b> Best regards,</b><br><br>
 
-                <b> Vittawat Bussara</b><br>
-                <b> Head Office : </b> 2/27 Bangna Complex Office Tower,7th Flr.,Soi Bangna-Trad 25, Bangna-Trad Rd.,<br>
-                Bangna, Bangna, Bangkok 10260, THAILAND, Tel : +662 399 2784  Fax : +662 399 2327 <br>
-                <b> Tax ID :</b> 0105558002033 
+                <b> '.$user_admin['user_name'].' '.$user_admin['user_lastname'].'</b><br> 
+                <b>Head Office :</b> '.$company['company_address_en_1'].' '.$company['company_address_en_2'].' <br>'.$company['company_address_en_3'].' 
+                Tel.'.$company['company_tel'].' Fax. '.$company['company_fax'].' Tax. '.$company['company_tax'].'
                 
             ';
             $mail->CharSet = "utf-8";
             $mail->IsSMTP();
             $mail->SMTPDebug = 0;
             $mail->SMTPAuth = true;
-            $mail->Host = "mail.revelsoft.co.th"; // SMTP server
-            $mail->Port = 587; 
-            $mail->Username = "support@revelsoft.co.th"; // account SMTP
-            $mail->Password = "revelsoft1234@"; //  SMTP
+            $mail->Host = $company['company_email_smtp']; // SMTP server
+            $mail->Port = $company['company_email_port']; 
+            $mail->Username = $company['company_email_user']; // account SMTP
+            $mail->Password = $company['company_email_password']; //  SMTP
 
-            $mail->SetFrom("support@revelsoft.co.th", "Revelsoft.co.th");
-            $mail->AddReplyTo("support@revelsoft.co.th","Revelsoft.co.th");
-            $mail->Subject = "Arno order confirm to ".$supplier['supplier_name_en'];
+            $mail->SetFrom( $company['company_email'], $company['company_name_en']);
+            $mail->AddReplyTo( $company['company_email'],$company['company_name_en']);
+            $mail->Subject = $company['	company_name_en']." order confirm to ".$supplier['supplier_name_en'];
 
             $mail->MsgHTML($body);
 

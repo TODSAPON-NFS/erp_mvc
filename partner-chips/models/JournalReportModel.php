@@ -1541,13 +1541,20 @@ class JournalReportModel extends BaseModel{
     //
     //#####################################################################################################################
     function getJournalAssetsReportBy($date_end = "", $code_start = "", $code_end = "" ,$keyword = ""){
+        //echo $keyword ;
 
+        if($keyword == 1){
 
+            $keyword = "account_group = '1'";
+
+        }else{
+            $keyword = "account_group = '2' OR account_group = '3'";
+        }
         //------------------------- General Journal -------------------------------------------------------------
         $str_general_date = "";
 
         if ($date_end != ""){
-            $str_general_date = "AND STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+            $str_general_date = " STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
         } 
 
         $sql_general = " SELECT
@@ -1559,10 +1566,7 @@ class JournalReportModel extends BaseModel{
         IFNULL(SUM(journal_general_list_credit),0) as journal_credit
         FROM tb_journal_general 
         LEFT JOIN tb_journal_general_list ON tb_journal_general_list.journal_general_id = tb_journal_general.journal_general_id  
-        WHERE ( 
-                journal_general_code LIKE ('%$keyword%') 
-            OR  journal_general_name LIKE ('%$keyword%') 
-        ) 
+        WHERE 
         $str_general_date 
         GROUP BY tb_journal_general_list.journal_general_list_id 
         ORDER BY STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s'), journal_general_code DESC 
@@ -1575,7 +1579,7 @@ class JournalReportModel extends BaseModel{
         $str_purchase_date = "";
 
         if ($date_end != ""){
-            $str_purchase_date = "AND STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+            $str_purchase_date = " STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
         } 
 
         $sql_purchase = " SELECT
@@ -1587,10 +1591,7 @@ class JournalReportModel extends BaseModel{
         IFNULL(SUM(journal_purchase_list_credit),0) as journal_credit
         FROM tb_journal_purchase 
         LEFT JOIN tb_journal_purchase_list ON tb_journal_purchase_list.journal_purchase_id = tb_journal_purchase.journal_purchase_id  
-        WHERE ( 
-                journal_purchase_code LIKE ('%$keyword%') 
-            OR  journal_purchase_name LIKE ('%$keyword%') 
-        ) 
+        WHERE 
         $str_purchase_date 
         GROUP BY tb_journal_purchase_list.journal_purchase_list_id 
         ORDER BY STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s'), journal_purchase_code DESC 
@@ -1603,7 +1604,7 @@ class JournalReportModel extends BaseModel{
         $str_sale_date = "";
 
         if ($date_end != ""){
-            $str_sale_date = "AND STR_TO_DATE(journal_sale_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+            $str_sale_date = "STR_TO_DATE(journal_sale_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
         } 
 
         $sql_sale = " SELECT
@@ -1615,10 +1616,7 @@ class JournalReportModel extends BaseModel{
         IFNULL(SUM(journal_sale_list_credit),0) as journal_credit
         FROM tb_journal_sale 
         LEFT JOIN tb_journal_sale_list ON tb_journal_sale_list.journal_sale_id = tb_journal_sale.journal_sale_id  
-        WHERE ( 
-                journal_sale_code LIKE ('%$keyword%') 
-            OR  journal_sale_name LIKE ('%$keyword%') 
-        ) 
+        WHERE 
         $str_sale_date 
         GROUP BY tb_journal_sale_list.journal_sale_list_id 
         ORDER BY STR_TO_DATE(journal_sale_date,'%d-%m-%Y %H:%i:%s'), journal_sale_code DESC 
@@ -1631,7 +1629,7 @@ class JournalReportModel extends BaseModel{
         $str_cash_payment_date = "";
 
         if ($date_end != ""){
-            $str_cash_payment_date = "AND STR_TO_DATE(journal_cash_payment_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+            $str_cash_payment_date = " STR_TO_DATE(journal_cash_payment_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
         } 
 
         $sql_cash_payment = " SELECT
@@ -1643,10 +1641,7 @@ class JournalReportModel extends BaseModel{
         IFNULL(SUM(journal_cash_payment_list_credit),0) as journal_credit
         FROM tb_journal_cash_payment 
         LEFT JOIN tb_journal_cash_payment_list ON tb_journal_cash_payment_list.journal_cash_payment_id = tb_journal_cash_payment.journal_cash_payment_id  
-        WHERE ( 
-                journal_cash_payment_code LIKE ('%$keyword%') 
-            OR  journal_cash_payment_name LIKE ('%$keyword%') 
-        ) 
+        WHERE 
         $str_cash_payment_date 
         GROUP BY tb_journal_cash_payment_list.journal_cash_payment_list_id 
         ORDER BY STR_TO_DATE(journal_cash_payment_date,'%d-%m-%Y %H:%i:%s'), journal_cash_payment_code DESC 
@@ -1659,7 +1654,7 @@ class JournalReportModel extends BaseModel{
         $str_cash_receipt_date = "";
 
         if ($date_end != ""){
-            $str_cash_receipt_date = "AND STR_TO_DATE(journal_cash_receipt_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+            $str_cash_receipt_date = " STR_TO_DATE(journal_cash_receipt_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
         } 
 
         $sql_cash_receipt = " SELECT
@@ -1671,10 +1666,7 @@ class JournalReportModel extends BaseModel{
         IFNULL(SUM(journal_cash_receipt_list_credit),0) as journal_credit
         FROM tb_journal_cash_receipt 
         LEFT JOIN tb_journal_cash_receipt_list ON tb_journal_cash_receipt_list.journal_cash_receipt_id = tb_journal_cash_receipt.journal_cash_receipt_id  
-        WHERE ( 
-                journal_cash_receipt_code LIKE ('%$keyword%') 
-            OR  journal_cash_receipt_name LIKE ('%$keyword%') 
-        ) 
+        WHERE 
         $str_cash_receipt_date 
         GROUP BY tb_journal_cash_receipt_list.journal_cash_receipt_list_id 
         ORDER BY STR_TO_DATE(journal_cash_receipt_date,'%d-%m-%Y %H:%i:%s'), journal_cash_receipt_code DESC 
@@ -1682,7 +1674,7 @@ class JournalReportModel extends BaseModel{
         //------------------------- End Cash Receipt Journal -------------------------------------------------------------
 
 
-        $sql =" SELECT account_code , account_name_th ,  MAX(IFNULL(account_debit_begin,0)) ,SUM(IFNULL(tb_journal.journal_debit,0)), MAX(IFNULL(account_credit_begin,0)) ,SUM(IFNULL(tb_journal.journal_credit,0)) , ( MAX(IFNULL(account_debit_begin,0)) + SUM(IFNULL(tb_journal.journal_debit,0)) ) - ( MAX(IFNULL(account_credit_begin,0)) + SUM(IFNULL(tb_journal.journal_credit,0)) ) as account_value , account_level
+        $sql =" SELECT account_code , account_name_th ,  MAX(IFNULL(account_debit_begin,0)) ,SUM(IFNULL(tb_journal.journal_debit,0)), MAX(IFNULL(account_credit_begin,0)) ,SUM(IFNULL(tb_journal.journal_credit,0)) , ( MAX(IFNULL(account_debit_begin,0)) + SUM(IFNULL(tb_journal.journal_debit,0)) ) - ( MAX(IFNULL(account_credit_begin,0)) + SUM(IFNULL(tb_journal.journal_credit,0)) ) as account_value , account_level,account_group
                 FROM tb_account 
                 LEFT JOIN  (($sql_general)  
                 UNION   ALL  ($sql_purchase) 
@@ -1690,12 +1682,13 @@ class JournalReportModel extends BaseModel{
                 UNION   ALL  ($sql_cash_payment) 
                 UNION   ALL  ($sql_cash_receipt)) as tb_journal  
                 ON tb_account.account_id = tb_journal.account_id  
-                WHERE account_group = '1'  
+                WHERE   $keyword
                 GROUP BY account_code 
                 HAVING  round(account_value,2)  != 0 OR   account_level != '1'
                 ORDER BY account_code ASC
-        ";  
-      //  echo '<pre>'.$sql.'</pre>';
+        ";    
+
+       //echo '<pre>'.$sql.'</pre>';
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

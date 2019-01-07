@@ -126,10 +126,21 @@
             return false;
         }else{
             var stock_groupt_id = $('select[name="stock_group_id[]"]')
+            var stock_event = $('select[name="stock_event[]"]')
             for(var i = 0 ; i < stock_groupt_id.length; i++){
-                if(stock_groupt_id[i].value == ""){
+                if(stock_groupt_id[i].value == "" && stock_event[i].value == '1'){
                     alert("กรุณาเลือกคลังสินค้า");
                     $(stock_groupt_id[i]).focus();
+                    return false;
+                }
+            }
+
+            var invoice_customer_list_qty = $('input[name="invoice_customer_list_qty[]"]')
+            for(var i = 0 ; i < invoice_customer_list_qty.length; i++){
+               var val = parseFloat(invoice_customer_list_qty[i].value.replace(',',''))
+                if( val < 1){
+                    alert("จำนวนสินค้าต้องมีค่ามากกว่า 0");
+                    $(invoice_customer_list_qty[i]).focus();
                     return false;
                 }
             }
@@ -213,6 +224,7 @@
                 $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
                 $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)   
                 $(id).closest('tr').children('td').children('input[name="save_product_price[]"]').val(data.product_id) 
+                $(id).closest('tr').children('td').children('input[name="stock_event[]"]').val(data.stock_event)  
                 
                 show_stock(id);
                 var customer_id = $('#customer_id').val(); 
@@ -493,6 +505,9 @@
                         '</td>'+      
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="invoice_customer_list_total[]" autocomplete="off" onchange="update_sum(this);"  value="'+ sum.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly /></td>'+
                         '<td>'+
+                            '<a href="javascript:;" onclick="product_detail_blank(this);">'+
+                                '<i class="fa fa-file-text-o" aria-hidden="true"></i>'+
+                            '</a> '+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                                 '<i class="fa fa-times" aria-hidden="true"></i>'+
                             '</a>'+
@@ -557,6 +572,9 @@
                 '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_customer_list_total[]" onchange="update_sum(this);" readonly /></td>'+
                 '<td>'+
+                    '<a href="javascript:;" onclick="product_detail_blank(this);">'+
+                        '<i class="fa fa-file-text-o" aria-hidden="true"></i>'+
+                    '</a> '+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
                         '<i class="fa fa-times" aria-hidden="true"></i>'+
                     '</a>'+
@@ -663,6 +681,15 @@
     }
 
 
+    function product_detail_blank(id){
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+        if(product_id == ''){
+            alert('ไม่มีข้อมูลสินค้านี้');
+            $(id).closest('tr').children('td').children('input[name="product_code[]"]').focus();
+        }else{
+            window.open("?app=product_detail&product_id="+product_id);
+        }
+    }
 
 
 
@@ -888,6 +915,7 @@
                                     <input type="text" class="form-control" name="invoice_customer_list_remark[]"  placeholder="Remark" value="<?php echo $invoice_customer_lists[$i]['invoice_customer_list_remark']; ?>" />
                                 </td> 
                                 <td>
+                                    <input type="hidden" name="stock_event[]" class="form-control" value="<?php echo $invoice_customer_lists[$i]['stock_event']; ?>" />
                                     <select  name="stock_group_id[]"  onchange="show_qty(this)" class="form-control select" data-live-search="true"  > 
                                         <?php 
                                         for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
@@ -906,7 +934,10 @@
                                     <input type="checkbox" name="save_product_price[]" value="<?php echo $invoice_customer_lists[$i]['product_id']; ?>"/> บันทึกราคาขาย
                                 </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" readonly onchange="update_sum(this);" name="invoice_customer_list_total[]" value="<?php echo  number_format($invoice_customer_lists[$i]['invoice_customer_list_qty'] * $invoice_customer_lists[$i]['invoice_customer_list_price'],2); ?>" /></td>
-                                <td>
+                                <td> 
+                                    <a href="javascript:;" onclick="product_detail_blank(this);">
+                                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                    </a> 
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>
@@ -946,11 +977,11 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="24"><input type="checkbox" value="all" id="check_all" onclick="checkAll(this)" /></th>
-                                                        <th style="text-align:center;">รหัสสินค้า <br> (Product Code)</th>
-                                                        <th style="text-align:center;">ชื่อสินค้า <br> (Product Detail)</th>
-                                                        <th style="text-align:center;" width="150">จำนวน <br> (Qty)</th>
-                                                        <th style="text-align:center;" width="150">ราคาต่อหน่วย <br> (Unit price) </th>
-                                                        <th style="text-align:center;" width="150">จำนวนเงิน <br> (Amount)</th>
+                                                        <th style="text-align:center;">รหัสสินค้า </th>
+                                                        <th style="text-align:center;">ชื่อสินค้า </th>
+                                                        <th style="text-align:center;" width="150">จำนวน </th>
+                                                        <th style="text-align:center;" width="150">ราคาต่อหน่วย </th>
+                                                        <th style="text-align:center;" width="150">จำนวนเงิน  </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="bodyAdd">

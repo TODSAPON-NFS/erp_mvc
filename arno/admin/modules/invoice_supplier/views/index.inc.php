@@ -754,28 +754,30 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
 }else if ($_GET['action'] == 'edit_cost' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
 
-    $invoice_supplier_list_id = $_POST['invoice_supplier_list_id'];
-    $invoice_supplier_list_freight_fix = $_POST['invoice_supplier_list_freight_fix'];
-    $invoice_supplier_list_duty_fix = $_POST['invoice_supplier_list_duty_fix'];
+    $invoice_supplier_list_id = $_POST['invoice_supplier_list_id']; 
+    $invoice_supplier_list_fix_type = $_POST['invoice_supplier_list_fix_type'];
+
     $invoice_supplier_list_duty_percent = $_POST['invoice_supplier_list_duty_percent'];
+    $invoice_supplier_list_duty = $_POST['invoice_supplier_list_duty'];
     $invoice_supplier_list_cost = $_POST['invoice_supplier_list_cost'];
     
     if(is_array($invoice_supplier_list_id)){
-        for($i=0; $i < count($invoice_supplier_list_id) ; $i++){
-            $data['invoice_supplier_list_freight_fix'] = $invoice_supplier_list_freight_fix[$i];
-            $data['invoice_supplier_list_duty_fix'] = $invoice_supplier_list_duty_fix[$i];
-            $data['invoice_supplier_list_duty_percent'] = $invoice_supplier_list_duty_percent[$i];
+        for($i=0; $i < count($invoice_supplier_list_id) ; $i++){ 
+            $data = [];
+            $data['invoice_supplier_list_fix_type'] = $invoice_supplier_list_fix_type[$invoice_supplier_list_id[$i]];
+            if($data['invoice_supplier_list_fix_type'] == 'percent-fix'){
+                $data['invoice_supplier_list_duty'] = (float)filter_var( $invoice_supplier_list_duty_percent[$i] , FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            } if($data['invoice_supplier_list_fix_type'] == 'price-fix'){ 
+                $data['invoice_supplier_list_duty'] =(float)filter_var( $invoice_supplier_list_duty[$i] , FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            }else{
+                $data['invoice_supplier_list_fix_type'] = 'no-fix';
+                $data['invoice_supplier_list_duty'] =(float)filter_var( $invoice_supplier_list_duty[$i] , FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            } 
             $data['invoice_supplier_list_cost'] = $invoice_supplier_list_cost[$i];
+
             $invoice_supplier_list_model->updateCostListById($data,$invoice_supplier_list_id[$i]); 
         }
-    }else if($invoice_supplier_list_id != ""){
-            $data['invoice_supplier_list_freight_fix'] = $invoice_supplier_list_freight_fix;
-            $data['invoice_supplier_list_duty_fix'] = $invoice_supplier_list_duty_fix;
-            $data['invoice_supplier_list_duty_percent'] = $invoice_supplier_list_duty_percent;
-            $data['invoice_supplier_list_cost'] = $invoice_supplier_list_cost;
-            $invoice_supplier_list_model->updateCostListById($data,$invoice_supplier_list_id);
-        
-    }
+    } 
 ?>
         <script>window.location="index.php?app=invoice_supplier&action=cost&id=<?php echo $invoice_supplier_id;?>"</script>
 <?php

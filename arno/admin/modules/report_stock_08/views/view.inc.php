@@ -23,7 +23,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">รายงานสรุปยอดเคลื่อนไหวสินค้า </h1>
+        <h1 class="page-header">รายงานสินค้าที่ไม่เคลื่อนไหว </h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -36,7 +36,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-8">
-                    รายงานสรุปยอดเคลื่อนไหวสินค้า  
+                    รายงานสินค้าที่ไม่เคลื่อนไหว  
                     </div>
                 </div>
             </div>
@@ -113,12 +113,12 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" >
                     <thead>
                         <tr>  
-                            <th width="16%" colspan="2" style="text-align:center;">ใบสำคัญ</th>     
-                            <th align="center" width="28%" colspan="3" style="text-align:center;">รายการรับ</th>    
-                            <th align="center" width="28%" colspan="3" style="text-align:center;">รายการจ่าย</th>    
-                            <th align="center" width="28%" colspan="3" style="text-align:center;">คงเหลือ</th>    
+                            <th width="16%" colspan="2" style="text-align:center;">รหัสสินค้า</th>     
+                            <th align="center" width="28%" colspan="3" style="text-align:center;">ชื่อสินค้า</th>    
+                            <!-- <th align="center" width="28%" colspan="3" style="text-align:center;">รายการจ่าย</th>    
+                            <th align="center" width="28%" colspan="3" style="text-align:center;">คงเหลือ</th>     -->
                         </tr>
-                        <tr>  
+                        <!-- <tr>  
                             <th  style="text-align:center;" width="8%">วันที่<br></th>    
                             <th  style="text-align:center;" width="8%">เลขที่<br></th>    
                             <th  style="text-align:right;" width="8%">จำนวน</th>   
@@ -130,7 +130,7 @@
                             <th  style="text-align:right;" width="8%">จำนวน</th>   
                             <th  style="text-align:right;" width="10%">ราคาต่อหน่วย</th>   
                             <th  style="text-align:right;" width="10%">มูลค่าคงเหลือ</th>  
-                        </tr>
+                        </tr> -->
                     </thead>
                     <tbody>
                         <?php 

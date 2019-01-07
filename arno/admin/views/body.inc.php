@@ -303,6 +303,9 @@
     else if($_GET['app'] == "report_stock_07"){
         require_once("modules/report_stock_07/views/index.inc.php");
     }  
+    else if($_GET['app'] == "report_stock_08"){
+        require_once("modules/report_stock_08/views/index.inc.php");
+    }  
 
     /* ----------------------------------- //ระบบรายงาน// ---------------------------------------------- */
    
@@ -313,7 +316,12 @@
     
     else if($_GET['app'] == "search_product"){
         require_once("modules/search_product/views/index.inc.php");
-    }else if($_GET['app'] == "stock_move"){
+    }
+    else if($_GET['app'] == "product_detail"){
+        require_once("modules/product_detail/views/index.inc.php");
+    }
+    
+    else if($_GET['app'] == "stock_move"){
         require_once("modules/stock_move/views/index.inc.php");
     }else if($_GET['app'] == "stock_change_product"){
         require_once("modules/stock_change_product/views/index.inc.php");
@@ -331,6 +339,8 @@
         require_once("modules/stock_out/views/index.inc.php");
     }else if($_GET['app'] == "stock_issue"){
         require_once("modules/stock_issue/views/index.inc.php");
+    }else if($_GET['app'] == "maintenance_stock"){
+        require_once("modules/maintenance_stock/views/index.inc.php");
     }
 
     /* ----------------------------------- //ระบบคลังสินค้า// ---------------------------------------------- */

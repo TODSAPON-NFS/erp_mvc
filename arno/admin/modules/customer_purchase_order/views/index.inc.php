@@ -14,6 +14,7 @@ require_once('../models/CustomerModel.php');
 
 require_once('../functions/CodeGenerateFunction.func.php');
 require_once('../models/PaperModel.php');
+require_once('../models/InvoiceCustomerModel.php');
 
 
 date_default_timezone_set('asia/bangkok');
@@ -27,7 +28,7 @@ $notification_model = new NotificationModel;
 $customer_purchase_order_model = new CustomerPurchaseOrderModel;
 $customer_purchase_order_list_model = new CustomerPurchaseOrderListModel;
 $customer_purchase_order_list_detail_model = new CustomerPurchaseOrderListDetailModel;
-
+$invoice_customer_model = new InvoiceCustomerModel;
 $vat = 7;
 
 $code_generate = new CodeGenerate;
@@ -91,8 +92,12 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $customers=$customer_model->getCustomerBy();
 
     $quotations=$quotation_model->getQuotationBy();
-    $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrderBy($date_start,$date_end,$customer_id,$status,$keyword);
+    $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrder1By($date_start,$date_end,$customer_id,$status,$keyword);
 
+
+    // echo "<pre>";
+    // print_r($customer_purchase_orders);
+    // echo"</pre>";
     
     $customer_orders = $customer_purchase_order_model->getCustomerOrder();
     
@@ -104,6 +109,72 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
 
     require_once($path.'view.inc.php');
+
+}else if($_GET['action']== 'view_list' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
+
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+    
+    
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
+    }
+
+    $customer_id = $_GET['customer_id'];
+    $status = $_GET['status'];
+    $view_type = $_GET['view_type'];
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+
+    $customers=$customer_model->getCustomerBy();
+
+    $quotations=$quotation_model->getQuotationBy();
+    $customer_purchase_orders = $customer_purchase_order_model->getCustomerPurchaseOrderlistProductBy($date_start,$date_end,$customer_id,$status,$keyword);
+
+    
+    $customer_orders = $customer_purchase_order_model->getCustomerOrder();
+    
+    // echo "<pre>";
+    // print_r($customer_purchase_orders);
+    // echo"</pre>";
+
+    $page_max = (int)(count($customer_purchase_orders)/$page_size);
+    if(count($customer_purchase_orders)%$page_size > 0){
+        $page_max += 1;
+    }
+
+
+    require_once($path.'view_list.inc.php');
 
 }else if ($_GET['action'] == 'insert' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
     if($quotation_id > 0){

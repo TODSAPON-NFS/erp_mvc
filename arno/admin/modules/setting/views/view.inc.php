@@ -126,31 +126,23 @@
                                     <input id="company_name_th" name="company_name_th" class="form-control" value="<? echo $company['company_name_th']?>">
                                     <p class="help-block">Example : บริษัท เรเวลซอฟต์ จำกัด.</p>
                                 </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>ชื่อบริษัท (อังกฤษ) / Company name (English)<font color="#F00"><b>*</b></font></label>
-                                    <input id="company_name_en" name="company_name_en" class="form-control" onChange="update_code()" value="<? echo $company['company_name_en']?>">
-                                    <p class="help-block">Example : Revel Soft Co., Ltd.</p>
-                                </div>
-                            </div>
-                        </div>    
-                        <div class="row"> 
-                            <div class="col-lg-4"> 
+                            </div> 
+                            <div class="col-lg-3"> 
                                 <div class="form-group">
                                     <label>เลขประจำตัวผู้เสียภาษี / Tax. <font color="#F00"><b>*</b></font></label>
                                     <input id="company_tax" name="company_tax" class="form-control" value="<? echo $company['company_tax']?>">
                                     <p class="help-block">Example : 123456789012345.</p>
                                 </div> 
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label>สาขา / Branch <font color="#F00"><b>*</b></font></label>
+                                    <label>สาขา (ไทย) / Branch (Thai) <font color="#F00"><b>*</b></font></label>
                                     <input id="company_branch" name="company_branch" class="form-control" value="<? echo $company['company_branch']?>"/>
                                     <p class="help-block">Example : 0000 = สำนักงานใหญ่, 0001 = สาขาย่อยที่ 1 .</p>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>ประเภทภาษีมูลค่าเพิ่ม / Vat type </label>
                                     <select id="company_vat_type" name="company_vat_type" class="form-control">
@@ -161,41 +153,70 @@
                                     </select>
                                     <p class="help-block">Example : 0 - ไม่มี vat.</p>
                                 </div>
-                            </div>
-                            
-                            <!-- /.col-lg-6 (nested) -->
-                        </div> 
-                        <!-- /.row (nested) -->
-
-                        <div class="row">
-                            <div class="col-lg-4">
+                            </div> 
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>โทรศัพท์ / Telephone </label>
                                     <input id="company_tel" name="company_tel" type="text" class="form-control" value="<? echo $company['company_tel']?>">
                                     <p class="help-block">Example : 023456789.</p>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>แฟกซ์ / Fax </label>
                                     <input id="company_fax" name="company_fax" type="text" class="form-control" value="<? echo $company['company_fax']?>">
                                     <p class="help-block">Example : 020265389-01.</p>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>อีเมล์ / Email </label>
-                                    <input id="company_email" name="company_email" type="email" class="form-control" value="<? echo $company['company_email']?>" >
-                                    <p class="help-block">Example : admin@arno.co.th.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.row (nested) -->
-                        <div class="row">
+                           
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>ที่อยู่ 1 / Address 1 </label>
                                     <input id="company_address_1" name="company_address_1" type="text" class="form-control" value="<? echo $company['company_address_1']?>" >
+                                    <p class="help-block">Example : ตึกบางนาธานี.</p>
+                                </div>
+                            </div> 
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>ที่อยู่ 2 / Address 2 </label>
+                                    <input id="company_address_2" name="company_address_2" type="text" class="form-control" value="<? echo $company['company_address_2']?>">
+                                    <p class="help-block">Example : เขตบางนา.</p>
+                                </div>
+                            </div> 
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                    <label>ที่อยู่ 3 / Address 3 </label>
+                                    <input id="company_address_3" name="company_address_3" type="text" class="form-control" value="<? echo $company['company_address_3']?>">
+                                    <p class="help-block">Example : กรุงเทพ 20150.</p>
+                                </div>
+                            </div> 
+                        </div> 
+                        <br>
+                        <hr>
+                        <br>
+                        <!-- /.row (nested) -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>ชื่อบริษัท (อังกฤษ) / Company name (English)<font color="#F00"><b>*</b></font></label>
+                                    <input id="company_name_en" name="company_name_en" class="form-control" onChange="update_code()" value="<? echo $company['company_name_en']?>">
+                                    <p class="help-block">Example : Revel Soft Co., Ltd.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>สาขา (อังกฤษ) / Branch (English) <font color="#F00"><b>*</b></font></label>
+                                    <input id="company_branch_en" name="company_branch_en" class="form-control" value="<? echo $company['company_branch_en']?>"/>
+                                    <p class="help-block">Example : 0000 = สำนักงานใหญ่, 0001 = สาขาย่อยที่ 1 .</p>
+                                </div>
+                            </div>
+                        </div> 
+                        <!-- /.row (nested) -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>ที่อยู่ (อังกฤษ) 1 / Address (English) 1  </label>
+                                    <input id="company_address_1" name="company_address_en_1" type="text" class="form-control" value="<? echo $company['company_address_en_1']?>" >
                                     <p class="help-block">Example : ตึกบางนาธานี.</p>
                                 </div>
                             </div>
@@ -204,8 +225,8 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>ที่อยู่ 2 / Address 2 </label>
-                                    <input id="company_address_2" name="company_address_2" type="text" class="form-control" value="<? echo $company['company_address_2']?>">
+                                    <label>ที่อยู่ (อังกฤษ) 2 / Address (English) 2 </label>
+                                    <input id="company_address_2" name="company_address_en_2" type="text" class="form-control" value="<? echo $company['company_address_en_2']?>">
                                     <p class="help-block">Example : เขตบางนา.</p>
                                 </div>
                             </div>
@@ -214,12 +235,49 @@
                         <div class="row">
                             <div class="col-lg-9">
                                 <div class="form-group">
-                                    <label>ที่อยู่ 3 / Address 3 </label>
-                                    <input id="company_address_3" name="company_address_3" type="text" class="form-control" value="<? echo $company['company_address_3']?>">
+                                    <label>ที่อยู่ (อังกฤษ) 3 / Address (English) 3 </label>
+                                    <input id="company_address_3" name="company_address_en_3" type="text" class="form-control" value="<? echo $company['company_address_en_3']?>">
                                     <p class="help-block">Example : กรุงเทพ 20150.</p>
                                 </div>
                             </div> 
                         </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>อีเมล์ / Email </label>
+                                    <input id="company_email" name="company_email" type="email" class="form-control" value="<? echo $company['company_email']?>" >
+                                    <p class="help-block">Example : admin@arno.co.th</p>
+                                </div>
+                            </div> 
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>เอสเอ็มทีพี / SMTP </label>
+                                    <input id="company_email_smtp" name="company_email_smtp" type="email" class="form-control" value="<? echo $company['company_email_smtp']?>" >
+                                    <p class="help-block">Example : mail.arno.co.th</p>
+                                </div>
+                            </div> 
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>พอร์ต / Port </label>
+                                    <input id="company_email_port" name="company_email_port" type="email" class="form-control" value="<? echo $company['company_email_port']?>" >
+                                    <p class="help-block">Example : 445</p>
+                                </div>
+                            </div> 
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>ยูสเซอร์ / Username </label>
+                                    <input id="company_email_user" name="company_email_user" type="email" class="form-control" value="<? echo $company['company_email_user']?>" >
+                                    <p class="help-block">Example : 445</p>
+                                </div>
+                            </div> 
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>รหัสผ่าน / Password </label>
+                                    <input id="company_email_password" name="company_email_password" type="email" class="form-control" value="<? echo $company['company_email_password']?>" >
+                                    <p class="help-block">Example : 445</p>
+                                </div>
+                            </div> 
+                        </div> 
                         <!-- /.row (nested) -->
                     </div>
 

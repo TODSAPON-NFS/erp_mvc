@@ -362,6 +362,12 @@
                                         <a href="print.php?app=purchase_order&action=excel&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>" target="_blank"  title="นำออกข้อมูล" style="color:green;">
                                             <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                                         </a> 
+                                        <a href="print.php?app=purchase_order&action=pdf&lan=th&id=<?PHP echo $purchase_orders[$i]['purchase_order_id'];?>" target="_blank" title="พิมพ์เอกสารภาษาไทย"  style="color:orange;">
+                                            <i class="fa fa-print" aria-hidden="true"></i>
+                                        </a>
+                                        <a href="print.php?app=purchase_order&action=pdf&lan=en&id=<?PHP echo $purchase_orders[$i]['purchase_order_id'];?>" target="_blank" title="พิมพ์เอกสารภาษาอังกฤษ">
+                                            <i class="fa fa-print" aria-hidden="true"></i>
+                                        </a>
 
                                         <?php if($purchase_orders[$i]['purchase_order_status'] == "New" || $purchase_orders[$i]['purchase_order_status'] == "Approved"){ ?>
                                             

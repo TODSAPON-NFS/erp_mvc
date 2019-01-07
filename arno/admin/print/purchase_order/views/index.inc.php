@@ -1,8 +1,10 @@
 <?PHP 
 
 session_start();
+require_once('../functions/NumbertoTextFunction.func.php');
 require_once('../models/CompanyModel.php');
 require_once('../models/PurchaseOrderModel.php'); 
+require_once('../models/PurchaseOrderListModel.php');
 
 date_default_timezone_set('asia/bangkok');
 $d1=date("d");
@@ -14,8 +16,10 @@ $d6=date("s");
 
 $path = "print/purchase_order/views/";
 
+$number_2_text = new Number2Text;
 $company_model = new CompanyModel;
 $purchase_order_model = new PurchaseOrderModel; 
+$purchase_order_list_model = new PurchaseOrderListModel; 
 
 
 $date_start = $_GET['date_start'];
@@ -39,31 +43,51 @@ $company=$company_model->getCompanyByID('1');
 
 
 
-$purchase_orders = $purchase_order_model->getPurchaseOrderExport($purchase_order_id,$supplier_id,$date_start,$date_end,$keyword);
+
 
 $html = '';
  
-include($path."view.inc.php");
-
-
 
 if($_GET['action'] == "pdf"){ 
+    $purchase_order = $purchase_order_model->getPurchaseOrderViewByID($purchase_order_id);
+    $purchase_order_lists = $purchase_order_list_model->getPurchaseOrderListBy($purchase_order_id);
+
+    $lines = 10;
+
+    $page_max = (int)(count($purchase_order_lists) / $lines);
+    if(count($purchase_order_lists) % $lines > 0){
+        $page_max += 1;
+    }
+
+    if($_GET['lan'] == "en"){ 
+        include($path."view-pdf-en.inc.php");
+    }else{
+        include($path."view-pdf-th.inc.php");
+    }
+
     include("../plugins/mpdf/mpdf.php");
-    $mpdf=new mPDF('th', 'A4', '0', 'garuda');   
+    $mpdf=new mPDF('th', 'A4', '0', 'garuda');  
 
-    $mpdf->AddPage('L');
-    $mpdf->mirrorMargins = true;
-    
-    $mpdf->SetDisplayMode('fullpage','two');
-    
+    for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
-    $mpdf->WriteHTML($html); 
-    
+        $mpdf->AddPage('P');
+        $mpdf->mirrorMargins = true;
+        
+        $mpdf->SetDisplayMode('fullpage','two');
+        
+
+        //$html = ob_get_contents();  
+        //ob_end_clean();
+        $mpdf->WriteHTML($html[$page_index]);
+
+    }
     $mpdf->Output();
 
     //exit;
 }else if ($_GET['action'] == "excel") {
-    
+
+    $purchase_orders = $purchase_order_model->getPurchaseOrderExport($purchase_order_id,$supplier_id,$date_start,$date_end,$keyword);
+    include($path."view-excel.inc.php");
     header("Content-type: application/vnd.ms-excel");
 	// header('Content-type: application/csv'); //*** CSV ***//
     header("Content-Disposition: attachment; filename=purchase order export $d1-$d2-$d3 $d4:$d5:$d6.xls");

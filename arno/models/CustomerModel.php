@@ -58,6 +58,29 @@ class CustomerModel extends BaseModel{
 
     }
 
+    function getCustomerProductBy($customer_id){
+        $sql = "SELECT * FROM `tb_customer_purchase_order` 
+        LEFT JOIN tb_customer_purchase_order_list ON tb_customer_purchase_order.customer_purchase_order_id = tb_customer_purchase_order_list.customer_purchase_order_id
+        LEFT JOIN tb_product ON tb_customer_purchase_order_list.product_id = tb_product.product_id 
+
+        LEFT JOIN tb_invoice_customer ON tb_customer_purchase_order.customer_id = tb_invoice_customer.customer_id
+        WHERE tb_customer_purchase_order.customer_id =  $customer_id
+
+        ";
+        // echo "<pre>";
+        // print_r($sql);
+        // echo"</pre>";
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getEndUserByCustomerID($customer_id){
         $sql = " SELECT customer_id, customer_code, customer_name_th, customer_name_en , customer_tax , customer_tel, customer_email   
         FROM tb_customer as tb1

@@ -6,12 +6,7 @@
         var list = $("#list").val();
         var status = $("#status").val();
         
-        if (list == "1"){
-            window.location = "index.php?app=purchase_request&action=search&list="+list+"&status="+status+"&date_start="+date_start+"&date_end="+date_end+"&keyword="+keyword;
-        }else{
-            window.location = "index.php?app=purchase_request&list="+list+"&status="+status+"&date_start="+date_start+"&date_end="+date_end+"&keyword="+keyword;
-            
-        }
+        window.location = "index.php?app=purchase_request&list="+list+"&status="+status+"&date_start="+date_start+"&date_end="+date_end+"&keyword="+keyword;
     }
 </script>
 
@@ -110,6 +105,8 @@
                                         <th>รหัสสินค้า<br>Product Code</th>
                                         <th>ชื่อสินค้า<br>Product Name</th>
                                         <th>จำนวน<br>Accept by</th>
+                                        <th>รหัสคำสั่งซื้อ<br>Purchase Order Code</th>
+                                        <th>เลขที่ใบรับสินค้า<br>Invoice Supplier Code</th>
                                         <th>หมายเหตุ<br>Remark</th>
                                         <th></th>
                                     </tr>
@@ -126,6 +123,35 @@
                                         <td><?php echo $purchase_requests[$i]['product_code']; ?></td>
                                         <td><?php echo $purchase_requests[$i]['product_name']; ?></td>
                                         <td><?php echo $purchase_requests[$i]['purchase_request_list_qty']; ?></td>
+                                        
+                                        
+                                        <td><?php
+                                        $purchase_orders = $purchase_request_model->getPurchaseOrderByPurchaseRequestListId($purchase_requests[$i]['purchase_request_list_id']);
+                                        // echo '<pre>';
+                                        // print_r ($purchase_orders);
+                                        // echo '</pre>';
+                                        for($j=0; $j < count($purchase_orders); $j++){ ?>
+                                            <a href="?app=purchase_order&action=detail&id=<?php echo $purchase_orders[$j]['purchase_order_id'];?>" target = "_blank" title="ดูรายละเอียดใบสั่งซื้อ">
+                                            <?php echo $purchase_orders[$j]['purchase_order_code']; ?>
+                                            </a><br>
+                                            <?php
+                                        }
+                                        ?></td>
+                                        
+                                       
+                                        <td><?php 
+                                            $purchase_invoices = $purchase_request_model->getInvoiceSuppliertByPurchaseRequestListId($purchase_requests[$i]['purchase_request_list_id']);
+                                            // echo '<pre>';
+                                            // print_r ($purchase_invoices);
+                                            // echo '</pre>';
+                                            for($k=0; $k < count($purchase_invoices); $k++){ ?>
+                                                <a href="?app=invoice_supplier&action=detail&id=<?php echo $purchase_invoices[$k]['invoice_supplier_id'];?>" target = "_blank" title="ดูรายละเอียดใบรับสินค้า">
+                                                <?php echo $purchase_invoices[$k]['invoice_supplier_code_gen']; ?>
+                                                </a><br>
+                                                <?php
+                                            }
+                                            ?></td>
+
                                         <td><?php echo $purchase_requests[$i]['purchase_request_remark']; ?></td>
                                         
                                         <td>

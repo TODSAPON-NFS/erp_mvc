@@ -306,6 +306,12 @@
                                         <a href="?app=invoice_supplier&action=detail&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
                                             <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                         </a>
+                                        <a href="print.php?app=invoice_supplier&action=pdf&lan=th&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" target="_blank" title="พิมพ์เอกสารภาษาไทย"  style="color:orange;">
+                                            <i class="fa fa-print" aria-hidden="true"></i>
+                                        </a>
+                                        <a href="print.php?app=invoice_supplier&action=pdf&lan=en&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" target="_blank" title="พิมพ์เอกสารภาษาอังกฤษ">
+                                            <i class="fa fa-print" aria-hidden="true"></i>
+                                        </a>
 
                                         <?PHP if($invoice_suppliers[$i]['supplier_domestic'] == "ภายนอกประเทศ"){ ?>
                                         <a href="?app=invoice_supplier&action=cost&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">

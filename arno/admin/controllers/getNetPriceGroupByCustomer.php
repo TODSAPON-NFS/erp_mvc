@@ -6,8 +6,8 @@ header("Content-Type: application/json; charset=UTF-8");
 require_once('../../models/DashboardModel.php');
 $invoice_customer_model = new DashboardModel;
 
-$page_start = $_POST['limit']*5;
-$page_end =5 ;
+$page_start = $_POST['limit']*10;
+$page_end =10 ;
 
 $invoice_customer = $invoice_customer_model->getNetPriceGroupByCustomerLimit($page_start,$page_end);
 

@@ -13,6 +13,7 @@ $user = $_SESSION['user'];
 //echo "</pre>";
 if($user['user_position_id']=='1' || $user['user_position_id']=='2'|| $user['user_position_id']=='4'){
     $customer = $dash_board_model->getNetPriceGroupByCustomer();
+    $sales = $dash_board_model->getNetPriceGroupByAllSales();
     
     require_once($path.'view.inc.php');
 }

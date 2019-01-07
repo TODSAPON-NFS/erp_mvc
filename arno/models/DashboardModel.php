@@ -154,7 +154,7 @@ class DashboardModel extends BaseModel{
 
     }
     function getNetPriceGroupByAllSales(){
-        $sql = "SELECT tb_user.user_id,tb_user.user_name AS 'sales_name' , 
+        $sql = "SELECT tb_user.user_id,CONCAT(tb_user.user_name,'  ',tb_user.user_lastname) AS sales_name , 
         DATE_FORMAT(STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s'), '%Y-%m') AS invoice_date ,
         SUM(invoice_customer_net_price) AS 'net_price' 
         FROM `tb_invoice_customer` 

@@ -129,73 +129,7 @@
             </div>
             <!-- /.panel-body -->
         </div>
-        <!-- /.panel -->
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-
-                <i class="fa fa-bar-chart-o fa-fw"></i> Chart แสดงยอดขายตามลูกค้า
-                <!-- <div id="pageInfo">
-                    
-                </div> -->
-                <div class="pull-right">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                            Actions
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right" role="menu">
-                            <li><a href="#">Action</a>
-                            </li>
-                            <li><a href="#">Another action</a>
-                            </li>
-                            <li><a href="#">Something else here</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-lg-5">
-                        <div class="table ">
-                            <table id="myTable" class="table table-bordered table-hover table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" width="25px;">#</th>
-                                        <th class="text-center" width="60px;">Code</th>
-                                        <th class="text-center">Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                
-                                    <?php for($i=0;$i<count($customer);$i++){?>
-                                        <tr>
-                                            <td class="text-center"><?php echo $i+1;?></td>
-                                            <td class="text-center"><?php echo $customer[$i]['code']?></td>
-                                            <td><?php echo $customer[$i]['customer_name']?></td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.table-responsive -->
-                    </div>
-                    <!-- /.col-lg-4 (nested) -->
-                    <div class="col-lg-7">
-                    <canvas id="BarChart" width="400" height="400"></canvas>
-                    </div>
-                    <!-- /.col-lg-8 (nested) -->
-                </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.panel-body -->
-        </div>
-        <!-- /.panel -->
-        
+        <!-- /.panel -->      
     </div>
     <!-- /.col-lg-8 -->
 
@@ -238,23 +172,126 @@
             </div>
             <!-- /.panel-body -->
         </div>
-        <!-- /.panel -->
-        <div class="panel panel-green">
-            <div class="panel-heading">
-                <i class="fa fa-bar-chart-o fa-fw"></i> Pie Chart Example
-            </div>
-            <div class="panel-body">
-                <canvas id="PieChart"></canvas>
-                <!-- <a href="#" class="btn btn-default btn-block">View Details</a> -->
-            </div>
-            <!-- /.panel-body -->
-        </div>
-        <!-- /.panel -->
-        
+        <!-- /.panel -->     
     </div>
     <!-- /.col-lg-4 -->
 </div>
 <!-- /.row -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+
+                <i class="fa fa-bar-chart-o fa-fw"></i> Chart แสดงยอดขายตามลูกค้า
+                <!-- <div id="pageInfo">
+                    
+                </div> -->
+                <div class="pull-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                            Actions
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right" role="menu">
+                            <li><a href="#">Action</a>
+                            </li>
+                            <li><a href="#">Another action</a>
+                            </li>
+                            <li><a href="#">Something else here</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="row">                    
+                    <div class="col-lg-5">
+                        <div class="table ">
+                            <table id="myTable" class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" width="auto;">#</th>
+                                        <th class="text-center" width="auto;">Code</th>
+                                        <th class="text-center" width="auto;">Name</th>
+                                        <th class="text-right" width="auto;">ยอดขาย</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                
+                                    <?php for($i=0;$i<count($customer);$i++){?>
+                                        <tr>
+                                            <td class="text-center"><?php echo $i+1;?></td>
+                                            <td class="text-center"><?php echo $customer[$i]['code'];?></td>
+                                            <td><?php echo $customer[$i]['customer_name'];?></td>
+                                            <td class="text-right"><?php echo number_format($customer[$i]['net_price'],2);?></td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>  
+                    <div class="col-lg-7">
+                        <canvas id="BarChart" width="400" height="400"></canvas>
+                    </div>                  
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+        <div class="row">                               
+            <div class="col-md-12">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Pie Chart Example
+                    </div>
+                    <div class="panel-body" >
+                        <div class="col-lg-5">
+                            <div class="table ">
+                                <table id="sales_table" class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" width="auto;">#</th>
+                                            <th class="text-center" width="auto;">Name</th>
+                                            <th class="text-center" width="auto;">ยอดขาย</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    
+                                        <?php for($i=0;$i<count($sales);$i++){?>
+                                            <tr>
+                                                <td class="text-center"><?php echo $i+1;?></td>
+                                                <td><?php echo $sales[$i]['sales_name'];?></td>
+                                                <td class="text-right"><?php echo number_format($sales[$i]['net_price'],2);?></td>
+                                            </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <canvas id="PieChart" style="height:500px;"></canvas>
+                        </div>
+                        
+                        
+                        <!-- <a href="#" class="btn btn-default btn-block">View Details</a> -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>                        
+            </div>
+            
+            <!-- /.panel -->
+        </div>
+    </div>
+    
+</div>
+
+
 <script>
     
     $(function () {
@@ -263,13 +300,18 @@
         $('#myTable').dataTable({
             "bInfo" : false,
             "pagingType": "simple",
-            "pageLength": 5,
+            "pageLength": 10,
+            "lengthChange": false
+        });
+        $('#sales_table').dataTable({
+            "bInfo" : false,
+            "pagingType": "simple",
+            "pageLength": 10,
             "lengthChange": false
         });
 
         var table = $('#myTable').DataTable();
-    
-        
+        var sales_table = $('#sales_table').DataTable();
         
         var Color = ["#004D40", "#00695C","#00796B","#00897B","#009688","#26A69A", "#4DB6AC","#80CBC4","#B2DFDB","#81C784"];
         var bar = document.getElementById("BarChart");
@@ -286,6 +328,7 @@
                 ]
                 },
                 options: {
+                    maintainAspectRatio: false,
                     legend: { display: false },
                     title: {
                         display: true,

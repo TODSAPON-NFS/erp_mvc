@@ -191,7 +191,7 @@ if(!isset($_GET['action'])){
     if($supplier['vat_type'] == '0'){
         $vat= '0';
     }else{
-        $vat = $invoice_supplier['vat'];
+        $vat = $purchase_order['vat'];
     }
     require_once($path.'detail.inc.php');
 

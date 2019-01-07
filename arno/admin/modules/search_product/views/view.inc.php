@@ -29,7 +29,7 @@
                                     <div class="form-group">
                                         <label>คลังสินค้า / Stock </label>
                                         <select id="stock_group_id" name="stock_group_id" class="form-control select"  data-live-search="true">
-                                            <option value="">ทั้งหมด</option>
+                                            <option selected value="ALL">ทั้งหมด</option>
                                             <?php 
                                             for($i =  0 ; $i < count($stock_group) ; $i++){
                                             ?>

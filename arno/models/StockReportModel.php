@@ -1,5 +1,5 @@
 <?php
-
+ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 require_once("BaseModel.php");
 class StockReportModel extends BaseModel{
 
@@ -12,8 +12,10 @@ class StockReportModel extends BaseModel{
 
     function getStockReportListBy($stock_group_id = '', $keyword = ''){
 
-        if($stock_group_id != ""){
+        if($stock_group_id != "" && $stock_group_id != "ALL"){
             $str_stock = " AND tb_stock_report.stock_group_id = '$stock_group_id' ";
+        }else if ($stock_group_id == "ALL"){
+            $str_stock = "  ";
         }
         $sql = "    SELECT * 
                     FROM tb_product 
@@ -24,7 +26,7 @@ class StockReportModel extends BaseModel{
                     $str_stock 
                     GROUP BY  tb_product.product_id, tb_stock_report.stock_group_id 
                     ORDER BY  tb_product.product_id, tb_stock_report.stock_group_id ";
-
+// echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -53,6 +55,8 @@ class StockReportModel extends BaseModel{
         LEFT JOIN tb_supplier ON tb_supplier.supplier_id = tb_product_supplier.supplier_id
         LEFT JOIN tb_product_customer_price ON tb_stock_report.product_id = tb_product_customer_price.product_id
         LEFT JOIN tb_customer ON tb_customer.customer_id = tb_product_customer_price.customer_id
+        LEFT JOIN tb_currency ON tb_supplier.currency_id = tb_currency.currency_id      
+
         WHERE     $str_product
                     
          ";

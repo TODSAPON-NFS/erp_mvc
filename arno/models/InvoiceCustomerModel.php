@@ -14,6 +14,27 @@ class InvoiceCustomerModel extends BaseModel{
         $this->maintenance_stock =  new MaintenanceStockModel;
     }
 
+    function getInvoiceCustomerByCustomerPurchaseListId ($customer_purchase_order_list_id){
+        
+        $sql = " SELECT tb_invoice_customer.invoice_customer_code,
+        tb_invoice_customer.invoice_customer_id
+        FROM `tb_invoice_customer` 
+        LEFT JOIN tb_invoice_customer_list ON tb_invoice_customer.invoice_customer_id =  tb_invoice_customer_list.invoice_customer_id
+        WHERE tb_invoice_customer_list.customer_purchase_order_list_id = '$customer_purchase_order_list_id'
+        GROUP BY  tb_invoice_customer.invoice_customer_id
+         ";
+
+        // echo $sql;
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+
     function getInvoiceCustomerBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = "",$begin = "0", $lock_1 = "0", $lock_2 = "0" ){
 
         $str_customer = "";

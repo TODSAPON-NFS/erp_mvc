@@ -206,14 +206,25 @@
 
         $(".example-ajax-post").easyAutocomplete(options);
 
+
+
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="supplier_id[]"]').empty();
         var str = "<option value='0'>ไม่ระบุ</option>";
+        var supplier_id = $("#supplier_id").val();
         $.each(supplier_data, function (index, value) { 
-            str += "<option value='" + value['supplier_id'] + "'>" +  value['supplier_name_en'] + "</option>";  
+            if(value['supplier_id'] == supplier_id){
+                str += "<option value='" + value['supplier_id'] + "' selected>" +  value['supplier_name_en'] + "</option>";  
+                
+            }else {
+                str += "<option value='" + value['supplier_id'] + "'>" +  value['supplier_name_en'] + "</option>";  
+                
+            }
         });
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="supplier_id[]"]').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="supplier_id[]"]').selectpicker();
+
+
 
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="stock_group_id[]"]').empty();
@@ -304,9 +315,15 @@
                         $(".example-ajax-post").easyAutocomplete(options);
 
                         $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="supplier_id[]"]').empty();
-                        var str = "<option value='0'>ไม่ระบุ</option>";
+                        var supplier_id = $("#supplier_id").val();
                         $.each(supplier_data, function (index, value) { 
-                            str += "<option value='" + value['supplier_id'] + "'>" +  value['supplier_name_en'] + "</option>";  
+                            if(value['supplier_id'] == supplier_id){
+                                str += "<option value='" + value['supplier_id'] + "' selected>" +  value['supplier_name_en'] + "</option>";  
+                                
+                            }else {
+                                str += "<option value='" + value['supplier_id'] + "'>" +  value['supplier_name_en'] + "</option>";  
+                                
+                            }
                         });
                         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="supplier_id[]"]').html(str);
 
@@ -461,6 +478,22 @@
                                 <p class="help-block">01-03-2018</p>
                             </div>
                         </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>ผู้ขาย </label>
+                                <select id="supplier_id" name="supplier_id" class="form-control" >
+                                    <option value="0">Select</option>
+                                    <?php 
+                                    for($i =  0 ; $i < count($suppliers) ; $i++){
+                                    ?>
+                                    <option  value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?>  </option>
+                                    <?
+                                    }
+                                    ?>
+                                </select>
+                                <p class="help-block">Example : บริษัท เรเวลซอฟต์ จำกัด (Revel Soft co,ltd).</p>
+                            </div>
+                        </div> 
                     </div>
 
                     <table name="tb_list" width="100%" class="table table-striped table-bordered table-hover" >

@@ -90,6 +90,7 @@
         document.getElementById('supplier_id').value = supplier_id;
         $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id}, function( data ) {
             document.getElementById('supplier_code').value = data.supplier_code;
+            document.getElementById('purchase_order_credit_term').value = data.credit_day;
             document.getElementById('supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
         });
 

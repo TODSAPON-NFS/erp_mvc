@@ -3,8 +3,15 @@
         var date_start = $("#date_start").val();
         var date_end = $("#date_end").val();
         var keyword = $("#keyword").val();
+        var list = $("#list").val();
+        var status = $("#status").val();
 
-        window.location = "index.php?app=purchase_request&date_start="+date_start+"&date_end="+date_end+"&keyword="+keyword;
+        if (list == "1"){
+            window.location = "index.php?app=purchase_request&action=search&list="+list+"&status="+status+"&date_start="+date_start+"&date_end="+date_end+"&keyword="+keyword;
+        }else{
+            window.location = "index.php?app=purchase_request&list="+list+"&status="+status+"&date_start="+date_start+"&date_end="+date_end+"&keyword="+keyword;
+            
+        }
     }
 </script>
 
@@ -59,6 +66,20 @@
                                         <p class="help-block">01-01-2018 - 31-12-2018</p>
                                     </div>
                                 </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>แสดงผล </label>
+                                            <select id="list" name="list" class="form-control select" data-live-search="true">
+                                                <option value="">ทั้งหมด</option>
+                                                
+                                                <option <?php if($list == '1'){?> selected <?php }?> value="1">แสดงตามรายการ</option>
+                                                <option <?php if($list == '2'){?> selected <?php }?> value="2">แสดงตามเอกสาร</option>
+                                            </select>
+                                            <p class="help-block">Example : แสดงตามรายการ</p>
+                                     </div>
+                                </div>
+
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>คำค้น <font color="#F00"><b>*</b></font></label>

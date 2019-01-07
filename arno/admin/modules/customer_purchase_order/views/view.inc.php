@@ -6,7 +6,12 @@
         var customer_id = $("#search_customer_id").val();
         var keyword = $("#keyword").val();
         var status = $("#status").val();
-        window.location = "index.php?app=customer_purchase_order&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&status="+status+"&keyword="+keyword;
+        var view_type = $("#view_type").val();
+        if( view_type == 'paper'){
+        window.location = "index.php?app=customer_purchase_order&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&status="+status+"&keyword="+keyword+"&view_type=paper";            
+        }else{
+        window.location = "index.php?app=customer_purchase_order&action=view_list&date_start="+date_start+"&date_end="+date_end+"&customer_id="+customer_id+"&status="+status+"&keyword="+keyword+"&view_type=product";            
+        }
     }
 
     function changeURL(id){

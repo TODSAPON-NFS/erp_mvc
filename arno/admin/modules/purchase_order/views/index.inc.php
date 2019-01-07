@@ -229,6 +229,7 @@ if(!isset($_GET['action'])){
         $data['purchase_order_type'] = $type;
         $data['purchase_order_status'] = 'New';
         $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
+        $data['purchase_order_delivery_term'] = $_POST['purchase_order_delivery_term'];
         $data['purchase_order_total_price'] = (float)filter_var($purchase_order_total_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['purchase_order_vat'] = (float)filter_var($purchase_order_vat, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['purchase_order_vat_price'] = (float)filter_var($purchase_order_vat_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -339,6 +340,7 @@ if(!isset($_GET['action'])){
             $data['purchase_order_accept_status'] = '';
             $data['purchase_order_status'] = 'New';
             $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
+            $data['purchase_order_delivery_term'] = $_POST['purchase_order_delivery_term'];
             $data['purchase_order_total_price'] = (float)filter_var($purchase_order_total_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data['purchase_order_vat'] = (float)filter_var($purchase_order_vat, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data['purchase_order_vat_price'] = (float)filter_var($purchase_order_vat_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -479,6 +481,7 @@ if(!isset($_GET['action'])){
         $data['purchase_order_accept_status'] = '';
         $data['purchase_order_status'] = 'New';
         $data['purchase_order_delivery_by'] = $_POST['purchase_order_delivery_by'];
+        $data['purchase_order_delivery_term'] = $_POST['purchase_order_delivery_term'];
         $data['purchase_order_total_price'] = (float)filter_var($purchase_order_total_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['purchase_order_vat'] = (float)filter_var($purchase_order_vat, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['purchase_order_vat_price'] = (float)filter_var($purchase_order_vat_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -547,6 +550,7 @@ if(!isset($_GET['action'])){
             $data['purchase_order_credit_term'] = $purchase_order['purchase_order_credit_term'];
             $data['purchase_order_accept_status'] = '';
             $data['purchase_order_delivery_by'] = $purchase_order['purchase_order_delivery_by'];
+            $data['purchase_order_delivery_term'] = $purchase_order['purchase_order_delivery_term'];
             $data['purchase_order_total'] = $purchase_order['purchase_order_total'];
             $data['purchase_order_vat'] = $purchase_order['purchase_order_vat'];
             $data['purchase_order_net'] = $purchase_order['purchase_order_net'];

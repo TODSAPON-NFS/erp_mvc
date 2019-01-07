@@ -171,10 +171,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                 </table> 
             </td>
-            <td width="240" valign="top" style="border: 1px solid #000;border-radius: 8px;">
+            <td width="260" valign="top" style="border: 1px solid #000;border-radius: 8px;">
                 <table width="100%">
                     <tr>
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>เลขที่</b>
                         </td>
                         <td   valign="middle" align="left">
@@ -185,7 +185,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>วันที่</b>
                         </td>
                         <td  valign="middle" align="left">
@@ -195,7 +195,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>เครดิต </b>
                         </td>
                         <td  valign="middle" align="left">
@@ -205,7 +205,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>การจัดส่ง </b>
                         </td>
                         <td  valign="middle" align="left">
@@ -215,7 +215,17 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
+                        <b>วันที่จัดส่ง  </b>
+                        </td>
+                        <td  valign="middle" align="left">
+                        '.$purchase_order['purchase_order_delivery_term'].'
+                        </td>
+
+                    </tr> 
+                    <tr>
+                        
+                        <td width="84px"  valign="middle" align="left">
                         <b>พนักงาน </b>
                         </td>
                         <td  valign="middle" align="left">

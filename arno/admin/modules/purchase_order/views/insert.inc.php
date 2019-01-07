@@ -662,11 +662,20 @@
                                         <p class="help-block">Example : Thana Tepchuleepornsil.</p>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>จัดส่งโดย / Delivery by</label>
                                         <input type="text" id="purchase_order_delivery_by" name="purchase_order_delivery_by" value="<?PHP echo $supplier['delivery_by'] ?>"  class="form-control"/>
                                         <p class="help-block">DHL </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>วันที่จัดส่ง / Delivery Date</label>
+                                        <input type="text" id="purchase_order_delivery_term" name="purchase_order_delivery_term" value="<? echo $purchase_order['purchase_order_delivery_term'];?>"  class="form-control calendar"   onchange="check_date(this);" readonly/>
+                                        <input id="date_check" type="hidden" value="" />
+                                        <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>
                             </div>

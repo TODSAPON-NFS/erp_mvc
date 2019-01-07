@@ -1533,29 +1533,40 @@ class JournalReportModel extends BaseModel{
           } 
 
 
-          //#####################################################################################################################
+    //#####################################################################################################################//
     //
     //
     //-------------------------------- ดึงรายการสินทรัพย์  ตามวันที่ ------------------------------------------
     //
     //
-    //#####################################################################################################################
-    function getJournalAssetsReportBy($date_end = "", $code_start = "", $code_end = "" ,$keyword = ""){
+    //#####################################################################################################################//
+    function getJournalAssetsReportBy($date_end = "", $date_start = "", $code_end = "" ,$keyword = ""){
         //echo $keyword ;
 
         if($keyword == 1){
 
-            $keyword = "account_group = '1'";
+            $account_group = "account_group = '1'";
 
-        }else{
-            $keyword = "account_group = '2' OR account_group = '3'";
+        }elseif($keyword == 2){
+            $account_group = "account_group = '2' OR account_group = '3'";
+        }elseif($keyword == 4){
+            $account_group = "account_group = '4' ";
+        }elseif($keyword == 5){
+            $account_group = " account_group = '5'";
         }
         //------------------------- General Journal -------------------------------------------------------------
         $str_general_date = "";
 
-        if ($date_end != ""){
-            $str_general_date = " STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        if ($date_end != ""   ){
+            $str_general_date .=" STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";        
         } 
+
+        if(( $keyword == 5 or $keyword == 4 )){
+            $str_general_date ="";
+            $str_general_date ="STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND ";
+            $str_general_date .="STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+        }
+       // echo $str_general_date ;
 
         $sql_general = " SELECT
         journal_general_code as journal_code, 
@@ -1572,8 +1583,8 @@ class JournalReportModel extends BaseModel{
         ORDER BY STR_TO_DATE(journal_general_date,'%d-%m-%Y %H:%i:%s'), journal_general_code DESC 
         "; 
         //------------------------- End General Journal -------------------------------------------------------------
-
-
+ 
+        //echo '<pre>'.$sql_general.'</pre>';
 
         //------------------------- Purchase Journal -------------------------------------------------------------
         $str_purchase_date = "";
@@ -1581,6 +1592,12 @@ class JournalReportModel extends BaseModel{
         if ($date_end != ""){
             $str_purchase_date = " STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
         } 
+
+        if(( $keyword == 5 or $keyword == 4 )){
+            $str_purchase_date = "";
+            $str_purchase_date = " STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND ";
+            $str_purchase_date .= " STR_TO_DATE(journal_purchase_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+        }
 
         $sql_purchase = " SELECT
         journal_purchase_code as journal_code, 
@@ -1606,6 +1623,11 @@ class JournalReportModel extends BaseModel{
         if ($date_end != ""){
             $str_sale_date = "STR_TO_DATE(journal_sale_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
         } 
+        if(( $keyword == 5 or $keyword == 4 )){
+            $str_sale_date = "";
+            $str_sale_date = "STR_TO_DATE(journal_sale_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND ";  
+            $str_sale_date .= "STR_TO_DATE(journal_sale_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        }
 
         $sql_sale = " SELECT
         journal_sale_code as journal_code, 
@@ -1631,6 +1653,11 @@ class JournalReportModel extends BaseModel{
         if ($date_end != ""){
             $str_cash_payment_date = " STR_TO_DATE(journal_cash_payment_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
         } 
+        if(( $keyword == 5 or $keyword == 4 )){
+            $str_cash_payment_date = "";
+            $str_cash_payment_date = " STR_TO_DATE(journal_cash_payment_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND ";  
+            $str_cash_payment_date .= " STR_TO_DATE(journal_cash_payment_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        }
 
         $sql_cash_payment = " SELECT
         journal_cash_payment_code as journal_code, 
@@ -1657,6 +1684,13 @@ class JournalReportModel extends BaseModel{
             $str_cash_receipt_date = " STR_TO_DATE(journal_cash_receipt_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
         } 
 
+        if(( $keyword == 5 or $keyword == 4 )){
+            $str_cash_receipt_date = "";
+            $str_cash_receipt_date = " STR_TO_DATE(journal_cash_receipt_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND ";
+            $str_cash_receipt_date .= " STR_TO_DATE(journal_cash_receipt_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+
+        }
+
         $sql_cash_receipt = " SELECT
         journal_cash_receipt_code as journal_code, 
         journal_cash_receipt_date as journal_date,
@@ -1674,7 +1708,7 @@ class JournalReportModel extends BaseModel{
         //------------------------- End Cash Receipt Journal -------------------------------------------------------------
 
 
-        $sql =" SELECT account_code , account_name_th ,  MAX(IFNULL(account_debit_begin,0)) ,SUM(IFNULL(tb_journal.journal_debit,0)), MAX(IFNULL(account_credit_begin,0)) ,SUM(IFNULL(tb_journal.journal_credit,0)) , ( MAX(IFNULL(account_debit_begin,0)) + SUM(IFNULL(tb_journal.journal_debit,0)) ) - ( MAX(IFNULL(account_credit_begin,0)) + SUM(IFNULL(tb_journal.journal_credit,0)) ) as account_value , account_level,account_group
+        $sql =" SELECT account_code , account_name_th ,  MAX(IFNULL(account_debit_begin,0)) ,SUM(IFNULL(tb_journal.journal_debit,0)) As journal_debit, MAX(IFNULL(account_credit_begin,0)) ,SUM(IFNULL(tb_journal.journal_credit,0)) As journal_credit, ( MAX(IFNULL(account_debit_begin,0)) + SUM(IFNULL(tb_journal.journal_debit,0)) ) - ( MAX(IFNULL(account_credit_begin,0)) + SUM(IFNULL(tb_journal.journal_credit,0)) ) as account_value , account_level,account_group
                 FROM tb_account 
                 LEFT JOIN  (($sql_general)  
                 UNION   ALL  ($sql_purchase) 
@@ -1682,7 +1716,7 @@ class JournalReportModel extends BaseModel{
                 UNION   ALL  ($sql_cash_payment) 
                 UNION   ALL  ($sql_cash_receipt)) as tb_journal  
                 ON tb_account.account_id = tb_journal.account_id  
-                WHERE   $keyword
+                WHERE   $account_group
                 GROUP BY account_code 
                 HAVING  round(account_value,2)  != 0 OR   account_level != '1'
                 ORDER BY account_code ASC

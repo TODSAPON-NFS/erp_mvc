@@ -325,7 +325,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                                         <tr style="width:200px" >
                                             <td  align="left" ><div><label> รวมหนี้สินเเละส่วนของผู้ถือหุ้น </label></div></td>
                                             <td  align="right" align="right" style="border-top: 1px solid black; border-bottom: 3px double black ; ">'. number_format(abs($sumAll), 2).'</td>
-                                            <td  align="right" >'.number_format(($sumAll/$acc_val)*100,2).'</td> 
+                                            <td  align="right" >'.number_format(($sumAll/$acc_val)*100,2).'%</td> 
                                          
                                         </tr>
                                     </tfoot>

@@ -193,8 +193,8 @@
                             <thead>
                                 <tr>
                                     <th>รหัสสินค้า</th>
-                                    <th></th>
-                                    <th></th>
+                                    <th>ชื่อสินค้า</th>
+                                    <th>ราคาสินค้า</th>
                                 </tr>
                             </thead>
                             <tbody class="odd gradeX">

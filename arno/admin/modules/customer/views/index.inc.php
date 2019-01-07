@@ -117,14 +117,12 @@ if(!isset($_GET['action'])){
     $adddate =  $customer['adddate'];
     $updateby =  $customer['updateby'];
     $lastupdate =  $customer['lastupdate'];
+    $product = $model_customer->getCustomerProductBy($_GET['id']);
 
+    echo "<pre>";
+    print_r($product);
+    echo"</pre>";
 
-
-
-
-    // echo "<pre>";
-    // print_r($customer);
-    // echo"</pre>";
    require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'delete' && ($license_admin_page == 'High') ){

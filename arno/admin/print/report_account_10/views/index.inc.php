@@ -7,10 +7,11 @@ require_once('../models/CompanyModel.php');
 
 date_default_timezone_set('asia/bangkok');
 
-$path = "print/report_account_03/views/";
+$path = "print/report_account_10/views/";
  
 $company_model = new CompanyModel;
 $journal_report_model = new JournalReportModel;
+
 
 
 
@@ -23,7 +24,7 @@ if(!isset($_GET['date_start'])){
     $date_start = $_GET['date_start'];
     $_SESSION['date_start'] = $date_start;
 }
-
+//echo  $date_start ;
 
 if(!isset($_GET['date_end'])){
     $date_end = $_SESSION['date_end'];
@@ -56,9 +57,9 @@ if(!isset($_GET['keyword'])){
 } 
 
 
-if($date_start == ""){
-    $date_start = date('01-m-Y'); 
-}
+if($date_start == ""){$date_start = date('01-m-Y');}
+     
+
 
 if($date_end == ""){ 
     $date_end  = date('t-m-Y');
@@ -69,39 +70,43 @@ $type = $_GET['type'];
 
 
 
+
 $company=$company_model->getCompanyByID('1');
 
-$lines = 60;
+$lines = 33;
 
-$keyword = 1;
-$journal_reports = $journal_report_model->getJournalAssetsReportBy($date_end,$code_start,$code_end, $keyword);
+$keyword = 4;
+$journal_reports_income = $journal_report_model->getJournalAssetsReportBy($date_end,$date_start,$code_end, $keyword);
 
-$keyword = 2;
-$journal_reports_debit = $journal_report_model->getJournalAssetsReportBy($date_end,$code_start,$code_end, $keyword);
+$keyword = 5;
+$journal_reports_charges = $journal_report_model->getJournalAssetsReportBy($date_end,$date_start,$code_end, $keyword);
 
     $countAssets = 0 ; 
+    $countAss = 0 ;
+    for($i=0; $i < (int)(count($journal_reports_income)); $i++){ 
 
-    for($i=0; $i < (int)(count($journal_reports)); $i++){ 
-        if($journal_reports[$i]['account_level'] =='2' || $journal_reports[$i]['account_level'] =='3'){
+        if(($journal_reports_income[$i]['journal_debit']-$journal_reports_income[$i]['journal_credit'])!=0){       
             $countAssets++;
+            $countAss++;          
         }
+
     }
     $countDebit = 0;
-    for($i=0; $i < count($journal_reports_debit); $i++){ 
-        if($journal_reports_debit[$i]['account_level'] =='2' || $journal_reports_debit[$i]['account_level'] =='3'){
+    for($i=0; $i < count($journal_reports_charges); $i++){ 
+        if(($journal_reports_charges[$i]['journal_debit']-$journal_reports_charges[$i]['journal_credit'])!=0){
              $countAssets++;
         }
     }
 
-    //echo  '<br>'.$countAssets;
 
- $page_max =(int) (   ($countAssets)  / $lines);
+
+   $page_max =(int) (   ($countAssets)  / $lines);
  
 
 
 if( (int) ($countAssets)  % $lines > 0 )  { $page_max += 1;}
    
-
+echo $lines;
 
 require_once($path.'view.inc.php');
 
@@ -131,12 +136,12 @@ if($_GET['action'] == "pdf"){
         ////$html = ob_get_contents();  
         ////ob_end_clean();
 
-       $mpdf->WriteHTML($html[$page_index]);
+      $mpdf->WriteHTML($html[$page_index]);
         //echo $html[$page_index];
     }
     
     
-    $mpdf->Output();
+     $mpdf->Output();
 
     //exit;
 }else if ($_GET['action'] == "excel") {

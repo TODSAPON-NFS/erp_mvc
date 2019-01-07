@@ -6,12 +6,7 @@
         var list = $("#list").val();
         var status = $("#status").val();
 
-        if (list == "1"){
-            window.location = "index.php?app=purchase_request&action=search&list="+list+"&status="+status+"&date_start="+date_start+"&date_end="+date_end+"&keyword="+keyword;
-        }else{
-            window.location = "index.php?app=purchase_request&list="+list+"&status="+status+"&date_start="+date_start+"&date_end="+date_end+"&keyword="+keyword;
-            
-        }
+        window.location = "index.php?app=purchase_request&list="+list+"&status="+status+"&date_start="+date_start+"&date_end="+date_end+"&keyword="+keyword;
     }
 </script>
 
@@ -111,6 +106,8 @@
                                         <th>ประเภทการร้องขอ<br>Request Type</th>
                                         <th>สถานะอนุมัติ<br>Accept Status</th>
                                         <th>ผู้อนุมัติ<br>Accept by</th>
+                                        <th>รหัสคำสั่งซื้อ<br>Purchase Order Code</th>
+                                        <th>เลขที่ใบรับสินค้า<br>Invoice Supplier Code</th>
                                         <th>หมายเหตุ<br>Remark</th>
                                         <th></th>
                                     </tr>
@@ -118,6 +115,8 @@
                                 <tbody>
                                     <?php 
                                     for($i=0; $i < count($purchase_requests); $i++){
+
+
                                     ?>
                                     <tr class="odd gradeX">
                                         <td><?php echo $i+1; ?></td>
@@ -127,6 +126,31 @@
                                         <td><?php echo $purchase_requests[$i]['purchase_request_type']; ?></td>
                                         <td><?php echo $purchase_requests[$i]['purchase_request_accept_status']; ?></td>
                                         <td><?php echo $purchase_requests[$i]['accept_name']; ?></td>
+                                        <td><?php
+                                            $purchase_orders = $purchase_request_model->getPurchaseOrderByPurchaseRequestId($purchase_requests[$i]['purchase_request_id']);
+                                            // echo '<pre>';
+                                            // print_r ($purchase_orders);
+                                            // echo '</pre>';
+                                            for($j=0; $j < count($purchase_orders); $j++){ ?>
+                                                <a href="?app=purchase_order&action=detail&id=<?php echo $purchase_orders[$j]['purchase_order_id'];?>" target = "_blank" title="ดูรายละเอียดใบสั่งซื้อ">
+                                                <?php echo $purchase_orders[$j]['purchase_order_code']; ?>
+                                                </a><br>
+                                                <?php
+                                            }
+                                            ?></td>
+                                            
+                                        <td><?php 
+                                            $purchase_invoices = $purchase_request_model->getInvoiceSuppliertByPurchaseRequestId($purchase_requests[$i]['purchase_request_id']);
+                                            // echo '<pre>';
+                                            // print_r ($purchase_invoices);
+                                            // echo '</pre>';
+                                            for($k=0; $k < count($purchase_invoices); $k++){ ?>
+                                                <a href="?app=invoice_supplier&action=detail&id=<?php echo $purchase_invoices[$k]['invoice_supplier_id'];?>" target = "_blank" title="ดูรายละเอียดใบรับสินค้า">
+                                                <?php echo $purchase_invoices[$k]['invoice_supplier_code_gen']; ?>
+                                                </a><br>
+                                                <?php
+                                            }
+                                            ?></td>
                                         <td><?php echo $purchase_requests[$i]['purchase_request_remark']; ?></td>
                                         
                                         <td>

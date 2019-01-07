@@ -268,7 +268,7 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_code = '".$data['purchase_order_code']."', 
         purchase_order_credit_term = '".$data['purchase_order_credit_term']."', 
         purchase_order_delivery_term = '".$data['purchase_order_delivery_term']."', 
-        purchase_order_delivery_by = '".$data['purchase_order_delivery_by']."', 
+        purchase_order_delivery_by = '".$data['purchase_order_delivery_by']."',  
         purchase_order_date = '".$data['purchase_order_date']."', 
         purchase_order_status = '".$data['purchase_order_status']."', 
         purchase_order_total_price = '".$data['purchase_order_total_price']."', 
@@ -1112,7 +1112,7 @@ class PurchaseOrderModel extends BaseModel{
             purchase_order_code,
             purchase_order_credit_term,
             purchase_order_delivery_term,
-            purchase_order_delivery_by,
+            purchase_order_delivery_by, 
             purchase_order_date,
             purchase_order_total_price,
             purchase_order_vat,
@@ -1135,7 +1135,7 @@ class PurchaseOrderModel extends BaseModel{
         $data['purchase_order_code']."','".
         $data['purchase_order_credit_term']."','".
         $data['purchase_order_delivery_term']."','".
-        $data['purchase_order_delivery_by']."','".
+        $data['purchase_order_delivery_by']."','". 
         $data['purchase_order_date']."','".
         $data['purchase_order_total_price']."','".
         $data['purchase_order_vat']."','".

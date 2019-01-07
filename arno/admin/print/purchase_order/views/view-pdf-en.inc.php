@@ -100,6 +100,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
 /*
 
+                <div style="font-size:18px;line-height:20px;">'.$company['company_name_th'].'</div>
 */
     $html[$page_index] .= '
 <div class="main" style="padding-left:8px;">
@@ -110,11 +111,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <img src="../upload/company/'.$company['company_image'].'" width="120px" />
             </td>
             <td>
-                <div style="font-size:18px;line-height:20px;">'.$company['company_name_en'].'</div>
-                <div style="font-size:18px;line-height:20px;">'.$company['company_name_th'].'</div>
+                <div style="font-size:24px;line-height:20px;">'.$company['company_name_en'].'</div>
             </td>
             <td align="right">
-                <div  style="font-size:16px;line-height:18px;padding:16px;"><b> ใบสั่งซื้อ / Purchase Order </b></div> 
+                <div  style="font-size:16px;line-height:18px;padding:16px;"><b>  Purchase Order </b></div> 
             </td>
         </tr>
     </table>
@@ -171,10 +171,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                 </table> 
             </td>
-            <td width="240" valign="top" style="border: 1px solid #000;border-radius: 8px;">
+            <td width="260" valign="top" style="border: 1px solid #000;border-radius: 8px;">
                 <table width="100%">
                     <tr>
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>No.</b>
                         </td>
                         <td   valign="middle" align="left">
@@ -185,7 +185,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>Date</b>
                         </td>
                         <td  valign="middle" align="left">
@@ -195,7 +195,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>Credit </b>
                         </td>
                         <td  valign="middle" align="left">
@@ -205,8 +205,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
-                        <b>Delivery  </b>
+                        <td width="84px"  valign="middle" align="left">
+                        <b>Delivery by  </b>
                         </td>
                         <td  valign="middle" align="left">
                         '.$purchase_order['purchase_order_delivery_by'].'
@@ -215,7 +215,17 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
+                        <b>Delivery date  </b>
+                        </td>
+                        <td  valign="middle" align="left">
+                        '.$purchase_order['purchase_order_delivery_term'].'
+                        </td>
+
+                    </tr> 
+                    <tr>
+                        
+                        <td width="84px"  valign="middle" align="left">
                         <b>Employee </b>
                         </td>
                         <td  valign="middle" align="left">

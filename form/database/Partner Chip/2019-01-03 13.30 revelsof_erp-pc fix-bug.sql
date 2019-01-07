@@ -25,6 +25,7 @@ DELIMITER $$
 -- Procedures
 --
 CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `cost_in` (IN `sg_id` INT, IN `p_id` INT, IN `in_qty` INT, IN `in_cost` DOUBLE)  NO SQL
+<<<<<<< HEAD
 BEGIN
 	DECLARE stock_qty INT DEFAULT 0;
     DECLARE stock_cost DOUBLE DEFAULT 0.0;
@@ -688,6 +689,671 @@ SET @sql = CONCAT('UPDATE ',
 
 PREPARE s FROM @sql;
 EXECUTE s;
+=======
+BEGIN
+	DECLARE stock_qty INT DEFAULT 0;
+    DECLARE stock_cost DOUBLE DEFAULT 0.0;
+    
+    DECLARE new_qty INT DEFAULT 0;
+    DECLARE new_cost DOUBLE DEFAULT 0.0;
+    
+    
+    SELECT stock_report_qty , stock_report_cost_avg 
+    INTO stock_qty, stock_cost 
+    FROM tb_stock_report
+    WHERE stock_group_id = sg_id 
+    AND product_id = p_id ;
+    
+    SET new_qty = stock_qty + in_qty;
+    SET new_cost = ((stock_qty * stock_cost) + (in_qty * in_cost))/new_qty;
+    
+    UPDATE tb_stock_report 
+    SET stock_report_qty = new_qty , 
+    stock_report_cost_avg = new_cost 
+    WHERE stock_group_id = sg_id AND product_id = p_id;
+    
+
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `cost_out` (IN `sg_id` INT, IN `p_id` INT, IN `out_qty` INT, IN `out_cost` DOUBLE)  NO SQL
+BEGIN
+	DECLARE stock_qty INT DEFAULT 0;
+    DECLARE stock_cost DOUBLE DEFAULT 0.0;
+    
+    DECLARE new_qty INT DEFAULT 0;
+    DECLARE new_cost DOUBLE DEFAULT 0.0;
+    
+    
+    SELECT stock_report_qty , stock_report_cost_avg 
+    INTO stock_qty, stock_cost 
+    FROM tb_stock_report
+    WHERE stock_group_id = sg_id 
+    AND product_id = p_id ;
+    
+    SET new_qty = stock_qty - out_qty;
+    SET new_cost = ((stock_qty * stock_cost) - (out_qty * out_cost))/new_qty;
+    
+    UPDATE tb_stock_report 
+    SET stock_report_qty = new_qty , 
+    stock_report_cost_avg = new_cost 
+    WHERE stock_group_id = sg_id AND product_id = p_id;
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `cost_update` (IN `sg_id` INT, IN `p_id` INT, IN `old_qty` INT, IN `old_cost` DOUBLE, IN `new_qty` INT, IN `new_cost` DOUBLE)  NO SQL
+BEGIN
+	DECLARE stock_qty INT DEFAULT 0;
+    DECLARE stock_cost DOUBLE DEFAULT 0.0;
+    
+    DECLARE new_stock_qty INT DEFAULT 0;
+    DECLARE new_stock_cost DOUBLE DEFAULT 0.0;
+    DECLARE new_stock_qty_out INT DEFAULT 0.0;
+    
+    SELECT stock_report_qty , stock_report_cost_avg 
+    INTO stock_qty, stock_cost 
+    FROM tb_stock_report
+    WHERE stock_group_id = sg_id 
+    AND product_id = p_id ;
+    
+    SET new_stock_qty_out = stock_qty - old_qty;
+    SET new_stock_cost = ((stock_qty * stock_cost) - (old_qty * old_cost))/new_stock_qty_out;
+    
+    
+    SET new_stock_qty = new_stock_qty_out + new_qty;
+    SET new_stock_cost = ((new_stock_qty_out * new_stock_cost) + (new_qty * new_cost))/new_stock_qty;
+    
+    
+    UPDATE tb_stock_report 
+    SET stock_report_qty = new_stock_qty , 
+    stock_report_cost_avg = new_stock_cost 
+    WHERE stock_group_id = sg_id AND product_id = p_id;
+    
+    
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `createRowStockReport` (IN `sg_id` INT, IN `p_id` INT)  NO SQL
+BEGIN
+
+DECLARE check_row INT DEFAULT 0;
+
+SELECT COUNT(*) INTO check_row 
+FROM tb_stock_report 
+WHERE tb_stock_report.stock_group_id = sg_id 
+AND tb_stock_report.product_id = p_id ;
+
+IF check_row = 0 THEN
+	INSERT INTO tb_stock_report (stock_group_id,product_id) 
+    VALUES (sg_id,p_id);  
+END IF;
+
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `delete_stock_credit` (IN `sg_id` INT, IN `icnl_id` INT, IN `p_id` INT, IN `q` INT, IN `cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE stock_id INT DEFAULT 0;
+IF sg_id != '0' THEN 
+    SELECT stock_group_id, table_name INTO stock_id, tb_name 
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sg_id;
+ELSE
+	SELECT stock_group_id, table_name INTO stock_id, tb_name 
+    FROM tb_stock_group 
+    LIMIT 0,1;
+END IF;
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_out(stock_id,p_id,q,cost);
+
+
+SET @sql = CONCAT('DELETE FROM ',
+                  tb_name,' WHERE credit_note_list_id = "',icnl_id,'"');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `delete_stock_customer` (IN `sg_id` INT, IN `icl_id` INT, IN `p_id` INT, IN `q` INT, IN `cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE stock_id INT DEFAULT 0;
+
+IF sg_id != '0' THEN 
+    SELECT table_name, stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sg_id;
+ELSE
+	SELECT table_name, stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    LIMIT 0,1;
+END IF;
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_in(stock_id,p_id,q,cost);
+
+
+SET @sql = CONCAT('DELETE FROM ',
+                  tb_name,' WHERE invoice_customer_list_id = "',icl_id,'"');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `delete_stock_issue` (IN `sgi` INT, IN `sili` INT, IN `p_id` INT, IN `q` INT, IN `cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE stock_id INT DEFAULT 0;
+
+IF sgi != '0' THEN 
+    SELECT stock_group_id, table_name INTO stock_id ,tb_name 
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sgi;
+ELSE
+	SELECT stock_group_id, table_name INTO stock_id ,tb_name 
+    FROM tb_stock_group 
+    LIMIT 0,1;
+END IF;
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_in(stock_id,p_id,q,cost);
+
+
+SET @sql = CONCAT('DELETE FROM ',
+                  tb_name,' WHERE stock_issue_list_id = "',sili,'"');
+                  
+PREPARE s FROM @sql;
+EXECUTE s;
+
+
+
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `delete_stock_move` (IN `sgio` INT, IN `sgii` INT, IN `smli` INT, IN `p_id` INT, IN `q` INT, IN `cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name_out VARCHAR(20);
+DECLARE tb_name_in VARCHAR(20);
+DECLARE col VARCHAR(40);
+
+SELECT table_name INTO tb_name_out 
+FROM tb_stock_group 
+WHERE tb_stock_group.stock_group_id = sgio;
+
+
+SELECT table_name INTO tb_name_in 
+FROM tb_stock_group 
+WHERE tb_stock_group.stock_group_id = sgii;
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_in(sgio,p_id,q,cost);
+
+
+SET @sql_out = CONCAT('DELETE FROM ',
+                  tb_name_out,' WHERE stock_move_list_id = "',smli,'"');
+                  
+PREPARE s_out FROM @sql_out;
+EXECUTE s_out;
+
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_out(sgii,p_id,q,cost);
+
+
+SET @sql_in = CONCAT('DELETE FROM ',
+                  tb_name_in,' WHERE stock_move_list_id = "',smli,'"');
+                  
+PREPARE s_in FROM @sql_in;
+EXECUTE s_in;
+
+
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `delete_stock_summit` (IN `sg_id` INT, IN `sp_id` INT, IN `p_id` INT, IN `q` INT, IN `cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE stock_id INT DEFAULT 0;
+
+IF sg_id != '0' THEN 
+    SELECT table_name, stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sg_id;
+ELSE
+	SELECT table_name, stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    LIMIT 0,1;
+END IF;
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_out(stock_id,p_id,q,cost);
+
+
+
+SET @sql = CONCAT('DELETE FROM ',
+                  tb_name,' WHERE summit_product_id = "',sp_id,'"');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `delete_stock_supplier` (IN `sg_id` INT, IN `icl_id` INT, IN `p_id` INT, IN `q` INT, IN `cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE stock_id INT DEFAULT 0;
+
+IF sg_id != '0' THEN 
+    SELECT table_name, stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sg_id;
+ELSE
+	SELECT table_name, stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    LIMIT 0,1;
+END IF;
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_out(stock_id,p_id,q,cost);
+
+
+
+SET @sql = CONCAT('DELETE FROM ',
+                  tb_name,' WHERE invoice_supplier_list_id = "',icl_id,'"');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `insert_stock_credit` (IN `sg_id` INT, IN `icnl_id` INT, IN `p_id` INT, IN `q` INT, IN `sd` VARCHAR(50), IN `cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE stock_id INT DEFAULT 0;
+
+IF sg_id != '0' THEN 
+    SELECT stock_group_id, table_name INTO stock_id ,tb_name 
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sg_id;
+ELSE
+	SELECT stock_group_id, table_name INTO stock_id ,tb_name 
+    FROM tb_stock_group 
+    LIMIT 0,1;
+END IF;
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_in(stock_id,p_id,q,cost);
+
+
+
+SET @sql = CONCAT('INSERT INTO ',
+                  tb_name,' (stock_type,product_id,',
+                  'qty,stock_date,credit_note_list_id)',
+				  ' VALUE ("in",',p_id,',',
+                  q,',"',sd,'",',icnl_id,')');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `insert_stock_customer` (IN `sg_id` INT, IN `icl_id` INT, IN `p_id` INT, IN `q` INT, IN `sd` VARCHAR(50), IN `cost` INT)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE col VARCHAR(40);
+DECLARE stock_qty DOUBLE DEFAULT 0.0;
+DECLARE stock_cost DOUBLE DEFAULT 0.0;
+DECLARE new_qty DOUBLE DEFAULT 0.0;
+DECLARE new_cost DOUBLE DEFAULT 0.0;
+DECLARE stock_id INT DEFAULT 0;
+
+IF sg_id != '0' THEN 
+    SELECT `table_name`,`stock_group_id` INTO tb_name ,stock_id 
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sg_id; 
+ELSE
+	SELECT `table_name`,`stock_group_id` INTO tb_name ,stock_id 
+    FROM tb_stock_group 
+    LIMIT 0,1; 
+END IF;
+
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_out(stock_id,p_id,q,cost);
+
+
+
+
+SET @sql = CONCAT('INSERT INTO ',
+                  tb_name,' (stock_type,product_id,',
+                  'qty,stock_date,invoice_customer_list_id)',
+				  ' VALUE ("out",',p_id,',',
+                  q,',"',sd,'",',icl_id,')');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `insert_stock_issue` (IN `sgi` INT, IN `sili` INT, IN `p_id` INT, IN `q` INT, IN `sid` VARCHAR(50), IN `cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE stock_id INT DEFAULT 0;
+
+IF sgi != '0' THEN 
+    SELECT stock_group_id, table_name INTO stock_id ,tb_name 
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sgi;
+ELSE
+	SELECT stock_group_id, table_name INTO stock_id ,tb_name 
+    FROM tb_stock_group 
+    LIMIT 0,1;
+END IF;
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_out(stock_id,p_id,q,cost);
+
+
+SET @sql = CONCAT('INSERT INTO ',
+                  tb_name,' (stock_type,product_id,',
+                  'qty,stock_date,stock_issue_list_id)',
+				  ' VALUE ("out",',p_id,',',
+                  q,',"',sid,'",',sili,')');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+
+
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `insert_stock_move` (IN `sgio` INT, IN `sgii` INT, IN `smli` INT, IN `p_id` INT, IN `q` INT, IN `smd` VARCHAR(50), IN `cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name_out VARCHAR(20);
+DECLARE tb_name_in VARCHAR(20);
+
+
+SELECT table_name INTO tb_name_out 
+FROM tb_stock_group 
+WHERE tb_stock_group.stock_group_id = sgio;
+
+SELECT table_name INTO tb_name_in 
+FROM tb_stock_group 
+WHERE tb_stock_group.stock_group_id = sgii;
+
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_out(sgio,p_id,q,cost);
+
+
+SET @sql_out = CONCAT('INSERT INTO ',
+                  tb_name_out,' (stock_type,product_id,',
+                  'qty,stock_date,stock_move_list_id)',
+				  ' VALUE ("out",',p_id,',',
+                  q,',"',smd,'",',smli,')');
+
+PREPARE s_out FROM @sql_out;
+EXECUTE s_out;
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_in(sgii,p_id,q,cost);
+
+
+SET @sql_in = CONCAT('INSERT INTO ',
+                  tb_name_in,' (stock_type,product_id,',
+                  'qty,stock_date,stock_move_list_id)',
+				  ' VALUE ("in",',p_id,',',
+                  q,',"',smd,'",',smli,')');
+
+PREPARE s_in FROM @sql_in;
+EXECUTE s_in;
+
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `insert_stock_summit` (IN `sg_id` INT, IN `sp_id` INT, IN `p_id` INT, IN `q` INT, IN `sd` VARCHAR(50), IN `cost` INT)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE col VARCHAR(40);
+DECLARE stock_qty DOUBLE DEFAULT 0.0;
+DECLARE stock_cost DOUBLE DEFAULT 0.0;
+DECLARE new_qty DOUBLE DEFAULT 0.0;
+DECLARE new_cost DOUBLE DEFAULT 0.0;
+DECLARE stock_id INT DEFAULT 0;
+
+IF sg_id != '0' THEN 
+    SELECT `table_name`,`stock_group_id` INTO tb_name ,stock_id 
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sg_id; 
+ELSE
+	SELECT `table_name`,`stock_group_id` INTO tb_name ,stock_id 
+    FROM tb_stock_group 
+    LIMIT 0,1; 
+END IF;
+
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_in(stock_id,p_id,q,cost);
+
+
+
+SET @sql = CONCAT('INSERT INTO ',
+                  tb_name,' (stock_type,product_id,',
+                  'qty,stock_date,summit_product_id)',
+				  ' VALUE ("in",',p_id,',',
+                  q,',"',sd,'",',sp_id,')');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `insert_stock_supplier` (IN `sg_id` INT, IN `icl_id` INT, IN `p_id` INT, IN `q` INT, IN `sd` VARCHAR(50), IN `cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE col VARCHAR(40);
+DECLARE stock_qty DOUBLE DEFAULT 0.0;
+DECLARE stock_cost DOUBLE DEFAULT 0.0;
+DECLARE new_qty DOUBLE DEFAULT 0.0;
+DECLARE new_cost DOUBLE DEFAULT 0.0;
+DECLARE stock_id INT DEFAULT 0;
+
+IF sg_id != '0' THEN 
+    SELECT `table_name`,`stock_group_id` INTO tb_name ,stock_id 
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sg_id; 
+ELSE
+	SELECT `table_name`,`stock_group_id` INTO tb_name ,stock_id 
+    FROM tb_stock_group 
+    LIMIT 0,1; 
+END IF;
+
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_in(stock_id,p_id,q,cost);
+
+
+
+SET @sql = CONCAT('INSERT INTO ',
+                  tb_name,' (stock_type,product_id,',
+                  'qty,stock_date,invoice_supplier_list_id)',
+				  ' VALUE ("in",',p_id,',',
+                  q,',"',sd,'",',icl_id,')');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `update_stock_credit` (IN `sg_id` INT, IN `icnl_id` INT, IN `p_id` INT, IN `sd` VARCHAR(50), IN `old_q` INT, IN `old_cost` DOUBLE, IN `new_q` INT, IN `new_cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE stock_id INT DEFAULT 0.0;
+
+IF sg_id != '0' THEN 
+    SELECT table_name , stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sg_id;
+ELSE
+	SELECT table_name , stock_group_id INTO tb_name , stock_id 
+    FROM tb_stock_group 
+    LIMIT 0,1;
+END IF;
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_update(stock_id,p_id,old_q,old_cost,new_q,new_cost);
+
+
+
+SET @sql = CONCAT('UPDATE ',
+                  tb_name,' SET stock_type = "in", ',
+                  'product_id = "',p_id,'", ',
+                  'qty = "',q,'", ',
+                  'stock_date = "',sd,'" ',
+                  'WHERE credit_note_list_id = "',icnl_id,'"');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `update_stock_customer` (IN `sg_id` INT, IN `icl_id` INT, IN `p_id` INT, IN `sd` VARCHAR(50), IN `old_q` INT, IN `old_cost` DOUBLE, IN `new_q` INT, IN `new_cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE stock_id INT DEFAULT 0.0;
+
+IF sg_id != '0' THEN 
+    SELECT table_name , stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sg_id;
+ELSE
+	SELECT table_name , stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    LIMIT 0,1;
+END IF;
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_update(stock_id,p_id,old_q,old_cost,new_q,new_cost);
+
+
+
+
+SET @sql = CONCAT('UPDATE ',
+                  tb_name,' SET stock_type = "out", ',
+                  'product_id = "',p_id,'", ',
+                  'qty = "',q,'", ',
+                  'stock_date = "',sd,'" ',
+                  'WHERE invoice_customer_list_id = "',icl_id,'"');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `update_stock_issue` (IN `sgi` INT, IN `sili` INT, IN `p_id` INT, IN `sid` VARCHAR(50), IN `old_q` INT, IN `old_cost` INT, IN `new_q` INT, IN `new_cost` INT)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE stock_id INT DEFAULT 0.0;
+
+IF sg_id != '0' THEN 
+    SELECT table_name , stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sg_id;
+ELSE
+	SELECT table_name , stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    LIMIT 0,1;
+END IF;
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_update(stock_id,p_id,old_q,old_cost,new_q,new_cost);
+
+
+SET @sql = CONCAT('UPDATE ',
+                  tb_name,' SET stock_type = "out", ',
+                  'product_id = "',p_id,'", ',
+                  'qty = "',q,'", ',
+                  'stock_date = "',sid,'" ',
+                  'WHERE stock_issue_list_id = "',sili,'"');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+
+
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `update_stock_move` (IN `sgio` INT, IN `sgii` INT, IN `smli` INT, IN `pid` INT, IN `smd` VARCHAR(50), IN `old_q` INT, IN `old_cost` DOUBLE, IN `new_q` INT, IN `new_cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name_out VARCHAR(20);
+DECLARE tb_name_in VARCHAR(20);
+
+SELECT table_name INTO tb_name_out 
+FROM tb_stock_group 
+WHERE tb_stock_group.stock_group_id = sgio;
+
+SELECT table_name INTO tb_name_in 
+FROM tb_stock_group 
+WHERE tb_stock_group.stock_group_id = sgii;
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_update(sgio,p_id,old_q,old_cost,new_q,new_cost);
+
+
+SET @sql_out = CONCAT('UPDATE ',
+                  tb_name_out,' SET stock_type = "out", ',
+                  'product_id = "',pid,'", ',
+                  'qty = "',q,'", ',
+                  'stock_date = "',smd,'" ',
+                  'WHERE stock_move_list_id = "',smli,'"');
+
+PREPARE s_out FROM @sql_out;
+EXECUTE s_out;
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_update(sgii,p_id,old_q,old_cost,new_q,new_cost);
+
+
+SET @sql_in = CONCAT('UPDATE ',
+                  tb_name_in,' SET stock_type = "out", ',
+                  'product_id = "',pid,'", ',
+                  'qty = "',q,'", ',
+                  'stock_date = "',smd,'" ',
+                  'WHERE stock_move_list_id = "',smli,'"');
+
+PREPARE s_in FROM @sql_in;
+EXECUTE s_in;
+
+
+END$$
+
+CREATE DEFINER=`revelsof_erp-pc`@`localhost` PROCEDURE `update_stock_supplier` (IN `sg_id` INT, IN `icl_id` INT, IN `p_id` INT, IN `sd` VARCHAR(50), IN `old_q` INT, IN `old_cost` DOUBLE, IN `new_q` INT, IN `new_cost` DOUBLE)  NO SQL
+BEGIN
+DECLARE tb_name VARCHAR(20);
+DECLARE stock_id INT DEFAULT 0.0;
+
+IF sg_id != '0' THEN 
+    SELECT table_name , stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    WHERE tb_stock_group.stock_group_id = sg_id;
+ELSE
+	SELECT table_name , stock_group_id INTO tb_name , stock_id
+    FROM tb_stock_group 
+    LIMIT 0,1;
+END IF;
+
+
+CALL createRowStockReport(stock_id,p_id);
+CALL cost_update(stock_id,p_id,old_q,old_cost,new_q,new_cost);
+
+
+SET @sql = CONCAT('UPDATE ',
+                  tb_name,' SET stock_type = "in", ',
+                  'product_id = "',p_id,'", ',
+                  'qty = "',new_q,'", ',
+                  'stock_date = "',sd,'" ',
+                  'WHERE invoice_supplier_list_id = "',icl_id,'"');
+
+PREPARE s FROM @sql;
+EXECUTE s;
+>>>>>>> bfe174f8f8a6ccd61604b3210c62329d9f03ccee
 END$$
 
 DELIMITER ;

@@ -65,6 +65,16 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
         $keyword = $_GET['keyword']; 
         $_SESSION['keyword'] = $keyword;
     }
+    
+    if(!isset($_GET['list'])){
+        $list = $_SESSION['list'];
+    }else{
+        
+        $list = $_GET['list']; 
+        $_SESSION['list'] = $list;
+    }
+
+    
 
     if($date_start == ""){
         $date_start = date('01-m-Y'); 
@@ -85,6 +95,62 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
     
 
     require_once($path.'view.inc.php');
+
+    ///////////////////////////////////////
+}else if ($_GET['action'] == 'search' && ($license_purchase_page == "Low" || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
+
+        if(!isset($_GET['date_start'])){
+            $date_start = $_SESSION['date_start'];
+        }else{
+            $date_start = $_GET['date_start'];
+            $_SESSION['date_start'] = $date_start;
+        }
+    
+    
+        if(!isset($_GET['date_end'])){
+            $date_end = $_SESSION['date_end'];
+        }else{
+            $date_end = $_GET['date_end'];
+            $_SESSION['date_end'] = $date_end;
+        }
+    
+        if(!isset($_GET['keyword'])){
+            $keyword = $_SESSION['keyword'];
+        }else{
+            
+            $keyword = $_GET['keyword']; 
+            $_SESSION['keyword'] = $keyword;
+        }
+        
+        if(!isset($_GET['list'])){
+            $list = $_SESSION['list'];
+        }else{
+            
+            $list = $_GET['list']; 
+            $_SESSION['list'] = $list;
+        }
+      
+    
+        if($date_start == ""){
+            $date_start = date('01-m-Y'); 
+        }
+        
+        if($date_end == ""){ 
+            $date_end  = date('t-m-Y');
+        }
+    
+        $customers=$customer_model->getCustomerBy();
+        $suppliers=$supplier_model->getSupplierBy();
+    
+        if($license_purchase_page == "Medium" || $license_purchase_page == "High" ){
+            $purchase_requests = $purchase_request_model->getPurchaseRequestLitsBy($date_start,$date_end,$keyword);
+        }else{
+            $purchase_requests = $purchase_request_model->getPurchaseRequestLitsBy($date_start,$date_end,$keyword,$user_id);
+        }
+        
+        require_once($path.'view-list.inc.php');
+
+    ///////////////////////////////////
 
 }else if ($_GET['action'] == 'insert' && ($license_purchase_page == "Low" || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     if($type == ''){

@@ -234,7 +234,7 @@
 
                             <tbody class="odd gradeX">
                                 <td>   <?PHP echo $product[$i]['invoice_customer_date']  ?> </td>
-                                <td>   <?PHP echo $product[$i]['invoice_customer_code']  ?> </td>
+                                <td> <a href="index.php?app=invoice_customer&action=detail&id=<?PHP echo $product[$i]['invoice_customer_id']  ?>"><?PHP echo $product[$i]['invoice_customer_code']  ?> </a>  </td>
                             </tbody>
                             <?PHP
                             }

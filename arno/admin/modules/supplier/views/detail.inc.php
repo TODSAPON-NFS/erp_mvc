@@ -219,8 +219,8 @@
 
                             <tbody class="odd gradeX">
                                 <td>   <?PHP echo $product[$i]['invoice_supplier_date']  ?> </td>
-                                <td>   <?PHP echo $product[$i]['invoice_supplier_code']  ?> </td>
-                                <td>   <?PHP echo $product[$i]['invoice_supplier_code_gen']  ?> </td>
+                                <td>  <a href="index.php?app=invoice_supplier&action=detail&id=<?PHP echo $product[$i]['invoice_supplier_id']  ?>">  <?PHP echo $product[$i]['invoice_supplier_code']  ?> </a></td>
+                                <td>  <a href="index.php?app=invoice_supplier&action=detail&id=<?PHP echo $product[$i]['invoice_supplier_id']  ?>"> <?PHP echo $product[$i]['invoice_supplier_code_gen']  ?></a> </td>
                             </tbody>
                             <?PHP
                             }

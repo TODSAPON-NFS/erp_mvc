@@ -77,17 +77,19 @@
 
     function get_supplier_detail(){
         var supplier_id = document.getElementById('supplier_select').value;
+        var purchase_order_category = document.getElementById('purchase_order_category').value;
         var employee_id = document.getElementById('employee_id').value;
         document.getElementById('supplier_id').value = supplier_id;
-        $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id }, function( data ) {
+        $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id}, function( data ) {
             document.getElementById('supplier_code').value = data.supplier_code;
             document.getElementById('purchase_order_credit_term').value = data.credit_day;
             document.getElementById('supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
         });
 
-        $.post( "controllers/getPurchaseOrderCodeByID.php", { 'supplier_id': supplier_id, 'employee_id':employee_id  }, function( data ) {
+        $.post( "controllers/getPurchaseOrderCodeByID.php", { 'supplier_id': supplier_id, 'employee_id':employee_id, 'purchase_order_category':purchase_order_category  }, function( data ) {
             document.getElementById('purchase_order_code').value = data;
             check_code();
+
         });
 
         $.post( "controllers/getProductBySupplierID.php", { 'supplier_id': supplier_id }, function( data ) {
@@ -642,6 +644,17 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
+                                        <label>ประเภทสั่งซื้อสินค้า / Purchase Order Type <font color="#F00"><b>*</b></font></label>
+                                        <select id="purchase_order_category" name="purchase_order_category" onchange="get_supplier_detail()"  class="form-control" >
+                                            <option value="Normal" <?PHP if($purchase_order['purchase_order_category'] == 'Normal'){ ?> SELECTED  <?PHP } ?>>Normal</option>
+                                            <option value="Email" <?PHP if($purchase_order['purchase_order_category'] == 'Email'){ ?> SELECTED  <?PHP } ?>>Email</option>
+                                            <option value="Online" <?PHP if($purchase_order['purchase_order_category'] == 'Online'){ ?> SELECTED  <?PHP } ?>>Online</option>
+                                        </select>
+                                        <p class="help-block">Example : Online.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
                                         <label>รหัสใบสั่งซื้อสินค้า / Purchase Order Code <font color="#F00"><b>*</b></font></label>
                                         <input id="purchase_order_code" name="purchase_order_code" class="form-control" value="<? echo $purchase_order['purchase_order_code'];?>"  onchange="check_code()" > 
                                         <input id="purchase_check" type="hidden" value="" />
@@ -691,7 +704,6 @@
                                     <div class="form-group">
                                         <label>วันที่จัดส่ง / Delivery Date</label>
                                         <input type="text" id="purchase_order_delivery_term" name="purchase_order_delivery_term" value="<? echo $purchase_order['purchase_order_delivery_term'];?>"  class="form-control calendar"   onchange="check_date(this);" readonly/>
-                                        <input id="date_check" type="hidden" value="" />
                                         <p class="help-block">31/01/2018</p>
                                     </div>
                                 </div>

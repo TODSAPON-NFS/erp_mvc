@@ -20,7 +20,9 @@ $paper_model = new PaperModel;
 $paper = $paper_model->getPaperByID('11');
 
 $supplier=$supplier_model->getSupplierByID($_POST['supplier_id']);
-if($supplier['supplier_domestic'] == "ภายในประเทศ"){
+if($_POST['purchase_order_category'] == "Online"){
+    $paper = $paper_model->getPaperByID('33');
+}else if($supplier['supplier_domestic'] == "ภายในประเทศ"){
     $paper = $paper_model->getPaperByID('11');
 }else{
     $paper = $paper_model->getPaperByID('10');

@@ -223,6 +223,7 @@ if(!isset($_GET['action'])){
         $data['purchase_order_id'] = $_POST['purchase_order_code'];
         $data['supplier_id'] = $_POST['supplier_id'];
         $data['purchase_order_code'] = $_POST['purchase_order_code'];
+        $data['purchase_order_category'] = $_POST['purchase_order_category'];
         $data['purchase_order_date'] = $_POST['purchase_order_date'];
         $data['purchase_order_credit_term'] = $_POST['purchase_order_credit_term'];
         $data['purchase_order_accept_status'] = '';
@@ -335,6 +336,7 @@ if(!isset($_GET['action'])){
             $data['purchase_order_id'] = $_POST['purchase_order_code'];
             $data['supplier_id'] = $_POST['supplier_id'];
             $data['purchase_order_code'] = $_POST['purchase_order_code'];
+            $data['purchase_order_category'] = $_POST['purchase_order_category'];
             $data['purchase_order_date'] = $_POST['purchase_order_date'];
             $data['purchase_order_credit_term'] = $_POST['purchase_order_credit_term'];
             $data['purchase_order_accept_status'] = '';
@@ -476,6 +478,7 @@ if(!isset($_GET['action'])){
         $data['purchase_order_id'] = $_POST['purchase_order_code'];
         $data['supplier_id'] = $_POST['supplier_id'];
         $data['purchase_order_code'] = $_POST['purchase_order_code'];
+        $data['purchase_order_category'] = $_POST['purchase_order_category'];
         $data['purchase_order_date'] = $_POST['purchase_order_date'];
         $data['purchase_order_credit_term'] = $_POST['purchase_order_credit_term'];
         $data['purchase_order_accept_status'] = '';
@@ -543,6 +546,7 @@ if(!isset($_GET['action'])){
             $data['employee_id'] = $purchase_order['employee_id'];
             $data['purchase_order_status'] = 'New';
             $data['purchase_order_type'] = $purchase_order['purchase_order_type'];
+            $data['purchase_order_category'] = $purchase_order['purchase_order_category'];
             $data['purchase_order_code'] = $purchase_order['purchase_order_code'];
             $data['purchase_order_date'] = $purchase_order['purchase_order_date'];
             $data['purchase_order_rewrite_id'] = $purchase_order_id;

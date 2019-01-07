@@ -41,7 +41,16 @@ $type = strtoupper($_GET['type']);
 $purchase_request = $purchase_request_model->getPurchaseRequestByID($purchase_request_id);
 
 $employee_id = $purchase_request["employee_id"];
-if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
+
+if(!isset($_GET['list'])){
+    $list = $_SESSION['list'];
+}else{
+    
+    $list = $_GET['list']; 
+    $_SESSION['list'] = $list;
+}
+
+if(!isset($_GET['action']) && $list != '1' && ($license_purchase_page == "Low" || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
 
     if(!isset($_GET['date_start'])){
         $date_start = $_SESSION['date_start'];
@@ -66,16 +75,6 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
         $_SESSION['keyword'] = $keyword;
     }
     
-    if(!isset($_GET['list'])){
-        $list = $_SESSION['list'];
-    }else{
-        
-        $list = $_GET['list']; 
-        $_SESSION['list'] = $list;
-    }
-
-    
-
     if($date_start == ""){
         $date_start = date('01-m-Y'); 
     }
@@ -97,7 +96,7 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
     require_once($path.'view.inc.php');
 
     ///////////////////////////////////////
-}else if ($_GET['action'] == 'search' && ($license_purchase_page == "Low" || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
+}else if (!isset($_GET['action']) && $list == '1' && ($license_purchase_page == "Low" || $license_purchase_page == "Medium" || $license_purchase_page == "High" )){
 
         if(!isset($_GET['date_start'])){
             $date_start = $_SESSION['date_start'];
@@ -121,15 +120,6 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
             $keyword = $_GET['keyword']; 
             $_SESSION['keyword'] = $keyword;
         }
-        
-        if(!isset($_GET['list'])){
-            $list = $_SESSION['list'];
-        }else{
-            
-            $list = $_GET['list']; 
-            $_SESSION['list'] = $list;
-        }
-      
     
         if($date_start == ""){
             $date_start = date('01-m-Y'); 
@@ -505,6 +495,7 @@ if(!isset($_GET['action']) && ($license_purchase_page == "Low" || $license_purch
     if($date_end == ""){ 
         $date_end  = date('t-m-Y');
     }
+    
 
     
     if($license_purchase_page == "Medium" || $license_purchase_page == "High" ){

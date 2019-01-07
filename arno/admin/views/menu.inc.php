@@ -852,6 +852,9 @@
                                         <li>
                                             <a href="?app=report_account_09" <?PHP if($_GET['app'] == "report_account_09"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายงานยอดขาย </a>
                                         </li>
+                                        <li>
+                                            <a href="?app=report_account_10" <?PHP if($_GET['app'] == "report_account_10"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายงานงบกำไรขาดทุน </a>
+                                        </li>
                                     </ul>
                                 </li>
 

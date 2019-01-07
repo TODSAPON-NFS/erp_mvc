@@ -87,6 +87,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         customer_purchase_order_delivery_term, 
         IFNULL(CONCAT(tb2.customer_name_en,' (',tb2.customer_name_th,')'),'-') as customer_name, 
         customer_purchase_order_delivery_by 
+        
         FROM tb_customer_purchase_order  as tb 
         LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
         LEFT JOIN tb_user_position  ON tb1.user_position_id = tb_user_position.user_position_id 
@@ -175,6 +176,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         }
 
         $sql = " SELECT 
+        tb_customer_purchase_order_list.customer_purchase_order_list_id,
         tb_customer_purchase_order.customer_purchase_order_id,
         tb_customer_purchase_order.customer_purchase_order_date ,
         tb_customer_purchase_order.customer_purchase_order_code_gen,

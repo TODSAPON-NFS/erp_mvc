@@ -195,13 +195,26 @@
                                     <th>รหัสสินค้า</th>
                                     <th>ชื่อสินค้า</th>
                                     <th>ราคาสินค้า</th>
+                                    <th>จำนวน</th>
+                                    <th>รวม</th>
                                 </tr>
                             </thead>
+                            <?PHP 
+                                for ($i=0; $i < count($product); $i++) { 
+                                
+                            ?>
                             <tbody class="odd gradeX">
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td> <?PHP echo $product[$i] ['product_code'] ?></td>
+                                <td> <?PHP echo $product[$i] ['product_name'] ?></td>
+                                <td> <?PHP echo number_format($product[$i] ['customer_purchase_order_list_price'] ,2)?></td>
+                                <td> <?PHP echo $product[$i] ['customer_purchase_order_list_qty'] ?></td>
+                                <td> <?PHP echo number_format($product[$i] ['customer_purchase_order_list_price_sum'] ,2)?></td>
                             </tbody>
+                            <?PHP 
+
+                                }
+
+                            ?>
                         </table>
                     </div>
 
@@ -209,14 +222,24 @@
                         <table width="100%" class="table table-striped table-bordered table-hover" >
                             <thead>
                                 <tr>
-                                    <th> <?PHP echo $product_code;?></th>
-                                    <th></th>
+                                    <th> วันที่  </th>
+                                    <th> หมายเลข Invoice ผู้ซื้อ	</th>
                                 </tr>
                             </thead>
+                            <?PHP 
+                            for ($i=0; $i <count($product) ; $i++) {   
+                                if ( $product[$i]['invoice_customer_code'] != null && $product[$i+1]['invoice_customer_code'] != $product[$i]['invoice_customer_code']) {
+                                                              
+                            ?>
+
                             <tbody class="odd gradeX">
-                                <td></td>
-                                <td></td>
+                                <td>   <?PHP echo $product[$i]['invoice_customer_date']  ?> </td>
+                                <td>   <?PHP echo $product[$i]['invoice_customer_code']  ?> </td>
                             </tbody>
+                            <?PHP
+                            }
+                                }
+                                ?>
                         </table>
                     </div>
                 </div>

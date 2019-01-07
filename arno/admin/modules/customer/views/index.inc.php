@@ -119,9 +119,9 @@ if(!isset($_GET['action'])){
     $lastupdate =  $customer['lastupdate'];
     $product = $model_customer->getCustomerProductBy($_GET['id']);
 
-    echo "<pre>";
-    print_r($product);
-    echo"</pre>";
+    // echo "<pre>";
+    // print_r($product);
+    // echo"</pre>";
 
    require_once($path.'detail.inc.php');
 

@@ -25,6 +25,29 @@ class SupplierModel extends BaseModel{
         }
 
     }
+    
+    function getSupplierProductBy($supplier_id){
+        $sql = " SELECT * 
+        FROM `tb_product_supplier` 
+        LEFT JOIN tb_product ON tb_product_supplier.product_id = tb_product.product_id
+        LEFT JOIN tb_invoice_supplier ON tb_product_supplier.supplier_id = tb_invoice_supplier.supplier_id
+        WHERE tb_product_supplier.supplier_id = $supplier_id
+        ";
+        // echo "<pre>";
+        // print_r($sql);
+        // echo"</pre>";
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+
 
     function getSupplierCodeIndexByChar($char){
         $sql = " SELECT IFNULL(MAX(CAST(RIGHT(supplier_code,3) AS SIGNED )),0) as supplier_code  

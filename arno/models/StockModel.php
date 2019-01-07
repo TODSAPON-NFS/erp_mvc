@@ -41,6 +41,7 @@ class StockModel extends BaseModel{
                 `credit_note_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการใบลดหนี้', 
                 `regrind_supplier_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสอ้างอิงรายการใบ Regrind', 
                 `summit_product_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสรายการสินค้ายกยอด', 
+                `stock_change_product_list_id` int(11) NOT NULL DEFAULT '0' COMMENT 'รหัสรายการสินค้าเปลี่ยนชื่อ', 
                 `addby` int(11) NOT NULL COMMENT 'ผู้เพิ่มสินค้า', 
                 `adddate` varchar(50) NOT NULL COMMENT 'เวลาเพิ่มสินค้า', 
                 `updateby` int(11) NOT NULL COMMENT 'ผู้แก้ไขสิ้นค้า', 

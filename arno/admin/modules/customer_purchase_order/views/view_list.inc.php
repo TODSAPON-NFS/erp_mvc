@@ -288,19 +288,28 @@
                                     <td><?PHP   echo $i+1; ?></td>
                                     <td><?PHP   echo $customer_purchase_orders[$i]['customer_purchase_order_date']; ?></td>
                                     <td><?PHP   echo $customer_purchase_orders[$i]['customer_purchase_order_code_gen']; ?></td>
-                                    <td><?PHP   echo $customer_purchase_orders[$i]['customer_name_en']; ?> (<?PHP   echo $customer_purchase_orders[$i]['customer_name_th']; ?>)</td>
+                                    <td><?PHP   echo $customer_purchase_orders[$i]['customer_name_en']; ?><br> (<?PHP   echo $customer_purchase_orders[$i]['customer_name_th']; ?>)</td>
                                     <td><?PHP   echo $customer_purchase_orders[$i]['product_code']; ?></td> 
                                     <td><?PHP   echo $customer_purchase_orders[$i]['product_name']; ?></td> 
                                     <td><?PHP   
-                                    $invoice_customers = $invoice_customer_model -> getInvoiceCustomerByCustomerPurchaseListId($customer_purchase_orders[$i]['customer_purchase_order_id']);
+                                    
+                                    $invoice_customers = $invoice_customer_model -> getInvoiceCustomerByCustomerPurchaseListId($customer_purchase_orders[$i]['customer_purchase_order_list_id']);
+                                   
+                                        // echo "<pre>";
+                                        // print_r($invoice_customers);
+                                        // echo"</pre>";
+
                                     for($j = 0; $j<count($invoice_customers); $j++){
                                         ?>
-
-                                    <a href="index.php?app=invoice_customer&action=detail&id=<?PHP echo $invoice_customers[$j]['invoice_customer_id']; ?>" target="_blank">
-                                    <?PHP
-                                    echo $invoice_customers[$j]['invoice_customer_code']; 
-                                    ?>
-                                    </a>
+                                    <ul class="list-inline">
+                                     <li class="list-inline-item">
+                                            <a href="index.php?app=invoice_customer&action=detail&id=<?PHP echo $invoice_customers[$j]['invoice_customer_id']; ?>" target="_blank">
+                                                <?PHP
+                                                echo $invoice_customers[$j]['invoice_customer_code']; 
+                                                ?>
+                                            </a>
+                                        </li>
+                                    </ul>
                                         <?PHP
                                     }
                                     
@@ -323,15 +332,21 @@
                                     <?PHP 
                                         if($customer_purchase_orders[$i]['invoice_customer_list_qty'] == $customer_purchase_orders[$i]['customer_purchase_order_list_qty']) {
                                     ?>
-                                    ครบ
+                                    <B>
+                                        <p class="font-weight-bold text-success">ครบ</p>
+                                    </b>
                                     <?PHP 
                                         } else if($customer_purchase_orders[$i]['invoice_customer_list_qty'] > $customer_purchase_orders[$i]['customer_purchase_order_list_qty']) {
                                     ?>
-                                    เกิน
+                                    <B>
+                                        <p class="font-weight-bold text-warning">เกิน</p>
+                                    </b>
                                     <?PHP 
                                         }else{
                                     ?>
-                                    ไม่ครบ
+                                    <B>
+                                        <p class="font-weight-bold text-danger">ไม่ครบ</p>
+                                    </b>
                                     <?PHP
                                         }
                                     ?>

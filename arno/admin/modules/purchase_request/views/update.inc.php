@@ -208,8 +208,17 @@
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="supplier_id[]"]').empty();
         var str = "<option value='0'>ไม่ระบุ</option>";
+        var supplier_id = $("#supplier_id").val();
         $.each(supplier_data, function (index, value) { 
-            str += "<option value='" + value['supplier_id'] + "'>" +  value['supplier_name_en'] + "</option>";  
+            
+            if(value['supplier_id'] == supplier_id){
+                str += "<option value='" + value['supplier_id'] + "' selected>" +  value['supplier_name_en'] + "</option>";  
+                
+            }else {
+                str += "<option value='" + value['supplier_id'] + "'>" +  value['supplier_name_en'] + "</option>";  
+                
+            }
+
         });
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="supplier_id[]"]').html(str);
 
@@ -306,7 +315,15 @@
                         $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="supplier_id[]"]').empty();
                         var str = "<option value='0'>ไม่ระบุ</option>";
                         $.each(supplier_data, function (index, value) { 
-                            str += "<option value='" + value['supplier_id'] + "'>" +  value['supplier_name_en'] + "</option>";  
+                                            
+                            if(value['supplier_id'] == supplier_id){
+                                str += "<option value='" + value['supplier_id'] + "' selected>" +  value['supplier_name_en'] + "</option>";  
+                                
+                            }else {
+                                str += "<option value='" + value['supplier_id'] + "'>" +  value['supplier_name_en'] + "</option>";  
+                                
+                            }
+            
                         });
                         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select[name="supplier_id[]"]').html(str);
 
@@ -382,7 +399,8 @@
             <div class="panel-body">
                 <form id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=purchase_request&action=edit&id=<?php echo $purchase_request_id;?>" >
                     <input type="hidden"  id="purchase_request_id" name="purchase_request_id" value="<?php echo $purchase_request_id; ?>" /> 
-                    <div class="row">
+                    <div class="row ">
+
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>หมายเลขใบร้องขอสั่งซื้อสินค้า / PR Code <font color="#F00"><b>* </b></font> <?php if($purchase_request['purchase_request_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_request['purchase_request_rewrite_no']; ?></font></b> <?PHP } ?></label>
@@ -391,6 +409,7 @@
                                 <p class="help-block">Example : PR1801001.</p>
                             </div>
                         </div>
+
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ร้องขอ  / PR Date</label>
@@ -399,6 +418,7 @@
                                 <p class="help-block">01-03-2018</p>
                             </div>
                         </div>
+
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>ประเภทใบร้องขอสั่งซื้อสินค้า / PR Type <font color="#F00"><b>*</b></font></label>
@@ -414,6 +434,7 @@
                                 <p class="help-block">Example : Low.</p>
                             </div>
                         </div>
+
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>ผู้ร้องขอ / Request by  <font color="#F00"><b>*</b></font> </label>
@@ -431,6 +452,7 @@
                                 <p class="help-block">Example : Thana Tepchuleepornsil.</p>
                             </div>
                         </div> 
+
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>สำหรับลูกค้า / Customer </label>
@@ -447,6 +469,7 @@
                                 <p class="help-block">Example : บริษัท เรเวลซอฟต์ จำกัด (Revel Soft co,ltd).</p>
                             </div>
                         </div> 
+
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>หมายเหตุ / Remark</label>
@@ -454,6 +477,7 @@
                                 <p class="help-block">Example : -.</p>
                             </div>
                         </div>
+
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>วันที่แจ้งเตือน  / Alert Date</label>
@@ -461,6 +485,24 @@
                                 <p class="help-block">01-03-2018</p>
                             </div>
                         </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>ผู้ขาย </label>
+                                <select id="supplier_id" name="supplier_id" class="form-control" >
+                                    <option value="0">Select</option>
+                                    <?php 
+                                    for($i =  0 ; $i < count($suppliers) ; $i++){
+                                    ?>
+                                    <option  value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?>  </option>
+                                    <?
+                                    }
+                                    ?>
+                                </select>
+                                <p class="help-block">Example : บริษัท เรเวลซอฟต์ จำกัด (Revel Soft co,ltd).</p>
+                            </div>
+                        </div> 
+
                     </div>
 
                     <table name="tb_list" width="100%" class="table table-striped table-bordered table-hover" >

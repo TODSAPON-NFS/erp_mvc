@@ -144,7 +144,7 @@ if($_GET['action'] == "pdf"){
     header("Content-type: application/vnd.ms-excel");
     //// header('Content-type: application/csv'); //*** CSV ***//
     
-    header("Content-Disposition: attachment; filename=Sale_vat $d1-$d2-$d3 $d4:$d5:$d6.xls");
+    header("Content-Disposition: attachment; filename=Financial_status$date_end.xls");
 
     for($page_index=0 ; $page_index < $page_max ; $page_index++){
         echo $html[$page_index] ."<div> </div> <br>"; 

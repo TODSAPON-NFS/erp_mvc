@@ -68,14 +68,64 @@ if(!isset($_GET['action'])){
 
 }else if ($_GET['action'] == 'update'){
 
-     $customer_id = $_GET['id'];
-     $customer = $model_customer->getCustomerByID($customer_id);
-     $user = $model_user->getUserBy('','sale');
-     $account = $account_model->getAccountAll();
-     $currency = $currency_model->getCurrencyBy();
-     $customer_types = $customer_type_model->getCustomerTypeBy();
+    $customer_id = $_GET['id'];
+    $customer = $model_customer->getCustomerByID($customer_id);
+    $user = $model_user->getUserBy('','sale');
+    $account = $account_model->getAccountAll();
+    $currency = $currency_model->getCurrencyBy();
+    $customer_types = $customer_type_model->getCustomerTypeBy();
 
-    require_once($path.'update.inc.php');
+   require_once($path.'update.inc.php');
+
+}else if ($_GET['action'] == 'detail'){   
+    
+    $customer = $model_customer->getCustomerByID($_GET['id']);
+
+    $header_page = "รายละเอียดลูกค้า";
+    $customer_code =  $customer['customer_code'];
+    $customer_name_th =  $customer['customer_name_th'];
+    $customer_name_en =  $customer['customer_name_en'];
+    $customer_type =  $customer['customer_type'];
+    $customer_tax =  $customer['customer_tax'];
+    $customer_address_1 =  $customer['customer_address_1'];
+    $customer_address_2 =  $customer['customer_address_2'];
+    $customer_address_3 =  $customer['customer_address_3'];
+    $customer_zipcode =  $customer['customer_zipcode'];
+    $customer_tel =  $customer['customer_tel'];
+    $customer_fax =  $customer['customer_fax'];
+    $customer_email =  $customer['customer_email'];
+    $customer_domestic =  $customer['customer_domestic'];
+    $customer_remark =  $customer['customer_remark'];
+    $customer_branch =  $customer['customer_branch'];
+    $customer_zone =  $customer['customer_zone'];
+    $credit_day =  $customer['credit_day'];
+    $condition_pay =  $customer['condition_pay'];
+    $pay_limit =  $customer['pay_limit'];
+    $account_id =  $customer['account_id'];
+    $vat_type =  $customer['vat_type'];
+    $vat =  $customer['vat'];
+    $currency_id =  $customer['currency_id'];
+    $customer_logo =  $customer['customer_logo'];
+    $bill_shift =  $customer['bill_shift'];
+    $invoice_shift =  $customer['invoice_shift'];
+    $date_bill =  $customer['date_bill'];
+    $date_invoice =  $customer['date_invoice'];
+    $customer_end_user =  $customer['customer_end_user'];
+    $sale_id =  $customer['sale_id'];
+    $customer_type_id =  $customer['customer_type_id'];
+    $addby =  $customer['addby'];
+    $adddate =  $customer['adddate'];
+    $updateby =  $customer['updateby'];
+    $lastupdate =  $customer['lastupdate'];
+
+
+
+
+
+    // echo "<pre>";
+    // print_r($customer);
+    // echo"</pre>";
+   require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'delete' && ($license_admin_page == 'High') ){
 

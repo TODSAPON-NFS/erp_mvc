@@ -265,6 +265,7 @@ class PurchaseOrderModel extends BaseModel{
         $sql = " UPDATE tb_purchase_order SET  
         supplier_id = '".$data['supplier_id']."', 
         employee_id = '".$data['employee_id']."', 
+        purchase_order_category = '".$data['purchase_order_category']."', 
         purchase_order_code = '".$data['purchase_order_code']."', 
         purchase_order_credit_term = '".$data['purchase_order_credit_term']."', 
         purchase_order_delivery_term = '".$data['purchase_order_delivery_term']."', 
@@ -1109,6 +1110,7 @@ class PurchaseOrderModel extends BaseModel{
             purchase_order_accept_date,
             purchase_order_status,
             purchase_order_type,
+            purchase_order_category,
             purchase_order_code,
             purchase_order_credit_term,
             purchase_order_delivery_term,
@@ -1132,6 +1134,7 @@ class PurchaseOrderModel extends BaseModel{
         $data['purchase_order_accept_date']."','".
         $data['purchase_order_status']."','".
         $data['purchase_order_type']."','".
+        $data['purchase_order_category']."','".
         $data['purchase_order_code']."','".
         $data['purchase_order_credit_term']."','".
         $data['purchase_order_delivery_term']."','".
@@ -1187,5 +1190,24 @@ class PurchaseOrderModel extends BaseModel{
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
+
+    function getPurchaseOrderCodeByInvoiceSupplierID($id){
+        $sql = "  SELECT GROUP_CONCAT( DISTINCT tb_purchase_order.purchase_order_code) As purchase_order_code FROM `tb_invoice_supplier_list` 
+                  LEFT JOIN tb_purchase_order_list ON tb_invoice_supplier_list.purchase_order_list_id = tb_purchase_order_list.purchase_order_list_id
+                  LEFT JOIN tb_purchase_order ON tb_purchase_order_list.purchase_order_id = tb_purchase_order.purchase_order_id
+                  WHERE invoice_supplier_id = '$id'";
+
+
+                   if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                    $data;
+                    while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                        $data = $row;
+                    }
+                    $result->close();
+                    return $data;
+                }
+    }
+
+
 }
 ?>

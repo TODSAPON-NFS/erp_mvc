@@ -5,7 +5,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Arno Thailand ERP</a>
+                <a class="navbar-brand" href="index.php"><?PHP echo $company['company_name_en']; ?></a>
             </div>
             <!-- /.navbar-header -->
 

@@ -273,7 +273,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>รหัสผ่าน / Password </label>
-                                    <input id="company_email_password" name="company_email_password" type="email" class="form-control" value="<? echo $company['company_email_password']?>" >
+                                    <input id="company_email_password" name="company_email_password" type="password" class="form-control" value="<? echo $company['company_email_password']?>" >
                                     <p class="help-block">Example : 445</p>
                                 </div>
                             </div> 

@@ -171,7 +171,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                 </table> 
             </td>
-            <td width="280" valign="top" style="border: 1px solid #000;border-radius: 8px;">
+            <td width="300" valign="top" style="border: 1px solid #000;border-radius: 8px;">
                 <table width="100%">
                     <tr>
                         <td width="64px"  valign="middle" align="left">
@@ -213,9 +213,17 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
                     <tr>                       
                         <td width="100px"  valign="middle" align="left">
+                        <b> Supplier Invoice </b>
+                        </td>
+                        <td  valign="middle" align="left"> '.$invoice_supplier['invoice_supplier_code_gen'].'                       
+                        </td>
+                     </tr>
+
+                    <tr>                       
+                        <td width="100px"  valign="middle" align="left">
                         <b> Purchase Order </b>
                         </td>
-                        <td  valign="middle" align="left"> -                        
+                        <td  valign="middle" align="left"> '.$purchaseOrder_code['purchase_order_code'].'                         
                         </td>
                     </tr>
 
@@ -366,34 +374,16 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
     
     <table width="100%" >
-        <tr>
-            <td style="border: 1px solid #000;border-radius: 8px; " >
-                <table width="100%" >
-                    <tr>
-                        <td style="height:64px;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td  align="center" >
-                            Received
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center">
-                            Date _____/________/_________
-                        </td>
-                    </tr>
-                </table>
-            </td>
+        <tr>          
             <td style="border: 1px solid #000;border-radius: 8px;">
                 <table width="100%" >
                     <tr>
-                        <td style="height:64px;">
+                        <td style="height:50px;">
                         </td>
                     </tr>
                     <tr>
                         <td  align="center">
-                            Prepared by
+                        Receive by
                         </td>
                     </tr>
                     <tr>
@@ -406,7 +396,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <td style="border: 1px solid #000;border-radius: 8px;">
                 <table width="100%" >
                     <tr>
-                        <td style="height:64px;">
+                        <td style="height:50px;">
                         </td>
                     </tr>
                     <tr>

@@ -7,6 +7,8 @@ require_once('../models/PurchaseOrderModel.php');
 require_once('../models/PurchaseOrderListModel.php');
 require_once('../models/InvoiceSupplierListModel.php');
 require_once('../models/InvoiceSupplierModel.php');
+require_once('../models/InvoiceSupplierModel.php');
+
 date_default_timezone_set('asia/bangkok');
 $d1=date("d");
 $d2=date("m");
@@ -21,7 +23,7 @@ $number_2_text = new Number2Text;
 $company_model = new CompanyModel;
 $invoice_supplier_model = new InvoiceSupplierModel;
 $invoice_supplier_list_model = new InvoiceSupplierListModel; 
-
+$purchaseOrder_model = new PurchaseOrderModel;
 
 $date_start = $_GET['date_start'];
 $date_end = $_GET['date_end'];
@@ -54,9 +56,10 @@ if($_GET['action'] == "pdf"){
 
     $invoice_supplier = $invoice_supplier_model->getInvoiceSupplierViewByID($invoice_supplier_id);       
     $invoice_supplier_lists = $invoice_supplier_list_model->getInvoiceSupplierListBy($invoice_supplier_id);
-    //echo '<pre>';
-    //print_r($invoice_supplier);
-    //echo '<pre>';
+    $purchaseOrder_code = $purchaseOrder_model->getPurchaseOrderCodeByInvoiceSupplierID($invoice_supplier_id); 
+    echo '<pre>';
+    print_r($purchaseOrder_code);
+    echo '<pre>';
     $lines = 9;
 
     $page_max = (int)(count($invoice_supplier_lists) / $lines);

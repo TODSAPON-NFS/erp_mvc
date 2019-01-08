@@ -226,7 +226,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <td width="64px"  valign="middle" align="left">
                         <b>ใบสั่งซื้อ </b>
                         </td>
-                        <td  valign="middle" align="left"> -  </td>
+                        <td  valign="middle" align="left"> '.$purchaseOrder_code['purchase_order_code'].' </td>
                                       
                     </tr>
 
@@ -379,24 +379,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     
     <table width="100%" >
         <tr>
-            <td style="border: 1px solid #000;border-radius: 8px; " >
-                <table width="100%" >
-                    <tr>
-                        <td style="height:50px;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td  align="center" >
-                            ผู้รับคำสั่งซื้อ
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center">
-                            วันที่ _____/________/_________
-                        </td>
-                    </tr>
-                </table>
-            </td>
+            
             <td style="border: 1px solid #000;border-radius: 8px;">
                 <table width="100%" >
                     <tr>
@@ -405,7 +388,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         <td  align="center">
-                            พนักงาน
+                            ผู้รับสินค้า
                         </td>
                     </tr>
                     <tr>
@@ -423,7 +406,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         <td align="center">
-                        ผู้อนุมัติ
+                        ผู้ตรวจสอบ
                         </td>
                     </tr>
                     <tr>

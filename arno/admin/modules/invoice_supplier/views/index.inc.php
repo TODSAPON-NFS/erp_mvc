@@ -232,9 +232,9 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     for($i = 0 ; $i < count($invoice_suppliers) ; $i++){
         if($invoice_supplier_id == $invoice_suppliers[$i]['invoice_supplier_id']){ 
             $previous_id = $invoice_suppliers[$i-1]['invoice_supplier_id'];
-            $previous_code = $invoice_suppliers[$i-1]['invoice_supplier_code'];
+            $previous_code = $invoice_suppliers[$i-1]['invoice_supplier_code_gen'];
             $next_id = $invoice_suppliers[$i+1]['invoice_supplier_id'];
-            $next_code = $invoice_suppliers[$i+1]['invoice_supplier_code'];
+            $next_code = $invoice_suppliers[$i+1]['invoice_supplier_code_gen'];
 
         }
     }

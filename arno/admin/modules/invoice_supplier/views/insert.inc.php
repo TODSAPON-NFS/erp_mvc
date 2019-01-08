@@ -661,8 +661,6 @@
                             '<input type="hidden" name="invoice_supplier_list_cost[]" value="'+price.toFixed(2)+'" readonly />'+     
                             '<input type="hidden" name="product_id[]" class="form-control" value="'+ data_buffer[i].product_id +'" />'+
 					        '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="'+ data_buffer[i].product_code +'" />'+ 
-                        '</td>'+
-                        '<td>'+
                             '<input type="text" class="form-control" name="product_name[]" value="'+ data_buffer[i].product_name +'" readonly />'+
                             '<input type="text" class="form-control" name="invoice_supplier_list_product_name[]" placeholder="Product Name (Supplier)" />'+
                             '<input type="text" class="form-control" name="invoice_supplier_list_product_detail[]" placeholder="Product Detail (Supplier)" />'+
@@ -734,8 +732,6 @@
                     '<input type="hidden" name="old_qty[]" value="0" readonly />'+
                     '<input type="hidden" name="product_id[]" class="form-control" value="0" />'+
                     '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="" />'+ 
-                '</td>'+
-                '<td>'+
                     '<input type="text" class="form-control" name="product_name[]" readonly />'+
                     '<input type="text" class="form-control" name="invoice_supplier_list_product_name[]" placeholder="Product Name (Supplier)" />'+
                     '<input type="text" class="form-control" name="invoice_supplier_list_product_detail[]" placeholder="Product Detail (Supplier)" />'+
@@ -1134,9 +1130,8 @@
                         <thead>
                             <tr>
                                 <th style="text-align:center;" width="60">ลำดับ </th>
-                                <th style="text-align:center;">รหัสสินค้า </th>
-                                <th style="text-align:center;">รายละเอียดสินค้า </th>
-                                <th style="text-align:center;">คลังสินค้า </th>
+                                <th style="text-align:center;">รหัสสินค้า / รายละเอียดสินค้า </th>
+                                <th style="text-align:center;" width="150">คลังสินค้า </th>
                                 <th style="text-align:center;" width="150">จำนวน </th>
                                 <?PHP if($sort == "ภายนอกประเทศ"){ ?>
                                 <th style="text-align:center;" width="150">ราคาต่อหน่วย <span name="currency"><?PHP echo $supplier['currency_sign']; ?></span> </th>
@@ -1204,8 +1199,6 @@
                                     <input type="hidden" name="old_qty[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];?>" />
                                     <input type="hidden" name="product_id[]" class="form-control" value="<?php echo $invoice_supplier_lists[$i]['product_id']; ?>" />
                                     <input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="<?php echo $invoice_supplier_lists[$i]['product_code']; ?>"  readonly/>
-                                </td>
-                                <td>
                                     <input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $invoice_supplier_lists[$i]['product_name']; ?>" />
                                     <input type="text" class="form-control" name="invoice_supplier_list_product_name[]"  placeholder="Product Name (Supplier)"/>
                                     <input type="text" class="form-control" name="invoice_supplier_list_product_detail[]"  placeholder="Product Detail (Supplier)" />
@@ -1251,9 +1244,9 @@
                             <tr class="odd gradeX">
                                 <td 
                                 <?PHP if($sort == "ภายนอกประเทศ"){ ?>
-                                colspan="10" 
+                                colspan="9" 
                                 <?PHP } else { ?>
-                                colspan="8" 
+                                colspan="7" 
                                 <?PHP } ?>
                                 align="center">
                                     <a href="javascript:;" onclick="show_purchase_order(this);" style="color:red;">
@@ -1308,7 +1301,7 @@
                             </tr>
                             <?PHP if($sort == "ภายนอกประเทศ"){ ?>
                             <tr class="odd gradeX">
-                                <td  colspan="5" rowspan="4">
+                                <td  colspan="4" rowspan="4">
                                     
                                 </td>
                                 <td align="left" style="vertical-align: middle;">
@@ -1327,7 +1320,7 @@
                             <?PHP } ?>
                             <tr class="odd gradeX"> 
                                 <?PHP if($sort != "ภายนอกประเทศ"){ ?>
-                                    <td  colspan="3" rowspan="3">
+                                    <td  colspan="2" rowspan="3">
                                     
                                     </td>
                                 <?PHP } ?>

@@ -428,7 +428,7 @@ class InvoiceSupplierModel extends BaseModel{
     }
 
     function generateInvoiceSupplierListBySupplierId($supplier_id, $data = [], $search = "", $purchase_order_id=""){
-
+        $data = [];
         $str ='0';
 
         if(is_array($data)){ 

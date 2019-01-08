@@ -2,6 +2,9 @@
 
 session_start();
 
+require_once('models/CompanyModel.php');
+$company_model = new CompanyModel;
+$company=$company_model->getCompanyByID('1'); 
 ?>
 
 
@@ -16,7 +19,7 @@ session_start();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Aro Thailand ERP System</title>
+    <title><?PHP echo $company['company_name_en']; ?> ERP System</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -87,10 +90,10 @@ session_start();
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading" align="center">
-                        <h3 class="panel-title">Arno ERP System</h3>
+                        <h3 class="panel-title"><?PHP echo $company['company_name_en']; ?></h3>
                     </div>
                     <div class="panel-body">
-                        <div align="center" style="padding:8px;"><img src="../uploads/logo/arno.jpg" /></div>
+                        <div align="center" style="padding:8px;"><img src="upload/company/<?PHP echo $company['company_image']; ?>" height="96px" /></div>
                         <iframe id="checklogin" name="checklogin" src="" style="width:0px;height:0px;border:0"></iframe>
                         <form role="form" method="post" action="check_login.php" onSubmit="return check();" target="checklogin">
                             <fieldset>

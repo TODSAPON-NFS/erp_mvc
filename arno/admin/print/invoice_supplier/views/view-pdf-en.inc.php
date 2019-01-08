@@ -36,7 +36,7 @@ if($invoice_supplier['invoice_supplier_tax'] != ""){
     $invoice_supplier_tax = "-";
 }
 
-
+$lastname =  substr($invoice_supplier['user_lastname'],0,1);
 
 $total = 0;
 for($page_index=0 ; $page_index < $page_max ; $page_index++){
@@ -114,7 +114,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_th'].'</div>
             </td>
             <td align="right">
-                <div  style="font-size:16px;line-height:18px;padding:16px;"><b> ใบรับสินค้า / Supplier Invoice  </b></div> 
+                <div  style="font-size:16px;line-height:18px;padding:16px;"><b> ใบรับสินค้า   </b></div> 
             </td>
         </tr>
     </table>
@@ -177,8 +177,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <td width="64px"  valign="middle" align="left">
                         <b>No.</b>
                         </td>
-                        <td   valign="middle" align="left">
-                            '.$invoice_supplier['invoice_supplier_code'].'
+                        <td  valign="middle" align="left"> '.$invoice_supplier['invoice_supplier_code_gen'].'
+                        
                         </td>
                     </tr>
 
@@ -215,7 +215,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <td width="100px"  valign="middle" align="left">
                         <b> Supplier Invoice </b>
                         </td>
-                        <td  valign="middle" align="left"> '.$invoice_supplier['invoice_supplier_code_gen'].'                       
+                        <td   valign="middle" align="left">
+                        '.$invoice_supplier['invoice_supplier_code'].'              
                         </td>
                      </tr>
 
@@ -240,12 +241,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <tr>
                         
                         <td width="64px"  valign="middle" align="left">
-                        <b>Employee </b>
+                        <b>Prepared by </b>
                         </td>
                         <td  valign="middle" align="left">
-                         '.$invoice_supplier['user_name'].' '.$invoice_supplier['user_lastname'].'
+                         '.$invoice_supplier['user_name'].' '.$lastname.'.
                         </td>
-
+                        
                     </tr>
                 </table>
 

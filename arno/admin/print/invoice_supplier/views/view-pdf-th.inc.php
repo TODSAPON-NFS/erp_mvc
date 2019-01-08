@@ -114,7 +114,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_th'].'</div>
             </td>
             <td align="right">
-                <div  style="font-size:16px;line-height:18px;padding:16px;"><b> ใบรับสินค้า / Supplier Invoice </b></div> 
+                <div  style="font-size:16px;line-height:18px;padding:16px;"><b> ใบรับสินค้า</b></div> 
             </td>
         </tr>
     </table>
@@ -177,9 +177,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <td width="64px"  valign="middle" align="left">
                         <b>เลขที่</b>
                         </td>
-                        <td   valign="middle" align="left">
-                            '.$invoice_supplier['invoice_supplier_code'].'
+                        <td  valign="middle" align="left">
+                        '.$invoice_supplier['invoice_supplier_code_gen'].'
                         </td>
+                        
                     </tr>
 
                     
@@ -217,8 +218,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <td width="110px"  valign="middle" align="left">
                         <b>ใบรับสินค้า </b>
                         </td>
-                        <td  valign="middle" align="left">
-                        '.$invoice_supplier['invoice_supplier_code_gen'].'
+                        
+                        <td   valign="middle" align="left">
+                            '.$invoice_supplier['invoice_supplier_code'].'
                         </td>
                     </tr>
                       
@@ -245,7 +247,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <b>พนักงาน </b>
                         </td>
                         <td  valign="middle" align="left">
-                         '.$invoice_supplier['user_name'].' '.$invoice_supplier['user_lastname'].'
+                         '.$invoice_supplier['user_name'].' 
                         </td>
                     </tr>
 

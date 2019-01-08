@@ -31,6 +31,31 @@ class SupplierModel extends BaseModel{
         FROM `tb_product_supplier` 
         LEFT JOIN tb_product ON tb_product_supplier.product_id = tb_product.product_id
         LEFT JOIN tb_invoice_supplier ON tb_product_supplier.supplier_id = tb_invoice_supplier.supplier_id
+        LEFT JOIN tb_user ON tb_invoice_supplier.employee_id = tb_user.user_id
+
+        WHERE tb_product_supplier.supplier_id = $supplier_id
+        ";
+        // echo "<pre>";
+        // print_r($sql);
+        // echo"</pre>";
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+    
+    function getSupplierProductCusBy($supplier_id){
+        $sql = " SELECT * 
+        FROM `tb_product_supplier` 
+        LEFT JOIN tb_product ON tb_product_supplier.product_id = tb_product.product_id
+        LEFT JOIN  tb_purchase_order ON tb_product_supplier.supplier_id = tb_purchase_order.supplier_id
+        LEFT JOIN tb_user ON tb_purchase_order.employee_id = tb_user.user_id
+
         WHERE tb_product_supplier.supplier_id = $supplier_id
         ";
         // echo "<pre>";

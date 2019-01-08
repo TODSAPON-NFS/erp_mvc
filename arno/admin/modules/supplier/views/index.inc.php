@@ -88,10 +88,10 @@ if(!isset($_GET['action'])){
     $currency_thousand = $supplier['currency_thousand'];
     $currency_decimal = $supplier['currency_decimal'];
     $product = $model_supplier->getSupplierProductBy($supplier_id);
-
+    $customer_purchase =  $model_supplier->getSupplierProductCusBy($supplier_id);
     
     // echo "<pre>";
-    // print_r($product);
+    // print_r($customer_purchase);
     // echo"</pre>";
 
     require_once($path.'detail.inc.php');

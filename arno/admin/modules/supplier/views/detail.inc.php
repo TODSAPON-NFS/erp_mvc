@@ -150,13 +150,17 @@
                                 <a class="nav-link active" id="stock-tab" data-toggle="tab" href="#stock" role="tab" aria-controls="stock" aria-selected="true">สินค้า</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="seller-tab" data-toggle="tab" href="#seller" role="tab" aria-controls="seller" aria-selected="false">เอกสาร</a>
+                                <a class="nav-link" id="buy-tab" data-toggle="tab" href="#buy" role="tab" aria-controls="buy" aria-selected="false">ใบสั่งซื้อสินค้า</a>
+                            </li>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="seller-tab" data-toggle="tab" href="#seller" role="tab" aria-controls="seller" aria-selected="false">ใบขายสินค้า</a>
                             </li>
                          </ul>
                     </div>
                 </div>
             </div>
-            
+
             <!-- /.panel-heading -->
             <div class="panel-body">
 
@@ -179,6 +183,8 @@
                         <table width="100%" class="table table-striped table-bordered table-hover" >
                             <thead>
                                 <tr>
+                                
+                                <th> ลำดับ  </th>
                                     <th>รหัสสินค้า</th>
                                     <th>ชื่อสินค้า</th>
                                     <th>ราคาสินค้า</th>
@@ -187,12 +193,14 @@
                             <?PHP 
                             for ($i=0; $i <count($product) ; $i++) {   
                                 if ( $product[$i]['product_code'] != null) {
-                                                              
+                            
                             ?>
                             <tbody class="odd gradeX">
-                                <td>   <?PHP echo $product[$i]['product_code']  ?> </td>
+                            <td>   <?PHP echo $i+1; ?> </td>
+
+                                <td> <a href="index.php?app=product_detail&product_id= <?PHP echo $product[$i]['product_id']  ?>">  <?PHP echo $product[$i]['product_code']  ?> </a></td>
                                 <td>   <?PHP echo $product[$i]['product_name']  ?> </td>
-                                <td>   <?PHP echo number_format( $product[$i]['product_buyprice'],2 ) ?> </td>
+                                <td style="text-align:right;">   <?PHP echo number_format( $product[$i]['product_buyprice'],2 ) ?> </td>
                             </tbody>
                             <?PHP
                             }
@@ -201,13 +209,46 @@
                         </table>
                     </div>
 
+                    <div class="tab-pane fade" id="buy" role="tabpanel" aria-labelledby="buy-tab">
+                        <table width="100%" class="table table-striped table-bordered table-hover" >
+                            <thead>
+                                <tr>
+                                    <th> วันที่  </th>
+                                    <th> รหัส	</th>
+                                    <th>พนักงานที่เกี่ยวข้อง	</th>
+                                </tr>
+                            </thead>
+                            
+                            <?PHP 
+                            for ($i=0; $i <count($customer_purchase) ; $i++) {   
+                                if ( $customer_purchase[$i]['purchase_order_code'] != null && $customer_purchase[$i+1]['purchase_order_code'] != $customer_purchase[$i]['purchase_order_code']) {
+                                                              
+                            ?>
+
+                            <tbody class="odd gradeX">
+                                <td>   <?PHP echo $customer_purchase[$i]['purchase_order_date']  ?> </td>
+                                <td>  
+                                <a href="index.php?app=customer_purchase_order&action=detail&id=<?PHP echo $customer_purchase[$i]['purchase_order_id']  ?>">  <?PHP echo $customer_purchase[$i]['purchase_order_code']  ?> </a></td>
+                                <td>   
+                                    <?PHP echo $customer_purchase[$i]['user_name']  ?> 
+                                    <?PHP echo $customer_purchase[$i]['user_lastname']  ?> 
+                                </td>
+                            </tbody>
+                            <?PHP
+                            }
+                                }
+                                ?>
+
+                        </table>
+                    </div>
+
                     <div class="tab-pane fade" id="seller" role="tabpanel" aria-labelledby="seller-tab">
                         <table width="100%" class="table table-striped table-bordered table-hover" >
                             <thead>
                                 <tr>
                                     <th> วันที่  </th>
-                                    <th> หมายเลข Invoice ผู้ซื้อ	</th>
-                                    <th> หมายเลข Invoice ผู้ซื้อ	</th>
+                                    <th> รหัส 	</th>
+                                    <th>พนักงานที่เกี่ยวข้อง	</th>
                                 </tr>
                             </thead>
                             
@@ -220,7 +261,11 @@
                             <tbody class="odd gradeX">
                                 <td>   <?PHP echo $product[$i]['invoice_supplier_date']  ?> </td>
                                 <td>  <a href="index.php?app=invoice_supplier&action=detail&id=<?PHP echo $product[$i]['invoice_supplier_id']  ?>">  <?PHP echo $product[$i]['invoice_supplier_code']  ?> </a></td>
-                                <td>  <a href="index.php?app=invoice_supplier&action=detail&id=<?PHP echo $product[$i]['invoice_supplier_id']  ?>"> <?PHP echo $product[$i]['invoice_supplier_code_gen']  ?></a> </td>
+                                <td>   
+                                    <?PHP echo $product[$i]['user_prefix']  ?> 
+                                    <?PHP echo $product[$i]['user_name']  ?> 
+                                    <?PHP echo $product[$i]['user_lastname']  ?> 
+                                </td>
                             </tbody>
                             <?PHP
                             }

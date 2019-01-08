@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+require_once('../models/CompanyModel.php');
 require_once('../models/NotificationModel.php');
 $user_admin = $_SESSION['user'];
 $notification_id = $_GET['notification']; 
@@ -19,6 +20,8 @@ $license_manager_page   =  $user_admin['license_manager_page'];
 
 
 $model_notification = new NotificationModel;
+$company_model = new CompanyModel;
+$company=$company_model->getCompanyByID('1'); 
 
 if($notification_id != ""){
     $model_notification->setNotificationSeenByID($notification_id);

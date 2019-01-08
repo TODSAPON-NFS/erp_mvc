@@ -113,8 +113,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_en'].'</div>
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_th'].'</div>
             </td>
-            <td align="right">
-                <div  style="font-size:16px;line-height:18px;padding:16px;"><b> ใบรับสินค้า   </b></div> 
+            <td align="right"> 
+                <div  style="font-size:22px;line-height:22px;padding:16px;"><b> ใบรับสินค้า</b></div>
+                <div  style="font-size:16px;line-height:16px;padding:16px;"><b>  Page '.( $page_index + 1 ).'/'.$page_max.' </b></div>  
             </td>
         </tr>
     </table>
@@ -281,12 +282,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 </td>
                 <td align="left" valign="top" >
                    '. $invoice_supplier_lists[$i]['product_code'].' <br>
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $invoice_supplier_lists[$i]['product_name'].' <br>  
+                   <span style="font-size:10px;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $invoice_supplier_lists[$i]['product_name'].'</span>  
                 </td> 
-                <td align="right" valign="top" width="120px">
+                <td align="right" valign="top" width="80px">
                     '. number_format($invoice_supplier_lists[$i]['invoice_supplier_list_qty'],0).'
                 </td> 
-                <td align="right" valign="top" width="120px">
+                <td align="right" valign="top" width="100px">
                     '. number_format($invoice_supplier_lists[$i]['invoice_supplier_list_price'],2).'
                 </td>
                 <td align="right" valign="top" width="120px">

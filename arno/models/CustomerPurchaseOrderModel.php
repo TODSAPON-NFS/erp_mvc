@@ -102,10 +102,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         $str_user  
         $str_status 
         ORDER BY STR_TO_DATE(customer_purchase_order_date,'%Y-%m-%d %H:%i:%s'),customer_purchase_order_code_gen,customer_purchase_order_code DESC 
-         ";  
-         echo "<pre>";
-         print_r($sql);
-         echo"</pre>";
+         ";   
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -399,6 +396,39 @@ class CustomerPurchaseOrderModel extends BaseModel{
             
         }
         return $data;
+    }
+
+
+    function getCustomerPurchaseOrderCodeByListID($id = []){
+
+        $str ="'0'";
+
+        if(is_array($id)){ 
+            for($i=0; $i < count($id) ;$i++){
+                $str .= $id[$i];
+                if($i + 1 < count($id)){
+                    $str .= "','";
+                }
+            }
+        }else if ($id != ''){
+            $str = $id;
+        }else{
+            $str="'0'";
+        }
+
+        $sql = "  SELECT GROUP_CONCAT( DISTINCT tb_customer_purchase_order.customer_purchase_order_code) As customer_purchase_order_code 
+                  FROM tb_customer_purchase_order_list  
+                  LEFT JOIN tb_customer_purchase_order ON tb_customer_purchase_order_list.customer_purchase_order_id = tb_customer_purchase_order.customer_purchase_order_id
+                  WHERE customer_purchase_order_list_id IN ($str)";
+ 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data['customer_purchase_order_code'];
+        }
     }
 
 

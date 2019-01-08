@@ -728,6 +728,27 @@
         }
     }
 
+    function get_customer_purchase_by_list_id(){
+        var customer_purchase_order_list_id = $('input[name="customer_purchase_order_list_id[]"]').val();
+        $.post( "controllers/getCustomerPurchaseOrderCodeByListID.php", {'customer_purchase_order_list_id': JSON.stringify(customer_purchase_order_list_id) }, function( data ) {  
+            if(data !== null){  
+                $('#invoice_customer_purchase').val(data); 
+            }else{  
+                $('#invoice_customer_purchase').val("-");
+            } 
+        });
+    } 
+
+    function add_customer_purchase_remark(){
+        var invoice_customer_list_remark = $('input[name="invoice_customer_list_remark[]"]');
+        var invoice_customer_list_product_name = $('input[name="invoice_customer_list_product_name[]"]');
+ 
+        for(var i = 0 ; i < invoice_customer_list_remark.length; i++){
+            invoice_customer_list_product_name[i].value=invoice_customer_list_remark[i].value;
+        }
+        
+    } 
+
 
 
 
@@ -845,6 +866,26 @@
                                         <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" onchange="check_code(this)" value="<?php echo $last_code;?>" >
                                         <input id="invoice_check" type="hidden" value="" />
                                         <p class="help-block">Example : INV1801001.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>หมายเลขใบสั่งซื้อ / Purchase order <font color="#F00"><b>*</b></font></label>
+                                        <table width="100%">
+                                            <tr>
+                                                <td>
+                                                    <input id="invoice_customer_purchase" name="invoice_customer_purchase" class="form-control"  value="" > 
+                                                </td>
+                                                <td width="64px">
+                                                    <button type="button" class="btn btn-default" onclick="get_customer_purchase_by_list_id()">ค้นหา</button>
+                                                </td>
+                                                <td width="100px">
+                                                    <button type="button" class="btn btn-default" onclick="add_customer_purchase_remark()">เพิ่มในหมายเหตุ</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <p class="help-block">Example : PO1901-001.</p>
                                     </div>
                                 </div>
 

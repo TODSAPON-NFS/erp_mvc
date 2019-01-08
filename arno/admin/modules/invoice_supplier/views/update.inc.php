@@ -368,6 +368,7 @@
     
         var qty = document.getElementsByName('invoice_supplier_list_qty[]'); 
         var purchase_price =  document.getElementsByName('purchase_order_list_price[]');
+        var purchase_currency_price =  document.getElementsByName('invoice_supplier_list_currency_price[]');
         var purchase_price_sum =  document.getElementsByName('purchase_order_list_price_sum[]');
         var price =  document.getElementsByName('invoice_supplier_list_price[]');
         var sum = document.getElementsByName('invoice_supplier_list_total[]');
@@ -409,6 +410,7 @@
 
             console.log("val_price",val_price);
 
+            purchase_currency_price[i].value = val_purchase_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") ;
             qty[i].value = val_qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") ;
             purchase_price_sum[i].value = numberWithCommas(val_purchase_price_sum.toFixed(2)) ;
             price[i].value = numberWithCommas(val_price.toFixed(4)) ;
@@ -660,9 +662,12 @@
                         '<td class="sorter">'+
                         '</td>'+ 
                         '<td>'+
-                            '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'" readonly />'+   
-                            '<input type="hidden" name="invoice_supplier_list_cost[]" value="'+price.toFixed(2)+'" readonly />'+     
-                            '<input type="hidden" name="product_id[]" class="form-control" value="'+ data_buffer[i].product_id +'" />'+
+                            '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'" readonly />'+         
+                            '<input type="hidden" name="invoice_supplier_list_freight_in[]" value="0" />'+     
+                            '<input type="hidden" name="invoice_supplier_list_import_duty[]" value="0" />'+    
+                            '<input type="hidden" name="invoice_supplier_list_currency_price[]" value="'+ purchase_price.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" />'+   
+                            '<input type="hidden" name="invoice_supplier_list_cost[]" value="'+price.toFixed(2)+'"  />'+     
+                            '<input type="hidden" name="product_id[]" value="'+ data_buffer[i].product_id +'" />'+
 					        '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="'+ data_buffer[i].product_code +'" />'+  
                             '<input type="text" class="form-control" name="product_name[]" value="'+ data_buffer[i].product_name +'" readonly />'+
                             '<input type="text" class="form-control" name="invoice_supplier_list_product_name[]" placeholder="Product Name (Supplier)" />'+
@@ -729,11 +734,14 @@
                 '<td class="sorter">'+
                 '</td>'+ 
                 '<td>'+
-                    '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+      
-                    '<input type="hidden" name="invoice_supplier_list_cost[]" value="0" readonly />'+
-                    '<input type="hidden" name="old_cost[]" value="0" readonly />'+
-                    '<input type="hidden" name="old_qty[]" value="0" readonly />'+
-                    '<input type="hidden" name="product_id[]" class="form-control" value="0" />'+
+                    '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+            
+                    '<input type="hidden" name="invoice_supplier_list_freight_in[]" value="0" />'+     
+                    '<input type="hidden" name="invoice_supplier_list_import_duty[]" value="0" />'+    
+                    '<input type="hidden" name="invoice_supplier_list_currency_price[]" value="0" />'+   
+                    '<input type="hidden" name="invoice_supplier_list_cost[]" value="0"  />'+
+                    '<input type="hidden" name="old_cost[]" value="0"  />'+
+                    '<input type="hidden" name="old_qty[]" value="0"  />'+
+                    '<input type="hidden" name="product_id[]" value="0" />'+
                     '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="" />'+  
                     '<input type="text" class="form-control" name="product_name[]" readonly />'+
                     '<input type="text" class="form-control" name="invoice_supplier_list_product_name[]" placeholder="Product Name (Supplier)" />'+
@@ -838,6 +846,8 @@
 
     function calculateCost(){
 
+        var invoice_supplier_list_import_duty = document.getElementsByName('invoice_supplier_list_import_duty[]');
+        var invoice_supplier_list_freight_in = document.getElementsByName('invoice_supplier_list_freight_in[]');
         var invoice_supplier_list_cost = document.getElementsByName('invoice_supplier_list_cost[]');
         var invoice_supplier_list_total = document.getElementsByName('invoice_supplier_list_total[]');
         var invoice_supplier_list_qty = document.getElementsByName('invoice_supplier_list_qty[]');
@@ -873,6 +883,10 @@
             var cost_price_duty = cost_price_total / invoice_supplier_total_price_ex * import_duty;
             var cost_price_f = cost_price_total / invoice_supplier_total_price_ex * freight_in;
             var cost_total = (cost_price_f + cost_price_duty + cost_price_total)/qty;
+
+            invoice_supplier_list_import_duty[i].value = cost_price_duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+            invoice_supplier_list_freight_in[i].value = cost_price_f.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
 
             if (invoice_supplier_total_price_ex > 0){
                 invoice_supplier_list_cost[i].value = cost_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -1194,12 +1208,14 @@
                                 <td class="sorter">
                                     <?PHP echo ($i + 1); ?>.
                                 </td>
-                                <td><input type="hidden" name="purchase_order_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['purchase_order_list_id'];?>" />
-                                   
-                                    <input type="hidden" name="invoice_supplier_list_cost[]" value="<?PHP echo  $cost_total;?>" />
+                                <td><input type="hidden" name="purchase_order_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['purchase_order_list_id'];?>" /> 
+                                    <input type="hidden" name="invoice_supplier_list_freight_in[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_freight_in'];?>" />
+                                    <input type="hidden" name="invoice_supplier_list_import_duty[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_import_duty'];?>" />
+                                    <input type="hidden" name="invoice_supplier_list_currency_price[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_currency_price'];?>" />
+                                    <input type="hidden" name="invoice_supplier_list_cost[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_cost'];?>" />
                                     <input type="hidden" name="old_cost[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_cost'];?>" />
                                     <input type="hidden" name="old_qty[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];?>" />
-                                    <input type="hidden" name="product_id[]" class="form-control" value="<?php echo $invoice_supplier_lists[$i]['product_id']; ?>" />
+                                    <input type="hidden" name="product_id[]"  value="<?php echo $invoice_supplier_lists[$i]['product_id']; ?>" />
                                     <input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="<?php echo $invoice_supplier_lists[$i]['product_code']; ?>"  readonly/> 
                                     <input type="text" class="form-control" name="product_name[]"  readonly value="<?php echo $invoice_supplier_lists[$i]['product_name']; ?>" />
                                     <input type="text" class="form-control" name="invoice_supplier_list_product_name[]"  placeholder="Product Name (Supplier)"/>

@@ -115,8 +115,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_th'].'</div>
             </td>
             <td align="right">
-                <div  style="font-size:22px;line-height:22px;padding:16px;"><b>  Purchase Order </b></div> 
-                <div  style="font-size:16px;line-height:16px;padding:16px;"><b>  Page '.( $page_index + 1 ).'/'.$page_max.' </b></div> 
+                <div  style="font-size:22px;line-height:22px;padding:16px;"><b> ใบรับสินค้า</b></div>
+                <div  style="font-size:16px;line-height:16px;padding:16px;"><b>  '.( $page_index + 1 ).'/'.$page_max.' หน้า </b></div>  
             </td>
         </tr>
     </table>

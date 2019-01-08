@@ -114,7 +114,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_th'].'</div>
             </td>
             <td align="right">
-                <div  style="font-size:16px;line-height:18px;padding:16px;"><b> ใบสั่งซื้อ </b></div> 
+                <div  style="font-size:22px;line-height:22px;padding:16px;"><b>  ใบสั่งซื้อสินค้า </b></div> 
+                <div  style="font-size:16px;line-height:16px;padding:16px;"><b>  Page '.( $page_index + 1 ).'/'.$page_max.' </b></div> 
             </td>
         </tr>
     </table>
@@ -226,10 +227,20 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <tr>
                         
                         <td width="84px"  valign="middle" align="left">
+                        <b>ข้อตกลง </b>
+                        </td>
+                        <td  valign="middle" align="left">
+                         '.$purchase_order['purchase_order_agreement'].'
+                        </td>
+
+                    </tr>
+                    <tr>
+                        
+                        <td width="84px"  valign="middle" align="left">
                         <b>พนักงาน </b>
                         </td>
                         <td  valign="middle" align="left">
-                         '.$purchase_order['user_name'].' '.$purchase_order['user_lastname'].'
+                         '.$purchase_order['user_name'].' '.substr($purchase_order['user_lastname'],0,1).'.
                         </td>
 
                     </tr>
@@ -268,7 +279,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                            '. $purchase_order_lists[$i]['product_code'].' <br>
                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $purchase_order_lists[$i]['product_name'].' <br>  
                         </td> 
-                        <td align="right" valign="top" width="120px">
+                        <td align="right" valign="top" width="100px">
                             '. number_format($purchase_order_lists[$i]['purchase_order_list_qty'],0).'
                         </td> 
                         <td align="right" valign="top" width="120px">
@@ -325,7 +336,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <tfoot>
                 <tr class="odd gradeX" >
                     <td colspan="3" rowspan="2" align="left" valign="top">
-                        <b>หมายเหตุ</b> 
+                        <b>หมายเหตุ</b> <br>'.$purchase_order['purchase_order_remark'].'
                     </td>
                     <td align="left">
                         <b>รวมทั้งสิน</b>

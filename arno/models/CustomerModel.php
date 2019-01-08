@@ -23,7 +23,7 @@ class CustomerModel extends BaseModel{
             
         }
 
-        $sql = " SELECT tb1.customer_id, tb1.customer_code, tb1.customer_name_th, tb1.customer_name_en , tb1.customer_tax , tb1.customer_tel, tb1.customer_email, customer_type_name, tb2.customer_name_en as customer_end_user_name 
+        $sql = " SELECT tb1.customer_id, tb1.customer_code, tb1.customer_name_th, tb1.customer_name_en , tb1.customer_tax , tb1.customer_tel, tb1.customer_email, customer_type_name,  tb2.customer_name_en as customer_end_user_name 
         FROM tb_customer as tb1 
         LEFT JOIN tb_customer as tb2 ON tb1.customer_end_user = tb2.customer_id 
         LEFT JOIN tb_customer_type ON tb1.customer_type_id = tb_customer_type.customer_type_id 
@@ -130,7 +130,7 @@ class CustomerModel extends BaseModel{
     }
 
     function getEndUserByCustomerID($customer_id){
-        $sql = " SELECT customer_id, customer_code, customer_name_th, customer_name_en , customer_tax , customer_tel, customer_email   
+        $sql = " SELECT customer_id, customer_code, customer_name_th, customer_name_en , customer_tax , customer_tel, customer_email ,customer_zipcode  
         FROM tb_customer as tb1
         WHERE customer_end_user = '$customer_id'
         ORDER BY customer_code  

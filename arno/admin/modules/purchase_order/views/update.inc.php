@@ -676,7 +676,7 @@
                                         <p class="help-block">10 </p>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>ผู้ออกใบสั่งซื้อ / Employee  <font color="#F00"><b>*</b></font> </label>
                                         <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true">
@@ -694,6 +694,13 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
+                                        <label>ข้อตกลง / Agreement</label>
+                                        <input type="text" id="purchase_order_agreement" name="purchase_order_agreement" value="<? echo $purchase_order['purchase_order_agreement'];?>"  class="form-control"/>
+                                        <p class="help-block">FOB shipping point, C.I.F, C&F </p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
                                         <label>จัดส่งโดย / Delivery by</label>
                                         <input type="text" id="purchase_order_delivery_by" name="purchase_order_delivery_by" value="<? echo $purchase_order['purchase_order_delivery_by'];?>"  class="form-control"/>
                                         <p class="help-block">DHL </p>
@@ -705,6 +712,13 @@
                                         <label>วันที่จัดส่ง / Delivery Date</label>
                                         <input type="text" id="purchase_order_delivery_term" name="purchase_order_delivery_term" value="<? echo $purchase_order['purchase_order_delivery_term'];?>"  class="form-control calendar"   onchange="check_date(this);" readonly/>
                                         <p class="help-block">31/01/2018</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>หมายเหตุ / Remark</label>
+                                        <input type="text" id="purchase_order_remark" name="purchase_order_remark" value="<? echo $purchase_order['purchase_order_remark'];?>"  class="form-control"  />
+                                        <p class="help-block">-</p>
                                     </div>
                                 </div>
 

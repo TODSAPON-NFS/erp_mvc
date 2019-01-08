@@ -159,7 +159,7 @@
             document.getElementById('customer_code').value = data.customer_code;
             document.getElementById('invoice_customer_name').value = data.customer_name_en ;
             document.getElementById('invoice_customer_branch').value = data.customer_branch ;
-            document.getElementById('invoice_customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
+            document.getElementById('invoice_customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3+ " " + data.customer_zipcode;
             document.getElementById('invoice_customer_tax').value = data.customer_tax ;
             document.getElementById('employee_id').value = data.sale_id ;
             console.log(data.sale_id);

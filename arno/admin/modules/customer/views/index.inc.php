@@ -118,7 +118,8 @@ if(!isset($_GET['action'])){
     $updateby =  $customer['updateby'];
     $lastupdate =  $customer['lastupdate'];
     $product = $model_customer->getCustomerProductBy($_GET['id']);
-
+    $invoice = $model_customer->getCustomerProductInvoiceBy($_GET['id']);
+    $quotation = $model_customer-> getCustomerProductQuoBy($_GET['id']);
     // echo "<pre>";
     // print_r($product);
     // echo"</pre>";

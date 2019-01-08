@@ -549,7 +549,8 @@ class PurchaseOrderModel extends BaseModel{
         $data_rspt = [] /*request special tool*/, 
         $data_rrt = [] /*request regrind tool*/, 
         $search = "" /*คำค้น*/){
-
+            $data_cpo = [];
+            $data_pr = [];
         $data = [];
 
         if($type == "BLANKED"){

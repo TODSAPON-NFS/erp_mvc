@@ -62,6 +62,31 @@ class CustomerModel extends BaseModel{
         $sql = "SELECT * FROM `tb_customer_purchase_order` 
         LEFT JOIN tb_customer_purchase_order_list ON tb_customer_purchase_order.customer_purchase_order_id = tb_customer_purchase_order_list.customer_purchase_order_id
         LEFT JOIN tb_product ON tb_customer_purchase_order_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_product_customer_price ON tb_customer_purchase_order_list.product_id = tb_product_customer_price.product_id 
+        LEFT JOIN tb_user ON tb_customer_purchase_order.employee_id = tb_user.user_id
+
+        WHERE tb_customer_purchase_order.customer_id =  $customer_id
+
+        ";
+        // echo "<pre>";
+        // print_r($sql);
+        // echo"</pre>";
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+
+    function getCustomerProductInvoiceBy($customer_id){
+        $sql = "SELECT * FROM `tb_customer_purchase_order` 
+        LEFT JOIN tb_customer_purchase_order_list ON tb_customer_purchase_order.customer_purchase_order_id = tb_customer_purchase_order_list.customer_purchase_order_id
+        LEFT JOIN tb_product ON tb_customer_purchase_order_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_product_customer_price ON tb_customer_purchase_order_list.product_id = tb_product_customer_price.product_id 
+        LEFT JOIN tb_user ON tb_customer_purchase_order.employee_id = tb_user.user_id
 
         LEFT JOIN tb_invoice_customer ON tb_customer_purchase_order.customer_id = tb_invoice_customer.customer_id
         WHERE tb_customer_purchase_order.customer_id =  $customer_id
@@ -78,7 +103,30 @@ class CustomerModel extends BaseModel{
             $result->close();
             return $data;
         }
+    }
 
+    function getCustomerProductQuoBy($customer_id){
+        $sql = "SELECT * FROM `tb_customer_purchase_order` 
+        LEFT JOIN tb_customer_purchase_order_list ON tb_customer_purchase_order.customer_purchase_order_id = tb_customer_purchase_order_list.customer_purchase_order_id
+        LEFT JOIN tb_product ON tb_customer_purchase_order_list.product_id = tb_product.product_id 
+        LEFT JOIN tb_product_customer_price ON tb_customer_purchase_order_list.product_id = tb_product_customer_price.product_id 
+        LEFT JOIN tb_user ON tb_customer_purchase_order.employee_id = tb_user.user_id
+
+        LEFT JOIN  tb_quotation ON tb_customer_purchase_order.customer_id = tb_quotation.customer_id
+        WHERE tb_customer_purchase_order.customer_id =  $customer_id
+
+        ";
+        // echo "<pre>";
+        // print_r($sql);
+        // echo"</pre>";
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
     }
 
     function getEndUserByCustomerID($customer_id){

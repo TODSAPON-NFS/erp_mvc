@@ -63,10 +63,7 @@ if($_GET['action'] == "pdf"){
 
     $supplier=$supplier_model->getSupplierByID($invoice_supplier_abroad['supplier_id']);
     $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($invoice_supplier_abroad['invoice_supplier_date_recieve'],$supplier['currency_id']);
-
-    echo '<pre>';
-    print_r($purchaseOrder_code);
-    echo '<pre>';
+ 
     $lines = 8;
 
     $page_max = (int)(count($invoice_supplier_abroad_lists) / $lines);
@@ -74,13 +71,13 @@ if($_GET['action'] == "pdf"){
         $page_max += 1;
     }
 
-    if($_GET['lan'] == "en"){
+    if($_GET['type'] == "cedit"){
 
-        include($path."view-pdf-en.inc.php");
+        require_once($path."view-pdf-cedit.inc.php");
 
     }else{
 
-        require_once($path."view-pdf-th.inc.php");
+        require_once($path."view-pdf-receive.inc.php");
 
     }
 

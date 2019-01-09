@@ -30,15 +30,15 @@ if($invoice_supplier_abroad['supplier_zipcode'] != ""){
     $zipcode = "";
 }
 
-if($invoice_supplier_abroad['invoice_supplier_abroad_tax'] != ""){
-    $invoice_supplier_abroad_tax = " ".$invoice_supplier_abroad['invoice_supplier_abroad_tax'];
+if($invoice_supplier_abroad['invoice_supplier_tax'] != ""){
+    $invoice_supplier_abroad_tax = " ".$invoice_supplier_abroad['invoice_supplier_tax'];
 }else{
     $invoice_supplier_abroad_tax = "-";
 }
 
 $lastname =  substr($invoice_supplier_abroad['user_lastname'],0,1);
 
-$total = 0;
+$$total = 0;
 for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
     $html[$page_index] = '
@@ -121,7 +121,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     </table>
             
 
-    <div style="line-height: 18px;" style="font-size:13px;" ><b>Head Office :</b> '.$company['company_address_en_1'].' '.$company['company_address_en_2'].' <br>'.$company['company_address_en_3'].' 
+    <div style="line-height: 18px;" style="font-size:13px;" ><b>สำนักงานใหญ่ :</b> '.$company['company_address_1'].' '.$company['company_address_2'].' <br>'.$company['company_address_3'].' 
     Tel.'.$company['company_tel'].' Fax. '.$company['company_fax'].' Tax. '.$company['company_tax'].'</div>
 
  
@@ -131,7 +131,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <table width="100%">
                     <tr>
                         <td width="64px" valign="top" style="padding:4px;line-height: 18px;">
-                        <b>Code</b>  
+                        <b>รหัสผู้ขาย</b>  
                         </td>
                         <td colspan="3" valign="top" style="padding:4px;line-height: 18px;">
                         '.$invoice_supplier_abroad['supplier_code'].'
@@ -139,7 +139,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         <td width="64px" valign="top" style="padding:4px;line-height: 18px;">
-                        <b>Name</b>  
+                        <b>ชื่อผู้ขาย</b>  
                         </td>
                         <td colspan="3" valign="top" style="padding:4px;line-height: 18px;">
                         '.$invoice_supplier_abroad['supplier_name_en'].' '.$branch.'
@@ -147,7 +147,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                     <tr>
                         <td width="64px" valign="top" style="padding:4px;line-height: 18px;">
-                        <b>Address</b> 
+                        <b>ที่อยู่</b> 
                         </td>
                         <td colspan="3" style="padding:4px;line-height: 18px;"> 
                             '. nl2br ( $invoice_supplier_abroad['supplier_address_1']).' <br> 
@@ -158,13 +158,13 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         <td width="64px" valign="top" style="padding:4px;line-height: 18px;">
-                        <b>Tel.</b>  
+                        <b>โทร.</b>  
                         </td>
                         <td  valign="top" style="padding:4px;line-height: 18px;">
                         '.$tel.'
                         </td> 
                         <td width="64px" valign="top" style="spadding:4px;line-height: 18px;">
-                        <b>Fax.</b>  
+                        <b>โทรสาร.</b>  
                         </td>
                         <td  valign="top" style="padding:4px;line-height: 18px;">
                         '.$fax.'
@@ -176,79 +176,92 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <table width="100%">
                     <tr>
                         <td width="64px"  valign="middle" align="left">
-                        <b>No.</b>
+                        <b>เลขที่</b>
                         </td>
-                        <td  valign="middle" align="left"> '.$invoice_supplier_abroad['invoice_supplier_abroad_code_gen'].'
+                        <td  valign="middle" align="left">
+                        '.$invoice_supplier_abroad['invoice_supplier_code_gen'].'
+                        </td>
                         
-                        </td>
                     </tr>
 
                     
+                    <tr>                      
+                        <td width="64px"  valign="middle" align="left">
+                        <b>วันที่</b>
+                        </td>
+                        <td  valign="middle" align="left">
+                         '.$invoice_supplier_abroad['invoice_supplier_date'].'
+                        </td>
+                    </tr>
+                  
                     <tr>
                         
                         <td width="64px"  valign="middle" align="left">
-                        <b>Date</b>
+                        <b>เครดิต </b>
                         </td>
                         <td  valign="middle" align="left">
-                         '.$invoice_supplier_abroad['invoice_supplier_abroad_date'].'
+                         '.$invoice_supplier_abroad['invoice_supplier_due_day'].' วัน
                         </td>
 
                     </tr>
-                    <tr>                       
+
+                    <tr>                      
                         <td width="64px"  valign="middle" align="left">
-                        <b>Credit </b>
+                        <b>ครบกำหนด</b>
                         </td>
                         <td  valign="middle" align="left">
-                         '.$invoice_supplier_abroad['invoice_supplier_abroad_due_day'].' Day
+                         '.$invoice_supplier_abroad['invoice_supplier_due'].'
                         </td>
                     </tr>
-
-                    <tr>                       
-                        <td width="64px"  valign="middle" align="left">
-                        <b> Due </b>
+                    
+                    
+                    <tr>                  
+                        <td width="110px"  valign="middle" align="left">
+                        <b>ใบกำกับภาษี </b>
                         </td>
-                        <td  valign="middle" align="left">
-                        '.$invoice_supplier_abroad['invoice_supplier_abroad_due'].'
-                        </td>
-                    </tr>
-
-                    <tr>                       
-                        <td width="100px"  valign="middle" align="left">
-                        <b> Supplier Invoice </b>
-                        </td>
+                        
                         <td   valign="middle" align="left">
-                        '.$invoice_supplier_abroad['invoice_supplier_abroad_code'].'              
+                            '.$invoice_supplier_abroad['invoice_supplier_code'].'
                         </td>
-                     </tr>
-
-                    <tr>                       
-                        <td width="100px"  valign="middle" align="left">
-                        <b> Purchase Order </b>
+                    </tr>
+                      
+                    <tr>                  
+                        <td width="64px"  valign="middle" align="left">
+                        <b>ใบสั่งซื้อ </b>
                         </td>
-                        <td  valign="middle" align="left"> '.$purchaseOrder_code['purchase_order_code'].'                         
-                        </td>
+                        <td  valign="middle" align="left"> '.$purchaseOrder_code['purchase_order_code'].' </td>
+                                      
                     </tr>
 
                     <tr>
                         
                         <td width="64px"  valign="middle" align="left">
-                        <b>Delivery  </b>
+                        <b>การจัดส่ง </b>
                         </td>
                         <td  valign="middle" align="left">
-                        '.$invoice_supplier_abroad['invoice_supplier_abroad_delivery_by'].'
+                         '.$invoice_supplier_abroad['purchase_order_delivery_by'].'
                         </td>
 
                     </tr> 
-                    <tr>
-                        
+                    <tr>                  
                         <td width="64px"  valign="middle" align="left">
-                        <b>Prepared by </b>
+                        <b>ผู้นำเข้าข้อมูล </b>
                         </td>
                         <td  valign="middle" align="left">
-                         '.$invoice_supplier_abroad['user_name'].' '.$lastname.'.
+                         '.$invoice_supplier_abroad['user_name'].' 
                         </td>
-                        
                     </tr>
+                    <tr>                  
+                        <td width="64px"  valign="middle" align="left">
+                        <b>อัตราแลกเปลี่ยน </b>
+                        </td>
+                        <td  valign="middle" align="left">
+                         '.number_format($exchange_rate_baht['exchange_rate_baht_value'],5).' 
+                        </td>
+                    </tr>
+
+                   
+
                 </table>
 
             </td>
@@ -262,19 +275,28 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <th style="text-align:center; padding:4px 0px;" >No.</th>
                     <th style="text-align:center; padding:4px 0px;" >Product name / Description</th>
                     <th style="text-align:center; padding:4px 0px;" >Qty</th>
-                    <th style="text-align:center; padding:4px 0px;" >@</th>
+                    <th style="text-align:center; padding:4px 0px;" >@</th> 
                     <th style="text-align:center; padding:4px 0px;" >Amount </th> 
+                    <th style="text-align:center; padding:4px 0px;" >Import duty</th>
+                    <th style="text-align:center; padding:4px 0px;" >Freight in</th>
+                    <th style="text-align:center; padding:4px 0px;" >Cost total </th> 
                 </tr>
             </thead>
 
             <tbody  >
     ';
  
-   
+    
     //count($tax_reports)
     for($i=$page_index * $lines; $i < count($invoice_supplier_abroad_lists) && $i < $page_index * $lines + $lines; $i++){ 
+        $invoice_supplier_list_cost_total =$invoice_supplier_abroad_lists[$i]['invoice_supplier_list_cost'] * $invoice_supplier_abroad_lists[$i]['invoice_supplier_list_qty'];
+        $invoice_supplier_list_import_duty =$invoice_supplier_abroad_lists[$i]['invoice_supplier_list_import_duty'] * $invoice_supplier_abroad_lists[$i]['invoice_supplier_list_qty'];
+        $invoice_supplier_list_freight_in =$invoice_supplier_abroad_lists[$i]['invoice_supplier_list_freight_in'] * $invoice_supplier_abroad_lists[$i]['invoice_supplier_list_qty'];
 
-        $total += $invoice_supplier_abroad_lists[$i]['invoice_supplier_abroad_list_total'];
+        $total += $invoice_supplier_list_cost_total;
+        $import_duty_total += $invoice_supplier_list_import_duty;
+        $freight_in_total += $invoice_supplier_list_freight_in;
+
                 $html[$page_index] .= ' 
                 <tr class="odd gradeX">
                 <td align="center" valign="top" style="height:48px;width:48px;">
@@ -285,13 +307,22 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                    <span style="font-size:10px;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $invoice_supplier_abroad_lists[$i]['product_name'].'</span>  
                 </td> 
                 <td align="right" valign="top" width="80px">
-                    '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_abroad_list_qty'],0).'
+                    '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_qty'],0).'
                 </td> 
                 <td align="right" valign="top" width="100px">
-                    '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_abroad_list_price'],2).'
+                    '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_price'],2).'
                 </td>
                 <td align="right" valign="top" width="120px">
-                    '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_abroad_list_total'],2).'
+                    '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_total'],2).'
+                </td>
+                <td align="right" valign="top" width="100px">
+                    '. number_format($invoice_supplier_list_import_duty,2).'
+                </td>
+                <td align="right" valign="top" width="100px">
+                    '. number_format($invoice_supplier_list_freight_in,2).'
+                </td>
+                <td align="right" valign="top" width="120px">
+                    '. number_format($invoice_supplier_list_cost_total,2).'
                 </td>
             </tr>
         ';
@@ -318,21 +349,29 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                             <td align="right">
                                  
                             </td>
+                            <td align="right">
+                                 
+                            </td>
+                            <td align="right">
+                                 
+                            </td>
+                            <td align="right">
+                                 
+                            </td>
                         </tr>
                     ';
             }
-        } 
-        $total_price = number_format($total,2); 
-        $vat_price =  number_format($total * $vat/100,2);
-        $net_price = number_format($total+($total * $vat/100),2); 
-        $str = '';//$number_2_text->convert_en($net_price);
+        }  
     
-        
-    }else{
-        $total_price = "-";
-        $vat_price = "-";
-        $net_price  ="-";
-        $str="";
+        $import_duty = number_format($import_duty_total,2);
+        $freight_in = number_format($freight_in_total,2) ;
+        $invoice_supplier_total_price = number_format($invoice_supplier_abroad['invoice_supplier_total_price'],2);
+        $total_cost = number_format($total,2);
+    }else{ 
+        $import_duty = "-";
+        $freight_in = "-";
+        $invoice_supplier_total_price = "-";
+        $total_cost = "-";
     }
    
 
@@ -340,35 +379,26 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             </tbody>
             <tfoot>
                 <tr class="odd gradeX" >
-                    <td colspan="3" rowspan="2" align="left" valign="top">
+                    <td colspan="2" align="left" valign="top">
                         <b>Remark</b> 
                     </td>
-                    <td align="left">
-                        <b>Total price</b>
+                    <td align="left" colspan="2" >
+                        <b>Summation </b> 
                     </td>
                     <td style="text-align: right;" >
-                    '.  $total_price .'
-                    </td>
-                </tr>    
-                <tr class="odd gradeX" >
-                    <td align="left"> 
-                        <b>Vat '.number_format($vat).' % </b>
+                    '.  $invoice_supplier_total_price  .'
                     </td>
                     <td style="text-align: right;" >
-                    '. $vat_price .'
-                    </td>
-                </tr>    
-                <tr class="odd gradeX" >
-                    <td colspan="3" align="center">
-                        '. $str.'
-                    </td>
-                    <td align="left">
-                        <b>Net price</b>
+                    '.  $import_duty  .'
                     </td>
                     <td style="text-align: right;" >
-                    '. $net_price .'
+                    '. $freight_in .'
+                    </td>
+                    <td style="text-align: right;" >
+                    '. $total_cost  .'
                     </td>
                 </tr>    
+                 
             </tfoot>
         </table>
         
@@ -385,7 +415,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         <td  align="center">
-                        Receive by
+                        ผู้รับสินค้า
                         </td>
                     </tr>
                     <tr>
@@ -403,7 +433,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         <td align="center">
-                        Authorized signature
+                        ผู้ตรวจสอบ
                         </td>
                     </tr>
                     <tr>

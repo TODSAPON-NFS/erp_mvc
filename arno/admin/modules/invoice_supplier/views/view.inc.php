@@ -303,7 +303,7 @@
                                     <td align="right"><?php echo number_format($invoice_suppliers[$i]['invoice_supplier_net_price'],2); ?></td>
 
                                     <td>
-                                        <a href="?app=invoice_supplier&action=detail&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
+                                        <a href="?app=invoice_supplier&action=detail&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" style="color:#0045E6;">
                                             <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                         </a>
  
@@ -315,19 +315,22 @@
                                             <i class="fa fa-money" aria-hidden="true"></i>
                                         </a>
 
-                                        <a href="print.php?app=invoice_supplier_abroad&action=pdf&type=cedit&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" target="_blank" title="พิมพ์เอกสารภาษาไทย"  style="color:orange;">
+                                        <a href="print.php?app=invoice_supplier_abroad&action=pdf&type=cedit&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" target="_blank" title="พิมพ์ใบตั้งเจ้าหนี้ต่างประเทศ"  style="color:green;">
                                             <i class="fa fa-print" aria-hidden="true"></i>
                                         </a>
-                                        <a href="print.php?app=invoice_supplier_abroad&action=pdf&type=receive&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" target="_blank" title="พิมพ์เอกสารภาษาอังกฤษ">
+                                        <a href="print.php?app=invoice_supplier_abroad&action=pdf&type=receive&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" target="_blank" title="พิมพ์ใบรับสินค้า">
                                             <i class="fa fa-print" aria-hidden="true"></i>
                                         </a> 
 
                                         <?PHP } else { ?>
-
+                                        
+                                        <?PHP /*
                                         <a href="print.php?app=invoice_supplier&action=pdf&lan=th&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" target="_blank" title="พิมพ์เอกสารภาษาไทย"  style="color:orange;">
                                             <i class="fa fa-print" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="print.php?app=invoice_supplier&action=pdf&lan=en&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" target="_blank" title="พิมพ์เอกสารภาษาอังกฤษ">
+                                        </a> */
+                                        ?>
+
+                                        <a href="print.php?app=invoice_supplier&action=pdf&lan=en&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" target="_blank" title="พิมพ์ใบรับสินค้า">
                                             <i class="fa fa-print" aria-hidden="true"></i>
                                         </a> 
 
@@ -335,7 +338,7 @@
 
 
                                         <?PHP if($license_purchase_page == "Medium" || $license_purchase_page == "High"){ ?>
-                                        <a href="?app=invoice_supplier&action=update&sort=<?PHP echo $invoice_suppliers[$i]['supplier_domestic'];?>&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>">
+                                        <a href="?app=invoice_supplier&action=update&sort=<?PHP echo $invoice_suppliers[$i]['supplier_domestic'];?>&id=<?php echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" style="color:orange;">
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                         </a> 
                                         <?PHP } ?>

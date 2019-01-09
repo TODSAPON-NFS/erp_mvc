@@ -71,9 +71,9 @@ if($_GET['action'] == "pdf"){
         $page_max += 1;
     }
 
-    if($_GET['type'] == "cedit"){
+    if($_GET['type'] == "credit"){
 
-        require_once($path."view-pdf-cedit.inc.php");
+        require_once($path."view-pdf-credit.inc.php");
 
     }else{
 

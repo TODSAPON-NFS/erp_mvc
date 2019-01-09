@@ -632,7 +632,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
             $data_sub['invoice_supplier_freight_in_list_total'] = (float)filter_var($invoice_supplier_freight_in_list_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION); 
 
             //echo "****"; 
-            if($invoice_supplier_list_id != '0' && $invoice_supplier_list_id != ''){
+            if($invoice_supplier_freight_in_list_id[$i] != '0' && $invoice_supplier_freight_in_list_id[$i] != ''){
                 $invoice_supplier_freight_in_list_model->updateInvoiceSupplierFreightInListById($data_sub,$invoice_supplier_list_id);
             }else{
                 $id = $invoice_supplier_freight_in_list_model->insertInvoiceSupplierFreightInList($data_sub);
@@ -651,8 +651,8 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
             $data_sub['invoice_supplier_import_duty_list_total'] = (float)filter_var($invoice_supplier_import_duty_list_total[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION); 
 
             //echo "****"; 
-            if($invoice_supplier_list_id != '0' && $invoice_supplier_list_id != ''){
-                $invoice_supplier_import_duty_list_model->updateInvoiceSupplierFreightInListById($data_sub,$invoice_supplier_list_id);
+            if($invoice_supplier_import_duty_list_id[$i] != '0' && $invoice_supplier_import_duty_list_id[$i] != ''){
+                $invoice_supplier_import_duty_list_model->updateInvoiceSupplierImportDutyListById($data_sub,$invoice_supplier_list_id);
             }else{
                 $id = $invoice_supplier_import_duty_list_model->insertInvoiceSupplierImportDutyList($data_sub);
             }
@@ -661,7 +661,7 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         if($output){
         
 ?>
-        <script>window.location="index.php?app=invoice_supplier"</script>
+        <script>window.location="index.php?app=invoice_supplier&action=update&id=<?php echo $invoice_supplier_id;?>";</script>
 <?php
         }else{
 ?>

@@ -180,6 +180,7 @@
         */
 
         else{
+            calculateCost();
             $('select[name="stock_group_id[]"]').prop('disabled', false);
             return true;
         }
@@ -232,7 +233,11 @@
         $(id).closest('tr').remove();
         calculateAll();
         <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+        
+        calculate_import_duty();
+        calculate_freight_in();
         calculateCost();
+
         <?PHP } ?>
         update_line();
      }
@@ -284,7 +289,7 @@
                     '<input type="text" class="form-control" name="invoice_supplier_freight_in_list_name[]" value="" />'+
                 '</td>'+ 
                 '<td>'+
-                    '<input type="text" class="form-control" style="text-align:right;" name="invoice_supplier_freight_in_list_total[]" value="0" onchange="calculate_freight_in()" />'+
+                    '<input type="text" class="form-control" style="text-align:right;" name="invoice_supplier_freight_in_list_total[]" value="0" onchange="calculate_freight_in();calculateCost();" />'+
                 '</td>'+ 
                 '<td>'+ 
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -314,7 +319,7 @@
                     '<input type="text" class="form-control" name="invoice_supplier_import_duty_list_name[]" value="" />'+
                 '</td>'+ 
                 '<td>'+
-                    '<input type="text" class="form-control" style="text-align:right;" name="invoice_supplier_import_duty_list_total[]" value="0" onchange="calculate_import_duty()"/>'+
+                    '<input type="text" class="form-control" style="text-align:right;" name="invoice_supplier_import_duty_list_total[]" value="0" onchange="calculate_import_duty();calculateCost();"/>'+
                 '</td>'+ 
                 '<td>'+ 
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -850,6 +855,8 @@
 
     function calculateCost(){
 
+        update_sum(null);
+
         var invoice_supplier_list_duty = document.getElementsByName('invoice_supplier_list_duty[]');
         var invoice_supplier_list_fix_type = document.getElementsByName('invoice_supplier_list_fix_type[]');
         var invoice_supplier_list_import_duty = document.getElementsByName('invoice_supplier_list_import_duty[]');
@@ -880,33 +887,116 @@
             freight_in = 0.0;
         }
 
-        invoice_supplier_total_price_ex = invoice_supplier_total_price * exchange_rate_baht; 
+        var import_duty_amount = import_duty;
+        var freight_in_amount = freight_in;
 
+        invoice_supplier_total_price_ex = invoice_supplier_total_price ; 
+
+        var import_duty_val = [];
+        var invoice_supplier_total_price_ex_use = 0;
+        // คำนวนหาค่า Import Duty 
+
+        for(var i=0; i < invoice_supplier_list_fix_type.length; i++){
+            var val = 0;
+            var total = parseFloat(invoice_supplier_list_total[i].value.replace(',',''));
+
+            if(invoice_supplier_list_fix_type[i].value == 'percent-fix'){
+
+                val = (parseFloat(invoice_supplier_list_duty[i].value.replace(',','')) / 100 ) * total;  
+
+            }else if(invoice_supplier_list_fix_type[i].value == 'price-fix'){
+
+                val = parseFloat(invoice_supplier_list_duty[i].value.replace(',',''));   
+
+            }else{
+                val = 0;
+                total = 0;
+            }
+
+            if(import_duty_amount - val < 0){
+                val = import_duty_amount;
+                import_duty_amount = 0;
+            }else{
+                import_duty_amount = import_duty_amount - val;
+            }
+            
+
+            import_duty_val.push(val);
+            invoice_supplier_total_price_ex_use += total;
+
+
+        }
+
+
+
+
+
+        // คำนวนหาค่า Import Duty ภาษีที่เหลือ
+        // คำนวนหาค่า Freight In 
+        // คำนวนหาค่า Cost Total
+
+        invoice_supplier_total_price_ex = invoice_supplier_total_price_ex - invoice_supplier_total_price_ex_use;
         for(var i=0; i < invoice_supplier_list_cost.length; i++){
 
-            var cost_price_total = parseFloat(invoice_supplier_list_total[i].value.toString().replace(new RegExp(',', 'g'),'')) * exchange_rate_baht ;
+            var cost_price_total = parseFloat(invoice_supplier_list_total[i].value.toString().replace(new RegExp(',', 'g'),''));
             var qty = parseFloat(invoice_supplier_list_qty[i].value.toString().replace(new RegExp(',', 'g'),''));
-            var cost_price_duty = cost_price_total / invoice_supplier_total_price_ex * import_duty;
+            
+            // คำนวน Import Duty ของสินค้าแต่ละชิ้น
+            var cost_price_duty = 0 ; 
+
+            if(invoice_supplier_list_fix_type[i].value == 'no-fix' || invoice_supplier_list_fix_type[i].value == "" ){
+                invoice_supplier_list_fix_type[i].value = 'no-fix';
+                cost_price_duty = cost_price_total / invoice_supplier_total_price_ex * import_duty;
+            }else{
+                cost_price_duty = import_duty_val[i];
+            }
+
+            if(cost_price_duty <= import_duty_amount){
+                import_duty_amount = import_duty_amount - cost_price_duty;
+            }else if (i + 1 < invoice_supplier_list_cost.length) {
+                cost_price_duty = import_duty_amount;
+            }else{
+                cost_price_duty = import_duty_amount;
+            } 
+            cost_price_duty = cost_price_duty / qty;
+            invoice_supplier_list_import_duty[i].value = cost_price_duty;//.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
+
+
+            // คำนวน Freight in ของสินค้าแต่ละชิ้น
             var cost_price_f = cost_price_total / invoice_supplier_total_price_ex * freight_in;
-            var cost_total = (cost_price_f + cost_price_duty + cost_price_total)/qty;
+            if(cost_price_f <= freight_in_amount){
+                freight_in_amount = freight_in_amount - cost_price_f;
+            }else if (i + 1 < invoice_supplier_list_cost.length) {
+                cost_price_f = freight_in_amount;
+            }else{
+                cost_price_f = freight_in_amount;
+            } 
+            cost_price_f = cost_price_f / qty;
+            invoice_supplier_list_freight_in[i].value = cost_price_f;//.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 
-            invoice_supplier_list_import_duty[i].value = cost_price_duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-            invoice_supplier_list_freight_in[i].value = cost_price_f.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 
+
+            // คำนวน Cost Total ของสินค้าแต่ละชิ้น
+            var cost_total = (cost_price_f + cost_price_duty + cost_price_total / qty);  
 
             if (invoice_supplier_total_price_ex > 0){
-                invoice_supplier_list_cost[i].value = cost_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                invoice_supplier_list_cost[i].value = cost_total;//.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
             }else{
                 invoice_supplier_list_cost[i].value = 0;                
             }
         }
+
+
+
+
 
         document.getElementById('exchange_rate_baht').value = numberWithCommas(exchange_rate_baht);
         document.getElementById('invoice_supplier_total_price').value = invoice_supplier_total_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
         document.getElementById('import_duty').value = import_duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
         document.getElementById('freight_in').value = freight_in.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 
-        update_sum(null);
+        
     }
 
 
@@ -975,17 +1065,28 @@
         <div class="panel panel-default">
             <div class="panel-heading">
             
-                <div class="col-md-8">
+                <div class="col-md-6">
                 แก้ไขใบกำกับภาษีรับเข้า / Edit Invoice Supplier 
                 </div>
-                <div class="col-md-4" align="right">
+                <div class="col-md-6" align="right">
                     <?PHP if($previous_id != ""){?>
                     <a class="btn btn-primary" href="?app=invoice_supplier&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
                     <?PHP } ?>
 
                     <a class="btn btn-success "  href="?app=invoice_supplier&action=insert&sort=<?php echo $sort;?>" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
-                    <a class="btn btn-danger" href="print.php?app=invoice_supplier&action=pdf&lan=en&sort=<?php echo $sort;?>&id=<?php echo $invoice_supplier_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
-                        
+                    
+                    <?PHP if ($sort == "ภายนอกประเทศ") { ?>
+
+                        <a class="btn btn-danger" href="print.php?app=invoice_supplier_abroad&action=pdf&type=credit&sort=<?php echo $sort;?>&id=<?php echo $invoice_supplier_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ใบตั้งเจ้าหนี้ต่างประเทศ </a>
+                    
+                        <a class="btn btn-danger" href="print.php?app=invoice_supplier_abroad&action=pdf&type=receive&sort=<?php echo $sort;?>&id=<?php echo $invoice_supplier_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ใบรับสินค้า </a>
+                    
+                    <?PHP } else { ?>
+
+                    <a class="btn btn-danger" href="print.php?app=invoice_supplier&action=pdf&lan=th&sort=<?php echo $sort;?>&id=<?php echo $invoice_supplier_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ใบรับสินค้า </a>
+                    
+                    <?PHP } ?>
+
                     <?PHP if($next_id != ""){?>
                     <a class="btn btn-primary" href="?app=invoice_supplier&action=update&sort=<?php echo $sort;?>&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
                     <?PHP } ?>
@@ -1438,16 +1539,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php for($i=0; $i < count($invoice_supplier_import_duty_list); $i++){ ?>
+                                        <?php for($i=0; $i < count($invoice_supplier_import_duty_lists); $i++){ ?>
                                             <tr class="odd gradeX">'+
                                                 <td class="sorter" style="vertical-align: middle;text-align:center;">
+                                                <?PHP echo $i + 1; ?>
                                                 </td>
                                                 <td>
-                                                    <input type="hidden" name="invoice_supplier_import_duty_list_id[]" value="<?php echo $invoice_supplier_import_duty_list[$i]['invoice_supplier_import_duty_list_id']; ?>" />
-                                                    <input type="text" class="form-control" name="invoice_supplier_import_duty_list_name[]" value="<?php echo $invoice_supplier_import_duty_list[$i]['invoice_supplier_import_duty_list_name']; ?>" />
+                                                    <input type="hidden" name="invoice_supplier_import_duty_list_id[]" value="<?php echo $invoice_supplier_import_duty_lists[$i]['invoice_supplier_import_duty_list_id']; ?>" />
+                                                    <input type="text" class="form-control" name="invoice_supplier_import_duty_list_name[]" value="<?php echo $invoice_supplier_import_duty_lists[$i]['invoice_supplier_import_duty_list_name']; ?>" />
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" style="text-align:right;" name="invoice_supplier_import_duty_list_total[]" value="<?php echo number_format($invoice_supplier_import_duty_list[$i]['invoice_supplier_import_duty_list_total'],2);?>" onchange="calculate_import_duty()" />
+                                                    <input type="text" class="form-control" style="text-align:right;" name="invoice_supplier_import_duty_list_total[]" value="<?php echo number_format($invoice_supplier_import_duty_lists[$i]['invoice_supplier_import_duty_list_total'],2);?>" onchange="calculate_import_duty();calculateCost();" />
                                                 </td>
                                                 <td>
                                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -1499,16 +1601,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php for($i=0; $i < count($invoice_supplier_freight_in_list); $i++){ ?>
+                                        <?php for($i=0; $i < count($invoice_supplier_freight_in_lists); $i++){ ?>
                                             <tr class="odd gradeX">'+
                                                 <td class="sorter" style="vertical-align: middle;text-align:center;">
+                                                <?PHP echo $i + 1; ?>
                                                 </td>
                                                 <td>
-                                                    <input type="hidden" name="invoice_supplier_freight_in_list_id[]" value="<?php echo $invoice_supplier_freight_in_list[$i]['invoice_supplier_freight_in_list_id']; ?>" />
-                                                    <input type="text" class="form-control" name="invoice_supplier_freight_in_list_name[]" value="<?php echo $invoice_supplier_freight_in_list[$i]['invoice_supplier_freight_in_list_name']; ?>" />
+                                                    <input type="hidden" name="invoice_supplier_freight_in_list_id[]" value="<?php echo $invoice_supplier_freight_in_lists[$i]['invoice_supplier_freight_in_list_id']; ?>" />
+                                                    <input type="text" class="form-control" name="invoice_supplier_freight_in_list_name[]" value="<?php echo $invoice_supplier_freight_in_lists[$i]['invoice_supplier_freight_in_list_name']; ?>" />
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" style="text-align:right;" name="invoice_supplier_freight_in_list_total[]" value="<?php echo number_format($invoice_supplier_freight_in_list[$i]['invoice_supplier_freight_in_list_total'],2);?>" onchange="calculate_freight_in()" />
+                                                    <input type="text" class="form-control" style="text-align:right;" name="invoice_supplier_freight_in_list_total[]" value="<?php echo number_format($invoice_supplier_freight_in_lists[$i]['invoice_supplier_freight_in_list_total'],2);?>" onchange="calculate_freight_in();calculateCost();" />
                                                 </td>
                                                 <td>
                                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">

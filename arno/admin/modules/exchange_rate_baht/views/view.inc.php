@@ -77,6 +77,7 @@
                     </div>    
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
+                            <a href="index.php?app=invoice_supplier" class="btn btn-default">Back</a>
                             <a href="?app=currency_type&action=view" class="btn btn-primary">Reset</a>
                             <button type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>
@@ -103,8 +104,8 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <form action="?app=exchange_rate_baht" method="post">
-
+                            <form action="index.php?app=exchange_rate_baht" method="get">
+                                <input type="hidden" name="app" value="exchange_rate_baht" />
                                 <div class="row">
                                     <div class="col-lg-3">
                                             <label>จากวันที่ / Date Start </label>
@@ -119,7 +120,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6" align="left" style="padding-top:24px;">
-                                        <button type="submit" class="btn btn-success">Veiw</button>
+                                        <button type="submit" class="btn btn-success">Search</button>
                                     </div>
                                     
                                 </div>   

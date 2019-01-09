@@ -46,13 +46,18 @@ if(!isset($_GET['keyword'])){
     $_SESSION['keyword'] = $keyword;
 }
  
-$start = $date_start; 
-$end = $date_end;
+if($date_start == ""){
+    $date_start = date('01-m-Y'); 
+}
+
+if($date_end == ""){ 
+    $date_end  = date('t-m-Y');
+}
 
 $exchange_rate_baht_id = $_GET['id'];
 
 if(!isset($_GET['action'])){
-    $exchange_rate_bahts = $exchange_rate_baht_model->getExchangeRateBahtByDate($start, $end,$lock_1,$lock_2);
+    $exchange_rate_bahts = $exchange_rate_baht_model->getExchangeRateBahtByDate($date_start, $date_end,$lock_1,$lock_2);
     $currencies = $currencies_model->getCurrencyBy();
     if($exchange_rate_baht_id != ""){
         $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtById($exchange_rate_baht_id); 
@@ -60,7 +65,7 @@ if(!isset($_GET['action'])){
     require_once($path.'view.inc.php');
 
 }else if($_GET['action'] == 'update'){
-    $exchange_rate_bahts = $exchange_rate_baht_model->getExchangeRateBahtByDate($start, $end,$lock_1,$lock_2);
+    $exchange_rate_bahts = $exchange_rate_baht_model->getExchangeRateBahtByDate($date_start, $date_end,$lock_1,$lock_2);
     $currencies = $currencies_model->getCurrencyBy();
     if($exchange_rate_baht_id != ""){
         $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtById($exchange_rate_baht_id); 
@@ -110,13 +115,10 @@ if(!isset($_GET['action'])){
 
 }else{
 
-    $exchange_rate_bahts = $exchange_rate_baht_model->getExchangeRateBahtByDate($start, $end,$lock_1,$lock_2);
+    $exchange_rate_bahts = $exchange_rate_baht_model->getExchangeRateBahtByDate($date_start, $date_end,$lock_1,$lock_2);
     $currencies = $currencies_model->getCurrencyBy();
     if($exchange_rate_baht_id != ""){
-        $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtById($exchange_rate_baht_id);
-        $dt = explode(' ',$exchange_rate_baht['exchange_rate_baht_baht_date']);
-        $dt = explode('-',$dt[0]);
-        $exchange_rate_baht['exchange_rate_baht_baht_date'] =  $dt[2].'-'.$dt[1].'-'.$dt[0];
+        $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtById($exchange_rate_baht_id); 
     }
     require_once($path.'view.inc.php');
 

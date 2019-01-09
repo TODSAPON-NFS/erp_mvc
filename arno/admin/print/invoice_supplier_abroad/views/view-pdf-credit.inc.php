@@ -98,10 +98,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     }
 
 </style>';
-
-/*
-
-*///echo $invoice_supplier_abroad['supplier_code'];
+ 
     $html[$page_index] .= '
 <div class="main" style="padding-left:8px;">
  
@@ -257,7 +254,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <b>อัตราแลกเปลี่ยน </b>
                         </td>
                         <td  valign="middle" align="left">
-                         '.$exchange_rate_baht['exchange_rate_baht_value'].' 
+                        '.number_format($exchange_rate_baht['exchange_rate_baht_value'],5).' 
                         </td>
                     </tr>
 

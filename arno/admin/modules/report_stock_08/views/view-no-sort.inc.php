@@ -111,10 +111,10 @@
                 <br>
 
                 <table width="100%" class="table table-striped table-bordered table-hover" >
-                    <thead>
+                    <thead >
                         <tr>  
                             <th width="16%" colspan="2" style="text-align:center;">รหัสสินค้า</th>     
-                            <th align="center" width="28%" colspan="3" style="text-align:center;">ชื่อสินค้า</th>    
+                            <th align="center" width="28%" colspan="9" style="text-align:center;">ชื่อสินค้า</th>    
                             <!-- <th align="center" width="28%" colspan="3" style="text-align:center;">รายการจ่าย</th>    
                             <th align="center" width="28%" colspan="3" style="text-align:center;">คงเหลือ</th>     -->
                         </tr>

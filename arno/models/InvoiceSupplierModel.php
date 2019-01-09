@@ -10,6 +10,7 @@ class InvoiceSupplierModel extends BaseModel{
         if(!static::$db){
             static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
         }
+        mysqli_set_charset(static::$db,"utf8");
         $this->maintenance_stock =  new MaintenanceStockModel;
     }
 
@@ -146,7 +147,8 @@ class InvoiceSupplierModel extends BaseModel{
         FROM tb_invoice_supplier 
         LEFT JOIN tb_user ON tb_invoice_supplier.employee_id = tb_user.user_id 
         LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
-        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
+        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id         
+        LEFT JOIN tb_currency ON tb_supplier.currency_id = tb_currency.currency_id 
         WHERE invoice_supplier_id = '$id' 
         ";
 

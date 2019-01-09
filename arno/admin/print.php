@@ -30,6 +30,8 @@
         require_once("print/report_journal_04/views/index.inc.php");
     }elseif($_GET['app'] == "invoice_supplier"){
         require_once("print/invoice_supplier/views/index.inc.php");
+    }elseif($_GET['app'] == "invoice_supplier_abroad"){
+        require_once("print/invoice_supplier_abroad/views/index.inc.php");
     }
 
 /* ################################################### รายงานลูกหนี้ ################################################### */

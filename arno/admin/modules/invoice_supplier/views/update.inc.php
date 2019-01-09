@@ -662,7 +662,9 @@
                         '<td class="sorter">'+
                         '</td>'+ 
                         '<td>'+
-                            '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'" readonly />'+         
+                            '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'" readonly />'+  
+                            '<input type="hidden" name="invoice_supplier_list_fix_type[]" value="no-fix" />'+     
+                            '<input type="hidden" name="invoice_supplier_list_duty[]" value="0" />'+               
                             '<input type="hidden" name="invoice_supplier_list_freight_in[]" value="0" />'+     
                             '<input type="hidden" name="invoice_supplier_list_import_duty[]" value="0" />'+    
                             '<input type="hidden" name="invoice_supplier_list_currency_price[]" value="'+ purchase_price.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" />'+   
@@ -734,7 +736,9 @@
                 '<td class="sorter">'+
                 '</td>'+ 
                 '<td>'+
-                    '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+            
+                    '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+  
+                    '<input type="hidden" name="invoice_supplier_list_fix_type[]" value="no-fix" />'+     
+                    '<input type="hidden" name="invoice_supplier_list_duty[]" value="0" />'+                  
                     '<input type="hidden" name="invoice_supplier_list_freight_in[]" value="0" />'+     
                     '<input type="hidden" name="invoice_supplier_list_import_duty[]" value="0" />'+    
                     '<input type="hidden" name="invoice_supplier_list_currency_price[]" value="0" />'+   
@@ -1208,7 +1212,9 @@
                                 <td class="sorter">
                                     <?PHP echo ($i + 1); ?>.
                                 </td>
-                                <td><input type="hidden" name="purchase_order_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['purchase_order_list_id'];?>" /> 
+                                <td><input type="hidden" name="purchase_order_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['purchase_order_list_id'];?>" />   
+                                    <input type="hidden" name="invoice_supplier_list_fix_type[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_fix_type'];?>" />
+                                    <input type="hidden" name="invoice_supplier_list_duty[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_duty'];?>" />
                                     <input type="hidden" name="invoice_supplier_list_freight_in[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_freight_in'];?>" />
                                     <input type="hidden" name="invoice_supplier_list_import_duty[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_import_duty'];?>" />
                                     <input type="hidden" name="invoice_supplier_list_currency_price[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_currency_price'];?>" />

@@ -660,6 +660,8 @@
                         '</td>'+ 
                         '<td>'+
                             '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'"  />'+   
+                            '<input type="hidden" name="invoice_supplier_list_fix_type[]" value="no-fix" />'+     
+                            '<input type="hidden" name="invoice_supplier_list_duty[]" value="0" />'+     
                             '<input type="hidden" name="invoice_supplier_list_freight_in[]" value="0" />'+     
                             '<input type="hidden" name="invoice_supplier_list_import_duty[]" value="0" />'+     
                             '<input type="hidden" name="invoice_supplier_list_currency_price[]" value="'+ purchase_price.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" />'+     
@@ -731,7 +733,9 @@
                 '<td class="sorter">'+
                 '</td>'+ 
                 '<td>'+
-                    '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+       
+                    '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+ 
+                    '<input type="hidden" name="invoice_supplier_list_fix_type[]" value="no-fix" />'+     
+                    '<input type="hidden" name="invoice_supplier_list_duty[]" value="0" />'+          
                     '<input type="hidden" name="invoice_supplier_list_freight_in[]" value="0" />'+     
                     '<input type="hidden" name="invoice_supplier_list_import_duty[]" value="0" />'+    
                     '<input type="hidden" name="invoice_supplier_list_currency_price[]" value="0" />'+    
@@ -843,6 +847,8 @@
 
     function calculateCost(){
 
+        var invoice_supplier_list_duty = document.getElementsByName('invoice_supplier_list_duty[]');
+        var invoice_supplier_list_fix_type = document.getElementsByName('invoice_supplier_list_fix_type[]');
         var invoice_supplier_list_import_duty = document.getElementsByName('invoice_supplier_list_import_duty[]');
         var invoice_supplier_list_freight_in = document.getElementsByName('invoice_supplier_list_freight_in[]');
         var invoice_supplier_list_cost = document.getElementsByName('invoice_supplier_list_cost[]');
@@ -859,19 +865,25 @@
         if(isNaN(exchange_rate_baht)){
             exchange_rate_baht = 0.0;
         }
+
+
         if(isNaN(invoice_supplier_total_price)){
             invoice_supplier_total_price = 0.0;
         }
+
 
         if(isNaN(import_duty)){
             import_duty = 0.0;
         }
 
+
         if(isNaN(freight_in)){
             freight_in = 0.0;
         }
 
+
         invoice_supplier_total_price_ex = invoice_supplier_total_price * exchange_rate_baht; 
+
 
         for(var i=0; i < invoice_supplier_list_cost.length; i++){
 
@@ -881,7 +893,11 @@
             var cost_price_f = cost_price_total / invoice_supplier_total_price_ex * freight_in;
             var cost_total = (cost_price_f + cost_price_duty + cost_price_total)/qty;
 
+
+            
             invoice_supplier_list_import_duty[i].value = cost_price_duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
+
             invoice_supplier_list_freight_in[i].value = cost_price_f.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 
 
@@ -891,6 +907,7 @@
                 invoice_supplier_list_cost[i].value = 0;                
             }
         }
+
 
         document.getElementById('exchange_rate_baht').value = numberWithCommas(exchange_rate_baht);
         document.getElementById('invoice_supplier_total_price').value = invoice_supplier_total_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -1208,6 +1225,8 @@
                                     <?PHP echo ($i + 1); ?>.
                                 </td>
                                 <td><input type="hidden" name="purchase_order_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['purchase_order_list_id'];?>" />  
+                                    <input type="hidden" name="invoice_supplier_list_fix_type[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_fix_type'];?>" />
+                                    <input type="hidden" name="invoice_supplier_list_duty[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_duty'];?>" />
                                     <input type="hidden" name="invoice_supplier_list_freight_in[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_freight_in'];?>" />
                                     <input type="hidden" name="invoice_supplier_list_import_duty[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_import_duty'];?>" />
                                     <input type="hidden" name="invoice_supplier_list_currency_price[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_currency_price'];?>" />

@@ -6,7 +6,7 @@ if( (int)$purchase_order['supplier_branch'] * 1 == 0){
     $branch =  "Branch " . ((int)$purchase_order['supplier_branch'] * 1) ;
 } 
 
-if($supplier['vat_type'] == '0'){
+if($purchase_order['vat_type'] == '0'){
     $vat= '0';
 }else{
     $vat = $purchase_order['vat'];
@@ -19,7 +19,7 @@ if($purchase_order['supplier_fax'] != ""){
 }
 
 if($purchase_order['supplier_tel'] != ""){
-    $tel = $purchase_order['supplier_fax'];
+    $tel = $purchase_order['supplier_tel'];
 }else{
     $tel = "-";
 }
@@ -30,8 +30,8 @@ if($purchase_order['supplier_zipcode'] != ""){
     $zipcode = "";
 }
 
-if($purchase_order['purchase_order_tax'] != ""){
-    $purchase_order_tax = " ".$purchase_order['purchase_order_tax'];
+if($purchase_order['supplier_tax'] != ""){
+    $purchase_order_tax = " ".$purchase_order['supplier_tax'];
 }else{
     $purchase_order_tax = "-";
 }
@@ -115,8 +115,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_th'].'</div>
             </td>
             <td align="right">
-                <div  style="font-size:22px;line-height:22px;padding:16px;"><b> ใบรับสินค้า</b></div>
-                <div  style="font-size:16px;line-height:16px;padding:16px;"><b>  '.( $page_index + 1 ).'/'.$page_max.' หน้า </b></div>  
+                <div  style="font-size:22px;line-height:22px;padding:16px;"><b> Purchase Order</b></div>
+                <div  style="font-size:16px;line-height:16px;padding:16px;"><b>  Page '.( $page_index + 1 ).'/'.$page_max.' </b></div> 
             </td>
         </tr>
     </table>

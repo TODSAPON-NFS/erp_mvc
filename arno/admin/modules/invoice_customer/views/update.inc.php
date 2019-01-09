@@ -185,9 +185,9 @@
     }
 
     function show_qty(id){
-        var stock_group_id = $(id).closest('tr').children('td').children('select[name="stock_group_id[]"]').val();
-        var product_id = $(id).closest('tr').children('td').children('div').children('select[name="product_id[]"]').val();
-
+        var stock_group_id = $(id).closest('tr').children('td').children('div').children('select[name="stock_group_id[]"]').val();
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+ 
         $.post( "controllers/getQtyBy.php", { 'stock_group_id': stock_group_id,'product_id': product_id }, function( data ) {
             if (data != null){
                 if(  data.stock_report_qty == null){

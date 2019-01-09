@@ -7,6 +7,7 @@ class PurchaseOrderModel extends BaseModel{
         if(!static::$db){
             static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
         }
+        mysqli_set_charset(static::$db,"utf8");
     }
 
     function getPurchaseOrderBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = ""){

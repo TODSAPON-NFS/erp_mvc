@@ -77,17 +77,19 @@
 
     function get_supplier_detail(){
         var supplier_id = document.getElementById('supplier_select').value;
+        var purchase_order_category = document.getElementById('purchase_order_category').value;
         var employee_id = document.getElementById('employee_id').value;
         document.getElementById('supplier_id').value = supplier_id;
-        $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id }, function( data ) {
+        $.post( "controllers/getSupplierByID.php", { 'supplier_id': supplier_id}, function( data ) {
             document.getElementById('supplier_code').value = data.supplier_code;
             document.getElementById('purchase_order_credit_term').value = data.credit_day;
             document.getElementById('supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3;
         });
 
-        $.post( "controllers/getPurchaseOrderCodeByID.php", { 'supplier_id': supplier_id, 'employee_id':employee_id  }, function( data ) {
+        $.post( "controllers/getPurchaseOrderCodeByID.php", { 'supplier_id': supplier_id, 'employee_id':employee_id, 'purchase_order_category':purchase_order_category  }, function( data ) {
             document.getElementById('purchase_order_code').value = data;
             check_code();
+
         });
 
         $.post( "controllers/getProductBySupplierID.php", { 'supplier_id': supplier_id }, function( data ) {
@@ -603,7 +605,6 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="row">
-                          
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label>รหัสผู้ขาย / Supplier Code <font color="#F00"><b>*</b></font> <?php if($purchase_order['purchase_order_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_order['purchase_order_rewrite_no']; ?></font></b> <?PHP } ?></label>
@@ -643,6 +644,17 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
+                                        <label>ประเภทสั่งซื้อสินค้า / Purchase Order Type <font color="#F00"><b>*</b></font></label>
+                                        <select id="purchase_order_category" name="purchase_order_category" onchange="get_supplier_detail()"  class="form-control" >
+                                            <option value="Normal" <?PHP if($purchase_order['purchase_order_category'] == 'Normal'){ ?> SELECTED  <?PHP } ?>>Normal</option>
+                                            <option value="Email" <?PHP if($purchase_order['purchase_order_category'] == 'Email'){ ?> SELECTED  <?PHP } ?>>Email</option>
+                                            <option value="Online" <?PHP if($purchase_order['purchase_order_category'] == 'Online'){ ?> SELECTED  <?PHP } ?>>Online</option>
+                                        </select>
+                                        <p class="help-block">Example : Online.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
                                         <label>รหัสใบสั่งซื้อสินค้า / Purchase Order Code <font color="#F00"><b>*</b></font></label>
                                         <input id="purchase_order_code" name="purchase_order_code" class="form-control" value="<? echo $purchase_order['purchase_order_code'];?>"  onchange="check_code()" > 
                                         <input id="purchase_check" type="hidden" value="" />
@@ -664,7 +676,7 @@
                                         <p class="help-block">10 </p>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>ผู้ออกใบสั่งซื้อ / Employee  <font color="#F00"><b>*</b></font> </label>
                                         <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true">
@@ -680,13 +692,36 @@
                                         <p class="help-block">Example : Thana Tepchuleepornsil.</p>
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>ข้อตกลง / Agreement</label>
+                                        <input type="text" id="purchase_order_agreement" name="purchase_order_agreement" value="<? echo $purchase_order['purchase_order_agreement'];?>"  class="form-control"/>
+                                        <p class="help-block">FOB shipping point, C.I.F, C&F </p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>จัดส่งโดย / Delivery by</label>
                                         <input type="text" id="purchase_order_delivery_by" name="purchase_order_delivery_by" value="<? echo $purchase_order['purchase_order_delivery_by'];?>"  class="form-control"/>
                                         <p class="help-block">DHL </p>
                                     </div>
                                 </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>วันที่จัดส่ง / Delivery Date</label>
+                                        <input type="text" id="purchase_order_delivery_term" name="purchase_order_delivery_term" value="<? echo $purchase_order['purchase_order_delivery_term'];?>"  class="form-control calendar"   onchange="check_date(this);" readonly/>
+                                        <p class="help-block">31/01/2018</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>หมายเหตุ / Remark</label>
+                                        <input type="text" id="purchase_order_remark" name="purchase_order_remark" value="<? echo $purchase_order['purchase_order_remark'];?>"  class="form-control"  />
+                                        <p class="help-block">-</p>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>    

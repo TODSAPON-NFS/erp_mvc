@@ -89,7 +89,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         </td>
 
                         <td width="100" height="48" valign="middle" align="right">
-                            '.$po[1].'
+                            '.$invoice_customer['invoice_customer_purchase'].'
                         </td>
 
                     </tr>

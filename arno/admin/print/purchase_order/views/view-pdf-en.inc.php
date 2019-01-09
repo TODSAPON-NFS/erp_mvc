@@ -6,7 +6,7 @@ if( (int)$purchase_order['supplier_branch'] * 1 == 0){
     $branch =  "Branch " . ((int)$purchase_order['supplier_branch'] * 1) ;
 } 
 
-if($supplier['vat_type'] == '0'){
+if($purchase_order['vat_type'] == '0'){
     $vat= '0';
 }else{
     $vat = $purchase_order['vat'];
@@ -19,7 +19,7 @@ if($purchase_order['supplier_fax'] != ""){
 }
 
 if($purchase_order['supplier_tel'] != ""){
-    $tel = $purchase_order['supplier_fax'];
+    $tel = $purchase_order['supplier_tel'];
 }else{
     $tel = "-";
 }
@@ -30,8 +30,8 @@ if($purchase_order['supplier_zipcode'] != ""){
     $zipcode = "";
 }
 
-if($purchase_order['purchase_order_tax'] != ""){
-    $purchase_order_tax = " ".$purchase_order['purchase_order_tax'];
+if($purchase_order['supplier_tax'] != ""){
+    $purchase_order_tax = " ".$purchase_order['supplier_tax'];
 }else{
     $purchase_order_tax = "-";
 }
@@ -100,6 +100,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
 /*
 
+                
 */
     $html[$page_index] .= '
 <div class="main" style="padding-left:8px;">
@@ -114,7 +115,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_th'].'</div>
             </td>
             <td align="right">
-                <div  style="font-size:16px;line-height:18px;padding:16px;"><b> ใบสั่งซื้อ / Purchase Order </b></div> 
+                <div  style="font-size:22px;line-height:22px;padding:16px;"><b> Purchase Order</b></div>
+                <div  style="font-size:16px;line-height:16px;padding:16px;"><b>  Page '.( $page_index + 1 ).'/'.$page_max.' </b></div> 
             </td>
         </tr>
     </table>
@@ -171,10 +173,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                 </table> 
             </td>
-            <td width="240" valign="top" style="border: 1px solid #000;border-radius: 8px;">
+            <td width="260" valign="top" style="border: 1px solid #000;border-radius: 8px;">
                 <table width="100%">
                     <tr>
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>No.</b>
                         </td>
                         <td   valign="middle" align="left">
@@ -185,7 +187,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>Date</b>
                         </td>
                         <td  valign="middle" align="left">
@@ -195,7 +197,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>Credit </b>
                         </td>
                         <td  valign="middle" align="left">
@@ -205,8 +207,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
-                        <b>Delivery  </b>
+                        <td width="84px"  valign="middle" align="left">
+                        <b>Delivery by  </b>
                         </td>
                         <td  valign="middle" align="left">
                         '.$purchase_order['purchase_order_delivery_by'].'
@@ -215,11 +217,31 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
-                        <b>Employee </b>
+                        <td width="84px"  valign="middle" align="left">
+                        <b>Delivery date  </b>
                         </td>
                         <td  valign="middle" align="left">
-                         '.$purchase_order['user_name'].' '.$purchase_order['user_lastname'].'
+                        '.$purchase_order['purchase_order_delivery_term'].'
+                        </td>
+
+                    </tr> 
+                    <tr>
+                        
+                        <td width="84px"  valign="middle" align="left">
+                        <b>Agreement </b>
+                        </td>
+                        <td  valign="middle" align="left">
+                         '.$purchase_order['purchase_order_agreement'].'
+                        </td>
+
+                    </tr>
+                    <tr>
+                        
+                        <td width="84px"  valign="middle" align="left">
+                        <b>Prepared by </b>
+                        </td>
+                        <td  valign="middle" align="left">
+                         '.$purchase_order['user_name'].' '.substr($purchase_order['user_lastname'],0,1).'.
                         </td>
 
                     </tr>
@@ -237,7 +259,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <th style="text-align:center; padding:4px 0px;" >Product name / Description</th>
                     <th style="text-align:center; padding:4px 0px;" >Qty</th>
                     <th style="text-align:center; padding:4px 0px;" >@</th>
-                    <th style="text-align:center; padding:4px 0px;" >Amount </th> 
+                    <th style="text-align:center; padding:4px 0px;" >Amount ('.$purchase_order['currency_code'].')</th> 
                 </tr>
             </thead>
 
@@ -258,10 +280,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                            '. $purchase_order_lists[$i]['product_code'].' <br>
                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $purchase_order_lists[$i]['product_name'].' <br>  
                         </td> 
-                        <td align="right" valign="top" width="120px">
+                        <td align="right" valign="top" width="90px">
                             '. number_format($purchase_order_lists[$i]['purchase_order_list_qty'],0).'
                         </td> 
-                        <td align="right" valign="top" width="120px">
+                        <td align="right" valign="top" width="90px">
                             '. number_format($purchase_order_lists[$i]['purchase_order_list_price'],2).'
                         </td>
                         <td align="right" valign="top" width="120px">
@@ -315,7 +337,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <tfoot>
                 <tr class="odd gradeX" >
                     <td colspan="3" rowspan="2" align="left" valign="top">
-                        <b>Remark</b> 
+                        <b>Remark</b> <br>'.$purchase_order['purchase_order_remark'].'
                     </td>
                     <td align="left">
                         <b>Total price</b>
@@ -337,7 +359,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         '. $str.'
                     </td>
                     <td align="left">
-                        <b>Net price</b>
+                        <b>Net price  </b>
                     </td>
                     <td style="text-align: right;" >
                     '. $net_price .'

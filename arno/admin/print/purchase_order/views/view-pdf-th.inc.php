@@ -1,12 +1,12 @@
 <?PHP 
 
 if( (int)$purchase_order['supplier_branch'] * 1 == 0){
-    $branch = " สำนักงานใหญ่";
+    $branch = "";
 } else {
-    $branch =  "สาขา " . ((int)$purchase_order['supplier_branch'] * 1) ;
+    $branch =  "Branch " . ((int)$purchase_order['supplier_branch'] * 1) ;
 } 
 
-if($supplier['vat_type'] == '0'){
+if($purchase_order['vat_type'] == '0'){
     $vat= '0';
 }else{
     $vat = $purchase_order['vat'];
@@ -19,7 +19,7 @@ if($purchase_order['supplier_fax'] != ""){
 }
 
 if($purchase_order['supplier_tel'] != ""){
-    $tel = $purchase_order['supplier_fax'];
+    $tel = $purchase_order['supplier_tel'];
 }else{
     $tel = "-";
 }
@@ -30,8 +30,8 @@ if($purchase_order['supplier_zipcode'] != ""){
     $zipcode = "";
 }
 
-if($purchase_order['purchase_order_tax'] != ""){
-    $purchase_order_tax = " ".$purchase_order['purchase_order_tax'];
+if($purchase_order['supplier_tax'] != ""){
+    $purchase_order_tax = " ".$purchase_order['supplier_tax'];
 }else{
     $purchase_order_tax = "-";
 }
@@ -114,7 +114,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_th'].'</div>
             </td>
             <td align="right">
-                <div  style="font-size:16px;line-height:18px;padding:16px;"><b> ใบสั่งซื้อ </b></div> 
+                <div  style="font-size:22px;line-height:22px;padding:16px;"><b>  ใบสั่งซื้อสินค้า </b></div> 
+                <div  style="font-size:16px;line-height:16px;padding:16px;"><b>  '.( $page_index + 1 ).'/'.$page_max.' หน้า </b></div>  
             </td>
         </tr>
     </table>
@@ -171,10 +172,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                 </table> 
             </td>
-            <td width="240" valign="top" style="border: 1px solid #000;border-radius: 8px;">
+            <td width="260" valign="top" style="border: 1px solid #000;border-radius: 8px;">
                 <table width="100%">
                     <tr>
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>เลขที่</b>
                         </td>
                         <td   valign="middle" align="left">
@@ -185,7 +186,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>วันที่</b>
                         </td>
                         <td  valign="middle" align="left">
@@ -195,7 +196,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>เครดิต </b>
                         </td>
                         <td  valign="middle" align="left">
@@ -205,7 +206,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr>
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
                         <b>การจัดส่ง </b>
                         </td>
                         <td  valign="middle" align="left">
@@ -215,11 +216,31 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                     <tr>
                         
-                        <td width="64px"  valign="middle" align="left">
+                        <td width="84px"  valign="middle" align="left">
+                        <b>วันที่จัดส่ง  </b>
+                        </td>
+                        <td  valign="middle" align="left">
+                        '.$purchase_order['purchase_order_delivery_term'].'
+                        </td>
+
+                    </tr> 
+                    <tr>
+                        
+                        <td width="84px"  valign="middle" align="left">
+                        <b>ข้อตกลง </b>
+                        </td>
+                        <td  valign="middle" align="left">
+                         '.$purchase_order['purchase_order_agreement'].'
+                        </td>
+
+                    </tr>
+                    <tr>
+                        
+                        <td width="84px"  valign="middle" align="left">
                         <b>พนักงาน </b>
                         </td>
                         <td  valign="middle" align="left">
-                         '.$purchase_order['user_name'].' '.$purchase_order['user_lastname'].'
+                         '.$purchase_order['user_name'].' '.substr($purchase_order['user_lastname'],0,1).'.
                         </td>
 
                     </tr>
@@ -258,7 +279,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                            '. $purchase_order_lists[$i]['product_code'].' <br>
                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $purchase_order_lists[$i]['product_name'].' <br>  
                         </td> 
-                        <td align="right" valign="top" width="120px">
+                        <td align="right" valign="top" width="100px">
                             '. number_format($purchase_order_lists[$i]['purchase_order_list_qty'],0).'
                         </td> 
                         <td align="right" valign="top" width="120px">
@@ -315,7 +336,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <tfoot>
                 <tr class="odd gradeX" >
                     <td colspan="3" rowspan="2" align="left" valign="top">
-                        <b>หมายเหตุ</b> 
+                        <b>หมายเหตุ</b> <br>'.$purchase_order['purchase_order_remark'].'
                     </td>
                     <td align="left">
                         <b>รวมทั้งสิน</b>

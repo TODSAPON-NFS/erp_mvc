@@ -28,6 +28,8 @@
         require_once("print/report_journal_03/views/index.inc.php");
     }else if($_GET['app'] == "report_journal_04"){
         require_once("print/report_journal_04/views/index.inc.php");
+    }elseif($_GET['app'] == "invoice_supplier"){
+        require_once("print/invoice_supplier/views/index.inc.php");
     }
 
 /* ################################################### รายงานลูกหนี้ ################################################### */
@@ -110,6 +112,8 @@ else if($_GET['app'] == "report_creditor_01"){
         require_once("print/report_account_08/views/index.inc.php");
     }else if($_GET['app'] == "report_account_09"){
         require_once("print/report_account_09/views/index.inc.php");
+    }else if($_GET['app'] == "report_account_10"){
+        require_once("print/report_account_10/views/index.inc.php");
     }
 
 

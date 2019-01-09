@@ -66,6 +66,98 @@ class PurchaseRequestModel extends BaseModel{
 
     }
 
+
+    function getPurchaseOrderByPurchaseRequestId($purchase_request_id){
+
+        $sql =  "   SELECT tb_purchase_order.purchase_order_id,purchase_order_code
+                    FROM  tb_purchase_request_list
+                    LEFT JOIN tb_purchase_order_list ON tb_purchase_request_list.purchase_order_list_id = tb_purchase_order_list.purchase_order_list_id    
+                    LEFT JOIN tb_purchase_order ON tb_purchase_order_list.purchase_order_id = tb_purchase_order.purchase_order_id
+                    WHERE purchase_request_id = '$purchase_request_id' 
+                    GROUP BY tb_purchase_order_list.purchase_order_id
+                ";
+         //echo $sql;
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+
+    function getInvoiceSuppliertByPurchaseRequestId($purchase_request_id){
+
+        $sql =  "   SELECT tb_invoice_supplier_list.invoice_supplier_id,invoice_supplier_code_gen
+                    FROM tb_purchase_request_list 
+                    LEFT JOIN tb_purchase_order_list ON tb_purchase_request_list.purchase_order_list_id = tb_purchase_order_list.purchase_order_list_id
+                    LEFT JOIN tb_invoice_supplier_list ON tb_purchase_order_list.purchase_order_list_id = tb_invoice_supplier_list.purchase_order_list_id
+                    LEFT JOIN tb_invoice_supplier ON tb_invoice_supplier_list.invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id
+                    WHERE purchase_request_id = '$purchase_request_id' 
+                    GROUP BY invoice_supplier_code_gen
+                
+                ";
+        //   echo $sql;
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+
+    function getPurchaseOrderByPurchaseRequestListId($purchase_request_list_id){
+
+        $sql =  "   SELECT tb_purchase_order.purchase_order_id,purchase_order_code
+                    FROM  tb_purchase_request_list
+                    LEFT JOIN tb_purchase_order_list ON tb_purchase_request_list.purchase_order_list_id = tb_purchase_order_list.purchase_order_list_id    
+                    LEFT JOIN tb_purchase_order ON tb_purchase_order_list.purchase_order_id = tb_purchase_order.purchase_order_id
+                    WHERE purchase_request_list_id = '$purchase_request_list_id' 
+                    GROUP BY tb_purchase_order_list.purchase_order_id
+                ";
+        //  echo $sql;
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getInvoiceSuppliertByPurchaseRequestListId($purchase_request_list_id){
+
+        $sql =  "   SELECT tb_invoice_supplier_list.invoice_supplier_id,invoice_supplier_code_gen
+                    FROM tb_purchase_request_list 
+                    LEFT JOIN tb_purchase_order_list ON tb_purchase_request_list.purchase_order_list_id = tb_purchase_order_list.purchase_order_list_id
+                    LEFT JOIN tb_invoice_supplier_list ON tb_purchase_order_list.purchase_order_list_id = tb_invoice_supplier_list.purchase_order_list_id
+                    LEFT JOIN tb_invoice_supplier ON tb_invoice_supplier_list.invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id
+                    WHERE purchase_request_list_id = '$purchase_request_list_id' 
+                    GROUP BY invoice_supplier_code_gen
+                
+                ";
+        //   echo $sql;
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+
     //////////////////////////////////////////////////////////////////////////////////////////
     function getPurchaseRequestLitsBy($date_start = "",$date_end = "",$keyword = "",$user_id = ""){
 
@@ -85,10 +177,16 @@ class PurchaseRequestModel extends BaseModel{
         }
 
 
-        $sql =  "   SELECT tb_purchase_request.purchase_request_id,purchase_request_date,purchase_request_code,purchase_request_remark,purchase_request_list_qty,product_name,product_code FROM tb_purchase_request
-                    LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id
-                    LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id
-                ";
+            $sql =  "   SELECT tb_purchase_request.purchase_request_id,purchase_request_list_id,purchase_request_date,purchase_request_code,purchase_request_remark,purchase_request_list_qty,product_name,product_code,purchase_order_code,invoice_supplier_code_gen
+                        FROM tb_purchase_request                    
+                        LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id
+                        LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id
+                        LEFT JOIN tb_purchase_order_list ON tb_purchase_request_list.purchase_order_list_id = tb_purchase_order_list.purchase_order_list_id
+                        LEFT JOIN tb_purchase_order ON tb_purchase_order_list.purchase_order_id = tb_purchase_order.purchase_order_id
+                        LEFT JOIN tb_invoice_supplier_list ON tb_purchase_order_list.purchase_order_list_id = tb_invoice_supplier_list.purchase_order_list_id
+                        LEFT JOIN tb_invoice_supplier ON tb_invoice_supplier_list.invoice_supplier_id = tb_invoice_supplier.invoice_supplier_id
+                    
+                    ";
         // echo $sql;
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];

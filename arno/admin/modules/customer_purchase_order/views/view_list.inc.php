@@ -301,12 +301,15 @@
 
                                     for($j = 0; $j<count($invoice_customers); $j++){
                                         ?>
-
-                                    <a href="index.php?app=invoice_customer&action=detail&id=<?PHP echo $invoice_customers[$j]['invoice_customer_id']; ?>" target="_blank">
-                                    <?PHP
-                                   echo $invoice_customers[$j]['invoice_customer_code']; 
-                                    ?>
-                                    </a>
+                                    <ul class="list-inline">
+                                     <li class="list-inline-item">
+                                            <a href="index.php?app=invoice_customer&action=detail&id=<?PHP echo $invoice_customers[$j]['invoice_customer_id']; ?>" target="_blank">
+                                                <?PHP
+                                                echo $invoice_customers[$j]['invoice_customer_code']; 
+                                                ?>
+                                            </a>
+                                        </li>
+                                    </ul>
                                         <?PHP
                                     }
                                     

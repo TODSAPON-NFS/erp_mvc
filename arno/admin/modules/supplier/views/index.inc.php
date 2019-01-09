@@ -51,6 +51,49 @@ if(!isset($_GET['action'])){
     }
     
     $supplier = $model_supplier->getSupplierByID($supplier_id);
+    $supplier_code = $supplier['supplier_code'];
+    $supplier_name_th = $supplier['supplier_name_th'];
+    $supplier_name_en = $supplier['supplier_name_en'];
+    $supplier_type = $supplier['supplier_type'];
+    $supplier_tax = $supplier['supplier_tax'];
+    $supplier_address_1 = $supplier['supplier_address_1'];
+    $supplier_address_2 = $supplier['supplier_address_2'];
+    $supplier_address_3 = $supplier['supplier_address_3'];
+    $supplier_zipcode = $supplier['supplier_zipcode'];
+    $supplier_tel = $supplier['supplier_tel'];
+    $supplier_fax = $supplier['supplier_fax'];
+    $supplier_email = $supplier['supplier_email'];
+    $supplier_domestic = $supplier['supplier_domestic'];
+    $supplier_remark = $supplier['supplier_remark'];
+    $supplier_branch = $supplier['supplier_branch'];
+    $supplier_zone = $supplier['supplier_zone'];
+    $credit_day = $supplier['credit_day'];
+    $condition_pay = $supplier['condition_pay'];
+    $pay_limit = $supplier['pay_limit'];
+    $account_id = $supplier['account_id'];
+    $vat_type = $supplier['vat_type'];
+    $vat = $supplier['vat'];
+    $currency_id = $supplier['currency_id'];
+    $addby = $supplier['addby'];
+    $adddate = $supplier['adddate'];
+    $updateby = $supplier['updateby'];
+    $lastupdate = $supplier['lastupdate'];
+    $supplier_accept_by = $supplier['supplier_accept_by'];
+    $supplier_accept_date = $supplier['supplier_accept_date'];
+    $supplier_accept_status = $supplier['supplier_accept_status'];
+    $currency_country = $supplier['currency_country'];
+    $currency_name = $supplier['currency_name'];
+    $currency_code = $supplier['currency_code'];
+    $currency_sign = $supplier['currency_sign'];
+    $currency_thousand = $supplier['currency_thousand'];
+    $currency_decimal = $supplier['currency_decimal'];
+    $product = $model_supplier->getSupplierProductBy($supplier_id);
+    $customer_purchase =  $model_supplier->getSupplierProductCusBy($supplier_id);
+    
+    // echo "<pre>";
+    // print_r($customer_purchase);
+    // echo"</pre>";
+
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'insert'  && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){

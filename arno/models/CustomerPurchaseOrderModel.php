@@ -102,6 +102,112 @@ class CustomerPurchaseOrderModel extends BaseModel{
         $str_user  
         $str_status 
         ORDER BY STR_TO_DATE(customer_purchase_order_date,'%Y-%m-%d %H:%i:%s'),customer_purchase_order_code_gen,customer_purchase_order_code DESC 
+         ";   
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    
+    function getCustomerPurchaseOrder1By($date_start = "",$date_end = "",$customer_id = "" , $status = "",$keyword = "",$user_id = ""){
+
+        $str_customer = "";
+        $str_date = "";
+        $str_user = "";
+        $str_status = "";
+
+        if($date_start != "" && $date_end != ""){
+            $str_date = "AND STR_TO_DATE(customer_purchase_order_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(customer_purchase_order_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+        }else if ($date_start != ""){
+            $str_date = "AND STR_TO_DATE(customer_purchase_order_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+        }else if ($date_end != ""){
+            $str_date = "AND STR_TO_DATE(customer_purchase_order_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        }
+
+        if($user_id != ""){
+            $str_user = "AND employee_id = '$user_id' ";
+        }
+
+        if($customer_id != ""){
+            $str_customer = "AND tb2.customer_id = '$customer_id' ";
+        }
+
+
+        if($status == "1"){//ยังไม่มีการสั่งสินค้า
+            $str_status = " AND  IFNULL((
+                    SELECT COUNT(*) 
+                    FROM tb_customer_purchase_order_list
+                    LEFT JOIN tb_customer_purchase_order_list_detail  
+                    ON tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list_detail.customer_purchase_order_list_id 
+                    WHERE IFNULL(tb_customer_purchase_order_list_detail.supplier_id,0) > 0 
+                    AND IFNULL(tb_customer_purchase_order_list_detail.purchase_order_list_id,0) > 0 
+                    AND customer_purchase_order_id = tb.customer_purchase_order_id 
+                    ),0) = 0";
+        } else if($status == "2"){//สั่งสินค้าแล้ว
+            $str_status = " AND  IFNULL((
+                    SELECT COUNT(*) 
+                    FROM tb_customer_purchase_order_list
+                    LEFT JOIN tb_customer_purchase_order_list_detail  
+                    ON tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_customer_purchase_order_list_detail.customer_purchase_order_list_id 
+                    WHERE IFNULL(tb_customer_purchase_order_list_detail.supplier_id,0) > 0 
+                    AND IFNULL(tb_customer_purchase_order_list_detail.purchase_order_list_id,0) = 0 
+                    AND customer_purchase_order_id = tb.customer_purchase_order_id 
+                    ),0) = 0";
+        } else if($status == "3"){//ส่งสินค้ายังไม่ครบ
+            $str_status = "  AND  IFNULL((
+                        SELECT COUNT(tb_customer_purchase_order_list.customer_purchase_order_list_id) 
+                        FROM tb_customer_purchase_order_list  
+                        LEFT JOIN tb_invoice_customer_list ON  tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_invoice_customer_list.customer_purchase_order_list_id  
+                        WHERE customer_purchase_order_id = tb.customer_purchase_order_id
+                        GROUP BY tb_customer_purchase_order_list.customer_purchase_order_id 
+                        HAVING IFNULL( IFNULL(SUM(invoice_customer_list_qty,0) ),0) < AVG( IFNULL(customer_purchase_order_list_qty,0) )  
+                    ),0) > 0 ";
+        }else if($status == "4"){//ส่งสินค้าครบแล้ว
+            $str_status = "  AND IFNULL(( 
+                SELECT COUNT(tb_customer_purchase_order_list.customer_purchase_order_list_id) 
+                FROM tb_customer_purchase_order_list 
+                LEFT JOIN tb_invoice_customer_list 
+                ON tb_customer_purchase_order_list.customer_purchase_order_list_id = tb_invoice_customer_list.customer_purchase_order_list_id 
+                WHERE customer_purchase_order_id = tb.customer_purchase_order_id 
+                GROUP BY tb_customer_purchase_order_list.customer_purchase_order_id 
+                HAVING IFNULL(SUM( IFNULL(invoice_customer_list_qty,0) ),0) < SUM( IFNULL(customer_purchase_order_list_qty,0) ) 
+            ),0) = 0 ";
+        }
+
+        $sql = " SELECT customer_purchase_order_id, 
+        customer_purchase_order_code, 
+        customer_purchase_order_code_gen,
+        customer_purchase_order_date, 
+        customer_purchase_order_status, 
+        customer_purchase_order_file, 
+        customer_purchase_order_remark, 
+        IFNULL(CONCAT(tb1.user_name,' ',tb1.user_lastname),'-') as employee_name, 
+        user_position_name,
+        customer_purchase_order_credit_term, 
+        customer_purchase_order_delivery_term, 
+        IFNULL(CONCAT(tb2.customer_name_en,' (',tb2.customer_name_th,')'),'-') as customer_name, 
+        customer_purchase_order_delivery_by 
+        
+        FROM tb_customer_purchase_order  as tb 
+        LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
+        LEFT JOIN tb_user_position  ON tb1.user_position_id = tb_user_position.user_position_id 
+        LEFT JOIN tb_customer as tb2 ON tb.customer_id = tb2.customer_id 
+        WHERE ( 
+            CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
+            OR  customer_purchase_order_code LIKE ('%$keyword%') 
+            OR  customer_purchase_order_code_gen LIKE ('%$keyword%') 
+        ) 
+        $str_customer 
+        $str_date 
+        $str_user  
+        $str_status 
+        ORDER BY STR_TO_DATE(customer_purchase_order_date,'%Y-%m-%d %H:%i:%s'),customer_purchase_order_code_gen,customer_purchase_order_code DESC 
          ";  
         //  echo "<pre>";
         //  print_r($sql);
@@ -290,6 +396,39 @@ class CustomerPurchaseOrderModel extends BaseModel{
             
         }
         return $data;
+    }
+
+
+    function getCustomerPurchaseOrderCodeByListID($id = []){
+
+        $str ="'0'";
+
+        if(is_array($id)){ 
+            for($i=0; $i < count($id) ;$i++){
+                $str .= $id[$i];
+                if($i + 1 < count($id)){
+                    $str .= "','";
+                }
+            }
+        }else if ($id != ''){
+            $str = $id;
+        }else{
+            $str="'0'";
+        }
+
+        $sql = "  SELECT GROUP_CONCAT( DISTINCT tb_customer_purchase_order.customer_purchase_order_code) As customer_purchase_order_code 
+                  FROM tb_customer_purchase_order_list  
+                  LEFT JOIN tb_customer_purchase_order ON tb_customer_purchase_order_list.customer_purchase_order_id = tb_customer_purchase_order.customer_purchase_order_id
+                  WHERE customer_purchase_order_list_id IN ($str)";
+ 
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data;
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data = $row;
+            }
+            $result->close();
+            return $data['customer_purchase_order_code'];
+        }
     }
 
 

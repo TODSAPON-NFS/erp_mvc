@@ -199,7 +199,7 @@ div.dataTables_filter{
         <div class="modal-content">
             <div class="modal-body" style="padding:40px 50px;">
                 <button type="button" class="close" data-dismiss="modal">&times;</button> 
-                <div align="center" style="padding:8px;"><img class="img-responsive logo" src="../../uploads/logo/arno.jpg"></div>
+                <div align="center" style="padding:8px;"><img class="img-responsive logo" src="../upload/company/<?PHP echo $company['company_image']; ?>"></div>
                 <div class="form-group">
                     <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
                     <input type="text" class="form-control" id="username" placeholder="Enter username">

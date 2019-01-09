@@ -35,6 +35,29 @@ class InvoiceCustomerModel extends BaseModel{
         }
     }
 
+    function getInvoiceCustomerByCustomerPurchaseId ($customer_purchase_order_id){
+        
+        $sql = " SELECT tb_invoice_customer.invoice_customer_code,
+        tb_invoice_customer.invoice_customer_id
+        FROM `tb_invoice_customer` 
+        LEFT JOIN tb_invoice_customer_list ON tb_invoice_customer.invoice_customer_id =  tb_invoice_customer_list.invoice_customer_id
+        WHERE tb_invoice_customer_list.customer_purchase_order_list_id IN (
+            SELECT customer_purchase_order_list_id FROM tb_customer_purchase_order_list WHERE customer_purchase_order_id = '$customer_purchase_order_id'
+        ) 
+        GROUP BY  tb_invoice_customer.invoice_customer_id
+         ";
+
+        //echo $sql;
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+    }
+
     function getInvoiceCustomerBy($date_start = "",$date_end = "",$customer_id = "",$keyword = "",$user_id = "",$begin = "0", $lock_1 = "0", $lock_2 = "0" ){
 
         $str_customer = "";
@@ -326,6 +349,7 @@ class InvoiceCustomerModel extends BaseModel{
         invoice_customer_branch = '".static::$db->real_escape_string($data['invoice_customer_branch'])."', 
         invoice_customer_due = '".static::$db->real_escape_string($data['invoice_customer_due'])."', 
         invoice_customer_due_day = '".static::$db->real_escape_string($data['invoice_customer_due_day'])."', 
+        invoice_customer_purchase = '".static::$db->real_escape_string($data['invoice_customer_purchase'])."', 
         invoice_customer_close = '".$data['invoice_customer_close']."', 
         invoice_customer_begin = '".$data['invoice_customer_begin']."', 
         vat_section = '".static::$db->real_escape_string($data['vat_section'])."', 
@@ -599,6 +623,7 @@ class InvoiceCustomerModel extends BaseModel{
             invoice_customer_term,
             invoice_customer_due,
             invoice_customer_due_day,
+            invoice_customer_purchase,
             invoice_customer_begin,  
             vat_section,
             vat_section_add,
@@ -627,6 +652,7 @@ class InvoiceCustomerModel extends BaseModel{
         static::$db->real_escape_string($data['invoice_customer_term'])."','".
         static::$db->real_escape_string($data['invoice_customer_due'])."','".
         static::$db->real_escape_string($data['invoice_customer_due_day'])."','".
+        static::$db->real_escape_string($data['invoice_customer_purchase'])."','".
         $data['invoice_customer_begin']."','".
         static::$db->real_escape_string($data['vat_section'])."','".
         static::$db->real_escape_string($data['vat_section_add'])."','".

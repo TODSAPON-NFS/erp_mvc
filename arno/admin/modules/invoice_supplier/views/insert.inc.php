@@ -240,6 +240,17 @@
         for(var i = 0; i < td_number.length ;i++){
             td_number[i].innerHTML = (i+1);
         }
+
+        <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+        var tb_import_duty = $('table[name="tb_import_duty"]').children('tbody').children('tr').children('td:first-child');
+        for(var i = 0; i < tb_import_duty.length ;i++){
+            tb_import_duty[i].innerHTML = (i+1);
+        }
+        var tb_freight_in = $('table[name="tb_freight_in"]').children('tbody').children('tr').children('td:first-child');
+        for(var i = 0; i < tb_freight_in.length ;i++){
+            tb_freight_in[i].innerHTML = (i+1);
+        }
+        <?PHP } ?>
     }
 
      function show_data(id){
@@ -254,10 +265,107 @@
 
 
 <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+
+    function add_freight_in_list(id){ 
+        var index = 0;
+        if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
+            index = 1;
+        }else{
+            index = $(id).closest('table').children('tbody').children('tr').length + 1;
+        }
+        $(id).closest('table').children('tbody').append(
+            '<tr class="odd gradeX">'+
+                '<td class="sorter" style="vertical-align: middle;text-align:center;">'+
+                '</td>'+ 
+                '<td>'+
+                    '<input type="hidden" name="invoice_supplier_freight_in_list_id[]" value="0" />'+
+                    '<input type="text" class="form-control" name="invoice_supplier_freight_in_list_name[]" value="" />'+
+                '</td>'+ 
+                '<td>'+
+                    '<input type="text" class="form-control" style="text-align:right;" name="invoice_supplier_freight_in_list_total[]" value="0" onchange="calculate_freight_in()" />'+
+                '</td>'+ 
+                '<td>'+ 
+                    '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
+                        '<i class="fa fa-times" aria-hidden="true"></i>'+
+                    '</a>'+
+                '</td>'+
+            '</tr>'
+        );
+ 
+        update_line();
+    }
+
+
+    function add_import_duty_list(id){ 
+        var index = 0;
+        if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
+            index = 1;
+        }else{
+            index = $(id).closest('table').children('tbody').children('tr').length + 1;
+        }
+        $(id).closest('table').children('tbody').append(
+            '<tr class="odd gradeX">'+
+                '<td class="sorter" style="vertical-align: middle;text-align:center;">'+
+                '</td>'+ 
+                '<td>'+
+                    '<input type="hidden"  name="invoice_supplier_import_duty_list_id[]" value="0" />'+
+                    '<input type="text" class="form-control" name="invoice_supplier_import_duty_list_name[]" value="" />'+
+                '</td>'+ 
+                '<td>'+
+                    '<input type="text" class="form-control" style="text-align:right;" name="invoice_supplier_import_duty_list_total[]" value="0" onchange="calculate_import_duty()"/>'+
+                '</td>'+ 
+                '<td>'+ 
+                    '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
+                        '<i class="fa fa-times" aria-hidden="true"></i>'+
+                    '</a>'+
+                '</td>'+
+            '</tr>'
+        );
+ 
+        update_line();
+    }
+
+    function calculate_import_duty(){
+        
+  
+        var val = document.getElementsByName('invoice_supplier_import_duty_list_total[]');
+        var total = 0.0;
+
+        
+        
+        for(var i = 0 ; i < val.length ; i++){ 
+            total += parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),''));
+            val[i].value = parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),'')).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        }
+
+        $('#import_duty').val(total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") ); 
+
+        
+    }
+
+    function calculate_freight_in(){
+        
+  
+        var val = document.getElementsByName('invoice_supplier_freight_in_list_total[]');
+        var total = 0.0;
+
+        
+        
+        for(var i = 0 ; i < val.length ; i++){ 
+            total += parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),''));
+            val[i].value = parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),'')).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        }
+
+        $('#freight_in').val(total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") ); 
+
+        
+    }
+
     function update_sum(id){ 
-    
+        
         var qty = document.getElementsByName('invoice_supplier_list_qty[]'); 
         var purchase_price =  document.getElementsByName('purchase_order_list_price[]');
+        var purchase_currency_price =  document.getElementsByName('invoice_supplier_list_currency_price[]');
         var purchase_price_sum =  document.getElementsByName('purchase_order_list_price_sum[]');
         var price =  document.getElementsByName('invoice_supplier_list_price[]');
         var sum = document.getElementsByName('invoice_supplier_list_total[]');
@@ -299,6 +407,7 @@
 
             console.log("val_price",val_price);
 
+            purchase_currency_price[i].value = val_purchase_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") ;
             qty[i].value = val_qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") ;
             purchase_price_sum[i].value = numberWithCommas(val_purchase_price_sum.toFixed(2)) ;
             price[i].value = numberWithCommas(val_price.toFixed(4)) ;
@@ -550,12 +659,15 @@
                         '<td class="sorter">'+
                         '</td>'+ 
                         '<td>'+
-                            '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'" readonly />'+   
-                            '<input type="hidden" name="invoice_supplier_list_cost[]" value="'+price.toFixed(2)+'" readonly />'+     
-                            '<input type="hidden" name="product_id[]" class="form-control" value="'+ data_buffer[i].product_id +'" />'+
+                            '<input type="hidden" name="purchase_order_list_id[]" value="'+ data_buffer[i].purchase_order_list_id +'"  />'+   
+                            '<input type="hidden" name="invoice_supplier_list_fix_type[]" value="no-fix" />'+     
+                            '<input type="hidden" name="invoice_supplier_list_duty[]" value="0" />'+     
+                            '<input type="hidden" name="invoice_supplier_list_freight_in[]" value="0" />'+     
+                            '<input type="hidden" name="invoice_supplier_list_import_duty[]" value="0" />'+     
+                            '<input type="hidden" name="invoice_supplier_list_currency_price[]" value="'+ purchase_price.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" />'+     
+                            '<input type="hidden" name="invoice_supplier_list_cost[]" value="'+price.toFixed(2)+'"  />'+     
+                            '<input type="hidden" name="product_id[]"  value="'+ data_buffer[i].product_id +'" />'+
 					        '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="'+ data_buffer[i].product_code +'" />'+ 
-                        '</td>'+
-                        '<td>'+
                             '<input type="text" class="form-control" name="product_name[]" value="'+ data_buffer[i].product_name +'" readonly />'+
                             '<input type="text" class="form-control" name="invoice_supplier_list_product_name[]" placeholder="Product Name (Supplier)" />'+
                             '<input type="text" class="form-control" name="invoice_supplier_list_product_detail[]" placeholder="Product Detail (Supplier)" />'+
@@ -621,14 +733,17 @@
                 '<td class="sorter">'+
                 '</td>'+ 
                 '<td>'+
-                    '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+      
-                    '<input type="hidden" name="invoice_supplier_list_cost[]" value="0" readonly />'+
-                    '<input type="hidden" name="old_cost[]" value="0" readonly />'+
-                    '<input type="hidden" name="old_qty[]" value="0" readonly />'+
-                    '<input type="hidden" name="product_id[]" class="form-control" value="0" />'+
+                    '<input type="hidden" name="purchase_order_list_id[]" value="0" />'+ 
+                    '<input type="hidden" name="invoice_supplier_list_fix_type[]" value="no-fix" />'+     
+                    '<input type="hidden" name="invoice_supplier_list_duty[]" value="0" />'+          
+                    '<input type="hidden" name="invoice_supplier_list_freight_in[]" value="0" />'+     
+                    '<input type="hidden" name="invoice_supplier_list_import_duty[]" value="0" />'+    
+                    '<input type="hidden" name="invoice_supplier_list_currency_price[]" value="0" />'+    
+                    '<input type="hidden" name="invoice_supplier_list_cost[]" value="0"  />'+
+                    '<input type="hidden" name="old_cost[]" value="0"  />'+
+                    '<input type="hidden" name="old_qty[]" value="0"  />'+
+                    '<input type="hidden" name="product_id[]" value="0" />'+
                     '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="" />'+ 
-                '</td>'+
-                '<td>'+
                     '<input type="text" class="form-control" name="product_name[]" readonly />'+
                     '<input type="text" class="form-control" name="invoice_supplier_list_product_name[]" placeholder="Product Name (Supplier)" />'+
                     '<input type="text" class="form-control" name="invoice_supplier_list_product_detail[]" placeholder="Product Detail (Supplier)" />'+
@@ -732,12 +847,16 @@
 
     function calculateCost(){
 
+        var invoice_supplier_list_duty = document.getElementsByName('invoice_supplier_list_duty[]');
+        var invoice_supplier_list_fix_type = document.getElementsByName('invoice_supplier_list_fix_type[]');
+        var invoice_supplier_list_import_duty = document.getElementsByName('invoice_supplier_list_import_duty[]');
+        var invoice_supplier_list_freight_in = document.getElementsByName('invoice_supplier_list_freight_in[]');
         var invoice_supplier_list_cost = document.getElementsByName('invoice_supplier_list_cost[]');
         var invoice_supplier_list_total = document.getElementsByName('invoice_supplier_list_total[]');
         var invoice_supplier_list_qty = document.getElementsByName('invoice_supplier_list_qty[]');
         var exchange_rate_baht = parseFloat(document.getElementById('exchange_rate_baht').value.toString().replace(new RegExp(',', 'g'),''));
         var invoice_supplier_total_price = parseFloat(document.getElementById('invoice_supplier_total_price').value.toString().replace(new RegExp(',', 'g'),''));
-         
+        
         var invoice_supplier_total_price_ex = 0; 
         var import_duty = parseFloat(document.getElementById('import_duty').value.toString().replace(new RegExp(',', 'g'),''));
         var freight_in = parseFloat(document.getElementById('freight_in').value.toString().replace(new RegExp(',', 'g'),''));
@@ -746,19 +865,25 @@
         if(isNaN(exchange_rate_baht)){
             exchange_rate_baht = 0.0;
         }
+
+
         if(isNaN(invoice_supplier_total_price)){
             invoice_supplier_total_price = 0.0;
         }
+
 
         if(isNaN(import_duty)){
             import_duty = 0.0;
         }
 
+
         if(isNaN(freight_in)){
             freight_in = 0.0;
         }
 
+
         invoice_supplier_total_price_ex = invoice_supplier_total_price * exchange_rate_baht; 
+
 
         for(var i=0; i < invoice_supplier_list_cost.length; i++){
 
@@ -768,12 +893,21 @@
             var cost_price_f = cost_price_total / invoice_supplier_total_price_ex * freight_in;
             var cost_total = (cost_price_f + cost_price_duty + cost_price_total)/qty;
 
+
+            
+            invoice_supplier_list_import_duty[i].value = cost_price_duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
+
+            invoice_supplier_list_freight_in[i].value = cost_price_f.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
+
             if (invoice_supplier_total_price_ex > 0){
                 invoice_supplier_list_cost[i].value = cost_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
             }else{
                 invoice_supplier_list_cost[i].value = 0;                
             }
         }
+
 
         document.getElementById('exchange_rate_baht').value = numberWithCommas(exchange_rate_baht);
         document.getElementById('invoice_supplier_total_price').value = invoice_supplier_total_price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -923,31 +1057,8 @@
                                         <p class="help-block">Example : 0305559003597.</p>
                                     </div>
                                 </div>
-                            <?PHP if($sort == "ภายนอกประเทศ"){ ?>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label>Exchange rate Baht<font color="#F00"><b>*</b></font></label>
-                                        <input  id="exchange_rate_baht" name="exchange_rate_baht" onchange="calculateCost();" class="form-control" value="<?php echo number_format($exchange_rate_baht['exchange_rate_baht_value'],5);?>" onchange="calculateCost()" >
-                                        <p class="help-block">Example : 0.</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label>Import duty<font color="#F00"><b>*</b></font></label>
-                                        <input  id="import_duty" name="import_duty" onchange="calculateCost();" class="form-control" value="<?php echo number_format($invoice_supplier['import_duty'],2);?>" onchange="calculateCost()" >
-                                        <p class="help-block">Example : 0.</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label>Freight in<font color="#F00"><b>*</b></font></label>
-                                        <input  id="freight_in" name="freight_in" onchange="calculateCost();" class="form-control" value="<?php echo number_format($invoice_supplier['freight_in'],2);?>" onchange="calculateCost()" >
-                                        <p class="help-block">Example : 0.</p>
-                                    </div>
-                                </div>
-                            <?PHP } ?>
+                                
+                            
                             </div>
                         </div>
                         <div class="col-lg-5">
@@ -1028,6 +1139,16 @@
                                         <p class="help-block">Example : Thana Tepchuleepornsil.</p>
                                     </div>
                                 </div>
+
+                                <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Exchange rate Baht<font color="#F00"><b>*</b></font></label>
+                                        <input  id="exchange_rate_baht" name="exchange_rate_baht" onchange="calculateCost();" class="form-control" value="<?php echo number_format($exchange_rate_baht['exchange_rate_baht_value'],5);?>" onchange="calculateCost()" >
+                                        <p class="help-block">Example : 0.</p>
+                                    </div>
+                                </div>
+                                <?PHP } ?>
                                 
                             </div>
                         </div>
@@ -1040,9 +1161,8 @@
                         <thead>
                             <tr>
                                 <th style="text-align:center;" width="60">ลำดับ </th>
-                                <th style="text-align:center;">รหัสสินค้า </th>
-                                <th style="text-align:center;">รายละเอียดสินค้า </th>
-                                <th style="text-align:center;">คลังสินค้า </th>
+                                <th style="text-align:center;">รหัสสินค้า / รายละเอียดสินค้า </th>
+                                <th style="text-align:center;" width="150">คลังสินค้า </th>
                                 <th style="text-align:center;" width="150">จำนวน </th>
                                 <?PHP if($sort == "ภายนอกประเทศ"){ ?>
                                 <th style="text-align:center;" width="150">ราคาต่อหน่วย <span name="currency"><?PHP echo $supplier['currency_sign']; ?></span> </th>
@@ -1104,14 +1224,17 @@
                                 <td class="sorter">
                                     <?PHP echo ($i + 1); ?>.
                                 </td>
-                                <td><input type="hidden" name="purchase_order_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['purchase_order_list_id'];?>" /> 
+                                <td><input type="hidden" name="purchase_order_list_id[]" value="<?PHP echo  $invoice_supplier_lists[$i]['purchase_order_list_id'];?>" />  
+                                    <input type="hidden" name="invoice_supplier_list_fix_type[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_fix_type'];?>" />
+                                    <input type="hidden" name="invoice_supplier_list_duty[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_duty'];?>" />
+                                    <input type="hidden" name="invoice_supplier_list_freight_in[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_freight_in'];?>" />
+                                    <input type="hidden" name="invoice_supplier_list_import_duty[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_import_duty'];?>" />
+                                    <input type="hidden" name="invoice_supplier_list_currency_price[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_currency_price'];?>" />
                                     <input type="hidden" name="invoice_supplier_list_cost[]" value="<?PHP echo  $cost_total;?>" />
                                     <input type="hidden" name="old_cost[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_cost'];?>" />
                                     <input type="hidden" name="old_qty[]" value="<?PHP echo  $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];?>" />
-                                    <input type="hidden" name="product_id[]" class="form-control" value="<?php echo $invoice_supplier_lists[$i]['product_id']; ?>" />
+                                    <input type="hidden" name="product_id[]" value="<?php echo $invoice_supplier_lists[$i]['product_id']; ?>" />
                                     <input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="<?php echo $invoice_supplier_lists[$i]['product_code']; ?>"  readonly/>
-                                </td>
-                                <td>
                                     <input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $invoice_supplier_lists[$i]['product_name']; ?>" />
                                     <input type="text" class="form-control" name="invoice_supplier_list_product_name[]"  placeholder="Product Name (Supplier)"/>
                                     <input type="text" class="form-control" name="invoice_supplier_list_product_detail[]"  placeholder="Product Detail (Supplier)" />
@@ -1157,9 +1280,9 @@
                             <tr class="odd gradeX">
                                 <td 
                                 <?PHP if($sort == "ภายนอกประเทศ"){ ?>
-                                colspan="10" 
+                                colspan="9" 
                                 <?PHP } else { ?>
-                                colspan="8" 
+                                colspan="7" 
                                 <?PHP } ?>
                                 align="center">
                                     <a href="javascript:;" onclick="show_purchase_order(this);" style="color:red;">
@@ -1214,7 +1337,7 @@
                             </tr>
                             <?PHP if($sort == "ภายนอกประเทศ"){ ?>
                             <tr class="odd gradeX">
-                                <td  colspan="5" rowspan="4">
+                                <td  colspan="4" rowspan="4">
                                     
                                 </td>
                                 <td align="left" style="vertical-align: middle;">
@@ -1233,7 +1356,7 @@
                             <?PHP } ?>
                             <tr class="odd gradeX"> 
                                 <?PHP if($sort != "ภายนอกประเทศ"){ ?>
-                                    <td  colspan="3" rowspan="3">
+                                    <td  colspan="2" rowspan="3">
                                     
                                     </td>
                                 <?PHP } ?>
@@ -1308,6 +1431,134 @@
                             </tr>
                         </tfoot>
                     </table>   
+
+                    
+                    <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>ภาษีนำเข้า / Import duty<font color="#F00"><b>*</b></font></label>
+                                <div>
+                                    <table name="tb_import_duty"  class="table table-striped table-bordered table-hover" >
+                                        <thead>
+                                            <tr>
+                                                <th style="width:64px;text-align:center;">ลำดับ</th>
+                                                <th style="text-align:center;" >รายการ</th>
+                                                <th style="text-align:center;" >จำนวนเงิน</th>
+                                                <th style="width:24px;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php for($i=0; $i < count($invoice_supplier_import_duty_list); $i++){ ?>
+                                            <tr class="odd gradeX">'+
+                                                <td class="sorter" style="vertical-align: middle;text-align:center;">
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="invoice_supplier_import_duty_list_id[]" value="<?php echo $invoice_supplier_import_duty_list[$i]['invoice_supplier_import_duty_list_id']; ?>" />
+                                                    <input type="text" class="form-control" name="invoice_supplier_import_duty_list_name[]" value="<?php echo $invoice_supplier_import_duty_list[$i]['invoice_supplier_import_duty_list_name']; ?>" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" style="text-align:right;" name="invoice_supplier_import_duty_list_total[]" value="<?php echo number_format($invoice_supplier_import_duty_list[$i]['invoice_supplier_import_duty_list_total'],2);?>" onchange="calculate_import_duty()" />
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
+                                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                       <?PHP }?>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="4" align="center" >
+                                                <a href="javascript:;" onclick="add_import_duty_list(this);" style="color:red;">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i> 
+                                                    <span>เพิ่มรายการ / Add list</span>
+                                                </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" align="right" style="vertical-align: middle;">
+                                                จำนวนเงินรวม
+                                                </td>
+                                                <td style="width:150px;">
+                                                    <input  id="import_duty" name="import_duty" onchange="calculateCost();" class="form-control" style="text-align:right" value="<?php echo number_format($invoice_supplier['import_duty'],2);?>" onchange="calculateCost()" readonly />
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                                <p class="help-block">Example : 0.</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>ค่าขนส่งสินค้า / Freight in<font color="#F00"><b>*</b></font></label>
+                                <div>
+                                    <table name="tb_freight_in"  class="table table-striped table-bordered table-hover" >
+                                        <thead>
+                                            <tr>
+                                                <th style="width:64px;text-align:center;">ลำดับ</th>
+                                                <th style="text-align:center;" >รายการ</th>
+                                                <th style="text-align:center;" >จำนวนเงิน</th>
+                                                <th style="width:24px;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php for($i=0; $i < count($invoice_supplier_freight_in_list); $i++){ ?>
+                                            <tr class="odd gradeX">'+
+                                                <td class="sorter" style="vertical-align: middle;text-align:center;">
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="invoice_supplier_freight_in_list_id[]" value="<?php echo $invoice_supplier_freight_in_list[$i]['invoice_supplier_freight_in_list_id']; ?>" />
+                                                    <input type="text" class="form-control" name="invoice_supplier_freight_in_list_name[]" value="<?php echo $invoice_supplier_freight_in_list[$i]['invoice_supplier_freight_in_list_name']; ?>" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" style="text-align:right;" name="invoice_supplier_freight_in_list_total[]" value="<?php echo number_format($invoice_supplier_freight_in_list[$i]['invoice_supplier_freight_in_list_total'],2);?>" onchange="calculate_freight_in()" />
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
+                                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                        <?PHP }?>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="4" align="center" >
+                                                <a href="javascript:;" onclick="add_freight_in_list(this);" style="color:red;">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i> 
+                                                    <span>เพิ่มรายการ / Add list</span>
+                                                </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" align="right" style="vertical-align: middle;">
+                                                    จำนวนเงินรวม 
+                                                </td>
+                                                <td style="width:150px;">
+                                                    <input  id="freight_in" name="freight_in" onchange="calculateCost();" class="form-control" style="text-align:right" value="<?php echo number_format($invoice_supplier['freight_in'],2);?>" onchange="calculateCost()" readonly />
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                                <p class="help-block">Example : 0.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <?PHP } ?>
+                    
                 
                     <!-- /.row (nested) -->
                     <div class="row">

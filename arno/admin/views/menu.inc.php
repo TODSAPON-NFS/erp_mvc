@@ -5,7 +5,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Arno Thailand ERP</a>
+                <a class="navbar-brand" href="index.php"><?PHP echo $company['company_name_en']; ?></a>
             </div>
             <!-- /.navbar-header -->
 
@@ -851,6 +851,9 @@
                                         </li>
                                         <li>
                                             <a href="?app=report_account_09" <?PHP if($_GET['app'] == "report_account_09"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายงานยอดขาย </a>
+                                        </li>
+                                        <li>
+                                            <a href="?app=report_account_10" <?PHP if($_GET['app'] == "report_account_10"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายงานงบกำไรขาดทุน </a>
                                         </li>
                                     </ul>
                                 </li>

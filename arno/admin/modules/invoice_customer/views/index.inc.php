@@ -208,6 +208,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['invoice_customer_term'] = $_POST['invoice_customer_term'];
         $data['invoice_customer_due'] = $_POST['invoice_customer_due'];
         $data['invoice_customer_due_day'] = $_POST['invoice_customer_due_day'];
+        $data['invoice_customer_purchase'] = $_POST['invoice_customer_purchase'];
         $data['invoice_customer_begin'] = $_POST['invoice_customer_begin'];
         $data['addby'] = $admin_id;
         $data['updateby'] = $admin_id;
@@ -368,6 +369,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['invoice_customer_term'] = $_POST['invoice_customer_term'];
         $data['invoice_customer_due'] = $_POST['invoice_customer_due'];
         $data['invoice_customer_due_day'] = $_POST['invoice_customer_due_day'];
+        $data['invoice_customer_purchase'] = $_POST['invoice_customer_purchase'];
         $data['invoice_customer_close'] = $_POST['invoice_customer_close'];
         $data['invoice_customer_begin'] = $_POST['invoice_customer_begin'];
         $data['addby'] = $admin_id;

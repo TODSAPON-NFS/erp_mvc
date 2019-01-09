@@ -236,7 +236,8 @@
 
                     <!-- /.row (nested) -->
                     <div class="row">
-                        <div class="col-lg-offset-9 col-lg-3" align="right">
+                        <div class="col-lg-offset-9 col-lg-3" align="right"> 
+                            <a class="btn btn-danger" href="../admin/print.php?app=purchase_order&action=pdf&lan=en&id=<?php echo $purchase_order_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> Print </a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                           
                             <?php 

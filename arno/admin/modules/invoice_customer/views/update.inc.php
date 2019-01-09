@@ -159,7 +159,7 @@
             document.getElementById('customer_code').value = data.customer_code;
             document.getElementById('invoice_customer_name').value = data.customer_name_en ;
             document.getElementById('invoice_customer_branch').value = data.customer_branch ;
-            document.getElementById('invoice_customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
+            document.getElementById('invoice_customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3+ " " + data.customer_zipcode;
             document.getElementById('invoice_customer_tax').value = data.customer_tax ;
             document.getElementById('employee_id').value = data.sale_id ;
             console.log(data.sale_id);
@@ -185,9 +185,9 @@
     }
 
     function show_qty(id){
-        var stock_group_id = $(id).closest('tr').children('td').children('select[name="stock_group_id[]"]').val();
-        var product_id = $(id).closest('tr').children('td').children('div').children('select[name="product_id[]"]').val();
-
+        var stock_group_id = $(id).closest('tr').children('td').children('div').children('select[name="stock_group_id[]"]').val();
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+ 
         $.post( "controllers/getQtyBy.php", { 'stock_group_id': stock_group_id,'product_id': product_id }, function( data ) {
             if (data != null){
                 if(  data.stock_report_qty == null){
@@ -691,6 +691,28 @@
         }
     }
 
+    function get_customer_purchase_by_list_id(){
+        var customer_purchase_order_list_id = $('input[name="customer_purchase_order_list_id[]"]').val();
+        $.post( "controllers/getCustomerPurchaseOrderCodeByListID.php", {'customer_purchase_order_list_id': JSON.stringify(customer_purchase_order_list_id) }, function( data ) {  
+            if(data !== null){  
+                $('#invoice_customer_purchase').val(data); 
+            }else{  
+                $('#invoice_customer_purchase').val("-");
+            } 
+        });
+    } 
+
+    function add_customer_purchase_remark(){
+        var invoice_customer_list_remark = $('input[name="invoice_customer_list_remark[]"]');
+        var invoice_customer_list_product_name = $('input[name="invoice_customer_list_product_name[]"]');
+ 
+        for(var i = 0 ; i < invoice_customer_list_remark.length; i++){
+            invoice_customer_list_product_name[i].value=invoice_customer_list_remark[i].value;
+        }
+            
+        
+    } 
+
 
 
 </script>
@@ -808,6 +830,25 @@
                                         <input id="invoice_customer_code" name="invoice_customer_code" class="form-control" onchange="check_code(this)" value="<?PHP echo $invoice_customer['invoice_customer_code'];?>" >
                                         <input id="invoice_check" type="hidden" value="" />
                                         <p class="help-block">Example : INV1801001.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>หมายเลขใบสั่งซื้อ / Purchase order <font color="#F00"><b>*</b></font></label>
+                                        <table width="100%">
+                                            <tr>
+                                                <td>
+                                                    <input id="invoice_customer_purchase" name="invoice_customer_purchase" class="form-control"  value="<?php echo $invoice_customer['invoice_customer_purchase'];?>" > 
+                                                </td>
+                                                <td width="64px">
+                                                    <button type="button" class="btn btn-default" onclick="get_customer_purchase_by_list_id()">ค้นหา</button>
+                                                </td>
+                                                <td width="100px">
+                                                    <button type="button" class="btn btn-default" onclick="add_customer_purchase_remark()">เพิ่มในหมายเหตุ</button>
+                                                </td>
+                                            </tr>
+                                        </table>  
+                                        <p class="help-block">Example : PO1901-001.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">

@@ -159,7 +159,8 @@ class PurchaseOrderModel extends BaseModel{
     function getPurchaseOrderByID($id){
         $sql = " SELECT * 
         FROM tb_purchase_order 
-        LEFT JOIN tb_supplier ON tb_purchase_order.supplier_id = tb_supplier.supplier_id 
+        LEFT JOIN tb_supplier ON tb_purchase_order.supplier_id = tb_supplier.supplier_id
+        LEFT JOIN tb_currency ON tb_supplier.currency_id = tb_currency.currency_id 
         LEFT JOIN tb_user ON tb_purchase_order.employee_id = tb_user.user_id 
         WHERE purchase_order_id = '$id' 
         ";
@@ -200,6 +201,7 @@ class PurchaseOrderModel extends BaseModel{
         LEFT JOIN tb_user ON tb_purchase_order.employee_id = tb_user.user_id 
         LEFT JOIN tb_user_position ON tb_user.user_position_id = tb_user_position.user_position_id 
         LEFT JOIN tb_supplier ON tb_purchase_order.supplier_id = tb_supplier.supplier_id 
+        LEFT JOIN tb_currency ON tb_supplier.currency_id = tb_currency.currency_id 
         WHERE purchase_order_id = '$id' 
         ";
 
@@ -265,10 +267,13 @@ class PurchaseOrderModel extends BaseModel{
         $sql = " UPDATE tb_purchase_order SET  
         supplier_id = '".$data['supplier_id']."', 
         employee_id = '".$data['employee_id']."', 
+        purchase_order_category = '".$data['purchase_order_category']."', 
         purchase_order_code = '".$data['purchase_order_code']."', 
         purchase_order_credit_term = '".$data['purchase_order_credit_term']."', 
         purchase_order_delivery_term = '".$data['purchase_order_delivery_term']."', 
-        purchase_order_delivery_by = '".$data['purchase_order_delivery_by']."', 
+        purchase_order_delivery_by = '".$data['purchase_order_delivery_by']."',  
+        purchase_order_agreement = '".$data['purchase_order_agreement']."',  
+        purchase_order_remark = '".$data['purchase_order_remark']."',  
         purchase_order_date = '".$data['purchase_order_date']."', 
         purchase_order_status = '".$data['purchase_order_status']."', 
         purchase_order_total_price = '".$data['purchase_order_total_price']."', 
@@ -548,7 +553,8 @@ class PurchaseOrderModel extends BaseModel{
         $data_rspt = [] /*request special tool*/, 
         $data_rrt = [] /*request regrind tool*/, 
         $search = "" /*คำค้น*/){
-
+            $data_cpo = [];
+            $data_pr = [];
         $data = [];
 
         if($type == "BLANKED"){
@@ -1109,10 +1115,13 @@ class PurchaseOrderModel extends BaseModel{
             purchase_order_accept_date,
             purchase_order_status,
             purchase_order_type,
+            purchase_order_category,
             purchase_order_code,
             purchase_order_credit_term,
             purchase_order_delivery_term,
-            purchase_order_delivery_by,
+            purchase_order_delivery_by, 
+            purchase_order_agreement, 
+            purchase_order_remark, 
             purchase_order_date,
             purchase_order_total_price,
             purchase_order_vat,
@@ -1132,10 +1141,13 @@ class PurchaseOrderModel extends BaseModel{
         $data['purchase_order_accept_date']."','".
         $data['purchase_order_status']."','".
         $data['purchase_order_type']."','".
+        $data['purchase_order_category']."','".
         $data['purchase_order_code']."','".
         $data['purchase_order_credit_term']."','".
         $data['purchase_order_delivery_term']."','".
-        $data['purchase_order_delivery_by']."','".
+        $data['purchase_order_delivery_by']."','". 
+        $data['purchase_order_agreement']."','". 
+        $data['purchase_order_remark']."','". 
         $data['purchase_order_date']."','".
         $data['purchase_order_total_price']."','".
         $data['purchase_order_vat']."','".
@@ -1187,5 +1199,24 @@ class PurchaseOrderModel extends BaseModel{
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }
+
+    function getPurchaseOrderCodeByInvoiceSupplierID($id){
+        $sql = "  SELECT GROUP_CONCAT( DISTINCT tb_purchase_order.purchase_order_code) As purchase_order_code FROM `tb_invoice_supplier_list` 
+                  LEFT JOIN tb_purchase_order_list ON tb_invoice_supplier_list.purchase_order_list_id = tb_purchase_order_list.purchase_order_list_id
+                  LEFT JOIN tb_purchase_order ON tb_purchase_order_list.purchase_order_id = tb_purchase_order.purchase_order_id
+                  WHERE invoice_supplier_id = '$id'";
+
+
+                   if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                    $data;
+                    while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                        $data = $row;
+                    }
+                    $result->close();
+                    return $data;
+                }
+    }
+
+
 }
 ?>

@@ -766,10 +766,12 @@ class StockReportModel extends BaseModel{
     //
     //
     //#####################################################################################################################
-    function getStockReportProductNoMovementBy($date_start = "",$date_end = "",$stock_start = "",$stock_end = "",$product_start = "",$product_end = ""){
+    function getStockReportProductNoMovementBy($order_by_stock,$date_start = "",$date_end = "",$stock_start = "",$stock_end = "",$product_start = "",$product_end = ""){
 
         $str_stock = "";   
         $str_product = "";   
+        $str_order_by = "";   
+        $str_group_by = " GROUP BY product_code";   
 
         if($stock_start != "" && $stock_end != ""){
             $str_stock = " AND CAST(stock_group_code AS UNSIGNED) >= '$stock_start' AND CAST(stock_group_code AS UNSIGNED) <=  '$stock_end' "; 
@@ -782,6 +784,12 @@ class StockReportModel extends BaseModel{
         }else if ($product_start != "" && $product_end == ""){
             $str_product = " AND CONCAT(product_code_first,product_code) LIKE ('%$product_start%') ";  
         } 
+        if($order_by_stock == "1"){
+            $str_order_by = " stock_group_code ASC, product_code ASC ,product_group_id ASC "; 
+        }
+        else{
+            $str_order_by = " product_group_id ASC ,stock_group_code ASC, product_code ASC";
+        }
 
         $sql ="SELECT table_name 
                     FROM tb_stock_group 
@@ -814,11 +822,11 @@ class StockReportModel extends BaseModel{
             }
 
             if($i == 0){
-                $sql .=" SELECT product_code,product_name,stock_group_name,stock_group_code FROM 
+                $sql .=" SELECT product_code,product_name,stock_group_name,stock_group_code,product_group_id,product_group_name FROM 
                 ( 
                 ";
             }
-            $sql .="(SELECT concat('".$data[$i]['table_name']."_',stock_id) AS from_stock ,
+            $sql .="(SELECT concat('".$data[$i]['table_name']."_',stock_id) AS from_stock ,tb_product_group.product_group_id,tb_product_group.product_group_name,
             ".$data[$i]['table_name'].".product_id ,
             CONCAT(product_code_first,product_code) as product_code ,product_name ,
             '".$data[$i]['table_name']."' AS table_name ,
@@ -826,7 +834,7 @@ class StockReportModel extends BaseModel{
             (SELECT stock_group_code FROM tb_stock_group WHERE table_name = '".$data[$i]['table_name']."') AS stock_group_code 
             FROM ".$data[$i]['table_name']." 
             LEFT JOIN tb_product ON ".$data[$i]['table_name'].".product_id = tb_product.product_id  
-            
+            LEFT JOIN tb_product_group ON tb_product.product_group = tb_product_group.product_group_id 
             WHERE ".$data[$i]['table_name'].".product_id NOT IN (
                 SELECT  ".$data[$i]['table_name'].".product_id 
                 FROM ".$data[$i]['table_name']." 
@@ -835,7 +843,7 @@ class StockReportModel extends BaseModel{
                 $str_date
                 
                 ) $str_product
-                GROUP BY product_code 
+                $str_group_by
             ORDER BY ".$data[$i]['table_name'].".product_id ,STR_TO_DATE(".$data[$i]['table_name'].".stock_date,'%d-%m-%Y %H:%i:%s'),from_stock  ASC ) 
             ";
             if(($i+1)<count($data)){
@@ -847,14 +855,15 @@ class StockReportModel extends BaseModel{
         $sql .="  
         )
         AS tb_stock 
+        ORDER BY $str_order_by  
         "; 
 
         /********************   */
 
         /** */
-        echo "<pre>";
-        print_r($sql) ;
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($sql) ;
+        // echo "</pre>";
         
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];

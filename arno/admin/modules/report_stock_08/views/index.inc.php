@@ -57,15 +57,30 @@ if(!isset($_GET['product_end'])){
 
 if($date_start!=''||$date_end!=''||$stock_start!=''||$stock_end!=''||$product_start!=''){ 
     // $stock_reports = $stock_report_model->getStockReportProductMovementBy($product_start,$product_end,$stock_start,$stock_end);
-    $stock_reports = $stock_report_model->getStockReportProductNoMovementBy($date_start,$date_end,$stock_start,$stock_end,$product_start,$product_end);
+    // $order_by_stock = "";
+    // $order_by = "1";
+    $sort_value=$_GET['sort'];
+    $stock_reports = $stock_report_model->getStockReportProductNoMovementBy($_GET['sort'],$date_start,$date_end,$stock_start,$stock_end,$product_start,$product_end);
     
-    echo "<pre>";
-    print_r($stock_reports);
-    echo "</pre>";
+    // echo "<pre>";
+    // print_r($stock_reports);
+    // echo "</pre>";
 }
 
-
-require_once($path.'view.inc.php');
+if(!isset($_GET['sort'])){
+    require_once($path.'view-product_group.inc.php');
+}
+else if($_GET['sort'] =="1"){
+    $sort = $_GET['sort'];
+    require_once($path.'view-stock.inc.php');
+}
+else if($_GET['sort'] =="2"){
+    $sort = $_GET['sort'];
+    require_once($path.'view-product_group.inc.php');
+}
+else{
+    require_once($path.'view-product_group.inc.php');
+}
   
 
 

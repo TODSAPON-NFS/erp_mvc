@@ -12,8 +12,8 @@ abstract class BaseModel{
     
     protected $password="root123456";
 
+    // protected $db_name="revelsoft_erp_arno";
     protected $db_name="revelsof_erp-ar";
-    //protected $db_name="revelsof_erp-ar";
 
     function __construct(){
         static::$db = mysqli_connect($host, $username, $password, $db_name);

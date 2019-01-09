@@ -9,7 +9,16 @@ class StockMoveModel extends BaseModel{
         }
     }
 
-    function getStockMoveBy($date_start  = '', $date_end  = ''){
+    function getStockMoveBy($date_start  = '', $date_end  = '',$keyword = ""){
+
+        if($date_start != "" && $date_end != ""){
+            $str_date = "AND STR_TO_DATE(stock_move_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(stock_move_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+        }else if ($date_start != ""){
+            $str_date = "AND STR_TO_DATE(stock_move_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+        }else if ($date_end != ""){
+            $str_date = "AND STR_TO_DATE(stock_move_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        }
+
         $sql = " SELECT stock_move_id, 
         stock_group_id_out, 
         stock_group_id_in, 
@@ -23,7 +32,9 @@ class StockMoveModel extends BaseModel{
         LEFT JOIN tb_user ON tb_stock_move.employee_id = tb_user.user_id 
         LEFT JOIN tb_stock_group as tb1 ON tb_stock_move.stock_group_id_out = tb1.stock_group_id 
         LEFT JOIN tb_stock_group as tb2 ON tb_stock_move.stock_group_id_in = tb2.stock_group_id 
-        ORDER BY STR_TO_DATE(stock_move_date,'%Y-%m-%d %H:%i:%s') DESC 
+        WHERE stock_move_code LIKE ('%$keyword%') 
+        $str_date
+        ORDER BY stock_move_code DESC 
          ";
 
 

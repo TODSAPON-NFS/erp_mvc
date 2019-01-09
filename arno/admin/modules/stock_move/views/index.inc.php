@@ -8,6 +8,8 @@ require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/StockGroupModel.php');
+require_once('../functions/CodeGenerateFunction.func.php');
+require_once('../models/PaperModel.php');
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/stock_move/views/";
@@ -16,22 +18,80 @@ $stock_group_model = new StockGroupModel;
 $stock_move_model = new StockMoveModel;
 $stock_move_list_model = new StockMoveListModel;
 $product_model = new ProductModel;
-$first_char = "SM";
+$code_generate = new CodeGenerate;
+$paper_model = new PaperModel;
+
+// 9 = key ของ purchase request ใน tb_paper
+$paper = $paper_model->getPaperByID('34');
+ 
 $stock_move_id = $_GET['id'];
 $target_dir = "../upload/stock_move/";
 
+
+if(!isset($_GET['date_start'])){
+    $date_start = $_SESSION['date_start'];
+}else{
+    $date_start = $_GET['date_start'];
+    $_SESSION['date_start'] = $date_start;
+}
+
+
+if(!isset($_GET['date_end'])){
+    $date_end = $_SESSION['date_end'];
+}else{
+    $date_end = $_GET['date_end'];
+    $_SESSION['date_end'] = $date_end;
+}
+
+if(!isset($_GET['keyword'])){
+    $keyword = $_SESSION['keyword'];
+}else{
+    
+    $keyword = $_GET['keyword']; 
+    $_SESSION['keyword'] = $keyword;
+}
+
+if($date_start == ""){
+    $date_start = date('01-m-Y'); 
+}
+
+if($date_end == ""){ 
+    $date_end  = date('t-m-Y');
+}
+
+
+
 if(!isset($_GET['action'])){
 
-    $stock_moves = $stock_move_model->getStockMoveBy();
+    
+
+    $stock_moves = $stock_move_model->getStockMoveBy($date_start,$date_end,$keyword);
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert'){
     $products=$product_model->getProductBy('','','','');
     $stock_groups=$stock_group_model->getStockGroupBy();
     $users=$user_model->getUserBy();
-    $first_code = $first_char.date("y").date("m");
-    $first_date = date("d")."-".date("m")."-".date("Y");
-    $last_code = $stock_move_model->getStockMoveLastID($first_code,3);
+
+    $user=$user_model->getUserByID($admin_id);
+        
+    $data = [];
+    $data['year'] = date("Y");
+    $data['month'] = date("m");
+    $data['number'] = "0000000000";
+    $data['employee_name'] = $user["user_name_en"];
+
+    $code = $code_generate->cut2Array($paper['paper_code'],$data);
+    $last_code = "";
+    for($i = 0 ; $i < count($code); $i++){
+    
+        if($code[$i]['type'] == "number"){
+            $last_code = $stock_move_model->getStockMoveLastID($last_code,$code[$i]['length']);
+        }else{
+            $last_code .= $code[$i]['value'];
+        }   
+    }  
+
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update'){
@@ -201,7 +261,8 @@ if(!isset($_GET['action'])){
     
 }else{
 
-    $stock_moves = $stock_move_model->getStockMoveBy();
+
+    $stock_moves = $stock_move_model->getStockMoveBy($date_start,$date_end,$keyword);
     require_once($path.'view.inc.php');
 
 }

@@ -850,6 +850,8 @@
 
     function calculateCost(){
 
+        var invoice_supplier_list_duty = document.getElementsByName('invoice_supplier_list_duty[]');
+        var invoice_supplier_list_fix_type = document.getElementsByName('invoice_supplier_list_fix_type[]');
         var invoice_supplier_list_import_duty = document.getElementsByName('invoice_supplier_list_import_duty[]');
         var invoice_supplier_list_freight_in = document.getElementsByName('invoice_supplier_list_freight_in[]');
         var invoice_supplier_list_cost = document.getElementsByName('invoice_supplier_list_cost[]');

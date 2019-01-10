@@ -180,7 +180,9 @@
         */
 
         else{
-            calculateCost();
+            <?PHP if($sort == "ภายนอกประเทศ"){ ?>
+                calculateCost();
+            <?PHP } ?>
             $('select[name="stock_group_id[]"]').prop('disabled', false);
             return true;
         }

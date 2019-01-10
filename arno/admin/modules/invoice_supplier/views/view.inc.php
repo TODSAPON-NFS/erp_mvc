@@ -315,7 +315,7 @@
                                             <i class="fa fa-money" aria-hidden="true"></i>
                                         </a>
 
-                                        <a href="print.php?app=invoice_supplier_abroad&action=pdf&type=cedit&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" target="_blank" title="พิมพ์ใบตั้งเจ้าหนี้ต่างประเทศ"  style="color:green;">
+                                        <a href="print.php?app=invoice_supplier_abroad&action=pdf&type=credit&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" target="_blank" title="พิมพ์ใบตั้งเจ้าหนี้ต่างประเทศ"  style="color:green;">
                                             <i class="fa fa-print" aria-hidden="true"></i>
                                         </a>
                                         <a href="print.php?app=invoice_supplier_abroad&action=pdf&type=receive&id=<?PHP echo $invoice_suppliers[$i]['invoice_supplier_id'];?>" target="_blank" title="พิมพ์ใบรับสินค้า">

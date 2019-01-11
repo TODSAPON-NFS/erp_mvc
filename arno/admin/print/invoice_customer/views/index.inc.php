@@ -33,7 +33,7 @@ $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy
 //     $tax_reports[] = $tax_reports[0];
 // }
 
-$lines = 7;
+$lines = 9;
 
 $page_max = (int)(count($invoice_customer_lists) / $lines);
 if(count($invoice_customer_lists) % $lines > 0){
@@ -54,8 +54,18 @@ if($_GET['action'] == "pdf"){
     /*############################### FPDF ##############################*/
 
     include("../plugins/mpdf/mpdf.php");
-    $mpdf=new mPDF('th', 'A4', '0', 'garuda','',15,15,15,15,15,15);  
-    
+    $mpdf=new mPDF('th', 'Letter', '0', 'garuda','',12,15,15,15,15,15);  
+    /******
+     * 
+     * Default values:
+            margin_left: 15
+            margin_right: 15
+            margin_top: 16
+            margin_bottom: 16
+            margin_header: 9
+            margin_footer: 9
+     * 
+     */
     for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
         $mpdf->AddPage('P');

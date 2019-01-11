@@ -55,25 +55,26 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     }
 
     .table thead th , .table tfoot td{
-        border :1px solid black;  
+        border-top :1px dashed   black;  
+        border-bottom :1px dashed   black;  
         border-collapse: collapse;
         height:16px;
         font-size:12px;
     }
 
-    .table, .table tbody td{ 
-        border-left :1px solid black; 
-        border-right :1px solid black; 
-        border-collapse: collapse;
+    .table, .table tbody td{ '.
+        //border-left :1px solid black; 
+        //border-right :1px solid black; 
+        'border-collapse: collapse;
         height:16px;
         font-size:12px;
-    }
-
+    } 
 
     tbody {
         display:block !important;
         height:325px;
     }
+
     th{
         padding:8px 4px;
         font-size:10px;
@@ -81,6 +82,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
     td{
         padding:4px;
+        padding-top:8px;
         font-size:12px;
         height:13px;
     }
@@ -105,10 +107,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 <div class="main" style="padding-left:8px;">
  
     <table width="100%">
-        <tr>
+        <tr>'./*
             <td width="120px">
                 <img src="../upload/company/'.$company['company_image'].'" width="120px" />
-            </td>
+            </td>*/'
             <td>
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_en'].'</div>
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_th'].'</div>
@@ -127,7 +129,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
  
     <table width="100%">
         <tr>
-            <td style="border: 1px solid #000;border-radius: 8px;">
+            <td './*style="border: 1px solid #000;border-radius: 8px;"*/'>
                 <table width="100%">
                     <tr>
                         <td width="64px" valign="top" style="padding:4px;line-height: 18px;">
@@ -172,7 +174,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                 </table> 
             </td>
-            <td width="300" valign="top" style="border: 1px solid #000;border-radius: 8px;">
+            <td width="300" valign="top" './*style="border: 1px solid #000;border-radius: 8px;"*/'>
                 <table width="100%">
                     <tr>
                         <td width="64px"  valign="middle" align="left">
@@ -261,6 +263,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <tr style="border-bottom:1px dashed #000;border-top:1px dashed #000;">
                     <th style="text-align:center; padding:4px 0px;" >No.</th>
                     <th style="text-align:center; padding:4px 0px;" >Product name / Description</th>
+                    <th style="text-align:center; padding:4px 0px;" >Stock</th>
                     <th style="text-align:center; padding:4px 0px;" >Qty</th>
                     <th style="text-align:center; padding:4px 0px;" >@</th>
                     <th style="text-align:center; padding:4px 0px;" >Amount </th> 
@@ -277,12 +280,15 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         $total += $invoice_supplier_lists[$i]['invoice_supplier_list_total'];
                 $html[$page_index] .= ' 
                 <tr class="odd gradeX">
-                <td align="center" valign="top" style="height:48px;width:48px;">
+                <td align="center" valign="top" style="height:40px;width:48px;">
                     '.($i+1).'
                 </td>
                 <td align="left" valign="top" >
                    '. $invoice_supplier_lists[$i]['product_code'].' <br>
                    <span style="font-size:10px;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $invoice_supplier_lists[$i]['product_name'].'</span>  
+                </td> 
+                <td align="center" valign="top" >
+                   '. $invoice_supplier_lists[$i]['stock_group_code'].'  
                 </td> 
                 <td align="right" valign="top" width="80px">
                     '. number_format($invoice_supplier_lists[$i]['invoice_supplier_list_qty'],0).'
@@ -303,9 +309,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             for($i = count($invoice_supplier_lists) % $lines ; $i < $lines; $i++){
                 $html[$page_index] .= ' 
                     <tr class="odd gradeX">
-                            <td align="center" style="height:48px;"> 
+                            <td align="center" style="height:40px;"> 
                             
                             </td> 
+                            <td align="center">
+                                
+                            </td>
                             <td align="center">
                                 
                             </td>
@@ -340,7 +349,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             </tbody>
             <tfoot>
                 <tr class="odd gradeX" >
-                    <td colspan="3" rowspan="2" align="left" valign="top">
+                    <td colspan="4" rowspan="2" align="left" valign="top">
                         <b>Remark</b> 
                     </td>
                     <td align="left">
@@ -359,7 +368,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </td>
                 </tr>    
                 <tr class="odd gradeX" >
-                    <td colspan="3" align="center">
+                    <td colspan="4" align="center">
                         '. $str.'
                     </td>
                     <td align="left">

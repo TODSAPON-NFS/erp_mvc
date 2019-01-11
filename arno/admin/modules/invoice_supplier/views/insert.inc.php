@@ -680,8 +680,7 @@
                             '<input type="text" class="form-control" name="invoice_supplier_list_remark[]" placeholder="Remark" value="'+ data_buffer[i].invoice_supplier_list_remark +'"/>'+
                         '</td>'+
                         '<td>'+
-                            '<select  name="stock_group_id[]" class="form-control select" data-live-search="true">'+ 
-                                '<option value="0">Select</option>'+ 
+                            '<select  name="stock_group_id[]" class="form-control select" data-live-search="true">'+  
                             '</select>'+ 
                         '</td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_qty[]" onchange="update_sum(this);" value="'+ qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" /></td>'+<?PHP if($sort == "ภายนอกประเทศ"){ ?>
@@ -756,8 +755,7 @@
                     '<input type="text" class="form-control" name="invoice_supplier_list_remark[]" placeholder="Remark"/>'+
                 '</td>'+
                 '<td>'+
-                    '<select  name="stock_group_id[]" class="form-control select" data-live-search="true">'+ 
-                        '<option value="0">Select</option>'+ 
+                    '<select  name="stock_group_id[]" class="form-control select" data-live-search="true">'+  
                     '</select>'+ 
                 '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_qty[]" value="0" onchange="update_sum(this);" /></td>'+<?PHP if($sort == "ภายนอกประเทศ"){ ?>

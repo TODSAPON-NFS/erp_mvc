@@ -55,16 +55,17 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     }
 
     .table thead th , .table tfoot td{
-        border :1px solid black;  
+        border-top :1px solid black;  
+        border-bottom :1px solid black;  
         border-collapse: collapse;
         height:16px;
         font-size:12px;
     }
 
-    .table, .table tbody td{ 
-        border-left :1px solid black; 
-        border-right :1px solid black; 
-        border-collapse: collapse;
+    .table, .table tbody td{ '.
+        //border-left :1px solid black; 
+        //border-right :1px solid black; 
+        'border-collapse: collapse;
         height:16px;
         font-size:12px;
     }
@@ -127,7 +128,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
  
     <table width="100%">
         <tr>
-            <td style="border: 1px solid #000;border-radius: 8px;">
+            <td './*style="border: 1px solid #000;border-radius: 8px;"*/'>
                 <table width="100%">
                     <tr>
                         <td width="64px" valign="top" style="padding:4px;line-height: 18px;">
@@ -172,7 +173,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                 </table> 
             </td>
-            <td width="300" valign="top" style="border: 1px solid #000;border-radius: 8px;">
+            <td width="300" valign="top" './*style="border: 1px solid #000;border-radius: 8px;"*/'>
                 <table width="100%">
                     <tr>
                         <td width="64px"  valign="middle" align="left">

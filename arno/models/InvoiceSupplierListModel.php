@@ -20,6 +20,7 @@ class InvoiceSupplierListModel extends BaseModel{
         CONCAT(product_code_first,product_code) as product_code, 
         product_name, 
         stock_group_name, 
+        stock_group_code, 
         tb_invoice_supplier_list.purchase_order_list_id,
         purchase_order_list_price,
         purchase_order_list_price_sum,

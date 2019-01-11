@@ -23,7 +23,8 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-
+                        <form action="" >
+                            <input type="hidden" name="app" value="search_product" />
                             <div class="row"> 
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -60,6 +61,7 @@
                                     <a href="index.php?app=product" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
                                 </div>
                             </div>
+                            </form>
 
                             <div class="row">
                                 <div class="col-sm-6">

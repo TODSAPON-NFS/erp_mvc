@@ -36,6 +36,7 @@
     <link href="../css/styles.css" rel="stylesheet">
     <link href="../css/notification.css" rel="stylesheet">
     <link href="../css/report.css" rel="stylesheet">
+    <link href="../css/totop.css" rel="stylesheet">
 
 
     

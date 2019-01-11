@@ -57,7 +57,7 @@ if(!isset($_SESSION['user'])){
             <?php require_once("views/menu.inc.php"); ?>
             <!-- /.navbar-static-side -->
         </nav>
-
+        
         <div id="page-wrapper">
            <?php require_once("views/body.inc.php"); ?>
         </div>

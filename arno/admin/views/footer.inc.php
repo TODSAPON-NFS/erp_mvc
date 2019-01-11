@@ -1,4 +1,4 @@
- 
+    <a id="btn_go_to_top"></a>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../template/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -24,7 +24,7 @@
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 
     <script src="../lib/functions.js"></script>
- 
+    <script src="../template/dist/js/totop.js"></script>
 
     <!-- Morris Charts JavaScript -->
     <?php if($_GET['app'] =="" ){?>
@@ -34,6 +34,7 @@
     <script src="../template/dist/js/numeral.min.js"></script>
     <script src="../template/dist/js/Chart.min.js"></script>
     <script src="../template/dist/js/Chart.bundle.min.js"></script>
+    
     <?php }?>
 
     <script>

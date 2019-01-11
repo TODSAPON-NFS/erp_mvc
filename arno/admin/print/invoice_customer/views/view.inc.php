@@ -129,7 +129,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
 </div>
 
-<div style="height:385px;">
+<div style="height:392px;">
     <table width="100%" >
 
         <tbody>

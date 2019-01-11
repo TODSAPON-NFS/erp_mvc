@@ -34,6 +34,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     .td-padding{
         padding-right: 20px;
     }
+    .td-padding40{
+        padding-right: 40px;
+    }
+    .td-padding60{
+        padding-right: 40px;
+    }
     @page *{
         margin-top: 0cm;
         margin-bottom: 0cm;
@@ -71,7 +77,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <tr>
                         <td width="80" height="48" valign="middle" align="left">
                         </td>
-                        <td width="100" height="48" valign="middle" align="right">
+                        <td class="td-padding60" width="100" height="48" valign="middle" align="right">
                             '.$invoice_customer['invoice_customer_date'].'
                         </td>
                         <td width="80" height="48" valign="middle" align="left">
@@ -86,7 +92,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <td width="80" height="48" valign="middle" align="left">
                         </td>
 
-                        <td width="100" height="48" valign="middle" align="right">
+                        <td td-padding40 width="100" height="48" valign="middle" align="right">
                             '.$invoice_customer['invoice_customer_due_day'].' วัน
                         </td>
 
@@ -107,7 +113,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         </td>
                         <td width="80" height="48" valign="middle" align="left">
                         </td>
-                        <td class="td-padding" width="100" height="48" valign="middle" align="right" style="padding-top:8px;">
+                        <td class="td-padding40" width="100" height="48" valign="middle" align="right" style="padding-top:8px;">
                             '.$invoice_customer['user_name'] .' 
                         </td>
 
@@ -123,7 +129,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
 </div>
 
-<div style="height:380px;">
+<div style="height:385px;">
     <table width="100%" >
 
         <tbody>

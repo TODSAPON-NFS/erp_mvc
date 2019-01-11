@@ -327,8 +327,8 @@
                                     <th>ผู้ขาย<br>Supplier</th>
                                     <th>ผู้ออกใบสั่งซื้อ<br>Request by</th>
                                     <th>สถานะสั่งซื้อ<br>PO Status</th>
-                                    <th>สถานะอนุมัติ<br>Accept Status</th>
-                                    <th>ผู้อนุมัติ<br>Accept by</th>
+                                    <!-- <th>สถานะอนุมัติ<br>Accept Status</th>
+                                    <th>ผู้อนุมัติ<br>Accept by</th> -->
                                     <th>หมายเหตุ<br>Remark</th>
                                     
                                     <th></th>
@@ -350,9 +350,48 @@
                                     >[<?PHP echo $purchase_orders[$i]['purchase_order_type']; ?>]</b> <?php if($purchase_orders[$i]['purchase_order_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_orders[$i]['purchase_order_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($purchase_orders[$i]['purchase_order_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
                                     <td><?php echo $purchase_orders[$i]['supplier_name']; ?> </td>
                                     <td><?php echo $purchase_orders[$i]['employee_name']; ?></td>
-                                    <td><?php echo $purchase_orders[$i]['purchase_order_status']; ?></td>
-                                    <td><?php echo $purchase_orders[$i]['purchase_order_accept_status']; ?></td>
-                                    <td><?php echo $purchase_orders[$i]['accept_name']; ?></td>
+                                    <td>
+                                    <?php if($purchase_orders[$i]['purchase_order_status'] =="New"){ ?>
+                                                <b class="font-weight-bold text-success text-center"><i class="fa fa-plus" aria-hidden="true"></i>
+                                                <?php
+                                                echo $purchase_orders[$i]['purchase_order_status'];
+                                                ?>
+                                                </b>
+                                                <?php
+                                        }else if($purchase_orders[$i]['purchase_order_status'] =="Request"){ ?>
+                                                <b class="font-weight-bold text-danger text-center"><i class="fa fa-registered" aria-hidden="true"></i>
+                                                <?php
+                                                echo $purchase_orders[$i]['purchase_order_status'];
+                                                ?>
+                                                </b>
+                                                <?php
+                                        }else if($purchase_orders[$i]['purchase_order_status'] =="Approved"){ ?>
+                                                <b class="font-weight-bold text-info text-center"><i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                                <?php
+                                                echo $purchase_orders[$i]['purchase_order_status'];
+                                                ?>
+                                                </b>
+                                        <?php
+                                        }else if($purchase_orders[$i]['purchase_order_status'] =="Sending"){ ?>
+                                                <b class="font-weight-bold text-warning text-center"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                                <?php
+                                                echo $purchase_orders[$i]['purchase_order_status'];
+                                                ?>
+                                                </b>
+                                                <?php
+                                        }else if($purchase_orders[$i]['purchase_order_status'] =="Confirm"){ ?>
+                                            <b class="font-weight-bold text-secondary text-center"><i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                            <?php
+                                            echo $purchase_orders[$i]['purchase_order_status'];
+                                            ?>
+                                            </b>
+                                            <?php
+                                        }?>
+
+                                    
+                                    </td>
+                                    <!-- <td><?php// echo $purchase_orders[$i]['purchase_order_accept_status']; ?></td>
+                                    <td><?php// echo $purchase_orders[$i]['accept_name']; ?></td> -->
                                     <td><?php echo $purchase_orders[$i]['purchase_order_remark']; ?></td>
                                     <td>
                                         <a href="?app=purchase_order&action=detail&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>">

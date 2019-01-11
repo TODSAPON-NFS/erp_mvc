@@ -33,7 +33,7 @@ $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy
 //     $tax_reports[] = $tax_reports[0];
 // }
 
-$lines = 9;
+$lines = 10;
 
 $page_max = (int)(count($invoice_customer_lists) / $lines);
 if(count($invoice_customer_lists) % $lines > 0){

@@ -411,7 +411,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ร้องขอ</label>
-                                <input type="text" id="purchase_request_date" name="purchase_request_date" value="<?PHP echo $purchase_request['purchase_request_date'];?>"  class="form-control calendar" onchange="check_date(this);" readonly/>
+                                <input type="text" id="purchase_request_date" name="purchase_request_date" value="<?PHP echo $first_date;?>"  class="form-control calendar" onchange="check_date(this);" readonly/>
                                 <input id="date_check" type="hidden" value="" />
                                 <p class="help-block">01-03-2018</p>
                             </div>

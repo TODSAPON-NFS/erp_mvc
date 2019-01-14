@@ -390,8 +390,7 @@
                                         // print_r($invoice_product);
                                         // echo"</pre>";
 
-                                    for($j = 0; $j<count($invoice_product); $j++){
-                                        if ( $invoice_product[$j]['invoice_supplier_id'] != $invoice_product[$j+1]['invoice_supplier_id'] ) {
+                                    for($j = 0; $j<count($invoice_product); $j++){ 
                                             # code...
                                         
                                         ?>
@@ -399,13 +398,12 @@
                                      <li class="list-inline-item">
                                             <a href="index.php?app=invoice_supplier&action=detail&id=<?PHP echo $invoice_product[$j]['invoice_supplier_id']; ?>" target="_blank">
                                                 <?PHP
-                                                echo $invoice_product[$j]['invoice_supplier_code']; 
+                                                echo $invoice_product[$j]['invoice_supplier_code_gen']; 
                                                 ?>
                                             </a>
                                         </li>
                                     </ul>
-                                        <?PHP
-                                    }
+                                        <?PHP 
                                     
                                 }
                                     

@@ -417,20 +417,18 @@
                                     // echo  $purchase_orders[$i]['purchase_order_id'];
                                          $invoice_supplier = $purchase_order_model->getPurchaseOrderInvoiceBy( $purchase_orders[$i]['purchase_order_id']);
 
-                                         for($j = 0; $j<count($invoice_supplier); $j++){
-                                             if($invoice_supplier[$j]['invoice_supplier_code'] != $invoice_supplier[$j+1]['invoice_supplier_code']){
+                                         for($j = 0; $j<count($invoice_supplier); $j++){ 
                                             ?>
                                             <ul class="list-inline">
                                              <li class="list-inline-item">
                                                     <a href="index.php?app=invoice_supplier&action=detail&id=<?PHP echo $invoice_supplier[$j]['invoice_supplier_id']; ?>" target="_blank">
                                                         <?PHP
-                                                        echo   $invoice_supplier[$j]['invoice_supplier_code'];
+                                                        echo   $invoice_supplier[$j]['invoice_supplier_code_gen'];
                                                         ?>
                                                     </a>
                                                 </li>
                                             </ul>
-                                                <?PHP
-                                            }
+                                                <?PHP 
                                          }
                                          
                                     ?>

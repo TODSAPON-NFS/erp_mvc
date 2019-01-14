@@ -113,7 +113,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         </td>
                         <td width="80" height="48" valign="middle" align="left">
                         </td>
-                        <td class="td-padding40" width="100" height="48" valign="middle" align="right" style="padding-top:8px;">
+                        <td class="td-padding" width="100" height="48" valign="middle"  style="padding-top:8px;">
                             '.$invoice_customer['user_name'] .' 
                         </td>
 

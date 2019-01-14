@@ -262,12 +262,13 @@
                         <table width="100%" class="table table-striped table-bordered table-hover"  id="dataTables-example">
                             <thead>
                                 <tr>
-                                    <th width="48">ลำดับ <br>No.</th>
-                                    <th width="150">วันที่รับสินค้า<br>Recieve Date</th>
-                                    <th width="150">หมายเลขรับสินค้า<br>Recieve Code.</th>
-                                    <th width="150">วันที่ตามใบกำกับภาษี<br>Invoice Date</th> 
-                                    <th width="150">หมายเลขใบกำกับภาษี<br>Invoice Code.</th>
-                                    <th>ผู้ขาย <br> Supplier</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="32">No.</th>
+                                    <th class="datatable-th" data-original-title="วันที่รับสินค้า" data-container="body" data-toggle="tooltip" data-placement="top" title="" width="100">Recieve Date</th>
+                                    <th class="datatable-th" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขรับสินค้า" width="104">Recieve Code.</th>
+                                    <th class="datatable-th" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ตามใบกำกับภาษี" width="92">Invoice Date</th> 
+                                    <th class="datatable-th" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบกำกับภาษี" width="110">Invoice Code.</th>
+                                    <th class="datatable-th" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เอกสารที่เกี่ยวข้อง" width="120">Purchase Order.</th>
+                                    <th class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" >Supplier</th>
                                     <!--
                                     <th width="150" >Recieve by</th>
                                     -->
@@ -294,6 +295,22 @@
                                     <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code_gen']; ?></td>
                                     <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date']; ?></td> 
                                     <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code']; ?></td>
+                                    <td><?php 
+
+                                        $purchase_orders = $invoice_supplier_model->getPurchaseOrderByInvoiceSupplierId($invoice_suppliers[$i]['invoice_supplier_id']);
+                                        // echo '<pre>';
+                                        // print_r ($purchase_orders);
+                                        // echo '</pre>';
+                                        for($j=0; $j < count($purchase_orders); $j++){ ?>
+                                            <a href="?app=purchase_order&action=detail&id=<?php echo $purchase_orders[$j]['purchase_order_id'];?>" target = "_blank" title="ดูรายละเอียดใบสั่งซื้อ">
+                                            <?php echo $purchase_orders[$j]['purchase_order_code']; ?>
+                                            </a><br>
+                                            <?php
+                                        } 
+                                    
+                                    ?>
+                                    
+                                    </td>
                                     <td><?php echo $invoice_suppliers[$i]['supplier_name']; ?> </td>
                                     <!--
                                     <td><?php echo $invoice_suppliers[$i]['employee_name']; ?></td>
@@ -360,7 +377,7 @@
                             </tbody>
                             <tfoot>
                                 <tr class="odd gradeX">
-                                    <td colspan ="6"><b>จำนวนเงินรวม</b></td>
+                                    <td colspan ="7"><b>จำนวนเงินรวม</b></td>
                                     <td align="right"><?php echo number_format($invoice_supplier_total_price,2); ?></td>
                                     <td align="right"><?php echo number_format($invoice_supplier_vat_price,2); ?></td>
                                     <td align="right"><?php echo number_format($invoice_supplier_net_price,2); ?></td>
@@ -377,6 +394,10 @@
         <!-- /.panel -->
     </div>
     <!-- /.col-lg-12 -->
-</div>
-            
-            
+</div>        
+<script>
+$(function () {
+    $("[data-toggle='tooltip']").tooltip();
+    
+});
+</script>            

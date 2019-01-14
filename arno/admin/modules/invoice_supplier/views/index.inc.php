@@ -128,7 +128,9 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     if($list_size%$page_size > 0){
         $page_max += 1;
     }
-
+    //  echo "<pre>";
+    // print_r($invoice_suppliers);
+    // echo "</pre>";
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'import-view' && ( $license_purchase_page == "Medium" || $license_purchase_page == "High" )){

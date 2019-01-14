@@ -383,8 +383,8 @@
                                    
 
                                     <td><?PHP   
-                                    
-                                    $invoice_product = $purchase_order_model -> getPurchaseOrderInvoiceProductBy($purchase_orders[$i]['product_id']);
+                                    // echo  $purchase_orders[$i]['purchase_order_list_id'];
+                                    $invoice_product = $purchase_order_model -> getPurchaseOrderInvoiceProductBy($purchase_orders[$i]['purchase_order_list_id']);
                                    
                                         // echo "<pre>";
                                         // print_r($invoice_product);

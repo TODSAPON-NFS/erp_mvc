@@ -5,8 +5,15 @@
         var date_end = $("#date_end").val();
         var supplier_id = $("#supplier_id").val();
         var keyword = $("#keyword").val();
+        var view_type = $("#view_type").val();
+        if( view_type == 'paper'){
+            window.location = "index.php?app=purchase_order&date_start="+date_start+"&date_end="+date_end+"&supplier_id="+supplier_id+"&keyword="+keyword+"&view_type=paper"; 
+       
+        }else{
+            window.location = "index.php?app=purchase_order&action=view_list&date_start="+date_start+"&date_end="+date_end+"&supplier_id="+supplier_id+"&keyword="+keyword+"&view_type=product";    
+        
+        }
 
-        window.location = "index.php?app=purchase_order&date_start="+date_start+"&date_end="+date_end+"&supplier_id="+supplier_id+"&keyword="+keyword;
     }
 
     function export_excel(){
@@ -302,6 +309,17 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="col-md-2">
+                        <div class="form-group">
+                            <label>แสดง </label>
+                            <select id="view_type" name="view_type" class="form-control select" data-live-search="true"> 
+                                <option <?PHP   if($view_type == 'paper'){?> selected <?PHP   }?> value="paper">ตามใบสั่งซื้อ</option> 
+                                <option <?PHP   if($view_type == 'product'){?> selected <?PHP   }?> value="product">ตามรายการสั่งซื้อ</option> 
+                            </select>
+                            <p class="help-block">Example : ตามใบสั่งซื้อ.</p>
+                        </div>
+                    </div>
 
                 <div class="row">
                     <div class="col-md-4">
@@ -327,6 +345,7 @@
                                     <th>ผู้ขาย<br>Supplier</th>
                                     <th>ผู้ออกใบสั่งซื้อ<br>Request by</th>
                                     <th>สถานะสั่งซื้อ<br>PO Status</th>
+                                    <th>รหัสเอกสาร<br>Invoice Code</th>
                                     <!-- <th>สถานะอนุมัติ<br>Accept Status</th>
                                     <th>ผู้อนุมัติ<br>Accept by</th> -->
                                     <th>หมายเหตุ<br>Remark</th>
@@ -392,6 +411,29 @@
                                     </td>
                                     <!-- <td><?php// echo $purchase_orders[$i]['purchase_order_accept_status']; ?></td>
                                     <td><?php// echo $purchase_orders[$i]['accept_name']; ?></td> -->
+                                    <td>
+                                    <?PHP
+                                    // echo  $purchase_orders[$i]['supplier_id'];
+                                         $invoice_supplier = $purchase_order_model->getPurchaseOrderInvoiceBy( $purchase_orders[$i]['supplier_id']);
+
+                                         for($j = 0; $j<count($invoice_supplier); $j++){
+                                             if($invoice_supplier[$j]['invoice_supplier_code'] != $invoice_supplier[$j+1]['invoice_supplier_code']){
+                                            ?>
+                                            <ul class="list-inline">
+                                             <li class="list-inline-item">
+                                                    <a href="index.php?app=invoice_supplier&action=detail&id=<?PHP echo $invoice_supplier[$j]['invoice_supplier_id']; ?>" target="_blank">
+                                                        <?PHP
+                                                        echo   $invoice_supplier[$j]['invoice_supplier_code'];
+                                                        ?>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                                <?PHP
+                                            }
+                                         }
+                                         
+                                    ?>
+                                    </td>
                                     <td><?php echo $purchase_orders[$i]['purchase_order_remark']; ?></td>
                                     <td>
                                         <a href="?app=purchase_order&action=detail&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>">

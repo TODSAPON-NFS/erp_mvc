@@ -54,6 +54,7 @@ $type = strtoupper($_GET['type']);
  
 
 if(!isset($_GET['action'])){
+    $view_type = $_GET['view_type'];
 
     if(!isset($_GET['date_start'])){
         $date_start = $_SESSION['date_start'];
@@ -109,9 +110,78 @@ if(!isset($_GET['action'])){
         $page_max += 1;
     }
 
+    // echo "<pre>";
+    // print_r( $purchase_orders);
+    // echo"</pre>";
 
     require_once($path.'view.inc.php');
 
+}else if ($_GET['action'] == 'view_list' ){
+
+
+    if(!isset($_GET['date_start'])){
+        $date_start = $_SESSION['date_start'];
+    }else{
+        $date_start = $_GET['date_start'];
+        $_SESSION['date_start'] = $date_start;
+    }
+
+
+    if(!isset($_GET['date_end'])){
+        $date_end = $_SESSION['date_end'];
+    }else{
+        $date_end = $_GET['date_end'];
+        $_SESSION['date_end'] = $date_end;
+    }
+
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
+
+    if($date_start == ""){
+        $date_start = date('01-m-Y'); 
+    }
+    
+    if($date_end == ""){ 
+        $date_end  = date('t-m-Y');
+    }
+
+    $view_type = $_GET['view_type'];
+
+    $supplier_id = $_GET['supplier_id'];
+
+    $suppliers=$supplier_model->getSupplierBy();
+
+    $purchase_orders = $purchase_order_model-> getPurchaseOrderListBy($date_start,$date_end,$supplier_id,$keyword);
+    $supplier_orders = $purchase_order_model->getSupplierOrder();
+    $supplier_tests = $purchase_order_model->getSupplierTestOrder();
+    $supplier_blankeds = $purchase_order_model->getSupplierBlankedOrder();
+    $supplier_regrinds = $purchase_order_model->getSupplierRegrind();
+
+    
+    // echo "<pre>";
+    // print_r($purchase_orders);
+    // echo"</pre>";
+
+    if($_GET['page'] == '' || $_GET['page'] == '0'){
+        $page = 0;
+    }else{
+        $page = $_GET['page'] - 1;
+    }
+
+    $page_size = 50;
+    $list_size = count($purchase_orders);
+    $page_max = (int)($list_size/$page_size);
+    if($list_size%$page_size > 0){
+        $page_max += 1;
+    }
+
+
+    require_once($path.'view_list.inc.php');
 }else if ($_GET['action'] == 'insert' && ($license_purchase_page == "Medium" || $license_purchase_page == "High" )){
     
     if($type != "STANDARD" && $type != "TEST" && $type != "BLANKED" && $type != "REGRIND"){

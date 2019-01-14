@@ -10,6 +10,119 @@ class PurchaseOrderModel extends BaseModel{
         mysqli_set_charset(static::$db,"utf8");
     }
 
+    function getPurchaseOrderInvoiceBy($supplier_id) {
+
+        $sql = " SELECT * 
+        FROM `tb_purchase_order` 
+        LEFT JOIN tb_invoice_supplier 
+        ON tb_purchase_order.supplier_id = tb_invoice_supplier.supplier_id 
+        WHERE tb_purchase_order.supplier_id = $supplier_id
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getPurchaseOrderInvoiceProductBy($product_id) {
+
+        $sql = " SELECT 
+        tb_invoice_supplier.invoice_supplier_id,
+        tb_invoice_supplier.supplier_id,
+        tb_invoice_supplier.invoice_supplier_code,
+        tb_invoice_supplier.invoice_supplier_code_gen,
+        tb_invoice_supplier.invoice_supplier_total_price,
+        tb_invoice_supplier.invoice_supplier_vat_price,
+        tb_invoice_supplier.invoice_supplier_net_price,
+        tb_invoice_supplier_list.product_id,
+        tb_invoice_supplier_list.invoice_supplier_list_qty,
+        tb_invoice_supplier_list.invoice_supplier_list_price,
+        tb_product.product_code,
+        tb_product.product_name
+        FROM `tb_invoice_supplier`
+        LEFT JOIN tb_invoice_supplier_list ON tb_invoice_supplier.invoice_supplier_id = tb_invoice_supplier_list.invoice_supplier_id
+        
+        LEFT JOIN tb_product ON tb_invoice_supplier_list.product_id = tb_product.product_id
+        WHERE tb_product.product_id ='$product_id'
+        ";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
+    function getPurchaseOrderListBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "") {
+
+        $str_supplier = "";
+        $str_date = "";
+
+        if($date_start != "" && $date_end != ""){
+            $str_date = " STR_TO_DATE(tb_purchase_order.purchase_order_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') AND STR_TO_DATE(tb_purchase_order.purchase_order_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";
+        }else if ($date_start != ""){
+            $str_date = " STR_TO_DATE(tb_purchase_order.purchase_order_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$date_start','%d-%m-%Y %H:%i:%s') ";    
+        }else if ($date_end != ""){
+            $str_date = " STR_TO_DATE(tb_purchase_order.purchase_order_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s') ";  
+        }
+
+        if($supplier_id != ""){
+            $str_supplier = "AND tb_purchase_order.supplier_id = '$supplier_id' ";
+        }
+        $sql = "SELECT 
+        tb_purchase_order.purchase_order_id,
+        tb_purchase_order.supplier_id,
+        tb_purchase_order.purchase_order_type,
+        tb_purchase_order.employee_id,
+        tb_purchase_order.purchase_order_code,
+        tb_purchase_order.purchase_order_status,
+        tb_purchase_order.purchase_order_date,
+        tb_purchase_order_list.purchase_order_list_id,
+        tb_purchase_order_list.product_id,
+        tb_purchase_order_list.purchase_order_list_qty,
+        tb_purchase_order_list.purchase_order_list_price,
+        tb_supplier.supplier_id,
+        tb_supplier.supplier_code,
+        tb_supplier.supplier_name_th,
+        tb_supplier.supplier_name_en,
+        tb_product.product_code,
+        tb_product.product_name,
+        tb_invoice_supplier_list.invoice_supplier_list_qty
+        FROM `tb_purchase_order`
+        LEFT JOIN tb_purchase_order_list ON tb_purchase_order.purchase_order_id = tb_purchase_order_list.purchase_order_id
+        LEFT JOIN tb_supplier ON tb_purchase_order.supplier_id = tb_supplier.supplier_id
+        LEFT JOIN tb_product ON tb_purchase_order_list.product_id = tb_product.product_id
+        LEFT JOIN tb_invoice_supplier_list ON tb_product.product_id = tb_invoice_supplier_list.product_id
+        WHERE 
+        
+            $str_date
+            $str_supplier
+        ";
+        // echo"<pre>";
+        // print_r($sql);
+        // echo "</pre>";
+
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getPurchaseOrderBy($date_start = "",$date_end = "",$supplier_id = "",$keyword = "",$user_id = ""){
 
         $str_supplier = "";
@@ -50,21 +163,22 @@ class PurchaseOrderModel extends BaseModel{
         purchase_order_delivery_term, 
         purchase_order_cancelled,
         IFNULL(tb2.supplier_name_en,'-') as supplier_name, 
-        purchase_order_delivery_by 
+        purchase_order_delivery_by ,
+        tb2.supplier_id 
         FROM tb_purchase_order as tb
         LEFT JOIN tb_user as tb1 ON tb.employee_id = tb1.user_id 
         LEFT JOIN tb_user as tb3 ON tb.purchase_order_accept_by = tb3.user_id 
         LEFT JOIN tb_supplier as tb2 ON tb.supplier_id = tb2.supplier_id 
-        WHERE ( 
-            CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%') 
-            OR  CONCAT(tb3.user_name,' ',tb3.user_lastname) LIKE ('%$keyword%') 
-            OR  purchase_order_code LIKE ('%$keyword%') 
-        ) 
-        $str_supplier 
-        $str_date 
-        $str_user  
+        WHERE (
+            CONCAT(tb1.user_name,' ',tb1.user_lastname) LIKE ('%$keyword%')
+            OR  CONCAT(tb3.user_name,' ',tb3.user_lastname) LIKE ('%$keyword%')
+            OR  purchase_order_code LIKE ('%$keyword%')
+        )
+        $str_supplier
+        $str_date
+        $str_user
         GROUP BY purchase_order_id
-        ORDER BY purchase_order_code DESC 
+        ORDER BY purchase_order_code DESC
          ";
 
     

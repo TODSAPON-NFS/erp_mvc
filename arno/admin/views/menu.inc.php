@@ -653,6 +653,9 @@
                                 ระบบรายงาน <span class="glyphicon arrow"></span>
                             </a>
                             <ul class="collapse">
+
+
+                        <?PHP if($license_report_page == "Medium" || $license_report_page == "High" ){ ?>
                                 <li
                                 <?PHP 
                                     if(
@@ -699,7 +702,9 @@
                                         
                                     </ul>
                                 </li>
+                            <?PHP } ?>
 
+                            <?PHP if($license_report_page == "Medium" ||  $license_report_page == "High" ){ ?>
                                 <li
                                 <?PHP 
                                     if(
@@ -741,8 +746,10 @@
                                             <a href="?app=report_creditor_09" <?PHP if($_GET['app'] == "report_creditor_09"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายละเอียดผู้จำหน่าย</a>
                                         </li>
                                     </ul>
-                                </li>
-
+                                </li>   
+                            <?PHP } ?>
+                            
+                            <?PHP if($license_report_page == "High" ){ ?>
                                 <li
                                 <?PHP 
                                     if(
@@ -768,7 +775,9 @@
                                        
                                     </ul>
                                 </li>
-
+                                <?PHP } ?>
+                            
+                                <?PHP if($license_report_page == "Low" || $license_report_page == "Medium" || $license_report_page == "High"){ ?>
                                 <li
                                 <?PHP 
                                     if(
@@ -811,7 +820,9 @@
                                         </li>  
                                     </ul>
                                 </li>
-
+                            <?PHP } ?>
+                            
+                            <?PHP if($license_report_page == "High"  ){ ?>
                                 <li
                                 <?PHP 
                                     if(
@@ -857,7 +868,7 @@
                                         </li>
                                     </ul>
                                 </li>
-
+                                <?PHP } ?>
                             </ul>
                         </li>
 

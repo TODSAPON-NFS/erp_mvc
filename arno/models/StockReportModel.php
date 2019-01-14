@@ -498,43 +498,62 @@ class StockReportModel extends BaseModel{
     //
     //
     //#####################################################################################################################
-    function getStockReportBalanceListBy($stock_start = "",$stock_end = "",$product_start = "",$product_end = ""){
-      
-        $str_stock = "";  
+    function getStockReportBalanceListBy($date_end = "", $stock_group_id = "" ,$product_start = "",$product_end = ""){
+       
         $str_product = "";  
+        $str_date = "";  
 
-        if($stock_start != "" && $stock_end != ""){
-            $str_stock = " AND CAST(stock_group_code AS UNSIGNED) >= '$stock_start' AND CAST(stock_group_code AS UNSIGNED) <=  '$stock_end' "; 
-        }else if ($stock_start != "" && $stock_end == ""){
-            $str_stock = " AND stock_group_code = '$stock_start' ";  
-        } 
+        
 
-        if($product_start != "" && $product_end != ""){
-            $str_product = " AND product_code >= '$product_start' AND product_code <=  '$product_end' "; 
-        }else if ($product_start != "" && $product_end == ""){
-            $str_product = " AND CONCAT(product_code_first,product_code) LIKE ('%$product_start%') ";  
-        } 
+        $sql = "SELECT * FROM tb_stock_group WHERE stock_group_id = '".$stock_group_id."' ";
 
+        //echo $sql."<br><br>";
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+             $tb_stock = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+             $result->close();
+ 
+    
+            if($product_start != "" && $product_end != ""){
+                $str_product = " AND product_code >= '$product_start' AND product_code <=  '$product_end' "; 
+            }else if ($product_start != "" && $product_end == ""){
+                $str_product = " AND CONCAT(product_code_first,product_code) LIKE ('%$product_start%') ";  
+            } 
 
-        $sql =" SELECT stock_group_name ,CONCAT(product_code_first,product_code) as product_code,product_name ,stock_report_qty,stock_report_cost_avg, (stock_report_qty*stock_report_cost_avg) AS  stock_report_total 
+             $sql =" SELECT stock_group_name ,CONCAT(product_code_first,product_code) as product_code,product_name , IF(balance_qty IS NULL , stock_report_qty ,balance_qty) as stock_report_qty , IF(balance_stock_cost_avg IS NULL , stock_report_cost_avg, balance_stock_cost_avg ) as stock_report_cost_avg , IF(balance_stock_cost_avg IS NULL , (stock_report_qty*stock_report_cost_avg) , (balance_qty * balance_stock_cost_avg ) ) AS  stock_report_total 
                 FROM tb_stock_report 
                 LEFT JOIN tb_product ON tb_stock_report.product_id = tb_product.product_id 
                 LEFT JOIN tb_stock_group ON tb_stock_report.stock_group_id = tb_stock_group.stock_group_id 
-                WHERE tb_product.product_id IS NOT NULL 
-                AND stock_report_qty != 0 
-                $str_stock
-                $str_product
+                LEFT JOIN ( 
+                    SELECT tb2.* 
+                    FROM ".$tb_stock['table_name']." as tb2 
+                    LEFT JOIN ".$tb_stock['table_name']." as tb3 ON (tb2.product_id = tb3.product_id AND tb2.stock_id < tb3.stock_id) 
+                    WHERE  tb3.stock_id IS NULL AND STR_TO_DATE(tb2.stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s')
+                ) as tb1 ON tb_stock_report.product_id = tb1.product_id
+                WHERE tb_stock_report.stock_group_id = '$stock_group_id' 
+                AND tb_product.product_id IS NOT NULL  
+                $str_product  
+                GROUP BY tb_stock_report.stock_group_id , tb_stock_report.product_id 
+                HAVING stock_report_qty != 0 
                 ORDER BY stock_group_name,product_code ASC
-        "; 
-        // echo $sql;
-        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-            $data = [];
-            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                $data[] = $row;
+            "; 
+
+            //echo $sql."<br><br>";
+            // echo $sql;
+            if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                $data = [];
+                while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close();
+                return $data;
             }
-            $result->close();
-            return $data;
+
+        }else{
+           return $data;
         }
+
+
+        
 
     } 
 

@@ -14,7 +14,7 @@ if($billing_note['customer_fax'] != ""){
 }
 
 if($billing_note['customer_tel'] != ""){
-    $tel = "Tel. ".$billing_note['customer_fax'];
+    $tel = "Tel. ".$billing_note['customer_tel'];
 }else{
     $tel = "";
 }

@@ -263,11 +263,11 @@
                             <thead>
                                 <tr>
                                     <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="32">No.</th>
+                                    <th class="datatable-th" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขรับสินค้า" width="104">Recieve Code</th>
                                     <th class="datatable-th" data-original-title="วันที่รับสินค้า" data-container="body" data-toggle="tooltip" data-placement="top" title="" width="100">Recieve Date</th>
-                                    <th class="datatable-th" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขรับสินค้า" width="104">Recieve Code.</th>
-                                    <th class="datatable-th" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ตามใบกำกับภาษี" width="92">Invoice Date</th> 
-                                    <th class="datatable-th" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบกำกับภาษี" width="110">Invoice Code.</th>
-                                    <th class="datatable-th" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เอกสารที่เกี่ยวข้อง" width="120">Purchase Order.</th>
+                                    <th class="datatable-th" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบกำกับภาษี" width="110">Invoice Code</th>
+                                    <th class="datatable-th" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ตามใบกำกับภาษี" width="94">Invoice Date</th>                                    
+                                    <th class="datatable-th" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เอกสารที่เกี่ยวข้อง" width="120">Purchase Order</th>
                                     <th class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" >Supplier</th>
                                     <!--
                                     <th width="150" >Recieve by</th>
@@ -291,10 +291,10 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date_recieve']; ?></td>
                                     <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code_gen']; ?></td>
-                                    <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date']; ?></td> 
+                                    <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date_recieve']; ?></td>
                                     <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code']; ?></td>
+                                    <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date']; ?></td> 
                                     <td><?php 
 
                                         $purchase_orders = $invoice_supplier_model->getPurchaseOrderByInvoiceSupplierId($invoice_suppliers[$i]['invoice_supplier_id']);

@@ -1074,6 +1074,12 @@
                                 <td style="padding-left:4px;width:100px;">
                                     <button class="btn btn-success " onclick="get_purchase();" ><i class="fa fa-plus" aria-hidden="true"></i> get purchase.</button>
                                 </td> 
+                                <td style="padding-left:4px;width:100px;">
+                                    <a class="btn btn-primary " href="index.php?app=purchase_order&action=detail&id=<?PHP echo $purchase_order_id ?>" target="_blank"> 
+                                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                        รายละเอียดการสั่งซื้อ
+                                    </a>
+                                </td> 
                             </tr>
                         </table> 
                     </div>

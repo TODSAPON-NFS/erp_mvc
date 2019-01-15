@@ -942,7 +942,16 @@
                                         <p class="help-block">Example : Thana Tepchuleepornsil.</p>
                                     </div>
                                 </div>
-                                
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>สถานะสั่งพิมพ์ <font color="#F00"><b>*</b></font> </label>
+                                        <select id="invoice_customer_print_line" name="invoice_customer_print_line" class="form-control" >
+                                            <option value="0">2 บรรทัด</option>
+                                            <option value="1">3 บรรทัด</option>
+                                        </select>
+                                        <p class="help-block">Example : 2 บรรทัด หรือ 3บรรทัด.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div> 

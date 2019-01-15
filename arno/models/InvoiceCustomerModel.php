@@ -359,6 +359,7 @@ class InvoiceCustomerModel extends BaseModel{
         invoice_customer_total_non = '".$data['invoice_customer_total_non']."', 
         invoice_customer_description = '".static::$db->real_escape_string($data['invoice_customer_description'])."', 
         invoice_customer_remark = '".static::$db->real_escape_string($data['invoice_customer_remark'])."', 
+        invoice_customer_print_line = '".$data['invoice_customer_print_line']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
         WHERE invoice_customer_id = $id 
@@ -632,6 +633,7 @@ class InvoiceCustomerModel extends BaseModel{
             invoice_customer_total_non,
             invoice_customer_description,
             invoice_customer_remark,
+            invoice_customer_print_line,
             addby,
             adddate,
             updateby,
@@ -661,6 +663,7 @@ class InvoiceCustomerModel extends BaseModel{
         static::$db->real_escape_string($data['invoice_customer_total_non'])."','".
         static::$db->real_escape_string($data['invoice_customer_description'])."','".
         static::$db->real_escape_string($data['invoice_customer_remark'])."','".
+        static::$db->real_escape_string($data['invoice_customer_print_line'])."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].

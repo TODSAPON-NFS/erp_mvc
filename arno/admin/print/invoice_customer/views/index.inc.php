@@ -34,13 +34,21 @@ $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy
 // }
 
 $lines = 10;
-
-$page_max = (int)(count($invoice_customer_lists) / $lines);
-if(count($invoice_customer_lists) % $lines > 0){
-    $page_max += 1;
+if($invoice_customer['invoice_customer_print_line'] == '1'){
+    $lines = 7;
+    $page_max = (int)(count($invoice_customer_lists) / $lines);
+    if(count($invoice_customer_lists) % $lines > 0){
+        $page_max += 1;
+    }
+    include($path."view-print-line.inc.php");
+}else{
+    $page_max = (int)(count($invoice_customer_lists) / $lines);
+    if(count($invoice_customer_lists) % $lines > 0){
+        $page_max += 1;
+    }
+    include($path."view.inc.php");
 }
 
-include($path."view.inc.php");
 
 
 

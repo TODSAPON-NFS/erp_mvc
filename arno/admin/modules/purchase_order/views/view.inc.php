@@ -301,16 +301,15 @@
                             <p class="help-block">Example : บริษัท ไทยซัมมิท โอโตโมทีฟ จำกัด.</p>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>คำค้น <font color="#F00"><b>*</b></font></label>
                             <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >
                             <p class="help-block">Example : T001.</p>
                         </div>
                     </div>
-                </div>
-                
-                <div class="col-md-2">
+                    
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>แสดง </label>
                             <select id="view_type" name="view_type" class="form-control select" data-live-search="true"> 
@@ -320,6 +319,8 @@
                             <p class="help-block">Example : ตามใบสั่งซื้อ.</p>
                         </div>
                     </div>
+
+                </div>
 
                 <div class="row">
                     <div class="col-md-4">
@@ -413,23 +414,21 @@
                                     <td><?php// echo $purchase_orders[$i]['accept_name']; ?></td> -->
                                     <td>
                                     <?PHP
-                                    // echo  $purchase_orders[$i]['supplier_id'];
-                                         $invoice_supplier = $purchase_order_model->getPurchaseOrderInvoiceBy( $purchase_orders[$i]['supplier_id']);
+                                    // echo  $purchase_orders[$i]['purchase_order_id'];
+                                         $invoice_supplier = $purchase_order_model->getPurchaseOrderInvoiceBy( $purchase_orders[$i]['purchase_order_id']);
 
-                                         for($j = 0; $j<count($invoice_supplier); $j++){
-                                             if($invoice_supplier[$j]['invoice_supplier_code'] != $invoice_supplier[$j+1]['invoice_supplier_code']){
+                                         for($j = 0; $j<count($invoice_supplier); $j++){ 
                                             ?>
                                             <ul class="list-inline">
                                              <li class="list-inline-item">
                                                     <a href="index.php?app=invoice_supplier&action=detail&id=<?PHP echo $invoice_supplier[$j]['invoice_supplier_id']; ?>" target="_blank">
                                                         <?PHP
-                                                        echo   $invoice_supplier[$j]['invoice_supplier_code'];
+                                                        echo   $invoice_supplier[$j]['invoice_supplier_code_gen'];
                                                         ?>
                                                     </a>
                                                 </li>
                                             </ul>
-                                                <?PHP
-                                            }
+                                                <?PHP 
                                          }
                                          
                                     ?>

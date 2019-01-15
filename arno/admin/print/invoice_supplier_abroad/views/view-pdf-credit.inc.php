@@ -272,12 +272,13 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <thead>
                 <tr style="border-bottom:1px dashed #000;border-top:1px dashed #000;">
                     <th style="text-align:center; padding:4px 0px;" >ลำดับ</th>
-                    <th style="text-align:center; padding:4px 0px;" >ชื่อสินค้า / รายละเอียด</th>
-                    <th width="7%" style="text-align:center; padding:4px 0px;" >จำนวน</th>
-                    <th width="12%" style="text-align:center; padding:4px 0px;" >ราคา/หน่วย '.$invoice_supplier_abroad['currency_code'].'</th>
-                    <th width="14%" style="text-align:center; padding:4px 0px;" >ราคารวม '.$invoice_supplier_abroad['currency_code'].' </th> 
-                    <th width="16%" style="text-align:center; padding:4px 0px;" >ราคา/หน่วย</th>
-                    <th width="13%" style="text-align:center; padding:4px 0px;" >ราคารวม </th> 
+                    <th style="text-align:center; padding:4px 0px;" >ชื่อสินค้า /<br> รายละเอียด</th>
+                    <th style="text-align:center; padding:4px 0px;" >คลัง</th>
+                    <th style="text-align:center; padding:4px 0px;" >จำนวน</th>
+                    <th style="text-align:center; padding:4px 0px;" >ราคา/<br>หน่วย '.$invoice_supplier_abroad['currency_code'].'</th>
+                    <th style="text-align:center; padding:4px 0px;" >ราคารวม <br>'.$invoice_supplier_abroad['currency_code'].' </th> 
+                    <th style="text-align:center; padding:4px 0px;" >ราคา/<br>หน่วย</th>
+                    <th style="text-align:center; padding:4px 0px;" >ราคารวม </th> 
                 </tr>
             </thead>
 
@@ -297,21 +298,24 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         </td>
                         <td align="left" valign="top" >
                            '. $invoice_supplier_abroad_lists[$i]['product_code'].' <br>
-                          <span style="font-size:10px;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $invoice_supplier_abroad_lists[$i]['product_name'].'</span>  
+                          <span style="font-size:10px;"> '. $invoice_supplier_abroad_lists[$i]['product_name'].'</span>  
                         </td> 
-                        <td align="right" valign="top" width="80px">
+                        <td align="center" valign="top" width="40px">
+                            '. $invoice_supplier_abroad_lists[$i]['stock_group_code'].'
+                        </td> 
+                        <td align="right" valign="top" width="60px">
                             '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_qty'],0).'
                         </td> 
-                        <td align="right" valign="top" width="110px">
+                        <td align="right" valign="top" width="80px">
                             '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_currency_price'],2).'
                         </td>
-                        <td align="right" valign="top" width="110px">
+                        <td align="right" valign="top" width="80px">
                             '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_currency_price']*$invoice_supplier_abroad_lists[$i]['invoice_supplier_list_qty'],2).'
                         </td>
-                        <td align="right" valign="top" width="110px">
+                        <td align="right" valign="top" width="80px">
                             '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_price'],2).'
                         </td>
-                        <td align="right" valign="top" width="120px">
+                        <td align="right" valign="top" width="100px">
                             '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_total'],2).'
                         </td>
                     </tr>
@@ -329,6 +333,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                             </td> 
                             <td align="center">
                                 
+                            </td>
+                            <td align="center">
+                               
                             </td>
                             <td align="center">
                                
@@ -373,7 +380,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             </tbody>
             <tfoot>
                 <tr class="odd gradeX" > 
-                    <td align="left" colspan="2" >
+                    <td align="left" colspan="3" >
                     </td>
                     <td align="left" colspan="2" >
                         <b>รวมทั้งสิ้น '.$invoice_supplier_abroad['currency_code'].'</b>
@@ -384,7 +391,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <td colspan="2" ></td> 
                 </tr> 
                 <tr class="odd gradeX" > 
-                    <td colspan="4" rowspan="2" align="left" valign="top">
+                    <td colspan="5" rowspan="2" align="left" valign="top">
                         <b>หมายเหตุ</b> 
                     </td>
                     <td align="left" colspan="2"> 
@@ -403,7 +410,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </td>
                 </tr>    
                 <tr class="odd gradeX" >
-                    <td colspan="4" align="center">
+                    <td colspan="5" align="center">
                         '. $str.'
                     </td>
                     <td align="left" colspan="2">

@@ -275,6 +275,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <tr style="border-bottom:1px dashed #000;border-top:1px dashed #000;">
                     <th style="text-align:center; padding:4px 0px;" >No.</th>
                     <th style="text-align:center; padding:4px 0px;" >Product name / Description</th>
+                    <th style="text-align:center; padding:4px 0px;" >Stock</th>
                     <th style="text-align:center; padding:4px 0px;" >Qty</th>
                     <th style="text-align:center; padding:4px 0px;" >@</th> 
                     <th style="text-align:center; padding:4px 0px;" >Amount </th> 
@@ -305,24 +306,27 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 </td>
                 <td align="left" valign="top" >
                    '. $invoice_supplier_abroad_lists[$i]['product_code'].' <br>
-                   <span style="font-size:10px;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $invoice_supplier_abroad_lists[$i]['product_name'].'</span>  
+                   <span style="font-size:10px;"> '. $invoice_supplier_abroad_lists[$i]['product_name'].'</span>  
+                </td> 
+                <td align="center" valign="top" width="60px">
+                    '. $invoice_supplier_abroad_lists[$i]['stock_group_code'].'
                 </td> 
                 <td align="right" valign="top" width="80px">
                     '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_qty'],0).'
                 </td> 
-                <td align="right" valign="top" width="100px">
+                <td align="right" valign="top" width="80px">
                     '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_price'],2).'
                 </td>
-                <td align="right" valign="top" width="120px">
+                <td align="right" valign="top" width="100px">
                     '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_total'],2).'
                 </td>
-                <td align="right" valign="top" width="100px">
+                <td align="right" valign="top" width="80px">
                     '. number_format($invoice_supplier_list_import_duty,2).'
                 </td>
-                <td align="right" valign="top" width="100px">
+                <td align="right" valign="top" width="80px">
                     '. number_format($invoice_supplier_list_freight_in,2).'
                 </td>
-                <td align="right" valign="top" width="120px">
+                <td align="right" valign="top" width="100px">
                     '. number_format($invoice_supplier_list_cost_total,2).'
                 </td>
             </tr>
@@ -340,6 +344,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                             </td> 
                             <td align="center">
                                 
+                            </td>
+                            <td align="center">
+                               
                             </td>
                             <td align="center">
                                
@@ -380,7 +387,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             </tbody>
             <tfoot>
                 <tr class="odd gradeX" >
-                    <td colspan="2" align="left" valign="top">
+                    <td colspan="3" align="left" valign="top">
                         <b>Remark</b> 
                     </td>
                     <td align="left" colspan="2" >

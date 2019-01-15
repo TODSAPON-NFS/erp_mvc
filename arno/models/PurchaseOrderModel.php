@@ -10,13 +10,14 @@ class PurchaseOrderModel extends BaseModel{
         mysqli_set_charset(static::$db,"utf8");
     }
 
-    function getPurchaseOrderInvoiceBy($supplier_id) {
+    function getPurchaseOrderInvoiceBy($purchase_order_id) {
 
-        $sql = " SELECT * 
-        FROM `tb_purchase_order` 
-        LEFT JOIN tb_invoice_supplier 
-        ON tb_purchase_order.supplier_id = tb_invoice_supplier.supplier_id 
-        WHERE tb_purchase_order.supplier_id = $supplier_id
+        $sql = "SELECT * 
+        FROM `tb_invoice_supplier` 
+        LEFT JOIN tb_invoice_supplier_list ON tb_invoice_supplier.invoice_supplier_id = tb_invoice_supplier_list.invoice_supplier_id
+        LEFT JOIN tb_purchase_order_list ON tb_invoice_supplier_list.purchase_order_list_id = tb_purchase_order_list.purchase_order_list_id 
+        WHERE tb_purchase_order_list.purchase_order_id = '$purchase_order_id' 
+        GROUP BY tb_invoice_supplier.invoice_supplier_id
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -30,7 +31,7 @@ class PurchaseOrderModel extends BaseModel{
 
     }
 
-    function getPurchaseOrderInvoiceProductBy($product_id) {
+    function getPurchaseOrderInvoiceProductBy($purchase_order_list_id) {
 
         $sql = " SELECT 
         tb_invoice_supplier.invoice_supplier_id,
@@ -47,9 +48,10 @@ class PurchaseOrderModel extends BaseModel{
         tb_product.product_name
         FROM `tb_invoice_supplier`
         LEFT JOIN tb_invoice_supplier_list ON tb_invoice_supplier.invoice_supplier_id = tb_invoice_supplier_list.invoice_supplier_id
-        
-        LEFT JOIN tb_product ON tb_invoice_supplier_list.product_id = tb_product.product_id
-        WHERE tb_product.product_id ='$product_id'
+        LEFT JOIN tb_purchase_order_list ON tb_invoice_supplier_list.purchase_order_list_id = tb_purchase_order_list.purchase_order_list_id 
+        LEFT JOIN tb_product ON tb_purchase_order_list.product_id = tb_product.product_id 
+        WHERE tb_purchase_order_list.purchase_order_list_id = '$purchase_order_list_id'
+        GROUP BY tb_invoice_supplier.invoice_supplier_id 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

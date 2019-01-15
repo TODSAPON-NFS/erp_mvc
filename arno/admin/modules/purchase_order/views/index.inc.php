@@ -264,6 +264,9 @@ if(!isset($_GET['action'])){
     }else{
         $vat = $purchase_order['vat'];
     }
+    // echo "<pre>";
+    // print_r( $purchase_order_lists);
+    // echo "</pre>";
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'delete' && ( $license_purchase_page == "High" )){

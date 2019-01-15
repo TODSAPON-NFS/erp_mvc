@@ -98,6 +98,7 @@
 								<th style="text-align:center;width:32px;">Item</th>
                                 <th style="text-align:center;">Product Code</th>
                                 <th style="text-align:center;">Product Name / Description</th>
+                                <th style="text-align:center;">Purchase detail</th>
                                 <th style="text-align:center;">Order Qty</th>
                                 <th style="text-align:center;">Recieve</th>
                                 
@@ -128,6 +129,42 @@
 								Delivery : <?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']?> - <?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_max']?> <br>
 								Remark : <?php echo $purchase_order_lists[$i]['purchase_order_list_remark']?>
 								</td>
+                                
+                                
+
+                                <td><?PHP   
+                                    //  echo  $purchase_order_lists[$i]['purchase_order_list_id'];
+                                    $invoice_product = $purchase_order_model -> getPurchaseOrderInvoiceProductBy($purchase_order_lists[$i]['purchase_order_list_id']);
+                                   
+                                        // echo "<pre>";
+                                        // print_r($invoice_product);
+                                        // echo"</pre>";
+
+                                    for($j = 0; $j<count($invoice_product); $j++){ 
+                                            # code...
+                                        
+                                        ?>
+                                    <ul class="list-inline">
+                                     <li class="list-inline-item">
+                                            <a href="index.php?app=invoice_supplier&action=detail&id=<?PHP echo $invoice_product[$j]['invoice_supplier_id']; ?>" target="_blank">
+                                                <?PHP
+                                                echo $invoice_product[$j]['invoice_supplier_code_gen']; 
+                                                ?>
+                                            </a>
+                                                จำนวน 
+                                                <?PHP
+                                                echo $invoice_product[$j]['invoice_supplier_list_qty']; 
+                                                ?>
+                                                pcs
+                                        </li>
+                                    </ul>
+                                        <?PHP 
+                                    
+                                }
+                                    
+                                    ?></td> 
+
+
                                 <td align="right"><?php echo number_format($purchase_order_lists[$i]['purchase_order_list_qty'],0)?></td>
                                 <td align="right"><?php echo number_format($purchase_order_lists[$i]['purchase_order_list_qty_recieve'],0)?></td>
                                 

@@ -126,7 +126,7 @@
             return false;
         }else{
             var stock_groupt_id = $('select[name="stock_group_id[]"]')
-            var stock_event = $('select[name="stock_event[]"]')
+            var stock_event = $('input[name="stock_event[]"]')
             for(var i = 0 ; i < stock_groupt_id.length; i++){
                 if(stock_groupt_id[i].value == "" && stock_event[i].value == '1'){
                     alert("กรุณาเลือกคลังสินค้า");
@@ -261,12 +261,19 @@
     }
 
     function check_qty(id){
-        var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val(  ).replace(',',''));
-        var stock_qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').attr('stock_report_qty').replace(',',''));
-        if(qty > stock_qty){
-            alert("คลังสินค้านี้มีสินค้าเพียง " + stock_qty + " pcs. ");
-            $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val( stock_qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")  )
+        var stock_event = $(id).closest('tr').children('td').children('input[name="stock_event[]"]').val()  
+
+        if(stock_event.value == '1'){
+            var qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val(  ).replace(',',''));
+            var stock_qty =  parseFloat($(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').attr('stock_report_qty').replace(',',''));
+            if(qty > stock_qty){
+                alert("คลังสินค้านี้มีสินค้าเพียง " + stock_qty + " pcs. ");
+                $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').val( stock_qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")  )
+            }
         }
+        
+
+
         update_sum(id);
     }
 

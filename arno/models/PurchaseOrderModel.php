@@ -53,7 +53,9 @@ class PurchaseOrderModel extends BaseModel{
         WHERE tb_purchase_order_list.purchase_order_list_id = '$purchase_order_list_id'
         GROUP BY tb_invoice_supplier.invoice_supplier_id 
         ";
-
+// echo"<pre>";
+// print_r($sql);
+// echo"</pre>";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

@@ -69,10 +69,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         <tr>
             <td style="padding-left:84px;font-size:14px;line-height: 26px;" width = "580" valign="middle">
             <b>
-                '.$invoice_customer['invoice_customer_name'].' '.$branch.'
+                '.$invoice_customer['invoice_customer_name'].'
                 <br>
                 '.nl2br ($invoice_customer['invoice_customer_address']).'<br>
-                เลขประจำตัวผู้เสียภาษี / Tax : '.$invoice_customer['invoice_customer_tax'].'
+                '.$branch.'&nbsp;&nbsp;&nbsp;Tax ID : '.$invoice_customer['invoice_customer_tax'].'
             </b>
             </td>
             <td width="140" >

@@ -12,6 +12,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
     $html[$page_index] = '
 <style>
+    body{
+        font-family:  "tahoma";  
+    }
     div{
         font-size:12px;
     }

@@ -185,9 +185,9 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
-                            <th width="48"  class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" > No.</th>
-                            <th width="150"class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่" >Invoice Date</th>
-                            <th width="150"class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เลขที่ใบกำกับภาษี" >> Invoice Code.</th>
+                            <th width="24"   class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" > No.</th>
+                            <th width="100"class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่" >Invoice Date</th>
+                            <th width="100"class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เลขที่ใบกำกับภาษี" > Invoice Code.</th>
                             <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลูกค้า" >  Customer</th>
                             <th width="150" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ออกเอกสาร" > Create by</th>
                             <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="จำนวนเงิน" >amount</th>
@@ -208,9 +208,9 @@
                             $invoice_customer_net_price +=$invoice_customers[$i]['invoice_customer_net_price'];
                         ?>
                         <tr class="odd gradeX">
-                            <td><?php echo $i+1; ?></td>
-                            <td><?php echo $invoice_customers[$i]['invoice_customer_date']; ?></td>
-                            <td><?php echo $invoice_customers[$i]['invoice_customer_code']; ?></td>
+                            <td class="text-center"><?php echo $i+1; ?></td>
+                            <td class="text-center"><?php echo $invoice_customers[$i]['invoice_customer_date']; ?></td>
+                            <td class="text-center"><?php echo $invoice_customers[$i]['invoice_customer_code']; ?></td>
                             <td><?php echo $invoice_customers[$i]['customer_name']; ?> </td>
                             <td><?php echo $invoice_customers[$i]['employee_name']; ?></td>
                             <td align="right"><?php echo number_format($invoice_customers[$i]['invoice_customer_total_price'],2); ?></td>

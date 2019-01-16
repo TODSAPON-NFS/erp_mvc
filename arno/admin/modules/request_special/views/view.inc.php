@@ -69,19 +69,19 @@
                                     <a href="index.php?app=request_special" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
                                 </div>
                             </div>
-                            <br>
+                                
 
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>ลำดับ<br>No.</th>
-                                        <th>วันที่ออกใบร้องขอ<br>SPTR Date</th>
-                                        <th>หมายเลขใบร้องขอ<br>SPTR No.</th>
-                                        <th>ร้องขอโดย<br>Request by</th> 
-                                        <th>สถานะอนุมัติ<br>Accept Status</th>
-                                        <th>ผู้อนุมัติ<br>Accept by</th>
-                                        <th>หมายเหตุ<br>Remark</th>
-                                        <th></th>
+                                       ` <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10" >`     No.</th>
+                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบร้องขอ" width="50" >     SPTR Date</th>
+                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบร้องขอ" width="50" >     SPTR No.</th>
+                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ร้องขอโดย" width="200" >     Request by</th> 
+                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะอนุมัติ" width="50" >     Accept Status</th>
+                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้อนุมัติ" width="200" >     Accept by</th>
+                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเหตุ" width="10" >     Remark</th>
+                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="" width="10" > </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -89,7 +89,7 @@
                                     for($i=0; $i < count($request_specials); $i++){
                                     ?>
                                     <tr class="odd gradeX">
-                                        <td><?php echo $i+1; ?></td>
+                                        <td class="text-center"><?php echo $i+1; ?></td>
                                         <td><?php echo $request_specials[$i]['request_special_date']; ?></td>
                                         <td><?php echo $request_specials[$i]['request_special_code']; ?> <?php if($request_specials[$i]['request_special_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $request_specials[$i]['request_special_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($request_specials[$i]['request_special_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
                                         <td><?php echo $request_specials[$i]['request_name']; ?></td> 

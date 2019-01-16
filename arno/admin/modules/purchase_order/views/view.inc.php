@@ -56,10 +56,10 @@
                         <table width="100%" class="table table-striped table-bordered table-hover" >
                             <thead>
                                 <tr>
-                                    <th width="64px" >ลำดับ <br>No.</th>
-                                    <th>ผู้ขาย <br>Supplier</th>
-                                    <th width="180px" >เปิดใบสั่งซื้อ <br>Open purchase order</th>
-                                </tr>
+                                    <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ"  width="64px" > No.</th>
+                                    <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" > Supplier</th>
+                                    <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เปิดใบสั่งซื้อ"  width="180px" > Open purchase order</th>
+                               </tr>
                             </thead>
                             <tbody>
                                 <?php 
@@ -107,10 +107,10 @@
                         <table width="100%" class="table table-striped table-bordered table-hover" >
                             <thead>
                                 <tr>
-                                    <th width="64px" >ลำดับ <br>No.</th>
-                                    <th>ผู้ขาย <br>Supplier</th>
-                                    <th width="180px" >เปิดใบสั่งซื้อ <br>Open Blanked order</th>
-                                </tr>
+                                    <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ"  width="64px" > No.</th>
+                                    <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" > Supplier</th>
+                                    <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เปิดใบสั่งซื้อ"  width="180px" > Open Blanked order</th>
+                              </tr>
                             </thead>
                             <tbody>
                                 <?php 
@@ -156,9 +156,9 @@
                         <table width="100%" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th width="64px" >ลำดับ <br>No.</th>
-                                    <th>ผู้ขาย <br>Supplier</th>
-                                    <th width="180px" >เปิดใบสั่งซื้อ <br>Open Test order</th>
+                                    <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ"  width="64px" > No.</th>
+                                    <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" > Supplier</th>
+                                    <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เปิดใบสั่งซื้อ"  width="180px" > Open Test order</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -205,10 +205,10 @@
                         <table width="100%" class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th width="64px" >ลำดับ <br>No.</th>
-                                    <th>ผู้ขาย <br>Supplier</th>
-                                    <th width="180px" >เปิดใบสั่งซื้อ <br>Open Regrind order</th>
-                                </tr>
+                                    <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ"  width="64px" > No.</th>
+                                    <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" > Supplier</th>
+                                    <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เปิดใบสั่งซื้อ"  width="180px" > Open Regrind order</th>
+                               </tr>
                             </thead>
                             <tbody>
                                 <?php 

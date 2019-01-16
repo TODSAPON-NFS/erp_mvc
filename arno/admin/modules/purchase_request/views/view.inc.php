@@ -99,17 +99,18 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>ลำดับ<br>No.</th>
-                                        <th>วันที่ออกใบร้องขอ<br>PR Date</th>
-                                        <th>หมายเลขใบร้องขอ<br>PR No.</th>
-                                        <th>ร้องขอโดย<br>Request by</th>
-                                        <th>ประเภทการร้องขอ<br>Request Type</th>
-                                        <th>สถานะอนุมัติ<br>Accept Status</th>
-                                        <th>ผู้อนุมัติ<br>Accept by</th>
-                                        <th>รหัสคำสั่งซื้อ<br>Purchase Order Code</th>
-                                        <th>เลขที่ใบรับสินค้า<br>Invoice Supplier Code</th>
-                                        <th>หมายเหตุ<br>Remark</th>
-                                        <th></th>
+                                    <!-- <th class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" >Supplier</th> -->
+                                        <th  width="24" class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" >No.</th>
+                                        <th  width="80"class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบร้องขอ" >PR Date</th>
+                                        <th  width="110"class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบร้องขอ" ><br>PR No.</th>
+                                        <th  width="200"class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ร้องขอโดย" ><br>Request by</th>
+                                        <th width="50"class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ประเภทการร้องขอ" ><br>Request Type</th>
+                                        <th width="50" class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะอนุมัติ" ><br>Accept Status</th>
+                                        <th width="200" class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้อนุมัติ" ><br>Accept by</th>
+                                        <th width="50"class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รหัสคำสั่งซื้อ" ><br>Purchase Order Code</th>
+                                        <th width="90"class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เลขที่ใบรับสินค้า" ><br>Invoice Supplier Code</th>
+                                        <th width="100"class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเหตุ" ><br>Remark</th>
+                                        <th width="10" />
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -119,14 +120,14 @@
 
                                     ?>
                                     <tr class="odd gradeX">
-                                        <td><?php echo $i+1; ?></td>
-                                        <td><?php echo $purchase_requests[$i]['purchase_request_date']; ?></td>
-                                        <td><?php echo $purchase_requests[$i]['purchase_request_code']; ?> <?php if($purchase_requests[$i]['purchase_request_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_requests[$i]['purchase_request_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($purchase_requests[$i]['purchase_request_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
+                                        <td class="text-center"><?php echo $i+1; ?></td>
+                                        <td class="text-center"><?php echo $purchase_requests[$i]['purchase_request_date']; ?></td>
+                                        <td class="text-center"><?php echo $purchase_requests[$i]['purchase_request_code']; ?> <?php if($purchase_requests[$i]['purchase_request_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_requests[$i]['purchase_request_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($purchase_requests[$i]['purchase_request_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
                                         <td><?php echo $purchase_requests[$i]['request_name']; ?></td>
-                                        <td><?php echo $purchase_requests[$i]['purchase_request_type']; ?></td>
-                                        <td><?php echo $purchase_requests[$i]['purchase_request_accept_status']; ?></td>
+                                        <td class="text-center"><?php echo $purchase_requests[$i]['purchase_request_type']; ?></td>
+                                        <td class="text-center"><?php echo $purchase_requests[$i]['purchase_request_accept_status']; ?></td>
                                         <td><?php echo $purchase_requests[$i]['accept_name']; ?></td>
-                                        <td><?php
+                                        <td class="text-center"><?php
                                             $purchase_orders = $purchase_request_model->getPurchaseOrderByPurchaseRequestId($purchase_requests[$i]['purchase_request_id']);
                                             // echo '<pre>';
                                             // print_r ($purchase_orders);
@@ -139,7 +140,7 @@
                                             }
                                             ?></td>
                                             
-                                        <td><?php 
+                                        <td class="text-center"><?php 
                                             $purchase_invoices = $purchase_request_model->getInvoiceSuppliertByPurchaseRequestId($purchase_requests[$i]['purchase_request_id']);
                                             // echo '<pre>';
                                             // print_r ($purchase_invoices);
@@ -153,7 +154,7 @@
                                             ?></td>
                                         <td><?php echo $purchase_requests[$i]['purchase_request_remark']; ?></td>
                                         
-                                        <td>
+                                        <td class="text-center">
                                             <a href="?app=purchase_request&action=detail&id=<?php echo $purchase_requests[$i]['purchase_request_id'];?>" title="ดูรายละเอียดใบร้องขอ">
                                                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
                                             </a>

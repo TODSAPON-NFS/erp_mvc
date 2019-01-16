@@ -49,9 +49,9 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" >
                     <thead>
                         <tr>
-                            <th width="64px" >ลำดับ <br>No.</th>
-                            <th>ลูกค้า <br>Customer</th>
-                            <th width="180px" >เปิดใบยืมสินค้าของลูกค้า <br>Open Delivery Note Customer</th>
+                            <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="64px" > No.</th>
+                            <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลูกค้า" > Customer</th>
+                            <th  class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เปิดใบยืมสินค้าของลูกค้า"  width="180px" > Open Delivery Note Customer</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -268,15 +268,15 @@
                         <table width="100%" class="table table-striped table-bordered table-hover"  >
                             <thead>
                                 <tr>
-                                    <th>ลำดับ<br>No.</th>
-                                    <th>วันที่รับใบสั่งซื้อ<br>PO Date</th>
-                                    <th>หมายเลขใบสั่งซื้อ<br>PO No.</th>
-                                    <th>ลูกค้า<br>Customer</th>
-                                    <th>พนักงาน<br>Employee</th> 
-                                    <th>รหัสเอกสาร<br>Invoice Code</th>
-                                    <th>หมายเหตุ<br>Remark</th>
-                                    <th>ใบกำกับภาษี<br>Invoice</th>
-                                    <th></th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="32">No.</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่รับใบสั่งซื้อ" width="32">PO Date</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบสั่งซื้อ" width="32">PO No.</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลูกค้า" width="32">Customer</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="พนักงาน" width="32">Employee</th> 
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รหัสเอกสาร" width="32">Invoice Code</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเหตุ" width="32">Remark</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ใบกำกับภาษี" width="32">Invoice</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="" width="32"></th>
                                 </tr>
                             </thead>
                             <tbody>

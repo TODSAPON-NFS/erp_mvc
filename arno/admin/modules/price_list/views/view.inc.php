@@ -390,18 +390,18 @@ function check_number(id){
                         <table width="100%" class="table table-striped table-bordered table-hover"  >
                             <thead>
                                 <tr>
-                                    <th>No.</th>
-                                    <th>รหัสสินค้า <br>Product Code</th>
-                                    <th>ชื่อสินค้า <br>Product Name</th>
-                                    <th>รายละเอียด <br> Description</th>
-                                    <th>พิเศษ  <br> Premium</th>
-                                    <th>ตัวแทน  <br> Dealer</th>
-                                    <th>ผู้จำหน่าย  <br> Agent/Trade</th>
-                                    <th>องค์กร  <br> KA</th>
-                                    <th>ใหญ่  <br> Big</th>
-                                    <th>กลาง  <br> Medium</th>
-                                    <th>เล็ก  <br> Small</th>
-                                    <th></th>
+                                    <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10">No.</th>
+                                      <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รหัสสินค้า" width="400"> Product Code</th>
+                                      <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ชื่อสินค้า" width="600"> Product Name</th>
+                                      <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รายละเอียด" width="400">  Description</th>
+                                      <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="พิเศษ" width="10">   Premium</th>
+                                      <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ตัวแทน" width="10">   Dealer</th>
+                                      <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้จำหน่าย" width="10">   Agent/Trade</th>
+                                      <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="องค์กร" width="10">   KA</th>
+                                      <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ใหญ่" width="10">   Big</th>
+                                      <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="กลาง" width="10">   Medium</th>
+                                      <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เล็ก" width="10">   Small</th>
+                                      <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="" width="10"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -411,7 +411,7 @@ function check_number(id){
                                 ?>
 
                                 <tr class="odd gradeX">
-                                    <td><?php echo $i+1; ?></td>
+                                    <td class="text-center"><?php echo $i+1; ?></td>
                                     <td><?php echo $product[$i]['product_code']; ?></td>
                                     <td><?php echo $product[$i]['product_name']; ?></td>
                                     <td align="left"><?php echo $product[$i]['product_description']; ?></td>
@@ -532,15 +532,15 @@ function check_number(id){
                 <table width="100%"  class="table table-striped table-bordered table-hover" >
                     <thead>
                         <tr> 
-                            <th style="text-align:center;">ชื่อสินค้า</th>
-                            <th>พิเศษ  <br> Premium</th>
-                            <th>ตัวแทน  <br> Dealer</th>
-                            <th>ผู้จำหน่าย <br> Agent/Trade</th>
-                            <th>องค์กร  <br> KA</th>
-                            <th>ใหญ่  <br> Big</th>
-                            <th>กลาง  <br> Medium</th>
-                            <th>เล็ก  <br> Small</th>
-                            <th>ลบ <br> Delete</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ชื่อสินค้า" width="100">Name</th>
+                              <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="พิเศษ" width="10">  Premium</th>
+                              <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ตัวแทนลำดับ" width="10">  Dealer</th>
+                              <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้จำหน่าย" width="10"> Agent/Trade</th>
+                              <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="องค์กร" width="10">  KA</th>
+                              <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ใหญ่" width="10">  Big</th>
+                              <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="กลาง" width="10">  Medium</th>
+                              <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เล็ก" width="10">  Small</th>
+                              <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลบ" width="10"> Delete</th>
                         </tr>
                     </thead>
                     <tbody id="bodyAdd">

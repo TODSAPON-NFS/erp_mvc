@@ -75,14 +75,14 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th style="text-align:center;">ลำดับ <br>No.</th>
-                                        <th style="text-align:center;">วันที่ย้าย <br>Transfer Date</th>
-                                        <th style="text-align:center;">หมายเลยใบย้าย <br>Transfer No.</th>
-                                        <th style="text-align:center;">จากคลัง <br>From stock</th>
-                                        <th style="text-align:center;">ไปยังคลัง <br>To stock</th>
-                                        <th style="text-align:center;">ผู้ย้าย <br>Transfer by</th>
-                                        <th style="text-align:center;">หมายเหตุ <br>Remark</th>
-                                        <th></th>
+                                        <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10"> No.</th>
+                                        <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ย้าย" width="10"> Transfer Date</th>
+                                        <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลยใบย้าย" width="10"> Transfer No.</th>
+                                        <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="จากคลัง" width="10"> From stock</th>
+                                        <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ไปยังคลัง" width="10"> To stock</th>
+                                        <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ย้าย" width="10"> Transfer by</th>
+                                        <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเหตุ" width="10"> Remark</th>
+                                        <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="" width="10"> </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -90,7 +90,7 @@
                                     for($i=0; $i < count($stock_moves); $i++){
                                     ?>
                                     <tr class="odd gradeX">
-                                        <td><?php echo $i+1; ?></td>
+                                        <td class="text-center"><?php echo $i+1; ?></td>
                                         <td><?php echo $stock_moves[$i]['stock_move_date']; ?></td>
                                         <td><?php echo $stock_moves[$i]['stock_move_code']; ?></td>
                                         <td><?php echo $stock_moves[$i]['move_group_name_out']; ?></td>

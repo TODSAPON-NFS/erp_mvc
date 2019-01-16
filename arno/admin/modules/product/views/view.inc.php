@@ -330,12 +330,12 @@ function export_error(){
                                     <table width="100%" class="table table-striped table-bordered table-hover" >
                                         <thead>
                                             <tr>
-                                                <th>No.</th>
-                                                <th>รหัสสินค้า <br>Product Code</th>
-                                                <th>ชื่อสินค้า <br>Product Name</th>
-                                                <th>รายละเอียด <br> Description</th>
-                                                <th>สถานะ <br> Status</th>
-                                                <th></th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10">No.</th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รหัสสินค้า" width="50"> Product Code</th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ชื่อสินค้า" width="100"> Product Name</th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รายละเอียด" width="200">  Description</th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะ" width="50">  Status</th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="" width="10"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -345,11 +345,11 @@ function export_error(){
                                             ?>
 
                                             <tr class="odd gradeX">
-                                                <td><?php echo $i+1; ?></td>
+                                                <td style="text-align:center;"><?php echo $i+1; ?></td>
                                                 <td><?php echo $product[$i]['product_code']; ?></td>
                                                 <td><?php echo $product[$i]['product_name']; ?></td>
                                                 <td class="center"><?php echo $product[$i]['product_description']; ?></td>
-                                                <td class="center"><?php echo $product[$i]['product_status']; ?></td>
+                                                <td class="center" style="text-align:center;"><?php echo $product[$i]['product_status']; ?></td>
                                                 <td>
                                                 <?
                                                     if($product[$i]['product_drawing'] != ""){
@@ -456,7 +456,7 @@ function export_error(){
                     <input type="checkbox" id="search_pop" onchange="search_pop_like(this)"  /> แสดงรายการที่มีปัญหาจำนวน <span class="number_error"></span> รายการ
                 </div>
             </div>
-            <br>
+            
 
             <div id="tb_import">
                 <table width="100%"  class="table table-striped table-bordered table-hover" >

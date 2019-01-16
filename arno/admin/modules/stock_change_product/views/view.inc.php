@@ -26,13 +26,13 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th style="text-align:center;">ลำดับ <br>No.</th>
-                                        <th style="text-align:center;">วันที่ย้าย <br>Change Product Date</th>
-                                        <th style="text-align:center;">หมายเลยใบย้าย <br>Change Product No.</th>
-                                        <th style="text-align:center;">คลัง <br>Stock</th> 
-                                        <th style="text-align:center;">ผู้ย้าย <br>Change Product by</th>
-                                        <th style="text-align:center;">หมายเหตุ <br>Remark</th>
-                                        <th></th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10"> No.</th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ย้าย" width="100"> Change Product Date</th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลยใบย้าย" width="100"> Change Product No.</th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="คลัง" width="200"> Stock</th> 
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ย้าย" width="200"> Change Product by</th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเหตุ" width="100"> Remark</th>
+                                        <th  class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="" width="10"></th>
                                     </tr>
                                 </thead>
                                 <tbody>

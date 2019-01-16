@@ -97,12 +97,12 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" >
                     <thead>
                         <tr>
-                            <th style="text-align:center;">ลำดับ <br>No.</th> 
-                            <th style="text-align:center;">ชื่อ <br>Name</th>
-                            <th style="text-align:center;">ตำแหน่ง <br>Position</th>
-                            <th style="text-align:center;">โทรศัพท์ <br>Mobile</th>
-                            <th style="text-align:center;">อีเมล์ <br>Email</th>
-                            <th style="text-align:left;">ลูกค้า <br>Customer</th> 
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10"> No.</th> 
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ชื่อ" width="200"> Name</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ตำแหน่ง" width="100"> Position</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="โทรศัพท์" width="100"> Mobile</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="อีเมล์" width="100"> Email</th>
+                            <th style="text-align:left;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลูกค้า" width="200"> Customer</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -110,7 +110,7 @@
                         for($i=0; $i < count($user); $i++){
                         ?>
                         <tr class="odd gradeX">
-                            <td><?php echo $i+1; ?></td> 
+                            <td class="text-center"><?php echo $i+1; ?></td> 
                             <td><?php echo $user[$i]['name']; ?> <?php echo $user[$i]['user_lastname']; ?></td>
                             <td><?php echo $user[$i]['user_position_name']; ?></td>
                             <td class="center"><?php echo $user[$i]['user_mobile']; ?></td>

@@ -133,15 +133,15 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" >
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>รหัสสินค้า </th>
-                                        <th>ชื่อสินค้า </th>
-                                        <th>รายละเอียดสินค้า </th>
-                                        <th>ประเภทสินค้า </th>
-                                        <th>สถานะสินค้า </th>
-                                        <th>คลังสินค้า </th>
-                                        <th>จำนวน </th>
-                                        <th>รายละเอียด</th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10">No.</th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รหัสสินค้า" width="100">product code </th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ชื่อสินค้า" width="200"> Product Name </th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รายละเอียดสินค้า" width="100"> Details </th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ประเภทสินค้า" width="100"> Category </th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะสินค้า" width="100"> Product status </th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="คลังสินค้า" width="200"> warehouse </th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="จำนวน" width="100"> quantity </th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รายละเอียด" width="100">Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>

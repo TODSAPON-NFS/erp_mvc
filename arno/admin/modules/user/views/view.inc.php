@@ -31,14 +31,14 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th style="text-align:center;">ลำดับ <br>No.</th>
-                                        <th style="text-align:center;">รหัส <br>ID</th>
-                                        <th style="text-align:center;">ชื่อ <br>Name</th>
-                                        <th style="text-align:center;">ตำแหน่ง <br>Position</th>
-                                        <th style="text-align:center;">โทรศัพท์ <br>Mobile</th>
-                                        <th style="text-align:center;">อีเมล์ <br>Email</th>
-                                        <th style="text-align:center;">สถานะ <br>Status</th>
-                                        <th></th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="24"> No.</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รหัส" width="80"> ID</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ชื่อ" width="200"> Name</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ตำแหน่ง" width="200"> Position</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="โทรศัพท์" width="100"> Mobile</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="อีเมล์" width="200"> Email</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะ" width="24"> Status</th>
+                                        <th  width="10"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -46,14 +46,14 @@
                                     for($i=0; $i < count($user); $i++){
                                     ?>
                                     <tr class="odd gradeX">
-                                        <td><?php echo $i+1; ?></td>
-                                        <td><?php echo $user[$i]['user_code']; ?></td>
+                                        <td style="text-align:center;"><?php echo $i+1; ?></td>
+                                        <td ><?php echo $user[$i]['user_code']; ?></td>
                                         <td><?php echo $user[$i]['name']; ?></td>
                                         <td><?php echo $user[$i]['user_position_name']; ?></td>
                                         <td class="center"><?php echo $user[$i]['user_mobile']; ?></td>
                                         <td class="center"><?php echo $user[$i]['user_email']; ?></td>
-                                        <td class="center"><?php echo $user[$i]['user_status_name']; ?></td>
-                                        <td>
+                                        <td style="text-align:center;"class="center"><?php echo $user[$i]['user_status_name']; ?></td>
+                                        <td style="text-align:center;">
                                         <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                             <a href="?app=employee&action=update&id=<?php echo $user[$i]['user_id'];?>">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

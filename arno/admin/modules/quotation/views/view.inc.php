@@ -96,13 +96,13 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-view">
                                 <thead>
                                     <tr>
-                                        <th>ลำดับ<br>No.</th>
-                                        <th>วันที่ออกใบเสนอราคา<br>Quotation Date</th>
-                                        <th>หมายเลขใบเสนอราคา<br>Quotation No.</th>
-                                        <th>ลูกค้า<br>Customer</th>
-                                        <th>ผู้ติดต่อ<br>Contact</th>
-                                        <th>ผู้ออกใบเสนอราคา<br>Create by</th>
-                                        <th></th>
+                                       <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10"> No.</th>
+                                       <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบเสนอราคา" width="100"> Quotation Date</th>
+                                       <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบเสนอราคา" width="100"> Quotation No.</th>
+                                       <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลูกค้า" width="200"> Customer</th>
+                                       <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ติดต่อ" width="200"> Contact</th>
+                                       <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ออกใบเสนอราคา" width="200">Create by</th>
+                                       <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="" width="10"></th>
                                     </tr>
                                 </thead>
                                 <tbody>

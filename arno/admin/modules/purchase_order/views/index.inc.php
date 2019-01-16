@@ -972,6 +972,18 @@ if(!isset($_GET['action'])){
         
         
     
+}else if ($_GET['action'] == 'update_sending'){
+
+    $data = [];
+    $data['purchase_order_status'] = 'Confirm';
+    $output = $purchase_order_model->updatePurchaseOrderStatusByID($purchase_order_id,$data);
+
+}else if ($_GET['action'] == 'cancel_sending'){
+
+    $data = [];
+    $data['purchase_order_status'] = 'Approved';
+    $output = $purchase_order_model->updatePurchaseOrderStatusByID($purchase_order_id,$data);
+
 }else if ($license_purchase_page == "Medium" || $license_purchase_page == "High" ){
 
     if(!isset($_GET['date_start'])){

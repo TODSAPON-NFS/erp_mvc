@@ -185,14 +185,14 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
-                            <th width="48">ลำดับ <br> No.</th>
-                            <th width="150">วันที่ <br> Invoice Date</th>
-                            <th width="150">เลขที่ใบกำกับภาษี <br> Invoice Code.</th>
-                            <th>ลูกค้า <br> Customer</th>
-                            <th width="150" >ผู้ออกเอกสาร <br> Create by</th>
-                            <th>จำนวนเงิน</th>
-                            <th>ภาษีขาย</th>
-                            <th>จำนวนเงินสุทธิ</th>
+                            <th width="48"  class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" > No.</th>
+                            <th width="150"class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่" >Invoice Date</th>
+                            <th width="150"class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เลขที่ใบกำกับภาษี" >> Invoice Code.</th>
+                            <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลูกค้า" >  Customer</th>
+                            <th width="150" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ออกเอกสาร" > Create by</th>
+                            <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="จำนวนเงิน" >amount</th>
+                            <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ภาษีขาย" >Sales Tax</th>
+                            <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="จำนวนเงินสุทธิ" >Net amount</th>
 							
                             <th width="64"></th>
                         </tr>

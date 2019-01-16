@@ -300,6 +300,10 @@ $this->fontdata = array(
 	"Kanit-Regular" => array(/* Thai */
 		'R' => "Kanit-Regular.ttf",
 	),
+	"tahoma" => array(/* Thai */
+		'R' => "tahoma.ttf",
+		'B' => "TAHOMABD.ttf",
+	),
 );
 
 

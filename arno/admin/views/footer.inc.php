@@ -105,6 +105,7 @@
         $( "#date_start" ).datepicker({ dateFormat: 'dd-mm-yy' });
         $( "#date_end" ).datepicker({ dateFormat: 'dd-mm-yy' }); 
         $( ".calendar" ).datepicker({ dateFormat: 'dd-mm-yy' });
+        $("[data-toggle='tooltip']").tooltip();
     } );
 
 

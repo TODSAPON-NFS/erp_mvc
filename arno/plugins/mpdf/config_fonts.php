@@ -297,9 +297,9 @@ $this->fontdata = array(
 		'R' => "UnBatang_0613.ttf",
 		),
 
-		"Kanit-Regular" => array(/* Thai */
-			'R' => "Kanit-Regular.ttf",
-		),
+	"Kanit-Regular" => array(/* Thai */
+		'R' => "Kanit-Regular.ttf",
+	),
 );
 
 

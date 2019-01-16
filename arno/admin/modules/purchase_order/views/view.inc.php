@@ -340,16 +340,16 @@
                         <table width="100%" class="table table-striped table-bordered table-hover"  id="dataTables-example" >
                             <thead>
                                 <tr>
-                                    <th>ลำดับ<br>No.</th>
-                                    <th>วันที่ออกใบสั่งซื้อ<br>PO Date</th>
-                                    <th>หมายเลขใบสั่งซื้อ<br>PO No.</th>
-                                    <th>ผู้ขาย<br>Supplier</th>
-                                    <th>ผู้ออกใบสั่งซื้อ<br>Request by</th>
-                                    <th>สถานะสั่งซื้อ<br>PO Status</th>
-                                    <th>รหัสเอกสาร<br>Invoice Code</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="32">No.</th>
+                                    <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบสั่งซื้อ" width="82" >PO No.</th>
+                                    <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบสั่งซื้อ" width="82">PO Date</th>                                    
+                                    <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" >Supplier</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ออกใบสั่งซื้อ" width="82">Request by</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะสั่งซื้อ" width="82">PO Status</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รหัสเอกสาร" width="102">Invoice Code</th>
                                     <!-- <th>สถานะอนุมัติ<br>Accept Status</th>
                                     <th>ผู้อนุมัติ<br>Accept by</th> -->
-                                    <th>หมายเหตุ<br>Remark</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเหตุ" width="82">Remark</th>
                                     
                                     <th></th>
                                 </tr>
@@ -359,17 +359,18 @@
                                 for($i=0; $i < count($purchase_orders); $i++){
                                 ?>
                                 <tr class="odd gradeX">
-                                    <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $purchase_orders[$i]['purchase_order_date']; ?></td>
-                                    <td><?php echo $purchase_orders[$i]['purchase_order_code']; ?> <b 
+                                    <td class="text-center"><?php echo $i+1; ?></td>
+                                    <td class="text-center"><?php echo $purchase_orders[$i]['purchase_order_code']; ?> <b 
                                     <?PHP 
                                         if( $purchase_orders[$i]['purchase_order_type'] == "BLANKED") {echo ' style="color:#D9534F;"';}
                                         else if ($purchase_orders[$i]['purchase_order_type'] == "TEST"){echo ' style="color:#F0AD4E;"';}
                                         else{ echo ' style="color:#449D44;"';}?>
                                         
                                     >[<?PHP echo $purchase_orders[$i]['purchase_order_type']; ?>]</b> <?php if($purchase_orders[$i]['purchase_order_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_orders[$i]['purchase_order_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($purchase_orders[$i]['purchase_order_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
+                                    <td><?php echo $purchase_orders[$i]['purchase_order_date']; ?></td>
+                                    
                                     <td><?php echo $purchase_orders[$i]['supplier_name']; ?> </td>
-                                    <td><?php echo $purchase_orders[$i]['employee_name']; ?></td>
+                                    <td class="text-center"><?php echo $purchase_orders[$i]['employee_name']; ?></td>
                                     <td>
                                     <?php if($purchase_orders[$i]['purchase_order_status'] =="New"){ ?>
                                                 <b class="font-weight-bold text-success text-center"><i class="fa fa-plus" aria-hidden="true"></i>
@@ -526,5 +527,3 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
-            
-            

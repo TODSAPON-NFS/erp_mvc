@@ -11,7 +11,19 @@ $po = explode(":" , $invoice_customer_lists[0]['invoice_customer_list_remark']);
 for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
     $html[$page_index] = '
+    <link href="https://fonts.googleapis.com/css?family=Kanit&subset=thai,latin" rel="stylesheet" type="text/css">   
 <style>
+
+    /*@font-face {
+        font-family: "tahoma";
+        src: url("../css/font/tahoma.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+    }*/
+
+    body{
+        font-family:  "Kanit", sans-serif;  
+    }
     div{
         font-size:12px;
     }

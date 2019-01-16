@@ -120,7 +120,7 @@ class StockReportModel extends BaseModel{
                         invoice_customer_code AS paper_code,
                         '3' AS paper_type,
                         'ขายสินค้า' AS paper_type_name,
-                        `invoice_customer_date` AS paper_date,
+                        `invoice_customer_due` AS paper_date,
                         invoice_customer_list_qty AS paper_qty,
                         tb_stock_group.stock_group_name,
                         tb_stock_group.stock_group_id

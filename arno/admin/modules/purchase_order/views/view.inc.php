@@ -371,7 +371,7 @@
                                     
                                     <td><?php echo $purchase_orders[$i]['supplier_name']; ?> </td>
                                     <td class="text-center"><?php echo $purchase_orders[$i]['employee_name']; ?></td>
-                                    <td>
+                                    <td class="text-center">
                                     <?php if($purchase_orders[$i]['purchase_order_status'] =="New"){ ?>
                                                 <b class="font-weight-bold text-success text-center"><i class="fa fa-plus" aria-hidden="true"></i>
                                                 <?php
@@ -398,6 +398,21 @@
                                                 <?php
                                                 echo $purchase_orders[$i]['purchase_order_status'];
                                                 ?>
+                                                </b>
+                                                <b >
+                                                    <a style="float: left;" class="text-success" href="?app=purchase_order&action=sending&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>&supplier_id=<?php echo $purchase_orders[$i]['supplier_id'];?>"  title="Re-send">
+                                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                                                    </a> 
+                                                </b>
+                                                <b>
+                                                    <a  href="?app=purchase_order&action=update_sending&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="Confirm">
+                                                        <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                                                    </a> 
+                                                </b>
+                                                <b >
+                                                    <a style="float: right;" class="text-danger" href="?app=purchase_order&action=cancel_sending&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="Cancel">
+                                                        <i class="fa fa-ban" aria-hidden="true"></i>
+                                                    </a> 
                                                 </b>
                                                 <?php
                                         }else if($purchase_orders[$i]['purchase_order_status'] =="Confirm"){ ?>

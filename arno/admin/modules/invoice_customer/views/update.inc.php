@@ -567,7 +567,7 @@
                     '<input type="text" class="form-control" name="invoice_customer_list_remark[]" placeholder="Remark"/>'+
                 '</td>'+ 
                 '<td>'+
-                    '<input type="hidden" name="stock_event[]" class="form-control" value="'+ data_buffer[i].stock_event +'" />'+
+                    '<input type="hidden" name="stock_event[]" class="form-control" value="0" />'+
                     '<select  name="stock_group_id[]"  onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
                         '<option value="0">Select</option>'+ 
                     '</select>'+ 

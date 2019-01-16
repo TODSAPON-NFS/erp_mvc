@@ -14,15 +14,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     <link href="https://fonts.googleapis.com/css?family=Kanit&subset=thai,latin" rel="stylesheet" type="text/css">   
 <style>
 
-    /*@font-face {
-        font-family: "tahoma";
-        src: url("../css/font/tahoma.ttf") format("truetype");
-        font-weight: normal;
-        font-style: normal;
-    }*/
-
     body{
-        font-family:  "Kanit", sans-serif;  
+        font-family:  "tahoma";  
     }
     div{
         font-size:12px;

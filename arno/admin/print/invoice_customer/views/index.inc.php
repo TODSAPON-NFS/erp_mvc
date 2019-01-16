@@ -62,7 +62,7 @@ if($_GET['action'] == "pdf"){
     /*############################### FPDF ##############################*/
 
     include("../plugins/mpdf/mpdf.php");
-    $mpdf=new mPDF('th', 'Letter', '0', 'garuda','',12,15,15,15,15,15);  
+    $mpdf=new mPDF('th', 'Letter', '0', 'tahoma','',12,15,15,15,15,15);  
     /******
      * 
      * Default values:

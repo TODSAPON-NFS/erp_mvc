@@ -42,7 +42,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div style="font-size:18px;padding: 8px 0px;">แยกตามผู้ขาย</div>
-                <table width="100%" class="table table-striped table-bordered table-hover" >
+                <table width="100%" class="table table-striped table-bordered table-hover" id="FIA">
                     <thead>
                         <tr>
                             <th width="64px" >No.</th>
@@ -72,7 +72,7 @@
                 </table>
                 
                 <div style="font-size:18px;padding: 8px 0px;">แยกตามใบสั่งซื้อ</div>
-                <table width="100%" class="table table-striped table-bordered table-hover">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="FIB">
                     <thead>
                         <tr>
                             <th width="64px" >No.</th>
@@ -126,7 +126,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div style="font-size:18px;padding: 8px 0px;">แยกตามผู้ขาย</div>
-                <table width="100%" class="table table-striped table-bordered table-hover">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="FIC">
                     <thead>
                         <tr>
                             <th width="64px" >No.</th>
@@ -156,7 +156,7 @@
                 </table>
                 
                 <div style="font-size:18px;padding: 8px 0px;">แยกตามใบสั่งซื้อ</div>
-                <table width="100%" class="table table-striped table-bordered table-hover">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="FID">
                     <thead>
                         <tr>
                             <th width="64px" >No.</th>

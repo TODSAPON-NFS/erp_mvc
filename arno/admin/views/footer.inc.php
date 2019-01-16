@@ -44,12 +44,53 @@
 
     $(document).ready(function() {
         
+        $('#FIA').DataTable({
+            "lengthMenu": [[5],[5]],
+            "pageLength": 5,
+            responsive: true 
+        });
+        
+        $('#FIB').DataTable({
+            "lengthMenu": [[5],[5]],
+            "pageLength": 5,
+            responsive: true 
+        });
+        
+        $('#FIC').DataTable({
+            "lengthMenu": [[5],[5]],
+            "pageLength": 5,
+            responsive: true 
+        });
+        
+        $('#FID').DataTable({
+            "lengthMenu": [[5],[5]],
+            "pageLength": 5,
+            responsive: true 
+        });
+        
+        $('#FIF').DataTable({
+            "lengthMenu": [[5],[5]],
+            "pageLength": 5,
+            responsive: true 
+        });
+        
+        $('#TEN').DataTable({
+            "lengthMenu": [[10],[10]],
+            "pageLength": 10,
+            responsive: true 
+        });
 
+        $('#TENTEN').DataTable({
+            "lengthMenu": [[10],[10]],
+            "pageLength": 10,
+            responsive: true 
+        });
         $('#dataTables-view').DataTable({
             "lengthMenu": [[25, 50, 75, 100, 250, 500, -1 ],[25, 50, 75, 100, 250, 500, 'All' ]],
             "pageLength": 100,
             responsive: true 
         });
+
         $('#dataTables-example').DataTable({
             "lengthMenu": [[25, 50, 75, 100, 250, 500, -1 ],[25, 50, 75, 100, 250, 500, 'All' ]],
             "pageLength": 100,

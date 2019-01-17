@@ -19,6 +19,16 @@ $company=$company_model->getCompanyByID('1');
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132661003-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-132661003-1');
+    </script>
+
     <title><?PHP echo $company['company_name_en']; ?> ERP System</title>
 
     <!-- Bootstrap Core CSS -->

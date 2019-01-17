@@ -150,8 +150,8 @@
                     <thead>
                         <tr>
                             <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10">    No.</th>
-                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบสั่งสินค้าทดลอง" width="50">    PO Date</th>
                             <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบสั่งสินค้าทดลอง" width="100">    PO No.</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบสั่งสินค้าทดลอง" width="100">    PO Date</th>
                             <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" width="200">    Supplier</th>
                             <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ออกใบสั่งสินค้าทดลอง" width="200">    Request by</th>
 							<th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะสั่งซื้อ" width="50">    PO Status</th>
@@ -168,8 +168,12 @@
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
-                            <td><?php echo $request_tests[$i]['request_test_date']; ?></td>
                             <td><?php echo $request_tests[$i]['request_test_code']; ?> <?php if($request_tests[$i]['request_test_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $request_tests[$i]['request_test_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($request_tests[$i]['request_test_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
+                            
+                            <td data-order="<?php echo  $timestamp = strtotime( $request_tests[$i]['request_test_date'] )?>" >
+                                        <?php echo ( $request_tests[$i]['request_test_date'] ); ?>
+                                    </td>
+                                    
                             <td><?php echo $request_tests[$i]['supplier_name']; ?> </td>
                             <td><?php echo $request_tests[$i]['employee_name']; ?></td>
 							<td><?php echo $request_tests[$i]['request_test_status']; ?></td>

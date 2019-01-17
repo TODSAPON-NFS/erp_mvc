@@ -76,8 +76,8 @@
                                 <thead>
                                     <tr>
                                         <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10"> No.</th>
-                                        <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ย้าย" width="10"> Transfer Date</th>
                                         <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลยใบย้าย" width="10"> Transfer No.</th>
+                                        <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ย้าย" width="10"> Transfer Date</th>
                                         <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="จากคลัง" width="10"> From stock</th>
                                         <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ไปยังคลัง" width="10"> To stock</th>
                                         <th style="text-align:center;" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ย้าย" width="10"> Transfer by</th>
@@ -91,8 +91,13 @@
                                     ?>
                                     <tr class="odd gradeX">
                                         <td class="text-center"><?php echo $i+1; ?></td>
-                                        <td><?php echo $stock_moves[$i]['stock_move_date']; ?></td>
                                         <td><?php echo $stock_moves[$i]['stock_move_code']; ?></td>
+                                        
+                                    
+                            <td data-order="<?php echo  $timestamp = strtotime(  $stock_moves[$i]['stock_move_date']    ) ?>" >
+                                        <?php echo (  $stock_moves[$i]['stock_move_date']    ); ?>
+                                    </td>
+                                    
                                         <td><?php echo $stock_moves[$i]['move_group_name_out']; ?></td>
                                         <td><?php echo $stock_moves[$i]['move_group_name_in']; ?></td>
                                         <td><?php echo $stock_moves[$i]['employee_name']; ?></td>

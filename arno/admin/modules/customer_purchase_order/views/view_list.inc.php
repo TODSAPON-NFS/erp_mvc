@@ -265,12 +265,12 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                        <table width="100%" class="table table-striped table-bordered table-hover"  >
+                        <table width="100%" class="table table-striped table-bordered table-hover"  id="dataTables-view" >
                             <thead>
                                 <tr>
                                     <th>ลำดับ<br>No.</th>
-                                    <th>วันที่รับใบสั่งซื้อ<br>PO Date</th>
                                     <th>หมายเลขใบสั่งซื้อ<br>PO No.</th>
+                                    <th>วันที่รับใบสั่งซื้อ<br>PO Date</th>
                                     <th>ลูกค้า<br>Customer</th>
                                     <th>รหัสสินค้า<br> Product Code</th>
                                     <th>ชื่อสินค้า<br> Product Name</th>
@@ -286,8 +286,15 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?PHP   echo $i+1; ?></td>
-                                    <td><?PHP   echo $customer_purchase_orders[$i]['customer_purchase_order_date']; ?></td>
                                     <td><?PHP   echo $customer_purchase_orders[$i]['customer_purchase_order_code_gen']; ?></td>
+
+                                    
+                                    <td data-order="<?php echo  $timestamp = strtotime(  $customer_purchase_orders[$i]['customer_purchase_order_date']  ) ?>" >
+                                        <?php echo (  $customer_purchase_orders[$i]['customer_purchase_order_date']  ); ?>
+                                    </td>
+                                    
+
+                                    
                                     <td><?PHP   echo $customer_purchase_orders[$i]['customer_name_en']; ?><br> (<?PHP   echo $customer_purchase_orders[$i]['customer_name_th']; ?>)</td>
                                     <td><?PHP   echo $customer_purchase_orders[$i]['product_code']; ?></td> 
                                     <td><?PHP   echo $customer_purchase_orders[$i]['product_name']; ?></td> 

@@ -27,8 +27,8 @@
                                 <thead>
                                     <tr>
                                        <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10"> No.</th>
-                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ย้าย" width="100"> Change Product Date</th>
                                        <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลยใบย้าย" width="100"> Change Product No.</th>
+                                       <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ย้าย" width="100"> Change Product Date</th>
                                        <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="คลัง" width="200"> Stock</th> 
                                        <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ย้าย" width="200"> Change Product by</th>
                                        <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเหตุ" width="100"> Remark</th>
@@ -41,8 +41,13 @@
                                     ?>
                                     <tr class="odd gradeX">
                                         <td align="center" ><?php echo $i+1; ?></td>
-                                        <td><?php echo $stock_change_products[$i]['stock_change_product_date']; ?></td>
                                         <td><?php echo $stock_change_products[$i]['stock_change_product_code']; ?></td>
+                                        
+                                    
+                            <td data-order="<?php echo  $timestamp = strtotime(  $stock_change_products[$i]['stock_change_product_date']     ) ?>" >
+                                        <?php echo (  $stock_change_products[$i]['stock_change_product_date']     ); ?>
+                                    </td>
+                                    
                                         <td><?php echo $stock_change_products[$i]['stock_group_name']; ?></td>
                                         <td><?php echo $stock_change_products[$i]['employee_name']; ?></td>
                                         <td><?php echo $stock_change_products[$i]['stock_change_product_remark']; ?></td> 

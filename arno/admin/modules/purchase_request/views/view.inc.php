@@ -101,8 +101,8 @@
                                     <tr>
                                     <!-- <th class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" >Supplier</th> -->
                                         <th  width="24" class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" >No.</th>
-                                        <th  width="80"class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบร้องขอ" >PR Date</th>
                                         <th  width="110"class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบร้องขอ" ><br>PR No.</th>
+                                        <th  width="80"class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบร้องขอ" >PR Date</th>
                                         <th  width="200"class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ร้องขอโดย" ><br>Request by</th>
                                         <th width="50"class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ประเภทการร้องขอ" ><br>Request Type</th>
                                         <th width="50" class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะอนุมัติ" ><br>Accept Status</th>
@@ -121,8 +121,15 @@
                                     ?>
                                     <tr class="odd gradeX">
                                         <td class="text-center"><?php echo $i+1; ?></td>
-                                        <td class="text-center"><?php echo $purchase_requests[$i]['purchase_request_date']; ?></td>
                                         <td class="text-center"><?php echo $purchase_requests[$i]['purchase_request_code']; ?> <?php if($purchase_requests[$i]['purchase_request_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_requests[$i]['purchase_request_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($purchase_requests[$i]['purchase_request_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
+                                        
+
+                                        <td data-order="<?php echo  $timestamp = strtotime(   $purchase_requests[$i]['purchase_request_date'] )?>" >
+                                            <?php echo (   $purchase_requests[$i]['purchase_request_date'] ); ?>
+                                        </td>
+                                    
+
+
                                         <td><?php echo $purchase_requests[$i]['request_name']; ?></td>
                                         <td class="text-center"><?php echo $purchase_requests[$i]['purchase_request_type']; ?></td>
                                         <td class="text-center"><?php echo $purchase_requests[$i]['purchase_request_accept_status']; ?></td>

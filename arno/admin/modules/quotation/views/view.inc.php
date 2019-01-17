@@ -97,8 +97,8 @@
                                 <thead>
                                     <tr>
                                        <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10"> No.</th>
-                                       <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบเสนอราคา" width="100"> Quotation Date</th>
                                        <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบเสนอราคา" width="100"> Quotation No.</th>
+                                       <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบเสนอราคา" width="100"> Quotation Date</th>
                                        <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลูกค้า" width="200"> Customer</th>
                                        <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ติดต่อ" width="200"> Contact</th>
                                        <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ออกใบเสนอราคา" width="200">Create by</th>
@@ -111,11 +111,19 @@
                                     ?>
                                     <tr class="odd gradeX">
                                         <td><?php echo $i+1; ?></td>
-                                        <td><?php echo $quotations[$i]['quotation_date']; ?></td>
                                         <td>
                                             <?php echo $quotations[$i]['quotation_code']; ?>
                                             <?php if($quotations[$i]['quotation_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $quotations[$i]['quotation_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($quotations[$i]['quotation_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?>
                                         </td>
+
+                                        
+                                    
+                                    <td data-order="<?php echo  $timestamp = strtotime(  $quotations[$i]['quotation_date']  ) ?>" >
+                                        <?php echo (  $quotations[$i]['quotation_date']  ); ?>
+                                    </td>
+                                    
+
+                                    
                                         <td><?php echo $quotations[$i]['customer_name']; ?></td>
                                         <td><?php echo $quotations[$i]['quotation_contact_name']; ?></td>
                                         <td><?php echo $quotations[$i]['employee_name']; ?></td>

@@ -100,8 +100,8 @@
                                 <thead>
                                     <tr>
                                         <th>ลำดับ<br>No.</th>
-                                        <th>วันที่ออกเอกสาร<br>PR Date</th>
                                         <th>หมายเลขเอกสาร<br>PR No.</th>
+                                        <th>วันที่ออกเอกสาร<br>PR Date</th>
                                         <th>รหัสสินค้า<br>Product Code</th>
                                         <th>ชื่อสินค้า<br>Product Name</th>
                                         <th>จำนวน<br>Accept by</th>
@@ -118,8 +118,15 @@
                                     ?>
                                     <tr class="odd gradeX">
                                         <td><?php echo $i+1; ?></td>
-                                        <td><?php echo $purchase_requests[$i]['purchase_request_date']; ?></td>
+
                                         <td><?php echo $purchase_requests[$i]['purchase_request_code']; ?> <?php if($purchase_requests[$i]['purchase_request_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_requests[$i]['purchase_request_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($purchase_requests[$i]['purchase_request_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
+                                       
+
+                                        <td data-order="<?php echo  $timestamp = strtotime(   $purchase_requests[$i]['purchase_request_date'] )?>" >
+                                            <?php echo (   $purchase_requests[$i]['purchase_request_date'] ); ?>
+                                        </td>
+                                    
+
                                         <td><?php echo $purchase_requests[$i]['product_code']; ?></td>
                                         <td><?php echo $purchase_requests[$i]['product_name']; ?></td>
                                         <td><?php echo $purchase_requests[$i]['purchase_request_list_qty']; ?></td>

@@ -292,9 +292,17 @@
                                 <tr class="odd gradeX">
                                     <td class=" text-center"><?php echo $i+1; ?></td>
                                     <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code_gen']; ?></td>
-                                    <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date_recieve']; ?></td>
+                                    
+                                    <td data-order="<?php echo  $timestamp = strtotime( $invoice_suppliers[$i]['invoice_supplier_date_recieve']) ?>" >
+                                        <?php echo ( $invoice_suppliers[$i]['invoice_supplier_date_recieve']); ?>
+                                    </td>
                                     <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code']; ?></td>
-                                    <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date']; ?></td> 
+
+                                    
+                                    <td data-order="<?php echo  $timestamp = strtotime(  $invoice_suppliers[$i]['invoice_supplier_date']  ) ?>" >
+                                        <?php echo (  $invoice_suppliers[$i]['invoice_supplier_date']  ); ?>
+                                    </td>
+                                    
                                     <td><?php 
 
                                         $purchase_orders = $invoice_supplier_model->getPurchaseOrderByInvoiceSupplierId($invoice_suppliers[$i]['invoice_supplier_id']);

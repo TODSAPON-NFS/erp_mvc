@@ -98,8 +98,8 @@
                                 <thead>
                                     <tr>
                                         <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10" >   No.</th>
-                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่รับใบรีกายร์" width="100" >   RG Date</th>
                                         <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบรีกายร์" width="100" >   RG No.</th>
+                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่รับใบรีกายร์" width="100" >   RG Date</th>
                                         <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" width="200" >   Supplier</th>
                                         <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ติดต่อ" width="200" >   Contact</th>
                                         <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้รับ" width="200" >   Recieve by</th>
@@ -113,8 +113,17 @@
                                     ?>
                                     <tr class="odd gradeX">
                                         <td class="text-center"><?php echo $i+1; ?></td>
-                                        <td><?php echo $regrind_suppliers[$i]['regrind_supplier_date']; ?></td>
                                         <td><?php echo $regrind_suppliers[$i]['regrind_supplier_code']; ?></td>
+
+                                        
+                            
+                                        
+                            <td data-order="<?php echo  $timestamp = strtotime( $regrind_suppliers[$i]['regrind_supplier_date'] )?>" >
+                                        <?php echo ( $regrind_suppliers[$i]['regrind_supplier_date'] ); ?>
+                                    </td>
+                                    
+
+
                                         <td><?php echo $regrind_suppliers[$i]['supplier_name']; ?></td>
                                         <td><?php echo $regrind_suppliers[$i]['contact_name']; ?></td>
                                         <td><?php echo $regrind_suppliers[$i]['employee_name']; ?></td>

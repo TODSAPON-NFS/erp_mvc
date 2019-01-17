@@ -341,8 +341,8 @@
                             <thead>
                                 <tr>
                                     <th>ลำดับ<br>No.</th>
-                                    <th>วันที่ออกใบสั่งซื้อ<br>PO Date</th>
                                     <th>หมายเลขใบสั่งซื้อ<br>PO No.</th>
+                                    <th>วันที่ออกใบสั่งซื้อ<br>PO Date</th>
                                     <th>ผู้ขาย<br>Supplier</th>
                                     <th>รหัสสินค้า<br> Product Code</th>
                                     <th>ชื่อสินค้า<br> Product Name</th>
@@ -358,7 +358,6 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $purchase_orders[$i]['purchase_order_date']; ?></td>
                                     <td><?php echo $purchase_orders[$i]['purchase_order_code']; ?> <b 
                                     <?PHP 
                                         if( $purchase_orders[$i]['purchase_order_type'] == "BLANKED") {echo ' style="color:#D9534F;"';}
@@ -366,6 +365,12 @@
                                         else{ echo ' style="color:#449D44;"';}?>
                                         
                                     >[<?PHP echo $purchase_orders[$i]['purchase_order_type']; ?>]</b> <?php if($purchase_orders[$i]['purchase_order_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_orders[$i]['purchase_order_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($purchase_orders[$i]['purchase_order_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
+                                   
+                                   
+                                    <td data-order="<?php echo  $timestamp = strtotime($purchase_orders[$i]['purchase_order_date']) ?>" >
+                                        <?php echo ($purchase_orders[$i]['purchase_order_date']); ?>
+                                    </td>
+                                    
                                     <td>
                                         <?php echo $purchase_orders[$i]['supplier_name_en']; ?><br>
                                         (<?php echo $purchase_orders[$i]['supplier_name_th']; ?>)

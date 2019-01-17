@@ -35,7 +35,7 @@
                         <table width="100%" class="table table-striped table-bordered table-hover" id ="TEN">
                             <thead>
                                 <tr>
-                                    <th width="64px" >No.</th>
+                                    <th width="5px" >No.</th>
                                     <th>Customer</th>
                                     <th width="180px" >Open Invoice Customer</th>
                                 </tr>
@@ -45,7 +45,7 @@
                                 for($i=0; $i < count($customer_orders); $i++){
                                 ?>
                                 <tr class="odd gradeX">
-                                    <td><?php echo $i+1; ?></td>
+                                    <td class="text-center"><?php echo $i+1; ?></td>
                                     <td><?php echo $customer_orders[$i]['customer_name_en']; ?></td>
                                     <td>
                                         <a href="?app=invoice_customer&action=insert&customer_id=<?php echo $customer_orders[$i]['customer_id'];?>">
@@ -66,7 +66,7 @@
                         <table width="100%" class="table table-scroll table-striped table-bordered table-hover" id ="TENTEN" >
                             <thead>
                                 <tr>
-                                    <th width="64px" >No.</th>
+                                    <th width="5px" >No.</th>
                                     <th>Customer Purchase Order</th>
                                     <th width="180px" >Open Invoice Customer</th>
                                 </tr>
@@ -77,7 +77,7 @@
                                     $invoice_customer_list_has = $invoice_customer_model->getCustomerPurchaseOrderStock($customer_purchase_orders[$i]['customer_id'],'','',$customer_purchase_orders[$i]['customer_purchase_order_id']);
                                 ?>
                                 <tr class="odd gradeX">
-                                    <td><?php echo $i+1; ?></td>
+                                    <td class="text-center"><?php echo $i+1; ?></td>
                                     <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?> (<?php echo $customer_purchase_orders[$i]['customer_name_en'];  ?>) 
                                     </td>
                                     <td>
@@ -186,8 +186,8 @@
                     <thead>
                         <tr>
                             <th width="24"   class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" > No.</th>
-                            <th width="100"class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่" >Invoice Date</th>
                             <th width="100"class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เลขที่ใบกำกับภาษี" > Invoice Code.</th>
+                            <th width="100"class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่" >Invoice Date</th>
                             <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลูกค้า" >  Customer</th>
                             <th width="150" class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ออกเอกสาร" > Create by</th>
                             <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="จำนวนเงิน" >amount</th>
@@ -209,8 +209,14 @@
                         ?>
                         <tr class="odd gradeX">
                             <td class="text-center"><?php echo $i+1; ?></td>
-                            <td class="text-center"><?php echo $invoice_customers[$i]['invoice_customer_date']; ?></td>
                             <td class="text-center"><?php echo $invoice_customers[$i]['invoice_customer_code']; ?></td>
+                            
+                                    
+                            <td data-order="<?php echo  $timestamp = strtotime(  $invoice_customers[$i]['invoice_customer_date'] ) ?>" >
+                                        <?php echo (  $invoice_customers[$i]['invoice_customer_date'] ); ?>
+                                    </td>
+                                    
+
                             <td><?php echo $invoice_customers[$i]['customer_name']; ?> </td>
                             <td><?php echo $invoice_customers[$i]['employee_name']; ?></td>
                             <td align="right"><?php echo number_format($invoice_customers[$i]['invoice_customer_total_price'],2); ?></td>

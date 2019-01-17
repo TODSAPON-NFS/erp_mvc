@@ -120,7 +120,7 @@ class InvoiceCustomerModel extends BaseModel{
         $str_date 
         $str_user   
         GROUP BY tb_invoice_customer.invoice_customer_id
-        ORDER BY invoice_customer_code ASC 
+        ORDER BY invoice_customer_code DESC 
          ";
 
         //echo $sql;

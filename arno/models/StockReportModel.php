@@ -129,7 +129,7 @@ class StockReportModel extends BaseModel{
                     LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_customer_list.stock_group_id
                     WHERE   $str_cus 
 
-                ORDER BY paper_date, paper_type
+                ORDER BY STR_TO_DATE(paper_date,'%d-%m-%Y %H:%i:%s'), paper_type
         ";
 
         // echo "<pre>";

@@ -52,7 +52,13 @@ if(!isset($_GET['action'])){
     $product_category_id = $_GET['product_category_id'];
     $product_type_id = $_GET['product_type_id'];
     $keyword = $_GET['keyword'];
-
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
     if($_GET['page'] == '' || $_GET['page'] == '0'){
         $page = 0;
     }else{
@@ -555,7 +561,13 @@ else{
     $product_category_id = $_GET['product_category_id'];
     $product_type_id = $_GET['product_type_id'];
     $keyword = $_GET['keyword'];
-
+    if(!isset($_GET['keyword'])){
+        $keyword = $_SESSION['keyword'];
+    }else{
+        
+        $keyword = $_GET['keyword']; 
+        $_SESSION['keyword'] = $keyword;
+    }
     if($_GET['page'] == '' || $_GET['page'] == '0'){
         $page = 0;
     }else{

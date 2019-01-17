@@ -977,13 +977,17 @@ if(!isset($_GET['action'])){
     $data = [];
     $data['purchase_order_status'] = 'Confirm';
     $output = $purchase_order_model->updatePurchaseOrderStatusByID($purchase_order_id,$data);
-
+    ?>
+    <script>window.location="index.php?app=purchase_order"</script>
+<?php
 }else if ($_GET['action'] == 'cancel_sending'){
 
     $data = [];
     $data['purchase_order_status'] = 'Approved';
     $output = $purchase_order_model->updatePurchaseOrderStatusByID($purchase_order_id,$data);
-
+    ?>
+    <script>window.location="index.php?app=purchase_order"</script>
+<?php
 }else if ($license_purchase_page == "Medium" || $license_purchase_page == "High" ){
 
     if(!isset($_GET['date_start'])){

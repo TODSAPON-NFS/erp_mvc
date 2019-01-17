@@ -249,6 +249,19 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     
     
     $invoice_supplier_lists = $invoice_supplier_list_model->getInvoiceSupplierListBy($invoice_supplier_id);
+
+    $invoice_suppliers = $invoice_supplier_model->getInvoiceSupplierBy("","","","","","0",$lock_1,$lock_2);
+
+    for($i = 0 ; $i < count($invoice_suppliers) ; $i++){
+        if($invoice_supplier_id == $invoice_suppliers[$i]['invoice_supplier_id']){ 
+            $previous_id = $invoice_suppliers[$i-1]['invoice_supplier_id'];
+            $previous_code = $invoice_suppliers[$i-1]['invoice_supplier_code_gen'];
+            $next_id = $invoice_suppliers[$i+1]['invoice_supplier_id'];
+            $next_code = $invoice_suppliers[$i+1]['invoice_supplier_code_gen'];
+
+        }
+    }
+    $purchase_orders = $invoice_supplier_model->getPurchaseOrderByInvoiceSupplierId($invoice_supplier_id);
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'cost'){

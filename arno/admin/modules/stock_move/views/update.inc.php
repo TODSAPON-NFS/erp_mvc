@@ -77,10 +77,16 @@
 
     }
 
-
+    function update_line(){
+        var td_number = $('table[name="tb_list"]').children('tbody').children('tr').children('td:first-child');
+        for(var i = 0; i < td_number.length ;i++){
+            td_number[i].innerHTML = (i+1);
+        }
+    }
     
     function delete_row(id){
         $(id).closest('tr').remove();
+        update_line();
      }
 
      function show_data(id){
@@ -104,6 +110,8 @@
          }
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
+                '<td class="sorter">'+
+                '</td>'+
                 '<td>'+  
                     '<input type="hidden" name="stock_move_list_id" value="0" />'+
                     '<input type="hidden" name="product_id[]" class="form-control" />'+
@@ -120,6 +128,7 @@
             '</tr>'
         ); 
         $(".example-ajax-post").easyAutocomplete(options);
+        update_line();
     }
 
 </script>
@@ -225,9 +234,10 @@
                             </div>
                         </div>
                     </div> 
-                    <table width="100%" class="table table-striped table-bordered table-hover" >
+                    <table  name="tb_list" width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
+                                <th style="text-align:center;" width="60">ลำดับ </th>             
                                 <th style="text-align:center;">รหัสสินค้า<br>(Product Code)</th>
                                 <th style="text-align:center;">ชื่อสินค้า<br>(Product Name)</th>
                                 <th style="text-align:center;">จำนวน<br>(Qty)</th>
@@ -235,11 +245,14 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="sorted_table">
                             <?php 
                             for($i=0; $i < count($stock_move_lists); $i++){
                             ?>
                             <tr class="odd gradeX">
+                                <td class="sorter">
+                                    <?PHP echo ($i + 1); ?>.
+                                </td>
                                 <td>
                                     <input type="hidden" name="stock_move_list_id" value="<?PHP echo $stock_move_lists[$i]['stock_move_list_id'];?>" />
                                     <input type="hidden" name="product_id[]" class="form-control" value="<?php echo $stock_move_lists[$i]['product_id']; ?>" />
@@ -263,6 +276,7 @@
                                 <td>
                                     
                                 </td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -291,3 +305,12 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+<script>
+// Sortable rows
+$('.sorted_table').sortable({
+        handle: ".sorter" , 
+        update: function( event, ui ) {
+            update_line(); 
+        }
+    });
+</script>

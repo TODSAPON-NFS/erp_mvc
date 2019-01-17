@@ -6,6 +6,17 @@
 
     <title>Revel Soft - ERP System</title>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132661003-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-132661003-1');
+    </script>
+
+
     <!-- Bootstrap Core CSS -->
     <link href="../template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 

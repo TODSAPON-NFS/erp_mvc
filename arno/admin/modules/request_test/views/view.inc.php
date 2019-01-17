@@ -34,9 +34,9 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
-                            <th width="64px" >ลำดับ <br>No.</th>
-                            <th>ผู้ขาย <br>Supplier</th>
-                            <th width="180px" >เปิดใบสั่งสินค้าทดลอง <br>Open Request Test</th>
+                            <th width="64px"style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ"  > No.</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" > Supplier</th>
+                            <th width="180px" style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เปิดใบสั่งสินค้าทดลอง" > Open Request Test</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -149,17 +149,17 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
-                            <th>ลำดับ<br>No.</th>
-                            <th>วันที่ออกใบสั่งสินค้าทดลอง<br>PO Date</th>
-                            <th>หมายเลขใบสั่งสินค้าทดลอง<br>PO No.</th>
-                            <th>ผู้ขาย<br>Supplier</th>
-                            <th>ผู้ออกใบสั่งสินค้าทดลอง<br>Request by</th>
-							<th>สถานะสั่งซื้อ<br>PO Status</th>
-                            <th>สถานะอนุมัติ<br>Accept Status</th>
-                            <th>ผู้อนุมัติ<br>Accept by</th>
-                            <th>หมายเหตุ<br>Remark</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10">    No.</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบสั่งสินค้าทดลอง" width="50">    PO Date</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบสั่งสินค้าทดลอง" width="100">    PO No.</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" width="200">    Supplier</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ออกใบสั่งสินค้าทดลอง" width="200">    Request by</th>
+							<th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะสั่งซื้อ" width="50">    PO Status</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะอนุมัติ" width="50">    Accept Status</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้อนุมัติ" width="200">    Accept by</th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเหตุ" width="50">    Remark</th>
 							
-                            <th></th>
+                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="" width="1"></th>
                         </tr>
                     </thead>
                     <tbody>

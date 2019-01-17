@@ -152,14 +152,14 @@
                                     <table width="100%" class="table table-striped table-bordered table-hover" >
                                         <thead>
                                             <tr>
-                                                <th style="text-align:center">ลำดับ <br>No.</th>
-                                                <th style="text-align:center">รหัสลูกค้า <br>Code</th> 
-                                                <th style="text-align:center">ชื่ออังกฤษ <br>Name english</th>
-                                                <th style="text-align:center">เลขผู้เสียภาษี <br>TAX ID</th>
-                                                <th style="text-align:center">โทรศัพท์ <br>Mobile</th>
-                                                <th style="text-align:center">ประเภทลูกค้า <br>Type</th>
-                                                <th style="text-align:center">สิทธิ์การขาย <br>Sales privileges</th>
-                                                <th></th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10"> No.</th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รหัสลูกค้า" width="100"> Code</th> 
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ชื่ออังกฤษ" width="300"> Name english</th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เลขผู้เสียภาษี" width="100"> TAX ID</th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="โทรศัพท์" width="100"> Mobile</th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ประเภทลูกค้า" width="50"> Type</th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สิทธิ์การขาย" width="400"> Sales privileges</th>
+                                                <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สิทธิ์การขาย" width="1"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -167,8 +167,8 @@
                                             for($i=0; $i < count($customer); $i++){
                                             ?>
                                             <tr class="odd gradeX">
-                                                <td><?php echo $i+1; ?></td>
-                                                <td><?php echo $customer[$i]['customer_code']; ?></td> 
+                                                <td  style="text-align:center;"><?php echo $i+1; ?></td>
+                                                <td  style="text-align:center;"><?php echo $customer[$i]['customer_code']; ?></td> 
                                                 <td><?php echo $customer[$i]['customer_name_en']; ?></td>
                                                 <td><?php echo $customer[$i]['customer_tax']; ?></td>
                                                 <td class="center"><?php echo $customer[$i]['customer_tel']; ?></td>
@@ -180,7 +180,7 @@
                                                     <?php echo $customer[$i]['customer_end_user_name']; ?>
                                                 
                                                 </td>
-                                                <td>
+                                                <td  style="text-align:center;">
                                                 <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                                     <a title="View Detail" href="?app=customer&action=detail&id=<?php echo $customer[$i]['customer_id'];?>">
                                                         <i class="fa fa-file-text-o" aria-hidden="true"></i>

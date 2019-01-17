@@ -36,9 +36,9 @@
                                 <table width="100%" class="table table-striped table-bordered table-hover" >
                                     <thead>
                                         <tr>
-                                            <th width="64px" >ลำดับ <br>No.</th>
-                                            <th>ผู้ขาย <br>Supplier</th>
-                                            <th width="180px" >เปิดใบรับรีกายร์ <br>Open recieve regrind</th>
+                                            <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="64px" > No.</th>
+                                            <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย"> Supplier</th>
+                                            <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เปิดใบรับรีกายร์" width="180px" > Open recieve regrind</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -66,9 +66,9 @@
                                 <table width="100%" class="table table-striped table-bordered table-hover" >
                                     <thead>
                                         <tr>
-                                            <th width="64px" >ลำดับ <br>No.</th>
-                                            <th>ผู้ขาย <br>ใบส่งรีกายร์</th>
-                                            <th width="180px" >เปิดใบรับรีกายร์ <br>Open recieve regrind</th>
+                                            <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="64px" > No.</th>
+                                            <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย"> Supplier  </th>
+                                            <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เปิดใบรับรีกายร์"width="180px" > Open recieve regrind</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -178,19 +178,19 @@
                                     <a href="index.php?app=regrind_supplier_receive" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
                                 </div>
                             </div>
-                            <br>
+                               
 
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th>ลำดับ <br>No.</th>
-                                        <th>วันที่รับใบรีกายร์ <br>RG Date</th>
-                                        <th>หมายเลขใบรีกายร์ <br>RG No.</th>
-                                        <th>ผู้ขาย <br>Supplier</th>
-                                        <th>ผู้ติดต่อ <br>Contact</th>
-                                        <th>ผู้รับ <br>Recieve by</th>
-                                        <th>หมายเหตุ <br>Remark</th>
-                                        <th></th>
+                                         <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10" > No.</th>
+                                         <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่รับใบรีกายร์" width="50" >    RG Date</th>
+                                         <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบรีกายร์" width="100" >    RG No.</th>
+                                         <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" width="200" >    Supplier</th>
+                                         <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ติดต่อ" width="200" >    Contact</th>
+                                         <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้รับ" width="200" >    Recieve by</th>
+                                         <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเหตุ" width="100" >    Remark</th>
+                                         <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="" width="10" ></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -198,7 +198,7 @@
                                     for($i=0; $i < count($regrind_supplier_receives); $i++){
                                     ?>
                                     <tr class="odd gradeX">
-                                        <td><?php echo $i+1; ?></td>
+                                        <td class="text-center"><?php echo $i+1; ?></td>
                                         <td><?php echo $regrind_supplier_receives[$i]['regrind_supplier_receive_date']; ?></td>
                                         <td><?php echo $regrind_supplier_receives[$i]['regrind_supplier_receive_code']; ?></td>
                                         <td><?php echo $regrind_supplier_receives[$i]['supplier_name']; ?></td>

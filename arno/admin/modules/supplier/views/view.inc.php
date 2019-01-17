@@ -25,15 +25,15 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        <th style="text-align:center;">ลำดับ<br>No.</th>
-                                        <th style="text-align:center;">รหัสลูกค้า<br>Code</th>
-                                        <th style="text-align:center;">ชื่อไทย<br>Name thai</th>
-                                        <th style="text-align:center;">ชื่ออังกฤษ<br>Name english</th>
-                                        <th style="text-align:center;">บริษัท<br>Domestic</th>
-                                        <th style="text-align:center;">เลขผู้เสียภาษี<br>TAX ID</th>
-                                        <th style="text-align:center;">โทรศัพท์<br>Mobile</th>
-                                        <th style="text-align:center;">อีเมล์<br>Email</th>
-                                        <th style="text-align:center;"></th>
+                                        <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="24"> No.</th>
+                                        <th style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รหัสลูกค้า" width="50">Code</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ชื่อไทย" width="200"> Name thai</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ชื่ออังกฤษ" width="200"> Name english</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="บริษัท" width="200"> Domestic</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="เลขผู้เสียภาษี" width="100"> TAX ID</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="โทรศัพท์" width="80"> Mobile</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="อีเมล์" width="100"> Email</th>
+                                        <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="" width="10"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -41,15 +41,15 @@
                                     for($i=0; $i < count($supplier); $i++){
                                     ?>
                                     <tr class="odd gradeX">
-                                        <td><?php echo $i+1; ?></td>
-                                        <td><?php echo $supplier[$i]['supplier_code']; ?></td>
+                                        <td  style="text-align:center;"><?php echo $i+1; ?></td>
+                                        <td style="text-align:center;"><?php echo $supplier[$i]['supplier_code']; ?></td>
                                         <td><?php echo $supplier[$i]['supplier_name_th']; ?></td>
                                         <td><?php echo $supplier[$i]['supplier_name_en']; ?></td>
                                         <td><?php echo $supplier[$i]['supplier_domestic']; ?></td>
                                         <td><?php echo $supplier[$i]['supplier_tax']; ?></td>
                                         <td class="center"><?php echo $supplier[$i]['supplier_tel']; ?></td>
                                         <td class="center"><?php echo $supplier[$i]['supplier_email']; ?></td>
-                                        <td>
+                                        <td  style="text-align:center;">
                                         <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                             <a title="View Detail" href="?app=supplier&action=detail&id=<?php echo $supplier[$i]['supplier_id'];?>">
                                                 <i class="fa fa-file-text-o" aria-hidden="true"></i>

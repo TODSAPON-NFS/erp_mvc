@@ -42,7 +42,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div style="font-size:18px;padding: 8px 0px;">แยกตามผู้ขาย</div>
-                <table width="100%" class="table table-striped table-bordered table-hover" >
+                <table width="100%" class="table table-striped table-bordered table-hover" id="FIA">
                     <thead>
                         <tr>
                             <th width="64px" >No.</th>
@@ -72,7 +72,7 @@
                 </table>
                 
                 <div style="font-size:18px;padding: 8px 0px;">แยกตามใบสั่งซื้อ</div>
-                <table width="100%" class="table table-striped table-bordered table-hover">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="FIB">
                     <thead>
                         <tr>
                             <th width="64px" >No.</th>
@@ -126,7 +126,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div style="font-size:18px;padding: 8px 0px;">แยกตามผู้ขาย</div>
-                <table width="100%" class="table table-striped table-bordered table-hover">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="FIC">
                     <thead>
                         <tr>
                             <th width="64px" >No.</th>
@@ -156,7 +156,7 @@
                 </table>
                 
                 <div style="font-size:18px;padding: 8px 0px;">แยกตามใบสั่งซื้อ</div>
-                <table width="100%" class="table table-striped table-bordered table-hover">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="FID">
                     <thead>
                         <tr>
                             <th width="64px" >No.</th>
@@ -272,9 +272,9 @@
                                     <!--
                                     <th width="150" >Recieve by</th>
                                     -->
-                                    <th>จำนวนเงิน</th>
-                                    <th>ภาษีซื้อ</th>
-                                    <th>จำนวนเงินสุทธิ</th>
+                                    <th  class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="จำนวนเงิน" >amount</th>
+                                    <th class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ภาษีซื้อ" >Tax</th>
+                                    <th  class="datatable-th text-center" data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="จำนวนเงินสุทธิ" >Net amount</th>
                                     
                                     <th width="100"></th>
                                 </tr>
@@ -290,7 +290,7 @@
                                     $invoice_supplier_net_price +=$invoice_suppliers[$i]['invoice_supplier_net_price'];
                                 ?>
                                 <tr class="odd gradeX">
-                                    <td><?php echo $i+1; ?></td>
+                                    <td class=" text-center"><?php echo $i+1; ?></td>
                                     <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code_gen']; ?></td>
                                     <td><?php echo $invoice_suppliers[$i]['invoice_supplier_date_recieve']; ?></td>
                                     <td><?php echo $invoice_suppliers[$i]['invoice_supplier_code']; ?></td>

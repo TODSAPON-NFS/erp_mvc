@@ -345,7 +345,7 @@
                                     <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบสั่งซื้อ" width="82">PO Date</th>                                    
                                     <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ขาย" >Supplier</th>
                                     <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ออกใบสั่งซื้อ" width="82">Request by</th>
-                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะสั่งซื้อ" width="82">PO Status</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะสั่งซื้อ" width="90">PO Status</th>
                                     <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รหัสเอกสาร" width="102">Invoice Code</th>
                                     <!-- <th>สถานะอนุมัติ<br>Accept Status</th>
                                     <th>ผู้อนุมัติ<br>Accept by</th> -->
@@ -387,33 +387,47 @@
                                                 </b>
                                                 <?php
                                         }else if($purchase_orders[$i]['purchase_order_status'] =="Approved"){ ?>
-                                                <b class="font-weight-bold text-info text-center"><i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                                                <?php
-                                                echo $purchase_orders[$i]['purchase_order_status'];
-                                                ?>
+                                                <div>
+                                                    <b class="font-weight-bold text-info text-center"><i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                                    <?php
+                                                    echo $purchase_orders[$i]['purchase_order_status'];
+                                                    ?>
+                                                    </b>
+                                                </div>                                                
+                                                <b >
+                                                    <a  class="text-success" href="?app=purchase_order&action=sending&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>&supplier_id=<?php echo $purchase_orders[$i]['supplier_id'];?>"  title="Send">
+                                                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                                    </a> 
                                                 </b>
                                         <?php
                                         }else if($purchase_orders[$i]['purchase_order_status'] =="Sending"){ ?>
-                                                <b class="font-weight-bold text-warning text-center"><i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                                <?php
-                                                echo $purchase_orders[$i]['purchase_order_status'];
-                                                ?>
-                                                </b>
-                                                <b >
-                                                    <a style="float: left;" class="text-success" href="?app=purchase_order&action=sending&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>&supplier_id=<?php echo $purchase_orders[$i]['supplier_id'];?>"  title="Re-send">
-                                                        <i class="fa fa-refresh" aria-hidden="true"></i>
-                                                    </a> 
-                                                </b>
-                                                <b>
-                                                    <a  href="?app=purchase_order&action=update_sending&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="Confirm">
-                                                        <i class="fa fa-handshake-o" aria-hidden="true"></i>
-                                                    </a> 
-                                                </b>
-                                                <b >
-                                                    <a style="float: right;" class="text-danger" href="?app=purchase_order&action=cancel_sending&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="Cancel">
-                                                        <i class="fa fa-ban" aria-hidden="true"></i>
-                                                    </a> 
-                                                </b>
+
+                                                <div>
+                                                    <b class="font-weight-bold text-warning text-center"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                                    <?php
+                                                    echo $purchase_orders[$i]['purchase_order_status'];
+                                                    ?>
+                                                    </b>
+                                                </div>
+                                                <div>
+                                                    <b >
+                                                        <a style="float: left;" class="text-success" href="?app=purchase_order&action=sending&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>&supplier_id=<?php echo $purchase_orders[$i]['supplier_id'];?>"  title="Re-send">
+                                                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                                                        </a> 
+                                                    </b>
+                                                    <b>
+                                                        <a  href="?app=purchase_order&action=update_sending&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="Confirm">
+                                                            <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                                                        </a> 
+                                                    </b>
+                                                    <b >
+                                                        <a style="float: right;" class="text-danger" href="?app=purchase_order&action=cancel_sending&id=<?php echo $purchase_orders[$i]['purchase_order_id'];?>"  title="Cancel">
+                                                            <i class="fa fa-ban" aria-hidden="true"></i>
+                                                        </a> 
+                                                    </b>
+                                                </div>
+
+                                                
                                                 <?php
                                         }else if($purchase_orders[$i]['purchase_order_status'] =="Confirm"){ ?>
                                             <b class="font-weight-bold text-secondary text-center"><i class="fa fa-check-square-o" aria-hidden="true"></i>

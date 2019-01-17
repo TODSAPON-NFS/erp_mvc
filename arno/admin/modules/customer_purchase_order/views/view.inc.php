@@ -265,12 +265,12 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                        <table width="100%" class="table table-striped table-bordered table-hover"  >
+                        <table width="100%" class="table table-striped table-bordered table-hover"  id="dataTables-view" >
                             <thead>
                                 <tr>
                                     <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="32">No.</th>
-                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่รับใบสั่งซื้อ" width="32">PO Date</th>
                                     <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบสั่งซื้อ" width="32">PO No.</th>
+                                    <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่รับใบสั่งซื้อ" width="32">PO Date</th>
                                     <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลูกค้า" width="32">Customer</th>
                                     <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="พนักงาน" width="32">Employee</th> 
                                     <th class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="รหัสเอกสาร" width="32">Invoice Code</th>
@@ -285,8 +285,15 @@
                                 ?>
                                 <tr class="odd gradeX">
                                     <td><?php echo $i+1; ?></td>
-                                    <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_date']; ?></td>
                                     <td><?php echo $customer_purchase_orders[$i]['customer_purchase_order_code']; ?></td>
+                                    
+                                    
+                                    <td data-order="<?php echo  $timestamp = strtotime(  $customer_purchase_orders[$i]['customer_purchase_order_date']  ) ?>" >
+                                        <?php echo (  $customer_purchase_orders[$i]['customer_purchase_order_date']  ); ?>
+                                    </td>
+                                    
+
+                                    
                                     <td><?php echo $customer_purchase_orders[$i]['customer_name']; ?></td>
                                     <td><?php echo $customer_purchase_orders[$i]['employee_name']; ?></td> 
                                     

@@ -77,8 +77,8 @@
                                 <thead>
                                     <tr>
                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10" >   No.</th>
-                                       <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบร้องขอ" width="50" >   STR Date</th>
                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบร้องขอ" width="100" >   STR No.</th>
+                                       <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบร้องขอ" width="50" >   STR Date</th>
                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ร้องขอโดย" width="200" >   Request by</th> 
                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะอนุมัติ" width="10" >   Accept Status</th>
                                        <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้อนุมัติ" width="200" >   Accept by</th>
@@ -92,8 +92,15 @@
                                     ?>
                                     <tr class="odd gradeX">
                                         <td class="text-center"><?php echo $i+1; ?></td>
-                                        <td><?php echo $request_standards[$i]['request_standard_date']; ?></td>
                                         <td><?php echo $request_standards[$i]['request_standard_code']; ?> <?php if($request_standards[$i]['request_standard_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $request_standards[$i]['request_standard_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($request_standards[$i]['request_standard_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
+                                      
+
+                                        
+                            <td data-order="<?php echo  $timestamp = strtotime( $request_standards[$i]['request_standard_date'] )?>" >
+                                        <?php echo ( $request_standards[$i]['request_standard_date'] ); ?>
+                                    </td>
+                                    
+
                                         <td><?php echo $request_standards[$i]['request_name']; ?></td> 
                                         <td><?php echo $request_standards[$i]['request_standard_accept_status']; ?></td>
                                         <td><?php echo $request_standards[$i]['accept_name']; ?></td>

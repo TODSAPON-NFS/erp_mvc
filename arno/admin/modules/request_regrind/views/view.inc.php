@@ -75,8 +75,8 @@
                                 <thead>
                                     <tr>
                                           <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10" >    No.</th>
-                                          <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบร้องขอ" width="50" >    RPTR Date</th>
-                                          <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบร้องขอ" width="50" >    RPTR No.</th>
+                                          <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบร้องขอ" width="100" >    RPTR No.</th>
+                                          <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบร้องขอ" width="100" >    RPTR Date</th>
                                           <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ร้องขอโดย" width="200" >    Request by</th> 
                                           <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="สถานะอนุมัติ" width="50" >    Accept Status</th>
                                           <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้อนุมัติ" width="200" >    Accept by</th>
@@ -90,8 +90,16 @@
                                     ?>
                                     <tr class="odd gradeX">
                                         <td class="text-center"><?php echo $i+1; ?></td>
-                                        <td><?php echo $request_regrinds[$i]['request_regrind_date']; ?></td>
                                         <td><?php echo $request_regrinds[$i]['request_regrind_code']; ?> <?php if($request_regrinds[$i]['request_regrind_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $request_regrinds[$i]['request_regrind_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($request_regrinds[$i]['request_regrind_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
+                                       
+
+                                        
+                            <td data-order="<?php echo  $timestamp = strtotime( $request_regrinds[$i]['request_regrind_date'] )?>" >
+                                        <?php echo ( $request_regrinds[$i]['request_regrind_date'] ); ?>
+                                    </td>
+                                    
+
+
                                         <td><?php echo $request_regrinds[$i]['request_name']; ?></td> 
                                         <td><?php echo $request_regrinds[$i]['request_regrind_accept_status']; ?></td>
                                         <td><?php echo $request_regrinds[$i]['accept_name']; ?></td>

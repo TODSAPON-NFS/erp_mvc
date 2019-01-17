@@ -100,8 +100,8 @@
                     <thead>
                         <tr>
                             <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10" >    No.</th>
-                            <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่รับใบยืม" width="100" >    DNC Date</th>
                             <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบยืม" width="100" >    DNC No.</th>
+                            <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่รับใบยืม" width="100" >    DNC Date</th>
                             <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลูกค้า" width="200" >    Customer</th>
                             <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ติดต่อ" width="200" >    Contact</th>
                             <th  style="text-align:center;" class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ส่ง" width="200" >    Send by</th>
@@ -115,8 +115,17 @@
                         ?>
                         <tr class="odd gradeX">
                             <td class="text-center"><?php echo $i+1; ?></td>
-                            <td><?php echo $delivery_note_customers[$i]['delivery_note_customer_date']; ?></td>
                             <td><?php echo $delivery_note_customers[$i]['delivery_note_customer_code']; ?>-<?PHP echo strtoupper(substr($delivery_note_customers[$i]['employee_name'],0,2));?></td>
+
+
+                            
+                                        
+                            <td data-order="<?php echo  $timestamp = strtotime( $delivery_note_customers[$i]['delivery_note_customer_date'] )?>" >
+                                        <?php echo ( $delivery_note_customers[$i]['delivery_note_customer_date'] ); ?>
+                                    </td>
+                                    
+
+
                             <td><?php echo $delivery_note_customers[$i]['customer_name']; ?></td>
                             <td><?php echo $delivery_note_customers[$i]['contact_name']; ?></td>
                             <td><?php echo $delivery_note_customers[$i]['employee_name']; ?></td>

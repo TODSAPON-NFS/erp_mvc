@@ -27,8 +27,8 @@
                                 <thead>
                                     <tr>
                                        <th class="datatable-th text-center "data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="10"> No.</th>
-                                       <th class="datatable-th text-center "data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ตัดสินค้า" width="100">Issue Date</th>
                                        <th class="datatable-th text-center "data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลยใบตัด" width="100"> Issue No.</th>
+                                       <th class="datatable-th text-center "data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ตัดสินค้า" width="100">Issue Date</th>
                                        <th class="datatable-th text-center "data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="จากคลังสินค้า" width=""> From stock</th>
                                        <th class="datatable-th text-center "data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบกำกับ" width=""> Invoice Customer Code</th>
                                        <th class="datatable-th text-center "data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ยอดการตัดสินค้า" width=""> Issue Price</th>
@@ -45,8 +45,15 @@
                                     ?>
                                     <tr class="odd gradeX">
                                         <td class="text-center"><?php echo $i+1; ?></td>
-                                        <td><?php echo $stock_issues[$i]['stock_issue_date']; ?></td>
                                         <td><?php echo $stock_issues[$i]['stock_issue_code']; ?></td>
+                                        
+                                    
+                            <td data-order="<?php echo  $timestamp = strtotime( $stock_issues[$i]['stock_issue_date']        ) ?>" >
+                                        <?php echo ( $stock_issues[$i]['stock_issue_date']        ); ?>
+                                    </td>
+                                    
+
+
                                         <td><?php echo $stock_issues[$i]['stock_group_name']; ?></td>
                                         <td><?php echo $stock_issues[$i]['invoice_customer_code']; ?></td>
                                         <td><?php echo number_format($stock_issues[$i]['stock_issue_total'],2); ?></td>

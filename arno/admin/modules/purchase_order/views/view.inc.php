@@ -367,7 +367,10 @@
                                         else{ echo ' style="color:#449D44;"';}?>
                                         
                                     >[<?PHP echo $purchase_orders[$i]['purchase_order_type']; ?>]</b> <?php if($purchase_orders[$i]['purchase_order_rewrite_no'] > 0){ ?><b><font color="#F00">Rewrite <?PHP echo $purchase_orders[$i]['purchase_order_rewrite_no']; ?></font></b> <?PHP } ?> <?php if($purchase_orders[$i]['purchase_order_cancelled'] == 1){ ?><b><font color="#F00">Cancelled</font></b> <?PHP } ?></td>
-                                    <td><?php echo $purchase_orders[$i]['purchase_order_date']; ?></td>
+                                   
+                                    <td data-order="<?php echo  $timestamp = strtotime($purchase_orders[$i]['purchase_order_date']) ?>" >
+                                        <?php echo ($purchase_orders[$i]['purchase_order_date']); ?>
+                                    </td>
                                     
                                     <td><?php echo $purchase_orders[$i]['supplier_name']; ?> </td>
                                     <td class="text-center"><?php echo $purchase_orders[$i]['employee_name']; ?></td>

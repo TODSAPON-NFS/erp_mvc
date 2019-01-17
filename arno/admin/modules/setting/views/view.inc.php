@@ -216,7 +216,7 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>ที่อยู่ (อังกฤษ) 1 / Address (English) 1  </label>
-                                    <input id="company_address_1" name="company_address_en_1" type="text" class="form-control" value="<? echo $company['company_address_en_1']?>" >
+                                    <input id="company_address_en_1" name="company_address_en_1" type="text" class="form-control" value="<? echo $company['company_address_en_1']?>" >
                                     <p class="help-block">Example : ตึกบางนาธานี.</p>
                                 </div>
                             </div>
@@ -226,7 +226,7 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>ที่อยู่ (อังกฤษ) 2 / Address (English) 2 </label>
-                                    <input id="company_address_2" name="company_address_en_2" type="text" class="form-control" value="<? echo $company['company_address_en_2']?>">
+                                    <input id="company_address_en_2" name="company_address_en_2" type="text" class="form-control" value="<? echo $company['company_address_en_2']?>">
                                     <p class="help-block">Example : เขตบางนา.</p>
                                 </div>
                             </div>
@@ -236,7 +236,7 @@
                             <div class="col-lg-9">
                                 <div class="form-group">
                                     <label>ที่อยู่ (อังกฤษ) 3 / Address (English) 3 </label>
-                                    <input id="company_address_3" name="company_address_en_3" type="text" class="form-control" value="<? echo $company['company_address_en_3']?>">
+                                    <input id="company_address_en_3" name="company_address_en_3" type="text" class="form-control" value="<? echo $company['company_address_en_3']?>">
                                     <p class="help-block">Example : กรุงเทพ 20150.</p>
                                 </div>
                             </div> 

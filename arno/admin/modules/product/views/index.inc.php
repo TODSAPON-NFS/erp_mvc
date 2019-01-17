@@ -283,13 +283,13 @@ if(!isset($_GET['action'])){
         $data['product_code_first'] = '';
         $data['product_code'] = $product_code[$i];
         $data['product_name'] = $product_name[$i];
-        $data['product_group'] = '';
+        $data['product_group'] = '2';
         $data['product_barcode'] = '';
-        $data['product_description'] = '';
-        $data['product_type'] = '';
-        $data['product_unit'] = '';
+        $data['product_description'] = '-';
+        $data['product_type'] = '1';
+        $data['product_unit'] = '1';
         $data['product_status'] = 'Active';
-        $data['product_category_id'] = ''; 
+        $data['product_category_id'] = '1'; 
     
         $model_product->insertProduct($data);
     }

@@ -193,7 +193,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <b>วันที่</b>
                         </td>
                         <td  valign="middle" align="left">
-                         '.$invoice_supplier['invoice_supplier_date'].'
+                         '.$invoice_supplier['invoice_supplier_date_recieve'].'
                         </td>
                     </tr>
                   

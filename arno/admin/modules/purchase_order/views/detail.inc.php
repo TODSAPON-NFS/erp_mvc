@@ -184,24 +184,40 @@
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
-							<td>
+							<td colspan="4" rowspan="3">
                                     
                                 </td>
-                                <td>
-                                    
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td align="right">
-                                    Sub Total <br>
-                                    Vat <br>
-                                    Net Total <br>
+                                <td colspan="3" align="right">
+                                    Sub Total 
                                 </td>
                                 <td align="right">
-                                    <?php echo number_format($sub_total,2);?> <br>
-                                    <?php echo number_format($sub_total * $vat/100,2);?> <br>
-                                    <?php echo number_format($sub_total+($sub_total * $vat/100),2);?> <br>
+                                    <?php echo number_format($sub_total,2);?> 
+                                    </td>								
+                                <td width="80"></td>
+                                <!--
+                                <td></td>
+                                <td></td>
+                                -->
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td colspan="3" align="right">
+                                    Vat
+                                </td>
+                                <td align="right">
+                                    <?php echo number_format($sub_total * $vat/100,2);?> 
+                                </td>								
+                                <td width="80"></td>
+                                <!--
+                                <td></td>
+                                <td></td>
+                                -->
+                            </tr>
+                            <tr class="odd gradeX">
+                                <td colspan="3" align="right">
+                                    Net Total
+                                </td>
+                                <td align="right">
+                                    <?php echo number_format($sub_total+($sub_total * $vat/100),2);?>
                                 </td>								
                                 <td width="80"></td>
                                 <!--

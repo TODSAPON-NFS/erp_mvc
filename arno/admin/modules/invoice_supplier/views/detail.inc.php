@@ -14,11 +14,37 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
+            
+            <div class="col-md-6">
             รายละเอียดใบกำกับภาษีรับเข้า / Invoice Supplier Detail 
+                </div>
+                <div class="col-md-6" align="right">
+                    <?PHP if($previous_id != ""){?>
+                    <a class="btn btn-primary" href="?app=invoice_supplier&action=detail&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
+                    <?PHP } ?>
+
+                    <a class="btn btn-success "  href="?app=invoice_supplier&action=insert&sort=<?php echo $sort;?>" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                    
+                    <?PHP if ($sort == "ภายนอกประเทศ") { ?>
+
+                        <a class="btn btn-danger" href="print.php?app=invoice_supplier_abroad&action=pdf&type=credit&sort=<?php echo $sort;?>&id=<?php echo $invoice_supplier_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ใบตั้งเจ้าหนี้ต่างประเทศ </a>
+                    
+                        <a class="btn btn-danger" href="print.php?app=invoice_supplier_abroad&action=pdf&type=receive&sort=<?php echo $sort;?>&id=<?php echo $invoice_supplier_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ใบรับสินค้า </a>
+                    
+                    <?PHP } else { ?>
+
+                    <a class="btn btn-danger" href="print.php?app=invoice_supplier&action=pdf&lan=th&sort=<?php echo $sort;?>&id=<?php echo $invoice_supplier_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ใบรับสินค้า </a>
+                    
+                    <?PHP } ?>
+
+                    <?PHP if($next_id != ""){?>
+                    <a class="btn btn-primary" href="?app=invoice_supplier&action=detail&sort=<?php echo $sort;?>&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
+                    <?PHP } ?>
+                </div>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                >
+                
                     <input type="hidden"  id="invoice_supplier_id" name="invoice_supplier_id" value="<?php echo $invoice_supplier_id; ?>" />
                     <input type="hidden"  id="invoice_supplier_date" name="invoice_supplier_date" value="<?php echo $invoice_supplier['invoice_supplier_date']; ?>" />
                     <div class="row">
@@ -114,6 +140,48 @@
                                         <label>ผู้รับใบกำกับภาษี / Employee  <font color="#F00"><b>*</b></font> </label>
                                        
                                         <p class="help-block"><?PHP echo $invoice_supplier['user_name'];?> <?PHP echo $invoice_supplier['user_lastname'];?> (<?PHP echo $invoice_supplier['user_position_name'];?>)</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>รายการใบสั่งซื้อที่เกี่ยวข้อง </label>
+                                        <table width="100%" class="table table-striped table-bordered table-hover" >
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center;">ลำดับ </th>
+                                                    <th style="text-align:center;">หมายเลขใบสั่งซื้อ </th>
+                                                    <th style="text-align:center;">สถานะ </th>
+                                                   
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <?php 
+                                                        for($i=0; $i < count($purchase_orders); $i++){
+                                                        ?>
+                                                        <tr class="odd gradeX">
+                                                        <td align="center">
+                                                            <?php echo $i+1; ?>.
+                                                        </td>
+                                                        <td align="center">
+                                                            <a target="_blank" href="?app=purchase_order&action=detail&id=<?php echo $purchase_orders[$i]['purchase_order_id']; ?>"><?php echo $purchase_orders[$i]['purchase_order_code']; ?></a>
+                                                        </td>
+                                                        <td align="center"> 
+                                                        <?php 
+                                                            if($invoice_supplier_model->checkPurchaseOrder($purchase_orders[$i]['purchase_order_id'])>0){ 
+                                                                echo " <b class='text-danger'>ยังไม่ครบ</b> ";
+                                                            }else{
+                                                                echo "<b  class='text-success'>ครบ</b>";    
+                                                            }
+                                                            ?>
+
+                                                        </td>   
+                                                        </tr>
+                                                        <?php  } ?>
+                                            
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                                 

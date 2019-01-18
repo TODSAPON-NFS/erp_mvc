@@ -84,7 +84,6 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         font-size:12px;
         height:13px;
     }
-
     
 
     @page *{
@@ -207,30 +206,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <tr>
                         
                         <td width="84px"  valign="middle" align="left">
-                        <b>การจัดส่ง </b>
-                        </td>
-                        <td  valign="middle" align="left">
-                         '.$purchase_order['purchase_order_delivery_by'].'
-                        </td>
-
-                    </tr> 
-                    <tr>
-                        
-                        <td width="84px"  valign="middle" align="left">
                         <b>วันที่จัดส่ง  </b>
                         </td>
                         <td  valign="middle" align="left">
                         '.$purchase_order['purchase_order_delivery_term'].'
-                        </td>
-
-                    </tr> 
-                    <tr>
-                        
-                        <td width="84px"  valign="middle" align="left">
-                        <b>ข้อตกลง </b>
-                        </td>
-                        <td  valign="middle" align="left">
-                         '.$purchase_order['purchase_order_agreement'].'
                         </td>
 
                     </tr>
@@ -256,7 +235,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <tr style="border-bottom:1px dashed #000;border-top:1px dashed #000;">
                     <th style="text-align:center; padding:4px 0px;" >ลำดับ</th>
                     <th style="text-align:center; padding:4px 0px;" >ชื่อสินค้า / รายละเอียด</th>
-                    <th style="text-align:center; padding:4px 0px;" >จำนวน</th>
+                    <th style="text-align:center; padding:4px 0px;" width="50">จำนวน</th>
                     <th style="text-align:center; padding:4px 0px;" >ราคา/หน่วย</th>
                     <th style="text-align:center; padding:4px 0px;" >ราคารวม </th> 
                 </tr>
@@ -275,11 +254,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <td align="center" valign="top" style="height:48px;width:48px;">
                             '.($i+1).'
                         </td>
-                        <td align="left" valign="top" >
+                        <td style="font-size:11px;" align="left" valign="top" >
                            '. $purchase_order_lists[$i]['product_code'].' <br>
                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $purchase_order_lists[$i]['product_name'].' <br>  
+                           '. $purchase_order_lists[$i]['purchase_order_list_remark'].'
                         </td> 
-                        <td align="right" valign="top" width="100px">
+                        <td align="right" valign="top" width="70px">
                             '. number_format($purchase_order_lists[$i]['purchase_order_list_qty'],0).'
                         </td> 
                         <td align="right" valign="top" width="120px">

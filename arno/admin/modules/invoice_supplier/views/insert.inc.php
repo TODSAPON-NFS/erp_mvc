@@ -1233,6 +1233,13 @@
                                         <p class="help-block">Example : 0.</p>
                                     </div>
                                 </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>หมายเลขใบรับสินค้า<font color="#F00"><b>*</b></font></label>
+                                        <input  id="invoice_supplier_stock" name="invoice_supplier_stock" onchange="" class="form-control" value="<?php ?>" onchange="" >
+                                        <p class="help-block">Example : JU1901-001</p>
+                                    </div>
+                                </div>
                                 <?PHP } ?>
                                 
                             </div>

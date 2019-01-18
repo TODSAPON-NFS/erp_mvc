@@ -135,14 +135,20 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>ผู้รับใบกำกับภาษี / Employee  <font color="#F00"><b>*</b></font> </label>
                                        
                                         <p class="help-block"><?PHP echo $invoice_supplier['user_name'];?> <?PHP echo $invoice_supplier['user_lastname'];?> (<?PHP echo $invoice_supplier['user_position_name'];?>)</p>
                                     </div>
                                 </div>
-
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>หมายเลขใบรับสินค้า  <font color="#F00"><b>*</b></font> </label>
+                                       
+                                        <p class="help-block"><?PHP echo $invoice_supplier['invoice_supplier_stock'];?></p>
+                                    </div>
+                                </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>รายการใบสั่งซื้อที่เกี่ยวข้อง </label>

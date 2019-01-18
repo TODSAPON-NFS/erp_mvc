@@ -84,7 +84,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         font-size:12px;
         height:13px;
     }
-
+    .td-product{
+        font-size:11px !important;
+    }
+    
     
 
     @page *{
@@ -205,16 +208,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         </td>
 
                     </tr>
-                    <tr>
-                        
-                        <td width="84px"  valign="middle" align="left">
-                        <b>Delivery by  </b>
-                        </td>
-                        <td  valign="middle" align="left">
-                        '.$purchase_order['purchase_order_delivery_by'].'
-                        </td>
-
-                    </tr> 
+                    
                     <tr>
                         
                         <td width="84px"  valign="middle" align="left">
@@ -225,16 +219,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         </td>
 
                     </tr> 
-                    <tr>
-                        
-                        <td width="84px"  valign="middle" align="left">
-                        <b>Agreement </b>
-                        </td>
-                        <td  valign="middle" align="left">
-                         '.$purchase_order['purchase_order_agreement'].'
-                        </td>
-
-                    </tr>
+                   
                     <tr>
                         
                         <td width="84px"  valign="middle" align="left">
@@ -257,7 +242,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <tr style="border-bottom:1px dashed #000;border-top:1px dashed #000;">
                     <th style="text-align:center; padding:4px 0px;" >No.</th>
                     <th style="text-align:center; padding:4px 0px;" >Product name / Description</th>
-                    <th style="text-align:center; padding:4px 0px;" >Qty</th>
+                    <th style="text-align:center; padding:4px 0px;" width="70px;" >Qty</th>
                     <th style="text-align:center; padding:4px 0px;" >@</th>
                     <th style="text-align:center; padding:4px 0px;" >Amount ('.$purchase_order['currency_code'].')</th> 
                 </tr>
@@ -276,11 +261,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <td align="center" valign="top" style="height:48px;width:48px;">
                             '.($i+1).'
                         </td>
-                        <td align="left" valign="top" >
+                        <td style="font-size:11px;" align="left" valign="top" >
                            '. $purchase_order_lists[$i]['product_code'].' <br>
                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $purchase_order_lists[$i]['product_name'].' <br>  
-                        </td> 
-                        <td align="right" valign="top" width="90px">
+                           '. $purchase_order_lists[$i]['purchase_order_list_remark'].'
+                           </td> 
+                        <td align="right" valign="top" >
                             '. number_format($purchase_order_lists[$i]['purchase_order_list_qty'],0).'
                         </td> 
                         <td align="right" valign="top" width="90px">

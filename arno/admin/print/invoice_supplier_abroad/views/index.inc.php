@@ -10,6 +10,7 @@ require_once('../models/InvoiceSupplierModel.php');
 require_once('../models/InvoiceSupplierModel.php');
 require_once('../models/ExchangeRateBahtModel.php');
 require_once('../models/SupplierModel.php');
+require_once('../models/CurrencyModel.php');
 date_default_timezone_set('asia/bangkok');
 $d1=date("d");
 $d2=date("m");
@@ -26,6 +27,7 @@ $invoice_supplier_abroad_model = new InvoiceSupplierModel;
 $invoice_supplier_abroad_list_model = new InvoiceSupplierListModel; 
 $purchaseOrder_model = new PurchaseOrderModel;
 $supplier_model = new SupplierModel;
+$currency_model = new CurrencyModel;
 $exchange_rate_baht_model = new ExchangeRateBahtModel; 
 $date_start = $_GET['date_start'];
 $date_end = $_GET['date_end'];
@@ -63,7 +65,7 @@ if($_GET['action'] == "pdf"){
 
     $supplier=$supplier_model->getSupplierByID($invoice_supplier_abroad['supplier_id']);
     $exchange_rate_baht = $exchange_rate_baht_model->getExchangeRateBahtByCurrncyID($invoice_supplier_abroad['invoice_supplier_date_recieve'],$supplier['currency_id']);
- 
+    $currency = $currency_model->getCurrencyByID($supplier['currency_id']);
     $lines = 8;
 
     $page_max = (int)(count($invoice_supplier_abroad_lists) / $lines);

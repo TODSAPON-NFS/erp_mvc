@@ -233,9 +233,7 @@ if(!isset($_GET['action'])){
         $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id,$purchase_request_id,$type);
         
     }
-    $first_date = date("d")."-".date("m")."-".date("Y");
-
-
+    $first_date = date("d")."-".date("m")."-".date("Y"); 
 
     require_once($path.'insert.inc.php');
 

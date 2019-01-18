@@ -677,6 +677,7 @@ class PurchaseOrderModel extends BaseModel{
             $data_pr = [];
         $data = [];
 
+        //echo "5555".$type;
         if($type == "BLANKED"){
 
             $str_pr ="'0'";
@@ -728,7 +729,7 @@ class PurchaseOrderModel extends BaseModel{
             GROUP BY purchase_request_list_id
                ";
 
-            //echo $sql_request."<br><br>";
+            //echo "LLL : ".$sql_request."<br><br>";
             if ($result = mysqli_query(static::$db,$sql_request, MYSQLI_USE_RESULT)) {
                 
                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

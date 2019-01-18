@@ -316,6 +316,7 @@
 
                         $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="supplier_id[]"]').empty();
                         var supplier_id = $("#supplier_id").val();
+                        var str = "";
                         $.each(supplier_data, function (index, value) { 
                             if(value['supplier_id'] == supplier_id){
                                 str += "<option value='" + value['supplier_id'] + "' selected>" +  value['supplier_name_en'] + "</option>";  

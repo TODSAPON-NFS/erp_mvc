@@ -313,7 +313,8 @@
                         $(".example-ajax-post").easyAutocomplete(options);
 
                         $(id).closest('table').children('tbody').children('tr:last').children('td').children('div').children('div').children('select[name="supplier_id[]"]').empty();
-                        var str = "<option value='0'>ไม่ระบุ</option>";
+                        var supplier_id = $("#supplier_id").val();
+                        var str = "";
                         $.each(supplier_data, function (index, value) { 
                                             
                             if(value['supplier_id'] == supplier_id){

@@ -301,6 +301,7 @@ class InvoiceSupplierModel extends BaseModel{
         invoice_supplier_total_non = '".$data['invoice_supplier_total_non']."', 
         invoice_supplier_description = '".static::$db->real_escape_string($data['invoice_supplier_description'])."', 
         invoice_supplier_remark = '".static::$db->real_escape_string($data['invoice_supplier_remark'])."', 
+        invoice_supplier_stock = '".static::$db->real_escape_string($data['invoice_supplier_stock'])."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
         WHERE invoice_supplier_id = '$id' 
@@ -565,6 +566,7 @@ class InvoiceSupplierModel extends BaseModel{
             invoice_supplier_total_non,
             invoice_supplier_description,
             invoice_supplier_remark,
+            invoice_supplier_stock,
             addby,
             adddate,
             updateby,
@@ -597,6 +599,7 @@ class InvoiceSupplierModel extends BaseModel{
         $data['invoice_supplier_total_non']."','".
         static::$db->real_escape_string($data['invoice_supplier_description'])."','".
         static::$db->real_escape_string($data['invoice_supplier_remark'])."','".
+        static::$db->real_escape_string($data['invoice_supplier_stock'])."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].

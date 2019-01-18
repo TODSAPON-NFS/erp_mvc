@@ -557,14 +557,15 @@ class PurchaseOrderModel extends BaseModel{
 
         $sql = "SELECT  tb_purchase_request.purchase_request_id, purchase_request_code, tb_supplier.supplier_id, supplier_name_en , supplier_name_th 
                 FROM tb_purchase_request
-                LEFT JOIN tb_supplier  ON  tb_purchase_request_list.supplier_id = tb_supplier.supplier_id 
                 LEFT JOIN tb_purchase_request_list ON  tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id
+                LEFT JOIN tb_supplier  ON  tb_purchase_request_list.supplier_id = tb_supplier.supplier_id 
                 WHERE purchase_order_list_id = 0 
                 AND purchase_request_accept_status = 'Approve' 
                 AND purchase_request_type = 'Sale Blanked' 
                 GROUP BY tb_purchase_request_list.supplier_id , tb_purchase_request.purchase_request_id 
                 
         ";
+        //echo $sql;
         $data = [];
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             

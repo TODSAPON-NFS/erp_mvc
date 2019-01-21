@@ -498,11 +498,12 @@ class StockReportModel extends BaseModel{
     //
     //
     //#####################################################################################################################
-    function getStockReportBalanceListBy($date_end = "", $stock_group_id = "" ,$product_start = "",$product_end = ""){
+    function getStockReportBalanceListBy($date_end = "", $stock_group_id = "" ,$product_start = "",$product_end = "" , $status_qty = ""){
        
         $str_product = "";  
-        $str_date = "";  
-
+        $str_date = "";
+        $str_qty = "";  
+       
         
 
         $sql = "SELECT * FROM tb_stock_group WHERE stock_group_id = '".$stock_group_id."' ";
@@ -511,6 +512,20 @@ class StockReportModel extends BaseModel{
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
              $tb_stock = mysqli_fetch_array($result,MYSQLI_ASSOC); 
              $result->close();
+
+            if($status_qty == 1){
+
+                $str_qty =" AND  stock_report_qty  > 0 " ;
+
+            }elseif ($status_qty == 2) {
+
+                $str_qty =" AND  stock_report_qty  < 0 " ;
+
+            }else{
+
+                $str_qty = "";
+
+            }
  
     
             if($product_start != "" && $product_end != ""){
@@ -532,12 +547,13 @@ class StockReportModel extends BaseModel{
                 WHERE tb_stock_report.stock_group_id = '$stock_group_id' 
                 AND tb_product.product_id IS NOT NULL  
                 $str_product  
+                $str_qty
                 GROUP BY tb_stock_report.stock_group_id , tb_stock_report.product_id 
                 HAVING stock_report_qty != 0 
                 ORDER BY stock_group_name,product_code ASC
             "; 
 
-            //echo $sql."<br><br>";
+             //echo "<pre>".$sql."</pre>";
             // echo $sql;
             if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
                 $data = [];

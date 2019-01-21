@@ -292,7 +292,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         $total += $invoice_supplier_abroad_lists[$i]['purchase_order_list_price_sum'];
         $total_baht += $invoice_supplier_abroad_lists[$i]['invoice_supplier_list_total'];
                 $html[$page_index] .= ' 
-                <tr class="odd gradeX">
+                <tr  class="odd gradeX">
                         <td align="center" valign="top" style="height:48px;width:48px;">
                             '.($i+1).'
                         </td>

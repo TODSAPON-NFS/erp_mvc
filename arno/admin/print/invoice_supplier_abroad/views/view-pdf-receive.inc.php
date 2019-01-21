@@ -128,7 +128,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
  
     <table width="100%">
         <tr>
-            <td './*style="border: 1px solid #000;border-radius: 8px;"*/'>
+            <td style="border: 1px solid #000;border-radius: 8px;">
                 <table width="100%">
                     <tr>
                         <td width="64px" valign="top" style="padding:4px;line-height: 18px;">
@@ -173,7 +173,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                 </table> 
             </td>
-            <td width="300" valign="top" './*style="border: 1px solid #000;border-radius: 8px;"*/'>
+            <td width="300" valign="top" style="border: 1px solid #000;border-radius: 8px;">
                 <table width="100%">
                     <tr>
                         <td width="64px"  valign="middle" align="left">
@@ -291,7 +291,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         $freight_in_total += $invoice_supplier_list_freight_in;
 
                 $html[$page_index] .= ' 
-                <tr class="odd gradeX">
+                <tr  style="border: 1px solid #000;border-radius: 8px;"  class="odd gradeX">
                 <td align="center" valign="top" style="height:48px;width:48px;">
                     '.($i+1).'
                 </td>

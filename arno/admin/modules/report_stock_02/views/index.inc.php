@@ -42,6 +42,13 @@ if(!isset($_GET['stock_group_id'])){
     $stock_group_id = $_GET['stock_group_id'];
     $_SESSION['stock_group_id'] = $stock_group_id;
 }
+if(!isset($_GET['status_qty'])){
+    $status_qty = $_SESSION['status_qty'];
+}else{
+    $status_qty = $_GET['status_qty'];
+    $_SESSION['status_qty'] = $status_qty;
+}
+
  
 if($date_end == ""){ 
     $date_end  = date('t-m-Y');
@@ -49,7 +56,7 @@ if($date_end == ""){
 
 if($stock_group_id!='' ||$product_start!=''||$product_end!=''){
 
-    $stock_reports = $stock_report_model->getStockReportBalanceListBy($date_end, $stock_group_id , $product_start, $product_end);
+    $stock_reports = $stock_report_model->getStockReportBalanceListBy($date_end, $stock_group_id , $product_start, $product_end,$status_qty);
 }
 
 require_once($path.'view.inc.php');

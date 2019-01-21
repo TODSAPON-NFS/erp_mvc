@@ -6,6 +6,20 @@ $count_product = 0;
 $count_product_sum = 0;
 $i = 0;  
 
+$str_head = "" ;
+
+if($status_qty == 1){
+
+    $str_head ="สินค้าคงเหลือ แยกตามคลังสินค้า (สินค้าที่ไม่ติดลบ)";
+
+}elseif($status_qty == 2){
+
+    $str_head ="สินค้าคงเหลือ แยกตามคลังสินค้า (สินค้าที่ติดลบ)";
+
+}else{
+
+    $str_head ="สินค้าคงเหลือ แยกตามคลังสินค้า (สินค้าทั้งหมด)";
+}
 
 if ($product_start == ""){
     $product_start = '-';
@@ -21,7 +35,7 @@ $html_head_pdf = '
         <td colspan="3">บริษัท อาร์โน (ประเทศไทย) จำกัด</td>  
     </tr> 
     <tr>
-        <td colspan="6" align="center" style="font-size:14px;color:#00F;"><b>สินค้าคงเหลือ แยกตามคลังสินค้า</b></td>  
+        <td colspan="6" align="center" style="font-size:14px;color:#00F;"><b>'.$str_head.'</b></td>  
     </tr> 
     <tr>
         <td align="left" width="80px" ><b>รหัสสินค้าจาก </b></td>

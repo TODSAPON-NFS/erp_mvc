@@ -192,6 +192,7 @@ if(!isset($_GET['action'])){
     $users=$user_model->getUserBy(); 
     if($purchase_request_id != ""){
         $type = "BLANKED";
+        $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id,$purchase_request_id,$type);
     }
 
 
@@ -230,7 +231,7 @@ if(!isset($_GET['action'])){
             }   
         } 
 
-        $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id,$purchase_request_id,$type);
+        
         
     }
     $first_date = date("d")."-".date("m")."-".date("Y"); 

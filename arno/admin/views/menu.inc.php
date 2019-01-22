@@ -626,6 +626,9 @@
                                 <li>
                                     <a href="?app=paper_lock" <?PHP if($_GET['app'] == "paper_lock"){?> class="active" <?PHP } ?> ><i class="fa fa-lock" aria-hidden="true"></i> ล็อกงวดบัญชี </a>
                                 </li>
+                                <li>
+                                    <a href="?app=asset" <?PHP if($_GET['app'] == "asset"){?> class="active" <?PHP } ?> ><i class="fa fa-gears" aria-hidden="true"></i> รายการสินทรัพย์ </a>
+                                </li>
                             </ul>
                         </li>
 

@@ -200,7 +200,7 @@
                 document.getElementById('supplier_code').value = data.supplier_code;
                 document.getElementById('invoice_supplier_name').value = data.supplier_name_en;
                 document.getElementById('invoice_supplier_branch').value = data.supplier_branch;
-                document.getElementById('invoice_supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3 ;
+                document.getElementById('invoice_supplier_address').value = data.supplier_address_1 +'\n' + data.supplier_address_2 +'\n' +data.supplier_address_3 + ' ' +data.supplier_zipcode ;
                 document.getElementById('invoice_supplier_tax').value = data.supplier_tax ;
                 document.getElementById('invoice_supplier_due_day').value = data.credit_day ;
                 document.getElementById('invoice_supplier_term').value = data.condition_pay ;
@@ -653,6 +653,7 @@
             <?PHP }else{ ?>
                 var qty =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="qty"]').val(  ).replace(',',''));
                 var price =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="price"]').val( ).replace(',',''));
+                var purchase_price =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="price"]').val( ).replace(',',''));
                 var sum =  parseFloat($(checkbox[i]).closest('tr').children('td').children('input[name="total"]').val( ).replace(',',''));
             <?PHP } ?>
 

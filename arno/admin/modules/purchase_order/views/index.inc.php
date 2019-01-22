@@ -192,6 +192,7 @@ if(!isset($_GET['action'])){
     $users=$user_model->getUserBy(); 
     if($purchase_request_id != ""){
         $type = "BLANKED";
+        $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id,$purchase_request_id,$type);
     }
 
 
@@ -230,7 +231,7 @@ if(!isset($_GET['action'])){
             }   
         } 
 
-        $purchase_order_lists = $purchase_order_model->generatePurchaseOrderListBySupplierId($supplier_id,$purchase_request_id,$type);
+        
         
     }
     $first_date = date("d")."-".date("m")."-".date("Y"); 
@@ -425,6 +426,32 @@ if(!isset($_GET['action'])){
             $data['employee_id'] = $_POST['employee_id'];
 
             $purchase_order_model->updatePurchaseOrderByID($purchase_order_id,$data);
+
+            $save_product_price = $_POST['save_product_price'];
+            for($i=0; $i < count($save_product_price); $i++){
+                $product_price = 0;
+                for($j=0; $j < count($product_id); $j++){
+                    if($product_id[$j] == $save_product_price[$i]){
+                        $product_price = (float)filter_var($purchase_order_list_price[$j], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    }
+                }
+                $product_supplier_prices =  $product_supplier_model->getProductSupplierPriceByID($save_product_price[$i],$_POST['supplier_id']);
+    
+                $data = [];
+                $data['product_id'] = $save_product_price[$i];
+                $data['supplier_id'] =$_POST['supplier_id'];
+                $data['product_buyprice'] = $product_price;
+                $data['product_supplier_status'] = 'Active';
+
+    
+                if(count($product_supplier_prices) > 0){ 
+                    $product_supplier_model->updateProductSupplierPriceByID($data);
+                }else{
+                    $product_supplier_model->insertProductSupplier($data);
+                }
+            }
+
+
 ?>
         <script>window.location="index.php?app=purchase_order&action=update&id=<?php echo $purchase_order_id;?>"</script>
 <?php
@@ -584,12 +611,14 @@ if(!isset($_GET['action'])){
             $data = [];
             $data['product_id'] = $save_product_price[$i];
             $data['supplier_id'] =$_POST['supplier_id'];
-            $data['product_price'] = $product_price;
+            $data['product_buyprice'] = $product_price;
+            
+            $data['product_supplier_status'] = 'Active';
 
             if(count($product_supplier_prices) > 0){ 
                 $product_supplier_model->updateProductSupplierPriceByID($data);
             }else{
-                $product_supplier_model->insertProductSupplierPrice($data);
+                $product_supplier_model->insertProductSupplier($data);
             }
         }
 
@@ -818,6 +847,7 @@ if(!isset($_GET['action'])){
     
     if(isset($purchase_order_id)){
         $company=$company_model->getCompanyByID('1'); 
+        $purchase_order = $purchase_order_model->getPurchaseOrderByID($purchase_order_id);
         $data = [];
 
         $data['purchase_order_status'] = 'Checking';
@@ -837,7 +867,7 @@ if(!isset($_GET['action'])){
             require("../controllers/mail/class.phpmailer.php");
             $mail = new PHPMailer();
             $body = '
-                We are opening the purchase order.
+                We are opening the purchase order No:'.$purchase_order['purchase_order_code'].'.
                 Can you please confirm the order details?. 
                 At <a href="'.$company_model->supplier_page_url.'/index.php?app=purchase_order&action=checking&id='.$purchase_order_id.'">Click</a> 
                 Before I send you a purchase order.
@@ -860,7 +890,7 @@ if(!isset($_GET['action'])){
 
             $mail->SetFrom( $company['company_email'], $company['company_name_en']);
             $mail->AddReplyTo( $company['company_email'],$company['company_name_en']);
-            $mail->Subject = $company['	company_name_en']." order recheck to ".$supplier['supplier_name_en'];
+            $mail->Subject = 'Check Order  No:'.$purchase_order['purchase_order_code'].' From: '.$company['company_name_en'];
 
             $mail->MsgHTML($body);
 
@@ -896,6 +926,7 @@ if(!isset($_GET['action'])){
     
     if(isset($purchase_order_id)){
         $company=$company_model->getCompanyByID('1'); 
+        $purchase_order = $purchase_order_model->getPurchaseOrderByID($purchase_order_id);
         $data = [];
 
         $data['purchase_order_status'] = 'Sending';
@@ -914,7 +945,7 @@ if(!isset($_GET['action'])){
             require("../controllers/mail/class.phpmailer.php");
             $mail = new PHPMailer();
             $body = '
-                We are opened the purchase order.
+                We are opened the purchase order No:'.$purchase_order['purchase_order_code'].' .
                 Can you confirm the order details?. 
                 At <a href="'.$company_model->supplier_page_url.'/index.php?app=purchase_order&action=sending&id='.$purchase_order_id.'">Click</a> 
 
@@ -938,7 +969,7 @@ if(!isset($_GET['action'])){
 
             $mail->SetFrom( $company['company_email'], $company['company_name_en']);
             $mail->AddReplyTo( $company['company_email'],$company['company_name_en']);
-            $mail->Subject = $company['	company_name_en']." order confirm to ".$supplier['supplier_name_en'];
+            $mail->Subject = 'Purchase Order  No:'.$purchase_order['purchase_order_code'].' From: '.$company['company_name_en'];
 
             $mail->MsgHTML($body);
 

@@ -240,126 +240,144 @@
 
                     <div class="row">
                         <div class="col-lg-3">
+                            
                             <div class="form-group">
-                                <label>คิดค่าเสื่อม <font color="#F00"><b>*</b></font> </label>
-                                <input type="checkbox" id="asset_depreciate" name="asset_depreciate" class="form-control">
-                                <p class="help-block">Example : checked.</p>
-                            </div>
-                        </div>                        
-                        <!-- /.col-lg-6 (nested) -->
-                    </div>
-                    <!-- /.row (nested) -->
-
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label>วันที่ซื้อ / PO Date</label>
-                                <input type="text" id="customer_purchase_order_date" name="customer_purchase_order_date" value="<? echo $customer_purchase_order['customer_purchase_order_date'];?>"  class="form-control calendar" readonly/>
-                                <p class="help-block">Example : 31-01-2018</p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>อำเภอ / Amphur <font color="#F00"><b>*</b></font> </label>
-                                <select id="asset_amphur" name="asset_amphur" data-live-search="true"  class="form-control" onchange="getDistrict()">
-                                <option value="">Select</option>
+                                <label>ตัวเลือกการคิดค่าเสื่อมทรัพย์สิน <font color="#F00"><b>*</b></font></label>
+                                <select id="asset_depreciate" name="asset_depreciate" class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="0">ไม่คิดค่าเสื่อม</option>
+                                    <option value="1">คิดค่าเสื่อม</option>
                                 </select>
-                                <p class="help-block">Example : เมือง.</p>
+                                <p class="help-block">Example : คิดค่าเสื่อม.</p>
                             </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>ตำบล / Distict <font color="#F00"><b>*</b></font> </label>
-                                <select id="asset_district" name="asset_district" data-live-search="true" class="form-control">
-                                <option value="">Select</option>
-                                </select>
-                                <p class="help-block">Example : ในเมือง.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>เลขไปรษณีย์ / Zipcode <font color="#F00"><b>*</b></font> </label>
-                                <input id="asset_zipcode" name="asset_zipcode" type="text" readonly class="form-control">
-                                <p class="help-block">Example : 30000.</p>
-                            </div>
-                        </div>
                         
-                        <!-- /.col-lg-6 (nested) -->
+                        </div>
                     </div>
                     <!-- /.row (nested) -->
-
 
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>ตำแหน่ง / Position <font color="#F00"><b>*</b></font> </label>
-                                <select class="form-control" id="asset_position_id" name="asset_position_id">
-                                <option value="">Select</option>
-                                    <?php 
-                                    for($i =  0 ; $i < count($asset_position) ; $i++){
-                                    ?>
-                                    <option value="<?php echo $asset_position[$i]['asset_position_id'] ?>"><?php echo $asset_position[$i]['asset_position_name'] ?></option>
-                                    <?
-                                    }
-                                    ?>
-                                </select>
-                                <p class="help-block">Example : ผู้ดูแลระบบ.</p>
+                                <label>วันที่ซื้อ</label>
+                                <input type="text" id="asset_buy_date" name="asset_buy_date"  class="form-control calendar" readonly/>
+                                <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
 
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>สิทธิ์การใช้งาน / License <font color="#F00"><b>*</b></font> </label>
-                                <select class="form-control" id="license_id" name="license_id">
-                                <option value="">Select</option>
-                                    <?php 
-                                    for($i =  0 ; $i < count($asset_license) ; $i++){
-                                    ?>
-                                    <option value="<?php echo $asset_license[$i]['license_id'] ?>"><?php echo $asset_license[$i]['license_name'] ?></option>
-                                    <?
-                                    }
-                                    ?>
-                                </select>
-                                <p class="help-block">Example : สิทธิ์การใช้งานที่ 1 .</p>
+                                <label>วันที่ใช้</label>
+                                <input type="text" id="asset_use_date" name="asset_use_date"  class="form-control calendar" readonly/>
+                                <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
 
                         <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>สถานะ / Status <font color="#F00"><b>*</b></font> </label>
-                                <select class="form-control" id="asset_status_id" name="asset_status_id">
-                                <option value="">Select</option>
-                                    <?php 
-                                    for($i =  0 ; $i < count($asset_status) ; $i++){
-                                    ?>
-                                    <option value="<?php echo $asset_status[$i]['asset_status_id'] ?>"><?php echo $asset_status[$i]['asset_status_name'] ?></option>
-                                    <?
-                                    }
-                                    ?>
-                                </select>
-                                <p class="help-block">Example : ทำงาน.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label>ลายเซ็น / Signature <font color="#F00"><b>*</b></font> </label>
-                                <div align="center">
-                                    <input name="hidden_data" id='hidden_data' type="hidden"/>
-                                    <canvas id="signature" width="280px" height="280px"  style="border: 1px solid #ddd;"></canvas>
-                                    <br>
-                                    <a class="btn btn-default" id="clear-signature" >Clear</a>
+                            
+                                <div class="form-group">
+                                    <label>ราคาทุน<font color="#F00"><b>*</b></font></label>
+                                    <input id="asset_cost_price" name="asset_cost_price" class="form-control">
+                                    <p class="help-block">Example : 25000.</p>
                                 </div>
-                                <p class="help-block">Example : ทำงาน.</p>
-                            </div>
+                            
+                        </div>
+
+                        <div class="col-lg-3">
+                            
+                                <div class="form-group">
+                                    <label>ราคาซาก<font color="#F00"><b>*</b></font></label>
+                                    <input id="asset_scrap_price" name="asset_scrap_price" class="form-control">
+                                    <p class="help-block">Example : 25000.</p>
+                                </div>
+                            
                         </div>
                         
                         <!-- /.col-lg-6 (nested) -->
                     </div>
                     <!-- /.row (nested) -->
+
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                                
+                                <div class="form-group">
+                                    <label>อายุการใช้<font color="#F00"><b>*</b></font></label>
+                                    <input id="asset_expire" name="asset_expire" class="form-control">
+                                    <p class="help-block">Example : 25000.</p>
+                                </div>
+                            
+                        </div>
+                        <div class="col-lg-3">
+                            
+                                <div class="form-group">
+                                    <label>อัตรา%<font color="#F00"><b>*</b></font></label>
+                                    <input id="asset_rate" name="asset_rate" class="form-control">
+                                    <p class="help-block">Example : 20.</p>
+                                </div>
+                            
+                        </div>                        
+                    </div>
+                    <!-- /.row (nested) -->
+                    <div class="row">
+
+                        <div class="col-lg-3">
+                            
+                            <div class="form-group">
+                                <label>การคำนวณค่าเสื่อมทรัพย์สิน <font color="#F00"><b>*</b></font></label>
+                                <select id="asset_depreciate_type" name="asset_depreciate_type" class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="0">รายเดือน</option>
+                                    <option value="1">รายปี</option>
+                                </select>
+                                <p class="help-block">Example :รายเดือน/รายปี.</p>
+                            </div>
+                        
+                        </div>     
+                        <div class="col-lg-3">
+                            
+                                <div class="form-group">
+                                    <label>ค่าเสื่อมสะสมยกมา<font color="#F00"><b>*</b></font></label>
+                                    <input id="asset_depreciate_transfer" name="asset_depreciate_transfer" class="form-control">
+                                    <p class="help-block">Example : 0.</p>
+                                </div>
+                            
+                        </div> 
+                        <div class="col-lg-3">
+                            
+                            <div class="form-group">
+                                <label>ค่าเสื่อมที่คำนวณเอง<font color="#F00"><b>*</b></font></label>
+                                <input id="asset_depreciate_manual" name="asset_depreciate_manual" class="form-control">
+                                <p class="help-block">Example : 0.</p>
+                            </div>
+                            
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>คำนวณเองถึงวันที่</label>
+                                <input type="text" id="asset_manual_date" name="asset_manual_date"  class="form-control calendar" readonly/>
+                                <p class="help-block">Example : 31-01-2019</p>
+                            </div>
+                        </div>                    
+                    </div>
+                    <!-- /.row (nested) -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>วันที่ขาย</label>
+                                <input type="text" id="asset_sale_date" name="asset_sale_date"  class="form-control calendar" readonly/>
+                                <p class="help-block">Example : 31-01-2019</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>ค่าเสื่อมที่คำนวณเอง<font color="#F00"><b>*</b></font></label>
+                                <input id="asset_price" name="asset_price" class="form-control">
+                                <p class="help-block">Example : 0.</p>
+                            </div>
+                        </div >
+                           
+                    </div>
+
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
                             <a href="?app=asset" class="btn btn-default">Back</a>

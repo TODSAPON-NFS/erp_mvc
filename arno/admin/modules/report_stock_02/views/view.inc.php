@@ -1,19 +1,21 @@
 <script>
     function search(){  
+
         var date_end = $("#date_end").val(); 
         var stock_group_id = $("#stock_group_id").val();  
         var product_start = encodeURIComponent($("#product_start").val()); 
-        var product_end = encodeURIComponent($("#product_end").val());  
+        var product_end = encodeURIComponent($("#product_end").val()); 
+        var status_qty  = $("#status_qty").val();
 
-        window.location = "index.php?app=report_stock_02&date_end="+date_end+"&stock_group_id="+stock_group_id+"&product_start="+product_start+"&product_end="+product_end ;
+        window.location = "index.php?app=report_stock_02&date_end="+date_end+"&stock_group_id="+stock_group_id+"&product_start="+product_start+"&product_end="+product_end +"&status_qty="+status_qty;
     }
     function print(type){  
         var date_end = $("#date_end").val(); 
         var stock_group_id = $("#stock_group_id").val();  
         var product_start = encodeURIComponent($("#product_start").val()); 
         var product_end = encodeURIComponent($("#product_end").val());  
-
-        window.open("print.php?app=report_stock_02&action="+type+"&date_end="+date_end+"&stock_group_id="+stock_group_id+"&product_start="+product_start+"&product_end="+product_end ,'_blank');
+        var status_qty  = $("#status_qty").val();
+        window.open("print.php?app=report_stock_02&action="+type+"&date_end="+date_end+"&stock_group_id="+stock_group_id+"&product_start="+product_start+"&product_end="+product_end+ "&status_qty="+status_qty,'_blank');
     }
 </script>
 
@@ -39,7 +41,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="row"> 
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>ณ วันที่</label> 
                             <input type="text" id="date_end" name="date_end" value="<?PHP echo $date_end;?>"  class="form-control calendar" readonly/> 
@@ -61,6 +63,21 @@
                             <p class="help-block">Example : - .</p>
                         </div>
                     </div>   
+                    
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>จำนวนสินค้า </label>
+                            <select id="status_qty" name="status_qty" class="form-control select"  data-live-search="true"> 
+                                
+                                <option  value="0" <?php if($status_qty==0 ){?> selected  <?php } ?> > ทั้งหมด </option>
+                                <option  value="1" <?php if($status_qty==1 ){?> selected  <?php } ?> > สินค้าที่ไม่ติดลบ </option>
+                                <option  value="2" <?php if($status_qty==2 ){?> selected  <?php } ?> > สินค้าที่่ติดลบ </option>
+                               
+                            </select>
+                            <p class="help-block">Example : - .</p>
+                        </div>
+                    </div>   
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>สินค้า</label>
@@ -88,7 +105,7 @@
                     <div class="col-md-4">
                         <button class="btn btn-danger" style="float:right; margin:0px 4px;" onclick="print('pdf','');">PDF</button>
                         <button class="btn btn-success" style="float:right; margin:0px 4px;" onclick="print('excel','');">Excel</button>
-                        <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search('');">Search</button>
+                        <button class="btn btn-primary" style="float:right; margin:0px 4px;" onclick="search();">Search</button>
                         <a href="index.php?app=report_stock_02" class="btn btn-default" style="float:right; margin:0px 4px;">Reset</a>
                     </div>
                 </div>

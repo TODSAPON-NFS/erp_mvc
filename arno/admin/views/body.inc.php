@@ -130,8 +130,9 @@
    
 
     /* ----------------------------------- ระบบบัญชี ---------------------------------------------- */
-
-    else if($_GET['app'] == "credit_note"){
+    else if($_GET['app'] == "asset"){
+        require_once("modules/asset/views/index.inc.php");
+    }else if($_GET['app'] == "credit_note"){
         require_once("modules/credit_note/views/index.inc.php");
     }else if($_GET['app'] == "debit_note"){
         require_once("modules/debit_note/views/index.inc.php");

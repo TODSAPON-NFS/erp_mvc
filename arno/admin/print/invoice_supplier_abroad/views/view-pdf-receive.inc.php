@@ -62,10 +62,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         font-size:12px;
     }
 
-    .table, .table tbody td{ '.
-        //border-left :1px solid black; 
+    .table,,table thead th, .table tbody td{ 
+        border-left :1px solid black; 
         //border-right :1px solid black; 
-        'border-collapse: collapse;
+        border-collapse: collapse;
         height:16px;
         font-size:12px;
     }
@@ -75,9 +75,13 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         display:block !important;
         height:325px;
     }
+    table  tr{
+        border-right :1px solid black; 
+    }
     th{
         padding:8px 4px;
         font-size:10px;
+        border-right :1px solid black; 
     }
 
     td{
@@ -128,7 +132,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
  
     <table width="100%">
         <tr>
-            <td style="border: 1px solid #000;border-radius: 8px;">
+            <td>
                 <table width="100%">
                     <tr>
                         <td width="64px" valign="top" style="padding:4px;line-height: 18px;">
@@ -173,7 +177,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </tr> 
                 </table> 
             </td>
-            <td width="300" valign="top" style="border: 1px solid #000;border-radius: 8px;">
+            <td width="300" valign="top"  >
                 <table width="100%">
                     <tr>
                         <td width="64px"  valign="middle" align="left">
@@ -261,18 +265,19 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     <div>
         <table width="100%" class="table" celspacing="0">
             <thead>
-                <tr style="border-bottom:1px dashed #000;border-top:1px dashed #000;">
-                    <th style="text-align:center; padding:4px 0px;" >No.</th>
-                    <th style="text-align:center; padding:4px 0px;" >Product name / Description</th>
-                    <th style="text-align:center; padding:4px 0px;" >Stock</th>
-                    <th style="text-align:center; padding:4px 0px;" >Qty</th>
-                    <th style="text-align:center; padding:4px 0px;" >Price/Pcs '.$currency['currency_code'].'</th> 
-                    <th style="text-align:center; padding:4px 0px;" >Price/Pcs Baht</th> 
-                    <th style="text-align:center; padding:4px 0px;" >Amount </th> 
-                    <th style="text-align:center; padding:4px 0px;" >Import duty</th>
-                    <th style="text-align:center; padding:4px 0px;" >Freight in</th>
-                    <th style="text-align:center; padding:4px 0px;" >Cost/Pcs </th> 
-                    <th style="text-align:center; padding:4px 0px;" >Cost total </th> 
+                <tr style="border-right :1px solid black;">
+                    <th style="text-align:center; padding:4px 2px;" >No.</th>
+                    <th style="text-align:center; padding:4px 2px;" >Product name / Description</th>
+                    <th style="text-align:center; padding:4px 2px;" >Stock</th>
+                    <th style="text-align:center; padding:4px 2px;" >Qty</th>
+                    <th style="text-align:center; padding:4px 2px;" >Price/Pcs '.$currency['currency_code'].'</th> 
+                    <th style="text-align:center; padding:4px 2px;" >Price/Pcs Baht</th> 
+                    <th style="text-align:center; padding:4px 2px;" >Amount </th> 
+                    <th style="text-align:center; padding:4px 2px;" >Import duty</th>
+                    <th style="text-align:center; padding:4px 2px;" >Freight in</th>
+                    <th style="text-align:center; padding:4px 2px;" >Cost/Pcs </th> 
+                    <th style="text-align:center; border-right :1px solid black;  padding:4px 2px;" >Cost total </th> 
+                    
                 </tr>
             </thead>
 
@@ -291,30 +296,30 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         $freight_in_total += $invoice_supplier_list_freight_in;
 
                 $html[$page_index] .= ' 
-                <tr  style="border: 1px solid #000;border-radius: 8px;"  class="odd gradeX">
-                <td align="center" valign="top" style="height:48px;width:48px;">
+                <tr   class="odd gradeX">
+                <td  align="center" valign="top" style="height:48px;width:28px;">
                     '.($i+1).'
                 </td>
-                <td align="left" valign="top" >
+                <td  align="left" valign="top" >
                    '. $invoice_supplier_abroad_lists[$i]['product_code'].' <br>
                    <span style="font-size:10px;"> '. $invoice_supplier_abroad_lists[$i]['product_name'].'</span>  
                 </td> 
-                <td align="center" valign="top" >
+                <td  align="center" valign="top" >
                     '. $invoice_supplier_abroad_lists[$i]['stock_group_code'].'
                 </td> 
-                <td align="right" valign="top">
+                <td   align="right" valign="top">
                     '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_qty'],0).'
                 </td> 
-                <td align="right" valign="top" width="70px">
+                <td   align="right" valign="top" width="50px">
                     '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_currency_price'],2).'
                 </td>
-                <td align="right" valign="top" width="70px">
+                <td   align="right" valign="top" width="70px">
                     '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_price'],2).'
                 </td>
-                <td align="right" valign="top" >
+                <td align="right" valign="top" width="50px">
                     '. number_format($invoice_supplier_abroad_lists[$i]['invoice_supplier_list_total'],2).'
                 </td>
-                <td align="right" valign="top" >
+                <td  align="right" valign="top" >
                     '. number_format($invoice_supplier_list_import_duty,2).'
                 </td>
                 <td align="right" valign="top" >
@@ -325,7 +330,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 </td>
                 <td align="right" valign="top" >
                     '. number_format($invoice_supplier_list_cost_total,2).'
-                </td>                
+                </td> 
+                <td align="center">
+                                
+                            </td>               
             </tr>
         ';
     }
@@ -335,7 +343,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         if(count($invoice_supplier_abroad_lists) % $lines > 0){
             for($i = count($invoice_supplier_abroad_lists) % $lines ; $i < $lines; $i++){
                 $html[$page_index] .= ' 
-                    <tr class="odd gradeX">
+                    <tr style="border-right :1px solid black; " class="odd gradeX">
                             <td align="center" style="height:48px;"> 
                             
                             </td> 
@@ -347,6 +355,15 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                             </td>
                             <td align="center">
                                
+                            </td>
+                            <td align="right">
+                                 
+                            </td>
+                            <td align="right">
+                                 
+                            </td>
+                            <td align="right">
+                                 
                             </td>
                             <td align="right">
                                  
@@ -384,24 +401,25 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             </tbody>
             <tfoot>
                 <tr class="odd gradeX" >
-                    <td colspan="5" align="left" valign="top">
+                    <td style="border-right: 1px solid #000;" colspan="5" align="left" valign="top">
                         <b>Remark</b> 
                     </td>
                     <td align="left" colspan="2" >
                         <b>Summation </b> 
                     </td>
-                    <td style="text-align: right;" >
+                    <td style="text-align: right;border-left: 1px solid #000;" >
                     '.  $invoice_supplier_total_price  .'
                     </td>
-                    <td style="text-align: right;" >
+                    <td style="text-align: right;border-left: 1px solid #000;" >
                     '.  $import_duty  .'
                     </td>
-                    <td style="text-align: right;" >
+                    <td style="text-align: right;border-left: 1px solid #000;border-right: 1px solid #000;" >
                     '. $freight_in .'
                     </td>
-                    <td style="text-align: right;" >
+                    <td style="text-align: right;border-right: 1px solid #000;" >
                     '. $total_cost  .'
                     </td>
+                    
                 </tr>    
                  
             </tfoot>

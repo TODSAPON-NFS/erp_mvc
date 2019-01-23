@@ -87,10 +87,9 @@ class AssetDepartmentModel extends BaseModel{
         
         asset_department_code = '".static::$db->real_escape_string($data['asset_department_code'])."',  
         asset_department_name_th = '".static::$db->real_escape_string($data['asset_department_name_th'])."',  
-        asset_department_name_en = '".static::$db->real_escape_string($data['asset_department_name_en'])."',
+        asset_department_name_en = '".static::$db->real_escape_string($data['asset_department_name_en'])."'
         WHERE asset_department_id = '".static::$db->real_escape_string($id)."'
         ";
-
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {

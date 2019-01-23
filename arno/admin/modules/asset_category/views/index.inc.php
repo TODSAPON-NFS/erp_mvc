@@ -22,6 +22,7 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'update' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     $asset_category_id = $_GET['id'];
     $asset = $model->getAssetCategoryByID($asset_category_id);
+    $code = $asset['asset_category_code'];
     // $asset_category_license = $license->getLicenseBy();
     // $asset_category_position = $position->getAsset_CategoryPositionBy();
     // $asset_category_status = $status->getAsset_CategoryStatusBy();
@@ -66,7 +67,7 @@ if(!isset($_GET['action'])){
     
 }else if ($_GET['action'] == 'edit' && ($license_admin_page == 'Medium' || $license_admin_page == 'High')){
     
-    if(isset($_POST['asset_category_code'])){
+    if(isset($_POST['asset_category_id'])){
         $data['asset_category_code'] = $_POST['asset_category_code'];
         $data['asset_category_name_th'] = $_POST['asset_category_name_th'];
         $data['asset_category_name_en'] = $_POST['asset_category_name_en'];
@@ -75,7 +76,7 @@ if(!isset($_GET['action'])){
 
         if($asset){
             ?>
-            <script>window.location="index.php?app=asset_category"</script>
+            <script>window.location="index.php?app=asset_category&action=update&id=<?PHP echo $_POST['asset_category_id'];?>"</script>
             <?php
         }else{
             ?>

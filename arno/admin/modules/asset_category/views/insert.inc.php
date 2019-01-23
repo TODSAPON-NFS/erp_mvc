@@ -91,7 +91,7 @@
                         <div class="col-lg-4">
                             
                                 <div class="form-group">
-                                    <label>ชื่อหมวดหมู่อุปกรณ์ TH/ Name TH<font color="#F00"><b>*</b></font></label>
+                                    <label>ชื่อหมวดหมู่อุปกรณ์ TH/Category Name TH<font color="#F00"><b>*</b></font></label>
                                     <input id="asset_category_name_th" name="asset_category_name_th" class="form-control">
                                     <p class="help-block">Example : อุปกรณ์สำนักงาน.</p>
                                 </div>
@@ -100,7 +100,7 @@
                         <div class="col-lg-4">
                             
                                 <div class="form-group">
-                                    <label>ชื่อหมวดหมู่อุปกรณ์ EN/ Name EN <font color="#F00"><b>*</b></font></label>
+                                    <label>ชื่อหมวดหมู่อุปกรณ์ EN/Category Name EN <font color="#F00"><b>*</b></font></label>
                                     <input id="asset_category_name_en" name="asset_category_name_en" class="form-control">
                                     <p class="help-block">Example : Office equipment.</p>
                                 </div>

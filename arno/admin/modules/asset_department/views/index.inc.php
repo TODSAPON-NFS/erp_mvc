@@ -74,28 +74,18 @@ if(!isset($_GET['action'])){
         $asset = $model->updateAssetDepartmentByID($_POST['asset_department_id'],$data);
 
         if($asset){
-            // $img = $_POST['hidden_data'];
-            // $data['asset_department_signature'] = $img;
-            // $model->updateAsset_DepartmentSignatureByID($_POST['asset_department_id'],$data);
-/*
-            $img = str_replace('data:image/png;base64,', '', $img);
-            $img = str_replace(' ', '+', $img);
-            $data = base64_decode($img);
-            $file = $target_dir . $_POST['asset_department_id'] . ".png";
-            $success = file_put_contents($file, $data);
-*/
-?>
-        <script>window.location="index.php?app=asset_department"</script>
-<?php
+            ?>
+                    <script>window.location="index.php?app=asset_department"</script>
+            <?php
         }else{
-?>
-        <script>window.location="index.php?app=asset_department"</script>
-<?php
+            ?>
+                    <script>window.location="index.php?app=asset_department"</script>
+            <?php
         }
         
     }else{
         ?>
-    <script>window.location="index.php?app=asset_department"</script>
+         <script>window.location="index.php?app=asset_department"</script>
         <?php
     }
         

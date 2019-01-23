@@ -87,10 +87,9 @@ class AssetCategoryModel extends BaseModel{
         
         asset_category_code = '".static::$db->real_escape_string($data['asset_category_code'])."',  
         asset_category_name_th = '".static::$db->real_escape_string($data['asset_category_name_th'])."',  
-        asset_category_name_en = '".static::$db->real_escape_string($data['asset_category_name_en'])."',
+        asset_category_name_en = '".static::$db->real_escape_string($data['asset_category_name_en'])."'
         WHERE asset_category_id = '".static::$db->real_escape_string($id)."'
         ";
-
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {

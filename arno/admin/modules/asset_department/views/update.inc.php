@@ -20,18 +20,16 @@
         var asset_department_code = document.getElementById("asset_department_code").value;
         var asset_department_name_th = document.getElementById("asset_department_name_th").value;
         var asset_department_name_en = document.getElementById("asset_department_name_en").value;
-        
+        // var code_check = document.getElementById("code_check").value;
+        // var user_id = document.getElementById("user_id").value;
+
         asset_department_code = $.trim(asset_department_code);
         asset_department_name_th = $.trim(asset_department_name_th);
         asset_department_name_en = $.trim(asset_department_name_en);
 
         
 
-        if(code_check != ""){
-            alert("This "+code_check+" is already in the system.");
-            document.getElementById("code_check").focus();
-            return false;
-        }else if(asset_department_code.length == 0){
+        if(asset_department_code.length == 0){
             alert("Please input asset_department code");
             document.getElementById("asset_department_code").focus();
             return false;
@@ -76,12 +74,13 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=asset_department&action=add" >
+                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=asset_department&action=edit" >
+                    <input type="hidden"  id="asset_department_id" name="asset_department_id" value="<?php echo $asset_department_id ?>" />
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>รหัสแผนก / Department Code <font color="#F00"><b>*</b></font></label>
-                                <input id="asset_department_code" name="asset_department_code" value="<?php echo $asset['asset_department_code']; ?>" class="form-control" onchange="check_code(this)" />
+                                <input id="asset_department_code" name="asset_department_code" value="<?php echo $asset['asset_department_code']; ?>" class="form-control" onchange="" />
                                 <input id="code_check" type="hidden" value="" />
                                 <p class="help-block">Example : 0000001.</p>
                             </div>

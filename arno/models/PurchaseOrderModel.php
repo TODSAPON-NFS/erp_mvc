@@ -714,9 +714,10 @@ class PurchaseOrderModel extends BaseModel{
             purchase_request_list_qty as purchase_order_list_qty, 
             purchase_request_list_delivery as purchase_order_list_delivery_min, 
             IFNULL(product_buyprice,0) as purchase_order_list_price ,
-            CONCAT('PR : ',purchase_request_code) as purchase_order_list_remark 
+            IF(customer_name_en IS NULL,CONCAT('PR : ',purchase_request_code),CONCAT('PR : ',purchase_request_code,', Customer : ',customer_name_en)) as purchase_order_list_remark 
             FROM tb_purchase_request 
             LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id 
+            LEFT JOIN tb_customer ON tb_purchase_request.customer_id = tb_customer.customer_id 
             LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id 
             LEFT JOIN tb_product_supplier ON tb_purchase_request_list.product_id = tb_product_supplier.product_id 
             WHERE tb_purchase_request_list.supplier_id = '$supplier_id' 

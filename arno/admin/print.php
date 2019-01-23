@@ -194,6 +194,8 @@ else if($_GET['app'] == "report_stock_01"){
     require_once("print/report_stock_08/views/index.inc.php");
 } else if($_GET['app'] == "report_stock_09"){
     require_once("print/report_stock_09/views/index.inc.php");
+}  else if($_GET['app'] == "report_stock_10"){
+    require_once("print/report_stock_10/views/index.inc.php");
 }  
 
 /* ################################################### สิ้นสุด สินค้าคงคลัง ################################################### */

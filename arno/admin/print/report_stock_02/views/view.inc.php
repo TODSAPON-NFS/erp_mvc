@@ -68,13 +68,13 @@ $html_head_pdf = '
 </table> 
 ';
 $html_head_excel = ' 
-<div align="center" style="font-size:14px;color:#00F;"> <b>สินค้าคงเหลือ แยกตามคลังสินค้า</b></div>
+<div align="center" style="font-size:14px;color:#00F;"> <b>'.$str_head.'</b></div>
 <table width="100%" border="0" cellspacing="0">
     <tr>
         <td colspan="3">บริษัท อาร์โน (ประเทศไทย) จำกัด</td>  
     </tr> 
     <tr>
-        <td colspan="6" align="center" style="font-size:14px;color:#00F;"><b>สินค้าคงเหลือ แยกตามคลังสินค้า</b></td>  
+        <td colspan="6" align="center" style="font-size:14px;color:#00F;"><b>'.$str_head.'</b></td>  
     </tr> 
     <tr>
         <td align="left" width="80px" ><b>รหัสสินค้าจาก </b></td>

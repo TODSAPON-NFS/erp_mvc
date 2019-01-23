@@ -691,7 +691,7 @@
                         '</td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_qty[]" onchange="update_sum(this);" value="'+ qty.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" /></td>'+<?PHP if($sort == "ภายนอกประเทศ"){ ?>
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price[]" onchange="update_sum(this);" value="'+ purchase_price.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" /></td>'+
-                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price_sum[]" onchange="update_sum(this);"  value="'+ purchase_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly /></td>'+
+                        '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" readonly name="purchase_order_list_price_sum[]" onchange="update_sum(this);"  value="'+ purchase_total.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly /></td>'+
             <?PHP } ?>  '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_price[]" onchange="update_sum(this);" value="'+ price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" /></td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_total[]" onchange="update_sum(this);"  value="'+ sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +'" readonly /></td>'+
                         '<td>'+
@@ -767,7 +767,7 @@
                 '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_qty[]" value="0" onchange="update_sum(this);" /></td>'+<?PHP if($sort == "ภายนอกประเทศ"){ ?>
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price[]" onchange="update_sum(this);" value="0" /></td>'+
-                '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="purchase_order_list_price_sum[]" onchange="update_sum(this);" value="0" /></td>'+
+                '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" readonly name="purchase_order_list_price_sum[]" onchange="update_sum(this);" value="0" /></td>'+
     <?PHP } ?>  '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_price[]" value="0" onchange="update_sum(this);" /></td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" name="invoice_supplier_list_total[]" value="0" onchange="update_sum(this);" readonly /></td>'+
                 '<td>'+
@@ -1301,7 +1301,7 @@
                                     $cost_price_ex = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] * $exchange_rate_baht['exchange_rate_baht_value'];
 
                                     $cost_price_total = $cost_qty * $cost_price;
-                                    $purchase_order_total_price += $cost_qty * $invoice_supplier_lists[$i]['purchase_order_list_price'];
+                                    $purchase_order_total_price += $cost_qty * $invoice_supplier_lists[$i]['invoice_supplier_list_currency_price'];
                                     $cost_price_ex_total = $cost_qty * $cost_price_ex;
 
                                     if($cost_duty * $invoice_supplier['import_duty'] == 0){
@@ -1358,7 +1358,7 @@
                                 
                                 <?PHP if($sort == "ภายนอกประเทศ"){ ?>
                                     <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="purchase_order_list_price[]" autocomplete="off" value="<?php echo number_format($invoice_supplier_lists[$i]['invoice_supplier_list_currency_price'],2); ?>" /></td>
-                                    <td align="right"><input type="text" class="form-control" style="text-align: right;"  onchange="update_sum(this);" name="purchase_order_list_price_sum[]" autocomplete="off" value="<?php echo number_format($invoice_supplier_lists[$i]['invoice_supplier_list_currency_price']*$invoice_supplier_lists[$i]['invoice_supplier_list_qty'],2); ?>" /></td>
+                                    <td align="right"><input type="text" class="form-control" style="text-align: right;" readonly  onchange="update_sum(this);" name="purchase_order_list_price_sum[]" autocomplete="off" value="<?php echo number_format($invoice_supplier_lists[$i]['invoice_supplier_list_currency_price']*$invoice_supplier_lists[$i]['invoice_supplier_list_qty'],2); ?>" /></td>
                                 <?PHP } ?>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  autocomplete="off" onchange="update_sum(this);" name="invoice_supplier_list_price[]" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_price'],4); ?>" /></td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;" autocomplete="off" readonly onchange="update_sum(this);" name="invoice_supplier_list_total[]" value="<?php echo  number_format($invoice_supplier_lists[$i]['invoice_supplier_list_qty'] * $invoice_supplier_lists[$i]['invoice_supplier_list_price'],2); ?>" /></td>

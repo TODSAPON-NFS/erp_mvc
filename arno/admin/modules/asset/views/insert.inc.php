@@ -104,31 +104,7 @@
             document.getElementById("asset_rate").focus();
             return false;
         }
-        // else if(asset_depreciate.length == 0){
-        //     alert("Please input asset amphur");
-        //     document.getElementById("asset_depreciate").focus();
-        //     return false;
-        // }else if(asset_district.length == 0){
-        //     alert("Please input asset district");
-        //     document.getElementById("asset_district").focus();
-        //     return false;
-        // }else if(asset_position_id.length == 0){
-        //     alert("Please input asset position");
-        //     document.getElementById("asset_position_id").focus();
-        //     return false;
-        // }else if(license_id.length == 0){
-        //     alert("Please input asset license");
-        //     document.getElementById("license_id").focus();
-        //     return false;
-        // }else if(asset_status_id.length == 0){
-        //     alert("Please input asset status");
-        //     document.getElementById("asset_status_id").focus();
-        //     return false;
-        // }
         else{
-            // var canvas = document.getElementById("signature");
-            // var dataURL = canvas.toDataURL("image/png");
-            // document.getElementById('hidden_data').value = dataURL;
             return true;
         }
 
@@ -143,7 +119,7 @@
         <h1 class="page-header">Asset Management</h1>
     </div>
     <div class="col-lg-6" align="right">
-        <a href="?app=asset" class="btn btn-primary active btn-menu">ทรัพย์สิน / Asset</a>
+        <a href="?app=asset" class="btn btn-primary active btn-menu">รายการทรัพย์สิน / Asset</a>
         <!-- <a href="?app=asset_license" class="btn btn-primary  btn-menu">สิทธิ์การใช้งาน / License</a> -->
     </div>
     <!-- /.col-lg-12 -->
@@ -190,9 +166,9 @@
                                 <label>หมวดหมู่ทรัพย์สิน <font color="#F00"><b>*</b></font></label>
                                 <select id="asset_category_id" name="asset_category_id" class="form-control">
                                     <option value="">Select</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
+                                    <?php for($i=0;$i<count($category);$i++){?>
+                                        <option value="<?php echo $category[$i]['asset_category_id'];?>"><?php echo $category[$i]['asset_category_name_th'];?></option>
+                                    <?php }?>
                                 </select>
                                 <p class="help-block">Example : คอมพิวเตอร์และอุปกรณ์สำนักงาน.</p>
                             </div>
@@ -209,9 +185,9 @@
                                 <label>กลุ่มบัญชีทรัพย์สิน <font color="#F00"><b>*</b></font></label>
                                 <select id="asset_account_group_id" name="asset_account_group_id" class="form-control">
                                     <option value="">Select</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
+                                    <?php for($i=0;$i<count($account_group);$i++){?>
+                                        <option value="<?php echo $account_group[$i]['asset_account_group_id'];?>"><?php echo $account_group[$i]['asset_account_group_name_th'];?></option>
+                                    <?php }?>
                                 </select>
                                 <p class="help-block">Example : อุปกรณ์สำนักงาน.</p>
                             </div>
@@ -232,9 +208,9 @@
                                 <label>แผนก <font color="#F00"><b>*</b></font></label>
                                 <select id="asset_department_id" name="asset_department_id" class="form-control">
                                     <option value="">Select</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
+                                    <?php for($i=0;$i<count($department);$i++){?>
+                                        <option value="<?php echo $department[$i]['asset_department_id'];?>"><?php echo $department[$i]['asset_department_name_th'];?></option>
+                                    <?php }?>
                                 </select>
                                 <p class="help-block">Example : บัญชี.</p>
                             </div>
@@ -413,4 +389,22 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+<script>
 
+$(document).ready(function($){
+		$('#asset_expire').on('change keyup', function()
+		{
+			console.log(this.value);
+            
+            if(this.value!=null){
+                var rate = 100 / this.value;
+                $("#asset_rate").val(rate); 
+            }
+            else{
+                $("#asset_rate").val("");
+            }	      
+             
+	    });
+	});
+
+</script>

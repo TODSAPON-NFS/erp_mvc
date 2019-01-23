@@ -1,8 +1,14 @@
 <?php
 require_once('../models/AssetModel.php');
+require_once('../models/AssetAccountGroupModel.php');
+require_once('../models/AssetCategoryModel.php');
+require_once('../models/AssetDepartmentModel.php');
 
 $path = "modules/asset/views/";
 $model = new AssetModel;
+$account_group_model = new AssetAccountGroupModel;
+$category_model = new AssetCategoryModel;
+$department_model = new AssetDepartmentModel;
 $target_dir = "../upload/asset/";
 
 
@@ -17,6 +23,9 @@ if(!isset($_GET['action'])){
     // $asset_position = $position->getAssetPositionBy();
     // $asset_status = $status->getAssetStatusBy();
     // $add_province = $address->getProvinceByID();
+    $account_group = $account_group_model->getAssetAccountGroupByAll();
+    $category = $category_model->getAssetCategoryByAll();
+    $department = $department_model->getAssetDepartmentByAll();
     require_once($path.'insert.inc.php');
 
 }else if ($_GET['action'] == 'update' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){

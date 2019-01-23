@@ -127,7 +127,11 @@
                                 <td>
 								Product name : <?php echo $purchase_order_lists[$i]['product_name']?> <br>
 								Delivery : <?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_min']?> - <?php echo $purchase_order_lists[$i]['purchase_order_list_delivery_max']?> <br>
-								Remark : <?php echo $purchase_order_lists[$i]['purchase_order_list_remark']?>
+								Remark : <?php echo $purchase_order_lists[$i]['purchase_order_list_remark']?> <br>
+                                <br><label>Supplier Confirm</label><br>
+                                Qty : <?php  echo $purchase_order_lists[$i]['purchase_order_list_supplier_qty']?> <br>
+                                Delivery Date : <?php echo $purchase_order_lists[$i]['purchase_order_list_supplier_delivery_min']?> - <?php echo $purchase_order_lists[$i]['purchase_order_list_supplier_delivery_max']?> <br>
+                                Supplier Remark : <?php echo $purchase_order_lists[$i]['purchase_order_list_supplier_remark']?> <br>
 								</td>
                                 
                                 

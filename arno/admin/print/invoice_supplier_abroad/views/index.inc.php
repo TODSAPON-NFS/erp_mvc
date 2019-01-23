@@ -77,10 +77,13 @@ if($_GET['action'] == "pdf"){
 
         require_once($path."view-pdf-credit.inc.php");
 
-    }else{
+    }else if ($_GET['type'] == "receive"){
 
         require_once($path."view-pdf-receive.inc.php");
-
+    }
+    else{
+        $page_max = 1;
+        require_once($path."view-pdf-short.inc.php");
     }
 
     include("../plugins/mpdf/mpdf.php");

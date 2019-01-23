@@ -113,7 +113,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <td width="120px">
                 <img src="../upload/company/'.$company['company_image'].'" width="120px" />
             </td>
-            <td>
+            <td valign="top">
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_en'].'</div>
             </td>
             <td align="right">
@@ -263,7 +263,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <td style="font-size:11px;" align="left" valign="top" >
                            '. $purchase_order_lists[$i]['product_code'].' <br>
                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $purchase_order_lists[$i]['product_name'].' <br>  
-                           '. $purchase_order_lists[$i]['purchase_order_list_remark'].'
+                           '. $purchase_order_lists[$i]['purchase_order_list_remark'].'<br> 
+                           '. $purchase_order_lists[$i]['purchase_order_list_delivery_min'].'
                            </td> 
                         <td align="right" valign="top" >
                             '. number_format($purchase_order_lists[$i]['purchase_order_list_qty'],0).'

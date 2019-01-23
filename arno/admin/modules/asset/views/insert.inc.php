@@ -2,6 +2,7 @@
 
     function check_code(id){
         var code = $(id).val();
+        console.log('code:',code);
         $.post( "controllers/getAssetByCode.php", { 'asset_code': code }, function( data ) {  
             if(data != null){ 
                 alert("This "+code+" is already in the system.");
@@ -9,6 +10,8 @@
                 $("#code_check").val(data.asset_code);
                 
             } else{
+                // alert("This "+code+" is available.");
+                console.log("This "+code+" is available");
                 $("#code_check").val("");
             }
         });
@@ -18,6 +21,7 @@
 
 
         var asset_code = document.getElementById("asset_code").value;
+        var code_check = document.getElementById("code_check").value;
         var asset_name_th = document.getElementById("asset_name_th").value;
         var asset_name_en = document.getElementById("asset_name_en").value;
         var asset_category_id = document.getElementById("asset_category_id").value;
@@ -64,8 +68,8 @@
         
 
         if(code_check != ""){
-            alert("This "+code_check+" is already in the system.");
-            document.getElementById("code_check").focus();
+            alert("This "+asset_code+" is already in the system.");
+            document.getElementById("asset_code").focus();
             return false;
         }else if(asset_code.length == 0){
             alert("Please input asset code");
@@ -80,46 +84,48 @@
             document.getElementById("asset_name_en").focus();
             return false;
         }else if(asset_buy_date.length == 0){
-            alert("Please input asset lastname");
+            alert("Please input asset buy date");
             document.getElementById("asset_buy_date").focus();
             return false;
         }else if(asset_use_date.length == 0){
-            alert("Please input asset assetname");
+            alert("Please input asset use date");
             document.getElementById("asset_use_date").focus();
             return false;
         }else if(asset_scrap_price.length == 0){
-            alert("Please input asset password");
+            alert("Please input asset scrap price");
             document.getElementById("asset_scrap_price").focus();
             return false;
         }else if(asset_expire.length == 0){
-            alert("Please input asset address");
+            alert("Please input asset expire");
             document.getElementById("asset_expire").focus();
             return false;
         }else if(asset_rate.length == 0){
-            alert("Please input asset provice");
+            alert("Please input asset rate");
             document.getElementById("asset_rate").focus();
             return false;
-        }else if(asset_depreciate.length == 0){
-            alert("Please input asset amphur");
-            document.getElementById("asset_depreciate").focus();
-            return false;
-        }else if(asset_district.length == 0){
-            alert("Please input asset district");
-            document.getElementById("asset_district").focus();
-            return false;
-        }else if(asset_position_id.length == 0){
-            alert("Please input asset position");
-            document.getElementById("asset_position_id").focus();
-            return false;
-        }else if(license_id.length == 0){
-            alert("Please input asset license");
-            document.getElementById("license_id").focus();
-            return false;
-        }else if(asset_status_id.length == 0){
-            alert("Please input asset status");
-            document.getElementById("asset_status_id").focus();
-            return false;
-        }else{
+        }
+        // else if(asset_depreciate.length == 0){
+        //     alert("Please input asset amphur");
+        //     document.getElementById("asset_depreciate").focus();
+        //     return false;
+        // }else if(asset_district.length == 0){
+        //     alert("Please input asset district");
+        //     document.getElementById("asset_district").focus();
+        //     return false;
+        // }else if(asset_position_id.length == 0){
+        //     alert("Please input asset position");
+        //     document.getElementById("asset_position_id").focus();
+        //     return false;
+        // }else if(license_id.length == 0){
+        //     alert("Please input asset license");
+        //     document.getElementById("license_id").focus();
+        //     return false;
+        // }else if(asset_status_id.length == 0){
+        //     alert("Please input asset status");
+        //     document.getElementById("asset_status_id").focus();
+        //     return false;
+        // }
+        else{
             // var canvas = document.getElementById("signature");
             // var dataURL = canvas.toDataURL("image/png");
             // document.getElementById('hidden_data').value = dataURL;
@@ -259,7 +265,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ซื้อ</label>
-                                <input type="text" id="asset_buy_date" name="asset_buy_date"  class="form-control calendar" readonly/>
+                                <input type="text" id="asset_buy_date" name="asset_buy_date"  class="form-control calendar" />
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
@@ -267,7 +273,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ใช้</label>
-                                <input type="text" id="asset_use_date" name="asset_use_date"  class="form-control calendar" readonly/>
+                                <input type="text" id="asset_use_date" name="asset_use_date"  class="form-control calendar" />
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
@@ -354,7 +360,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>คำนวณเองถึงวันที่</label>
-                                <input type="text" id="asset_manual_date" name="asset_manual_date"  class="form-control calendar" readonly/>
+                                <input type="text" id="asset_manual_date" name="asset_manual_date"  class="form-control calendar" />
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>                    
@@ -364,17 +370,31 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ขาย</label>
-                                <input type="text" id="asset_sale_date" name="asset_sale_date"  class="form-control calendar" readonly/>
+                                <input type="text" id="asset_sale_date" name="asset_sale_date"  class="form-control calendar" />
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>ค่าเสื่อมที่คำนวณเอง<font color="#F00"><b>*</b></font></label>
+                                <label>ราคาขาย<font color="#F00"><b>*</b></font></label>
                                 <input id="asset_price" name="asset_price" class="form-control">
                                 <p class="help-block">Example : 0.</p>
                             </div>
-                        </div >
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>กำไร/ขาดทุน<font color="#F00"><b>*</b></font></label>
+                                <input id="asset_income" name="asset_income" class="form-control">
+                                <p class="help-block">Example : 0.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>ค่าเสื่อมเบื้องต้น<font color="#F00"><b>*</b></font></label>
+                                <input id="asset_depreciate_initial" name="asset_depreciate_initial" class="form-control">
+                                <p class="help-block">Example : 0.</p>
+                            </div>
+                        </div>
                            
                     </div>
 
@@ -393,3 +413,4 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+

@@ -8,4 +8,5 @@ $asset_model = new AssetModel;
 $asset = $asset_model->getAssetByCode($_POST['asset_code']);
 
 echo json_encode($asset);
+
 ?>

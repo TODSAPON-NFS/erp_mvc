@@ -1,13 +1,12 @@
-
 <script>
 
     function check_code(id){
         var code = $(id).val();
-        $.post( "controllers/getUserByCode.php", { 'user_code': code }, function( data ) {  
+        $.post( "controllers/getAssetByCode.php", { 'asset_code': code }, function( data ) {  
             if(data != null){ 
                 alert("This "+code+" is already in the system.");
-                document.getElementById("user_code").focus();
-                $("#code_check").val(data.user_code);
+                document.getElementById("asset_code").focus();
+                $("#code_check").val(data.asset_code);
                 
             } else{
                 $("#code_check").val("");
@@ -18,105 +17,114 @@
     function check(){
 
 
-        var user_code = document.getElementById("user_code").value;
-        var user_prefix = document.getElementById("user_prefix").value;
-        var user_name = document.getElementById("user_name").value;
-        var user_lastname = document.getElementById("user_lastname").value;
-        var user_mobile = document.getElementById("user_mobile").value;
-        var user_email = document.getElementById("user_email").value;
-        var user_username = document.getElementById("user_username").value;
-        var user_password = document.getElementById("user_password").value;
-        var user_address = document.getElementById("user_address").value;
-        var user_province = document.getElementById("user_province").value;
-        var user_amphur = document.getElementById("user_amphur").value;
-        var user_district = document.getElementById("user_district").value;
-        var user_zipcode = document.getElementById("user_zipcode").value;
-        var user_position_id = document.getElementById("user_position_id").value;
-        var license_id = document.getElementById("license_id").value;
-        var user_status_id = document.getElementById("user_status_id").value;
-        var code_check = document.getElementById("code_check").value;
-        var user_id = document.getElementById("user_id").value;
+        var asset_code = document.getElementById("asset_code").value;
+        var asset_name_th = document.getElementById("asset_name_th").value;
+        var asset_name_en = document.getElementById("asset_name_en").value;
+        var asset_category_id = document.getElementById("asset_category_id").value;
+        var asset_registration_no = document.getElementById("asset_registration_no").value;
+        var asset_department_id = document.getElementById("asset_department_id").value;
+        var asset_depreciate = document.getElementById("asset_depreciate").value;
+        var asset_buy_date = document.getElementById("asset_buy_date").value;
+        var asset_use_date = document.getElementById("asset_use_date").value;
+        var asset_cost_price = document.getElementById("asset_cost_price").value;
+        var asset_scrap_price = document.getElementById("asset_scrap_price").value;
+        var asset_expire = document.getElementById("asset_expire").value;
+        var asset_rate = document.getElementById("asset_rate").value;
+        var asset_depreciate_type = document.getElementById("asset_depreciate_type").value;
+        var asset_depreciate_transfer = document.getElementById("asset_depreciate_transfer").value;
+        var asset_depreciate_manual = document.getElementById("asset_depreciate_manual").value;
+        var asset_depreciate_initial = document.getElementById("asset_depreciate_initial").value;
+        var asset_manual_date = document.getElementById("asset_manual_date").value;
+        var asset_sale_date = document.getElementById("asset_sale_date").value;
+        var asset_price = document.getElementById("asset_price").value;
+        var asset_income = document.getElementById("asset_income").value;
+        
+        asset_code = $.trim(asset_code);
+        asset_name_th = $.trim(asset_name_th);
+        asset_name_en = $.trim(asset_name_en);
+        asset_category_id = $.trim(asset_category_id);
+        asset_registration_no = $.trim(asset_registration_no);
+        asset_department_id = $.trim(asset_department_id);
+        asset_depreciate = $.trim(asset_depreciate);
+        asset_buy_date = $.trim(asset_buy_date);
+        asset_use_date = $.trim(asset_use_date);
+        asset_cost_price = $.trim(asset_cost_price);
+        asset_scrap_price = $.trim(asset_scrap_price);
+        asset_expire = $.trim(asset_expire);
+        asset_rate = $.trim(asset_rate);
+        asset_depreciate_type = $.trim(asset_depreciate_type);
+        asset_depreciate_transfer = $.trim(asset_depreciate_transfer);
+        asset_depreciate_manual = $.trim(asset_depreciate_manual);
+        asset_depreciate_initial = $.trim(asset_depreciate_initial);
+        asset_manual_date = $.trim(asset_manual_date);
+        asset_sale_date = $.trim(asset_sale_date);
+        asset_price = $.trim(asset_price);
+        asset_income = $.trim(asset_income);
 
         
-        user_code = $.trim(user_code);
-        user_prefix = $.trim(user_prefix);
-        user_name = $.trim(user_name);
-        user_lastname = $.trim(user_lastname);
-        user_mobile = $.trim(user_mobile);
-        user_email = $.trim(user_email);
-        user_username = $.trim(user_username);
-        user_password = $.trim(user_password);
-        user_address = $.trim(user_address);
-        user_province = $.trim(user_province);
-        user_amphur = $.trim(user_amphur);
-        user_district = $.trim(user_district);
-        user_zipcode = $.trim(user_zipcode);
-        user_position_id = $.trim(user_position_id);
-        license_id = $.trim(license_id);
-        user_status_id = $.trim(user_status_id);
 
-        
-
-        if(code_check != "" && code_check != user_id){
+        if(code_check != ""){
             alert("This "+code_check+" is already in the system.");
-            document.getElementById("user_code").focus();
+            document.getElementById("code_check").focus();
             return false;
-        }else if(user_code.length == 0){
-            alert("Please input employee code");
-            document.getElementById("user_code").focus();
+        }else if(asset_code.length == 0){
+            alert("Please input asset code");
+            document.getElementById("asset_code").focus();
             return false;
-        }else if(user_prefix.length == 0){
-            alert("Please input employee prefix");
-            document.getElementById("user_prefix").focus();
+        }else if(asset_name_th.length == 0){
+            alert("Please input asset name th");
+            document.getElementById("asset_name_th").focus();
             return false;
-        }else if(user_name.length == 0){
-            alert("Please input employee name");
-            document.getElementById("user_name").focus();
+        }else if(asset_name_en.length == 0){
+            alert("Please input asset name en ");
+            document.getElementById("asset_name_en").focus();
             return false;
-        }else if(user_lastname.length == 0){
-            alert("Please input employee lastname");
-            document.getElementById("user_lastname").focus();
+        }else if(asset_buy_date.length == 0){
+            alert("Please input asset buy date");
+            document.getElementById("asset_buy_date").focus();
             return false;
-        }else if(user_username.length == 0){
-            alert("Please input employee username");
-            document.getElementById("user_username").focus();
+        }else if(asset_use_date.length == 0){
+            alert("Please input asset use date");
+            document.getElementById("asset_use_date").focus();
             return false;
-        }else if(user_password.length == 0){
-            alert("Please input employee password");
-            document.getElementById("user_password").focus();
+        }else if(asset_scrap_price.length == 0){
+            alert("Please input asset scrap price");
+            document.getElementById("asset_scrap_price").focus();
             return false;
-        }else if(user_address.length == 0){
-            alert("Please input employee address");
-            document.getElementById("user_address").focus();
+        }else if(asset_expire.length == 0){
+            alert("Please input asset expire");
+            document.getElementById("asset_expire").focus();
             return false;
-        }else if(user_province.length == 0){
-            alert("Please input employee provice");
-            document.getElementById("user_province").focus();
+        }else if(asset_rate.length == 0){
+            alert("Please input asset rate");
+            document.getElementById("asset_rate").focus();
             return false;
-        }else if(user_amphur.length == 0){
-            alert("Please input employee amphur");
-            document.getElementById("user_amphur").focus();
-            return false;
-        }else if(user_district.length == 0){
-            alert("Please input employee district");
-            document.getElementById("user_district").focus();
-            return false;
-        }else if(user_position_id.length == 0){
-            alert("Please input employee position");
-            document.getElementById("user_position_id").focus();
-            return false;
-        }else if(license_id.length == 0){
-            alert("Please input employee license");
-            document.getElementById("license_id").focus();
-            return false;
-        }else if(user_status_id.length == 0){
-            alert("Please input employee status");
-            document.getElementById("user_status_id").focus();
-            return false;
-        }else{
-            var canvas = document.getElementById("signature");
-            var dataURL = canvas.toDataURL("image/png");
-            document.getElementById('hidden_data').value = dataURL;
+        }
+        // else if(asset_depreciate.length == 0){
+        //     alert("Please input asset amphur");
+        //     document.getElementById("asset_depreciate").focus();
+        //     return false;
+        // }else if(asset_district.length == 0){
+        //     alert("Please input asset district");
+        //     document.getElementById("asset_district").focus();
+        //     return false;
+        // }else if(asset_position_id.length == 0){
+        //     alert("Please input asset position");
+        //     document.getElementById("asset_position_id").focus();
+        //     return false;
+        // }else if(license_id.length == 0){
+        //     alert("Please input asset license");
+        //     document.getElementById("license_id").focus();
+        //     return false;
+        // }else if(asset_status_id.length == 0){
+        //     alert("Please input asset status");
+        //     document.getElementById("asset_status_id").focus();
+        //     return false;
+        // }
+        else{
+            // var canvas = document.getElementById("signature");
+            // var dataURL = canvas.toDataURL("image/png");
+            // document.getElementById('hidden_data').value = dataURL;
             return true;
         }
 
@@ -124,43 +132,15 @@
 
     }
 
-    function getAmphur(){
-        
-        var user_province = document.getElementById("user_province").value;
-        $.post( "controllers/getAmphur.php", { 'province': user_province }, function( data ) {
-            document.getElementById("user_amphur").innerHTML = data;
-            $("#user_amphur").selectpicker('refresh');
-        });
-
-        
-        
-    }
-
-    function getDistrict(){
-        var user_amphur = document.getElementById("user_amphur").value;
-        $.post( "controllers/getDistrict.php", { 'amphur': user_amphur }, function( data ) {
-            document.getElementById("user_district").innerHTML = data;
-            $("#user_district").selectpicker('refresh');
-        });
-
-        $.post( "controllers/getZipcode.php", { 'amphur': user_amphur }, function( data ) {
-            document.getElementById("user_zipcode").value = data;
-        });
-    }
-
-
-
-    
-
 </script>
 
 <div class="row">
     <div class="col-lg-6">
-        <h1 class="page-header">Employee Management</h1>
+        <h1 class="page-header">Asset Management</h1>
     </div>
     <div class="col-lg-6" align="right">
-        <a href="?app=employee" class="btn btn-primary active btn-menu">พนักงาน / Employee</a>
-        <a href="?app=employee_license" class="btn btn-primary  btn-menu">สิทธิ์การใช้งาน / License</a>
+        <a href="?app=asset" class="btn btn-primary active btn-menu">ทรัพย์สิน / Asset</a>
+        <!-- <a href="?app=asset_license" class="btn btn-primary  btn-menu">สิทธิ์การใช้งาน / License</a> -->
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -169,17 +149,16 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                แก้ไขพนักงาน / Edit employee 
+            เพิ่มทรัพย์สิน / Add asset 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=employee&action=edit" >
-                    <input type="hidden"  id="user_id" name="user_id" value="<?php echo $user_id ?>" />
+                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=asset&action=add" >
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>รหัสพนักงาน / Employee Code <font color="#F00"><b>*</b></font></label>
-                                <input id="user_code" name="user_code" class="form-control" value="<?php echo $user['user_code']?>" onchange="check_code(this)" />
+                                <label>รหัสทรัพย์สิน / Asset Code <font color="#F00"><b>*</b></font></label>
+                                <input id="asset_code" name="asset_code" class="form-control" value="<?php echo $asset['asset_code']?>" onchange="check_code(this)" />
                                 <input id="code_check" type="hidden" value="" />
                                 <p class="help-block">Example : 0000001.</p>
                             </div>
@@ -187,33 +166,33 @@
                         <div class="col-lg-3">
                             
                                 <div class="form-group">
-                                    <label>คำนำหน้าชื่อ / Prename <font color="#F00"><b>*</b></font></label>
-                                    <select id="user_prefix" name="user_prefix" class="form-control">
-                                        <option value="">Select</option>
-                                        <option <?php if($user['user_prefix'] == 'นาย'){?> selected <?php } ?> >นาย</option>
-                                        <option <?php if($user['user_prefix'] == 'นาง'){?> selected <?php } ?> >นาง</option>
-                                        <option <?php if($user['user_prefix'] == 'นางสาว'){?> selected <?php } ?> >นางสาว</option>
-                                    </select>
-                                    <p class="help-block">Example : นาย.</p>
+                                    <label>ชื่อทรัพย์สิน TH/ Name TH<font color="#F00"><b>*</b></font></label>
+                                    <input id="asset_name_th" name="asset_name_th" value="<?php echo $asset['asset_name_th']?>" class="form-control">
+                                    <p class="help-block">Example : คอมพิวเตอร์.</p>
                                 </div>
                             
                         </div>
                         <div class="col-lg-3">
                             
                                 <div class="form-group">
-                                    <label>ชื่อ / Name <font color="#F00"><b>*</b></font></label>
-                                    <input id="user_name" name="user_name" class="form-control" value="<?php echo $user['user_name']?>">
-                                    <p class="help-block">Example : วินัย.</p>
+                                    <label>ชื่อทรัพย์สิน EN/  Name EN <font color="#F00"><b>*</b></font></label>
+                                    <input id="asset_name_en" name="asset_name_en" value="<?php echo $asset['asset_name_en']?>" class="form-control">
+                                    <p class="help-block">Example : Computer.</p>
                                 </div>
-                            
                         </div>
                         <div class="col-lg-3">
                             
-                                <div class="form-group">
-                                    <label>นามสกุล / Lastname <font color="#F00"><b>*</b></font></label>
-                                    <input id="user_lastname" name="user_lastname" class="form-control" value="<?php echo $user['user_lastname']?>">
-                                    <p class="help-block">Example : ชาญชัย.</p>
-                                </div>
+                            <div class="form-group">
+                                <label>หมวดหมู่ทรัพย์สิน <font color="#F00"><b>*</b></font></label>
+                                <select id="asset_category_id" name="asset_category_id" class="form-control">
+                                    <option value="">Select</option>
+                                    <option >1</option>
+                                    <option >2</option>
+                                    <option >3</option>
+                                </select>
+                                <p class="help-block">Example : คอมพิวเตอร์และอุปกรณ์สำนักงาน.</p>
+                            </div>
+                        
                         </div>
                         <!-- /.col-lg-6 (nested) -->
                     </div>
@@ -221,190 +200,196 @@
 
                     <div class="row">
                         <div class="col-lg-3">
+                            
                             <div class="form-group">
-                                <label>อีเมล์ / Email </label>
-                                <input id="user_email" name="user_email" type="email" class="form-control" value="<?php echo $user['user_email']?>">
-                                <p class="help-block">Example : admin@arno.co.th.</p>
+                                <label>กลุ่มบัญชีทรัพย์สิน <font color="#F00"><b>*</b></font></label>
+                                <select id="asset_account_group_id" name="asset_account_group_id" class="form-control">
+                                    <option value="">Select</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                                <p class="help-block">Example : อุปกรณ์สำนักงาน.</p>
                             </div>
+                        
                         </div>
                         <div class="col-lg-3">
                             
                                 <div class="form-group">
-                                    <label>โทรศัพท์ / Mobile </label>
-                                    <input id="user_mobile" name="user_mobile" type="text" class="form-control" value="<?php echo $user['user_mobile']?>">
+                                    <label>เลขทะเบียน  </label>
+                                    <input id="asset_registration_no" name="asset_registration_no" type="text" class="form-control">
                                     <p class="help-block">Example : 0610243003.</p>
                                 </div>
                             
                         </div>
                         <div class="col-lg-3">
                             
+                            <div class="form-group">
+                                <label>แผนก <font color="#F00"><b>*</b></font></label>
+                                <select id="asset_department_id" name="asset_department_id" class="form-control">
+                                    <option value="">Select</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                                <p class="help-block">Example : บัญชี.</p>
+                            </div>
+                        
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                    </div>
+                    <!-- /.row (nested) -->
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            
+                            <div class="form-group">
+                                <label>ตัวเลือกการคิดค่าเสื่อมทรัพย์สิน <font color="#F00"><b>*</b></font></label>
+                                <select id="asset_depreciate" name="asset_depreciate" class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="0">ไม่คิดค่าเสื่อม</option>
+                                    <option value="1">คิดค่าเสื่อม</option>
+                                </select>
+                                <p class="help-block">Example : คิดค่าเสื่อม.</p>
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <!-- /.row (nested) -->
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>วันที่ซื้อ</label>
+                                <input type="text" id="asset_buy_date" name="asset_buy_date"  class="form-control calendar" readonly/>
+                                <p class="help-block">Example : 31-01-2019</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>วันที่ใช้</label>
+                                <input type="text" id="asset_use_date" name="asset_use_date"  class="form-control calendar" readonly/>
+                                <p class="help-block">Example : 31-01-2019</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            
                                 <div class="form-group">
-                                    <label>ยูสเซอร์ / Username <font color="#F00"><b>*</b></font></label>
-                                    <input id="user_username" name="user_username" class="form-control" value="<?php echo $user['user_username']?>">
-                                    <p class="help-block">Example : thana.</p>
+                                    <label>ราคาทุน<font color="#F00"><b>*</b></font></label>
+                                    <input id="asset_cost_price" name="asset_cost_price" class="form-control">
+                                    <p class="help-block">Example : 25000.</p>
+                                </div>
+                            
+                        </div>
+
+                        <div class="col-lg-3">
+                            
+                                <div class="form-group">
+                                    <label>ราคาซาก<font color="#F00"><b>*</b></font></label>
+                                    <input id="asset_scrap_price" name="asset_scrap_price" class="form-control">
+                                    <p class="help-block">Example : 25000.</p>
+                                </div>
+                            
+                        </div>
+                        
+                        <!-- /.col-lg-6 (nested) -->
+                    </div>
+                    <!-- /.row (nested) -->
+
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                                
+                                <div class="form-group">
+                                    <label>อายุการใช้<font color="#F00"><b>*</b></font></label>
+                                    <input id="asset_expire" name="asset_expire" class="form-control">
+                                    <p class="help-block">Example : 25000.</p>
                                 </div>
                             
                         </div>
                         <div class="col-lg-3">
+                            
                                 <div class="form-group">
-                                    <label>รหัสผ่าน / Password <font color="#F00"><b>*</b></font></label>
-                                    <input id="user_password" name="user_password" type="password" class="form-control" value="<?php echo $user['user_password']?>">
-                                    <p class="help-block">Example : thanaadmin.</p>
+                                    <label>อัตรา%<font color="#F00"><b>*</b></font></label>
+                                    <input id="asset_rate" name="asset_rate" class="form-control">
+                                    <p class="help-block">Example : 20.</p>
                                 </div>
-                        </div>
-                        <!-- /.col-lg-6 (nested) -->
+                            
+                        </div>                        
                     </div>
                     <!-- /.row (nested) -->
-
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label>ที่อยู่ / Address <font color="#F00"><b>*</b></font> </label>
-                                <input type="text" id="user_address" name="user_address" class="form-control" value="<?php echo $user['user_address']?>">
-                                <p class="help-block">Example : 271/55.</p>
-                            </div>
-                        </div>
-                        
-                        <!-- /.col-lg-6 (nested) -->
-                    </div>
-                    <!-- /.row (nested) -->
 
-                    <div class="row">
                         <div class="col-lg-3">
+                            
                             <div class="form-group">
-                                <label>จังหวัด / Province <font color="#F00"><b>*</b></font> </label>
-                                <select id="user_province" name="user_province" class="form-control" onchange="getAmphur()">
+                                <label>การคำนวณค่าเสื่อมทรัพย์สิน <font color="#F00"><b>*</b></font></label>
+                                <select id="asset_depreciate_type" name="asset_depreciate_type" class="form-control">
                                     <option value="">Select</option>
-                                    <?php 
-                                    for($i =  0 ; $i < count($add_province) ; $i++){
-                                    ?>
-                                    <option <?php if($user['user_province'] == $add_province[$i]['PROVINCE_NAME'] ){?> selected <?php } ?> value="<?php echo $add_province[$i]['PROVINCE_NAME'] ?>"><?php echo $add_province[$i]['PROVINCE_NAME'] ?></option>
-                                    <?
-                                    }
-                                    ?>
+                                    <option value="0">รายเดือน</option>
+                                    <option value="1">รายปี</option>
                                 </select>
-                                <p class="help-block">Example : นครราชสีมา.</p>
+                                <p class="help-block">Example :รายเดือน/รายปี.</p>
                             </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>อำเภอ / Amphur <font color="#F00"><b>*</b></font> </label>
-                                <select id="user_amphur" name="user_amphur"  class="form-control" onchange="getDistrict()">
-                                <option value="">Select</option>
-                                <?php 
-                                    for($i =  0 ; $i < count($add_amphur) ; $i++){
-                                    ?>
-                                    <option <?php if($user['user_amphur'] == $add_amphur[$i]['AMPHUR_NAME'] ){?> selected <?php } ?> value="<?php echo $add_amphur[$i]['AMPHUR_NAME'] ?>"><?php echo $add_amphur[$i]['AMPHUR_NAME'] ?></option>
-                                    <?
-                                    }
-                                    ?>
-                                </select>
-                                <p class="help-block">Example : เมือง.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>ตำบล / Distict <font color="#F00"><b>*</b></font> </label>
-                                
-                                <select id="user_district" name="user_district" class="form-control">
-                                <option value="">Select</option>
-                                <?php 
-                                    for($i =  0 ; $i < count($add_district) ; $i++){
-                                    ?>
-                                    <option <?php if($user['user_district'] == $add_district[$i]['DISTRICT_NAME'] ){?> selected <?php } ?> value="<?php echo $add_district[$i]['DISTRICT_NAME'] ?>"><?php echo $add_district[$i]['DISTRICT_NAME'] ?></option>
-                                    <?
-                                    }
-                                    ?>
-                                </select>
-                                <p class="help-block">Example : ในเมือง.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>เลขไปรษณีย์ / Zipcode <font color="#F00"><b>*</b></font> </label>
-                                <input id="user_zipcode" name="user_zipcode" type="text" readonly class="form-control" value="<?php echo $user['user_zipcode']?>">
-                                <p class="help-block">Example : 30000.</p>
-                            </div>
-                        </div>
                         
-                        <!-- /.col-lg-6 (nested) -->
+                        </div>     
+                        <div class="col-lg-3">
+                            
+                                <div class="form-group">
+                                    <label>ค่าเสื่อมสะสมยกมา<font color="#F00"><b>*</b></font></label>
+                                    <input id="asset_depreciate_transfer" name="asset_depreciate_transfer" class="form-control">
+                                    <p class="help-block">Example : 0.</p>
+                                </div>
+                            
+                        </div> 
+                        <div class="col-lg-3">
+                            
+                            <div class="form-group">
+                                <label>ค่าเสื่อมที่คำนวณเอง<font color="#F00"><b>*</b></font></label>
+                                <input id="asset_depreciate_manual" name="asset_depreciate_manual" class="form-control">
+                                <p class="help-block">Example : 0.</p>
+                            </div>
+                            
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>คำนวณเองถึงวันที่</label>
+                                <input type="text" id="asset_manual_date" name="asset_manual_date"  class="form-control calendar" readonly/>
+                                <p class="help-block">Example : 31-01-2019</p>
+                            </div>
+                        </div>                    
                     </div>
                     <!-- /.row (nested) -->
-
-
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>ตำแหน่ง / Position <font color="#F00"><b>*</b></font> </label>
-                                <select class="form-control" id="user_position_id" name="user_position_id">
-                                <option value="">Select</option>
-                                    <?php 
-                                    for($i =  0 ; $i < count($user_position) ; $i++){
-                                    ?>
-                                    <option <?php if($user['user_position_id'] == $user_position[$i]['user_position_id'] ){?> selected <?php } ?> value="<?php echo $user_position[$i]['user_position_id'] ?>"><?php echo $user_position[$i]['user_position_name'] ?></option>
-                                    <?
-                                    }
-                                    ?>
-                                </select>
-                                <p class="help-block">Example : ผู้ดูแลระบบ.</p>
+                                <label>วันที่ขาย</label>
+                                <input type="text" id="asset_sale_date" name="asset_sale_date"  class="form-control calendar" readonly/>
+                                <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
-
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>สิทธิ์การใช้งาน / License <font color="#F00"><b>*</b></font> </label>
-                                <select class="form-control" id="license_id" name="license_id">
-                                <option value="">Select</option>
-                                    <?php 
-                                    for($i =  0 ; $i < count($user_license) ; $i++){
-                                    ?>
-                                    <option <?php if($user['license_id'] == $user_license[$i]['license_id'] ){?> selected <?php } ?> value="<?php echo $user_license[$i]['license_id'] ?>"><?php echo $user_license[$i]['license_name'] ?></option>
-                                    <?
-                                    }
-                                    ?>
-                                </select>
-                                <p class="help-block">Example : สิทธิ์การใช้งานที่ 1 .</p>
+                                <label>กำไร/ขาดทุน<font color="#F00"><b>*</b></font></label>
+                                <input id="asset_price" name="asset_price" class="form-control">
+                                <p class="help-block">Example : 0.</p>
                             </div>
                         </div>
-
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>สถานะ / Status <font color="#F00"><b>*</b></font> </label>
-                                <select class="form-control" id="user_status_id" name="user_status_id">
-                                <option value="">Select</option>
-                                    <?php 
-                                    for($i =  0 ; $i < count($user_status) ; $i++){
-                                    ?>
-                                    <option <?php if($user['user_status_id'] == $user_status[$i]['user_status_id'] ){?> selected <?php } ?> value="<?php echo $user_status[$i]['user_status_id'] ?>"><?php echo $user_status[$i]['user_status_name'] ?></option>
-                                    <?
-                                    }
-                                    ?>
-                                </select>
-                                <p class="help-block">Example : ทำงาน.</p>
+                                <label>ค่าเสื่อมเบื้องต้น<font color="#F00"><b>*</b></font></label>
+                                <input id="asset_depreciate_initial" name="asset_depreciate_initial" class="form-control">
+                                <p class="help-block">Example : 0.</p>
                             </div>
                         </div>
-
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label>ลายเซ็น / Signature <font color="#F00"><b>*</b></font> </label>
-                                <div align="center">
-                                    <input name="hidden_data" id='hidden_data' type="hidden"/>
-                                    <canvas id="signature" width="280px" height="280px" style="border: 1px solid #ddd;"></canvas>
-                                    <br>
-                                    <a class="btn btn-default" id="clear-signature" >Clear</a>
-                                </div>
-                                <p class="help-block">Example : ทำงาน.</p>
-                            </div>
-                        </div>
-                        <!-- /.col-lg-6 (nested) -->
+                           
                     </div>
-                    <!-- /.row (nested) -->
+
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
-                            <a href="?app=employee" class="btn btn-default">Back</a>
+                            <a href="?app=asset" class="btn btn-default">Back</a>
                             <button type="reset" class="btn btn-primary">Reset</button>
                             <button  type="button" onclick="check_login('form_target');" class="btn btn-success">Save</button>
                         </div>

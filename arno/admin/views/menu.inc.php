@@ -626,8 +626,32 @@
                                 <li>
                                     <a href="?app=paper_lock" <?PHP if($_GET['app'] == "paper_lock"){?> class="active" <?PHP } ?> ><i class="fa fa-lock" aria-hidden="true"></i> ล็อกงวดบัญชี </a>
                                 </li>
-                                <li>
-                                    <a href="?app=asset" <?PHP if($_GET['app'] == "asset"){?> class="active" <?PHP } ?> ><i class="fa fa-gears" aria-hidden="true"></i> รายการสินทรัพย์ </a>
+                                <li
+                                <?PHP 
+                                    if(
+                                        substr($_GET["app"],0,5) =='asset'
+                                    ){
+                                        echo ' class="active" ';
+                                    }
+                                ?> 
+                                >
+                                    <a href="#" >
+                                        <i class="fa fa-gears" aria-hidden="true"></i> รายการทรัพย์สิน <span class="glyphicon arrow"></span>
+                                    </a>
+                                    <ul class="collapse" >
+                                        <li>
+                                            <a href="?app=asset" <?PHP if($_GET['app'] == "asset"){?> class="active" <?PHP } ?> ><i class="fa  fa-list" aria-hidden="true"></i> รายการทรัพย์สิน</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=asset_category" <?PHP if($_GET['app'] == "asset_category"){?> class="active" <?PHP } ?> ><i class="fa  fa-gear" aria-hidden="true"></i> หมวดหมู่ทรัพย์</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=asset_account_group" <?PHP if($_GET['app'] == "asset_account_group"){?> class="active" <?PHP } ?> ><i class="fa  fa-th-list" aria-hidden="true"></i> กลุ่มบัญชีทรัพย์</a>
+                                        </li> 
+                                        <li>
+                                            <a href="?app=asset_department" <?PHP if($_GET['app'] == "asset_department"){?> class="active" <?PHP } ?>  ><i class="fa  fa-gears" aria-hidden="true"></i> แผนก</a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </li>

@@ -257,7 +257,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                         <td style="font-size:11px;" align="left" valign="top" >
                            '. $purchase_order_lists[$i]['product_code'].' <br>
                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $purchase_order_lists[$i]['product_name'].' <br>  
-                           '. $purchase_order_lists[$i]['purchase_order_list_remark'].'
+                           '. $purchase_order_lists[$i]['purchase_order_list_remark'].'<br>
+                           '. $purchase_order_lists[$i]['purchase_order_list_delivery_min'].'
                         </td> 
                         <td align="right" valign="top" width="70px">
                             '. number_format($purchase_order_lists[$i]['purchase_order_list_qty'],0).'

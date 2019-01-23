@@ -6,7 +6,7 @@ class AssetModel extends BaseModel{
     function __construct(){
        
         if(!static::$db){
-            static::$db = mysqli_connect($this->host, $this->assetname, $this->password, $this->db_name);        
+            static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);        
         }
         mysqli_set_charset(static::$db,"utf8");
     }
@@ -127,6 +127,7 @@ class AssetModel extends BaseModel{
         asset_sale_date = '".static::$db->real_escape_string($data['asset_sale_date'])."' 
         asset_price = '".static::$db->real_escape_string($data['asset_price'])."' 
         asset_income = '".static::$db->real_escape_string($data['asset_income'])."' 
+        asset_remark = '".static::$db->real_escape_string($data['asset_remark'])."' 
         WHERE asset_id = '".static::$db->real_escape_string($id)."'
         ";
 
@@ -242,7 +243,8 @@ class AssetModel extends BaseModel{
             asset_manual_date,
             asset_sale_date,
             asset_price,
-            asset_income
+            asset_income,
+            asset_remark
             )  VALUES ('". 
             $data['asset_code']."','".
             $data['asset_name_th']."','".
@@ -264,7 +266,8 @@ class AssetModel extends BaseModel{
             $data['asset_manual_date']."','".
             $data['asset_sale_date']."','".
             $data['asset_price']."','".
-            $data['asset_income']."'); 
+            $data['asset_income']."','".
+            $data['asset_remark']."'); 
         ";
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {

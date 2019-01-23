@@ -132,6 +132,12 @@
     /* ----------------------------------- ระบบบัญชี ---------------------------------------------- */
     else if($_GET['app'] == "asset"){
         require_once("modules/asset/views/index.inc.php");
+    }else if($_GET['app'] == "asset_category"){
+        require_once("modules/asset_category/views/index.inc.php");
+    }else if($_GET['app'] == "asset_account_group"){
+        require_once("modules/asset_account_group/views/index.inc.php");
+    }else if($_GET['app'] == "asset_department"){
+        require_once("modules/asset_department/views/index.inc.php");
     }else if($_GET['app'] == "credit_note"){
         require_once("modules/credit_note/views/index.inc.php");
     }else if($_GET['app'] == "debit_note"){

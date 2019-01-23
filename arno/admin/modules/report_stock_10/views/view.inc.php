@@ -12,10 +12,10 @@
     function print(type){  
         var date_end = $("#date_end").val(); 
         var stock_group_id = $("#stock_group_id").val();  
-        var product_start = encodeURIComponent($("#product_start").val()); 
+        var keyword = encodeURIComponent($("#keyword").val()); 
         var product_end = encodeURIComponent($("#product_end").val());  
         
-        window.open("print.php?app=report_stock_02&action="+type+"&date_end="+date_end+"&stock_group_id="+stock_group_id+"&product_start="+product_start+"&product_end="+product_end+ "&status_qty="+status_qty,'_blank');
+        window.open("print.php?app=report_stock_10&action="+type+"&stock_group_id="+stock_group_id+"&keyword="+keyword,'_blank');
     }
 </script>
 

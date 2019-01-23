@@ -115,7 +115,6 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             </td>
             <td>
                 <div style="font-size:18px;line-height:20px;">'.$company['company_name_en'].'</div>
-                <div style="font-size:18px;line-height:20px;">'.$company['company_name_th'].'</div>
             </td>
             <td align="right">
                 <div  style="font-size:22px;line-height:22px;padding:16px;"><b> Purchase Order</b></div>

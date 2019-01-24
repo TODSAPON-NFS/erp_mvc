@@ -93,8 +93,8 @@
                             <th width="150">วันที่ </th>
                             <th>ใบรับสินค้า </th> 
                             <th>ใบกำกับภาษี </th> <?PHP if($supplier_id != '' && $supplier['supplier_domestic'] == "ภายนอกประเทศ"){ ?>
-                            <th>จำนวนเงินรวม <br> (<?PHP echo $supplier['currency_code']; ?>) </th> 
-                            <th>จำนวนเงินรวม <br> (<?PHP echo $supplier['currency_code']; ?>) </th> 
+                            <th>อัตราการเเลกเปลี่ยน <br>(บาท)  </th> 
+                            <th>จำนวนเงินรวม <br>(<?PHP echo $supplier['currency_code']; ?>)  </th> 
                 <?PHP }?>   <th>จำนวนเงินรวม <br> (บาท) </th> 
                             <th>ยอดจ่ายจริง <br> (บาท) </th>  
                             <th>ยอดหนี้คงเหลือ <br> (บาท) </th>  
@@ -130,15 +130,18 @@
                             
                             $invoice_supplier_net_price_all +=  $creditor_reports[$i]['invoice_supplier_net_price']; 
                             $finance_credit_list_paid_all +=  $creditor_reports[$i]['finance_credit_list_paid'];  
-                            $invoice_supplier_balance_all +=  $creditor_reports[$i]['invoice_supplier_balance'];  
+                            $invoice_supplier_balance_all +=  $creditor_reports[$i]['invoice_supplier_balance'];
+                            $exchange_balance_EUR = $creditor_reports[$i]['invoice_supplier_balance']/$creditor_reports[$i]['exchange_rate_baht_value'];
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $index; ?></td>
                             <td><?php echo $creditor_reports[$i]['invoice_supplier_date']; ?></td> 
                             <td><?php echo $creditor_reports[$i]['invoice_supplier_code_gen']; ?></td> 
                             <td><?php echo $creditor_reports[$i]['invoice_supplier_code']; ?></td> 
-                            <?PHP if($supplier_id != ''){ ?>
-                            <td></td>
+
+                            <?PHP if($supplier_id != '' && $supplier['supplier_domestic'] == "ภายนอกประเทศ"){ ?>
+                            <td align="right"><?php echo number_format($creditor_reports[$i]['exchange_rate_baht_value'],5); ?></td>
+                            <td align="right"><?php echo number_format( $exchange_balance_EUR,2); ?></td>
                             <?PHP }?> 
                             <td  align="right" >
                                 <?php echo number_format($creditor_reports[$i]['invoice_supplier_net_price'],2); ?>
@@ -153,10 +156,15 @@
                         <?PHP
                             if($creditor_reports[$i]['supplier_code'] != $creditor_reports[$i+1]['supplier_code']){ 
                         ?>
+
                         <tr class="">
                             <td colspan="4" align="center" >
                                <b><font color="black"> ยอดรวมของ <?php echo $creditor_reports[$i]['invoice_supplier_name']; ?> จำนวน <?PHP echo number_format($index,0); ?> ใบ</font> </b>
                             </td> 
+                            <?PHP if($supplier_id != '' && $supplier['supplier_domestic'] == "ภายนอกประเทศ"){ ?>
+                            <td align="right"></td>
+                            <td align="right"></td>
+                            <?PHP }?>
                             <td  align="right" ><b> </b></td> 
                             <td  align="right" ><b> </b></td> 
                             <td  align="right" ><b><?php echo number_format($invoice_supplier_balance,2); ?></b></td>  
@@ -173,6 +181,10 @@
                     <tfoot>
                         <tr>
                             <td colspan="4" align="center"><b>รวมทั้งหมด</b></td>
+                            <?PHP if($supplier_id != '' && $supplier['supplier_domestic'] == "ภายนอกประเทศ"){ ?>
+                            <td align="right"></td>
+                            <td align="right"></td>
+                            <?PHP }?>
                             <td  align="right" ><b><?php echo number_format($invoice_supplier_net_price_all,2); ?></b></td> 
                             <td  align="right" ><b><?php echo number_format($finance_credit_list_paid_all,2); ?></b></td> 
                             <td  align="right" ><b><?php echo number_format($invoice_supplier_balance_all,2); ?></b></td>  

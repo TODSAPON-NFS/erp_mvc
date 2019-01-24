@@ -6,6 +6,7 @@ function calculate(all_duty){
     var cost_price_ex_total =  document.getElementsByName("cost_price_ex_total[]"); 
     
     var invoice_supplier_list_id = document.getElementsByName("invoice_supplier_list_id[]");
+    var invoice_supplier_list_qty = document.getElementsByName("invoice_supplier_list_qty[]");
     var invoice_supplier_list_duty_percent = document.getElementsByName("invoice_supplier_list_duty_percent[]");
     var invoice_supplier_list_duty = document.getElementsByName("invoice_supplier_list_duty[]");
     var invoice_supplier_list_import_duty = document.getElementsByName("invoice_supplier_list_import_duty[]");
@@ -13,6 +14,8 @@ function calculate(all_duty){
     var total = 0.0; 
   
     for(var i = 0 ; i < (invoice_supplier_list_id.length); i++){
+        var qty = parseFloat(invoice_supplier_list_qty[i].value);
+        console.log('Qty : ',qty);
         var duty = 0.0;
         var invoice_supplier_list_fix_type =  $("input[name='invoice_supplier_list_fix_type["+invoice_supplier_list_id[i].value+"]']:checked");
         var ex_total = parseFloat(cost_price_ex_total[i].value.replace(',','')); 
@@ -20,10 +23,12 @@ function calculate(all_duty){
         if(invoice_supplier_list_fix_type[0].value == 'percent-fix'){
             duty = (parseFloat(invoice_supplier_list_duty_percent[i].value.replace(',','')) / 100 ) * ex_total; 
             invoice_supplier_list_duty[i].value = duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-            invoice_supplier_list_import_duty[i].value = duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
+            invoice_supplier_list_import_duty[i].value = (duty / qty).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
         }else if(invoice_supplier_list_fix_type[0].value == 'price-fix'){
             duty = parseFloat(invoice_supplier_list_duty[i].value.replace(',',''));  
-            invoice_supplier_list_import_duty[i].value = duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
+            invoice_supplier_list_import_duty[i].value = (duty /  qty).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
             var duty_percent = duty / ex_total * 100;
             invoice_supplier_list_duty_percent[i].value = duty_percent.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
         }else{ 
@@ -36,6 +41,8 @@ function calculate(all_duty){
     all_duty = all_duty - sum;
     
         for(var i = 0 ; i < (invoice_supplier_list_id.length); i++){
+            var qty = parseFloat(invoice_supplier_list_qty[i].value);
+            console.log('Qty : ',qty);
             var duty = 0.0;
             var ex_total = parseFloat(cost_price_ex_total[i].value.replace(',',''));
             var invoice_supplier_list_fix_type =  $("input[name='invoice_supplier_list_fix_type["+invoice_supplier_list_id[i].value+"]']:checked");
@@ -43,10 +50,14 @@ function calculate(all_duty){
                 if(all_duty > 0){
                     duty = all_duty * ex_total / total;
                     invoice_supplier_list_duty[i].value = duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-                    invoice_supplier_list_import_duty[i].value = duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
+
+                    invoice_supplier_list_import_duty[i].value = (duty /  qty).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                     invoice_supplier_list_duty_percent[i].value = (duty/ex_total*100).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"); 
                 }else{
                     invoice_supplier_list_duty[i].value = 0;
+
+
                     invoice_supplier_list_import_duty[i].value = 0;
                     invoice_supplier_list_duty_percent[i].value = 0;
                 }
@@ -198,8 +209,8 @@ function calculate(all_duty){
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th style="text-align:center;">ลำดับ <br> (์No.)</th>
-                                <th style="text-align:center;" width="200" >รหัสสินค้า <br> (Product Code)</th>
+                                <th style="text-align:center;" width="48">ลำดับ <br> (์No.)</th>
+                                <th style="text-align:center;" >รหัสสินค้า <br> (Product Code)</th>
                                 <th style="text-align:center;" width="150">จำนวน <br> (Qty)</th>
                                 <th style="text-align:center;" width="150">ราคาต่อหน่วย <br> (Unit price <?PHP echo $exchange_rate_baht['currency_sign'];?>) </th>
                                 <th style="text-align:center;" width="150">ราคาต่อหน่วย (บาท) <br> (Unit price baht) </th>
@@ -279,7 +290,7 @@ function calculate(all_duty){
                                             <td>
                                                 <input name="invoice_supplier_list_fix_type[<?php echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id']; ?>]" type="radio" value="price-fix"  <?PHP if($invoice_supplier_lists[$i]['invoice_supplier_list_fix_type'] == "price-fix"){ ?> checked <?PHP } ?>/>
                                                 <span><b>Price.</b></span> 
-                                                <input name="invoice_supplier_list_duty[]" autocomplete="off" type="text" style="text-align:right;" onchange="calculate('<?php echo $invoice_supplier['import_duty'];?>');" class="form-control" value="<?php if($invoice_supplier_lists[$i]['invoice_supplier_list_fix_type'] == "price-fix"){ echo $invoice_supplier_lists[$i]['invoice_supplier_list_duty']; }else{ echo  0; } ?>"  />
+                                                <input name="invoice_supplier_list_duty[]" autocomplete="off" type="text" style="text-align:right;" onchange="calculate('<?php echo $invoice_supplier['import_duty'];?>');" class="form-control" value="<?php echo number_format($invoice_supplier_lists[$i]['invoice_supplier_list_import_duty'] * $invoice_supplier_lists[$i]['invoice_supplier_list_import_duty'],2);  ?>"  />
                                             </td>
                                         </tr>
                                     </table>
@@ -288,9 +299,10 @@ function calculate(all_duty){
                                 <td align="right"><?php echo  number_format($cost_price_f,2); ?></td>
                                 <td align="right">
                                     <?php echo  number_format($cost_total,2); ?>
-                                    <input name="invoice_supplier_list_import_duty[]" type="hidden" value="<?php echo  number_format($cost_price_duty,2); ?>"  />
-                                    <input name="invoice_supplier_list_freight_in[]" type="hidden" value="<?php echo  number_format($cost_price_f,2); ?>"  />
-                                    <input name="invoice_supplier_list_cost[]" type="hidden" value="<?php echo  number_format($cost_total,2); ?>"  />
+                                    <input name="invoice_supplier_list_import_duty[]" type="hidden" value="<?php echo   $invoice_supplier_lists[$i]['invoice_supplier_list_import_duty'] ; ?>"  />
+                                    <input name="invoice_supplier_list_freight_in[]" type="hidden" value="<?php echo  ($cost_price_f / $invoice_supplier_lists[$i]['invoice_supplier_list_qty']) ; ?>"  />
+                                    <input name="invoice_supplier_list_qty[]" type="hidden" value="<?php echo   $invoice_supplier_lists[$i]['invoice_supplier_list_qty'] ; ?>"  />
+                                    <input name="invoice_supplier_list_cost[]" type="hidden" value="<?php echo   $invoice_supplier_lists[$i]['invoice_supplier_list_cost'] ; ?>"  />
                                 </td>
                             </tr>
                             <?
@@ -419,4 +431,11 @@ function calculate(all_duty){
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+
+<script>
+$( document ).ready(function() {
+calculate('<?php echo $invoice_supplier['import_duty'];?>');
+});
+</script>
  

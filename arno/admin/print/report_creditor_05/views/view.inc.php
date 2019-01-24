@@ -61,31 +61,67 @@ while($i < count($creditor_reports)){
         </tr>
     </table>  
     ';
+    if($supplier_id != '' && $supplier['supplier_domestic'] == "ภายนอกประเทศ"){
 
+        $html[$page_index] .= '
+        <table  width="100%" cellspacing="0" style="font-size:12px;">
+            <thead>
+                <tr>
+                    <th style="border-top: 1px dotted black;" width="30" align="center" > ลำดับ </th>
+                    <th style="border-top: 1px dotted black;border-bottom: 1px dotted black;" colspan="3" align="center" >ใบกำกับภาษี </th> 
+                    <th style="border-top: 1px dotted black;" align="center" ></th> 
+                    <th style="border-top: 1px dotted black;" align="center" ></th> 
+                    <th style="border-top: 1px dotted black;" align="center" >จำนวนเงินรวม</th>  
+                    <th style="border-top: 1px dotted black;" align="center" width="60" >ยอดรับจริง</th>  
+                    <th style="border-top: 1px dotted black;" align="center" >ยอดหนี้คงเหลือ</th>
+                      
+                </tr>
+                <tr> 
+                    <th style="border-bottom: 1px dotted black;" ></th>
+                    <th style="border-bottom: 1px dotted black;" width="70" align="center" >วัน/เดือน/ปี</th>
+                    <th style="border-bottom: 1px dotted black;" align="center" >เลขที่ </th>  
+                    <th style="border-bottom: 1px dotted black;" align="center" >ใบรับสินค้า</th> 
+                    <th style="border-bottom: 1px dotted black;" align="center"  width="110">อัตราการเเลกเปลี่ยน <br>(บาท)  </th> 
+                    <th style="border-bottom: 1px dotted black;" align="center" >จำนวนเงินรวม <br>('.$supplier['currency_code'].')  </th>  
+                    <th style="border-bottom: 1px dotted black;" align="center" ></th>  
+                    <th style="border-bottom: 1px dotted black;" align="center" ></th>  
+                    <th style="border-bottom: 1px dotted black;" align="center" ></th>
+                    
+                </tr>
+            </thead>
+    
+            <tbody>
+    
+        ';
+
+
+    }else{
     $html[$page_index] .= '
     <table  width="100%" cellspacing="0" style="font-size:12px;">
         <thead>
             <tr>
                 <th style="border-top: 1px dotted black;" width="48" align="center" > ลำดับ </th>
-                <th style="border-top: 1px dotted black;border-bottom: 1px dotted black;" colspan="2" align="center" >ใบกำกับภาษี </th> 
+                <th style="border-top: 1px dotted black;border-bottom: 1px dotted black;" colspan="3" align="center" >ใบกำกับภาษี </th> 
                 <th style="border-top: 1px dotted black;" align="center" >จำนวนเงินรวม</th>  
                 <th style="border-top: 1px dotted black;" align="center" >ยอดรับจริง</th>  
-                <th style="border-top: 1px dotted black;" align="center" >ยอดหนี้คงเหลือ</th>  
+                <th style="border-top: 1px dotted black;" align="center" >ยอดหนี้คงเหลือ</th>
+                  
             </tr>
             <tr> 
                 <th style="border-bottom: 1px dotted black;" ></th>
                 <th style="border-bottom: 1px dotted black;" width="80" align="center" >วัน/เดือน/ปี</th>
                 <th style="border-bottom: 1px dotted black;" align="center" >เลขที่ </th>  
+                <th style="border-bottom: 1px dotted black;" align="center" >ใบรับสินค้า</th>  
                 <th style="border-bottom: 1px dotted black;" align="center" ></th>  
                 <th style="border-bottom: 1px dotted black;" align="center" ></th>  
-                <th style="border-bottom: 1px dotted black;" align="center" ></th>  
+                <th style="border-bottom: 1px dotted black;" align="center" ></th>
             </tr>
         </thead>
 
         <tbody>
 
     ';
- 
+    }
     
     //count($creditor_reports)
     $total_page = 0; 
@@ -134,24 +170,51 @@ while($i < count($creditor_reports)){
         $paid_total +=  $creditor_reports[$i]['finance_credit_list_paid']; 
         $balance_total +=  $creditor_reports[$i]['invoice_supplier_balance']; 
 
+        $exchange_balance_EUR = $creditor_reports[$i]['invoice_supplier_balance']/$creditor_reports[$i]['exchange_rate_baht_value'];
+        if($supplier_id != '' && $supplier['supplier_domestic'] == "ภายนอกประเทศ"){
 
-        $html[$page_index] .= ' 
-        <tr>
-            <td align="center" >'.($index).'</td>
-            <td align="left" >'.$creditor_reports[$i]['invoice_supplier_date'].'</td>
-            <td>'.$creditor_reports[$i]['invoice_supplier_code'].'</td> 
-            <td  align="right" >
-                '.number_format($creditor_reports[$i]['invoice_supplier_net_price'],2).'
-            </td> 
-            <td  align="right" >
-                '.number_format($creditor_reports[$i]['finance_credit_list_paid'],2).'
-            </td>  
-            <td  align="right" >
-                '.number_format($creditor_reports[$i]['invoice_supplier_balance'],2).'
-            </td>  
-        </tr> 
-        ';
 
+            $html[$page_index] .= ' 
+            <tr>
+                <td align="center" >'.($index).'</td>
+                <td align="left" >'.$creditor_reports[$i]['invoice_supplier_date'].'</td>
+                <td>'.$creditor_reports[$i]['invoice_supplier_code'].'</td> 
+                <td>'.$creditor_reports[$i]['invoice_supplier_code_gen'].'</td>
+                <td align="right">'.number_format($creditor_reports[$i]['exchange_rate_baht_value'],5).'</td>
+                <td align="right">'.number_format($exchange_balance_EUR,2).'</td>
+                <td  align="right" >
+                    '.number_format($creditor_reports[$i]['invoice_supplier_net_price'],2).'
+                </td> 
+                <td  align="right" >
+                    '.number_format($creditor_reports[$i]['finance_credit_list_paid'],2).'
+                </td>  
+                <td  align="right" >
+                    '.number_format($creditor_reports[$i]['invoice_supplier_balance'],2).'
+                </td>  
+            </tr> 
+            ';
+
+           
+        }else{
+            $html[$page_index] .= ' 
+            <tr>
+                <td align="center" >'.($index).'</td>
+                <td align="left" >'.$creditor_reports[$i]['invoice_supplier_date'].'</td>
+                <td>'.$creditor_reports[$i]['invoice_supplier_code'].'</td> 
+                <td>'.$creditor_reports[$i]['invoice_supplier_code_gen'].'</td>
+            
+                <td  align="right" >
+                    '.number_format($creditor_reports[$i]['invoice_supplier_net_price'],2).'
+                </td> 
+                <td  align="right" >
+                    '.number_format($creditor_reports[$i]['finance_credit_list_paid'],2).'
+                </td>  
+                <td  align="right" >
+                    '.number_format($creditor_reports[$i]['invoice_supplier_balance'],2).'
+                </td>  
+            </tr> 
+            ';
+        }
         $line ++;
         if($line % $lines == 0){
             $i++;
@@ -159,16 +222,34 @@ while($i < count($creditor_reports)){
         }
 
         if($creditor_reports[$i]['supplier_code'] != $creditor_reports[$i+1]['supplier_code']){  
-            $html[$page_index] .= ' <tr class="">
+
+            if($supplier_id != '' && $supplier['supplier_domestic'] == "ภายนอกประเทศ"){
+
+                $html[$page_index] .= ' <tr class="">
                 <td></td>
                 <td colspan="4" align="left" >
                     <b><font color="black"> ยอดรวมของ '. $creditor_reports[$i]['invoice_supplier_name'].' จำนวน '. number_format($index,0) .' ใบ</font> </b>
-                </td>  
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>  
                 <td  align="right" style="border-top: 1px dotted black; " >
                     <b>'. number_format($invoice_supplier_balance,2).'</b>
                 </td>  
             </tr>';
 
+            }else{
+                    $html[$page_index] .= ' <tr class="">
+                        <td></td>
+                        <td colspan="4" align="left" >
+                            <b><font color="black"> ยอดรวมของ '. $creditor_reports[$i]['invoice_supplier_name'].' จำนวน '. number_format($index,0) .' ใบ</font> </b>
+                        </td>
+                        <td></td>  
+                        <td  align="right" style="border-top: 1px dotted black; " >
+                            <b>'. number_format($invoice_supplier_balance,2).'</b>
+                        </td>  
+                    </tr>';
+            }
             $line ++;
             if($line % $lines == 0){
                 $i++;
@@ -176,7 +257,7 @@ while($i < count($creditor_reports)){
             }
 
             $html[$page_index] .= '<tr>
-                <td colspan="6" align="center" ></td>
+                <td colspan="8" align="center" ></td>
             </tr>'; 
 
             $line ++;
@@ -210,19 +291,42 @@ while($i < count($creditor_reports)){
             </table>
             ';
     }else if($page_index == 0){
-        $html[$page_index] .= ' 
-                </tbody>
-                <tfoot>  
-                    <tr>
-                        <td></td>
-                        <td colspan="2" align="left"><div><b>รวมทั้งสิ้น ถึง</b> '.$date_end.' </div> </td>
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($total_total,2).'</td>  
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($paid_total,2).'</td>   
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($balance_total,2).'</td>   
-                    </tr>
-                </tfoot>
-            </table>
-        ';
+        if($supplier_id != '' && $supplier['supplier_domestic'] == "ภายนอกประเทศ"){
+
+            $html[$page_index] .= ' 
+            </tbody>
+            <tfoot>  
+                <tr>
+                    <td></td>
+                    <td colspan="2" align="left"><div><b>รวมทั้งสิ้น ถึง</b> '.$date_end.' </div> </td>
+                    <td> </td> 
+                    <td> </td>
+                    <td> </td>
+                    <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($total_total,2).'</td>  
+                    <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($paid_total,2).'</td>   
+                    <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($balance_total,2).'</td>   
+                </tr>
+            </tfoot>
+        </table>
+    ';
+
+
+        }else{
+            $html[$page_index] .= ' 
+                    </tbody>
+                    <tfoot>  
+                        <tr>
+                            <td></td>
+                            <td colspan="2" align="left"><div><b>รวมทั้งสิ้น ถึง</b> '.$date_end.' </div> </td>
+                            <td> </td> 
+                            <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($total_total,2).'</td>  
+                            <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($paid_total,2).'</td>   
+                            <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($balance_total,2).'</td>   
+                        </tr>
+                    </tfoot>
+                </table>
+            ';
+        }
     }else{
         /*
         <tr>
@@ -236,20 +340,43 @@ while($i < count($creditor_reports)){
             <td colspan="6" align="center"> </td>
         </tr>
         */
-        $html[$page_index] .= ' 
-                </tbody>
-                <tfoot>
-                    
-                    <tr>
-                        <td></td>
-                        <td colspan="2" align="left"><div><b>รวมทั้งสิ้น ถึง</b> '.$date_end.' </div> </td> 
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($total_total,2).'</td>  
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($paid_total,2).'</td>  
-                        <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($balance_total,2).'</td>  
-                    </tr>
-                </tfoot>
-            </table>
-        ';
+        if($supplier_id != '' && $supplier['supplier_domestic'] == "ภายนอกประเทศ"){
+
+            $html[$page_index] .= ' 
+                    </tbody>
+                    <tfoot>
+                        
+                        <tr>
+                            <td> </td>
+                            <td colspan="2" align="left"><div><b>รวมทั้งสิ้น ถึง</b> '.$date_end.' </div> </td> 
+                            <td> </td>
+                            <td> </td>
+                            <td> </td>                  
+                            <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($total_total,2).'</td>  
+                            <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($paid_total,2).'</td>  
+                            <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($balance_total,2).'</td>  
+                        </tr>
+                    </tfoot>
+                </table>
+            ';
+            
+
+        }else{
+            $html[$page_index] .= ' 
+                    </tbody>
+                    <tfoot>
+                        
+                        <tr>
+                            <td> </td>
+                            <td colspan="2" align="left"><div><b>รวมทั้งสิ้น ถึง</b> '.$date_end.' </div> </td>                   
+                            <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($total_total,2).'</td>  
+                            <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($paid_total,2).'</td>  
+                            <td  align="right" style="border-top: 1px dotted black;border-bottom: 1px dotted black;" >'.number_format($balance_total,2).'</td>  
+                        </tr>
+                    </tfoot>
+                </table>
+            ';
+        }
     }
 
     $page_index++;

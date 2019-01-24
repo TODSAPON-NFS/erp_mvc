@@ -4,7 +4,7 @@ session_start();
 require_once('../models/CompanyModel.php');
 require_once('../models/CreditorReportModel.php');
 require_once('../models/CustomerModel.php');
-
+require_once('../models/SupplierModel.php');
 date_default_timezone_set('asia/bangkok');
 $d1=date("d");
 $d2=date("m");
@@ -18,7 +18,7 @@ $path = "print/report_creditor_05/views/";
 $company_model = new CompanyModel;
 $supplier_model = new CustomerModel;
 $creditor_report_model = new CreditorReportModel;
-
+$supplier_ = new SupplierModel;
 
 $date_start = $_GET['date_start'];
 $date_end = $_GET['date_end'];
@@ -36,7 +36,12 @@ $val = explode("-",$date_start);
 $section_date =  $val['1']."/".$val['2'];
 
 $supplier_id = $_GET['supplier_id'];
+
 $keyword = $_GET['keyword'];
+
+if($supplier_id != ""){
+    $supplier=$supplier_->getSupplierByID($supplier_id);
+}
 
 $company=$company_model->getCompanyByID('1');
 

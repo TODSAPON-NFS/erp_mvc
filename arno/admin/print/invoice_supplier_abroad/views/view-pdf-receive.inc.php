@@ -271,12 +271,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <th style="text-align:center; padding:4px 2px;" >Stock</th>
                     <th style="text-align:center; padding:4px 2px;" >Qty</th>
                     <th style="text-align:center; padding:4px 2px;" >Price/Pcs '.$currency['currency_code'].'</th> 
-                    <th style="text-align:center; padding:4px 2px;" >Price/Pcs Baht</th> 
-                    <th style="text-align:center; padding:4px 2px;" >Amount </th> 
-                    <th style="text-align:center; padding:4px 2px;" >Import duty</th>
-                    <th style="text-align:center; padding:4px 2px;" >Freight in</th>
-                    <th style="text-align:center; padding:4px 2px;" >Cost/Pcs </th> 
-                    <th style="text-align:center; border-right :1px solid black;  padding:4px 2px;" >Cost total </th> 
+                    <th style="text-align:center; padding:4px 2px;" >Price/Pcs THB</th> 
+                    <th style="text-align:center; padding:4px 2px;" >Amount THB </th> 
+                    <th style="text-align:center; padding:4px 2px;" >Import duty THB</th>
+                    <th style="text-align:center; padding:4px 2px;" >Freight in THB</th>
+                    <th style="text-align:center; padding:4px 2px;" >Cost/Pcs THB</th> 
+                    <th style="text-align:center; border-right :1px solid black;  padding:4px 2px;" >Cost total THB </th> 
                     
                 </tr>
             </thead>
@@ -401,7 +401,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             </tbody>
             <tfoot>
                 <tr class="odd gradeX" >
-                    <td style="border-right: 1px solid #000;" colspan="5" align="left" valign="top">
+                    <td style="border-right: 1px solid #000;" colspan="4" align="left" valign="top">
                         <b>Remark</b> 
                     </td>
                     <td align="left" colspan="2" >
@@ -415,6 +415,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     </td>
                     <td style="text-align: right;border-left: 1px solid #000;border-right: 1px solid #000;" >
                     '. $freight_in .'
+                    </td>
+                    <td style="text-align: right;border-left: 1px solid #000;border-right: 1px solid #000;" >
+                    
                     </td>
                     <td style="text-align: right;border-right: 1px solid #000;" >
                     '. $total_cost  .'

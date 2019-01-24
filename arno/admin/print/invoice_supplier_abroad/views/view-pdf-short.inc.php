@@ -274,7 +274,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <th style="text-align:center; padding:4px 0px;" >ลำดับ</th>
                     <th style="text-align:center; padding:4px 0px;" >รายการ</th>
                     <th style="text-align:center; padding:4px 0px;" >ราคารวม <br>'.$invoice_supplier_abroad['currency_code'].' </th> 
-                    <th style="text-align:center; padding:4px 0px;" >อัตราแลกเปลี่ยน<br>'.$invoice_supplier_abroad['currency_code'].'</th>
+                    <th style="text-align:center; padding:4px 0px;" >อัตราแลกเปลี่ยน<br>บาท</th>
                     <th style="text-align:center; padding:4px 0px;" >ราคารวม<br>บาท </th> 
                 </tr>
             </thead>
@@ -282,7 +282,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <tbody  >
     ';
     for($i=0;$i<count($invoice_supplier_abroad_lists);$i++){
-        $total += $invoice_supplier_abroad_lists[$i]['purchase_order_list_price_sum'];
+        $total += $invoice_supplier_abroad_lists[$i]['invoice_supplier_list_currency_price']*$invoice_supplier_abroad_lists[$i]['invoice_supplier_list_qty'];
         $total_baht += $invoice_supplier_abroad_lists[$i]['invoice_supplier_list_total'];
     }
     $total_price = number_format($total,2); 

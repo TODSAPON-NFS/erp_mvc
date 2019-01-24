@@ -120,24 +120,22 @@ class AssetModel extends BaseModel{
         asset_rate = '".static::$db->real_escape_string($data['asset_rate'])."', 
         asset_depreciate_type = '".static::$db->real_escape_string($data['asset_depreciate_type'])."',
         asset_depreciate_transfer = '".static::$db->real_escape_string($data['asset_depreciate_transfer'])."', 
-        asset_depreciate_manual = '".static::$db->real_escape_string($data['asset_depreciate_manual'])."' 
-        asset_depreciate_initial = '".static::$db->real_escape_string($data['asset_depreciate_initial'])."' 
-        asset_depreciate_manual = '".static::$db->real_escape_string($data['asset_depreciate_manual'])."' 
-        asset_manual_date = '".static::$db->real_escape_string($data['asset_manual_date'])."' 
-        asset_sale_date = '".static::$db->real_escape_string($data['asset_sale_date'])."' 
-        asset_price = '".static::$db->real_escape_string($data['asset_price'])."' 
-        asset_income = '".static::$db->real_escape_string($data['asset_income'])."' 
+        asset_depreciate_manual = '".static::$db->real_escape_string($data['asset_depreciate_manual'])."' ,
+        asset_depreciate_initial = '".static::$db->real_escape_string($data['asset_depreciate_initial'])."' ,
+        asset_depreciate_manual = '".static::$db->real_escape_string($data['asset_depreciate_manual'])."' ,
+        asset_manual_date = '".static::$db->real_escape_string($data['asset_manual_date'])."' ,
+        asset_sale_date = '".static::$db->real_escape_string($data['asset_sale_date'])."' ,
+        asset_price = '".static::$db->real_escape_string($data['asset_price'])."' ,
+        asset_income = '".static::$db->real_escape_string($data['asset_income'])."' ,
         asset_remark = '".static::$db->real_escape_string($data['asset_remark'])."' 
         WHERE asset_id = '".static::$db->real_escape_string($id)."'
         ";
-
+        echo $sql;
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {
             return false;
         }
-
-
     }
 
     function updateAssetProfileByID($id,$data = []){
@@ -166,67 +164,14 @@ class AssetModel extends BaseModel{
         }
 
 
-    }    
-    function updateAssetProfileNoIMGByID($id,$data = []){
-        $sql = " UPDATE tb_asset SET 
-        
-        asset_prefix = '".static::$db->real_escape_string($data['asset_prefix'])."', 
-        asset_name = '".static::$db->real_escape_string($data['asset_name'])."', 
-        asset_lastname = '".static::$db->real_escape_string($data['asset_lastname'])."', 
-        asset_mobile = '".static::$db->real_escape_string($data['asset_mobile'])."', 
-        asset_email = '".static::$db->real_escape_string($data['asset_email'])."', 
-        asset_assetname = '".static::$db->real_escape_string($data['asset_assetname'])."', 
-        asset_password = '".static::$db->real_escape_string($data['asset_password'])."', 
-        asset_address = '".static::$db->real_escape_string($data['asset_address'])."', 
-        asset_province = '".static::$db->real_escape_string($data['asset_province'])."', 
-        asset_amphur = '".static::$db->real_escape_string($data['asset_amphur'])."', 
-        asset_district = '".static::$db->real_escape_string($data['asset_district'])."', 
-        asset_zipcode = '".static::$db->real_escape_string($data['asset_zipcode'])."'
-        WHERE asset_id = '".static::$db->real_escape_string($id)."'
-        ";
-
-        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-           return true;
-        }else {
-            return false;
-        }
-
-
-    }
-    function updateAssetSignatureByID($id,$data = []){
-        $sql = " UPDATE tb_asset SET 
-        asset_signature = '".$data['asset_signature']."' 
-        WHERE asset_id = '$id'
-        ";
-
-        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-           return true;
-        }else {
-            return false;
-        }
-
-
-    }
-    function updatePlayerIDByID($id,$asset_player_id){
-        $sql = " UPDATE tb_asset SET 
-        asset_player_id = '".$asset_player_id."' 
-        WHERE asset_id = '$id' 
-        ";
-
-        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-           return true;
-        }else {
-            return false;
-        }
-
-
-    }
+    }  
     function insertAsset($data = []){
         $sql = " INSERT INTO tb_asset ( 
             asset_code,
             asset_name_th,
             asset_name_en,
             asset_category_id,
+            asset_account_group_id,
             asset_registration_no,
             asset_department_id,
             asset_depreciate,
@@ -250,6 +195,7 @@ class AssetModel extends BaseModel{
             $data['asset_name_th']."','".
             $data['asset_name_en']."','".
             $data['asset_category_id']."','".
+            $data['asset_account_group_id']."','".
             $data['asset_registration_no']."','".
             $data['asset_department_id']."','".
             $data['asset_depreciate']."','".
@@ -277,8 +223,6 @@ class AssetModel extends BaseModel{
         }
 
     }
-
-
     function deleteAssetByID($id){
         $sql = " DELETE FROM tb_asset WHERE asset_id = '$id' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);

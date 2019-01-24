@@ -205,7 +205,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>วันที่รับใบกำกับภาษี</label>
+                            <label>คัดกรองตาม วันที่รับใบกำกับภาษี</label>
                             <div class="row">
                                 <div class="col-md-5">
                                     <input type="text" id="date_start" name="date_start" value="<?PHP echo $date_start;?>"  class="form-control calendar" readonly/>
@@ -222,7 +222,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>ผู้ขาย </label>
+                            <label>คัดกรองตาม ผู้ขาย </label>
                             <select id="supplier_id" name="supplier_id" class="form-control select"  data-live-search="true">
                                 <option value="">ทั้งหมด</option>
                                 <?php 
@@ -238,7 +238,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>คำค้น <font color="#F00"><b>*</b></font></label>
+                            <label>คัดกรองตาม คำค้น <font color="#F00"><b>*</b></font></label>
                             <input id="keyword" name="keyword" class="form-control" value="<?PHP echo $keyword;?>" >
                             <p class="help-block">Example : T001.</p>
                         </div>

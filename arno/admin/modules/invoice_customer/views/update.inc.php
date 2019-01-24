@@ -1010,7 +1010,10 @@
 
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td colspan="7" align="center">
+                            <td>
+                                <button type="button" class="btn btn-success" onclick="add_row_new(this);">+ New</button>
+                            </td>
+                                <td colspan="6" align="center" style="vertical-align: middle;">
                                     <a href="javascript:;" onclick="show_purchase_order(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> 
                                         <span>เพิ่มสินค้า / Add product</span>

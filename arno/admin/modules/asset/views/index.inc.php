@@ -18,11 +18,6 @@ if(!isset($_GET['action'])){
     require_once($path.'view.inc.php');
 
 }else if ($_GET['action'] == 'insert' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
-
-    // $asset_license = $license->getLicenseBy();
-    // $asset_position = $position->getAssetPositionBy();
-    // $asset_status = $status->getAssetStatusBy();
-    // $add_province = $address->getProvinceByID();
     $account_group = $account_group_model->getAssetAccountGroupByAll();
     $category = $category_model->getAssetCategoryByAll();
     $department = $department_model->getAssetDepartmentByAll();
@@ -31,12 +26,9 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'update' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
     $asset_id = $_GET['id'];
     $asset = $model->getAssetByID($asset_id);
-    // $asset_license = $license->getLicenseBy();
-    // $asset_position = $position->getAssetPositionBy();
-    // $asset_status = $status->getAssetStatusBy();
-    // $add_province = $address->getProvinceByID();
-    // $add_amphur = $address->getAmphurByProviceID($asset['asset_province']);
-    // $add_district = $address->getDistricByAmphurID($asset['asset_amphur']);
+    $account_group = $account_group_model->getAssetAccountGroupByAll();
+    $category = $category_model->getAssetCategoryByAll();
+    $department = $department_model->getAssetDepartmentByAll();
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'delete' && ($license_admin_page == 'High')){
@@ -131,25 +123,24 @@ if(!isset($_GET['action'])){
             $file = $target_dir . $_POST['asset_id'] . ".png";
             $success = file_put_contents($file, $data);
 */
-?>
-        <script>window.location="index.php?app=asset"</script>
-<?php
+            ?>
+                    <script>window.location="index.php?app=asset"</script>
+            <?php
         }else{
-?>
-        <script>window.location="index.php?app=asset"</script>
-<?php
+            ?>
+                    <script>window.location="index.php?app=asset"</script>
+            <?php
         }
         
     }else{
         ?>
-    <script>window.location="index.php?app=asset"</script>
+            <script>window.location="index.php?app=asset"</script>
         <?php
     }
         
         
     
 }else{
-
     $asset = $model->getAssetBy($_GET['name'],$_GET['position'],$_GET['email']);
     require_once($path.'view.inc.php');
 

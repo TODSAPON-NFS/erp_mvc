@@ -289,7 +289,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     //count($tax_reports)
     for($i=$page_index * $lines; $i < count($invoice_supplier_abroad_lists) && $i < $page_index * $lines + $lines; $i++){ 
 
-        $total += $invoice_supplier_abroad_lists[$i]['purchase_order_list_price_sum'];
+        $total += $invoice_supplier_abroad_lists[$i]['invoice_supplier_list_currency_price']*$invoice_supplier_abroad_lists[$i]['invoice_supplier_list_qty'];
         $total_baht += $invoice_supplier_abroad_lists[$i]['invoice_supplier_list_total'];
                 $html[$page_index] .= ' 
                 <tr  class="odd gradeX">

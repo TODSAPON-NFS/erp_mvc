@@ -135,7 +135,7 @@
             <div class="panel-body">
                 <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=asset&action=add" >
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label>รหัสทรัพย์สิน / Asset Code <font color="#F00"><b>*</b></font></label>
                                 <input id="asset_code" name="asset_code" class="form-control" onchange="check_code(this)" />
@@ -143,7 +143,7 @@
                                 <p class="help-block">Example : 0000001.</p>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             
                                 <div class="form-group">
                                     <label>ชื่อทรัพย์สิน TH/ Name TH<font color="#F00"><b>*</b></font></label>
@@ -152,7 +152,7 @@
                                 </div>
                             
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             
                                 <div class="form-group">
                                     <label>ชื่อทรัพย์สิน EN/  Name EN <font color="#F00"><b>*</b></font></label>
@@ -160,6 +160,12 @@
                                     <p class="help-block">Example : Computer.</p>
                                 </div>
                         </div>
+                        
+                        <!-- /.col-lg-6 (nested) -->
+                    </div>
+                    <!-- /.row (nested) -->
+
+                    <div class="row">
                         <div class="col-lg-3">
                             
                             <div class="form-group">
@@ -174,11 +180,6 @@
                             </div>
                         
                         </div>
-                        <!-- /.col-lg-6 (nested) -->
-                    </div>
-                    <!-- /.row (nested) -->
-
-                    <div class="row">
                         <div class="col-lg-3">
                             
                             <div class="form-group">
@@ -234,6 +235,19 @@
                             </div>
                         
                         </div>
+                        <div class="col-lg-3">
+                            
+                            <div class="form-group">
+                                <label>การคำนวณค่าเสื่อมทรัพย์สิน <font color="#F00"><b>*</b></font></label>
+                                <select id="asset_depreciate_type" name="asset_depreciate_type" class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="0">รายเดือน</option>
+                                    <option value="1">รายปี</option>
+                                </select>
+                                <p class="help-block">Example :รายเดือน/รายปี.</p>
+                            </div>
+                        
+                        </div> 
                     </div>
                     <!-- /.row (nested) -->
 
@@ -302,19 +316,7 @@
                     <!-- /.row (nested) -->
                     <div class="row">
 
-                        <div class="col-lg-3">
                             
-                            <div class="form-group">
-                                <label>การคำนวณค่าเสื่อมทรัพย์สิน <font color="#F00"><b>*</b></font></label>
-                                <select id="asset_depreciate_type" name="asset_depreciate_type" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="0">รายเดือน</option>
-                                    <option value="1">รายปี</option>
-                                </select>
-                                <p class="help-block">Example :รายเดือน/รายปี.</p>
-                            </div>
-                        
-                        </div>     
                         <div class="col-lg-3">
                             
                                 <div class="form-group">
@@ -395,9 +397,9 @@ $(document).ready(function($){
 		$('#asset_expire').on('change keyup', function()
 		{
 			console.log(this.value);
-            
-            if(this.value!=null){
-                var rate = 100 / this.value;
+            var val = parseFloat(this.value);
+            if(!isNaN(val)){
+                var rate = 100 / val;
                 $("#asset_rate").val(rate); 
             }
             else{

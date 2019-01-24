@@ -50,6 +50,11 @@ $supplier_id = $_GET['supplier_id'];
 
 $suppliers=$supplier_model->getSupplierBy();
 
+if($supplier_id != ""){
+    $supplier=$supplier_model->getSupplierByID($supplier_id);
+}
+
+
 $creditor_reports = $creditor_report_model->getCreditorListDetailReportBy($date_end, $supplier_id, $keyword);
 
 require_once($path.'view.inc.php');

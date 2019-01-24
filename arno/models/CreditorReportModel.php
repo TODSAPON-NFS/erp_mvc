@@ -450,11 +450,12 @@ class CreditorReportModel extends BaseModel{
         supplier_code,
         IFNULL(currency_code,'-') as currency_code,
         IFNULL(
-            SELECT exchange_rate_baht_value 
+            (SELECT exchange_rate_baht_value 
             FROM tb_exchange_rate_baht   
             WHERE  currency_id = tb3.currency_id 
             AND  exchange_rate_baht_date = tb1.invoice_supplier_date LIMIT 0,1
-        , 0 ) as exchange_rate_baht_value
+            )
+        , 1 ) as exchange_rate_baht_value,
         invoice_supplier_code, 
         invoice_supplier_code_gen, 
         invoice_supplier_name,   
@@ -479,7 +480,7 @@ class CreditorReportModel extends BaseModel{
         GROUP BY tb1.invoice_supplier_id 
         HAVING MAX(IFNULL(tb1.invoice_supplier_net_price,0)) - SUM(IFNULL(finance_credit_list_balance,0)) != 0 
         ORDER BY  supplier_code , invoice_supplier_code "; 
-
+       //  echo '<pre>'.$sql_supplier."</pre>";
         $data = [];
         if ($result = mysqli_query(static::$db,$sql_supplier, MYSQLI_USE_RESULT)) {
             

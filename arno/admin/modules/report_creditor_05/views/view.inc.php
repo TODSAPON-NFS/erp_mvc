@@ -54,7 +54,7 @@
                                 <?php 
                                 for($i =  0 ; $i < count($suppliers) ; $i++){
                                 ?>
-                                <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> (<?php echo $suppliers[$i]['supplier_name_th'] ?>)</option>
+                                <option <?php if($suppliers[$i]['supplier_id'] == $supplier_id){?> selected <?php }?> value="<?php echo $suppliers[$i]['supplier_id'] ?>"><?php echo $suppliers[$i]['supplier_name_en'] ?> </option>
                                 <?
                                 }
                                 ?>
@@ -89,13 +89,15 @@
                 <table width="100%" class="table table-bordered table-hover" >
                     <thead>
                         <tr>
-                            <th width="48"> ลำดับ <br>No.</th>
-                            <th width="150">วันที่ <br>Date</th>
-                            <th>ใบรับสินค้า <br>Reciept</th> 
-                            <th>ใบกำกับภาษี <br>Invoice</th> 
-                            <th>จำนวนเงินรวม<br>Total</th> 
-                            <th>ยอดรับจริง <br>Charged</th>  
-                            <th>ยอดหนี้คงเหลือ <br>Balance</th>  
+                            <th width="48"> ลำดับ </th>
+                            <th width="150">วันที่ </th>
+                            <th>ใบรับสินค้า </th> 
+                            <th>ใบกำกับภาษี </th> <?PHP if($supplier_id != '' && $supplier['supplier_domestic'] == "ภายนอกประเทศ"){ ?>
+                            <th>จำนวนเงินรวม <br> (<?PHP echo $supplier['currency_code']; ?>) </th> 
+                            <th>จำนวนเงินรวม <br> (<?PHP echo $supplier['currency_code']; ?>) </th> 
+                <?PHP }?>   <th>จำนวนเงินรวม <br> (บาท) </th> 
+                            <th>ยอดจ่ายจริง <br> (บาท) </th>  
+                            <th>ยอดหนี้คงเหลือ <br> (บาท) </th>  
                         </tr>
                     </thead>
                     <tbody>
@@ -135,6 +137,9 @@
                             <td><?php echo $creditor_reports[$i]['invoice_supplier_date']; ?></td> 
                             <td><?php echo $creditor_reports[$i]['invoice_supplier_code_gen']; ?></td> 
                             <td><?php echo $creditor_reports[$i]['invoice_supplier_code']; ?></td> 
+                            <?PHP if($supplier_id != ''){ ?>
+                            <td></td>
+                            <?PHP }?> 
                             <td  align="right" >
                                 <?php echo number_format($creditor_reports[$i]['invoice_supplier_net_price'],2); ?>
                             </td> 

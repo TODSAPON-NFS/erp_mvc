@@ -438,7 +438,7 @@ class CreditorReportModel extends BaseModel{
 
         $str_supplier ='';
         if($supplier_id != ""){
-            $str_supplier =" AND tb_invoice_supplier.supplier_id = '$supplier_id' ";
+            $str_supplier =" AND tb1.supplier_id = '$supplier_id' ";
         }
         
         $str_date ='';
@@ -446,8 +446,15 @@ class CreditorReportModel extends BaseModel{
             $str_date =" AND STR_TO_DATE(invoice_supplier_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s')  ";
         }
 
-        $sql_supplier = "SELECT tb_invoice_supplier.invoice_supplier_id, 
+        $sql_supplier = "SELECT tb1.invoice_supplier_id, 
         supplier_code,
+        IFNULL(currency_code,'-') as currency_code,
+        IFNULL(
+            SELECT exchange_rate_baht_value 
+            FROM tb_exchange_rate_baht   
+            WHERE  currency_id = tb3.currency_id 
+            AND  exchange_rate_baht_date = tb1.invoice_supplier_date LIMIT 0,1
+        , 0 ) as exchange_rate_baht_value
         invoice_supplier_code, 
         invoice_supplier_code_gen, 
         invoice_supplier_name,   
@@ -455,12 +462,13 @@ class CreditorReportModel extends BaseModel{
         invoice_supplier_branch, 
         invoice_supplier_date, 
         invoice_supplier_due, 
-        MAX(IFNULL(tb_invoice_supplier.invoice_supplier_net_price,0)) as invoice_supplier_net_price,
+        MAX(IFNULL(tb1.invoice_supplier_net_price,0)) as invoice_supplier_net_price,
         SUM(IFNULL(finance_credit_list_balance,0)) as finance_credit_list_paid,  
-        MAX(IFNULL(tb_invoice_supplier.invoice_supplier_net_price,0)) - SUM(IFNULL(finance_credit_list_balance,0)) as invoice_supplier_balance 
-        FROM tb_invoice_supplier 
-        LEFT JOIN tb_finance_credit_list ON tb_invoice_supplier.invoice_supplier_id = tb_finance_credit_list.invoice_supplier_id 
-        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id 
+        MAX(IFNULL(tb1.invoice_supplier_net_price,0)) - SUM(IFNULL(finance_credit_list_balance,0)) as invoice_supplier_balance 
+        FROM tb_invoice_supplier as tb1
+        LEFT JOIN tb_finance_credit_list as tb2 ON tb1.invoice_supplier_id = tb2.invoice_supplier_id 
+        LEFT JOIN tb_supplier as tb3 ON tb1.supplier_id = tb3.supplier_id        
+        LEFT JOIN tb_currency as tb4 ON tb3.currency_id = tb4.currency_id 
         WHERE invoice_supplier_begin != '2'    
         $str_supplier 
         $str_date
@@ -468,8 +476,8 @@ class CreditorReportModel extends BaseModel{
             invoice_supplier_code LIKE ('%$search%') OR 
             invoice_supplier_code_gen LIKE ('%$search%') 
         ) 
-        GROUP BY tb_invoice_supplier.invoice_supplier_id 
-        HAVING MAX(IFNULL(tb_invoice_supplier.invoice_supplier_net_price,0)) - SUM(IFNULL(finance_credit_list_balance,0)) != 0 
+        GROUP BY tb1.invoice_supplier_id 
+        HAVING MAX(IFNULL(tb1.invoice_supplier_net_price,0)) - SUM(IFNULL(finance_credit_list_balance,0)) != 0 
         ORDER BY  supplier_code , invoice_supplier_code "; 
 
         $data = [];

@@ -130,7 +130,6 @@ class AssetModel extends BaseModel{
         asset_remark = '".static::$db->real_escape_string($data['asset_remark'])."' 
         WHERE asset_id = '".static::$db->real_escape_string($id)."'
         ";
-        echo $sql;
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;
         }else {

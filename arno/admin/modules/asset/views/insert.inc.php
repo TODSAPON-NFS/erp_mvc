@@ -196,15 +196,6 @@
                         </div>
                         <div class="col-lg-3">
                             
-                                <div class="form-group">
-                                    <label>เลขทะเบียน  </label>
-                                    <input id="asset_registration_no" name="asset_registration_no" type="text" class="form-control">
-                                    <p class="help-block">Example : 0610243003.</p>
-                                </div>
-                            
-                        </div>
-                        <div class="col-lg-3">
-                            
                             <div class="form-group">
                                 <label>แผนก <font color="#F00"><b>*</b></font></label>
                                 <select id="asset_department_id" name="asset_department_id" class="form-control">
@@ -217,6 +208,16 @@
                             </div>
                         
                         </div>
+                        <div class="col-lg-3">
+                            
+                                <div class="form-group">
+                                    <label>เลขทะเบียน  </label>
+                                    <input id="asset_registration_no" name="asset_registration_no" type="text" class="form-control">
+                                    <p class="help-block">Example : 0610243003.</p>
+                                </div>
+                            
+                        </div>
+                        
                         <!-- /.col-lg-6 (nested) -->
                     </div>
                     <!-- /.row (nested) -->
@@ -227,7 +228,6 @@
                             <div class="form-group">
                                 <label>ตัวเลือกการคิดค่าเสื่อมทรัพย์สิน <font color="#F00"><b>*</b></font></label>
                                 <select id="asset_depreciate" name="asset_depreciate" class="form-control">
-                                    <option value="">Select</option>
                                     <option value="0">ไม่คิดค่าเสื่อม</option>
                                     <option value="1">คิดค่าเสื่อม</option>
                                 </select>
@@ -400,7 +400,7 @@ $(document).ready(function($){
             var val = parseFloat(this.value);
             if(!isNaN(val)){
                 var rate = 100 / val;
-                $("#asset_rate").val(rate); 
+                $("#asset_rate").val(rate.toFixed(2)); 
             }
             else{
                 $("#asset_rate").val("");

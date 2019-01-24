@@ -38,6 +38,8 @@
         var asset_sale_date = document.getElementById("asset_sale_date").value;
         var asset_price = document.getElementById("asset_price").value;
         var asset_income = document.getElementById("asset_income").value;
+        var asset_id = document.getElementById("asset_id").value;
+        var code_check = document.getElementById("code_check").value;
         
         asset_code = $.trim(asset_code);
         asset_name_th = $.trim(asset_name_th);
@@ -63,7 +65,7 @@
 
         
 
-        if(code_check != ""){
+        if(code_check != "" && code_check != asset_id){
             alert("This "+code_check+" is already in the system.");
             document.getElementById("code_check").focus();
             return false;
@@ -100,31 +102,7 @@
             document.getElementById("asset_rate").focus();
             return false;
         }
-        // else if(asset_depreciate.length == 0){
-        //     alert("Please input asset amphur");
-        //     document.getElementById("asset_depreciate").focus();
-        //     return false;
-        // }else if(asset_district.length == 0){
-        //     alert("Please input asset district");
-        //     document.getElementById("asset_district").focus();
-        //     return false;
-        // }else if(asset_position_id.length == 0){
-        //     alert("Please input asset position");
-        //     document.getElementById("asset_position_id").focus();
-        //     return false;
-        // }else if(license_id.length == 0){
-        //     alert("Please input asset license");
-        //     document.getElementById("license_id").focus();
-        //     return false;
-        // }else if(asset_status_id.length == 0){
-        //     alert("Please input asset status");
-        //     document.getElementById("asset_status_id").focus();
-        //     return false;
-        // }
         else{
-            // var canvas = document.getElementById("signature");
-            // var dataURL = canvas.toDataURL("image/png");
-            // document.getElementById('hidden_data').value = dataURL;
             return true;
         }
 
@@ -153,17 +131,18 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=asset&action=add" >
+                <form  id="form_target" role="form" method="post" onsubmit="return check();" action="index.php?app=asset&action=edit" >
+                    <input type="hidden"  id="asset_id" name="asset_id" value="<?php echo $asset_id ?>" />
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label>รหัสทรัพย์สิน / Asset Code <font color="#F00"><b>*</b></font></label>
-                                <input id="asset_code" name="asset_code" class="form-control" value="<?php echo $asset['asset_code']?>" onchange="check_code(this)" />
+                                <input readonly id="asset_code" name="asset_code" class="form-control" value="<?php echo $asset['asset_code']?>" onchange="check_code(this)" />
                                 <input id="code_check" type="hidden" value="" />
                                 <p class="help-block">Example : 0000001.</p>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             
                                 <div class="form-group">
                                     <label>ชื่อทรัพย์สิน TH/ Name TH<font color="#F00"><b>*</b></font></label>
@@ -172,27 +151,13 @@
                                 </div>
                             
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             
                                 <div class="form-group">
                                     <label>ชื่อทรัพย์สิน EN/  Name EN <font color="#F00"><b>*</b></font></label>
                                     <input id="asset_name_en" name="asset_name_en" value="<?php echo $asset['asset_name_en']?>" class="form-control">
                                     <p class="help-block">Example : Computer.</p>
                                 </div>
-                        </div>
-                        <div class="col-lg-3">
-                            
-                            <div class="form-group">
-                                <label>หมวดหมู่ทรัพย์สิน <font color="#F00"><b>*</b></font></label>
-                                <select id="asset_category_id" name="asset_category_id" class="form-control">
-                                    <option value="">Select</option>
-                                    <option >1</option>
-                                    <option >2</option>
-                                    <option >3</option>
-                                </select>
-                                <p class="help-block">Example : คอมพิวเตอร์และอุปกรณ์สำนักงาน.</p>
-                            </div>
-                        
                         </div>
                         <!-- /.col-lg-6 (nested) -->
                     </div>
@@ -202,12 +167,26 @@
                         <div class="col-lg-3">
                             
                             <div class="form-group">
+                                <label>หมวดหมู่ทรัพย์สิน <font color="#F00"><b>*</b></font></label>
+                                <select id="asset_category_id" name="asset_category_id" class="form-control">
+                                    <option value="">Select</option>
+                                    <?php for($i=0;$i<count($category);$i++){?>
+                                    <option <?php if($asset['asset_category_id']==$category[$i]['asset_category_id']){ ?> selected <?php }?> value="<?php echo $category[$i]['asset_category_id'];?>"><?php echo $category[$i]['asset_category_name_th'];?></option>
+                                    <?php }?>
+                                </select>
+                                <p class="help-block">Example : คอมพิวเตอร์และอุปกรณ์สำนักงาน.</p>
+                            </div>
+                        
+                        </div>
+                        <div class="col-lg-3">
+                            
+                            <div class="form-group">
                                 <label>กลุ่มบัญชีทรัพย์สิน <font color="#F00"><b>*</b></font></label>
                                 <select id="asset_account_group_id" name="asset_account_group_id" class="form-control">
                                     <option value="">Select</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
+                                    <?php for($i=0;$i<count($account_group);$i++){?>
+                                        <option <?php if($asset['asset_account_group_id']==$account_group[$i]['asset_account_group_id']){ ?> selected <?php }?> value="<?php echo $account_group[$i]['asset_account_group_id'];?>"><?php echo $account_group[$i]['asset_account_group_name_th'];?></option>
+                                    <?php }?>
                                 </select>
                                 <p class="help-block">Example : อุปกรณ์สำนักงาน.</p>
                             </div>
@@ -215,27 +194,28 @@
                         </div>
                         <div class="col-lg-3">
                             
-                                <div class="form-group">
-                                    <label>เลขทะเบียน  </label>
-                                    <input id="asset_registration_no" name="asset_registration_no" type="text" class="form-control">
-                                    <p class="help-block">Example : 0610243003.</p>
-                                </div>
-                            
-                        </div>
-                        <div class="col-lg-3">
-                            
                             <div class="form-group">
                                 <label>แผนก <font color="#F00"><b>*</b></font></label>
                                 <select id="asset_department_id" name="asset_department_id" class="form-control">
                                     <option value="">Select</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
+                                    <?php for($i=0;$i<count($department);$i++){?>
+                                        <option <?php if($asset['asset_department_id']==$department[$i]['asset_department_id']){ ?> selected <?php }?>  value="<?php echo $department[$i]['asset_department_id'];?>"><?php echo $department[$i]['asset_department_name_th'];?></option>
+                                    <?php }?>
                                 </select>
                                 <p class="help-block">Example : บัญชี.</p>
                             </div>
                         
                         </div>
+                        <div class="col-lg-3">
+                            
+                                <div class="form-group">
+                                    <label>เลขทะเบียน  </label>
+                                    <input value="<?php echo $asset['asset_registration_no']?>" id="asset_registration_no" name="asset_registration_no" type="text" class="form-control">
+                                    <p class="help-block">Example : 0610243003.</p>
+                                </div>
+                            
+                        </div>
+                        
                         <!-- /.col-lg-6 (nested) -->
                     </div>
                     <!-- /.row (nested) -->
@@ -247,13 +227,26 @@
                                 <label>ตัวเลือกการคิดค่าเสื่อมทรัพย์สิน <font color="#F00"><b>*</b></font></label>
                                 <select id="asset_depreciate" name="asset_depreciate" class="form-control">
                                     <option value="">Select</option>
-                                    <option value="0">ไม่คิดค่าเสื่อม</option>
-                                    <option value="1">คิดค่าเสื่อม</option>
+                                    <option  <?php if($asset['asset_depreciate']==0){?> selected <?php } ?>value="0">ไม่คิดค่าเสื่อม</option>
+                                    <option  <?php if($asset['asset_depreciate']==1){?> selected <?php } ?>value="1">คิดค่าเสื่อม</option>
                                 </select>
                                 <p class="help-block">Example : คิดค่าเสื่อม.</p>
                             </div>
                         
                         </div>
+                        <div class="col-lg-3">
+                            
+                            <div class="form-group">
+                                <label>การคำนวณค่าเสื่อมทรัพย์สิน <font color="#F00"><b>*</b></font></label>
+                                <select id="asset_depreciate_type" name="asset_depreciate_type" class="form-control">
+                                    <option value="">Select</option>
+                                    <option <?php if($asset['asset_depreciate_type']==0){?> selected <?php } ?>value="0">รายเดือน</option>
+                                    <option <?php if($asset['asset_depreciate_type']==1){?> selected <?php } ?>value="1">รายปี</option>
+                                </select>
+                                <p class="help-block">Example :รายเดือน/รายปี.</p>
+                            </div>
+                        
+                        </div> 
                     </div>
                     <!-- /.row (nested) -->
 
@@ -261,7 +254,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ซื้อ</label>
-                                <input type="text" id="asset_buy_date" name="asset_buy_date"  class="form-control calendar" readonly/>
+                                <input value="<?php echo $asset['asset_buy_date']?>" type="text" id="asset_buy_date" name="asset_buy_date"  class="form-control calendar" readonly/>
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
@@ -269,7 +262,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ใช้</label>
-                                <input type="text" id="asset_use_date" name="asset_use_date"  class="form-control calendar" readonly/>
+                                <input  value="<?php echo $asset['asset_use_date']?>" type="text" id="asset_use_date" name="asset_use_date"  class="form-control calendar" readonly/>
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
@@ -278,7 +271,7 @@
                             
                                 <div class="form-group">
                                     <label>ราคาทุน<font color="#F00"><b>*</b></font></label>
-                                    <input id="asset_cost_price" name="asset_cost_price" class="form-control">
+                                    <input value="<?php echo $asset['asset_cost_price']?>"  id="asset_cost_price" name="asset_cost_price" class="form-control">
                                     <p class="help-block">Example : 25000.</p>
                                 </div>
                             
@@ -288,7 +281,7 @@
                             
                                 <div class="form-group">
                                     <label>ราคาซาก<font color="#F00"><b>*</b></font></label>
-                                    <input id="asset_scrap_price" name="asset_scrap_price" class="form-control">
+                                    <input  value="<?php echo $asset['asset_scrap_price']?>" id="asset_scrap_price" name="asset_scrap_price" class="form-control">
                                     <p class="help-block">Example : 25000.</p>
                                 </div>
                             
@@ -304,7 +297,7 @@
                                 
                                 <div class="form-group">
                                     <label>อายุการใช้<font color="#F00"><b>*</b></font></label>
-                                    <input id="asset_expire" name="asset_expire" class="form-control">
+                                    <input value="<?php echo $asset['asset_expire']?>" id="asset_expire" name="asset_expire" class="form-control">
                                     <p class="help-block">Example : 25000.</p>
                                 </div>
                             
@@ -313,7 +306,7 @@
                             
                                 <div class="form-group">
                                     <label>อัตรา%<font color="#F00"><b>*</b></font></label>
-                                    <input id="asset_rate" name="asset_rate" class="form-control">
+                                    <input  value="<?php echo $asset['asset_rate']?>"  id="asset_rate" name="asset_rate" class="form-control">
                                     <p class="help-block">Example : 20.</p>
                                 </div>
                             
@@ -321,25 +314,12 @@
                     </div>
                     <!-- /.row (nested) -->
                     <div class="row">
-
-                        <div class="col-lg-3">
                             
-                            <div class="form-group">
-                                <label>การคำนวณค่าเสื่อมทรัพย์สิน <font color="#F00"><b>*</b></font></label>
-                                <select id="asset_depreciate_type" name="asset_depreciate_type" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="0">รายเดือน</option>
-                                    <option value="1">รายปี</option>
-                                </select>
-                                <p class="help-block">Example :รายเดือน/รายปี.</p>
-                            </div>
-                        
-                        </div>     
                         <div class="col-lg-3">
                             
                                 <div class="form-group">
                                     <label>ค่าเสื่อมสะสมยกมา<font color="#F00"><b>*</b></font></label>
-                                    <input id="asset_depreciate_transfer" name="asset_depreciate_transfer" class="form-control">
+                                    <input  value="<?php echo $asset['asset_depreciate_transfer']?>" id="asset_depreciate_transfer" name="asset_depreciate_transfer" class="form-control">
                                     <p class="help-block">Example : 0.</p>
                                 </div>
                             
@@ -348,7 +328,7 @@
                             
                             <div class="form-group">
                                 <label>ค่าเสื่อมที่คำนวณเอง<font color="#F00"><b>*</b></font></label>
-                                <input id="asset_depreciate_manual" name="asset_depreciate_manual" class="form-control">
+                                <input value="<?php echo $asset['asset_depreciate_manual']?>" id="asset_depreciate_manual" name="asset_depreciate_manual" class="form-control">
                                 <p class="help-block">Example : 0.</p>
                             </div>
                             
@@ -356,7 +336,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>คำนวณเองถึงวันที่</label>
-                                <input type="text" id="asset_manual_date" name="asset_manual_date"  class="form-control calendar" readonly/>
+                                <input value="<?php echo $asset['asset_manual_date']?>" type="text" id="asset_manual_date" name="asset_manual_date"  class="form-control calendar" readonly/>
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>                    
@@ -366,21 +346,28 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ขาย</label>
-                                <input type="text" id="asset_sale_date" name="asset_sale_date"  class="form-control calendar" readonly/>
+                                <input value="<?php echo $asset['asset_sale_date']?>"  type="text" id="asset_sale_date" name="asset_sale_date"  class="form-control calendar" readonly/>
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
+                                <label>ราคาขาย<font color="#F00"><b>*</b></font></label>
+                                <input value="<?php echo $asset['asset_price']?>"  id="asset_price" name="asset_price" class="form-control">
+                                <p class="help-block">Example : 0.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
                                 <label>กำไร/ขาดทุน<font color="#F00"><b>*</b></font></label>
-                                <input id="asset_price" name="asset_price" class="form-control">
+                                <input value="<?php echo $asset['asset_income']?>"  id="asset_income" name="asset_income" class="form-control">
                                 <p class="help-block">Example : 0.</p>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>ค่าเสื่อมเบื้องต้น<font color="#F00"><b>*</b></font></label>
-                                <input id="asset_depreciate_initial" name="asset_depreciate_initial" class="form-control">
+                                <input  value="<?php echo $asset['asset_depreciate_initial']?>" id="asset_depreciate_initial" name="asset_depreciate_initial" class="form-control">
                                 <p class="help-block">Example : 0.</p>
                             </div>
                         </div>

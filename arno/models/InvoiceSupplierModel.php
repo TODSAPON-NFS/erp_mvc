@@ -91,6 +91,30 @@ class InvoiceSupplierModel extends BaseModel{
 
     }
 
+    function getInvoiceSupplierByKeyword( $keyword = "" ){
+  
+        
+        $sql = " SELECT *
+        FROM tb_invoice_supplier 
+        LEFT JOIN tb_user  ON tb_invoice_supplier.employee_id = tb_user.user_id 
+        LEFT JOIN tb_supplier  ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id  
+        WHERE  invoice_supplier_code_gen LIKE ('%$keyword%')   
+        AND invoice_supplier_begin = '0' 
+        ORDER BY  invoice_supplier_code_gen ASC 
+        ";
+
+         //echo $sql;
+        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+            $data = [];
+            while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                $data[] = $row;
+            }
+            $result->close();
+            return $data;
+        }
+
+    }
+
     function getInvoiceSupplierByID($id){
         $sql = " SELECT * 
         FROM tb_invoice_supplier 
@@ -111,6 +135,7 @@ class InvoiceSupplierModel extends BaseModel{
     function getInvoiceSupplierByCode($invoice_supplier_code){
         $sql = " SELECT * 
         FROM tb_invoice_supplier  
+        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id
         WHERE invoice_supplier_code = '$invoice_supplier_code' 
         ";
 
@@ -128,6 +153,7 @@ class InvoiceSupplierModel extends BaseModel{
     function getInvoiceSupplierByCodeGen($invoice_supplier_code){
         $sql = " SELECT * 
         FROM tb_invoice_supplier  
+        LEFT JOIN tb_supplier ON tb_invoice_supplier.supplier_id = tb_supplier.supplier_id
         WHERE invoice_supplier_code_gen = '$invoice_supplier_code' 
         ";
 
@@ -663,6 +689,12 @@ class InvoiceSupplierModel extends BaseModel{
             $this->maintenance_stock->removePurchase( $data_clear[$i]['stock_group_id'], $data_clear[$i]['invoice_supplier_list_id'], $data_clear[$i]['product_id'], $data_clear[$i]['invoice_supplier_list_qty'], $data_clear[$i]['invoice_supplier_list_cost']); 
         }
  
+
+        $sql = " DELETE FROM tb_invoice_supplier_freight_in_list WHERE invoice_supplier_id = '$id' ";
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+        $sql = " DELETE FROM tb_invoice_supplier_import_duty_list WHERE invoice_supplier_id = '$id' ";
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
         $sql = " DELETE FROM tb_invoice_supplier_list WHERE invoice_supplier_id = '$id' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);

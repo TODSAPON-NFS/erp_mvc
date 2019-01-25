@@ -903,9 +903,11 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
         for($i=0; $i < count($invoice_supplier_list_id) ; $i++){ 
             $data = [];
             $data['invoice_supplier_list_fix_type'] = $invoice_supplier_list_fix_type[$invoice_supplier_list_id[$i]];
+            
             // echo "<pre>";
             // print_r($data['invoice_supplier_list_fix_type'] );
             // echo "</pre>";
+
             if($data['invoice_supplier_list_fix_type'] == 'percent-fix'){
                 $data['invoice_supplier_list_duty'] = (float)filter_var( $invoice_supplier_list_duty_percent[$i] , FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             } else if($data['invoice_supplier_list_fix_type'] == 'price-fix'){ 

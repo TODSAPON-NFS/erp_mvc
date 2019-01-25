@@ -188,10 +188,9 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example2">
                     <thead>
                         <tr>
-                            <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="No" width="24"> งวด</th>
-                            <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="Calculate" width="24"> การคำนวณ</th>
-                            <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="Depreciate" width="80"> ค่าเสื่อม</th>
-                            <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="Net price" width="200"> ราคาสุทธิ</th>
+                            <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="No" > งวด</th>
+                            <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="Calculate" > การคำนวณ</th>
+                            <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="Depreciate" > ค่าเสื่อม</th>
                             
                         </tr>
                     </thead>
@@ -213,39 +212,47 @@
                         $dd = intval($date->format('d'));                    
                         $maxDays=intval($date->format('t'));  
                         $rest_of_day = $maxDays - $dd;
-                        echo $rest_of_day;
                         $number = cal_days_in_month(CAL_GREGORIAN, 8, 2003);
                         ?>
                         <?php
+                        $sum=0;
                         for($i=0; $i < $expire; $i++){
+
                             for($j = 1; $j<=12; $j++){
 
                                 ?>
                                 <tr class="odd gradeX">
-                                    <td style="text-align:center;">เดือนที่  <?php echo $j; ?>ปี <?php echo $YY+$i;?></td>
+                                    <td style="text-align:center;">เดือนที่  <?php echo $j." "; ?>ปี <?php echo $YY+$i;?></td>
                                     <td style="text-align:center;">
                                         <?php 
                                         $days = cal_days_in_month(CAL_GREGORIAN, $j, $YY+$i);
-                                        echo number_format($calculate_price,2)."x".($rate/100)." /(365x".$days.")";
+                                        echo number_format($calculate_price,2)."x".($rate/100)." / 365x".$days."";
                                         ?>                                        
                                     </td>
                                     <td style="text-align:right;">
                                         <?php  
-                                        $result = ($calculate_price * ($rate/100)) / 365* $days;
+                                        $result = ($calculate_price * ($rate/100)) / 365* $days; 
+                                        $sum += $result;                                       
                                         echo number_format($result,2);
-                                        ?>
-                                    </td>                                       
-                                    <td style="text-align:right;">
-                                        <?php  
-                                            $net_price = $net_price-$result; 
-                                            echo number_format($net_price,2);
+
                                         ?>
                                     </td>                                        
                                 </tr>
                             <?php 
                             }
+                            ?>
+                                <tr>
+                                    <th class="text-right" > รวม</th>
+                                    <th> </th>
+                                    <th class="text-right" > <?php echo number_format($sum,2);?></th>
+                                    
+                                    
+                                </tr>
+                            <?php
+                            $sum = 0;
                         }
                         ?>
+                        
                     </tbody>
                 </table>
                 
@@ -265,7 +272,6 @@
     $dd = intval($date->format('d'));                    
     $maxDays=intval($date->format('t'));  
     $rest_of_day = $maxDays - $dd;
-    echo $maxDays;
     // $currentDayOfMonth=date('j');
 
     // if($maxDays == $currentDayOfMonth){
@@ -281,7 +287,10 @@
 $(document).ready(function($){
     $('#dataTables-example2').dataTable( {
         "ordering": false,
-        "pageLength": 12
+        "bInfo": false,
+        "bLengthChange": false,
+        "bAutoWidth": false,
+        "pageLength": 13
         } );
         
 	});

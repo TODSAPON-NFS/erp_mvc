@@ -52,6 +52,7 @@
                         <div class="form-group">
                             <label>คลังสินค้า / Stock </label>
                             <select id="stock_group_id" name="stock_group_id" class="form-control select"  data-live-search="true"> 
+                            <option <?php if($stock_group[$i]['stock_group_id'] == $stock_group_id){?> selected <?php }?> value="0">ทั้งหมด</option>
                                 <?php 
                                 for($i =  0 ; $i < count($stock_group) ; $i++){
                                 ?>
@@ -134,6 +135,33 @@
                         $stock_report_qty_sum = 0;
                         $stock_report_cost_avg_sum =  0; 
                         $stock_report_total_sum =  0; 
+                        if( count($stock_reports) == 0){
+
+                        }else{ 
+                            ///echo $stock_group_id;
+                             if($stock_group_id ==0 ){?>
+
+                                <tr class="">
+                                    <td colspan="4" >
+                                    </td>
+                                </tr>
+                                <tr class="">
+                                <td colspan="4" >
+                                <b><?php echo คลังสินค้าทั้งหมด; ?></b>
+                                </td>    
+                        </tr>
+                        <?php }else{?>
+                        <tr class="">
+                        <td colspan="4" >
+                        </td>
+                        </tr>
+                        <tr class="">
+                        <td colspan="4" >
+                        <b><?php echo $stock_reports[$i]['stock_group_name']; ?></b>
+                        </td>    
+                        </tr>
+                    
+                  <?php }}
 
                         for($i=0; $i < count($stock_reports); $i++){ 
 
@@ -143,16 +171,7 @@
                                 $stock_report_cost_avg = 0;
                                 $stock_report_total = 0;    
                         ?>
-                        <tr class="">
-                            <td colspan="4" >
-                            </td>
-                        </tr>
-                        <tr class="">
-                            <td colspan="4" >
-                                <b><?php echo $stock_reports[$i]['stock_group_name']; ?></b>
-                            </td> 
-                             
-                        </tr>
+                       
                         
                         <?PHP
                             } 

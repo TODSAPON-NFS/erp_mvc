@@ -506,12 +506,31 @@ class StockReportModel extends BaseModel{
        
         
 
-        $sql = "SELECT * FROM tb_stock_group WHERE stock_group_id = '".$stock_group_id."' ";
+       // $sql = "SELECT * FROM tb_stock_group WHERE stock_group_id = '".$stock_group_id."' ";
 
-        //echo $sql."<br><br>";
-        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-             $tb_stock = mysqli_fetch_array($result,MYSQLI_ASSOC); 
-             $result->close();
+        if($stock_group_id == "0"){
+             $str_stock = ""; 
+        }else if ($stock_group_id != "0"){
+            $str_stock = " AND stock_group_id = '$stock_group_id' ";  
+        } 
+
+            $sql ="SELECT * 
+            FROM tb_stock_group 
+            WHERE 1 
+            $str_stock
+            ";
+
+
+            if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                 $data = [];
+                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                 }
+                 $result->close(); 
+            }
+            $sql = '' ;
+
+        for($i = 0 ;$i<count($data)&&count($data)>0;$i++){
 
             if($status_qty == 1){
 
@@ -526,7 +545,11 @@ class StockReportModel extends BaseModel{
                 $str_qty = "";
 
             }
- 
+            //echo "<pre>";
+            //print_r($data);
+            //echo "</pre>";
+
+            
     
             if($product_start != "" && $product_end != ""){
                 $str_product = " AND product_code >= '$product_start' AND product_code <=  '$product_end' "; 
@@ -534,27 +557,43 @@ class StockReportModel extends BaseModel{
                 $str_product = " AND CONCAT(product_code_first,product_code) LIKE ('%$product_start%') ";  
             } 
 
-             $sql =" SELECT stock_group_name ,CONCAT(product_code_first,product_code) as product_code,product_name , IF(balance_qty IS NULL , stock_report_qty ,balance_qty) as stock_report_qty , IF(balance_stock_cost_avg IS NULL , stock_report_cost_avg, balance_stock_cost_avg ) as stock_report_cost_avg , IF(balance_stock_cost_avg IS NULL , (stock_report_qty*stock_report_cost_avg) , (balance_qty * balance_stock_cost_avg ) ) AS  stock_report_total 
+            if($i == 0){
+                $sql .=" SELECT SUM(stock_report_qty) AS stock_report_qty,product_code ,  product_name FROM 
+                ( 
+                ";
+            }
+
+             $sql .="( SELECT stock_group_name ,CONCAT(product_code_first,product_code) as product_code,product_name , IF(balance_qty IS NULL , stock_report_qty ,balance_qty) as stock_report_qty , IF(balance_stock_cost_avg IS NULL , stock_report_cost_avg, balance_stock_cost_avg ) as stock_report_cost_avg , IF(balance_stock_cost_avg IS NULL , (stock_report_qty*stock_report_cost_avg) , (balance_qty * balance_stock_cost_avg ) ) AS  stock_report_total 
                 FROM tb_stock_report 
                 LEFT JOIN tb_product ON tb_stock_report.product_id = tb_product.product_id 
                 LEFT JOIN tb_stock_group ON tb_stock_report.stock_group_id = tb_stock_group.stock_group_id 
                 LEFT JOIN ( 
                     SELECT tb2.* 
-                    FROM ".$tb_stock['table_name']." as tb2 
-                    LEFT JOIN ".$tb_stock['table_name']." as tb3 ON (tb2.product_id = tb3.product_id AND tb2.stock_id < tb3.stock_id) 
+                    FROM ".$data[$i]['table_name']." as tb2 
+                    LEFT JOIN ".$data[$i]['table_name']." as tb3 ON (tb2.product_id = tb3.product_id AND tb2.stock_id < tb3.stock_id) 
                     WHERE  tb3.stock_id IS NULL AND STR_TO_DATE(tb2.stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s')
                 ) as tb1 ON tb_stock_report.product_id = tb1.product_id
-                WHERE tb_stock_report.stock_group_id = '$stock_group_id' 
+                    WHERE tb_stock_report.stock_group_id = ".$data[$i]['stock_group_id']." 
                 AND tb_product.product_id IS NOT NULL  
                 $str_product  
                 $str_qty
                 GROUP BY tb_stock_report.stock_group_id , tb_stock_report.product_id 
                 HAVING stock_report_qty != 0 
-                ORDER BY stock_group_name,product_code ASC
+                ORDER BY stock_group_name,product_code ASC )
             "; 
 
-             //echo "<pre>".$sql."</pre>";
-            // echo $sql;
+                if(($i+1)<count($data)){
+                    $sql .=" union";
+                }
+            }
+            $sql .="  
+            )
+            AS tb_stock
+            GROUP BY product_code
+            "; 
+
+            //echo "<pre>".$sql."</pre>";
+            //echo $sql;
             if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
                 $data = [];
                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -562,14 +601,8 @@ class StockReportModel extends BaseModel{
                 }
                 $result->close();
                 return $data;
-            }
-
-        }else{
-           return $data;
-        }
-
-
-        
+            }  
+             
 
     } 
 
@@ -1226,8 +1259,9 @@ class StockReportModel extends BaseModel{
             $str_product
             ORDER BY ".$data[$i]['table_name'].".product_id ,STR_TO_DATE(".$data[$i]['table_name'].".stock_date,'%d-%m-%Y %H:%i:%s'),from_stock ASC ) 
             ";
+
             if(($i+1)<count($data)){
-                $sql .=" union";
+                $sql .=" union ";
             }
             
         }  
@@ -1237,7 +1271,7 @@ class StockReportModel extends BaseModel{
         AS tb_stock
         ORDER BY stock_group_name ASC , product_code,stock_group_code,STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'), from_stock ASC 
         "; 
-      // echo "<pre>".$sql."</pre>";
+       echo "<pre>".$sql."</pre>";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

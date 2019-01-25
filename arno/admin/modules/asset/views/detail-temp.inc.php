@@ -185,12 +185,13 @@
             <!-- /.panel-heading -->
             
             <div class="panel-body">
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example2">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
                             <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="No" width="24"> งวด</th>
                             <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="Calculate" width="24"> การคำนวณ</th>
                             <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="Depreciate" width="80"> ค่าเสื่อม</th>
+                            <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="cumulative" width="80"> สะสม</th>
                             <th style="text-align:center;"class="datatable-th"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="Net price" width="200"> ราคาสุทธิ</th>
                             
                         </tr>
@@ -214,36 +215,47 @@
                         $maxDays=intval($date->format('t'));  
                         $rest_of_day = $maxDays - $dd;
                         echo $rest_of_day;
-                        $number = cal_days_in_month(CAL_GREGORIAN, 8, 2003);
                         ?>
+                        <tr class="odd gradeX">
+                            <td style="text-align:center;">ต้นปีที่ 1</td>
+                            <td >                                      
+                            </td>
+                            <td>
+                            </td>                                        
+                            <td>
+                            </td>                                        
+                            <td style="text-align:right;">
+                                <?php echo  $net_price; ?>
+                            </td>                                        
+                        </tr>
                         <?php
-                        for($i=0; $i < $expire; $i++){
-                            for($j = 1; $j<=12; $j++){
-
+                        for($i=1; $i <= $expire; $i++){
+                        ?>
+                        <tr class="odd gradeX">
+                            <td style="text-align:center;">สิ้นปีที่ <?php echo $i; ?></td>
+                            <td style="text-align:center;">
+                                <?php 
+                                
+                                echo $calculate_price."x".$rate."%";
+                                ?>                                        
+                            </td>
+                            <td style="text-align:right;">
+                                <?php  
+                                $cal = $calculate_price * ($rate/100);
+                                echo  $cal;
                                 ?>
-                                <tr class="odd gradeX">
-                                    <td style="text-align:center;">เดือนที่  <?php echo $j; ?>ปี <?php echo $YY+$i;?></td>
-                                    <td style="text-align:center;">
-                                        <?php 
-                                        $days = cal_days_in_month(CAL_GREGORIAN, $j, $YY+$i);
-                                        echo number_format($calculate_price,2)."x".($rate/100)." /(365x".$days.")";
-                                        ?>                                        
-                                    </td>
-                                    <td style="text-align:right;">
-                                        <?php  
-                                        $result = ($calculate_price * ($rate/100)) / 365* $days;
-                                        echo number_format($result,2);
-                                        ?>
-                                    </td>                                       
-                                    <td style="text-align:right;">
-                                        <?php  
-                                            $net_price = $net_price-$result; 
-                                            echo number_format($net_price,2);
-                                        ?>
-                                    </td>                                        
-                                </tr>
-                            <?php 
-                            }
+                            </td> 
+
+                            <td style="text-align:right;">
+                                <?php echo  $added;
+                                $added += $cal;
+                                ?>
+                            </td>                                        
+                            <td style="text-align:right;">
+                                <?php echo  $net_price-$added; ?>
+                            </td>                                        
+                        </tr>
+                        <?
                         }
                         ?>
                     </tbody>
@@ -276,13 +288,3 @@
 
     ?>
 </div>
-<script>
-
-$(document).ready(function($){
-    $('#dataTables-example2').dataTable( {
-        "ordering": false,
-        "pageLength": 12
-        } );
-        
-	});
-</script>

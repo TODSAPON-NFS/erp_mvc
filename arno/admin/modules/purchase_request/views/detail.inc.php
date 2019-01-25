@@ -69,7 +69,7 @@
                                 <th style="text-align:center;">รหัสสินค้า <br>(Product Code)</th>
                                 <th style="text-align:center;">ชื่อสินค้า<br>(Product Name)</th>
                                 <th style="text-align:center;">จำนวน<br>(Qty)</th>
-                                <th style="text-align:center;">วันที่ใช้สินค้า<br>(Delivery Min)</th>
+                                <th style="text-align:center;">Delivery Date</th>
                                 <th style="text-align:center;">หมายเหตุ<br>(Remark)</th>
                             </tr>
                         </thead>

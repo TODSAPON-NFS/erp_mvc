@@ -31,6 +31,14 @@ if(!isset($_GET['action'])){
     $department = $department_model->getAssetDepartmentByAll();
     require_once($path.'update.inc.php');
 
+}else if ($_GET['action'] == 'detail' && ($license_admin_page == 'Medium' || $license_admin_page == 'High') ){
+    $asset_id = $_GET['id'];
+    $asset = $model->getAssetByID($asset_id);
+    $account_group = $account_group_model->getAssetAccountGroupByAll();
+    $category = $category_model->getAssetCategoryByAll();
+    $department = $department_model->getAssetDepartmentByAll();
+    require_once($path.'detail.inc.php');
+
 }else if ($_GET['action'] == 'delete' && ($license_admin_page == 'High')){
 
     $asset = $model->deleteAssetById($_GET['id']);
@@ -69,16 +77,13 @@ if(!isset($_GET['action'])){
         $asset = $model->insertAsset($data);
 
         if($asset != ""){
-            // $img = $_POST['hidden_data'];
-            // $data['asset_signature'] = $img;
-            // $model->updateAssetSignatureByID($_POST['asset_id'],$data);
-?>
-        <script>window.location="index.php?app=asset&action=update&id=<?PHP echo $asset?>"</script>
-<?php
+            ?>
+                    <script>window.location="index.php?app=asset&action=update&id=<?PHP echo $asset?>"</script>
+            <?php
         }else{
-?>
-        <script>window.location="index.php?app=asset"</script>
-<?php
+            ?>
+                    <script>window.location="index.php?app=asset"</script>
+            <?php
         }
     }else{
         ?>
@@ -87,7 +92,6 @@ if(!isset($_GET['action'])){
     }
     
 }else if ($_GET['action'] == 'edit' && ($license_admin_page == 'Medium' || $license_admin_page == 'High')){
-    
     if(isset($_POST['asset_code'])){
         // $data['asset_id'] = $_POST['asset_code'];
         $data['asset_code'] = $_POST['asset_code'];
@@ -115,7 +119,15 @@ if(!isset($_GET['action'])){
 
         $asset = $model->updateAssetByID($_POST['asset_id'],$data);
 
-        
+        if($asset){
+            ?>
+                    <script>window.location="index.php?app=asset&action=update&id=<?php echo $_POST['asset_id']; ?>"</script>
+            <?php
+        }else{
+            ?>
+                    <script>window.location="index.php?app=asset"</script>
+            <?php
+        }
         
     }else{
         ?>

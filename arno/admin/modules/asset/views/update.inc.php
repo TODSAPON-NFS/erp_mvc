@@ -389,3 +389,22 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+<script>
+
+$(document).ready(function($){
+		$('#asset_expire').on('change keyup', function()
+		{
+			console.log(this.value);
+            var val = parseFloat(this.value);
+            if(!isNaN(val)){
+                var rate = 100 / val;
+                $("#asset_rate").val(rate.toFixed(2)); 
+            }
+            else{
+                $("#asset_rate").val("");
+            }	      
+             
+	    });
+	});
+
+</script>

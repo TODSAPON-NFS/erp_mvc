@@ -42,12 +42,28 @@ if(!isset($_GET['stock_group_id'])){
     $stock_group_id = $_GET['stock_group_id'];
     $_SESSION['stock_group_id'] = $stock_group_id;
 }
+
 if(!isset($_GET['status_qty'])){
     $status_qty = $_SESSION['status_qty'];
 }else{
     $status_qty = $_GET['status_qty'];
     $_SESSION['status_qty'] = $status_qty;
 }
+
+if(!isset($_GET['product_start'])){
+    $product_start = $_SESSION['product_start'];
+}else{
+    $product_start = $_GET['product_start'];
+    $_SESSION['product_start'] = $product_start;
+}
+
+if(!isset($_GET['product_end'])){
+    $product_end = $_SESSION['product_end'];
+}else{
+    $product_end = $_GET['product_end'];
+    $_SESSION['product_end'] = $product_end;
+}
+
 
  
 if($date_end == ""){ 

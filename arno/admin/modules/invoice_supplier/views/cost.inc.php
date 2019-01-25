@@ -228,16 +228,16 @@ function calculate(all_duty){
                             $cost_duty = 0;
                             $cost_price_total_s = 0;
                             $cost_price_ex_total_s = 0;
-                            for($i=0; $i < count($invoice_supplier_lists); $i++){
-                                $invoice_supplier_lists[$i]['invoice_supplier_list_price']  = $invoice_supplier_lists[$i]['invoice_supplier_list_currency_price'];
+                            for($i=0; $i < count($invoice_supplier_lists); $i++){ 
                                 $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
-                                $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
+                                $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_currency_price'] ;
                                 $cost_duty += $cost_qty * $cost_price;
                             }
                             for($i=0; $i < count($invoice_supplier_lists); $i++){
                                 $cost_qty = $invoice_supplier_lists[$i]['invoice_supplier_list_qty'];
-                                $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ;
-                                $cost_price_ex = $invoice_supplier_lists[$i]['invoice_supplier_list_price'] * $exchange_rate_baht['exchange_rate_baht_value'];
+                                $cost_price = $invoice_supplier_lists[$i]['invoice_supplier_list_currency_price'] ;
+                                $cost_price_ex = $invoice_supplier_lists[$i]['invoice_supplier_list_currency_price'] * $exchange_rate_baht['exchange_rate_baht_value'];
+                                $invoice_supplier_lists[$i]['invoice_supplier_list_price'] = $cost_price_ex ;
                                 $cost_price_total = $cost_qty * $cost_price;
                                 $cost_price_ex_total = $cost_qty * $cost_price_ex;
 
@@ -302,6 +302,7 @@ function calculate(all_duty){
                                     <input name="invoice_supplier_list_import_duty[]" type="hidden" value="<?php echo   $invoice_supplier_lists[$i]['invoice_supplier_list_import_duty'] ; ?>"  />
                                     <input name="invoice_supplier_list_freight_in[]" type="hidden" value="<?php echo  ($cost_price_f / $invoice_supplier_lists[$i]['invoice_supplier_list_qty']) ; ?>"  />
                                     <input name="invoice_supplier_list_qty[]" type="hidden" value="<?php echo   $invoice_supplier_lists[$i]['invoice_supplier_list_qty'] ; ?>"  />
+                                    <input name="invoice_supplier_list_price[]" type="hidden" value="<?php echo   $invoice_supplier_lists[$i]['invoice_supplier_list_price'] ; ?>"  />
                                     <input name="invoice_supplier_list_cost[]" type="hidden" value="<?php echo   $invoice_supplier_lists[$i]['invoice_supplier_list_cost'] ; ?>"  />
                                 </td>
                             </tr>

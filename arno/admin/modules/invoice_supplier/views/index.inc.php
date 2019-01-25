@@ -896,8 +896,8 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
     $invoice_supplier_list_duty = $_POST['invoice_supplier_list_duty'];
     $invoice_supplier_list_import_duty = $_POST['invoice_supplier_list_import_duty'];
     $invoice_supplier_list_freight_in = $_POST['invoice_supplier_list_freight_in'];
-    $invoice_supplier_list_currency_price = $_POST['invoice_supplier_list_currency_price'];
-    $invoice_supplier_list_cost = $_POST['invoice_supplier_list_cost'];
+    $invoice_supplier_list_currency_price = $_POST['invoice_supplier_list_currency_price']; 
+    $invoice_supplier_list_price = $_POST['invoice_supplier_list_price']; 
     
     if(is_array($invoice_supplier_list_id)){
         for($i=0; $i < count($invoice_supplier_list_id) ; $i++){ 
@@ -916,7 +916,8 @@ if(!isset($_GET['action']) && ( $license_purchase_page == "Medium" || $license_p
             } 
             $data['invoice_supplier_list_import_duty'] = (float)filter_var( $invoice_supplier_list_import_duty[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $data['invoice_supplier_list_freight_in'] = (float)filter_var( $invoice_supplier_list_freight_in[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-            $data['invoice_supplier_list_cost'] = (float)filter_var( $invoice_supplier_list_cost[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['invoice_supplier_list_price'] = (float)filter_var( $invoice_supplier_list_price[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $data['invoice_supplier_list_cost'] = $data['invoice_supplier_list_import_duty'] + $data['invoice_supplier_list_freight_in'] + $data['invoice_supplier_list_price'] ;
 
             // echo "<pre>";
             // print_r($data);

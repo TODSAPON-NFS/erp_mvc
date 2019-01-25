@@ -58,7 +58,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     <div style="font-size:12px;padding-left:32px;padding-top:134px;"></div>   
     <table width="100%" >
         <tr>
-            <td style="padding-left:72px;width:120px;" align="center">
+            <td style="padding-left:90px;width:120px;" align="center">
                 '.$invoice_customer['customer_code'].'
             </td>
             <td style="font-size:14px;padding-right:60px;" align="right">
@@ -69,7 +69,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 <div>
     <table width="100%" >
         <tr>
-            <td style="padding-left:84px;font-size:14px;line-height: 26px;" width = "580" valign="middle">
+            <td style="padding-left:104px;font-size:14px;line-height: 26px;" width = "580" valign="middle">
             <b>
                 '.$invoice_customer['invoice_customer_name'].'
                 <br>

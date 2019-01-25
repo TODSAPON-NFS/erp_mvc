@@ -264,7 +264,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                            '. $purchase_order_lists[$i]['product_code'].' <br>
                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'. $purchase_order_lists[$i]['product_name'].' <br>  
                            '. $purchase_order_lists[$i]['purchase_order_list_remark'].'<br> 
-                           '. $purchase_order_lists[$i]['purchase_order_list_delivery_min'].'
+                           <b style="color:red;">Delivery date :'. $purchase_order_lists[$i]['purchase_order_list_delivery_min'].' </b>
                            </td> 
                         <td align="right" valign="top" >
                             '. number_format($purchase_order_lists[$i]['purchase_order_list_qty'],0).'

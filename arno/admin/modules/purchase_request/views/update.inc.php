@@ -514,7 +514,7 @@
                                 <th style="text-align:center;">ผู้ขาย </th>
                                 <th style="text-align:center;">คลังสินค้า </th>
                                 <th style="text-align:center;max-width:80px;">จำนวน </th>
-                                <th style="text-align:center;max-width:80px;">วันที่ใช้สินค้า </th>
+                                <th style="text-align:center;max-width:80px;">Delivery Date </th>
                                 <th style="text-align:center;">หมายเหตุ </th>
                                 <th></th>
                             </tr>

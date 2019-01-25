@@ -32,7 +32,7 @@
         },
 
         preparePostData: function(data) {
-            data.keyword = $(".example-ajax-post").val();
+            data.keyword = $(".example-ajax-post:focus").val();
             return data;
         },
 

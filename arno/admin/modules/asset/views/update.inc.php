@@ -13,7 +13,15 @@
             }
         });
     }
-
+    function onChangeTypeNumber(id){
+            var val = $(id).val();
+            if(!isNaN(val)){
+                $(id).val(parseFloat(val).toFixed(2)); 
+            }
+            else{
+                $("#id").val("");
+            }
+    }
     function check(){
 
 
@@ -271,7 +279,7 @@
                             
                                 <div class="form-group">
                                     <label>ราคาทุน<font color="#F00"><b>*</b></font></label>
-                                    <input value="<?php echo $asset['asset_cost_price']?>"  id="asset_cost_price" name="asset_cost_price" class="form-control">
+                                    <input onchange="onChangeTypeNumber(this)" value="<?php echo $asset['asset_cost_price']?>"  id="asset_cost_price" name="asset_cost_price" class="form-control">
                                     <p class="help-block">Example : 25000.</p>
                                 </div>
                             
@@ -281,7 +289,7 @@
                             
                                 <div class="form-group">
                                     <label>ราคาซาก<font color="#F00"><b>*</b></font></label>
-                                    <input  value="<?php echo $asset['asset_scrap_price']?>" id="asset_scrap_price" name="asset_scrap_price" class="form-control">
+                                    <input onchange="onChangeTypeNumber(this)" value="<?php echo $asset['asset_scrap_price']?>" id="asset_scrap_price" name="asset_scrap_price" class="form-control">
                                     <p class="help-block">Example : 25000.</p>
                                 </div>
                             
@@ -319,7 +327,7 @@
                             
                                 <div class="form-group">
                                     <label>ค่าเสื่อมสะสมยกมา<font color="#F00"><b>*</b></font></label>
-                                    <input  value="<?php echo $asset['asset_depreciate_transfer']?>" id="asset_depreciate_transfer" name="asset_depreciate_transfer" class="form-control">
+                                    <input onchange="onChangeTypeNumber(this)" value="<?php echo $asset['asset_depreciate_transfer']?>" id="asset_depreciate_transfer" name="asset_depreciate_transfer" class="form-control">
                                     <p class="help-block">Example : 0.</p>
                                 </div>
                             
@@ -328,7 +336,7 @@
                             
                             <div class="form-group">
                                 <label>ค่าเสื่อมที่คำนวณเอง<font color="#F00"><b>*</b></font></label>
-                                <input value="<?php echo $asset['asset_depreciate_manual']?>" id="asset_depreciate_manual" name="asset_depreciate_manual" class="form-control">
+                                <input onchange="onChangeTypeNumber(this)" value="<?php echo $asset['asset_depreciate_manual']?>" id="asset_depreciate_manual" name="asset_depreciate_manual" class="form-control">
                                 <p class="help-block">Example : 0.</p>
                             </div>
                             
@@ -353,26 +361,27 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>ราคาขาย<font color="#F00"><b>*</b></font></label>
-                                <input value="<?php echo $asset['asset_price']?>"  id="asset_price" name="asset_price" class="form-control">
+                                <input onchange="onChangeTypeNumber(this)" value="<?php echo $asset['asset_price']?>"  id="asset_price" name="asset_price" class="form-control">
                                 <p class="help-block">Example : 0.</p>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>กำไร/ขาดทุน<font color="#F00"><b>*</b></font></label>
-                                <input value="<?php echo $asset['asset_income']?>"  id="asset_income" name="asset_income" class="form-control">
+                                <input onchange="onChangeTypeNumber(this)" value="<?php echo $asset['asset_income']?>"  id="asset_income" name="asset_income" class="form-control">
                                 <p class="help-block">Example : 0.</p>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>ค่าเสื่อมเบื้องต้น<font color="#F00"><b>*</b></font></label>
-                                <input  value="<?php echo $asset['asset_depreciate_initial']?>" id="asset_depreciate_initial" name="asset_depreciate_initial" class="form-control">
+                                <input onchange="onChangeTypeNumber(this)"  value="<?php echo $asset['asset_depreciate_initial']?>" id="asset_depreciate_initial" name="asset_depreciate_initial" class="form-control">
                                 <p class="help-block">Example : 0.</p>
                             </div>
                         </div>
                            
                     </div>
+                   
 
                     <div class="row">
                         <div class="col-lg-offset-9 col-lg-3" align="right">
@@ -405,6 +414,7 @@ $(document).ready(function($){
             }	      
              
 	    });
+        
 	});
 
 </script>

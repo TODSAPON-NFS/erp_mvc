@@ -16,7 +16,15 @@
             }
         });
     }
-
+    function onChangeTypeNumber(id){
+            var val = $(id).val();
+            if(!isNaN(val)){
+                $(id).val(val.toFixed(2)); 
+            }
+            else{
+                $("#id").val("");
+            }
+    }
     function check(){
 
 
@@ -255,7 +263,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ซื้อ</label>
-                                <input type="text" id="asset_buy_date" name="asset_buy_date"  class="form-control calendar" />
+                                <input autocomplete="off" type="text" id="asset_buy_date" name="asset_buy_date"  class="form-control calendar" />
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
@@ -263,7 +271,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ใช้</label>
-                                <input type="text" id="asset_use_date" name="asset_use_date"  class="form-control calendar" />
+                                <input autocomplete="off" type="text" id="asset_use_date" name="asset_use_date"  class="form-control calendar" />
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
@@ -272,7 +280,7 @@
                             
                                 <div class="form-group">
                                     <label>ราคาทุน<font color="#F00"><b>*</b></font></label>
-                                    <input id="asset_cost_price" name="asset_cost_price" class="form-control">
+                                    <input value="0.00" id="asset_cost_price" name="asset_cost_price" class="form-control" onchange="onChangeTypeNumber(this)" >
                                     <p class="help-block">Example : 25000.</p>
                                 </div>
                             
@@ -282,7 +290,7 @@
                             
                                 <div class="form-group">
                                     <label>ราคาซาก<font color="#F00"><b>*</b></font></label>
-                                    <input id="asset_scrap_price" name="asset_scrap_price" class="form-control">
+                                    <input value="1.00" id="asset_scrap_price" name="asset_scrap_price" class="form-control" onchange="onChangeTypeNumber(this)" >
                                     <p class="help-block">Example : 25000.</p>
                                 </div>
                             
@@ -321,7 +329,7 @@
                             
                                 <div class="form-group">
                                     <label>ค่าเสื่อมสะสมยกมา<font color="#F00"><b>*</b></font></label>
-                                    <input id="asset_depreciate_transfer" name="asset_depreciate_transfer" class="form-control">
+                                    <input value="0.00" id="asset_depreciate_transfer" name="asset_depreciate_transfer" class="form-control"  onchange="onChangeTypeNumber(this)" >
                                     <p class="help-block">Example : 0.</p>
                                 </div>
                             
@@ -330,7 +338,7 @@
                             
                             <div class="form-group">
                                 <label>ค่าเสื่อมที่คำนวณเอง<font color="#F00"><b>*</b></font></label>
-                                <input id="asset_depreciate_manual" name="asset_depreciate_manual" class="form-control">
+                                <input value="0.00" id="asset_depreciate_manual" name="asset_depreciate_manual" class="form-control"  onchange="onChangeTypeNumber(this)" >
                                 <p class="help-block">Example : 0.</p>
                             </div>
                             
@@ -338,7 +346,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>คำนวณเองถึงวันที่</label>
-                                <input type="text" id="asset_manual_date" name="asset_manual_date"  class="form-control calendar" />
+                                <input autocomplete="off" type="text" id="asset_manual_date" name="asset_manual_date"  class="form-control calendar" />
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>                    
@@ -348,28 +356,28 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ขาย</label>
-                                <input type="text" id="asset_sale_date" name="asset_sale_date"  class="form-control calendar" />
+                                <input autocomplete="off" type="text" id="asset_sale_date" name="asset_sale_date"  class="form-control calendar" />
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>ราคาขาย<font color="#F00"><b>*</b></font></label>
-                                <input id="asset_price" name="asset_price" class="form-control">
+                                <input value="0.00" id="asset_price" name="asset_price" class="form-control" onchange="onChangeTypeNumber(this)" >
                                 <p class="help-block">Example : 0.</p>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>กำไร/ขาดทุน<font color="#F00"><b>*</b></font></label>
-                                <input id="asset_income" name="asset_income" class="form-control">
+                                <input value="0.00" id="asset_income" name="asset_income" class="form-control" onchange="onChangeTypeNumber(this)" >
                                 <p class="help-block">Example : 0.</p>
                             </div>
                         </div>
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>ค่าเสื่อมเบื้องต้น<font color="#F00"><b>*</b></font></label>
-                                <input id="asset_depreciate_initial" name="asset_depreciate_initial" class="form-control">
+                                <input value="0.00" id="asset_depreciate_initial" name="asset_depreciate_initial" class="form-control" onchange="onChangeTypeNumber(this)" >
                                 <p class="help-block">Example : 0.</p>
                             </div>
                         </div>
@@ -407,6 +415,7 @@ $(document).ready(function($){
             }	      
              
 	    });
+        
 	});
 
 </script>

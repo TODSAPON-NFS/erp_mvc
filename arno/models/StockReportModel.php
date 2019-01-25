@@ -1271,7 +1271,7 @@ class StockReportModel extends BaseModel{
         AS tb_stock
         ORDER BY stock_group_name ASC , product_code,stock_group_code,STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'), from_stock ASC 
         "; 
-       echo "<pre>".$sql."</pre>";
+       //echo "<pre>".$sql."</pre>";
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             $data = [];
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){

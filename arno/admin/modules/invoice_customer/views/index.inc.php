@@ -5,6 +5,7 @@ $user = $_SESSION['user'];
 require_once('../functions/NumbertoTextFunction.func.php');
 require_once('../models/InvoiceCustomerModel.php');
 require_once('../models/InvoiceCustomerListModel.php');
+require_once('../models/InvoiceCustomerCostModel.php');
 require_once('../models/CustomerPurchaseOrderListModel.php');
 require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
@@ -30,6 +31,7 @@ $customer_model = new CustomerModel;
 $notification_model = new NotificationModel;
 $invoice_customer_model = new InvoiceCustomerModel;
 $invoice_customer_list_model = new InvoiceCustomerListModel;
+$invoice_customer_cost_model = new InvoiceCustomerCostModel;
 $customer_purchase_order_list_model = new CustomerPurchaseOrderListModel;
 $product_model = new ProductModel;
 $product_customer_price_model = new ProductCustomerPriceModel;
@@ -160,6 +162,13 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     $customer=$customer_model->getCustomerByID($invoice_customer['customer_id']);
 
     $invoice_customer_lists = $invoice_customer_list_model->getInvoiceCustomerListBy($invoice_customer_id);
+
+    $invoice_customer_costs = $invoice_customer_cost_model->getInvoiceSupplierCostByInvoiceCustomerID($invoice_customer_id);
+
+
+    // echo "<pre>";
+    // print_r($invoice_customer_costs);
+    // echo "</pre>";
 
     $invoice_customers = $invoice_customer_model->getInvoiceCustomerBy("","","","","","0",$lock_1,$lock_2);
 
@@ -330,6 +339,26 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                     $product_customer_price_model->insertProductCustomerPrice($data);
                 }
             }
+
+
+            /* อัพเดทต้นทุน */
+
+            $invoice_supplier_id = $_POST['invoice_supplier_id'];
+            $invoice_customer_cost_value = $_POST['invoice_customer_cost_value'];
+
+            $invoice_customer_cost_model->deleteInvoiceCustomerCostByIDNotIN($invoice_customer_id,$invoice_supplier_id);
+            for($i=0; $i < count($invoice_supplier_id); $i++){
+                $data = [];
+                $data['invoice_customer_id'] = $invoice_customer_id;
+                $data['invoice_supplier_id'] = $invoice_supplier_id[$i];
+                $data['invoice_customer_cost_value'] = (float)filter_var($invoice_customer_cost_value[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+
+                $invoice_customer_cost_model->deleteInvoiceCustomerCostByID($invoice_customer_id,$invoice_supplier_id[$i]);
+                $invoice_customer_cost_model->insertInvoiceCustomerCost($data);
+
+            } 
+
+            /* สิ้นสุดอัพเดทต้นทุน */
             
 
             
@@ -492,7 +521,9 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
        $maintenance_model->updateJournal($invoice_customer,$journal_list, $account_customer, $account_vat_sale['account_id'],$account_sale['account_id']);
 
-        
+       
+       
+       /* อัพเดทราคาขาย */
        
        $save_product_price = $_POST['save_product_price'];
        for($i=0; $i < count($save_product_price); $i++){
@@ -515,6 +546,33 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
                $product_customer_price_model->insertProductCustomerPrice($data);
            }
        }
+
+       /* สิ้นสุดอัพเดทราคาขาย */
+
+
+
+
+
+       /* อัพเดทต้นทุน */
+        $invoice_supplier_id = $_POST['invoice_supplier_id'];
+        $invoice_customer_cost_value = $_POST['invoice_customer_cost_value'];
+
+        $invoice_customer_cost_model->deleteInvoiceCustomerCostByIDNotIN($invoice_customer_id,$invoice_supplier_id);
+        for($i=0; $i < count($invoice_supplier_id); $i++){
+            $data = [];
+            $data['invoice_customer_id'] = $invoice_customer_id;
+            $data['invoice_supplier_id'] = $invoice_supplier_id[$i];
+            $data['invoice_customer_cost_value'] = (float)filter_var($invoice_customer_cost_value[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+
+            $invoice_customer_cost_model->deleteInvoiceCustomerCostByID($invoice_customer_id,$invoice_supplier_id[$i]);
+            $invoice_customer_cost_model->insertInvoiceCustomerCost($data);
+
+        } 
+
+       /* สิ้นสุดอัพเดทต้นทุน */
+
+
+
 
         if($output){
         

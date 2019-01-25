@@ -258,9 +258,9 @@
             td_number[i].innerHTML = (i+1);
         }
 
-        var td_number = $('table[name="tb_invoice_supplier_list"]').children('tbody').children('tr').children('td:first-child');
-        for(var i = 0; i < td_number.length ;i++){
-            td_number[i].innerHTML = (i+1);
+        var tb_invoice_supplier_list = $('table[name="tb_invoice_supplier_list"]').children('tbody').children('tr').children('td:first-child');
+        for(var i = 0; i < tb_invoice_supplier_list.length ;i++){
+            tb_invoice_supplier_list[i].innerHTML = (i+1);
         }
     }
 
@@ -818,7 +818,7 @@
                 '<td>'+
                     '<input type="hidden" name="invoice_supplier_id[]" value="0" />'+
                     '<input type="hidden" name="invoice_customer_cost_real[]" value="0" />'+
-                    '<input type="text" class="invoice-supplier-ajax-post form-control" name="invoice_supplier_code[]" onchange="show_invoice_supplier_data(this);" value=""'+
+                    '<input type="text" class="invoice-supplier-ajax-post form-control" name="invoice_supplier_code_gen[]" onchange="show_invoice_supplier_data(this);" value=""'+
                 '</td>'+
                 '<td align="center">'+
                     '<span name="invoice_supplier_date_recieve">'+
@@ -829,7 +829,7 @@
                     '</span>'+ 
                 '</td>'+
                 '<td align="center">'+
-                '<input type="text" class="form-control" name="invoice_customer_cost_value[]" value="" />'+
+                '<input type="text" class="form-control" style="text-align:right;" name="invoice_customer_cost_value[]" value="" />'+
                 '</td>'+
                 '<td>'+
                     '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -850,6 +850,7 @@
         $.post( "controllers/getInvoiceSupplierByCodeGen.php", { 'invoice_supplier_code': $.trim(invoice_supplier_code)}, function( data ) {
             console.log($(id).closest('tr').children('td').children('span[name="supplier_name"]'));
             if(data != null){
+                $(id).closest('tr').children('td').children('input[name="invoice_supplier_id[]"]').val(data.invoice_supplier_id)
                 $(id).closest('tr').children('td').children('span[name="invoice_supplier_date_recieve"]').text(data.invoice_supplier_date_recieve)
                 $(id).closest('tr').children('td').children('span[name="supplier_name"]').text("["+data.supplier_code+"] "+ data.supplier_name_en)  
                 $(id).closest('tr').children('td').children('input[name="invoice_customer_cost_value[]"]').val(data.invoice_supplier_total_price)   
@@ -1291,16 +1292,16 @@
                                                 <td>
                                                     <input type="hidden" name="invoice_supplier_id[]" value="<?php echo $invoice_customer_costs[$i]['invoice_supplier_id']; ?>" />
                                                     <input type="hidden" name="invoice_customer_cost_real[]" value="<?php echo $invoice_customer_costs[$i]['invoice_supplier_total_price']; ?>" />
-                                                    <input type="text" class="invoice-supplier-ajax-post form-control" name="invoice_supplier_code[]" onchange="show_invoice_supplier_data(this);" value="<?php echo $invoice_customer_costs[$i]['invoice_supplier_code']; ?>" />
+                                                    <input type="text" class="invoice-supplier-ajax-post form-control" name="invoice_supplier_code_gen[]" onchange="show_invoice_supplier_data(this);" value="<?php echo $invoice_customer_costs[$i]['invoice_supplier_code_gen']; ?>" />
                                                 </td>
                                                 <td align="center">
-                                                    <?php  $invoice_customer_costs[$i]['invoice_supplier_date_recieve']; ?>
+                                                    <?php  echo $invoice_customer_costs[$i]['invoice_supplier_date_recieve']; ?>
                                                 </td>
                                                 <td align="left">
-                                                    [<?php  $invoice_customer_costs[$i]['supplier_code']; ?>] <?php  $invoice_customer_costs[$i]['supplier_name_en']; ?>
+                                                    [<?php  echo $invoice_customer_costs[$i]['supplier_code']; ?>] <?php  echo $invoice_customer_costs[$i]['supplier_name_en']; ?>
                                                 </td>
                                                 <td align="center">
-                                                <input type="text" class="form-control" name="invoice_customer_cost_value[]" onchange="calculate_cost();" value="<?php echo $invoice_customer_costs[$i]['invoice_customer_cost_value']; ?>" />
+                                                <input type="text" class="form-control" name="invoice_customer_cost_value[]" style="text-align:right;" onchange="calculate_cost();" value="<?php echo number_format($invoice_customer_costs[$i]['invoice_customer_cost_value'],2); ?>" />
                                                 </td>
                                                 <td>
                                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
@@ -1357,6 +1358,7 @@
 </div>
 
 <script>
+$(".invoice-supplier-ajax-post").easyAutocomplete(option_invoice_suppliers);
 $(".example-ajax-post").easyAutocomplete(options);
 $(".purchase-ajax-post").easyAutocomplete(options_purchase);
 generate_credit_date();

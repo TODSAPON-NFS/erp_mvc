@@ -109,14 +109,14 @@ class StockReportModel extends BaseModel{
                         '2' AS paper_type,
                         'โอนคลังสินค้า' AS paper_type_name,
                         `stock_move_date` AS paper_date,
-                        stock_move_list_qty AS paper_qty,
+                        SUM(stock_move_list_qty) AS paper_qty,
                         tb_stock_group.stock_group_name,
                         tb_stock_group.stock_group_id
                     FROM `tb_stock_move` 
                    LEFT JOIN tb_stock_move_list ON tb_stock_move.stock_move_id = tb_stock_move_list.stock_move_id 
                    LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_stock_move.stock_group_id_in
                     WHERE   $str_mov
-
+                    group by tb_stock_move.stock_move_id
                 UNION SELECT
                         product_id ,
                         tb_invoice_customer.invoice_customer_id AS paper_id,
@@ -124,14 +124,14 @@ class StockReportModel extends BaseModel{
                         '3' AS paper_type,
                         'ขายสินค้า' AS paper_type_name,
                         `invoice_customer_date` AS paper_date,
-                        invoice_customer_list_qty AS paper_qty,
+                        SUM(invoice_customer_list_qty) AS paper_qty,
                         tb_stock_group.stock_group_name,
                         tb_stock_group.stock_group_id
                     FROM `tb_invoice_customer` 
                     LEFT JOIN tb_invoice_customer_list ON tb_invoice_customer.invoice_customer_id = tb_invoice_customer_list.invoice_customer_id 
                     LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_customer_list.stock_group_id
                     WHERE   $str_cus 
-
+                    group by tb_invoice_customer.invoice_customer_id
                 ORDER BY STR_TO_DATE(paper_date,'%d-%m-%Y %H:%i:%s'), paper_type
         ";
 

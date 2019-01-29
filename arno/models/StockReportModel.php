@@ -91,13 +91,16 @@ class StockReportModel extends BaseModel{
                     '1' AS paper_type,
                     'รับสินค้าเข้า' AS paper_type_name,
                     `invoice_supplier_date_recieve` AS paper_date,
-                    tb_invoice_supplier_list.invoice_supplier_list_qty AS paper_qty,
+                    -- tb_invoice_supplier_list.invoice_supplier_list_qty AS paper_qty,
+                    SUM(tb_invoice_supplier_list.invoice_supplier_list_qty) AS paper_qty,
                     tb_stock_group.stock_group_name,
                     tb_stock_group.stock_group_id
                 FROM `tb_invoice_supplier` 
                 LEFT JOIN tb_invoice_supplier_list ON tb_invoice_supplier.invoice_supplier_id = tb_invoice_supplier_list.invoice_supplier_id 
                 LEFT JOIN tb_stock_group ON tb_stock_group.stock_group_id = tb_invoice_supplier_list.stock_group_id
                 WHERE   $str_sup
+                group by tb_invoice_supplier.invoice_supplier_id
+
 
                 UNION  SELECT
                         product_id ,

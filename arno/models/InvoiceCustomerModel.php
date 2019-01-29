@@ -709,6 +709,9 @@ class InvoiceCustomerModel extends BaseModel{
         $sql = " DELETE FROM tb_invoice_customer_list WHERE invoice_customer_id = '$id' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
+        $sql = " DELETE FROM tb_invoice_customer_cost WHERE invoice_customer_id = '$id' ";
+        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
         $sql = " DELETE FROM tb_invoice_customer WHERE invoice_customer_id = '$id' ";
         
         if(mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)){

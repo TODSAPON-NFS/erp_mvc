@@ -457,7 +457,7 @@ class CustomerPurchaseOrderModel extends BaseModel{
         CONCAT(product_code_first,product_code) as product_code, 
         product_name, 
         SUM(IFNULL(delivery_note_customer_list_qty,0)) - SUM(IFNULL(customer_purchase_order_list_qty,0)) as customer_purchase_order_list_qty,  
-        CONCAT('DN : ',delivery_note_customer_code) as customer_purchase_order_list_remark 
+        CONCAT('DN : ',delivery_note_customer_code) as customer_purchase_order_list_remark  
         FROM tb_delivery_note_customer_list 
         LEFT JOIN tb_delivery_note_customer ON tb_delivery_note_customer_list.delivery_note_customer_id = tb_delivery_note_customer.delivery_note_customer_id 
         LEFT JOIN tb_customer_purchase_order_list ON tb_delivery_note_customer_list.delivery_note_customer_list_id = tb_customer_purchase_order_list.delivery_note_customer_list_id 

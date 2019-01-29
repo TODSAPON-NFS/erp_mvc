@@ -493,7 +493,7 @@
                             '<input type="hidden" class="form-control" name="delivery_note_customer_list_id[]" value="'+delivery_note_customer_list_id+'" readonly />'+
                             '<input type="hidden" class="form-control" name="customer_purchase_order_list_id[]" value="0" readonly />'+
                             '<input type="hidden" name="product_id[]" class="form-control" />'+
-                            '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" />'+ 
+                            '<input class="example-ajax-post form-control" name="product_code[]" value="'+data_buffer[i].product_code+'" onchange="show_data(this);" placeholder="Product Code" />'+ 
                         '</td>'+
                         '<td>'+
                             '<input type="text" class="form-control" name="product_name[]" readonly value="'+data_buffer[i].product_name+'" />'+
@@ -506,9 +506,9 @@
                         '</td>'+
                         '<td><input type="text" class="form-control" name="customer_purchase_order_list_qty[]"  autocomplete="off" value="'+data_buffer[i].customer_purchase_order_list_qty+'" onchange="update_sum(this);" /></td>'+
                         '<td>'+
-                            '<input type="text" class="form-control" name="customer_purchase_order_list_price[]" autocomplete="off" onchange="update_sum(this);" />'+
+                            '<input type="text" class="form-control" name="customer_purchase_order_list_price[]" autocomplete="off" value="0.00"  onchange="update_sum(this);" />'+
                         '</td>'+
-                        '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" autocomplete="off" onchange="update_sum(this);" /></td>'+
+                        '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" autocomplete="off" value="0.00" onchange="update_sum(this);" /></td>'+
                         '<td></td>'+
                         '<td>'+
                             '<input type="hidden" name="end_user_id[]" class="form-control" />'+

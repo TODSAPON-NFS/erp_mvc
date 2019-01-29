@@ -128,6 +128,11 @@
         <div class="panel panel-default">
             <div class="panel-heading">
             การเสื่อมทรัพย์สิน / Asset Depreciate
+                    <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
+                        <a  href="?app=asset&action=update&id=<?php echo $asset_id;?>">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </a> 
+                    <?PHP }?>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -162,6 +167,45 @@
                         <!-- /.col-lg-6 (nested) -->
                     </div>
                     <!-- /.row (nested) -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                                
+                                <div class="form-group">
+                                    <label>ราคาทุน<font color="#F00"><b>*</b></font></label>
+                                    <input readonly onchange="onChangeTypeNumber(this)" value="<?php echo $asset['asset_cost_price']?>"  id="asset_cost_price" name="asset_cost_price" class="form-control">
+                                    <p class="help-block">Example : 25000.00</p>
+                                </div>
+                            
+                        </div>
+
+                        <div class="col-lg-3">
+                            
+                                <div class="form-group">
+                                    <label>ราคาซาก<font color="#F00"><b>*</b></font></label>
+                                    <input readonly onchange="onChangeTypeNumber(this)" value="<?php echo $asset['asset_scrap_price']?>" id="asset_scrap_price" name="asset_scrap_price" class="form-control">
+                                    <p class="help-block">Example : 1.00.</p>
+                                </div>
+                            
+                        </div>
+                        <div class="col-lg-3">
+                                
+                                <div class="form-group">
+                                    <label>อายุการใช้<font color="#F00"><b>*</b></font></label>
+                                    <input readonly value="<?php echo $asset['asset_expire']?>" id="asset_expire" name="asset_expire" class="form-control">
+                                    <p class="help-block">Example : 5</p>
+                                </div>
+                            
+                        </div>
+                        <div class="col-lg-3">
+                            
+                                <div class="form-group">
+                                    <label>อัตรา%<font color="#F00"><b>*</b></font></label>
+                                    <input readonly value="<?php echo $asset['asset_rate']?>"  id="asset_rate" name="asset_rate" class="form-control">
+                                    <p class="help-block">Example : 20.00</p>
+                                </div>
+                            
+                        </div>                        
+                    </div>
 
                    
             </div>
@@ -172,7 +216,7 @@
     <!-- /.col-lg-12 -->
 </div>
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-6">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
@@ -216,30 +260,48 @@
                         ?>
                         <?php
                         $sum=0;
+                        $days=$rest_of_day;
                         for($i=0; $i < $expire; $i++){
-
+                            
                             for($j = 1; $j<=12; $j++){
-
-                                ?>
-                                <tr class="odd gradeX">
-                                    <td style="text-align:center;">เดือนที่  <?php echo $j." "; ?>ปี <?php echo $YY+$i;?></td>
-                                    <td style="text-align:center;">
-                                        <?php 
-                                        $days = cal_days_in_month(CAL_GREGORIAN, $j, $YY+$i);
-                                        echo number_format($calculate_price,2)."x".($rate/100)." / 365x".$days."";
-                                        ?>                                        
-                                    </td>
-                                    <td style="text-align:right;">
-                                        <?php  
-                                        $result = ($calculate_price * ($rate/100)) / 365* $days; 
-                                        $sum += $result;                                       
-                                        echo number_format($result,2);
-
-                                        ?>
-                                    </td>                                        
-                                </tr>
-                            <?php 
+                                if($j == $mm){
+                                    if($j!=12)
+                                        $mm = $j+1;
+                                    ?>
+                                        <tr class="odd gradeX">
+                                            <td style="text-align:center;">เดือนที่  <?php echo $j." "; ?>ปี <?php echo $YY+$i;?></td>
+                                            <td style="text-align:center;">
+                                                <?php 
+                                                
+                                                echo number_format($calculate_price,2)."x".$rate."% / 365x".$days."";
+                                                if($j!=12)
+                                                    $month=$j+1;
+                                                
+                                                ?>                                        
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <?php  
+                                                $result = ($calculate_price * ($rate/100)) / 365* $days; 
+                                                $sum += $result;                                       
+                                                echo number_format($result,2);
+                                                $days = cal_days_in_month(CAL_GREGORIAN, $month, $YY+$i);
+                                                ?>
+                                            </td>                                        
+                                        </tr>
+                                <?php }else{
+                                    ?>
+                                        <tr class="odd gradeX">
+                                            <td style="text-align:center;">เดือนที่  <?php echo $j." "; ?>ปี <?php echo $YY+$i;?></td>
+                                            <td style="text-align:center;">0                                       
+                                            </td>
+                                            <td style="text-align:right;">0
+                                            </td>                                        
+                                        </tr>
+                                <?php }
+                                
                             }
+                            $mm=1;
+                            
                             ?>
                                 <tr>
                                     <th class="text-right" > รวม</th>

@@ -118,7 +118,6 @@ class AssetModel extends BaseModel{
         asset_scrap_price = '".static::$db->real_escape_string($data['asset_scrap_price'])."', 
         asset_expire = '".static::$db->real_escape_string($data['asset_expire'])."', 
         asset_rate = '".static::$db->real_escape_string($data['asset_rate'])."', 
-        asset_depreciate_type = '".static::$db->real_escape_string($data['asset_depreciate_type'])."',
         asset_depreciate_transfer = '".static::$db->real_escape_string($data['asset_depreciate_transfer'])."', 
         asset_depreciate_manual = '".static::$db->real_escape_string($data['asset_depreciate_manual'])."' ,
         asset_depreciate_initial = '".static::$db->real_escape_string($data['asset_depreciate_initial'])."' ,
@@ -180,7 +179,6 @@ class AssetModel extends BaseModel{
             asset_scrap_price,
             asset_expire,
             asset_rate,
-            asset_depreciate_type,
             asset_depreciate_transfer,
             asset_depreciate_manual,
             asset_depreciate_initial,
@@ -204,7 +202,6 @@ class AssetModel extends BaseModel{
             $data['asset_scrap_price']."','".
             $data['asset_expire']."','".
             $data['asset_rate']."','".
-            $data['asset_depreciate_type']."','".
             $data['asset_depreciate_transfer']."','".
             $data['asset_depreciate_manual']."','".
             $data['asset_depreciate_initial']."','".

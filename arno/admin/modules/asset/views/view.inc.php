@@ -48,18 +48,20 @@
                                         <td><?php echo $asset[$i]['asset_name_th']; ?></td>
                                         <td><?php echo $asset[$i]['asset_buy_date']; ?></td>
                                         <td style="text-align:center;">
+                                        <?php if($asset[$i]['asset_depreciate'] =='1'){?>
                                             <a href="?app=asset&action=detail&id=<?php echo $asset[$i]['asset_id'];?>">
-                                                <i class="fa fa-money" aria-hidden="true"></i>
+                                                <i style="margin-left:4px;margin-right:4px;" class="fa fa-money" aria-hidden="true"></i>
                                             </a> 
+                                        <?php }?>
                                         <?php if($license_admin_page == "Medium" || $license_admin_page == "High"){ ?> 
                                             <a href="?app=asset&action=update&id=<?php echo $asset[$i]['asset_id'];?>">
-                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                <i style="margin-left:4px;margin-right:4px;" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             </a> 
                                         <?PHP }?>
                                            
                                         <?php if($license_admin_page == "High"){ ?> 
                                             <a href="?app=asset&action=delete&id=<?php echo $asset[$i]['asset_id'];?>" onclick="return confirm('You want to delete asset : <?php echo $asset[$i]['name']; ?>');" style="color:red;">
-                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                                <i style="margin-left:4px;margin-right:4px;" class="fa fa-times" aria-hidden="true"></i>
                                             </a>
                                         <?PHP }?>
                                         </td>

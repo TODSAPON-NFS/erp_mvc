@@ -64,7 +64,6 @@ if(!isset($_GET['action'])){
         $data['asset_scrap_price'] = $_POST['asset_scrap_price'];
         $data['asset_expire'] = $_POST['asset_expire'];
         $data['asset_rate'] = $_POST['asset_rate'];
-        $data['asset_depreciate_type'] = $_POST['asset_depreciate_type'];
         $data['asset_depreciate_transfer'] = $_POST['asset_depreciate_transfer'];
         $data['asset_depreciate_manual'] = $_POST['asset_depreciate_manual'];
         $data['asset_depreciate_initial'] = $_POST['asset_depreciate_initial'];
@@ -107,7 +106,6 @@ if(!isset($_GET['action'])){
         $data['asset_scrap_price'] = $_POST['asset_scrap_price'];
         $data['asset_expire'] = $_POST['asset_expire'];
         $data['asset_rate'] = $_POST['asset_rate'];
-        $data['asset_depreciate_type'] = $_POST['asset_depreciate_type'];
         $data['asset_depreciate_transfer'] = $_POST['asset_depreciate_transfer'];
         $data['asset_depreciate_manual'] = $_POST['asset_depreciate_manual'];
         $data['asset_depreciate_initial'] = $_POST['asset_depreciate_initial'];

@@ -38,7 +38,6 @@
         var asset_scrap_price = document.getElementById("asset_scrap_price").value;
         var asset_expire = document.getElementById("asset_expire").value;
         var asset_rate = document.getElementById("asset_rate").value;
-        var asset_depreciate_type = document.getElementById("asset_depreciate_type").value;
         var asset_depreciate_transfer = document.getElementById("asset_depreciate_transfer").value;
         var asset_depreciate_manual = document.getElementById("asset_depreciate_manual").value;
         var asset_depreciate_initial = document.getElementById("asset_depreciate_initial").value;
@@ -62,7 +61,6 @@
         asset_scrap_price = $.trim(asset_scrap_price);
         asset_expire = $.trim(asset_expire);
         asset_rate = $.trim(asset_rate);
-        asset_depreciate_type = $.trim(asset_depreciate_type);
         asset_depreciate_transfer = $.trim(asset_depreciate_transfer);
         asset_depreciate_manual = $.trim(asset_depreciate_manual);
         asset_depreciate_initial = $.trim(asset_depreciate_initial);
@@ -154,7 +152,7 @@
                             
                                 <div class="form-group">
                                     <label>ชื่อทรัพย์สิน TH/ Name TH<font color="#F00"><b>*</b></font></label>
-                                    <input id="asset_name_th" name="asset_name_th" value="<?php echo $asset['asset_name_th']?>" class="form-control">
+                                    <input required  id="asset_name_th" name="asset_name_th" value="<?php echo $asset['asset_name_th']?>" class="form-control">
                                     <p class="help-block">Example : คอมพิวเตอร์.</p>
                                 </div>
                             
@@ -163,7 +161,7 @@
                             
                                 <div class="form-group">
                                     <label>ชื่อทรัพย์สิน EN/  Name EN <font color="#F00"><b>*</b></font></label>
-                                    <input id="asset_name_en" name="asset_name_en" value="<?php echo $asset['asset_name_en']?>" class="form-control">
+                                    <input required  id="asset_name_en" name="asset_name_en" value="<?php echo $asset['asset_name_en']?>" class="form-control">
                                     <p class="help-block">Example : Computer.</p>
                                 </div>
                         </div>
@@ -242,19 +240,6 @@
                             </div>
                         
                         </div>
-                        <div class="col-lg-3">
-                            
-                            <div class="form-group">
-                                <label>การคำนวณค่าเสื่อมทรัพย์สิน <font color="#F00"><b>*</b></font></label>
-                                <select id="asset_depreciate_type" name="asset_depreciate_type" class="form-control">
-                                    <option value="">Select</option>
-                                    <option <?php if($asset['asset_depreciate_type']==0){?> selected <?php } ?>value="0">รายเดือน</option>
-                                    <option <?php if($asset['asset_depreciate_type']==1){?> selected <?php } ?>value="1">รายปี</option>
-                                </select>
-                                <p class="help-block">Example :รายเดือน/รายปี.</p>
-                            </div>
-                        
-                        </div> 
                     </div>
                     <!-- /.row (nested) -->
 
@@ -262,7 +247,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ซื้อ</label>
-                                <input value="<?php echo $asset['asset_buy_date']?>" type="text" id="asset_buy_date" name="asset_buy_date"  class="form-control calendar" readonly/>
+                                <input  required value="<?php echo $asset['asset_buy_date']?>" type="text" id="asset_buy_date" name="asset_buy_date"  class="form-control calendar" readonly/>
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
@@ -270,7 +255,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label>วันที่ใช้</label>
-                                <input  value="<?php echo $asset['asset_use_date']?>" type="text" id="asset_use_date" name="asset_use_date"  class="form-control calendar" readonly/>
+                                <input required value="<?php echo $asset['asset_use_date']?>" type="text" id="asset_use_date" name="asset_use_date"  class="form-control calendar" readonly/>
                                 <p class="help-block">Example : 31-01-2019</p>
                             </div>
                         </div>
@@ -279,7 +264,7 @@
                             
                                 <div class="form-group">
                                     <label>ราคาทุน<font color="#F00"><b>*</b></font></label>
-                                    <input onchange="onChangeTypeNumber(this)" value="<?php echo $asset['asset_cost_price']?>"  id="asset_cost_price" name="asset_cost_price" class="form-control">
+                                    <input required onchange="onChangeTypeNumber(this)" value="<?php echo $asset['asset_cost_price']?>"  id="asset_cost_price" name="asset_cost_price" class="form-control">
                                     <p class="help-block">Example : 25000.</p>
                                 </div>
                             
@@ -289,7 +274,7 @@
                             
                                 <div class="form-group">
                                     <label>ราคาซาก<font color="#F00"><b>*</b></font></label>
-                                    <input onchange="onChangeTypeNumber(this)" value="<?php echo $asset['asset_scrap_price']?>" id="asset_scrap_price" name="asset_scrap_price" class="form-control">
+                                    <input required onchange="onChangeTypeNumber(this)" value="<?php echo $asset['asset_scrap_price']?>" id="asset_scrap_price" name="asset_scrap_price" class="form-control">
                                     <p class="help-block">Example : 25000.</p>
                                 </div>
                             
@@ -305,7 +290,7 @@
                                 
                                 <div class="form-group">
                                     <label>อายุการใช้<font color="#F00"><b>*</b></font></label>
-                                    <input value="<?php echo $asset['asset_expire']?>" id="asset_expire" name="asset_expire" class="form-control">
+                                    <input required value="<?php echo $asset['asset_expire']?>" id="asset_expire" name="asset_expire" class="form-control">
                                     <p class="help-block">Example : 25000.</p>
                                 </div>
                             
@@ -314,7 +299,7 @@
                             
                                 <div class="form-group">
                                     <label>อัตรา%<font color="#F00"><b>*</b></font></label>
-                                    <input  value="<?php echo $asset['asset_rate']?>"  id="asset_rate" name="asset_rate" class="form-control">
+                                    <input required value="<?php echo $asset['asset_rate']?>"  id="asset_rate" name="asset_rate" class="form-control">
                                     <p class="help-block">Example : 20.</p>
                                 </div>
                             

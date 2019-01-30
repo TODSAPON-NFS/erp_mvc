@@ -137,7 +137,7 @@ if(!isset($_GET['action'])){
     if($journal_cash_receipt_id > 0){
        
         $journal_cash_receipt = $journal_cash_receipt_model->getJournalCashPaymentByID($journal_cash_receipt_id);
-        $journal_cash_receipt_lists = $journal_cash_receipt_list_model->getJournalCashPaymentListBy($journal_cash_receipt_id);
+        $journal_cash_receipt_lists = $journal_cash_receipt_list_model->getJournalCashReceiptListBy($journal_cash_receipt_id);
     }
     
     require_once($path.'insert.inc.php');

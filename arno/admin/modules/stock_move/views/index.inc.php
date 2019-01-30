@@ -190,6 +190,8 @@ if(!isset($_GET['action'])){
 
             $maintenance_stock_model->runMaintenance($_POST['stock_move_date']);
 
+
+
     ?>
             <script>window.location="index.php?app=stock_move&action=update&id=<?php echo $stock_move_id;?>"</script>
     <?php
@@ -203,6 +205,9 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'edit'){
     
     if(isset($_POST['stock_move_code'])){
+
+        $stock_move = $stock_move_model->getStockMoveByID($stock_move_id);
+
         $data = [];
         $data['stock_move_date'] = $_POST['stock_move_date'];
         $data['stock_move_code'] = $_POST['stock_move_code'];
@@ -258,7 +263,15 @@ if(!isset($_GET['action'])){
         
         if($output){
 
-            $maintenance_stock_model->runMaintenance($_POST['stock_move_date']);
+            $old_date = DateTime::createFromFormat('d-m-Y',$stock_move['stock_move_date']);
+            $new_date =  DateTime::createFromFormat('d-m-Y',$_POST['stock_move_date']);
+
+            if($old_date < $new_date){
+                $maintenance_stock_model->runMaintenance($stock_move['stock_move_date']);
+            }else{
+                $maintenance_stock_model->runMaintenance($_POST['stock_move_date']);
+            }
+            
     ?>
             <script>window.location="index.php?app=stock_move"</script>
     <?php

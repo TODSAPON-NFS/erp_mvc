@@ -620,15 +620,17 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         เพิ่มใบจ่ายชำระหนี้ / Add Finance Credit  
                     </div>
-                    <div class="col-md-4" align="right">
+                    <div class="col-md-6" align="right">
                         <?PHP if($previous_id != ""){?>
                         <a class="btn btn-primary" href="?app=finance_credit&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
                         <?PHP } ?>
+                        
+                        <a class="btn btn-success "  href="?app=finance_credit&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
 
-                        <a class="btn btn-danger" href="print.php?app=report_journal_04&type=id&action=pdf&id=<?php echo $journal_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
+                        <a class="btn btn-danger" href="print.php?app=finance_credit&type=id&action=pdf&id=<?php echo $journal_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
                         
                         <a class="btn btn-warning" href="?app=journal_special_04&action=update&id=<?php echo $journal_id;?>" target="_blank" > <i class="fa fa-folder-open" aria-hidden="true"></i> สมุดรายวันขาย </a>
                         

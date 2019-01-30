@@ -3,7 +3,7 @@
 session_start();
 require_once('../models/StockReportModel.php'); 
 require_once('../models/StockGroupModel.php');
-
+require_once('../models/CompanyModel.php'); 
 date_default_timezone_set('asia/bangkok');
 $d1=date("d");
 $d2=date("m");
@@ -16,7 +16,7 @@ $path = "print/report_stock_02/views/";
  
 $stock_report_model = new StockReportModel;
 $model_group = new StockGroupModel;
-
+$company_model = new CompanyModel;
 
 if(!isset($_GET['date_end'])){
     $date_end = $_SESSION['date_end'];
@@ -66,6 +66,7 @@ if($stock_group_id!='' ||$product_start!=''||$product_end!=''){
     $stock_reports = $stock_report_model->getStockReportBalanceListBy($date_end, $stock_group_id , $product_start, $product_end,$status_qty);
 }
  
+$company=$company_model->getCompanyByID('1');
 
 include($path."view.inc.php");
 

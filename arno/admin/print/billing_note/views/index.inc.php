@@ -33,7 +33,7 @@ $billing_note_lists = $billing_note_list_model->getBillingNoteListBy($billing_no
 //     $tax_reports[] = $tax_reports[0];
 // }
 
-$lines = 10;
+$lines = 15;
 
 $page_max = (int)(count($billing_note_lists) / $lines);
 if(count($billing_note_lists) % $lines > 0){
@@ -54,7 +54,19 @@ if($_GET['action'] == "pdf"){
     /*############################### FPDF ##############################*/
 
     include("../plugins/mpdf/mpdf.php");
-    $mpdf=new mPDF('th', 'A4', '0', 'garuda');  
+    $mpdf=new mPDF('th', 'A4', '0', 'garuda' ,12,12,9,10,15,15,15);  
+
+    /******
+     * 
+     * Default values:
+            margin_left: 15
+            margin_right: 15
+            margin_top: 16
+            margin_bottom: 16
+            margin_header: 9
+            margin_footer: 9
+     * 
+     */
     
     for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
@@ -67,7 +79,7 @@ if($_GET['action'] == "pdf"){
         //$html = ob_get_contents();  
         //ob_end_clean();
         $mpdf->WriteHTML($html[$page_index]);
-        
+        //echo $html[$page_index] ;
 
     }
     

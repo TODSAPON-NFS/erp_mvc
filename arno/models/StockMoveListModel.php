@@ -1,12 +1,14 @@
 <?php
 
 require_once("BaseModel.php");
+require_once("MaintenanceStockModel.php"); 
 class StockMoveListModel extends BaseModel{
-
+    private $maintenance_stock;
     function __construct(){
         if(!static::$db){
             static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
         }
+        $this->maintenance_stock =  new MaintenanceStockModel;
     }
 
     function getStockMoveListBy($stock_move_id){
@@ -60,6 +62,7 @@ class StockMoveListModel extends BaseModel{
 
             $id = mysqli_insert_id(static::$db);
 
+
             $sql = "
                 CALL insert_stock_move('".
                 $data['stock_group_id_out']."','".
@@ -69,6 +72,7 @@ class StockMoveListModel extends BaseModel{
                 $data['stock_move_list_qty']."','".
                 $data['stock_date']."');
             ";
+
 
             //echo $sql . "<br><br>";
 
@@ -95,6 +99,8 @@ class StockMoveListModel extends BaseModel{
 
         //echo $sql . "<br><br>";
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+          
+            
             $sql = "
                 CALL update_stock_move('".
                 $data['stock_group_id_out']."','".
@@ -104,6 +110,7 @@ class StockMoveListModel extends BaseModel{
                 $data['stock_move_list_qty']."','".
                 $data['stock_date']."');
             ";
+
 
             //echo $sql . "<br><br>";
 
@@ -156,12 +163,14 @@ class StockMoveListModel extends BaseModel{
         $sql_delete=[];
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+
                 $sql_delete [] = "
                     CALL delete_stock_move('".
                     $row['stock_group_id_out']."','".
                     $row['stock_group_id_in']."','".
                     $row['stock_move_list_id']."');
-                ";
+                "; 
+
                
             }
             $result->close();

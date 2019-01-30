@@ -133,8 +133,9 @@ class StockMoveModel extends BaseModel{
         stock_move_remark = '".$data['stock_move_remark']."', 
         updateby = '".$data['updateby']."', 
         lastupdate = '".$data['lastupdate']."' 
-        WHERE stock_move_id = $id 
+        WHERE stock_move_id = '$id' 
         ";
+
 
         if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
            return true;

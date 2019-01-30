@@ -13,6 +13,7 @@ class JournalGeneralListModel extends BaseModel{
         $sql = " SELECT 
         account_code,
         journal_general_list_id, 
+        journal_general_list_no, 
         journal_general_list_name,
         journal_general_list_debit,
         journal_general_list_credit, 
@@ -25,7 +26,7 @@ class JournalGeneralListModel extends BaseModel{
         account_name_en 
         FROM tb_journal_general_list LEFT JOIN tb_account ON tb_journal_general_list.account_id = tb_account.account_id 
         WHERE journal_general_id = '$journal_general_id' 
-        ORDER BY journal_general_list_id 
+        ORDER BY journal_general_list_no 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -43,6 +44,7 @@ class JournalGeneralListModel extends BaseModel{
     function insertJournalGeneralList($data = []){
         $sql = " INSERT INTO tb_journal_general_list (
             journal_general_id,
+            journal_general_list_no,
             journal_cheque_id,
             journal_cheque_pay_id,
             journal_invoice_customer_id,
@@ -57,6 +59,7 @@ class JournalGeneralListModel extends BaseModel{
             lastupdate
         ) VALUES (
             '".$data['journal_general_id']."',  
+            '".$data['journal_general_list_no']."', 
             '".$data['journal_cheque_id']."', 
             '".$data['journal_cheque_pay_id']."', 
             '".$data['journal_invoice_customer_id']."', 
@@ -83,6 +86,7 @@ class JournalGeneralListModel extends BaseModel{
 
         $sql = " UPDATE tb_journal_general_list 
             SET account_id = '".$data['account_id']."',  
+            journal_general_list_no = '".$data['journal_general_list_no']."',
             journal_cheque_id = '".$data['journal_cheque_id']."',
             journal_cheque_pay_id = '".$data['journal_cheque_pay_id']."',
             journal_invoice_customer_id = '".$data['journal_invoice_customer_id']."',

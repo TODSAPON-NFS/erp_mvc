@@ -237,6 +237,7 @@ if(!isset($_GET['action'])){
                     for($i=0; $i < count($account_id) ; $i++){
                         $data = [];
                         $data['journal_cash_payment_id'] = $journal_cash_payment_id;
+                        $data['journal_cash_payment_list_no'] = $i;
                         $data['account_id'] = $account_id[$i];
                         $data['journal_cheque_id'] = $journal_cheque_id[$i];
                         $data['journal_cheque_pay_id'] = $journal_cheque_pay_id[$i];
@@ -258,6 +259,7 @@ if(!isset($_GET['action'])){
                 }else{
                     $data = [];
                     $data['journal_cash_payment_id'] = $journal_cash_payment_id;
+                    $data['journal_cash_payment_list_no'] = 0;
                     $data['account_id'] = $account_id;
                     $data['journal_cheque_id'] = $journal_cheque_id;
                     $data['journal_cheque_pay_id'] = $journal_cheque_pay_id;
@@ -318,6 +320,7 @@ if(!isset($_GET['action'])){
             for($i=0; $i < count($account_id) ; $i++){
                 $data = [];
                 $data['journal_cash_payment_id'] = $journal_cash_payment_id;
+                $data['journal_cash_payment_list_no'] = $i;
                 $data['account_id'] = $account_id[$i];
                 $data['journal_cheque_id'] = $journal_cheque_id[$i];
                 $data['journal_cheque_pay_id'] = $journal_cheque_pay_id[$i];
@@ -337,6 +340,7 @@ if(!isset($_GET['action'])){
         }else{
             $data = [];
             $data['journal_cash_payment_id'] = $journal_cash_payment_id;
+            $data['journal_cash_payment_list_no'] = 0;
             $data['account_id'] = $account_id;
             $data['journal_cheque_id'] = $journal_cheque_id;
             $data['journal_cheque_pay_id'] = $journal_cheque_pay_id;

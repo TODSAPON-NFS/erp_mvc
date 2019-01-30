@@ -2,7 +2,7 @@
 
 session_start();
 require_once('../models/StockReportModel.php'); 
-
+require_once('../models/CompanyModel.php'); 
 date_default_timezone_set('asia/bangkok');
 $d1=date("d");
 $d2=date("m");
@@ -14,7 +14,7 @@ $d6=date("s");
 $path = "print/report_stock_03/views/";
  
 $stock_report_model = new StockReportModel;
-
+$company_model = new CompanyModel;
 
 $date_start = $_GET['date_start'];
 $date_end = $_GET['date_end'];
@@ -26,7 +26,7 @@ $product_end = $_GET['product_end'];
 
 $stock_reports = $stock_report_model->getStockReportProductMovementBy($date_start,$date_end,$stock_start,$stock_end,$product_start,$product_end);
  
-
+$company=$company_model->getCompanyByID('1');
 include($path."view.inc.php");
 
 

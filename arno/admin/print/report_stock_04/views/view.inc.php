@@ -19,7 +19,7 @@ $html_head_pdf = '
             <th width="16%" align=""></th>   
         </tr>
         <tr>
-            <td colspan="6">บริษัท อาร์โน (ประเทศไทย) จำกัด</td> 
+            <td colspan="6">'.$company['company_name_th'].'จำกัด</td> 
             <td colspan="7" align="right" ></td>
         </tr> 
         <tr>

@@ -10,6 +10,8 @@ require_once('../models/ProductModel.php');
 require_once('../models/StockGroupModel.php');
 require_once('../functions/CodeGenerateFunction.func.php');
 require_once('../models/PaperModel.php');
+require_once('../models/MaintenanceStockModel.php');
+
 date_default_timezone_set('asia/bangkok');
 
 $path = "modules/stock_move/views/";
@@ -20,6 +22,7 @@ $stock_move_list_model = new StockMoveListModel;
 $product_model = new ProductModel;
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
+$maintenance_stock_model = new MaintenanceStockModel;
 
 // 9 = key ของ purchase request ใน tb_paper
 $paper = $paper_model->getPaperByID('34');
@@ -116,7 +119,12 @@ if(!isset($_GET['action'])){
 }else if ($_GET['action'] == 'delete'){
 
     //$stock_move_list_model->deleteStockMoveListByStockMoveID($stock_move_id);
+    
+    $stock_move = $stock_move_model->getStockMoveByID($stock_move_id);
     $stock_moves = $stock_move_model->deleteStockMoveById($stock_move_id);
+
+    $maintenance_stock_model->runMaintenance($stock_move['stock_move_date']);
+
 ?>
     <script>window.location="index.php?app=stock_move"</script>
 <?php
@@ -178,6 +186,9 @@ if(!isset($_GET['action'])){
                 }
                 
             }
+
+
+            $maintenance_stock_model->runMaintenance($_POST['stock_move_date']);
 
     ?>
             <script>window.location="index.php?app=stock_move&action=update&id=<?php echo $stock_move_id;?>"</script>
@@ -246,6 +257,8 @@ if(!isset($_GET['action'])){
         }
         
         if($output){
+
+            $maintenance_stock_model->runMaintenance($_POST['stock_move_date']);
     ?>
             <script>window.location="index.php?app=stock_move"</script>
     <?php

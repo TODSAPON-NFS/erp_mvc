@@ -170,7 +170,7 @@ class JournalGeneralModel extends BaseModel{
         $sql = " UPDATE tb_journal_general SET 
         journal_general_code = '".$data['journal_general_code']."', 
         journal_general_date = '".$data['journal_general_date']."', 
-        journal_general_name = '".$data['journal_general_name']."', 
+        journal_general_name = '".static::$db->real_escape_string($data['journal_general_name'])."', 
         updateby = '".$data['updateby']."', 
         lastupdate = NOW()  
         WHERE journal_general_id = $id 
@@ -199,7 +199,7 @@ class JournalGeneralModel extends BaseModel{
         VALUES ('".
         $data['journal_general_code']."','".
         $data['journal_general_date']."','".
-        $data['journal_general_name']."','".
+        static::$db->real_escape_string($data['journal_general_name'])."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].

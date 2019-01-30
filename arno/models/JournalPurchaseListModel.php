@@ -80,7 +80,7 @@ class JournalPurchaseListModel extends BaseModel{
             '".$data['journal_invoice_customer_id']."', 
             '".$data['journal_invoice_supplier_id']."', 
             '".$data['account_id']."', 
-            '".$data['journal_purchase_list_name']."', 
+            '".static::$db->real_escape_string($data['journal_purchase_list_name'])."', 
             '".$data['journal_purchase_list_debit']."',
             '".$data['journal_purchase_list_credit']."',
             '".$data['addby']."', 
@@ -107,7 +107,7 @@ class JournalPurchaseListModel extends BaseModel{
             journal_cheque_pay_id = '".$data['journal_cheque_pay_id']."',
             journal_invoice_customer_id = '".$data['journal_invoice_customer_id']."',
             journal_invoice_supplier_id = '".$data['journal_invoice_supplier_id']."',
-            journal_purchase_list_name = '".$data['journal_purchase_list_name']."',
+            journal_purchase_list_name = '".static::$db->real_escape_string($data['journal_purchase_list_name'])."',
             journal_purchase_list_debit = '".$data['journal_purchase_list_debit']."',
             journal_purchase_list_credit = '".$data['journal_purchase_list_credit']."' 
             WHERE journal_purchase_list_id = '$id' 

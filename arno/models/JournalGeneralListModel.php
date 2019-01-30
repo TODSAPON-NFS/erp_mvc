@@ -62,7 +62,7 @@ class JournalGeneralListModel extends BaseModel{
             '".$data['journal_invoice_customer_id']."', 
             '".$data['journal_invoice_supplier_id']."', 
             '".$data['account_id']."', 
-            '".$data['journal_general_list_name']."', 
+            '".static::$db->real_escape_string($data['journal_general_list_name'])."', 
             '".$data['journal_general_list_debit']."',
             '".$data['journal_general_list_credit']."',
             '".$data['addby']."', 
@@ -87,7 +87,7 @@ class JournalGeneralListModel extends BaseModel{
             journal_cheque_pay_id = '".$data['journal_cheque_pay_id']."',
             journal_invoice_customer_id = '".$data['journal_invoice_customer_id']."',
             journal_invoice_supplier_id = '".$data['journal_invoice_supplier_id']."',
-            journal_general_list_name = '".$data['journal_general_list_name']."',
+            journal_general_list_name = '".static::$db->real_escape_string($data['journal_general_list_name'])."',
             journal_general_list_debit = '".$data['journal_general_list_debit']."',
             journal_general_list_credit = '".$data['journal_general_list_credit']."' 
             WHERE journal_general_list_id = '$id' 

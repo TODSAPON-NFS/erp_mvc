@@ -117,8 +117,10 @@
                         <tr> 
                             <th width="64px">ลำดับ</th>
                             <th >รหัสสินค้า</th>
-                            <th>ชื่อสินค้า</th>  
+                            <th>ชื่อสินค้า</th> 
                             <th align="center">จำนวน</th>
+                            <th>ต้นทุนเฉลี่ยต่อชิ้น</th> 
+                            <th>ต้นทุนเฉลี่ยรวม</th>
                             <?PHP /*?>
                             <th align="center">ราคาต่อหน่วย</th>
                             <th align="center">มูลค่าคงเหลือ</th>   
@@ -137,31 +139,33 @@
                         $stock_report_total_sum =  0; 
                         if( count($stock_reports) == 0){
 
+
                         }else{ 
                             ///echo $stock_group_id;
                              if($stock_group_id ==0 ){?>
 
-                                <tr class="">
-                                    <td colspan="4" >
-                                    </td>
+                            <tr class="">
+                                <td colspan="6"> </td>
+                                   
                                 </tr>
-                                <tr class="">
-                                <td colspan="4" >
-                                <b><?php echo คลังสินค้าทั้งหมด; ?></b>
-                                </td>    
-                        </tr>
-                        <?php }else{?>
+                                    <tr class="">
+                                    <td colspan="6" >
+                                    <b><?php echo คลังสินค้าทั้งหมด; ?></b>
+                                    </td>    
+                                </tr>
+                           <?php }else{?>
                         <tr class="">
-                        <td colspan="4" >
+                        <td colspan="6" >
                         </td>
                         </tr>
                         <tr class="">
-                        <td colspan="4" >
+                        <td colspan="6" >
                         <b><?php echo $stock_reports[$i]['stock_group_name']; ?></b>
                         </td>    
                         </tr>
                     
-                  <?php }}
+                  <?php }
+                  }
 
                         for($i=0; $i < count($stock_reports); $i++){ 
 
@@ -185,6 +189,8 @@
                             <td><?php echo $stock_reports[$i]['product_code']; ?></td>
                             <td><?php echo $stock_reports[$i]['product_name']; ?></td>
                             <td align="right"><?php echo number_format($stock_reports[$i]['stock_report_qty'],0); ?> Pc.</td> 
+                            <td align="right"><?php echo number_format($stock_reports[$i]['stock_report_cost_avg'],2); ?> </td> 
+                            <td align="right"><?php echo number_format($stock_reports[$i]['stock_report_avg_total'],2); ?> </td> 
                             <?PHP /* ?>
                             <td align="right"><?php if ($stock_reports[$i]['stock_report_qty'] != 0){ echo number_format($stock_reports[$i]['stock_report_cost_avg'],2); }else{ echo 0;} ?></td>
                             <td align="right"><?php if ($stock_reports[$i]['stock_report_qty'] != 0){ echo number_format($stock_reports[$i]['stock_report_total'],2); }else{ echo 0;} ?></td> 

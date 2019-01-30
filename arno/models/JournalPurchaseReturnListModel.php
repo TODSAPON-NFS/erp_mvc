@@ -49,7 +49,7 @@ class JournalPurchaseReturnListModel extends BaseModel{
         ) VALUES (
             '".$data['journal_purchase_return_id']."', 
             '".$data['account_id']."', 
-            '".$data['journal_purchase_return_list_name']."', 
+            '".static::$db->real_escape_string($data['journal_purchase_return_list_name'])."', 
             '".$data['journal_purchase_return_list_debit']."',
             '".$data['journal_purchase_return_list_credit']."',
             '".$data['addby']."', 
@@ -70,7 +70,7 @@ class JournalPurchaseReturnListModel extends BaseModel{
 
         $sql = " UPDATE tb_journal_purchase_return_list 
             SET account_id = '".$data['account_id']."', 
-            journal_purchase_return_list_name = '".$data['journal_purchase_return_list_name']."',
+            journal_purchase_return_list_name = '".static::$db->real_escape_string($data['journal_purchase_return_list_name'])."',
             journal_purchase_return_list_debit = '".$data['journal_purchase_return_list_debit']."',
             journal_purchase_return_list_credit = '".$data['journal_purchase_return_list_credit']."' 
             WHERE journal_purchase_return_list_id = '$id' 

@@ -185,32 +185,7 @@ class StockMoveModel extends BaseModel{
 
 
     function deleteStockMoveByID($id){
-
-        $sql = "SELECT stock_move_list_id, stock_group_id_out,  stock_group_id_in
-                FROM  tb_stock_move 
-                LEFT JOIN tb_stock_move_list ON tb_stock_move.stock_move_id = tb_stock_move_list.stock_move_id
-                WHERE tb_stock_move_list.stock_move_id = '$id' ";   
-                     
-         $sql_delete=[];
-         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-             while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                 $sql_delete [] = "
-                    CALL delete_stock_move('".
-                    $row['stock_group_id_out']."','".
-                    $row['stock_group_id_in']."','".
-                    $row['stock_move_list_id']."');
-                 ";
-                
-             }
-             $result->close();
-         }
  
-         for($i = 0 ; $i < count($sql_delete); $i++){
-             mysqli_query(static::$db,$sql_delete[$i], MYSQLI_USE_RESULT);
-             //echo $sql_delete[$i]."<br><br>";
-         }
- 
-
         $sql = " DELETE FROM tb_stock_move_list WHERE stock_move_id = '$id' ";
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 

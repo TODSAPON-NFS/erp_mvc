@@ -492,7 +492,7 @@
                         '<td>'+
                             '<input type="hidden" class="form-control" name="delivery_note_customer_list_id[]" value="'+delivery_note_customer_list_id+'" readonly />'+
                             '<input type="hidden" class="form-control" name="customer_purchase_order_list_id[]" value="0" readonly />'+
-                            '<input type="hidden" name="product_id[]" class="form-control" />'+
+                            '<input type="hidden" name="product_id[]" value="'+data_buffer[i].product_id+'" class="form-control" />'+
                             '<input class="example-ajax-post form-control" name="product_code[]" value="'+data_buffer[i].product_code+'" onchange="show_data(this);" placeholder="Product Code" />'+ 
                         '</td>'+
                         '<td>'+

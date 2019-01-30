@@ -486,8 +486,8 @@
                         '<td>'+
                             '<input type="hidden" class="form-control" name="delivery_note_customer_list_id[]" value="'+delivery_note_customer_list_id+'" readonly />'+
                             '<input type="hidden" class="form-control" name="customer_purchase_order_list_id[]" value="0" readonly />'+
-                            '<input type="hidden" name="product_id[]" class="form-control" />'+
-                            '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" />'+ 
+                            '<input type="hidden" name="product_id[]" value="'+data_buffer[i].product_id+'" class="form-control" />'+
+                            '<input class="example-ajax-post form-control" name="product_code[]" value="'+data_buffer[i].product_code+'"  onchange="show_data(this);" placeholder="Product Code" />'+ 
                         '</td>'+
                         '<td>'+
                             '<input type="text" class="form-control" name="product_name[]" readonly value="'+data_buffer[i].product_name+'" />'+
@@ -500,9 +500,9 @@
                         '</td>'+
                         '<td><input type="text" class="form-control" name="customer_purchase_order_list_qty[]" autocomplete="off" value="'+data_buffer[i].customer_purchase_order_list_qty+'" onchange="update_sum(this);" /></td>'+
                         '<td>'+
-                            '<input type="text" class="form-control" name="customer_purchase_order_list_price[]" autocomplete="off" onchange="update_sum(this);" />'+
+                            '<input type="text" class="form-control" name="customer_purchase_order_list_price[]" value="0.00"  autocomplete="off" onchange="update_sum(this);" />'+
                         '</td>'+
-                        '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" autocomplete="off" onchange="update_sum(this);" /></td>'+
+                        '<td><input type="text" class="form-control" name="customer_purchase_order_list_price_sum[]" value="0.00"  autocomplete="off" onchange="update_sum(this);" /></td>'+
                         '<td></td>'+
                         '<td>'+
                             '<input type="hidden" name="end_user_id[]" class="form-control" />'+
@@ -752,14 +752,20 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
+                                <?php
+                                        // echo "<pre>";
+                                        // echo print_r( $customer_purchase_order);
+                                        // echo "</pre>";
+                                ?>
+                               
                                     <div class="form-group">
                                         <label>พนักงานขาย / Sale  <font color="#F00"><b>*</b></font> </label>
                                         <select id="employee_id" name="employee_id" class="form-control select" data-live-search="true" onchange="getNewCode();"  >
-                                            <option value="">Select</option>
+                                        <option value="">Select</option>
                                             <?php 
                                             for($i =  0 ; $i < count($users) ; $i++){
                                             ?>
-                                            <option <?php if($users[$i]['user_id'] == $customer_purchase_order['employee_id']){?> selected <?php }?> value="<?php echo $users[$i]['user_id'] ?>"><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
+                                            <option value="<?php echo $users[$i]['user_id'] ?>" <?PHP if( $users[$i]['user_id'] == $customer_purchase_order['employee_id']){ ?> SELECTED <?PHP }?> ><?php echo $users[$i]['name'] ?> (<?php echo $users[$i]['user_position_name'] ?>)</option>
                                             <?
                                             }
                                             ?>
@@ -799,7 +805,6 @@
                                 <th style="text-align:center;" width="96">ราคารวม <br>(Amount)</th>
                                 <th style="text-align:center;">การสั่งซื้อ<br>(From)</th>
                                 <th style="text-align:center;">ขายให้<br>Sale to</th>
-                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>

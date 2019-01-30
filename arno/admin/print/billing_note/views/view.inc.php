@@ -231,7 +231,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     
        $total_price = number_format($total,2);
        $str = $number_2_text->convert($total_price);
-
+       
+    }else{
+        $total_price = "";
+        $str ="";
     }
    
 
@@ -240,13 +243,13 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     <tfoot>
         <tr  >
             <td colspan="5" align="center" style="font-size:14px;">
-                ('. $number_2_text->convert(number_format($total,2)).')
+                '.$str.'
             </td>
             <td colspan="1" align="left" style="vertical-align: middle;">
                 Total
             </td>
             <td style="text-align: right;">
-                '. number_format($total,2) .'
+                '.$total_price.'
             </td> 
         </tr>
     </tfoot>

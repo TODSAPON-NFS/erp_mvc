@@ -431,6 +431,8 @@ function set_cheque_pay_row(data){
                 
                 $('#tb_journal').children('tbody').append(
                     '<tr class="odd gradeX">'+
+                        '<td class="sorter">'+
+                        '</td>'+
                         '<td>'+
                             '<input type="hidden" name="journal_cheque_id[]" value="0" />'+  
                             '<input type="hidden" name="journal_cheque_pay_id[]" value="'+data.check_pay_id+'" />'+  
@@ -463,6 +465,7 @@ function set_cheque_pay_row(data){
                 $('#tb_journal').children('tbody').children('tr:last').children('td').children('select').html(str);
 
                 $('#tb_journal').children('tbody').children('tr:last').children('td').children('select').selectpicker();
+                update_line();
 
             }else{
                 $(row_journal_id).prop("disabled","true");

@@ -198,6 +198,8 @@
          }
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
+                '<td class="sorter">'+
+                '</td>'+
                 '<td>'+
                     '<input type="hidden" name="journal_cheque_id[]" value="0" />'+  
                     '<input type="hidden" name="journal_cheque_pay_id[]" value="0" />'+  
@@ -225,6 +227,9 @@
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').html(str);
 
         $(id).closest('table').children('tbody').children('tr:last').children('td').children('select').selectpicker();
+
+        
+        update_line();
     }
     
 
@@ -375,6 +380,13 @@
             } 
         });
     } 
+    
+    function update_line(){
+        var td_number = $('table[name="tb_list"]').children('tbody').children('tr').children('td:first-child');
+        for(var i = 0; i < td_number.length ;i++){
+            td_number[i].innerHTML = (i+1);
+        }
+    }
 
 </script>
 
@@ -454,9 +466,10 @@
                         <div id="journal" class="tab-pane fade in active">
                             <h3>รายการทีเดบิต / เครดิต</h3>
                                 
-                            <table id="tb_journal" width="100%" class="table table-striped table-bordered table-hover" >
+                            <table id="tb_journal" name="tb_list" width="100%" class="table table-striped table-bordered table-hover" >
                                 <thead>
                                     <tr>
+                                        <th style="text-align:center;" width="60">ลำดับ </th>
                                         <th style="text-align:center;">บัญชี<br>(Account)</th>
                                         <th style="text-align:center;">รายละเอียด<br>(Description)</th>
                                         <th style="text-align:center;">เดบิต<br>(Debit)</th>
@@ -464,7 +477,7 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="sorted_table">
                                 <?php 
                                     $journal_sale_list_debit = 0;
                                     $journal_sale_list_credit = 0;
@@ -473,6 +486,9 @@
                                         $journal_sale_list_credit += $journal_sale_lists[$i]['journal_sale_list_credit'];
                                     ?>
                                     <tr class="odd gradeX">
+                                        <td class="sorter">
+                                            <?PHP echo ($i + 1); ?>.
+                                        </td>
                                         <td>
                                             <input type="hidden" name="journal_cheque_id[]" value="0" /> 
                                             <input type="hidden" name="journal_cheque_pay_id[]" value="0" /> 
@@ -505,7 +521,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr class="odd gradeX">
-                                        <td colspan="2" align="center">
+                                        <td colspan="3" align="center">
                                             <a href="javascript:;" onclick="add_row(this);" style="color:red;">
                                                 <i class="fa fa-plus" aria-hidden="true"></i> 
                                                 <span>เพิ่มบัญชี / Add account</span>
@@ -586,4 +602,11 @@
 
 <script>
     $(".example-ajax-post").easyAutocomplete(options);
+    
+    $('.sorted_table').sortable({
+        handle: ".sorter" , 
+        update: function( event, ui ) {
+            update_line(); 
+        }
+    });
 </script>

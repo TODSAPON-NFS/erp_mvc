@@ -151,27 +151,30 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
-                            <th width="48"> ลำดับ <br>No.</th>
-                            <th width="150">วันที่ออกใบวางบิล <br>Billing Note Date</th>
-                            <th width="150">หมายเลขใบวางบิล <br>Billing Note Code.</th>
-                            <th>ลูกค้า <br>Customer</th>
-                            <th width="150" > ผู้ออก<br>Create by</th>
-                            <th>หมายเหตุ <br>Remark</th>
-							
+                            <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลำดับ" width="48"> No.</th>
+                            <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="วันที่ออกใบวางบิล" width="150">Billing Note Date</th>
+                            <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเลขใบวางบิล" width="150"> Billing Note Code.</th>
+                            <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ลูกค้า">Customer</th>
+                            <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ผู้ออก" width="150" >Create by</th>
+                            <th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="หมายเหตุ">Remark</th>
+							<th class="datatable-th text-center"data-container="body" data-toggle="tooltip" data-placement="top" title="" data-original-title="ยอดเงิน" width="150" >Total</th>
                             <th width="64"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php 
+                        $total = 0;
                         for($i=0; $i < count($billing_notes); $i++){
+                            $total += $billing_notes[$i]['billing_note_total'];
                         ?>
                         <tr class="odd gradeX">
                             <td><?php echo $i+1; ?></td>
-                            <td><?php echo $billing_notes[$i]['billing_note_date']; ?></td>
+                            <td data-order="<?php echo  $timestamp = strtotime(  $billing_notes[$i]['billing_note_date']    ) ?>" ><?php echo $billing_notes[$i]['billing_note_date']; ?></td>
                             <td><?php echo $billing_notes[$i]['billing_note_code']; ?></td>
                             <td><?php echo $billing_notes[$i]['customer_name']; ?> </td>
                             <td><?php echo $billing_notes[$i]['employee_name']; ?></td>
                             <td><?php echo $billing_notes[$i]['billing_note_remark']; ?></td>
+                            <td style="text-align:right;"><?php echo number_format($billing_notes[$i]['billing_note_total'],2); ?></td>
 
                             <td>
                                 <a href="?app=billing_note&action=detail&id=<?php echo $billing_notes[$i]['billing_note_id'];?>">
@@ -201,6 +204,13 @@
                         }
                         ?>
                     </tbody>
+                    <tfoot>
+                        <td colspan="6" >
+                        </td>
+                        <td style="text-align:right;" >
+                            <?php echo number_format($total,2); ?>
+                        </td>
+                    </tfoot>
                 </table>
                 
             </div>

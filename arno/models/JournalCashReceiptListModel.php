@@ -12,6 +12,7 @@ class JournalCashReceiptListModel extends BaseModel{
     function getJournalCashReceiptListBy($journal_cash_receipt_id){
         $sql = " SELECT 
         journal_cash_receipt_list_id, 
+        journal_cash_receipt_list_no,
         journal_cash_receipt_list_name,
         journal_cash_receipt_list_debit,
         journal_cash_receipt_list_credit, 
@@ -25,7 +26,7 @@ class JournalCashReceiptListModel extends BaseModel{
         account_name_en 
         FROM tb_journal_cash_receipt_list LEFT JOIN tb_account ON tb_journal_cash_receipt_list.account_id = tb_account.account_id 
         WHERE journal_cash_receipt_id = '$journal_cash_receipt_id' 
-        ORDER BY journal_cash_receipt_list_id 
+        ORDER BY journal_cash_receipt_list_no 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -42,6 +43,7 @@ class JournalCashReceiptListModel extends BaseModel{
     function getJournalCashReceiptListByFinanceDebitPayId($journal_cash_receipt_id,$finance_debit_pay_id){
         $sql = " SELECT 
         journal_cash_receipt_list_id, 
+        journal_cash_receipt_list_no, 
         journal_cash_receipt_list_name,
         journal_cash_receipt_list_debit,
         journal_cash_receipt_list_credit, 
@@ -52,7 +54,7 @@ class JournalCashReceiptListModel extends BaseModel{
         account_name_en 
         FROM tb_journal_cash_receipt_list LEFT JOIN tb_account ON tb_journal_cash_receipt_list.account_id = tb_account.account_id 
         WHERE journal_cash_receipt_id = '$journal_cash_receipt_id' AND tb_journal_cash_receipt_list.finance_debit_pay_id = '$finance_debit_pay_id' 
-        ORDER BY journal_cash_receipt_list_id 
+        ORDER BY journal_cash_receipt_list_no 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -70,6 +72,7 @@ class JournalCashReceiptListModel extends BaseModel{
     function insertJournalCashReceiptList($data = []){
         $sql = " INSERT INTO tb_journal_cash_receipt_list (
             journal_cash_receipt_id,
+            journal_cash_receipt_list_no,
             journal_cheque_id,
             journal_cheque_pay_id,
             journal_invoice_customer_id,
@@ -85,6 +88,7 @@ class JournalCashReceiptListModel extends BaseModel{
             lastupdate
         ) VALUES (
             '".$data['journal_cash_receipt_id']."', 
+            '".$data['journal_cash_receipt_list_no']."', 
             '".$data['journal_cheque_id']."', 
             '".$data['journal_cheque_pay_id']."', 
             '".$data['journal_invoice_customer_id']."', 
@@ -112,6 +116,7 @@ class JournalCashReceiptListModel extends BaseModel{
 
         $sql = " UPDATE tb_journal_cash_receipt_list 
             SET account_id = '".$data['account_id']."', 
+            journal_cash_receipt_list_no = '".$data['journal_cash_receipt_list_no']."',
             journal_cheque_id = '".$data['journal_cheque_id']."',
             journal_cheque_pay_id = '".$data['journal_cheque_pay_id']."',
             journal_invoice_customer_id = '".$data['journal_invoice_customer_id']."',

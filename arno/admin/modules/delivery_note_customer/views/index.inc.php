@@ -192,6 +192,7 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
                 $delivery_note_customer_list_id = $_POST['delivery_note_customer_list_id'];
                 $delivery_note_customer_list_qty = $_POST['delivery_note_customer_list_qty'];
                 $delivery_note_customer_list_remark = $_POST['delivery_note_customer_list_remark'];
+                $stock_group_id = $_POST['stock_group_id'];
 
                 $delivery_note_customer_list_model->deleteDeliveryNoteCustomerListByDeliveryNoteCustomerIDNotIN($delivery_note_customer_id,$delivery_note_customer_list_id);
 
@@ -202,6 +203,7 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
                         $data['product_id'] = $product_id[$i];
                         $data['delivery_note_customer_list_qty'] = $delivery_note_customer_list_qty[$i];
                         $data['delivery_note_customer_list_remark'] = $delivery_note_customer_list_remark[$i];
+                        $data['stock_group_id'] = $stock_group_id[$i];
 
                         if ($delivery_note_customer_list_id[$i] != "" && $delivery_note_customer_list_id[$i] != '0'){
                             $delivery_note_customer_list_model->updateDeliveryNoteCustomerListById($data,$delivery_note_customer_list_id[$i]);
@@ -215,6 +217,7 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
                     $data['product_id'] = $product_id;
                     $data['delivery_note_customer_list_qty'] = $delivery_note_customer_list_qty;
                     $data['delivery_note_customer_list_remark'] = $delivery_note_customer_list_remark;
+                    $data['stock_group_id'] = $stock_group_id;
                     if ($delivery_note_customer_list_id != "" && $delivery_note_customer_list_id != '0'){
                         $delivery_note_customer_list_model->updateDeliveryNoteCustomerListById($data,$delivery_note_customer_list_id);
                     }else{
@@ -295,6 +298,7 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
             $delivery_note_customer_list_id = $_POST['delivery_note_customer_list_id'];
             $delivery_note_customer_list_qty = $_POST['delivery_note_customer_list_qty'];
             $delivery_note_customer_list_remark = $_POST['delivery_note_customer_list_remark'];
+            $stock_group_id = $_POST['stock_group_id'];
 
             $delivery_note_customer_list_model->deleteDeliveryNoteCustomerListByDeliveryNoteCustomerIDNotIN($delivery_note_customer_id,$delivery_note_customer_list_id);
 
@@ -305,6 +309,7 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
                     $data['product_id'] = $product_id[$i];
                     $data['delivery_note_customer_list_qty'] = $delivery_note_customer_list_qty[$i];
                     $data['delivery_note_customer_list_remark'] = $delivery_note_customer_list_remark[$i];
+                    $data['stock_group_id'] = $stock_group_id[$i];
 
                     if ($delivery_note_customer_list_id[$i] != "" && $delivery_note_customer_list_id[$i] != '0'){
                         $delivery_note_customer_list_model->updateDeliveryNoteCustomerListById($data,$delivery_note_customer_list_id[$i]);
@@ -318,6 +323,7 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
                 $data['product_id'] = $product_id;
                 $data['delivery_note_customer_list_qty'] = $delivery_note_customer_list_qty;
                 $data['delivery_note_customer_list_remark'] = $delivery_note_customer_list_remark;
+                $data['stock_group_id'] = $stock_group_id;
                 if ($delivery_note_customer_list_id != "" && $delivery_note_customer_list_id != '0'){
                     $delivery_note_customer_list_model->updateDeliveryNoteCustomerListById($data,$delivery_note_customer_list_id);
                 }else{

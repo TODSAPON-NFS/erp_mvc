@@ -410,10 +410,11 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th style="text-align:center;">รหัสสินค้า<br>(Product Code)</th>
-                                <th style="text-align:center;">ชื่อสินค้า<br>(Product Name)</th>
-                                <th style="text-align:center;">จำนวน<br>(Qty)</th>
-                                <th style="text-align:center;">หมายเหตุ<br>(Remark)</th>
+                                <th style="text-align:center;" width="300">รหัสสินค้า<br>(Product Code)</th>
+                                <th style="text-align:center;" width="500">ชื่อสินค้า<br>(Product Name)</th>
+                                <th style="text-align:center;" width="280">คลังสินค้า</th>
+                                <th style="text-align:center;" width="150">จำนวน<br>(Qty)</th>
+                                <th style="text-align:center;" width="400">หมายเหตุ<br>(Remark)</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -443,7 +444,7 @@
                         </tbody>
                         <tfoot>
                             <tr class="odd gradeX">
-                                <td colspan="5" align="center">
+                                <td colspan="6" align="center">
                                     <a href="javascript:;" onclick="show_request_test(this);" style="color:red;">
                                         <i class="fa fa-plus" aria-hidden="true"></i> 
                                         <span>เพิ่มสินค้า / Add product</span>

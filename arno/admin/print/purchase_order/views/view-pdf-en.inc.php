@@ -46,7 +46,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     .main{
         font-size:13px;
     }
-
+    body{
+        font-family:  "tahoma";  
+    }
     div{
         display:block;
         padding:4px;

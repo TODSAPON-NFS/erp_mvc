@@ -73,60 +73,13 @@
 
 
     }
-
-
-
-    function get_customer_detail(){
-        var customer_id = document.getElementById('customer_id').value;
-        $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
-            document.getElementById('customer_code').value = data.customer_code;
-            document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
-        });
-    }
-
-    
-    function delete_row(id){
-        $(id).closest('tr').remove();
-     }
-
-     function show_stock(id){ 
-        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
-        $.post( "controllers/getStockGroupByProductID.php", { 'product_id': product_id }, function( data ) {
-                var str_stock = "";
-                console.log(product_id);
-                    $.each(data, function (index, value) { 
-                        if(index == 0){
-                        $(id).closest('tr').children('td').children('input[name="delivery_note_customer_list_qty[]"]').attr( 'stock_report_qty' , value['stock_report_qty'] );
-                        }
-                        str_stock += "<option value='" + value['stock_group_id'] + "'>" +  value['stock_group_name'] + "["+value['stock_report_qty']+"]</option>"; 
-                    });
-                    console.log(str_stock);
-                $(id).closest('tr').children('td').children('div').children('select[name="stock_group_id[]"]').html(str_stock);
-                $(id).closest('tr').children('td').children('div').children('select[name="stock_group_id[]"]').selectpicker('refresh');
-        });
-    
-    } 
-
-    function show_data(id){
-         var product_code = $(id).val();
-         
-        $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
-            if(data != null){
-               
-                $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
-                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)
-                show_stock(id);
-            }
-        });
-        
-     }
-     function add_row(id){
-         var index = 0;
-         if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
+    function add_row(id){
+        var index = 0;
+        if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
             index = 1;
-         }else{
+        }else{
             index = $(id).closest('table').children('tbody').children('tr').length + 1;
-         }
+        }
         $(id).closest('table').children('tbody').append(
             '<tr class="odd gradeX">'+
                 '<td>'+
@@ -137,11 +90,11 @@
 				'</td>'+
                 '<td><input type="text" class="form-control" name="product_name[]" readonly /></td>'+
                 '<td>'+
-                            '<input type="hidden" name="stock_event[]" class="form-control" />'+
-                            '<select  name="stock_group_id[]" onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
-                                '<option value="0">Select</option>'+ 
-                            '</select>'+ 
-                        '</td>'+
+                    '<input type="hidden" name="stock_event[]" class="form-control" />'+
+                    '<select  name="stock_group_id[]" onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
+                        '<option value="0">Select</option>'+ 
+                    '</select>'+ 
+                '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="delivery_note_customer_list_qty[]"  /></td>'+
                 '<td><input type="text" class="form-control" name="delivery_note_customer_list_remark[]" /></td>'+
                 '<td>'+
@@ -154,17 +107,55 @@
 
         $(".example-ajax-post").easyAutocomplete(options);
     }
+    function get_customer_detail(){
+        var customer_id = document.getElementById('customer_id').value;
+        $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
+            document.getElementById('customer_code').value = data.customer_code;
+            document.getElementById('customer_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3;
+        });
+    }
+
+    function delete_row(id){
+        $(id).closest('tr').remove();
+    }
+    function show_data(id){
+        var product_code = $(id).val();         
+        $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
+            if(data != null){               
+                $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
+                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)
+                show_stock(id);
+            }
+        });
+        
+    }
+    
+    function show_stock(id){ 
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+        $.post( "controllers/getStockGroupByProductID.php", { 'product_id': product_id }, function( data ) {
+                var str_stock = "";
+                // console.log(product_id);
+                    $.each(data, function (index, value) { 
+                        if(index == 0){
+                        $(id).closest('tr').children('td').children('input[name="delivery_note_customer_list_qty[]"]').attr( 'stock_report_qty' , value['stock_report_qty'] );
+                        }
+                        str_stock += "<option value='" + value['stock_group_id'] + "'>" +  value['stock_group_name'] + "["+value['stock_report_qty']+"]</option>"; 
+                    });
+                console.log(str_stock);
+                $(id).closest('tr').children('td').children('select[name="stock_group_id[]"]').html(str_stock);
+                $(id).closest('tr').children('td').children('select[name="stock_group_id[]"]').selectpicker('refresh');
+        });
+    }
     function show_qty(id){
         
         var stock_group_id = $(id).closest('tr').children('td').children('div').children('select[name="stock_group_id[]"]').val();
         var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(); 
- 
         $.post( "controllers/getQtyBy.php", { 'stock_group_id': stock_group_id,'product_id': product_id }, function( data ) {
             if (data != null){
                 if( data.stock_report_qty == null){
-                    $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').attr( 'stock_report_qty', 0 );
+                    $(id).closest('tr').children('td').children('input[name="delivery_note_customer_list_qty[]"]').attr( 'stock_report_qty', 0 );
                 }else{
-                    $(id).closest('tr').children('td').children('input[name="invoice_customer_list_qty[]"]').attr( 'stock_report_qty', data.stock_report_qty );
+                    $(id).closest('tr').children('td').children('input[name="delivery_note_customer_list_qty[]"]').attr( 'stock_report_qty', data.stock_report_qty );
                 }
             }
             
@@ -289,11 +280,11 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th style="text-align:center;">รหัสสินค้า<br>(Product Code)</th>
-                                <th style="text-align:center;">ชื่อสินค้า<br>(Product Name)</th>
-                                <th style="text-align:center;">คลังสินค้า</th>
-                                <th style="text-align:center;">จำนวน<br>(Qty)</th>
-                                <th style="text-align:center;">หมายเหตุ<br>(Remark)</th>
+                                <th style="text-align:center;" width="300">รหัสสินค้า<br>(Product Code)</th>
+                                <th style="text-align:center;" width="500">ชื่อสินค้า<br>(Product Name)</th>
+                                <th style="text-align:center;" width="280">คลังสินค้า</th>
+                                <th style="text-align:center;" width="150">จำนวน<br>(Qty)</th>
+                                <th style="text-align:center;" width="400">หมายเหตุ<br>(Remark)</th>
                                 <th></th>
                             </tr>
                         </thead>

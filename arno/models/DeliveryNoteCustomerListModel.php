@@ -15,7 +15,8 @@ class DeliveryNoteCustomerListModel extends BaseModel{
         product_name,   
         delivery_note_customer_list_id, 
         delivery_note_customer_list_qty,
-        delivery_note_customer_list_remark 
+        delivery_note_customer_list_remark,
+        stock_group_id 
         FROM tb_delivery_note_customer_list LEFT JOIN tb_product ON tb_delivery_note_customer_list.product_id = tb_product.product_id 
         WHERE delivery_note_customer_id = '$delivery_note_customer_id' 
         ORDER BY delivery_note_customer_list_id 
@@ -39,6 +40,7 @@ class DeliveryNoteCustomerListModel extends BaseModel{
             product_id,
             delivery_note_customer_list_qty,
             delivery_note_customer_list_remark,
+            stock_group_id,
             addby,
             adddate,
             updateby,
@@ -48,6 +50,7 @@ class DeliveryNoteCustomerListModel extends BaseModel{
             '".$data['product_id']."', 
             '".$data['delivery_note_customer_list_qty']."', 
             '".$data['delivery_note_customer_list_remark']."',
+            '".$data['stock_group_id']."',
             '".$data['addby']."', 
             NOW(), 
             '".$data['updateby']."', 
@@ -70,6 +73,7 @@ class DeliveryNoteCustomerListModel extends BaseModel{
             SET product_id = '".$data['product_id']."', 
             delivery_note_customer_list_qty = '".$data['delivery_note_customer_list_qty']."',
             delivery_note_customer_list_remark = '".$data['delivery_note_customer_list_remark']."' 
+            stock_group_id = '".$data['stock_group_id']."' 
             WHERE delivery_note_customer_list_id = '$id'
         ";
 

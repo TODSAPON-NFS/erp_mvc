@@ -104,11 +104,37 @@ if(!isset($_GET['action'])){
     $stock_move = $stock_move_model->getStockMoveByID($stock_move_id);
     $stock_group=$stock_group_model->getStockGroupByID($stock_move['stock_group_id']);
     $stock_move_lists = $stock_move_list_model->getStockMoveListBy($stock_move_id);
+
+    $stock_moves = $stock_move_model->getStockMoveBy($date_start,$date_end,$keyword);
+
+    for($i = 0 ; $i < count($stock_moves) ; $i++){
+        if($stock_move_id == $stock_moves[$i]['stock_move_id']){ 
+            $previous_id = $stock_moves[$i-1]['stock_move_id'];
+            $previous_code = $stock_moves[$i-1]['stock_move_code'];
+            $next_id = $stock_moves[$i+1]['stock_move_id'];
+            $next_code = $stock_moves[$i+1]['stock_move_code'];
+
+        }
+    }
+
     require_once($path.'update.inc.php');
 
 }else if ($_GET['action'] == 'detail'){
     $stock_move = $stock_move_model->getStockMoveViewByID($stock_move_id);
     $stock_move_lists = $stock_move_list_model->getStockMoveListBy($stock_move_id);
+
+    $stock_moves = $stock_move_model->getStockMoveBy($date_start,$date_end,$keyword);
+
+    for($i = 0 ; $i < count($stock_moves) ; $i++){
+        if($stock_move_id == $stock_moves[$i]['stock_move_id']){ 
+            $previous_id = $stock_moves[$i-1]['stock_move_id'];
+            $previous_code = $stock_moves[$i-1]['stock_move_code'];
+            $next_id = $stock_moves[$i+1]['stock_move_id'];
+            $next_code = $stock_moves[$i+1]['stock_move_code'];
+
+        }
+    }
+    
     require_once($path.'detail.inc.php');
 
 }else if ($_GET['action'] == 'print'){

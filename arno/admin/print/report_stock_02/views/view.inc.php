@@ -54,7 +54,7 @@ $html_head_pdf = '
         <td  colspan="1" >   </td>  
     </tr>  
 </table>  
-<table  width="100%" cellspacing="0" style="font-size:12px;margin-top:10px;border-top: 1px dotted black;border-bottom: 1px dotted black;padding-top:5px;padding-bottom:3px;" >
+<table  width="100%" cellspacing="0" style="font-size:12px;margin-top:10px;border-top: 1px solid black;border-bottom: 1px solid black;padding-top:5px;padding-bottom:3px;" >
     <thead>
         <tr > 
             <th align="left" width="40">ลำดับ</th>  
@@ -93,7 +93,7 @@ $html_head_excel = '
         <td  colspan="1" >   </td>  
     </tr> 
 </table>  
-<table  width="100%" cellspacing="0" style="font-size:12px;margin-top:10px;border-top: 1px dotted black;border-bottom: 1px dotted black;padding-top:5px;padding-bottom:3px;" >
+<table  width="100%" cellspacing="0" style="font-size:12px;margin-top:10px;border-top: 1px solid black;border-bottom: 1px solid black;padding-top:5px;padding-bottom:3px;" >
     <thead>
     <tr > 
         <th align="left" width="40">ลำดับ</th>  
@@ -128,10 +128,19 @@ $html = '<style>
 
     </style>'; 
 
-
+    $sumQty = 0 ;
+    $sumCost_avg_total= 0;
 while($i < count($stock_reports)){ 
     $html .= '
-    <table  width="100%" cellspacing="0" style="font-size:12px;"> 
+    <table  width="100%" cellspacing="0" style="font-size:12px;">
+    <tr > 
+        <th width="10%"></th>  
+        <th width="20%"></th>  
+        <th width="27%"></th>  
+        <th width="10%"></th>
+        <th width="10%"></th> 
+        <th width="15%"></th>
+    </tr> 
         <tbody>
 
     ';
@@ -139,8 +148,8 @@ while($i < count($stock_reports)){
      
     for(; $i < count($stock_reports); $i++){
         
-        
-
+        $sumQty +=  $stock_reports[$i]['stock_report_qty'] ;
+        $sumCost_avg_total += $stock_reports[$i]['stock_report_avg_total'] ;
        
         $count_product+=1;
         $stock_report_qty +=  $stock_reports[$i]['stock_report_qty'];
@@ -150,28 +159,27 @@ while($i < count($stock_reports)){
 
         $html .= ' 
         <tr> 
-            <td align="left" width="30" >'.($i+1).'</td> 
-            <td align="left" width="65">'.$stock_reports[$i]['product_code'].'</td>
-            <td align="left" width="95" >'.$stock_reports[$i]['product_name'].'</td>
-            <td width="20" align="right"> '.number_format($stock_reports[$i]['stock_report_qty'],0).' Pc.</td> 
-            <td width="70" align="right"> '.number_format($stock_reports[$i]['stock_report_qty'],2).' </td> 
-            <td width="70" align="right"> '.number_format($stock_reports[$i]['stock_report_qty'],2).' </td> 
+            <td align="left"  >'.($i+1).'</td> 
+            <td align="left" >'.$stock_reports[$i]['product_code'].'</td>
+            <td align="left"  >'.$stock_reports[$i]['product_name'].'</td>
+            <td align="right"> '.number_format($stock_reports[$i]['stock_report_qty'],0).' Pc.</td> 
+            <td align="right"> '.number_format($stock_reports[$i]['stock_report_cost_avg'],2).' </td> 
+            <td align="right"> '.number_format($stock_reports[$i]['stock_report_avg_total'],2).' </td> 
             
         </tr> 
         ';  
     }
 
     if($i < count($stock_reports)){ 
-        $html .= ' 
-                </tbody>
-                <tfoot> 
-                </tfoot>
-            </table>
-            '; 
+        // $html .= ' 
+        //         </tbody>
+        //         <tfoot> 
+        //         </tfoot>
+        //     </table>
+        //     '; 
     }else{ 
         $html .= ' 
-                </tbody> 
-            </table>
+               
             './*<table  width="100%" cellspacing="0" style="font-size:12px;margin-top:10px;" >
                 <thead>
                     <tr >  
@@ -192,8 +200,21 @@ while($i < count($stock_reports)){
                 </tfoot>
             </table> */' 
         ';
-    } 
+        
+     $html .= '
+            <tfoot style="margin-top:12px;">
+                <tr>                           
+                    <td align="center" colspan="3" style="padding-top:8;border-top:1px solid black;border-bottom: 1px solid black;"><font color="black"> <b>รวมทั้งหมด</b></td>
+                    <td align="right" style="padding-top:8px;border-top:1px solid black;border-bottom: 1px solid black;"> <b>'.number_format($sumQty ,0).' Pc.</b></td>                        
+                    <td align="right" style="padding-top:8;border-top:1px solid black;border-bottom: 1px solid black;"><b> - </b></td>
+                    <td align="right" style="padding-top:8;border-top:1px solid black;border-bottom: 1px solid black;"><b>'.number_format($sumCost_avg_total,2).'</b></td> 
+                </tr>
+            </tfoot>  
+            </table>';
 
+
+    } 
 } 
 
+        
 ?>

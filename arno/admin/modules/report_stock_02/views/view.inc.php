@@ -137,6 +137,8 @@
                         $stock_report_qty_sum = 0;
                         $stock_report_cost_avg_sum =  0; 
                         $stock_report_total_sum =  0; 
+                        $sumQty = 0 ; 
+                        $sumCost_avg_total = 0 ; 
                         if( count($stock_reports) == 0){
 
 
@@ -183,6 +185,8 @@
                             $stock_report_qty +=  $stock_reports[$i]['stock_report_qty'];
                             $stock_report_cost_avg +=  $stock_reports[$i]['stock_report_cost_avg'];
                             $stock_report_total +=  $stock_reports[$i]['stock_report_total'];
+                            $sumQty += $stock_reports[$i]['stock_report_qty'];
+                            $sumCost_avg_total += $stock_reports[$i]['stock_report_avg_total'] ;
                         ?>
                         <tr class="">
                             <td><?php echo number_format(($i + 1),0); ?></td>
@@ -234,17 +238,16 @@
                         ?>
                     </tbody>
                     <tfoot>
-                    <?PHP /* ?>
+                   
                         <tr>
                             
                             <td align="center" colspan="3">รวม</td>
-                            <td align="right" > </td>
-                            
-                            <td align="right" > </td>
-                            <td align="right" ><?php echo number_format($stock_report_total_sum,2); ?></td> 
+                            <td align="right" ><?php echo  number_format($sumQty ,0);?> Pc.</td>                        
+                            <td align="right" > - </td>
+                            <td align="right" ><?php echo number_format($sumCost_avg_total,2); ?></td> 
                             
                         </tr>
-                        <?PHP */ ?>
+                       
                     </tfoot>
                 </table>
                 

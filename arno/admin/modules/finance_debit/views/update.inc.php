@@ -162,7 +162,7 @@
         $.post( "controllers/getCustomerByID.php", { 'customer_id': customer_id }, function( data ) {
             document.getElementById('customer_code').value = data.customer_code;
             document.getElementById('finance_debit_name').value = data.customer_name_en  ;
-            document.getElementById('finance_debit_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3 +' '+ data.customer_zipcode + '\nTel.'+ data.customer_tel+' Fax. '+data.customer_fax;
+            document.getElementById('finance_debit_address').value = data.customer_address_1 +'\n' + data.customer_address_2 +'\n' +data.customer_address_3 +' '+ data.customer_zipcode;
             document.getElementById('finance_debit_tax').value = data.customer_tax ;
         });
     }

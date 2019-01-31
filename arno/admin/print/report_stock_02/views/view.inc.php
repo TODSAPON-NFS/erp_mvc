@@ -32,7 +32,7 @@ if ($product_end == ""){
 $html_head_pdf = '  
 <table width="100%" border="0" cellspacing="0">
     <tr>
-        <td colspan="3">บริษัท อาร์โน (ประเทศไทย) จำกัด</td>  
+        <td colspan="3">'.$company['company_name_th'].'</td>  
     </tr> 
     <tr>
         <td colspan="6" align="center" style="font-size:14px;color:#00F;"><b>'.$str_head.'</b></td>  
@@ -57,12 +57,12 @@ $html_head_pdf = '
 <table  width="100%" cellspacing="0" style="font-size:12px;margin-top:10px;border-top: 1px dotted black;border-bottom: 1px dotted black;padding-top:5px;padding-bottom:3px;" >
     <thead>
         <tr > 
-            <th align="left" style="">ลำดับ</th>  
-            <th align="left" style="">รหัสสินค้า</th>  
-            <th align="left" style="">ชื่อสินค้า</th>  
-            <th width="60" style="">จำนวน</th>'./*
-            <th width="100" style="">ราคาต่อหน่วย</th>
-            <th width="100" style="">มูลค่าคงเหลือ</th> */'
+            <th align="left" width="40">ลำดับ</th>  
+            <th align="left" width="70">รหัสสินค้า</th>  
+            <th align="center" width="250">ชื่อสินค้า</th>  
+            <th width="50">จำนวน</th>
+            <th width="50">ต้นทุนเฉลี่ยต่อชิ้น</th> 
+            <th width="50">ต้นทุนเฉลี่ยรวม</th>
         </tr>
     </thead>
 </table> 
@@ -95,14 +95,14 @@ $html_head_excel = '
 </table>  
 <table  width="100%" cellspacing="0" style="font-size:12px;margin-top:10px;border-top: 1px dotted black;border-bottom: 1px dotted black;padding-top:5px;padding-bottom:3px;" >
     <thead>
-        <tr > 
-            <th align="left" style="">ลำดับ</th>  
-            <th align="left" style="">รหัสสินค้า</th>  
-            <th align="left" style="">ชื่อสินค้า</th>  
-            <th width="60" style="">จำนวน</th>'./*
-            <th width="100" style="">ราคาต่อหน่วย</th>
-            <th width="100" style="">มูลค่าคงเหลือ</th> */'
-        </tr>
+    <tr > 
+        <th align="left" width="40">ลำดับ</th>  
+        <th align="left" width="70">รหัสสินค้า</th>  
+        <th align="center" width="250">ชื่อสินค้า</th>  
+        <th width="50">จำนวน</th>
+        <th width="50">ต้นทุนเฉลี่ยต่อชิ้น</th> 
+        <th width="50">ต้นทุนเฉลี่ยรวม</th>
+    </tr>
     </thead>
 </table> 
 ';
@@ -150,12 +150,13 @@ while($i < count($stock_reports)){
 
         $html .= ' 
         <tr> 
-            <td align="left" >'.($i+1).'</td> 
-            <td>'.$stock_reports[$i]['product_code'].'</td>
-            <td>'.$stock_reports[$i]['product_name'].'</td>
-            <td  align="right" width="60" > '.number_format($stock_reports[$i]['stock_report_qty'],0).' Pc.</td> './*
-            <td  align="right" width="100" > '.number_format($stock_reports[$i]['stock_report_cost_avg'],2).' </td> 
-            <td  align="right" width="100" > '.number_format($stock_reports[$i]['stock_report_total'],2).' </td>   */'
+            <td align="left" width="30" >'.($i+1).'</td> 
+            <td align="left" width="65">'.$stock_reports[$i]['product_code'].'</td>
+            <td align="left" width="95" >'.$stock_reports[$i]['product_name'].'</td>
+            <td width="20" align="right"> '.number_format($stock_reports[$i]['stock_report_qty'],0).' Pc.</td> 
+            <td width="70" align="right"> '.number_format($stock_reports[$i]['stock_report_qty'],2).' </td> 
+            <td width="70" align="right"> '.number_format($stock_reports[$i]['stock_report_qty'],2).' </td> 
+            
         </tr> 
         ';  
     }

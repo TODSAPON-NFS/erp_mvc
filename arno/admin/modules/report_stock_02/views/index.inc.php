@@ -74,6 +74,9 @@ if($stock_group_id!='' ||$product_start!=''||$product_end!=''){
 
     $stock_reports = $stock_report_model->getStockReportBalanceListBy($date_end, $stock_group_id , $product_start, $product_end,$status_qty);
 }
+// echo '<pre>';
+// print_r($stock_reports);
+// echo '</pre>';
 
 require_once($path.'view.inc.php');
   

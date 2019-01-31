@@ -35,7 +35,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     }
 
     div{
-        padding-left:8px;
+        padding-left:6px;
         font-size:14px;
     }
 
@@ -75,12 +75,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     
 
     @page *{
-        margin-top: 2.54cm;
-        margin-bottom: 2.54cm;
+        margin-top: 1.54cm;
+        margin-bottom: 1.54cm;
         margin-left: 3.175cm;
         margin-right: 3.175cm;
-        margin-header: 5mm; /* <any of the usual CSS values for margins> */
-	    margin-footer: 5mm; /* <any of the usual CSS values for margins> */
+        margin-header: 2mm; /* <any of the usual CSS values for margins> */
+	    margin-footer: 2mm; /* <any of the usual CSS values for margins> */
     }
 
 </style>';
@@ -231,7 +231,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     
        $total_price = number_format($total,2);
        $str = $number_2_text->convert($total_price);
-
+       
+    }else{
+        $total_price = "";
+        $str ="";
     }
    
 
@@ -240,13 +243,13 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     <tfoot>
         <tr  >
             <td colspan="5" align="center" style="font-size:14px;">
-                ('. $number_2_text->convert(number_format($total,2)).')
+                '.$str.'
             </td>
             <td colspan="1" align="left" style="vertical-align: middle;">
                 Total
             </td>
             <td style="text-align: right;">
-                '. number_format($total,2) .'
+                '.$total_price.'
             </td> 
         </tr>
     </tfoot>
@@ -270,21 +273,20 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
     </tr> 
     <tr >
-        <td colspan="4" style="padding:16px;line-height: 24px;" > 
+        <td colspan="4" style="padding:14px;line-height: 24px;" > 
             <div ><b>Remark</b></div>
             <div >'.nl2br ( $billing_note['billing_note_remark']).'</div> 
             <br>
             <div >ชื่อผู้รับวางบิล   ______________________</div>
             <div style="padding:16px;" >วันที่รับ ____/____/________</div><br>
         </td>
-        <td>
-        </td>
+        
     </tr>
     <tr>
-        <td colspan="4" style="padding:16px;line-height: 24px;vertical-align: top;" >
+        <td colspan="4" style="padding:14px;line-height: 24px;vertical-align: top;" >
             <div style="padding:16px;" ><b>จ่ายโดย</b> </div>
-            <div style="padding-left : 16px;">|_| การโอนเงิน วันที่ _______________</div>
-            <div style="padding-left : 16px;">|_| เช็ค วันที่รับเช็ค _________________</div>
+            <div style="padding-left : 14px;">|_| การโอนเงิน วันที่ _______________</div>
+            <div style="padding-left : 14px;">|_| เช็ค วันที่รับเช็ค _________________</div>
         </td>
         <td colspan="3" align="left" style="vertical-align: top;line-height: 24px;">
             

@@ -19,57 +19,133 @@ class MaintenanceStockModel extends BaseModel{
     //***************************************************************************************************************** */
 
 
-    function runMaintenance(){
+    function runMaintenance($start_date = ''){
 
-        
-        // ล้างข้อมูลทั้งหมดในตาราง รายงานคลังสินค้า
-        $sql = "TRUNCATE TABLE tb_stock_report";
-        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+        // 1-1. ถ้าเป็นการซ่อมแซมระบบทั้งหมด 
+        if($start_date == ''){
+            // 1-1.1 ล้างข้อมูลทั้งหมดในตาราง รายงานคลังสินค้า
+            $sql = "TRUNCATE TABLE tb_stock_report";
+            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
-        // ค้นหาคลังสินค้าทั้งหมด แล้วล้างประวัติทั้งหมด
-        $sql = "SELECT * FROM tb_stock_group ";
-        $data = [];
-        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-            while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                $data[] = $row;
+            // 1-1.2 ค้นหาคลังสินค้าทั้งหมด แล้วล้างประวัติทั้งหมด
+            $sql = "SELECT * FROM tb_stock_group ";
+            $data = [];
+            if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close(); 
+
+                //1-1.2.1 วนรอบล้างประวัติคลังสินค้า 
+                for($i = 0; $i < count($data); $i++){
+                    $sql = "TRUNCATE TABLE ".$data[$i]['table_name'];
+                    mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+                }
             }
-            $result->close(); 
-            //วนรอบล้างประวัติคลังสินค้า
 
-            for($i = 0; $i < count($data); $i++){
-                $sql = "TRUNCATE TABLE ".$data[$i]['table_name'];
-                mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+            // 1-1.3 ทำการนำสินค้าตั้งต้น เข้าสู่คลังสินค้าต่างๆ 
+            $sql = "SELECT * FROM tb_summit_product ORDER BY stock_group_id , product_id";
+            $data = [];
+            if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close(); 
+
+                // 1-1.3.1 วนรอบปรับต้นทุนต่างๆ ในคลังสินค้า
+                for($i = 0; $i < count($data); $i++){  
+                    $this->addSummitProduct($data[$i]['summit_product_date'], $data[$i]['stock_group_id'], $data[$i]['summit_product_id'], $data[$i]['product_id'], $data[$i]['summit_product_qty'], $data[$i]['summit_product_cost']);
+                }
             }
+
+            $str_invoice_supplier = " ";
+            $str_move = " ";
+            $str_change = " ";
+            $str_invoice_customer = " ";
+            $str_issue = " ";
         }
 
-        // ทำการนำสินค้าตั้งต้น เข้าสู่คลังสินค้าต่างๆ 
-        $sql = "SELECT * FROM tb_summit_product ORDER BY stock_group_id , product_id";
-        $data = [];
-        if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
-            while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                $data[] = $row;
-            }
-            $result->close();
+        // 1-2. ถ้าเป็นเป็นการซ่อมแซมข้อมูล ณ วันที่นั้นๆ
 
+        else{
+            // 1-2.1 ล้างข้อมูลทั้งหมดในตาราง รายงานคลังสินค้า
+            $sql = "TRUNCATE TABLE tb_stock_report";
+            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+            // 1-2.2 ลบข้อมูลในคลังสินค้าทุกคลังที่มีการเคลื่อนไหวตั้งแต่วันที่ทำการแก้ไข และ ปรับ Index ของทุกคลังสินค้าใหม่ ให้เท่ากับ index ล่าสุด
+            $sql = "SELECT * FROM tb_stock_group ";
+            $data = [];
+            if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close(); 
+
+                
+                for($i = 0; $i < count($data); $i++){
+
+                    //1-2.2.1 วนรอบล้างประวัติคลังสินค้า ตั้งแต่วันที่ทำการแก้ไข 
+                    $sql = "DELETE FROM ".$data[$i]['table_name']." WHERE STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$start_date','%d-%m-%Y %H:%i:%s')";
+                    mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+                    // 1-2.3 ปรับ Index ของทุกคลังสินค้าใหม่ ให้เท่ากับ index ล่าสุด
+                    $sql = "ALTER TABLE ".$data[$i]['table_name']." AUTO_INCREMENT = (SELECT MAX(stock_id) + 1 FROM ".$data[$i]['table_name']." )";
+                    mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+
+                    $sql = "SELECT * FROM ".$data[$i]['table_name']." 
+                    WHERE stock_id IN ( 
+                        SELECT MAX(stock_id) 
+                        FROM ".$data[$i]['table_name']."  
+                        GROUP BY product_id 
+                    ) ";
+
+
+                    $data_transaction = [];
+                    if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                        while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                            $data_transaction[] = $row;
+                        }
+                        $result->close(); 
+
+
+                        for($i_tran = 0 ; $i_tran < count($data_transaction) ; $i_tran ++){
+                            $sql = "INSERT INTO tb_stock_report (
+                                stock_group_id,
+                                product_id,
+                                stock_report_qty,
+                                stock_report_cost_avg
+                            ) VALUES ('".
+                            $data[$i]['stock_group_id'] . "','".
+                            $data_transaction[$i_tran]['product_id'] . "','".
+                            $data_transaction[$i_tran]['balance_qty'] . "','".
+                            $data_transaction[$i_tran]['balance_stock_cost_avg'] . "'".
+                            "); "; 
             
+                            mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+                        }
+
+                    }
 
 
 
-            //วนรอบปรับต้นทุนต่างๆ ในคลังสินค้า
-            for($i = 0; $i < count($data); $i++){
-
-                // echo "<pre>";
-                // print_r($data[$i]);
-                // echo "</pre>";
-
-                $this->addSummitProduct($data[$i]['summit_product_date'], $data[$i]['stock_group_id'], $data[$i]['summit_product_id'], $data[$i]['product_id'], $data[$i]['summit_product_qty'], $data[$i]['summit_product_cost']);
+                }
             }
+
+
+            $str_invoice_supplier = " AND STR_TO_DATE(invoice_supplier_date_recieve,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$start_date','%d-%m-%Y %H:%i:%s') ";
+            $str_move = " AND STR_TO_DATE(stock_move_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$start_date','%d-%m-%Y %H:%i:%s') ";
+            $str_change = " AND STR_TO_DATE(stock_change_product_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$start_date','%d-%m-%Y %H:%i:%s') ";
+            $str_invoice_customer = " AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$start_date','%d-%m-%Y %H:%i:%s') ";
+            $str_issue = " AND STR_TO_DATE(stock_issue_date,'%d-%m-%Y %H:%i:%s') >= STR_TO_DATE('$start_date','%d-%m-%Y %H:%i:%s') ";
+
+             
         }
 
 
 
         
-        //ดึงข้อมูลการรับสินค้าเข้าเรียงตามวันที่
+        //2. ดึงข้อมูลการรับสินค้าเข้าเรียงตามวันที่
         $sql_purchase="SELECT 
         invoice_supplier_code_gen as transaction_code,  
         invoice_supplier_date_recieve as stock_date, 
@@ -93,8 +169,11 @@ class MaintenanceStockModel extends BaseModel{
         LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id  
         WHERE invoice_supplier_begin = '0' AND stock_event = '1'  
         AND invoice_supplier_list_id IS NOT NULL 
+        $str_invoice_supplier
         GROUP BY invoice_supplier_list_id 
         ORDER BY STR_TO_DATE(invoice_supplier_date_recieve,'%d-%m-%Y %H:%i:%s') , invoice_supplier_code_gen  ";
+
+
 
 
 
@@ -119,8 +198,11 @@ class MaintenanceStockModel extends BaseModel{
         FROM tb_stock_move 
         LEFT JOIN tb_stock_move_list ON tb_stock_move.stock_move_id = tb_stock_move_list.stock_move_id 
         WHERE stock_move_list_id IS NOT NULL 
+        $str_move 
         GROUP BY stock_move_list_id 
         ORDER BY STR_TO_DATE(stock_move_date,'%d-%m-%Y %H:%i:%s') , stock_move_code ";
+
+
 
 
 
@@ -145,8 +227,11 @@ class MaintenanceStockModel extends BaseModel{
         FROM tb_stock_change_product 
         LEFT JOIN tb_stock_change_product_list ON tb_stock_change_product.stock_change_product_id = tb_stock_change_product_list.stock_change_product_id 
         WHERE stock_change_product_list_id IS NOT NULL 
+        $str_change 
         GROUP BY stock_change_product_list_id 
         ORDER BY STR_TO_DATE(stock_change_product_date,'%d-%m-%Y %H:%i:%s') , stock_change_product_code";
+
+
 
 
         
@@ -175,8 +260,12 @@ class MaintenanceStockModel extends BaseModel{
         LEFT JOIN tb_product_category ON tb_product.product_category_id = tb_product_category.product_category_id 
         WHERE invoice_customer_begin = '0' AND stock_event = '1' 
         AND invoice_customer_list_id IS NOT NULL  
+        $str_invoice_customer 
         GROUP BY invoice_customer_list_id 
         ORDER BY STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') , invoice_customer_code  ";
+
+
+
 
 
         //ดึงข้อมูลการรับสินค้าเข้าเรียงตามวันที่
@@ -200,8 +289,11 @@ class MaintenanceStockModel extends BaseModel{
         FROM tb_stock_issue 
         LEFT JOIN tb_stock_issue_list ON tb_stock_issue.stock_issue_id = tb_stock_issue_list.stock_issue_id 
         WHERE stock_issue_list_id IS NOT NULL 
+        $str_issue 
         GROUP BY stock_issue_list_id 
         ORDER BY STR_TO_DATE(stock_issue_date,'%d-%m-%Y %H:%i:%s') , stock_issue_code  ";
+
+
 
 
         // ดึงข้อมูล Transaction รวมทั้งหมด
@@ -231,6 +323,8 @@ class MaintenanceStockModel extends BaseModel{
                 ) as tb_transaction  
         ORDER BY STR_TO_DATE(stock_date,'%d-%m-%Y %H:%i:%s'), transaction_type ASC 
         "; 
+        
+
         
         //echo $sql."<br><br><br>";
         $data = [];

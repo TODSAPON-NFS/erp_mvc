@@ -8,7 +8,7 @@ $i = 0;
 $html_head_pdf = '  
 <table width="100%" border="0" cellspacing="0">
     <tr>
-        <td colspan="3">บริษัท อาร์โน (ประเทศไทย) จำกัด</td>  
+        <td colspan="3">'.$company['company_name_th'].'</td>  
     </tr> 
     <tr>
         <td colspan="6" align="center" style="font-size:14px;color:#00F;"><b>สินค้าและวัตถุดิบ แยกตามคลังสินค้า</b></td>  

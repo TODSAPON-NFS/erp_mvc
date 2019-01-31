@@ -23,6 +23,7 @@ require_once('../models/AccountSettingModel.php');
 require_once('../functions/CodeGenerateFunction.func.php');
 require_once('../models/PaperModel.php');
 require_once('../models/MaintenanceSaleModel.php');
+require_once('../models/MaintenanceStockModel.php');
 
 date_default_timezone_set('asia/bangkok');
 

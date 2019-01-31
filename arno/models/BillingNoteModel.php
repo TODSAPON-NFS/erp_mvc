@@ -13,8 +13,7 @@ class BillingNoteModel extends BaseModel{
 
         $str_customer = "";
         $str_date = "";
-        $str_user = "";
-
+        $str_user = ""; 
         $str_lock = "";
 
         if($lock_1 == "1" && $lock_2 == "1"){

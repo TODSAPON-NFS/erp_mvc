@@ -189,7 +189,7 @@ class JournalCashReceiptModel extends BaseModel{
         $sql = " UPDATE tb_journal_cash_receipt SET 
         journal_cash_receipt_code = '".$data['journal_cash_receipt_code']."', 
         journal_cash_receipt_date = '".$data['journal_cash_receipt_date']."', 
-        journal_cash_receipt_name = '".$data['journal_cash_receipt_name']."', 
+        journal_cash_receipt_name = '".static::$db->real_escape_string($data['journal_cash_receipt_name'])."', 
         updateby = '".$data['updateby']."', 
         lastupdate = NOW()  
         WHERE journal_cash_receipt_id = $id 
@@ -220,7 +220,7 @@ class JournalCashReceiptModel extends BaseModel{
         $data['finance_debit_id']."','".
         $data['journal_cash_receipt_code']."','".
         $data['journal_cash_receipt_date']."','".
-        $data['journal_cash_receipt_name']."','".
+        static::$db->real_escape_string($data['journal_cash_receipt_name'])."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].

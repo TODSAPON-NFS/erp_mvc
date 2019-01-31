@@ -42,7 +42,7 @@ $company=$company_model->getCompanyByID('1');
 $debtor_reports = $debtor_report_model->getInvoiceDebtorReportBy($date_start,$date_end,$customer_id,$keyword);
 
 
-$lines = 28;
+$lines = 40;
 
 $page_max = (int)(count($debtor_reports) / $lines);
 if(count($debtor_reports) % $lines > 0){
@@ -63,11 +63,23 @@ if($_GET['action'] == "pdf"){
     /*############################### FPDF ##############################*/
 
     include("../plugins/mpdf/mpdf.php");
-    $mpdf=new mPDF('th', 'A4', '0', 'garuda');  
+    $mpdf=new mPDF('th', 'A4', '0', 'garuda' ,5,5,9,9,15,15,15 );  
+
+    /******
+     * 
+     * Default values:
+            margin_left: 15
+            margin_right: 15
+            margin_top: 16
+            margin_bottom: 16
+            margin_header: 9
+            margin_footer: 9
+     * 
+     */
     
     for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
-        $mpdf->AddPage('L');
+        $mpdf->AddPage('P');
         $mpdf->mirrorMargins = true;
         
         $mpdf->SetDisplayMode('fullpage','two');

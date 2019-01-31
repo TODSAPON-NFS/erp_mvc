@@ -13,6 +13,7 @@ class JournalSaleListModel extends BaseModel{
         $sql = " SELECT 
         account_code,
         journal_sale_list_id, 
+        journal_sale_list_no, 
         journal_sale_list_name,
         journal_sale_list_debit,
         journal_sale_list_credit, 
@@ -25,7 +26,7 @@ class JournalSaleListModel extends BaseModel{
         account_name_en 
         FROM tb_journal_sale_list LEFT JOIN tb_account ON tb_journal_sale_list.account_id = tb_account.account_id 
         WHERE journal_sale_id = '$journal_sale_id' 
-        ORDER BY journal_sale_list_id 
+        ORDER BY journal_sale_list_no 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -43,7 +44,7 @@ class JournalSaleListModel extends BaseModel{
         $sql = " SELECT *
         FROM tb_journal_sale_list  
         WHERE journal_sale_id = '$journal_sale_id' AND account_id = '$account_id' 
-        ORDER BY journal_sale_list_id 
+        ORDER BY journal_sale_list_no 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -61,6 +62,7 @@ class JournalSaleListModel extends BaseModel{
     function insertJournalSaleList($data = []){
         $sql = " INSERT INTO tb_journal_sale_list (
             journal_sale_id,
+            journal_sale_list_no,
             journal_cheque_id,
             journal_cheque_pay_id,
             journal_invoice_customer_id,
@@ -75,6 +77,7 @@ class JournalSaleListModel extends BaseModel{
             lastupdate
         ) VALUES (
             '".$data['journal_sale_id']."',  
+            '".$data['journal_sale_list_no']."',  
             '".$data['journal_cheque_id']."', 
             '".$data['journal_cheque_pay_id']."', 
             '".$data['journal_invoice_customer_id']."', 
@@ -101,6 +104,7 @@ class JournalSaleListModel extends BaseModel{
 
         $sql = " UPDATE tb_journal_sale_list 
             SET account_id = '".$data['account_id']."',  
+            journal_sale_list_no = '".$data['journal_sale_list_no']."',
             journal_cheque_id = '".$data['journal_cheque_id']."',
             journal_cheque_pay_id = '".$data['journal_cheque_pay_id']."',
             journal_invoice_customer_id = '".$data['journal_invoice_customer_id']."',

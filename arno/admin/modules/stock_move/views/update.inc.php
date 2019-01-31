@@ -113,7 +113,7 @@
                 '<td class="sorter">'+
                 '</td>'+
                 '<td>'+  
-                    '<input type="hidden" name="stock_move_list_id" value="0" />'+
+                    '<input type="hidden" name="stock_move_list_id[]" value="0" />'+
                     '<input type="hidden" name="product_id[]" class="form-control" />'+
 					'<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" />'+ 
                 '</td>'+
@@ -254,7 +254,7 @@
                                     <?PHP echo ($i + 1); ?>.
                                 </td>
                                 <td>
-                                    <input type="hidden" name="stock_move_list_id" value="<?PHP echo $stock_move_lists[$i]['stock_move_list_id'];?>" />
+                                    <input type="hidden" name="stock_move_list_id[]" value="<?PHP echo $stock_move_lists[$i]['stock_move_list_id'];?>" />
                                     <input type="hidden" name="product_id[]" class="form-control" value="<?php echo $stock_move_lists[$i]['product_id']; ?>" />
                                     <input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="<?php echo $stock_move_lists[$i]['product_code']; ?>"  readonly/>
                                 </td>

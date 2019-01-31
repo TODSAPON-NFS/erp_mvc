@@ -143,7 +143,7 @@ class JournalPurchaseReturnModel extends BaseModel{
         $sql = " UPDATE tb_journal_purchase_return SET 
         journal_purchase_return_code = '".$data['journal_purchase_return_code']."', 
         journal_purchase_return_date = '".$data['journal_purchase_return_date']."', 
-        journal_purchase_return_name = '".$data['journal_purchase_return_name']."', 
+        journal_purchase_return_name = '".static::$db->real_escape_string($data['journal_purchase_return_name'])."', 
         updateby = '".$data['updateby']."', 
         lastupdate = NOW()  
         WHERE journal_purchase_return_id = $id 
@@ -174,7 +174,7 @@ class JournalPurchaseReturnModel extends BaseModel{
         $data['debit_note_id']."','".
         $data['journal_purchase_return_code']."','".
         $data['journal_purchase_return_date']."','".
-        $data['journal_purchase_return_name']."','".
+        static::$db->real_escape_string($data['journal_purchase_return_name'])."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].

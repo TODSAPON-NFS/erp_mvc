@@ -510,10 +510,14 @@ class StockReportModel extends BaseModel{
         
 
        // $sql = "SELECT * FROM tb_stock_group WHERE stock_group_id = '".$stock_group_id."' ";
+        $selectSun = "" ;
 
         if($stock_group_id == "0"){
              $str_stock = ""; 
+             $selectSun = "  IF( stock_report_qty  <= 0  , 0 , (SUM(stock_report_avg_total)/SUM(stock_report_qty))) AS stock_report_cost_avg,
+                             IF( stock_report_qty  <= 0  , 0 ,( SUM(stock_report_avg_total)  ) ) AS  stock_report_avg_total" ;
         }else if ($stock_group_id != "0"){
+            $selectSun = " stock_report_avg_total , stock_report_cost_avg " ;
             $str_stock = " AND stock_group_id = '$stock_group_id' ";  
         } 
 
@@ -548,9 +552,9 @@ class StockReportModel extends BaseModel{
                 $str_qty = "";
 
             }
-            //echo "<pre>";
-            //print_r($data);
-            //echo "</pre>";
+            // echo "<pre>";
+            // print_r($data);
+            // echo "</pre>";
 
             
     
@@ -561,12 +565,19 @@ class StockReportModel extends BaseModel{
             } 
 
             if($i == 0){
-                $sql .=" SELECT SUM(stock_report_qty) AS stock_report_qty,product_code ,  product_name FROM 
+                $sql .="SELECT SUM(stock_report_qty) AS stock_report_qty,product_code ,  
+                                product_name , 
+                                $selectSun
+                        FROM 
                 ( 
                 ";
             }
 
-             $sql .="( SELECT stock_group_name ,CONCAT(product_code_first,product_code) as product_code,product_name , IF(balance_qty IS NULL , stock_report_qty ,balance_qty) as stock_report_qty , IF(balance_stock_cost_avg IS NULL , stock_report_cost_avg, balance_stock_cost_avg ) as stock_report_cost_avg , IF(balance_stock_cost_avg IS NULL , (stock_report_qty*stock_report_cost_avg) , (balance_qty * balance_stock_cost_avg ) ) AS  stock_report_total 
+             $sql .="( SELECT stock_group_name ,CONCAT(product_code_first,product_code) as product_code,
+             product_name , 
+             IF(balance_qty IS NULL , stock_report_qty ,balance_qty) as stock_report_qty , 
+             IF(balance_stock_cost_avg IS NULL , 0, balance_stock_cost_avg ) as stock_report_cost_avg , 
+             IF(balance_stock_cost_avg_total IS NULL , 0 ,balance_stock_cost_avg_total ) AS  stock_report_avg_total 
                 FROM tb_stock_report 
                 LEFT JOIN tb_product ON tb_stock_report.product_id = tb_product.product_id 
                 LEFT JOIN tb_stock_group ON tb_stock_report.stock_group_id = tb_stock_group.stock_group_id 
@@ -595,7 +606,7 @@ class StockReportModel extends BaseModel{
             GROUP BY product_code
             "; 
 
-            //echo "<pre>".$sql."</pre>";
+            // echo "<pre>".$sql."</pre>";
             //echo $sql;
             if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
                 $data = [];

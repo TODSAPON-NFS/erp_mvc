@@ -88,7 +88,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <td style="padding:4px;line-height: 18px;">
                 <div style="padding:8px;font-size:12px;"> '.$finance_debit['finance_debit_name'].'  '.$branch.' <br> 
                  '. nl2br ( $finance_debit['finance_debit_address']).' <br> 
-                เลขประจำตัวผู้เสียภาษี / Tax : '.$finance_debit['finance_debit_tax'].' 
+                 Tax : '.$finance_debit['finance_debit_tax'].' 
                 </div>
             </td>
             <td width="240">

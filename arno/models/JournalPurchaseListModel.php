@@ -13,6 +13,7 @@ class JournalPurchaseListModel extends BaseModel{
         $sql = " SELECT 
         account_code,
         journal_purchase_list_id, 
+        journal_purchase_list_no, 
         journal_purchase_list_name,
         journal_purchase_list_debit,
         journal_purchase_list_credit, 
@@ -25,7 +26,7 @@ class JournalPurchaseListModel extends BaseModel{
         account_name_en 
         FROM tb_journal_purchase_list LEFT JOIN tb_account ON tb_journal_purchase_list.account_id = tb_account.account_id 
         WHERE journal_purchase_id = '$journal_purchase_id' 
-        ORDER BY journal_purchase_list_id 
+        ORDER BY journal_purchase_list_no 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -43,7 +44,7 @@ class JournalPurchaseListModel extends BaseModel{
         $sql = " SELECT *
         FROM tb_journal_purchase_list  
         WHERE journal_purchase_id = '$journal_purchase_id' AND account_id = '$account_id' 
-        ORDER BY journal_purchase_list_id 
+        ORDER BY journal_purchase_list_no 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -61,6 +62,7 @@ class JournalPurchaseListModel extends BaseModel{
     function insertJournalPurchaseList($data = []){
         $sql = " INSERT INTO tb_journal_purchase_list (
             journal_purchase_id, 
+            journal_purchase_list_no, 
             journal_cheque_id,
             journal_cheque_pay_id,
             journal_invoice_customer_id,
@@ -75,12 +77,13 @@ class JournalPurchaseListModel extends BaseModel{
             lastupdate
         ) VALUES (
             '".$data['journal_purchase_id']."',   
+            '".$data['journal_purchase_list_no']."',   
             '".$data['journal_cheque_id']."', 
             '".$data['journal_cheque_pay_id']."', 
             '".$data['journal_invoice_customer_id']."', 
             '".$data['journal_invoice_supplier_id']."', 
             '".$data['account_id']."', 
-            '".$data['journal_purchase_list_name']."', 
+            '".static::$db->real_escape_string($data['journal_purchase_list_name'])."', 
             '".$data['journal_purchase_list_debit']."',
             '".$data['journal_purchase_list_credit']."',
             '".$data['addby']."', 
@@ -103,11 +106,12 @@ class JournalPurchaseListModel extends BaseModel{
 
         $sql = " UPDATE tb_journal_purchase_list 
             SET account_id = '".$data['account_id']."',  
+            journal_purchase_list_no = '".$data['journal_purchase_list_no']."',
             journal_cheque_id = '".$data['journal_cheque_id']."',
             journal_cheque_pay_id = '".$data['journal_cheque_pay_id']."',
             journal_invoice_customer_id = '".$data['journal_invoice_customer_id']."',
             journal_invoice_supplier_id = '".$data['journal_invoice_supplier_id']."',
-            journal_purchase_list_name = '".$data['journal_purchase_list_name']."',
+            journal_purchase_list_name = '".static::$db->real_escape_string($data['journal_purchase_list_name'])."',
             journal_purchase_list_debit = '".$data['journal_purchase_list_debit']."',
             journal_purchase_list_credit = '".$data['journal_purchase_list_credit']."' 
             WHERE journal_purchase_list_id = '$id' 

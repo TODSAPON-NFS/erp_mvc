@@ -37,7 +37,7 @@ $html_head_pdf = '
 <table  width="100%" cellspacing="0" style="" > 
     <thead>
         <tr>
-            <td colspan="5">บริษัท อาร์โน (ประเทศไทย) จำกัด</td> 
+            <td colspan="5">'.$company['company_name_th'].'</td> 
             <td colspan="6" align="right" >เลขประจำตัวผู้เสียภาษี : 0105558002033</td>
         </tr> 
         <tr>

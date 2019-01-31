@@ -12,6 +12,7 @@ class JournalCashPaymentListModel extends BaseModel{
     function getJournalCashPaymentListBy($journal_cash_payment_id){
         $sql = " SELECT 
         journal_cash_payment_list_id, 
+        journal_cash_payment_list_no,
         journal_cash_payment_list_name,
         journal_cash_payment_list_debit,
         journal_cash_payment_list_credit, 
@@ -25,7 +26,7 @@ class JournalCashPaymentListModel extends BaseModel{
         account_name_en 
         FROM tb_journal_cash_payment_list LEFT JOIN tb_account ON tb_journal_cash_payment_list.account_id = tb_account.account_id 
         WHERE journal_cash_payment_id = '$journal_cash_payment_id' 
-        ORDER BY journal_cash_payment_list_id 
+        ORDER BY journal_cash_payment_list_no 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -42,6 +43,7 @@ class JournalCashPaymentListModel extends BaseModel{
     function getJournalCashPaymentListByFinanceCreditPayId($journal_cash_payment_id,$finance_credit_pay_id){
         $sql = " SELECT 
         journal_cash_payment_list_id, 
+        journal_cash_payment_list_no,
         journal_cash_payment_list_name,
         journal_cash_payment_list_debit,
         journal_cash_payment_list_credit, 
@@ -55,7 +57,7 @@ class JournalCashPaymentListModel extends BaseModel{
         account_name_en 
         FROM tb_journal_cash_payment_list LEFT JOIN tb_account ON tb_journal_cash_payment_list.account_id = tb_account.account_id 
         WHERE journal_cash_payment_id = '$journal_cash_payment_id' AND tb_journal_cash_payment_list.finance_credit_pay_id = '$finance_credit_pay_id' 
-        ORDER BY journal_cash_payment_list_id 
+        ORDER BY journal_cash_payment_list_no 
         ";
 
         if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -73,6 +75,7 @@ class JournalCashPaymentListModel extends BaseModel{
 
         $sql = " INSERT INTO tb_journal_cash_payment_list (
             journal_cash_payment_id,
+            journal_cash_payment_list_no,
             finance_credit_pay_id,
             journal_cheque_id,
             journal_cheque_pay_id,
@@ -88,6 +91,7 @@ class JournalCashPaymentListModel extends BaseModel{
             lastupdate
         ) VALUES (
             '".$data['journal_cash_payment_id']."', 
+            '".$data['journal_cash_payment_list_no']."', 
             '".$data['finance_credit_pay_id']."', 
             '".$data['journal_cheque_id']."', 
             '".$data['journal_cheque_pay_id']."', 
@@ -116,6 +120,7 @@ class JournalCashPaymentListModel extends BaseModel{
 
         $sql = " UPDATE tb_journal_cash_payment_list 
             SET account_id = '".$data['account_id']."',  
+            journal_cash_payment_list_no = '".$data['journal_cash_payment_list_no']."',
             journal_cheque_id = '".$data['journal_cheque_id']."',
             journal_cheque_pay_id = '".$data['journal_cheque_pay_id']."',
             journal_invoice_customer_id = '".$data['journal_invoice_customer_id']."',

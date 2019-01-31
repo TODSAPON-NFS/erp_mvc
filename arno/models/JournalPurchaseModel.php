@@ -190,7 +190,7 @@ class JournalPurchaseModel extends BaseModel{
         $sql = " UPDATE tb_journal_purchase SET 
         journal_purchase_code = '".$data['journal_purchase_code']."', 
         journal_purchase_date = '".$data['journal_purchase_date']."', 
-        journal_purchase_name = '".$data['journal_purchase_name']."', 
+        journal_purchase_name = '".static::$db->real_escape_string($data['journal_purchase_name'])."', 
         updateby = '".$data['updateby']."', 
         lastupdate = NOW()  
         WHERE journal_purchase_id = $id 
@@ -221,7 +221,7 @@ class JournalPurchaseModel extends BaseModel{
         $data['invoice_supplier_id']."','".
         $data['journal_purchase_code']."','".
         $data['journal_purchase_date']."','".
-        $data['journal_purchase_name']."','".
+        static::$db->real_escape_string($data['journal_purchase_name'])."','".
         $data['addby']."',".
         "NOW(),'".
         $data['addby'].

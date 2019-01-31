@@ -1227,7 +1227,7 @@
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">สร้างเช็คจ่าย / Add Cheque Payment</h4>
+            <h4 class="modal-title">สร้างเช็ครับ / Add Cheque Receive</h4>
         </div>
 
         <div  class="modal-body">
@@ -1236,7 +1236,7 @@
                     <div class="row">
                         <div class="col-lg-2">
                             <div class="form-group">
-                                <label>วันที่เช็ค</label>
+                                <label>วันที่รับเช็ค</label>
                                 <input id="check_date_write" name="check_date_write" class="form-control calendar" type="text" value="" readonly />
                                 <p class="help-block">01-06-2018 </p>
                             </div>
@@ -1292,7 +1292,7 @@
                         </div>
                         <div class="col-lg-2">
                             <div class="form-group">
-                                <label>วันรับที่เช็ค</label>
+                                <label>วันที่เช็ค</label>
                                 <input id="check_date_recieve" name="check_date_recieve" class="form-control calendar" value="" readonly>
                                 <p class="help-block">01-06-2018 </p>
                             </div>

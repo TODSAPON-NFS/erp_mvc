@@ -70,37 +70,41 @@
 
             $.post( "controllers/getBillingNoteListByCustomerID.php", { 'customer_id': customer_id, 'invoice_customer_id': JSON.stringify(invoice_customer_id) }, function( data ) {
                //alert(data);
-               // $('#bodyAdd').html(data);
-               // $('#modalAdd').modal('show');
+                $('#bodyAdd').html(data);
+                $('#modalAdd').modal('show');
                
                 if(data.length > 0){
                     data_buffer = data;
                     var content = "";
                     for(var i = 0; i < data.length ; i++){
 
+                        var billing_note_list_amount = parseFloat(data[i].billing_note_list_amount);
+                        var billing_note_list_paid = parseFloat(data[i].billing_note_list_paid); 
+
                         content += '<tr class="odd gradeX">'+
-                                        '<td>'+
-                                            '<input type="checkbox" name="p_id" value="'+data[i].invoice_customer_id+'" />'+     
-                                        '</td>'+
-                                        '<td>'+
-                                            data[i].invoice_customer_code+
-                                        '</td>'+
-                                        '<td>'+
-                                            data[i].billing_note_list_date+
-                                        '</td>'+
-                                        '<td align="right">'+
-                                            data[i].billing_note_list_due +
-                                        '</td>'+
-                                        '<td align="right">'+
-                                            data[i].billing_note_list_amount +
-                                        '</td>'+
-                                        '<td align="right">'+
-                                            data[i].billing_note_list_paid +
-                                        '</td>'+
-                                        '<td align="right">'+
-                                            (data[i].billing_note_list_amount - data[i].billing_note_list_paid) +
-                                        '</td>'+
-                                    '</tr>';
+                                    '<td>'+
+                                        '<input type="checkbox" name="p_id" value="'+data[i].invoice_customer_id+'" />'+     
+                                    '</td>'+
+                                    '<td>'+
+                                        data[i].invoice_customer_code+
+                                    '</td>'+
+                                    '<td>'+
+                                        data[i].billing_note_list_date+
+                                    '</td>'+
+                                    '<td align="right">'+
+                                        data[i].billing_note_list_due +
+                                    '</td>'+
+                                    '<td align="right">'+
+                                         billing_note_list_amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
+                                    '</td>'+
+                                    '<td align="right">'+
+                                         billing_note_list_paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
+                                    '</td>'+
+                                    '<td align="right">'+
+                                        ( billing_note_list_amount -  billing_note_list_paid).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
+                                    '</td>'+
+                                '</tr>';
+
 
                     }
                     $('#bodyAdd').html(content);
@@ -127,34 +131,37 @@
 
         $.post( "controllers/getBillingNoteListByCustomerID.php", { 'customer_id': customer_id, 'invoice_customer_id': JSON.stringify(invoice_customer_id), search : $(id).val() }, function( data ) {
             var content = "";
-                if(data.length > 0){
-                    data_buffer = data;
-                    
-                    for(var i = 0; i < data.length ; i++){
+            if(data.length > 0){
+                data_buffer = data;
+                
+                for(var i = 0; i < data.length ; i++){
 
-                        content += '<tr class="odd gradeX">'+
-                                        '<td>'+
-                                            '<input type="checkbox" name="p_id" value="'+data[i].invoice_customer_id+'" />'+     
-                                        '</td>'+
-                                        '<td>'+
-                                            data[i].invoice_customer_code+
-                                        '</td>'+
-                                        '<td>'+
-                                            data[i].billing_note_list_date+
-                                        '</td>'+
-                                        '<td align="right">'+
-                                            data[i].billing_note_list_due +
-                                        '</td>'+
-                                        '<td align="right">'+
-                                            data[i].billing_note_list_amount +
-                                        '</td>'+
-                                        '<td align="right">'+
-                                            data[i].billing_note_list_paid +
-                                        '</td>'+
-                                        '<td align="right">'+
-                                            (data[i].billing_note_list_amount - data[i].billing_note_list_paid) +
-                                        '</td>'+
-                                    '</tr>';
+                    var billing_note_list_amount = parseFloat(data[i].billing_note_list_amount);
+                    var billing_note_list_paid = parseFloat(data[i].billing_note_list_paid); 
+
+                    content += '<tr class="odd gradeX">'+
+                                    '<td>'+
+                                        '<input type="checkbox" name="p_id" value="'+data[i].invoice_customer_id+'" />'+     
+                                    '</td>'+
+                                    '<td>'+
+                                        data[i].invoice_customer_code+
+                                    '</td>'+
+                                    '<td>'+
+                                        data[i].billing_note_list_date+
+                                    '</td>'+
+                                    '<td align="right">'+
+                                        data[i].billing_note_list_due +
+                                    '</td>'+
+                                    '<td align="right">'+
+                                         billing_note_list_amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
+                                    '</td>'+
+                                    '<td align="right">'+
+                                         billing_note_list_paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
+                                    '</td>'+
+                                    '<td align="right">'+
+                                        ( billing_note_list_amount -  billing_note_list_paid).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") +
+                                    '</td>'+
+                                '</tr>';
 
                 }
             }
@@ -177,6 +184,9 @@
                     index = $(id).closest('table').children('tbody').children('tr').length + 1;
                 }
 
+                var billing_note_list_amount = parseFloat(data_buffer[i].billing_note_list_amount);
+                var billing_note_list_paid = parseFloat(data_buffer[i].billing_note_list_paid); 
+
                 $(id).closest('table').children('tbody').append(
                     '<tr class="odd gradeX">'+
                         '<td>'+  
@@ -191,13 +201,13 @@
                             data_buffer[i].billing_note_list_due + 
                         '</td>'+
                         '<td align="right">'+
-                            '<input type="text" class="form-control" style="text-align:right" name="billing_note_list_amount[]" onchange="update_sum(this);" value="'+data_buffer[i].billing_note_list_amount+'" />'+
+                            '<input type="text" class="form-control" name="billing_note_list_amount[]" style="text-align:right" onchange="update_sum(this);" value="'+billing_note_list_amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'" />'+
                         '</td>'+
                         '<td align="right">'+
-                        '<input type="text" class="form-control" style="text-align:right" name="billing_note_list_paid[]" onchange="update_sum(this);" value="'+data_buffer[i].billing_note_list_paid+'" />'+
+                        '<input type="text" class="form-control" name="billing_note_list_paid[]" style="text-align:right" onchange="update_sum(this);" value="'+billing_note_list_paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'" />'+
                         '</td>'+
                         '<td align="right">'+
-                        '<input type="text" class="form-control" style="text-align:right" name="billing_note_list_balance[]" onchange="update_sum(this);" value="'+(data_buffer[i].billing_note_list_amount - data_buffer[i].billing_note_list_paid)+'" readonly />'+
+                        '<input type="text" class="form-control" name="billing_note_list_balance[]" style="text-align:right" onchange="update_sum(this);" value="'+(billing_note_list_amount - billing_note_list_paid).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'" readonly />'+
                         '</td>'+
                         '<td>'+
                             '<a href="javascript:;" onclick="delete_row(this);" style="color:red;">'+
@@ -227,7 +237,7 @@
     }
 
     function update_sum(id){
-                    
+
         var amount =  parseFloat($(id).closest('tr').children('td').children('input[name="billing_note_list_amount[]"]').val(  ).replace(',',''));
         var paid =  parseFloat($(id).closest('tr').children('td').children('input[name="billing_note_list_paid[]"]').val( ).replace(',',''));
         var balance =  parseFloat($(id).closest('tr').children('td').children('input[name="billing_note_list_balance[]"]').val( ).replace(',',''));
@@ -250,15 +260,14 @@
         $(id).closest('tr').children('td').children('input[name="billing_note_list_paid[]"]').val( paid.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
         $(id).closest('tr').children('td').children('input[name="billing_note_list_balance[]"]').val( sum.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
 
-        calculateAll();         
+        calculateAll();
 
 
-    }                                                                   
-
+    }
 
     function calculateAll(){
 
-        var val = document.getElementsByName('billing_note_total[]');
+        var val = document.getElementsByName('billing_note_list_balance[]');
         var total = 0.0;
         
         for(var i = 0 ; i < val.length ; i++){
@@ -266,8 +275,9 @@
             total += parseFloat(val[i].value.toString().replace(new RegExp(',', 'g'),''));
         }
        
-        $('#billing_note_net').val((total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
+        $('#billing_note_total').val((total).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") );
     }
+
 
 
 

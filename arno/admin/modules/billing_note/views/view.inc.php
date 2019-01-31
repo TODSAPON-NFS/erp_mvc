@@ -210,6 +210,8 @@
                         <td style="text-align:right;" >
                             <?php echo number_format($total,2); ?>
                         </td>
+                        <td>
+                        </td>
                     </tfoot>
                 </table>
                 

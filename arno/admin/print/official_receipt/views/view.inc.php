@@ -25,6 +25,13 @@ if($official_receipt['customer_zipcode'] != ""){
 }
 
 
+if($official_receipt['official_receipt_tax'] != ""){
+    $tax = ' Tax : '.$official_receipt['official_receipt_tax'];
+}else{
+    $tax = "";
+}
+
+
 $total = 0;
 for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
@@ -110,7 +117,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <td style="padding:4px;line-height: 18px;">
                 <div style="padding:8px;font-size:12px;"> '.$official_receipt['official_receipt_name'].'  '.$branch.' <br> 
                  '. nl2br ( $official_receipt['official_receipt_address']).' '.$zipcode.'<br> 
-                 '.$tel.' '.$fax.' Tax : '.$official_receipt['official_receipt_tax'].' 
+                 '.$tel.' '.$fax.' '. $tax.' 
                 </div>
             </td>
             <td width="240">
@@ -239,7 +246,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     
        $total_price = number_format($total,2);
        $str = $number_2_text->convert($total_price);
-
+       if($str != ""){
+        $str = '('.$str.')';
+       }
+    }else{
+        $str = "";
+        $total_price = "";
     }
    
 
@@ -248,7 +260,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             <tfoot>
                 <tr class="odd gradeX" >
                     <td colspan="6" align="center">
-                        ('. $str.')
+                        '. $str.'
                     </td>
                     <td style="text-align: right;" >
                     '.  $total_price .'

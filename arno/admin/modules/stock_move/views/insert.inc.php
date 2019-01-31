@@ -131,15 +131,22 @@
         update_line();
     }
 
+    function product_detail_blank(id){
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+        if(product_id == ''){
+            alert('ไม่มีข้อมูลสินค้านี้');
+            $(id).closest('tr').children('td').children('input[name="product_code[]"]').focus();
+        }else{
+            window.open("?app=product_detail&product_id="+product_id);
+        }
+    }
+
 </script>
 
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <h1 class="page-header">Stock Transfer Management</h1>
-    </div>
-    <div class="col-lg-6" align="right">
-       
-    </div>
+    </div> 
     <!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
@@ -261,6 +268,9 @@
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  name="stock_move_list_qty[]" value="<?php echo $stock_move_lists[$i]['stock_move_list_qty']; ?>" /></td>
                                 <td><input type="text" class="form-control" name="stock_move_list_remark[]" value="<?php echo $stock_move_lists[$i]['stock_move_list_remark']; ?>" /></td>
                                 <td>
+                                    <a href="javascript:;" onclick="product_detail_blank(this);">
+                                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                    </a> 
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>

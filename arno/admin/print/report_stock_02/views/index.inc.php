@@ -85,7 +85,8 @@ if($_GET['action'] == "pdf"){
     $mpdf->mirrorMargins = true;
     $mpdf->SetHTMLHeader($html_head_pdf,'O');
     $mpdf->SetHTMLHeader($html_head_pdf,'E'); 
-
+    // $mpdf->SetHTMLFooter($htmlFooter,'O');
+    // $mpdf->SetHTMLFooter($htmlFooter,'E');
     $mpdf->AddPage('P', // L - landscape, P - portrait 
     '', '', '', '',
     10, // margin_left
@@ -93,7 +94,7 @@ if($_GET['action'] == "pdf"){
     45, // margin top
     20, // margin bottom
     10, // margin header
-    0); // margin footer  
+    10); // margin footer  
     
     $mpdf->WriteHTML($html);  
     

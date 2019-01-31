@@ -84,10 +84,12 @@
         }
     }
     
+
     function delete_row(id){
         $(id).closest('tr').remove();
         update_line();
      }
+
 
      function show_data(id){
         var product_code = $(id).val();
@@ -101,7 +103,7 @@
      }
 
 
-     function add_row(id){
+    function add_row(id){
          var index = 0;
          if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
             index = 1;
@@ -131,23 +133,46 @@
         update_line();
     }
 
+    function product_detail_blank(id){
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+        if(product_id == ''){
+            alert('ไม่มีข้อมูลสินค้านี้');
+            $(id).closest('tr').children('td').children('input[name="product_code[]"]').focus();
+        }else{
+            window.open("?app=product_detail&product_id="+product_id);
+        }
+    }
+
 </script>
 
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <h1 class="page-header">Stock Transfer Management</h1>
-    </div>
-    <div class="col-lg-6" align="right">
-       
-    </div>
+    </div> 
     <!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
-            <div class="panel-heading">
-            แก้ไขใบย้ายคลังสินค้า /  Edit Stock Transfer   
+            <div class="panel-heading"> 
+                <div class="col-md-6">
+                แก้ไขใบย้ายคลังสินค้า /  Edit Stock Transfer  
+                </div>
+                <div class="col-md-6" align="right">
+                    <?PHP if($previous_id != ""){?>
+                    <a class="btn btn-primary" href="?app=stock_move&action=update&id=<?php echo $previous_id;?>" > <i class="fa fa-angle-double-left" aria-hidden="true"></i> <?php echo $previous_code;?> </a>
+                    <?PHP } ?>
+
+                    <a class="btn btn-success "  href="?app=stock_move&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+                      
+                    <a class="btn btn-danger" href="?app=stock_move&action=print&id=<?php echo $sort;?>&id=<?php echo $stock_move_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
+                     
+
+                    <?PHP if($next_id != ""){?>
+                    <a class="btn btn-primary" href="?app=stock_move&action=update&sort=<?php echo $sort;?>&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>
+                    <?PHP } ?>
+                </div>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -262,6 +287,9 @@
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  name="stock_move_list_qty[]" value="<?php echo $stock_move_lists[$i]['stock_move_list_qty']; ?>" /></td>
                                 <td><input type="text" class="form-control" name="stock_move_list_remark[]" value="<?php echo $stock_move_lists[$i]['stock_move_list_remark']; ?>" /></td>
                                 <td>
+                                    <a href="javascript:;" onclick="product_detail_blank(this);">
+                                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                    </a> 
                                     <a href="javascript:;" onclick="delete_row(this);" style="color:red;">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>

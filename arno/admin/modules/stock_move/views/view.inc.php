@@ -9,12 +9,9 @@
 </script>
 
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <h1 class="page-header">Stock Transfer Management</h1>
-    </div>
-    <div class="col-lg-6" align="right">
-        
-    </div>
+    </div> 
     <!-- /.col-lg-12 -->
 </div>
             <!-- /.row -->

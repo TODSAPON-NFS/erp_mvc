@@ -7,6 +7,25 @@ if( (int)$finance_debit['customer_branch'] * 1 == 0){
 } 
 
 
+if($finance_debit['customer_fax'] != ""){
+    $fax = "Fax. ".$finance_debit['customer_fax'];
+}else{
+    $fax = "";
+}
+
+if($finance_debit['customer_tel'] != ""){
+    $tel = "Tel. ".$finance_debit['customer_fax'];
+}else{
+    $tel = "";
+}
+
+if($finance_debit['finance_debit_tax'] != ""){
+    $tax = ' Tax : '.$finance_debit['finance_debit_tax'];
+}else{
+    $tax = "";
+}
+
+
 $total = 0;
 for($page_index=0 ; $page_index < $page_max ; $page_index++){
 
@@ -87,8 +106,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         <tr>
             <td style="padding:4px;line-height: 18px;">
                 <div style="padding:8px;font-size:12px;"> '.$finance_debit['finance_debit_name'].'  '.$branch.' <br> 
-                 '. nl2br ( $finance_debit['finance_debit_address']).' <br> 
-                 Tax : '.$finance_debit['finance_debit_tax'].' 
+                    '. nl2br ( $finance_debit['finance_debit_address']).' '.$zipcode.'<br> 
+                    '.$tel.' '.$fax.' '. $tax.' 
                 </div>
             </td>
             <td width="240">
@@ -221,6 +240,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         $str = '('.$str.')';
        }
 
+    }else{
+        $str = "";
+        $total_price = "";
     }
    
 

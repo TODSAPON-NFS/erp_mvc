@@ -284,7 +284,7 @@
 
     function show_stock(id){ 
         var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
-
+        console.log("dfdfdf",product_id);
         $.post( "controllers/getStockGroupByProductID.php", { 'product_id': product_id }, function( data ) {
                 var str_stock = "";
                 console.log(data);
@@ -303,7 +303,9 @@
     function show_data (id){
         var product_code = $(id).val(); 
         $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
+            // console.log(data);
             if(data != null){
+                //console.log(data);
                 $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
                 $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)  
                 $(id).closest('tr').children('td').children('input[name="save_product_price[]"]').val(data.product_id)  

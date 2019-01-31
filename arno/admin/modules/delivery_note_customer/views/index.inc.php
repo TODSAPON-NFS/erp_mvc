@@ -8,7 +8,7 @@ require_once('../models/UserModel.php');
 require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/CustomerModel.php');
-
+require_once('../models/StockGroupModel.php');
 require_once('../functions/CodeGenerateFunction.func.php');
 require_once('../models/PaperModel.php');
 
@@ -20,7 +20,7 @@ $customer_model = new CustomerModel;
 $delivery_note_customer_model = new DeliveryNoteCustomerModel;
 $delivery_note_customer_list_model = new DeliveryNoteCustomerListModel;
 $product_model = new ProductModel;
-
+$stock_group_model = new StockGroupModel;
 
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
@@ -83,7 +83,7 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
     $products=$product_model->getProductBy('','','','');
     $customers=$customer_model->getCustomerBy();
     $users=$user_model->getUserBy();
-
+    $stock_groups=$stock_group_model->getStockGroupBy();
 
     $user=$user_model->getUserByID($admin_id);
 

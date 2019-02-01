@@ -10,6 +10,11 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         div{
             font-size:10px;
         }
+
+        body{
+            font-family:  "tahoma";  
+        }
+
         .table, .table thead th, .table tbody td{
             border: 1px solid black;
         }
@@ -33,7 +38,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <div><b>เดือน/ปีภาษี</b> '.$section_date.' (<b>เริ่มจาก</b> '.$date_start.' <b>ถึง</b> '.$date_end.') </div>
             </td>
             <td align="left"  align="left" width="120px" >
-                
+                <b>พิมพ์ : </b>  '.$d1.'-'.$d2.'-'.$d3.' '.$d4.':'.$d5.':'.$d6.'
             </td>
         </tr>
     </table>
@@ -51,7 +56,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         </tr> 
         <tr>
             <td align="left" ><b>เลขประจำตัวผู้เสียภาษีอาการ</b> </td>
-            <td> '.$company['company_tax'].' <b>สำนักงาน</b> '.$company['company_branch'].' </td>
+            <td> '.$company['company_tax'].'  '.$company['company_branch'].' </td>
             <td >  </td>
         </tr>
     </table>  

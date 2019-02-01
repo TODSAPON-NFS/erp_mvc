@@ -5,6 +5,11 @@
         div{
             font-size:10px;
         }
+
+        body{
+            font-family:  "tahoma";  
+        }
+
         .table, .table thead th, .table tbody td{
             border: 1px solid black;
         }
@@ -40,7 +45,7 @@
                 <th style="text-align: center;vertical-align: middle;" >อีเมล</th>   
             </tr>
         </thead>
-
+        
         <tbody>
 
     ';
@@ -65,6 +70,11 @@
  
     $html .= ' 
             </tbody> 
+            <tfoot>
+                <td colspan="11">
+                <b>พิมพ์ : </b>  '.$d1.'-'.$d2.'-'.$d3.' '.$d4.':'.$d5.':'.$d6.'
+                </td>
+            </tfoot>
         </table>
     '; 
 

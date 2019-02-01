@@ -23,6 +23,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             padding:2px 4px;
             font-size:10px;
         }
+        body{
+            font-family:  "tahoma";  
+        }
 
     </style>';
 
@@ -33,7 +36,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 <div> <b>เริ่มจาก</b> '.$date_start.' <b>ถึง</b> '.$date_end.'  </div>
             </td>
             <td align="left"  align="left" width="120px" >
-                
+            <b>หน้า</b> : '.($page_index + 1).' / '.$page_max.'
             </td>
         </tr>
     </table>
@@ -42,7 +45,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         <tr>
             <td align="left" width="140px" ><b>ชื่อสถานประกอบการ </b></td>
             <td> '.$company['company_name_th'].'</td>
-            <td align="left"  align="left" width="120px" ><b>หน้า</b> : '.($page_index + 1).' / '.$page_max.'</td>
+            <td align="left"  align="left" width="120px" > พิมพ์ '.$datePrint.'</td>
         </tr>
         <tr>
             <td align="left" ><b>ที่อยู่สถานประกอบการ</b> </td>

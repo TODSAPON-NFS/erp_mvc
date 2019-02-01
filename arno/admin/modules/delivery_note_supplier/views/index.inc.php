@@ -9,7 +9,7 @@ require_once('../models/NotificationModel.php');
 require_once('../models/ProductModel.php');
 require_once('../models/ProductSupplierModel.php');
 require_once('../models/SupplierModel.php');
-
+require_once('../models/StockGroupModel.php');
 require_once('../functions/CodeGenerateFunction.func.php');
 require_once('../models/PaperModel.php');
 
@@ -23,7 +23,7 @@ $delivery_note_supplier_model = new DeliveryNoteSupplierModel;
 $delivery_note_supplier_list_model = new DeliveryNoteSupplierListModel;
 $product_model = new ProductModel;
 $product_supplier_model = new ProductSupplierModel;
-
+$stock_group_model = new StockGroupModel;
 $code_generate = new CodeGenerate;
 $paper_model = new PaperModel;
 
@@ -56,14 +56,14 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
         $_SESSION['date_end'] = $date_end;
     }
 
-    if(!isset($_GET['keyword'])){
-        $keyword = $_SESSION['keyword'];
-    }else{
+    // if(!isset($_GET['keyword'])){
+    //     $keyword = $_SESSION['keyword'];
+    // }else{
         
-        $keyword = $_GET['keyword']; 
-        $_SESSION['keyword'] = $keyword;
-    }
-
+    //     $keyword = $_GET['keyword']; 
+    //     $_SESSION['keyword'] = $keyword;
+    // }
+    $keyword = $_GET['keyword']; 
     
     if($date_start == ""){
         $date_start = date('01-m-Y'); 
@@ -89,7 +89,7 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
     $products=$product_model->getProductBy('','','','');
     $suppliers=$supplier_model->getSupplierBy();
     $users=$user_model->getUserBy();
-
+    $stock_groups=$stock_group_model->getStockGroupBy();
     $user=$user_model->getUserByID($admin_id);
 
     $data = [];
@@ -378,13 +378,14 @@ if(!isset($_GET['action'])  && ($license_delivery_note_page == 'Low' || $license
         $_SESSION['date_end'] = $date_end;
     }
 
-    if(!isset($_GET['keyword'])){
-        $keyword = $_SESSION['keyword'];
-    }else{
+     // if(!isset($_GET['keyword'])){
+    //     $keyword = $_SESSION['keyword'];
+    // }else{
         
-        $keyword = $_GET['keyword']; 
-        $_SESSION['keyword'] = $keyword;
-    }
+    //     $keyword = $_GET['keyword']; 
+    //     $_SESSION['keyword'] = $keyword;
+    // }
+    $keyword = $_GET['keyword']; 
 
     
     if($date_start == ""){

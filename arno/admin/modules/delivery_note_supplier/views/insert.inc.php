@@ -91,19 +91,8 @@
         $(id).closest('tr').remove();
      }
 
-     function show_data(id){
-        var product_code = $(id).val();
-        $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
-            if(data != null){
-                $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
-                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)
-            }
-        });
-        
-     }
 
-
-     function show_request_test(id){
+    function show_request_test(id){
         var supplier_id = document.getElementById('supplier_id').value;
         var val1 = document.getElementsByName('request_test_list_id[]');
 
@@ -159,7 +148,6 @@
         }
         
     } 
-
     function search_pop_like(id){
         var supplier_id = document.getElementById('supplier_id').value;
         var val1 = document.getElementsByName('request_test_list_id[]'); 
@@ -205,7 +193,6 @@
             $('#bodyAdd').html(content);
         });
     }
-
     function add_row(id){
         $('#modalAdd').modal('hide');
         var checkbox = document.getElementsByName('p_id');
@@ -233,6 +220,12 @@
 							'<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" />'+ 
 						'</td>'+
                         '<td><input type="text" class="form-control" name="product_name[]" value="'+data_buffer[i].product_name+'" readonly /></td>'+
+                        '<td>'+
+                            '<input type="hidden" name="stock_event[]" class="form-control" />'+
+                            '<select  name="stock_group_id[]" onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
+                                '<option value="0">Select</option>'+ 
+                            '</select>'+ 
+                        '</td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="delivery_note_supplier_list_qty[]" value="'+data_buffer[i].delivery_note_supplier_list_qty+'"  /></td>'+
                         '<td><input type="text" class="form-control" name="delivery_note_supplier_list_remark[]" value="'+data_buffer[i].delivery_note_supplier_list_remark+'" /></td>'+
                         '<td>'+
@@ -248,10 +241,7 @@
             
         }
     }
-
-
-
-     function add_row_new(id){
+    function add_row_new(id){
          var index = 0;
          if(isNaN($(id).closest('table').children('tbody').children('tr').length)){
             index = 1;
@@ -267,6 +257,12 @@
                     '<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" />'+
                 '</td>'+
                 '<td><input type="text" class="form-control" name="product_name[]" readonly /></td>'+
+                '<td>'+
+                    '<input type="hidden" name="stock_event[]" class="form-control" />'+
+                    '<select  name="stock_group_id[]" onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
+                        '<option value="0">Select</option>'+ 
+                    '</select>'+ 
+                '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="delivery_note_supplier_list_qty[]"  /></td>'+
                 '<td><input type="text" class="form-control" name="delivery_note_supplier_list_remark[]" /></td>'+
                 '<td>'+
@@ -280,9 +276,7 @@
         $(".example-ajax-post").easyAutocomplete(options);
         $('#modalAdd').modal('hide');
     }
-
-    function checkAll(id)
-    {
+    function checkAll(id){
         var checkbox = document.getElementById('check_all');
         if (checkbox.checked == true){
             $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', true);
@@ -290,8 +284,50 @@
             $(id).closest('table').children('tbody').children('tr').children('td').children('input[type="checkbox"]').prop('checked', false);
         }
     }
-
-
+    function show_stock(id){ 
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+        $.post( "controllers/getStockGroupByProductID.php", { 'product_id': product_id }, function( data ) {
+                var str_stock = "";
+                console.log("show_stock(id)-product_id:",product_id);
+                    $.each(data, function (index, value) { 
+                        if(index == 0){
+                        $(id).closest('tr').children('td').children('input[name="delivery_note_supplier_list_qty[]"]').attr( 'stock_report_qty' , value['stock_report_qty'] );
+                        }
+                        str_stock += "<option value='" + value['stock_group_id'] + "'>" +  value['stock_group_name'] + "["+value['stock_report_qty']+"]</option>"; 
+                    });
+                console.log(str_stock);
+                $(id).closest('tr').children('td').children('select[name="stock_group_id[]"]').html(str_stock);
+                $(id).closest('tr').children('td').children('select[name="stock_group_id[]"]').selectpicker('refresh');
+        });
+    }
+    function show_qty(id){
+        
+        var stock_group_id = $(id).closest('tr').children('td').children('div').children('select[name="stock_group_id[]"]').val();
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(); 
+        $.post( "controllers/getQtyBy.php", { 'stock_group_id': stock_group_id,'product_id': product_id }, function( data ) {
+            if (data != null){
+                if( data.stock_report_qty == null){
+                    $(id).closest('tr').children('td').children('input[name="delivery_note_supplier_list_qty[]"]').attr( 'stock_report_qty', 0 );
+                }else{
+                    $(id).closest('tr').children('td').children('input[name="delivery_note_supplier_list_qty[]"]').attr( 'stock_report_qty', data.stock_report_qty );
+                }
+            }
+            
+        });
+    
+    }
+    function show_data(id){
+        var product_code = $(id).val();
+        console.log("show_data()-product_code:",product_code);
+        $.post( "controllers/getProductByCode.php", { 'product_code': $.trim(product_code)}, function( data ) {
+            if(data != null){
+                $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
+                $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)
+                show_stock(id);
+            }
+        });
+        
+    }
 </script>
 
     
@@ -430,6 +466,23 @@
                                     <input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="<?php echo $delivery_note_supplier_lists[$i]['product_code']; ?>"  readonly/>
                                 </td>
                                 <td><input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $delivery_note_supplier_lists[$i]['product_name']; ?>" /></td>
+                                <td>  
+                                    <input type="hidden" name="stock_event[]" class="form-control" value="<?php echo $delivery_note_supplier_lists[$i]['stock_event']; ?>" />
+                                    <select   name="stock_group_id[]"  onchange="show_qty(this)" class="form-control select" data-live-search="true" > 
+                                        <?php 
+                                        $stock_groups = $stock_group_model->getStockGroupByProductID($delivery_note_supplier_lists[$i]['product_id']);
+                                        $stock_report_qty = 0;
+                                        for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
+                                            if($stock_groups[$ii]['stock_group_id'] == $delivery_note_supplier_lists[$i]['stock_group_id'] || $ii ==  0){  
+                                                $stock_report_qty = $stock_groups[$ii]['stock_report_qty'];
+                                            }
+                                        ?>
+                                        <option <?php if($stock_groups[$ii]['stock_group_id'] == $delivery_note_supplier_lists[$i]['stock_group_id']){?> selected <?php }?> value="<?php echo $stock_groups[$ii]['stock_group_id'] ?>"><?php echo $stock_groups[$ii]['stock_group_name'] ?> [<?php echo $stock_groups[$ii]['stock_report_qty'] ?>] </option>
+                                        <?
+                                        }
+                                        ?>
+                                    </select> 
+                                </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  name="delivery_note_supplier_list_qty[]" value="<?php echo $delivery_note_supplier_lists[$i]['delivery_note_supplier_list_qty']; ?>" /></td>
                                 <td><input type="text" class="form-control" name="delivery_note_supplier_list_remark[]" value="<?php echo $delivery_note_supplier_lists[$i]['delivery_note_supplier_list_remark']; ?>" /></td>
                                 <td>

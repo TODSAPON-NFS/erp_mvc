@@ -719,7 +719,7 @@ class PurchaseOrderModel extends BaseModel{
             LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id 
             LEFT JOIN tb_customer ON tb_purchase_request.customer_id = tb_customer.customer_id 
             LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id 
-            LEFT JOIN tb_product_supplier ON tb_purchase_request_list.product_id = tb_product_supplier.product_id 
+            LEFT JOIN tb_product_supplier ON (tb_purchase_request_list.product_id = tb_product_supplier.product_id AND tb_purchase_request_list.supplier_id = tb_product_supplier.supplier_id) 
             WHERE tb_purchase_request_list.supplier_id = '$supplier_id' 
             AND tb_purchase_request.purchase_request_id = '$purchase_request_id' 
             AND purchase_order_list_id = 0  
@@ -1062,7 +1062,7 @@ class PurchaseOrderModel extends BaseModel{
             LEFT JOIN tb_purchase_request_list ON tb_purchase_request.purchase_request_id = tb_purchase_request_list.purchase_request_id 
             LEFT JOIN tb_customer ON tb_purchase_request.customer_id = tb_customer.customer_id 
             LEFT JOIN tb_product ON tb_purchase_request_list.product_id = tb_product.product_id 
-            LEFT JOIN tb_product_supplier ON tb_purchase_request_list.product_id = tb_product_supplier.product_id 
+            LEFT JOIN tb_product_supplier ON (tb_purchase_request_list.product_id = tb_product_supplier.product_id AND tb_purchase_request_list.supplier_id = tb_product_supplier.supplier_id) 
             WHERE tb_purchase_request_list.supplier_id = '$supplier_id' 
             AND purchase_order_list_id = '0' 
             AND purchase_request_list_id NOT IN ($str_pr) 

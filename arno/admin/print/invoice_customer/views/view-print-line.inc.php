@@ -159,7 +159,6 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <td class="td-list" valign="top" align="right" width="100">'.  number_format($invoice_customer_lists[$i]['invoice_customer_list_price'],2).'</td>
                     <td class="td-list td-padding" valign="top" align="right" width="130">'.  number_format($invoice_customer_lists[$i]['invoice_customer_list_qty'] * $invoice_customer_lists[$i]['invoice_customer_list_price'],2).'</td>
                     
-
                 </tr>
                 ';
     }

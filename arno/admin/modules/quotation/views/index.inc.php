@@ -53,13 +53,14 @@ if(!isset($_GET['action']) && ( $license_sale_page == "Low" || $license_sale_pag
         $_SESSION['date_end'] = $date_end;
     }
 
-    if(!isset($_GET['keyword'])){
-        $keyword = $_SESSION['keyword'];
-    }else{
+    // if(!isset($_GET['keyword'])){
+    //     $keyword = $_SESSION['keyword'];
+    // }else{
         
-        $keyword = $_GET['keyword']; 
-        $_SESSION['keyword'] = $keyword;
-    }
+    //     $keyword = $_GET['keyword']; 
+    //     $_SESSION['keyword'] = $keyword;
+    // }
+    $keyword = $_GET['keyword'];
 
     
     if($date_start == ""){
@@ -415,13 +416,14 @@ if(!isset($_GET['action']) && ( $license_sale_page == "Low" || $license_sale_pag
         $_SESSION['date_end'] = $date_end;
     }
 
-    if(!isset($_GET['keyword'])){
-        $keyword = $_SESSION['keyword'];
-    }else{
+    // if(!isset($_GET['keyword'])){
+    //     $keyword = $_SESSION['keyword'];
+    // }else{
         
-        $keyword = $_GET['keyword']; 
-        $_SESSION['keyword'] = $keyword;
-    }
+    //     $keyword = $_GET['keyword']; 
+    //     $_SESSION['keyword'] = $keyword;
+    // }
+    $keyword = $_GET['keyword'];
 
     
     if($date_start == ""){

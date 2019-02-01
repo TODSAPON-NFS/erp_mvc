@@ -97,6 +97,7 @@
             if(data != null){
                 $(id).closest('tr').children('td').children('input[name="product_name[]"]').val(data.product_name)
                 $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(data.product_id)
+                show_stock(id);
             }
         });
         
@@ -233,6 +234,12 @@
 							'<input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" />'+ 
 						'</td>'+
                         '<td><input type="text" class="form-control" name="product_name[]" value="'+data_buffer[i].product_name+'" readonly /></td>'+
+                        '<td>'+
+                            '<input type="hidden" name="stock_event[]" class="form-control" />'+
+                            '<select  name="stock_group_id[]" onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
+                                '<option value="0">Select</option>'+ 
+                            '</select>'+ 
+                        '</td>'+
                         '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="delivery_note_supplier_list_qty[]" value="'+data_buffer[i].delivery_note_supplier_list_qty+'"  /></td>'+
                         '<td><input type="text" class="form-control" name="delivery_note_supplier_list_remark[]" value="'+data_buffer[i].delivery_note_supplier_list_remark+'" /></td>'+
                         '<td>'+
@@ -248,7 +255,38 @@
             
         }
     }
-
+    function show_stock(id){ 
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val();
+        $.post( "controllers/getStockGroupByProductID.php", { 'product_id': product_id }, function( data ) {
+                var str_stock = "";
+                console.log(product_id);
+                    $.each(data, function (index, value) { 
+                        if(index == 0){
+                        $(id).closest('tr').children('td').children('input[name="delivery_note_customer_list_qty[]"]').attr( 'stock_report_qty' , value['stock_report_qty'] );
+                        }
+                        str_stock += "<option value='" + value['stock_group_id'] + "'>" +  value['stock_group_name'] + "["+value['stock_report_qty']+"]</option>"; 
+                    });
+                console.log(str_stock);
+                $(id).closest('tr').children('td').children('select[name="stock_group_id[]"]').html(str_stock);
+                $(id).closest('tr').children('td').children('select[name="stock_group_id[]"]').selectpicker('refresh');
+        });
+    }
+    function show_qty(id){
+        
+        var stock_group_id = $(id).closest('tr').children('td').children('div').children('select[name="stock_group_id[]"]').val();
+        var product_id = $(id).closest('tr').children('td').children('input[name="product_id[]"]').val(); 
+        $.post( "controllers/getQtyBy.php", { 'stock_group_id': stock_group_id,'product_id': product_id }, function( data ) {
+            if (data != null){
+                if( data.stock_report_qty == null){
+                    $(id).closest('tr').children('td').children('input[name="delivery_note_customer_list_qty[]"]').attr( 'stock_report_qty', 0 );
+                }else{
+                    $(id).closest('tr').children('td').children('input[name="delivery_note_customer_list_qty[]"]').attr( 'stock_report_qty', data.stock_report_qty );
+                }
+            }
+            
+        });
+    
+    }
 
 
      function add_row_new(id){
@@ -266,6 +304,12 @@
                     '<select class="form-control select" type="text" name="product_id[]" onchange="show_data(this);" data-live-search="true" ></select>'+
                 '</td>'+
                 '<td><input type="text" class="form-control" name="product_name[]" readonly /></td>'+
+                '<td>'+
+                    '<input type="hidden" name="stock_event[]" class="form-control" />'+
+                    '<select  name="stock_group_id[]" onchange="show_qty(this)" class="form-control select" data-live-search="true">'+ 
+                        '<option value="0">Select</option>'+ 
+                    '</select>'+ 
+                '</td>'+
                 '<td align="right"><input type="text" class="form-control" style="text-align: right;" name="delivery_note_supplier_list_qty[]"  /></td>'+
                 '<td><input type="text" class="form-control" name="delivery_note_supplier_list_remark[]" /></td>'+
                 '<td>'+
@@ -416,10 +460,11 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" >
                         <thead>
                             <tr>
-                                <th style="text-align:center;">รหัสสินค้า<br>(Product Code)</th>
-                                <th style="text-align:center;">ชื่อสินค้า<br>(Product Name)</th>
-                                <th style="text-align:center;">จำนวน<br>(Qty)</th>
-                                <th style="text-align:center;">หมายเหตุ<br>(Remark)</th>
+                                <th style="text-align:center;" width="300">รหัสสินค้า<br>(Product Code)</th>
+                                <th style="text-align:center;" width="500">ชื่อสินค้า<br>(Product Name)</th>
+                                <th style="text-align:center;" width="280">คลังสินค้า</th>
+                                <th style="text-align:center;" width="150">จำนวน<br>(Qty)</th>
+                                <th style="text-align:center;" width="400">หมายเหตุ<br>(Remark)</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -435,6 +480,23 @@
                                     <input class="example-ajax-post form-control" name="product_code[]" onchange="show_data(this);" placeholder="Product Code" value="<?php echo $delivery_note_supplier_lists[$i]['product_code']; ?>"  readonly/>
                                 </td>
                                 <td><input type="text" class="form-control" name="product_name[]" readonly value="<?php echo $delivery_note_supplier_lists[$i]['product_name']; ?>" /></td>
+                                <td>  
+                                    <input type="hidden" name="stock_event[]" class="form-control" value="<?php echo $delivery_note_customer_lists[$i]['stock_event']; ?>" />
+                                    <select   name="stock_group_id[]"  onchange="show_qty(this)" class="form-control select" data-live-search="true" > 
+                                        <?php 
+                                        $stock_groups = $stock_group_model->getStockGroupByProductID($delivery_note_customer_lists[$i]['product_id']);
+                                        $stock_report_qty = 0;
+                                        for($ii =  0 ; $ii < count($stock_groups) ; $ii++){
+                                            if($stock_groups[$ii]['stock_group_id'] == $delivery_note_customer_lists[$i]['stock_group_id'] || $ii ==  0){  
+                                                $stock_report_qty = $stock_groups[$ii]['stock_report_qty'];
+                                            }
+                                        ?>
+                                        <option <?php if($stock_groups[$ii]['stock_group_id'] == $delivery_note_customer_lists[$i]['stock_group_id']){?> selected <?php }?> value="<?php echo $stock_groups[$ii]['stock_group_id'] ?>"><?php echo $stock_groups[$ii]['stock_group_name'] ?> [<?php echo $stock_groups[$ii]['stock_report_qty'] ?>] </option>
+                                        <?
+                                        }
+                                        ?>
+                                    </select> 
+                                </td>
                                 <td align="right"><input type="text" class="form-control" style="text-align: right;"  name="delivery_note_supplier_list_qty[]" value="<?php echo $delivery_note_supplier_lists[$i]['delivery_note_supplier_list_qty']; ?>" /></td>
                                 <td><input type="text" class="form-control" name="delivery_note_supplier_list_remark[]" value="<?php echo $delivery_note_supplier_lists[$i]['delivery_note_supplier_list_remark']; ?>" /></td>
                                 <td>

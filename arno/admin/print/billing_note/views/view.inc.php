@@ -34,6 +34,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         font-size:14px;
     }
 
+    body{
+        font-family:  "tahoma";  
+    }
+
     div{
         padding-left:6px;
         font-size:14px;

@@ -616,7 +616,7 @@
 
                         <a class="btn btn-success "  href="?app=finance_debit&action=insert" ><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
 
-                        <a class="btn btn-danger" href="print.php?app=finance_debit&type=id&action=pdf&id=<?php echo $journal_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
+                        <a class="btn btn-danger" href="print.php?app=finance_debit&action=pdf&id=<?php echo $finance_debit_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
                         
                         <a class="btn btn-warning" href="?app=journal_special_03&action=update&id=<?php echo $journal_id;?>" target="_blank" > <i class="fa fa-folder-open" aria-hidden="true"></i> สมุดรายวันขาย </a>
                         

@@ -54,7 +54,7 @@ if($_GET['action'] == "pdf"){
     /*############################### FPDF ##############################*/
 
     include("../plugins/mpdf/mpdf.php");
-    $mpdf=new mPDF('th', 'Letter', '0', 'garuda');  
+    $mpdf=new mPDF('th', 'Letter', '0', 'garuda',10,15,10,10,15,15,15);  
     
     for($page_index=0 ; $page_index < $page_max ; $page_index++){
 

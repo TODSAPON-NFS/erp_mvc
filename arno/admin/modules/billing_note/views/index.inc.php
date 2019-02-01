@@ -245,7 +245,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $data['billing_note_address'] = $_POST['billing_note_address'];
         $data['billing_note_tax'] = $_POST['billing_note_tax'];
         $data['billing_note_remark'] = $_POST['billing_note_remark'];
-        $data['billing_note_total_old'] = (float)filter_var($_POST['billing_note_total_old'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $data['billing_note_total'] = (float)filter_var($_POST['billing_note_total'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $data['billing_note_sent_name'] = $_POST['billing_note_sent_name'];
         $data['billing_note_recieve_name'] = $_POST['billing_note_recieve_name'];
         $data['updateby'] = $user[0][0];

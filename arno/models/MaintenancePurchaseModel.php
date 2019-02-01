@@ -9,6 +9,8 @@ class MaintenancePurchaseModel extends BaseModel{
             static::$db = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
         }
     }
+ 
+
 
     function runMaintenance(){
 
@@ -40,7 +42,7 @@ class MaintenancePurchaseModel extends BaseModel{
                 LEFT JOIN tb_product ON tb_invoice_supplier_list.product_id = tb_product.product_id 
                 LEFT JOIN tb_purchase_order_list ON tb_invoice_supplier_list.purchase_order_list_id = tb_purchase_order_list.purchase_order_list_id 
                 WHERE invoice_supplier_id = '".$data[$i]['invoice_supplier_id']."' 
-                ORDER BY invoice_supplier_list_id ";
+                ORDER BY invoice_supplier_list_no ";
                 $data_sub = []; 
 
                 if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
@@ -236,7 +238,7 @@ class MaintenancePurchaseModel extends BaseModel{
                     //echo "<b>".$sql." ===> ".$exchange_rate."</b><br><br>";
 
                      for($i_sup = 0 ; $i_sup < count($data_sub); $i_sup ++ ){ 
-                        $data_sub[$i_sup]['invoice_supplier_list_price'] = $data_sub[$i_sup]['purchase_order_list_price'] * $exchange_rate; 
+                        $data_sub[$i_sup]['invoice_supplier_list_price'] = $data_sub[$i_sup]['invoice_supplier_list_currency_price'] * $exchange_rate; 
                         $cost_qty = $data_sub[$i_sup]['invoice_supplier_list_qty'];
                         $cost_price = $data_sub[$i_sup]['invoice_supplier_list_price'] ;
                         $cost_duty += $cost_qty * $cost_price;
@@ -262,28 +264,54 @@ class MaintenancePurchaseModel extends BaseModel{
                     }
 
 
+                    //คำนวนตามค่าที่ Fix เอาไว้
+                    $import_duty_amount = $data[$i]['import_duty'];
+                    $invoice_supplier_total_price_ex_use = 0;
 
-                    
                     for($i_sup = 0 ; $i_sup < count($data_sub); $i_sup ++ ){
                         $cost_qty = $data_sub[$i_sup]['invoice_supplier_list_qty']; 
                         $cost_price_ex = $data_sub[$i_sup]['invoice_supplier_list_price'];
- 
                         $cost_price_ex_total = $cost_qty * $cost_price_ex;
 
-                        if($cost_duty * $data[$i]['import_duty'] == 0){
-                            $cost_price_duty = 0;
-                        }else{
-                            $cost_price_duty = $cost_price_ex_total / $cost_duty * $data[$i]['import_duty'];
+
+                        if($data_sub[$i_sup]['invoice_supplier_list_fix_type'] == 'percent-fix' || $data_sub[$i_sup]['invoice_supplier_list_fix_type'] == 'price-fix'){
+                            if($data_sub[$i_sup]['invoice_supplier_list_fix_type'] == 'percent-fix'){
+
+                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = ($data_sub[$i_sup]['invoice_supplier_list_duty']/ 100  * $cost_price_ex_total)/$data_sub[$i_sup]['invoice_supplier_list_qty'] ;  
+                
+                            }else if($data_sub[$i_sup]['invoice_supplier_list_fix_type'] == 'price-fix'){
+                
+                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = $data_sub[$i_sup]['invoice_supplier_list_duty'] / $data_sub[$i_sup]['invoice_supplier_list_qty'];   
+                
+                            }else{
+                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = 0;
+                                $cost_price_ex_total = 0;
+                            }
+
+                            if($import_duty_amount - $data_sub[$i_sup]['invoice_supplier_list_import_duty'] < 0){
+                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = $import_duty_amount;
+                                $import_duty_amount = 0;
+                            }else{
+                                $import_duty_amount = $import_duty_amount - $data_sub[$i_sup]['invoice_supplier_list_import_duty'];
+                            }
+                            
+            
+                            $invoice_supplier_total_price_ex_use += $cost_price_ex_total;
+
                         }
+ 
+
+
 
                         if($cost_duty * $data[$i]['freight_in'] == 0){
                             $cost_price_f = 0;
                         }else{
                             $cost_price_f = $cost_price_ex_total / $cost_duty * $data[$i]['freight_in'];
-                        } 
+                        }  
 
-                        $cost_total = $cost_price_f + $cost_price_duty + $cost_price_ex_total; 
+                        $data_sub[$i_sup]['invoice_supplier_list_freight_in'] = $cost_price_f / $data_sub[$i_sup]['invoice_supplier_list_qty'];
 
+                        $cost_total = $data_sub[$i_sup]['invoice_supplier_list_import_duty'] + $data_sub[$i_sup]['invoice_supplier_list_freight_in'] + $data_sub[$i_sup]['invoice_supplier_list_price']; 
                         $data_sub[$i_sup]['invoice_supplier_list_cost'] = round($cost_total,2);
 
                         $sql = " UPDATE tb_invoice_supplier_list 
@@ -295,6 +323,8 @@ class MaintenancePurchaseModel extends BaseModel{
                                 invoice_supplier_list_total = '".$data_sub[$i_sup]['invoice_supplier_list_total']."', 
                                 invoice_supplier_list_remark = '".$data_sub[$i_sup]['invoice_supplier_list_remark']."', 
                                 stock_group_id = '".$data_sub[$i_sup]['stock_group_id']."', 
+                                invoice_supplier_list_freight_in = '".$data_sub[$i_sup]['invoice_supplier_list_freight_in']."', 
+                                invoice_supplier_list_import_duty = '".$data_sub[$i_sup]['invoice_supplier_list_import_duty']."', 
                                 invoice_supplier_list_cost = '".$data_sub[$i_sup]['invoice_supplier_list_cost']."', 
                                 purchase_order_list_id = '".$data_sub[$i_sup]['purchase_order_list_id']."' 
                                 WHERE invoice_supplier_list_id = '".$data_sub[$i_sup]['invoice_supplier_list_id']."' 
@@ -306,6 +336,82 @@ class MaintenancePurchaseModel extends BaseModel{
                        
 
                     }
+
+                    $invoice_supplier_total_price_ex = $total - $invoice_supplier_total_price_ex_use;
+
+
+                    for($i_sup = 0 ; $i_sup < count($data_sub); $i_sup ++ ){
+                        $cost_qty = $data_sub[$i_sup]['invoice_supplier_list_qty']; 
+                        $cost_price_ex = $data_sub[$i_sup]['invoice_supplier_list_price'];
+                        $cost_price_ex_total = $cost_qty * $cost_price_ex;
+
+
+                        if($data_sub[$i_sup]['invoice_supplier_list_fix_type'] == 'no-fix' || $data_sub[$i_sup]['invoice_supplier_list_fix_type'] == "" ){
+                            $data_sub[$i_sup]['invoice_supplier_list_fix_type'] = 'no-fix';
+
+                            if($invoice_supplier_total_price_ex > 0){
+                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = $cost_price_ex_total / $invoice_supplier_total_price_ex * $data[$i]['import_duty'];
+                            }else{
+                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = 0;
+                            }
+
+                            
+                            
+                            if($import_duty_amount - $data_sub[$i_sup]['invoice_supplier_list_import_duty'] < 0){
+                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = $import_duty_amount;
+                                $import_duty_amount = 0;
+                            }else{
+                                $import_duty_amount = $import_duty_amount - $data_sub[$i_sup]['invoice_supplier_list_import_duty'];
+                            }
+
+                            
+
+                        }
+
+                        
+                         
+ 
+
+
+
+                        if($cost_duty * $data[$i]['freight_in'] == 0){
+                            $cost_price_f = 0;
+                        }else{
+                            $cost_price_f = $cost_price_ex_total / $cost_duty * $data[$i]['freight_in'];
+                        }  
+
+                        $data_sub[$i_sup]['invoice_supplier_list_freight_in'] = $cost_price_f / $data_sub[$i_sup]['invoice_supplier_list_qty'];
+
+                        $cost_total = $data_sub[$i_sup]['invoice_supplier_list_import_duty'] + $data_sub[$i_sup]['invoice_supplier_list_freight_in'] + $data_sub[$i_sup]['invoice_supplier_list_price']; 
+                        $data_sub[$i_sup]['invoice_supplier_list_cost'] = round($cost_total,2);
+
+                        $sql = " UPDATE tb_invoice_supplier_list 
+                                SET product_id = '".$data_sub[$i_sup]['product_id']."', 
+                                invoice_supplier_list_product_name = '".$data_sub[$i_sup]['invoice_supplier_list_product_name']."',  
+                                invoice_supplier_list_product_detail = '".$data_sub[$i_sup]['invoice_supplier_list_product_detail']."', 
+                                invoice_supplier_list_qty = '".$data_sub[$i_sup]['invoice_supplier_list_qty']."', 
+                                invoice_supplier_list_price = '".$data_sub[$i_sup]['invoice_supplier_list_price']."', 
+                                invoice_supplier_list_total = '".$data_sub[$i_sup]['invoice_supplier_list_total']."', 
+                                invoice_supplier_list_remark = '".$data_sub[$i_sup]['invoice_supplier_list_remark']."', 
+                                stock_group_id = '".$data_sub[$i_sup]['stock_group_id']."', 
+                                invoice_supplier_list_freight_in = '".$data_sub[$i_sup]['invoice_supplier_list_freight_in']."', 
+                                invoice_supplier_list_import_duty = '".$data_sub[$i_sup]['invoice_supplier_list_import_duty']."', 
+                                invoice_supplier_list_cost = '".$data_sub[$i_sup]['invoice_supplier_list_cost']."', 
+                                purchase_order_list_id = '".$data_sub[$i_sup]['purchase_order_list_id']."' 
+                                WHERE invoice_supplier_list_id = '".$data_sub[$i_sup]['invoice_supplier_list_id']."' 
+                        "; 
+
+                        //echo "<B> ".$data[$i]['invoice_supplier_code_gen']."---->".($i_sup+1)."===>".$data_sub[$i_sup]['product_id']." </B> : ".$sql ."<br><br>";
+                        mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
+
+                       
+
+                    }
+
+
+                    
+
+
 
 
                     //อัพเดทหัวข้อเอกสารรับสินค้าเข้า ----------------------------------------------------------------------

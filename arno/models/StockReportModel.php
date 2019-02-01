@@ -1300,6 +1300,115 @@ class StockReportModel extends BaseModel{
 
     }
 
+     //#####################################################################################################################
+    //
+    //
+    //------------------------------------------------------- มูลค่าตามคลังสินค้า --------------------------------------------
+    //
+    //
+    //#####################################################################################################################
+    function getStockCostBy($date_end = ""){
+       
+        $str_product = "";  
+        $str_date = "";
+        $str_qty = "";  
+       
+        
+
+       // $sql = "SELECT * FROM tb_stock_group WHERE stock_group_id = '".$stock_group_id."' ";
+    
+
+            $sql ="SELECT * 
+            FROM tb_stock_group 
+            WHERE 1 
+            
+            ";
+
+
+            if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                 $data = [];
+                 while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                 }
+                 $result->close(); 
+            }
+            $sql = '' ;
+
+        for($i = 0 ;$i<count($data)&&count($data)>0;$i++){
+
+           
+            // echo "<pre>";
+            // print_r($data);
+            // echo "</pre>";
+
+            
+    
+            if($product_start != "" && $product_end != ""){
+                $str_product = " AND product_code >= '$product_start' AND product_code <=  '$product_end' "; 
+            }else if ($product_start != "" && $product_end == ""){
+                $str_product = " AND CONCAT(product_code_first,product_code) LIKE ('%$product_start%') ";  
+            } 
+
+            if($i == 0){
+                $sql .="SELECT SUM(stock_report_qty) AS stock_report_qty,
+                               SUM(stock_report_avg_total) As stock_report_avg_total,
+                                product_code ,  
+                                product_name ,
+                                stock_group_name,
+                                stock_group_code
+                        FROM 
+                ( 
+                ";
+            }
+
+             $sql .="( SELECT stock_group_name ,
+             CONCAT(product_code_first,product_code) as product_code,
+             product_name , 
+             stock_group_code ,
+             IF(balance_qty IS NULL , stock_report_qty ,balance_qty) as stock_report_qty , 
+             IF(balance_stock_cost_avg IS NULL , 0, balance_stock_cost_avg ) as stock_report_cost_avg , 
+             IF(balance_stock_cost_avg_total IS NULL , 0 ,balance_stock_cost_avg_total ) AS  stock_report_avg_total 
+                FROM ( 
+                    SELECT tb2.* 
+                    FROM ".$data[$i]['table_name']." as tb2 
+                    LEFT JOIN ".$data[$i]['table_name']." as tb3 ON (tb2.product_id = tb3.product_id AND tb2.stock_id < tb3.stock_id) 
+                    WHERE  tb3.stock_id IS NULL AND STR_TO_DATE(tb2.stock_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s')
+                ) as tb1
+                LEFT JOIN tb_stock_report ON tb1.product_id = tb_stock_report.product_id
+                LEFT JOIN tb_product ON tb_stock_report.product_id = tb_product.product_id 
+                LEFT JOIN tb_stock_group ON tb_stock_report.stock_group_id = tb_stock_group.stock_group_id 
+                  
+                    WHERE tb_stock_report.stock_group_id = ".$data[$i]['stock_group_id']." 
+                AND tb_product.product_id IS NOT NULL              
+                GROUP BY tb_stock_report.stock_group_id , tb_stock_report.product_id 
+                HAVING stock_report_qty != 0 
+                ORDER BY stock_group_name,product_code ASC )
+            "; 
+
+                if(($i+1)<count($data)){
+                    $sql .=" union";
+                }
+            }
+            $sql .="  
+            )
+            AS tb_stock
+            GROUP BY stock_group_code
+            "; 
+
+            // echo "<pre>".$sql."</pre>";
+            //echo $sql;
+            if ($result = mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+                $data = [];
+                while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                    $data[] = $row;
+                }
+                $result->close();
+                return $data;
+            }  
+             
+
+    } 
+
 
 
 }

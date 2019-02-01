@@ -18,6 +18,9 @@
             padding:2px 4px;
             font-size:10px;
         }
+        body{
+            font-family:  "tahoma";  
+        }
 
     </style>'; 
 

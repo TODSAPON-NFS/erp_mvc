@@ -623,13 +623,14 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
         $_SESSION['date_end'] = $date_end;
     }
 
-    if(!isset($_GET['keyword'])){
-        $keyword = $_SESSION['keyword'];
-    }else{
+    // if(!isset($_GET['keyword'])){
+    //     $keyword = $_SESSION['keyword'];
+    // }else{
         
-        $keyword = $_GET['keyword']; 
-        $_SESSION['keyword'] = $keyword;
-    }
+    //     $keyword = $_GET['keyword']; 
+    //     $_SESSION['keyword'] = $keyword;
+    // }
+    $keyword = $_GET['keyword'];
 
     $customer_id = $_GET['customer_id'];
     

@@ -267,35 +267,45 @@ class MaintenancePurchaseModel extends BaseModel{
                     //คำนวนตามค่าที่ Fix เอาไว้
                     $import_duty_amount = $data[$i]['import_duty'];
                     $invoice_supplier_total_price_ex_use = 0;
-
+                    // if($data[$i]['invoice_supplier_id'] == 163){
+                    //     echo "<pre>";
+                    //     print_r($import_duty_amount);
+                    //     echo "</pre>";
+                    // }
                     for($i_sup = 0 ; $i_sup < count($data_sub); $i_sup ++ ){
                         $cost_qty = $data_sub[$i_sup]['invoice_supplier_list_qty']; 
                         $cost_price_ex = $data_sub[$i_sup]['invoice_supplier_list_price'];
                         $cost_price_ex_total = $cost_qty * $cost_price_ex;
 
-
+                        $val_duty = 0;
                         if($data_sub[$i_sup]['invoice_supplier_list_fix_type'] == 'percent-fix' || $data_sub[$i_sup]['invoice_supplier_list_fix_type'] == 'price-fix'){
                             if($data_sub[$i_sup]['invoice_supplier_list_fix_type'] == 'percent-fix'){
 
-                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = ($data_sub[$i_sup]['invoice_supplier_list_duty']/ 100  * $cost_price_ex_total)/$data_sub[$i_sup]['invoice_supplier_list_qty'] ;  
-                
+                                $val_duty = ($data_sub[$i_sup]['invoice_supplier_list_duty']/ 100  * $cost_price_ex_total) ;   
                             }else if($data_sub[$i_sup]['invoice_supplier_list_fix_type'] == 'price-fix'){
                 
-                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = $data_sub[$i_sup]['invoice_supplier_list_duty'] / $data_sub[$i_sup]['invoice_supplier_list_qty'];   
-                
+                                $val_duty = $data_sub[$i_sup]['invoice_supplier_list_duty'] ;   
+                                
                             }else{
-                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = 0;
+                                $val_duty = 0;
                                 $cost_price_ex_total = 0;
                             }
 
-                            if($import_duty_amount - $data_sub[$i_sup]['invoice_supplier_list_import_duty'] < 0){
-                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = $import_duty_amount;
+                            
+
+                            if($import_duty_amount - $val_duty < 0){
+                                $val_duty = $import_duty_amount;
                                 $import_duty_amount = 0;
                             }else{
-                                $import_duty_amount = $import_duty_amount - $data_sub[$i_sup]['invoice_supplier_list_import_duty'];
+                                $import_duty_amount = $import_duty_amount - $val_duty;
                             }
                             
-            
+                            $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = $val_duty / $data_sub[$i_sup]['invoice_supplier_list_qty'] ;
+                            // if($data[$i]['invoice_supplier_id'] == 163){
+                            //     echo "<pre>";
+                            //     print_r( "Price : " . $data_sub[$i_sup]['invoice_supplier_list_import_duty'] );
+                            //     echo "</pre>";
+                            // }
                             $invoice_supplier_total_price_ex_use += $cost_price_ex_total;
 
                         }
@@ -339,34 +349,42 @@ class MaintenancePurchaseModel extends BaseModel{
 
                     $invoice_supplier_total_price_ex = $total - $invoice_supplier_total_price_ex_use;
 
+                    // if($data[$i]['invoice_supplier_id'] == 163){
+                    //     echo "<pre>";
+                    //     print_r($import_duty_amount);
+                    //     echo "</pre>";
+                    // }
+
 
                     for($i_sup = 0 ; $i_sup < count($data_sub); $i_sup ++ ){
                         $cost_qty = $data_sub[$i_sup]['invoice_supplier_list_qty']; 
                         $cost_price_ex = $data_sub[$i_sup]['invoice_supplier_list_price'];
                         $cost_price_ex_total = $cost_qty * $cost_price_ex;
-
+                        $val_duty = 0;
 
                         if($data_sub[$i_sup]['invoice_supplier_list_fix_type'] == 'no-fix' || $data_sub[$i_sup]['invoice_supplier_list_fix_type'] == "" ){
                             $data_sub[$i_sup]['invoice_supplier_list_fix_type'] = 'no-fix';
 
                             if($invoice_supplier_total_price_ex > 0){
-                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = $cost_price_ex_total / $invoice_supplier_total_price_ex * $data[$i]['import_duty'];
+                                $val_duty = $cost_price_ex_total / $invoice_supplier_total_price_ex * $data[$i]['import_duty'];
                             }else{
-                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = 0;
+                                $val_duty = 0;
                             }
 
                             
                             
-                            if($import_duty_amount - $data_sub[$i_sup]['invoice_supplier_list_import_duty'] < 0){
-                                $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = $import_duty_amount;
+                            if($import_duty_amount - $val_duty < 0){
+                                $val_duty = $import_duty_amount;
                                 $import_duty_amount = 0;
                             }else{
-                                $import_duty_amount = $import_duty_amount - $data_sub[$i_sup]['invoice_supplier_list_import_duty'];
+                                $import_duty_amount = $import_duty_amount - $val_duty;
                             }
 
-                            
+                            $data_sub[$i_sup]['invoice_supplier_list_import_duty'] = $val_duty / $data_sub[$i_sup]['invoice_supplier_list_qty'] ;
 
                         }
+
+
 
                         
                          
@@ -407,7 +425,11 @@ class MaintenancePurchaseModel extends BaseModel{
                        
 
                     }
-
+// if($data[$i]['invoice_supplier_id'] == 163){
+//                         echo "<pre>";
+//                         print_r($import_duty_amount);
+//                         echo "</pre>";
+//                     }
 
                     
 

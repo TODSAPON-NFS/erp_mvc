@@ -621,28 +621,28 @@ class DebtorReportModel extends BaseModel{
             $str_date =" AND STR_TO_DATE(invoice_customer_date,'%d-%m-%Y %H:%i:%s') <= STR_TO_DATE('$date_end','%d-%m-%Y %H:%i:%s')  ";
         }
 
-        $sql_customer = "SELECT tb_billing_note_list.billing_note_list_id, 
+        $sql_customer = "SELECT tb_invoice_customer.invoice_customer_id, 
         IFNULL(billing_note_code,'-') as billing_note_code, 
         IFNULL(official_receipt_code,'-') as official_receipt_code, 
         customer_code,
         invoice_customer_code, 
-        billing_note_name,   
+        invoice_customer_name as billing_note_name,   
         billing_note_tax,   
         billing_note_branch, 
         invoice_customer_date, 
         invoice_customer_due, 
-        MAX(IFNULL(tb_billing_note_list.billing_note_list_balance,0)) as invoice_customer_net_price,
+        invoice_customer_net_price,
         SUM(IFNULL(finance_debit_list_balance,0)) as finance_debit_list_paid,  
-        MAX(IFNULL(tb_billing_note_list.billing_note_list_balance,0)) - SUM(IFNULL(finance_debit_list_balance,0)) as invoice_customer_balance,  
+        invoice_customer_net_price - SUM(IFNULL(finance_debit_list_balance,0)) as invoice_customer_balance,  
         invoice_customer_due  
-        FROM tb_billing_note_list 
-        LEFT JOIN tb_invoice_customer ON tb_billing_note_list.invoice_customer_id = tb_invoice_customer.invoice_customer_id 
+        FROM tb_invoice_customer
+        LEFT JOIN tb_billing_note_list ON tb_invoice_customer.invoice_customer_id = tb_billing_note_list.invoice_customer_id 
         LEFT JOIN tb_billing_note ON tb_billing_note_list.billing_note_id = tb_billing_note.billing_note_id 
         LEFT JOIN tb_finance_debit_list ON tb_billing_note_list.billing_note_list_id = tb_finance_debit_list.billing_note_list_id 
         LEFT JOIN tb_finance_debit ON tb_finance_debit_list.finance_debit_id = tb_finance_debit.finance_debit_id 
         LEFT JOIN tb_official_receipt_list ON tb_billing_note_list.billing_note_list_id = tb_official_receipt_list.billing_note_list_id 
         LEFT JOIN tb_official_receipt ON tb_official_receipt_list.official_receipt_id = tb_official_receipt.official_receipt_id 
-        LEFT JOIN tb_customer ON tb_billing_note.customer_id = tb_customer.customer_id 
+        LEFT JOIN tb_customer ON tb_invoice_customer.customer_id = tb_customer.customer_id 
         WHERE 1  
         $str_customer 
         $str_date 
@@ -652,11 +652,15 @@ class DebtorReportModel extends BaseModel{
             invoice_customer_code LIKE ('%$keyword%') 
         ) 
 
-        GROUP BY tb_billing_note_list.billing_note_list_id 
-        HAVING MAX(IFNULL(tb_billing_note_list.billing_note_list_balance,0)) -  SUM(IFNULL(finance_debit_list_balance,0)) != 0
+        GROUP BY tb_invoice_customer.invoice_customer_id 
+        HAVING MAX(IFNULL(tb_billing_note_list.billing_note_list_balance,0)) -  SUM(IFNULL(finance_debit_list_balance,0)) != 0 OR MAX(IFNULL(tb_billing_note_list.billing_note_list_balance,0)) = 0 
         ORDER BY  customer_code, invoice_customer_code ";
 
-        //echo $sql_customer;
+
+        //invoice_customer_net_price แทน MAX(IFNULL(tb_billing_note_list.billing_note_list_balance,0)) as 
+        //echo $sql_customer; 
+        //MAX(IFNULL(tb_billing_note_list.billing_note_list_balance,0)) -  SUM(IFNULL(finance_debit_list_balance,0)) != 0 OR
+
 
         $data = [];
         if ($result = mysqli_query(static::$db,$sql_customer, MYSQLI_USE_RESULT)) {

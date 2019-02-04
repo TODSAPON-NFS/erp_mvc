@@ -18,7 +18,8 @@ $html_head_pdf = '
         </tr>
         <tr>
             <td colspan="5">บริษัท อาร์โน (ประเทศไทย) จำกัด</td> 
-            <td colspan="6" align="right" ></td>
+            <td colspan="5" align="right" ></td>
+            <td align="right" ><b>หน้า</b> : {PAGENO}/{nbpg}</td>
         </tr> 
         <tr>
             <td colspan="11" align="center" style="font-size:14px;color:#00F;"><b>รายงานราคาขายสินค้า</b></td>  
@@ -28,7 +29,7 @@ $html_head_pdf = '
             <td colspan="1" align="left"> '.$product_start.' </td>
             <td colspan="1" align="center"> ถึง </td>
             <td colspan="1" align="left"> '.$product_end.' </td> 
-            <td colspan="7" align="right" ><b>หน้า</b> : {PAGENO}/{nbpg}</td>
+            <td colspan="7" align="right" > พิมพ์ '.$datePrint.'</td>
         </tr> 
         <tr> 
             <td colspan="1" align="left" width="80px" ><b>ลักษณะ </b></td>
@@ -94,7 +95,7 @@ $html_head_excel = '
             <td colspan="1" > '.$product_category.' </td>
             <td colspan="1" align="center"></td>
             <td colspan="1" ></td>
-            <td colspan="7" ></td> 
+            <td colspan="7" align="right" > พิมพ์ '.$datePrint.'</td>
         </tr>
         <tr> 
             <td colspan="1" align="left" width="80px" ><b>ประเภท </b></td>
@@ -149,6 +150,9 @@ $html = '<style>
         }
         .text-align-right{ 
             text-align:right;
+        }  
+        body{
+            font-family:  "tahoma";  
         }  
 
     </style>';  

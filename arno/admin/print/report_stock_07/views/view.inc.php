@@ -37,7 +37,8 @@ $html_head_pdf = '
     <thead>
         <tr>
             <td colspan="4">บริษัท อาร์โน (ประเทศไทย) จำกัด</td> 
-            <td colspan="5" align="right" >เลขประจำตัวผู้เสียภาษี : 0105558002033</td>
+            <td colspan="4" align="right" >เลขประจำตัวผู้เสียภาษี : 0105558002033</td>
+            <td colspan="1" align="right" width="100px" ><b>หน้า</b> : {PAGENO}/{nbpg}</td>
         </tr> 
         <tr>
             <td colspan="9" align="center" style="font-size:14px;color:#00F;"><b>รายงานจุดสั่งซื้อ</b></td>  
@@ -46,7 +47,7 @@ $html_head_pdf = '
             <td colspan="1" ><b>รหัสสินค้าจาก </b></td>
             <td colspan="1" > '.$product_start.' </td>
             <td colspan="4" > ถึง&nbsp;&nbsp;&nbsp;&nbsp;'.$product_end.'</td> 
-            <td colspan="3" align="right" ><b>หน้า</b> : {PAGENO}/{nbpg}</td>
+            <td colspan="3" align="right" width="100px" > พิมพ์ '.$datePrint.'</td>
         </tr>    
         <tr>
             <td colspan="1" ><b>ประเภท </b></td>
@@ -80,6 +81,7 @@ $html_head_excel = '
         <tr>
             <td colspan="4">บริษัท อาร์โน (ประเทศไทย) จำกัด</td> 
             <td colspan="5" align="right" >เลขประจำตัวผู้เสียภาษี : 0105558002033</td>
+            
         </tr> 
         <tr>
             <td colspan="9" align="center" style="font-size:14px;color:#00F;"><b>รายงานจุดสั่งซื้อ</b></td>  
@@ -87,7 +89,8 @@ $html_head_excel = '
         <tr>
             <td colspan="1" ><b>รหัสสินค้าจาก </b></td>
             <td colspan="1" > '.$product_start.' </td>
-            <td colspan="7" > ถึง&nbsp;&nbsp;&nbsp;&nbsp;'.$product_end.'</td> 
+            <td colspan="6" > ถึง&nbsp;&nbsp;&nbsp;&nbsp;'.$product_end.'</td> 
+            <td colspan="1 align="right" width="100px" > พิมพ์ '.$datePrint.'</td>
         </tr>    
         <tr>
             <td colspan="1" ><b>ประเภท </b></td>

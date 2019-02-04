@@ -12,7 +12,7 @@ $d4=date("h");
 $d5=date("i");
 $d6=date("s");
 $date_  = date('d-m-Y');
-
+$datePrint=date("d-m-Y ");
 $path = "print/report_stock_10/views/";
  
 $stock_report_model = new StockReportModel;

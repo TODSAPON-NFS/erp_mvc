@@ -12,7 +12,7 @@ $d3=date("Y");
 $d4=date("h");
 $d5=date("i");
 $d6=date("s"); 
-
+$datePrint=date("d-m-Y ");
 $path = "print/report_tax_02/views/";
 
 $company_model = new CompanyModel;

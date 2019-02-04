@@ -92,8 +92,8 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     $html[$page_index] .= '
 <div class="main" style="padding-left:8px;">
  
-    <div style="font-size:18px;line-height:20px;padding-left:148px;">'.$company['company_name_en'].'</div>
-    <div style="font-size:18px;line-height:20px;padding-left:148px;">'.$company['company_name_th'].'</div>
+    <div style="font-size:18px;line-height:20px;padding-left:184px;">'.$company['company_name_en'].'</div>
+    <div style="font-size:18px;line-height:20px;padding-left:184px;">'.$company['company_name_th'].'</div>
             
 
     <div style="line-height: 18px;" style="font-size:13px;" >สำนักงานใหญ่ : '.$company['company_address_1'].' '.$company['company_address_2'].' <br>'.$company['company_address_3'].' 
@@ -156,7 +156,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
     </div>
 
     <div>
-        <table width="100%" class="table" celspacing="0">
+        <table width="97%" class="table" celspacing="0">
             <thead>
                 <tr style="border-bottom:1px dashed #000;border-top:1px dashed #000;">
                     <th style="text-align:center; padding:4px 0px;" >SQ.</th>

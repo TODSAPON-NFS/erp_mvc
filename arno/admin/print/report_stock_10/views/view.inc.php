@@ -24,6 +24,7 @@ $html_head_pdf = '
 <table width="100%" border="0" cellspacing="0">
     <tr>
         <td colspan="3">'.$company['company_name_th'].'จำกัด</td>  
+        <td colspan="3" align="right" width="120px" > <b>หน้า</b> : {PAGENO}/{nbpg} </td>
     </tr> 
     <tr>
         <td colspan="6" align="center" style="font-size:14px;color:#00F;"><b> สินค้าเคลื่อนไหวที่มีปัญหา </b></td>  
@@ -33,8 +34,8 @@ $html_head_pdf = '
         <td width="200" >'.$keyword.'</td>
         <td width="100" align="center"> <b></b>  </td>
         <td width="150">  </td>
-        <td ></td>
-        <td align="right" width="120px" > <b>หน้า</b> : {PAGENO}/{nbpg} </td>
+        <td  colspan="2" align="right" width="100px" > พิมพ์ '.$datePrint.'</td>
+        
     </tr> 
     <tr> 
         <td align="left" width="80px" ><b>คลังสินค้า </b></td>
@@ -76,7 +77,7 @@ $html_head_excel = '
             <td width="100" align="center"> <b></b>  </td>
             <td width="150">  </td>
             <td ></td>
-            <td align="right" width="120px"></td>
+            <td  colspan="1" align="right" width="100px" > พิมพ์ '.$datePrint.'</td>
         </tr> 
         <tr> 
             <td align="left" width="80px" ><b>คลังสินค้า </b></td>
@@ -119,6 +120,9 @@ $html = '<style>
         td{
             padding:4px 4px;
             font-size:10px;
+        }
+        body{
+            font-family:  "tahoma";  
         }
 
     </style>'; 

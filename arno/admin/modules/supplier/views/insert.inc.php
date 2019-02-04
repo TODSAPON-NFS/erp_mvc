@@ -316,7 +316,7 @@
                                 <?PHP 
                                     for($i=0; $i < count($account) ; $i++){
                                 ?>
-                                    <option value="<?PHP echo $account[$i]['account_id'];?>"><?PHP echo $account[$i]['account_code'];?> <?PHP echo $account[$i]['account_name_th'];?></option>
+                                    <option value="<?PHP echo $account[$i]['account_id'];?>" <?PHP if($account[$i]['account_id'] == 72 ){ ?> SELECTED <? } ?> ><?PHP echo $account[$i]['account_code'];?> <?PHP echo $account[$i]['account_name_th'];?></option>
                                 <?PHP
                                     }
                                 ?>

@@ -9,6 +9,8 @@ $html_head_pdf = '
 <table width="100%" border="0" cellspacing="0">
     <tr>
         <td colspan="3">'.$company['company_name_th'].'</td>  
+        <td align="left"  width="380px" >
+        <td align="right" width="100px" ><b>หน้า</b> : {PAGENO}/{nbpg}</td>
     </tr> 
     <tr>
         <td colspan="6" align="center" style="font-size:14px;color:#00F;"><b>สินค้าและวัตถุดิบ แยกตามคลังสินค้า</b></td>  
@@ -17,9 +19,9 @@ $html_head_pdf = '
         <td align="left" width="80px" ><b>รหัสสินค้าจาก </b></td>
         <td width="100" > '.$product_start.' </td>
         <td width="30" align="center"> ถึง </td>
-        <td > '.$product_end.' </td>
-        <td ></td>
-        <td align="right" width="120px" ><b>หน้า</b> : {PAGENO}/{nbpg}</td>
+        <td width="100" > '.$product_end.' </td>
+        
+        <td align="right" width="100px" > พิมพ์ '.$datePrint.'</td>
     </tr> 
     <tr> 
         <td align="left" width="80px" ><b>คลังสินค้าจาก </b></td>
@@ -52,7 +54,7 @@ $html_head_excel = '
         <td width="30" align="center"> ถึง </td>
         <td > '.$product_end.' </td>
         <td ></td>
-        <td align="right" width="120px" ></td>
+        <td align="right" width="100px" > พิมพ์ '.$datePrint.'</td>
     </tr> 
     <tr> 
         <td align="left" width="80px" ><b>คลังสินค้าจาก </b></td>
@@ -93,8 +95,13 @@ $html = '<style>
             padding:4px 4px;
             font-size:10px;
         }
+        body{
+            font-family:  "tahoma";  
+        }
 
     </style>'; 
+    // $line =1;
+    
 while($i < count($stock_reports)){
 
     
@@ -105,7 +112,7 @@ while($i < count($stock_reports)){
 
     ';
  
-     
+    
     for(; $i < count($stock_reports); $i++){
         
         if($stock_reports[$i-1]['stock_group_name'] != $stock_reports[$i]['stock_group_name']){
@@ -118,11 +125,11 @@ while($i < count($stock_reports)){
                     </td>  
                 </tr> 
             ';
-            $line ++;
-            if($line % $lines == 0){
-                $i++;
-                break;
-            }
+            // $line ++;
+            // if( $line % $lines == 0){
+            //     $i++;
+            //     break;
+            // }
         }
 
        
@@ -143,11 +150,11 @@ while($i < count($stock_reports)){
         </tr> 
         ';
 
-        $line ++;
-        if($line % $lines == 0){
-            $i++;
-            break;
-        }
+        // $line ++;
+        // if($line % $lines == 0){
+        //     $i++;
+        //     break;
+        // }
 
         if($stock_reports[$i]['stock_group_name'] != $stock_reports[$i+1]['stock_group_name']){ 
              

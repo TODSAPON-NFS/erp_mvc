@@ -430,7 +430,7 @@
                     '</div> '+ 
                 '</td>'+ 
                 '<td  style="max-width:100px;" >' +
-                '<input type="text" class="form-control calendar"  name="finance_debit_pay_date[]"  readonly/>'+
+                '<input type="text" class="form-control calendar"  name="finance_debit_pay_date[]"  value="'+$('#finance_debit_date').val()+'" readonly/>'+
                 '</td>'+ 
                 '<td >'+
                     '<div class="row">'+
@@ -618,7 +618,7 @@
 
                         <a class="btn btn-danger" href="print.php?app=finance_debit&action=pdf&id=<?php echo $finance_debit_id;?>" target="_blank" > <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ </a>
                         
-                        <a class="btn btn-warning" href="?app=journal_special_03&action=update&id=<?php echo $journal_id;?>" target="_blank" > <i class="fa fa-folder-open" aria-hidden="true"></i> สมุดรายวันขาย </a>
+                        <a class="btn btn-warning" href="?app=journal_special_03&action=update&id=<?php echo $journal_id;?>" target="_blank" > <i class="fa fa-folder-open" aria-hidden="true"></i> สมุดรายวันรับเงิน </a>
                         
                         <?PHP if($next_id != ""){?>
                         <a class="btn btn-primary" href="?app=finance_debit&action=update&id=<?php echo $next_id;?>" >  <?php echo $next_code;?> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </a>

@@ -92,7 +92,7 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
 
 }else if ($_GET['action'] == 'insert' && ($license_sale_page == "Medium" || $license_sale_page == "High" ) ){
  
-    $customers=$customer_model->getCustomerBy();
+    $customers=$billing_note_model->getCustomerOrder();
     $customer=$customer_model->getCustomerByID($customer_id);
     $users=$user_model->getUserBy();
    

@@ -607,7 +607,7 @@ if(!isset($_GET['action'])){
           $finance_credit_pay_total = $_POST['finance_credit_pay_total'];
   
   
-          $finance_credit_pay_model->deleteFinanceCreditPayByFinanceCreditPayIDNotIN($journal_cash_payment_id,$finance_credit_pay_id);
+          $finance_credit_pay_model->deleteFinanceCreditPayByFinanceCreditPayIDNotIN($finance_credit_id,$finance_credit_pay_id);
           $journal_cash_payment_list_model->deleteJournalCashPaymentListByFinanceCreditListIDNotIn($finance_credit_id,$finance_credit_pay_id);
   
           if(is_array($finance_credit_pay_id)){

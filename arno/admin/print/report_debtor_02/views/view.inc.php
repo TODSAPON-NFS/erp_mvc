@@ -10,6 +10,9 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         div{
             font-size:10px;
         }
+        body{
+            font-family:  "tahoma";  
+        }
         .table, .table thead th, .table tbody td{
             border: 1px solid black;
         }
@@ -52,7 +55,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         <tr>
             <td align="left" ><b>เลขประจำตัวผู้เสียภาษีอาการ</b> </td>
             <td> '.$company['company_tax'].' <b>สำนักงาน</b> '.$company['company_branch'].' </td>
-            <td >  </td>
+            <td align="left"  align="left" width="120px" > พิมพ์ '.$datePrint.'</td>
         </tr>
     </table>  
     ';

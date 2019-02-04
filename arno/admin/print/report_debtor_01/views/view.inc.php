@@ -19,6 +19,10 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             font-size:10px;
         }
 
+        body{
+            font-family:  "tahoma";  
+        }
+
         td{
             
             padding:2px 4px;
@@ -48,12 +52,12 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
         <tr>
             <td align="left" ><b>ที่อยู่สถานประกอบการ</b> </td>
             <td> '.$company['company_address_1'].' '.$company['company_address_2'].' '.$company['company_address_3'].'</td>
-            <td ></td>
+            <td >  </td>
         </tr> 
         <tr>
             <td align="left" ><b>เลขประจำตัวผู้เสียภาษีอาการ</b> </td>
-            <td> '.$company['company_tax'].' '.$company['company_branch'].' </td>
-            <td >  </td>
+            <td>'.$company['company_tax'].' '.$company['company_branch'].'</td>        
+            <td align="left"  align="left" width="120px" > พิมพ์ '.$datePrint.'</td>
         </tr>
     </table>  
     ';

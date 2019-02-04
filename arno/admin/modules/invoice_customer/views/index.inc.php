@@ -199,6 +199,19 @@ if(!isset($_GET['action']) && ($license_sale_page == "Medium" || $license_sale_p
     <script>window.location="index.php?app=invoice_customer"</script>
 <?php
 
+}else if ($_GET['action'] == 'cancelled' && ($license_sale_page == "Medium" || $license_sale_page == "High" )){
+    $invoice_customer_model->cancelInvoiceCustomerById($invoice_customer_id); 
+    $journal_sale_model->deleteJournalSaleByInvoiceCustomerID($invoice_customer_id);
+?>
+    <script>window.location="index.php?app=invoice_customer"</script>
+<?php
+
+}else if ($_GET['action'] == 'uncancelled' && ($license_sale_page == "Medium" || $license_sale_page == "High" )){
+    $invoice_customer_model->uncancelInvoiceCustomerById($invoice_customer_id); 
+?>
+    <script>window.location="index.php?app=invoice_customer"</script>
+<?php
+
 }else if ($_GET['action'] == 'add' && ($license_sale_page == "Medium" || $license_sale_page == "High" )){
     if(isset($_POST['invoice_customer_code'])){
         $data = [];

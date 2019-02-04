@@ -143,6 +143,8 @@ class FinanceCreditPayModel extends BaseModel{
         }
 
         $sql = "DELETE FROM tb_finance_credit_pay WHERE finance_credit_id = '$id' AND finance_credit_pay_id NOT IN ($str) ";
+
+        // echo $sql;
         mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT);
 
     }

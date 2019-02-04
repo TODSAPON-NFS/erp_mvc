@@ -40,12 +40,21 @@ if($invoice_customer['invoice_customer_print_line'] == '1'){
     if(count($invoice_customer_lists) % $lines > 0){
         $page_max += 1;
     }
+
+    if($page_max == 0){
+        $page_max = 1;
+    }
     include($path."view-print-line.inc.php");
 }else{
     $page_max = (int)(count($invoice_customer_lists) / $lines);
     if(count($invoice_customer_lists) % $lines > 0){
         $page_max += 1;
     }
+
+    if($page_max == 0){
+        $page_max = 1;
+    }
+    
     include($path."view.inc.php");
 }
 

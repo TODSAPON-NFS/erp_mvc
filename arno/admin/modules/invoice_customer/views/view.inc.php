@@ -209,7 +209,7 @@
                         ?>
                         <tr class="odd gradeX">
                             <td class="text-center"><?php echo $i+1; ?></td>
-                            <td class="text-center"><?php echo $invoice_customers[$i]['invoice_customer_code']; ?></td>
+                        <td class="text-center"><?php echo $invoice_customers[$i]['invoice_customer_code']; ?> <?php if($invoice_customers[$i]['invoice_customer_close'] == 1){ ?> <font color="red"><b> Cancelled </b></font> <?PHP }?> </td>
                             
                                     
                             <td data-order="<?php echo  $timestamp = strtotime(  $invoice_customers[$i]['invoice_customer_date'] ) ?>" >
@@ -233,17 +233,37 @@
                                 </a>
 
 
-                                <?PHP if ( $license_sale_page == "Medium" || $license_sale_page == "High" ) { ?>
-                                <a href="?app=invoice_customer&action=update&id=<?php echo $invoice_customers[$i]['invoice_customer_id'];?>">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </a> 
+                                <?php if($invoice_customers[$i]['invoice_customer_close'] == 0){ ?>
+
+
+                                        <?PHP if( $license_sale_page == "Medium" || $license_sale_page == "High"){ ?>  
+                                            <a href="?app=invoice_customer&action=update&id=<?php echo $invoice_customers[$i]['invoice_customer_id'];?>"  title="แก้ไขใบกำกับภาษี">
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            </a> 
+                                            <a href="?app=invoice_customer&action=cancelled&id=<?php echo $invoice_customers[$i]['invoice_customer_id'];?>"  title="ยกเลิกใบกำกับภาษี" onclick="return confirm('คุณต้องการยกเลิกเอกสารใบกำกับภาษีหมายเลข : <?php echo $invoice_customers[$i]['invoice_customer_code']; ?>');" style="color:#F00;">
+                                                <i class="fa fa-ban" aria-hidden="true"></i>
+                                            </a>
+                                        <?PHP } ?>
+
+
+                                <?php } else { ?>
+
+                                        <?PHP if( $license_sale_page == "Medium" || $license_sale_page == "High"){ ?> 
+                                            <a href="?app=invoice_customer&action=uncancelled&id=<?php echo $invoice_customers[$i]['invoice_customer_id'];?>"  title="เรียกคืนใบกำกับภาษี" onclick="return confirm('คุณต้องการเรียกคืนเอกสารใบกำกับภาษีหมายเลข : <?php echo $invoice_customers[$i]['invoice_customer_code']; ?>');" >
+                                                <i class="fa fa-undo" aria-hidden="true"></i>
+                                            </a>
+                                        <?PHP } ?>
+
+
+                                        <?PHP if( $license_sale_page == "High"){ ?> 
+                                            <a href="?app=invoice_customer&action=delete&id=<?php echo $invoice_customers[$i]['invoice_customer_id'];?>" title="ลบใบกำกับภาษี" onclick="return confirm('คุณต้องการลบเอกสารใบกำกับภาษีหมายเลข : <?php echo $invoice_customers[$i]['invoice_customer_code']; ?>');" style="color:red;">
+                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                            </a>
+                                        <?PHP } ?>
+
+
                                 <?PHP } ?>
 
-                                <?PHP if ( $license_sale_page == "High" ) { ?>
-                                <a href="?app=invoice_customer&action=delete&id=<?php echo $invoice_customers[$i]['invoice_customer_id'];?>" onclick="return confirm('You want to delete Invoice Customer : <?php echo $invoice_customers[$i]['invoice_customer_code']; ?>');" style="color:red;">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                </a>
-                                <?PHP } ?>
                             </td>
 
                         </tr>

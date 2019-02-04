@@ -447,12 +447,12 @@
                             '</select>'+ 
                         '</div>'+ 
                         '<div class="col-md-6">'+ 
-                            '<input type="text" class="form-control" name="finance_debit_pay_by[]" value="" onchange="get_cheque_id(this)" />'+ 
+                            '<input type="text" class="form-control" name="finance_debit_pay_by[]" onchange="get_cheque_id(this)" />'+ 
                         '</div>'+ 
                     '</div> '+ 
                 '</td>'+ 
                 '<td  style="max-width:100px;" >' +
-                '<input type="text" class="form-control calendar"  name="finance_debit_pay_date[]"  readonly/>'+
+                '<input type="text" class="form-control calendar"  name="finance_debit_pay_date[]"  value="'+$('#finance_debit_date').val()+'" readonly/>'+
                 '</td>'+ 
                 '<td >'+
                     '<div class="row">'+

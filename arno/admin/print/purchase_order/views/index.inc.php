@@ -52,7 +52,7 @@ if($_GET['action'] == "pdf"){
     $purchase_order = $purchase_order_model->getPurchaseOrderViewByID($purchase_order_id);
     $purchase_order_lists = $purchase_order_list_model->getPurchaseOrderListBy($purchase_order_id);
 
-    $lines = 7;
+    $lines = 6;
 
     $page_max = (int)(count($purchase_order_lists) / $lines);
     if(count($purchase_order_lists) % $lines > 0){

@@ -848,6 +848,9 @@
                                         <li>
                                             <a href="?app=report_stock_10" <?PHP if($_GET['app'] == "report_stock_10"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> สินค้าเคลื่อนไหวที่มีปัญหา</a>
                                         </li>
+                                        <li>
+                                            <a href="?app=report_stock_11" <?PHP if($_GET['app'] == "report_stock_11"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> มูลค่าตามคลังสินค้า</a>
+                                        </li>
                                     </ul>
                                 </li>
                             <?PHP } ?>
@@ -896,6 +899,7 @@
                                         <li>
                                             <a href="?app=report_account_10" <?PHP if($_GET['app'] == "report_account_10"){?> class="active" <?PHP } ?> ><i class="fa fa-outdent" aria-hidden="true"></i> รายงานงบกำไรขาดทุน </a>
                                         </li>
+                                        
                                     </ul>
                                 </li>
                                 <?PHP } ?>

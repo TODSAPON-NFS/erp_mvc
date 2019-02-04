@@ -39,6 +39,8 @@ $html_head_pdf = '
         <tr>
             <td colspan="5">'.$company['company_name_th'].'</td> 
             <td colspan="6" align="right" >เลขประจำตัวผู้เสียภาษี : 0105558002033</td>
+            <td colspan="5">'.$company['company_name_th'].'</td> 
+           
         </tr> 
         <tr>
             <td colspan="11" align="center" style="font-size:14px;color:#00F;"><b>รายงานสินค้าและวัตถุดิบแยกตามคลัง</b></td>  
@@ -49,7 +51,8 @@ $html_head_pdf = '
             <td colspan="1" align="center"> ถึง </td>
             <td colspan="1" > '.$date_end.' </td>
             <td colspan="1" ></td>
-            <td colspan="6" align="right" ><b>หน้า</b> : {PAGENO}/{nbpg}</td>
+            <td align="right" width="100px" ><b>หน้า</b> : {PAGENO}/{nbpg}</td>
+            <
         </tr> 
         <tr> 
             <td colspan="1" align="left" width="80px" ><b>คลังสินค้าจาก </b></td>
@@ -65,7 +68,8 @@ $html_head_pdf = '
             <td colspan="1" align="center"> ถึง </td>
             <td colspan="1" > '.$product_end.' </td>
             <td colspan="1" ></td>
-            <td colspan="6" ></td>
+            <td colspan="6" align="right" width="100px" > พิมพ์ '.$datePrint.'</td>
+            
         </tr> 
         <tr>  
             <th width="16%" colspan="2" style="padding-top:6px;padding-bottom:5px;text-align:center;border-right: 1px dotted black;border-top: 1px dotted black;border-bottom: 1px dotted black;">ใบสำคัญ</th>     
@@ -113,7 +117,7 @@ $html_head_excel = '
             <td colspan="1" align="center"> ถึง </td>
             <td colspan="1" > '.$stock_end.' </td>
             <td colspan="1" ></td>
-            <td colspan="6" ></td>
+            <td colspan="6" align="right" width="100px" > พิมพ์ '.$datePrint.'</td>
         </tr>
         <tr>
             <td colspan="1" align="left" width="80px" ><b>รหัสสินค้าจาก </b></td>
@@ -161,6 +165,9 @@ $html = '<style>
         td{
             padding:4px 4px;
             font-size:10px;
+        }
+        body{
+            font-family:  "tahoma";  
         }
 
     </style>'; 

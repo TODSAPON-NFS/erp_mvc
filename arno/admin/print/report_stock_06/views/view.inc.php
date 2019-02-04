@@ -37,7 +37,8 @@ $html_head_pdf = '
     <thead>
         <tr>
             <td colspan="5">บริษัท อาร์โน (ประเทศไทย) จำกัด</td> 
-            <td colspan="6" align="right" >เลขประจำตัวผู้เสียภาษี : 0105558002033</td>
+            <td colspan="5" align="right" >เลขประจำตัวผู้เสียภาษี : 0105558002033</td>
+            <td colspan="1" align="right" ><b>หน้า</b> : {PAGENO}/{nbpg}</td>
         </tr> 
         <tr>
             <td colspan="11" align="center" style="font-size:14px;color:#00F;"><b>รายงานรายการประจำวันสินค้า</b></td>  
@@ -48,7 +49,7 @@ $html_head_pdf = '
             <td colspan="1" align="center"> </td>
             <td colspan="1" > </td>
             <td colspan="1" ></td>
-            <td colspan="6" align="right" ><b>หน้า</b> : {PAGENO}/{nbpg}</td>
+            <td colspan="6" align="right" width="100px" > พิมพ์ '.$datePrint.'</td>
         </tr> 
         <tr> 
             <td colspan="1" ><b>คลังสินค้าจาก </b></td>
@@ -130,7 +131,7 @@ $html_head_excel = '
             <td colspan="1" align="center"> ถึง </td>
             <td colspan="1" > '.$stock_end.' </td>
             <td colspan="1" ></td>
-            <td colspan="6" ></td>
+            <td colspan="6" align="right" width="100px" > พิมพ์ '.$datePrint.'</td>
         </tr>
         <tr>
             <td colspan="1" ><b>รหัสสินค้าจาก </b></td>
@@ -206,6 +207,9 @@ $html = '<style>
         td{
             padding:4px 4px;
             font-size:10px;
+        }
+        body{
+            font-family:  "tahoma";  
         }
 
     </style>'; 

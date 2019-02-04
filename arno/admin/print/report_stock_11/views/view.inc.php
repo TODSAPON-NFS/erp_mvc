@@ -63,7 +63,7 @@ $html_head_excel = '
 <td width="100" align="center" colspan="1" ><b>ณ วันที่ </b></td>
 <td  colspan="1" > '.$date_.' </td>  
     <td ></td>
-    <td align="right" width="120px" > <b>หน้า</b> : {PAGENO}/{nbpg} </td>
+    <td align="right" width="120px" > </td>
 </tr> 
     </table>  
 <table  width="100%" cellspacing="0" style="font-size:12px;margin-top:10px;border-top: 1px solid black;border-bottom: 1px solid black;padding-top:5px;padding-bottom:3px;" >

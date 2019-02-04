@@ -20,7 +20,8 @@ $html_head_pdf = '
         </tr>
         <tr>
             <td colspan="6">'.$company['company_name_th'].'จำกัด</td> 
-            <td colspan="7" align="right" ></td>
+            <td colspan="6" align="right" ></td>
+            <td align="right" ><b>หน้า</b> : {PAGENO}/{nbpg}</td>
         </tr> 
         <tr>
             <td colspan="13" align="center" style="font-size:14px;color:#00F;"><b>รายงานรายละเอียดสินค้า</b></td>  
@@ -30,7 +31,7 @@ $html_head_pdf = '
             <td colspan="3" align="left"> '.$product_start.' </td>
             <td colspan="1" align="center"> ถึง </td>
             <td colspan="3" align="left"> '.$product_end.' </td> 
-            <td colspan="4" align="right" ><b>หน้า</b> : {PAGENO}/{nbpg}</td>
+            <td colspan="4" align="right" > พิมพ์ '.$datePrint.'</td>
         </tr>  
         <tr>
             <td colspan="13" ></td>  
@@ -81,7 +82,7 @@ $html_head_excel = '
             <td colspan="3" align="left"> '.$product_start.' </td>
             <td colspan="1" align="center"> ถึง </td>
             <td colspan="3" align="left"> '.$product_end.' </td> 
-            <td colspan="4" align="right" > </td>
+            <td colspan="4" align="right" > พิมพ์ '.$datePrint.'</td>
         </tr>  
         <tr>     
             <th class="head-style " style="text-align:center;" width="5%" >No.</th>  
@@ -130,7 +131,12 @@ $html = '<style>
         }
         .text-align-right{ 
             text-align:right;
+        }
+        body{
+            font-family:  "tahoma";  
         }  
+        
+
 
     </style>';  
 

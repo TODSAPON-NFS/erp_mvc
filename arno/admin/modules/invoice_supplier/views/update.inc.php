@@ -967,7 +967,7 @@
 
 
             // คำนวน Freight in ของสินค้าแต่ละชิ้น
-            var cost_price_f = cost_price_total / invoice_supplier_total_price_ex * freight_in;
+            var cost_price_f = cost_price_total / invoice_supplier_total_price * freight_in;
             if(cost_price_f <= freight_in_amount){
                 freight_in_amount = freight_in_amount - cost_price_f;
             }else if (i + 1 < invoice_supplier_list_cost.length) {

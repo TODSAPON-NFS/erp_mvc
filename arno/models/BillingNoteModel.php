@@ -139,6 +139,7 @@ class BillingNoteModel extends BaseModel{
                         FROM tb_billing_note_list
                         GROUP BY invoice_customer_id 
                     ) 
+                    AND tb_invoice_customer.invoice_customer_close = '0' 
                     GROUP BY customer_id 
                 )
                 ORDER BY customer_name_en
@@ -187,6 +188,7 @@ class BillingNoteModel extends BaseModel{
             GROUP BY invoice_customer_id 
         ) 
         AND tb_invoice_customer.customer_id = '$customer_id' 
+        AND tb_invoice_customer.invoice_customer_close = '0' 
         ORDER BY  invoice_customer_code ASC ";
 
         //echo $sql_customer;

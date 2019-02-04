@@ -102,6 +102,7 @@ class InvoiceCustomerModel extends BaseModel{
         invoice_customer_term, 
         invoice_customer_due, 
         invoice_customer_name,
+        invoice_customer_close,
         IFNULL(tb2.customer_name_en,'-') as customer_name  
         FROM tb_invoice_customer 
         LEFT JOIN tb_user as tb1 ON tb_invoice_customer.employee_id = tb1.user_id 
@@ -678,6 +679,38 @@ class InvoiceCustomerModel extends BaseModel{
             return 0;
         }
 
+    }
+
+    function cancelInvoiceCustomerById($id){
+        $sql = " UPDATE tb_invoice_customer SET 
+        invoice_customer_close = '1', 
+        updateby = '".$data['updateby']."', 
+        lastupdate = '".$data['lastupdate']."' 
+        WHERE invoice_customer_id = '$id' 
+        ";
+
+        //echo $sql;
+
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
+    }
+
+    function uncancelInvoiceCustomerById($id){
+        $sql = " UPDATE tb_invoice_customer SET 
+        invoice_customer_close = '0', 
+        updateby = '".$data['updateby']."', 
+        lastupdate = '".$data['lastupdate']."' 
+        WHERE invoice_customer_id = '$id' 
+        ";
+
+        if (mysqli_query(static::$db,$sql, MYSQLI_USE_RESULT)) {
+           return true;
+        }else {
+            return false;
+        }
     }
 
 

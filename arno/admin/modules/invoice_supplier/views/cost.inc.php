@@ -20,6 +20,7 @@ function calculate(all_duty){
         var invoice_supplier_list_fix_type =  $("input[name='invoice_supplier_list_fix_type["+invoice_supplier_list_id[i].value+"]']:checked");
         var ex_total = parseFloat(cost_price_ex_total[i].value.replace(',','')); 
         console.log("invoice_supplier_list_fix_type :" , invoice_supplier_list_fix_type);
+        
         if(invoice_supplier_list_fix_type[0].value == 'percent-fix'){
             duty = (parseFloat(invoice_supplier_list_duty_percent[i].value.replace(',','')) / 100 ) * ex_total; 
             invoice_supplier_list_duty[i].value = duty.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -290,7 +291,7 @@ function calculate(all_duty){
                                             <td>
                                                 <input name="invoice_supplier_list_fix_type[<?php echo  $invoice_supplier_lists[$i]['invoice_supplier_list_id']; ?>]" type="radio" value="price-fix"  <?PHP if($invoice_supplier_lists[$i]['invoice_supplier_list_fix_type'] == "price-fix"){ ?> checked <?PHP } ?>/>
                                                 <span><b>Price.</b></span> 
-                                                <input name="invoice_supplier_list_duty[]" autocomplete="off" type="text" style="text-align:right;" onchange="calculate('<?php echo $invoice_supplier['import_duty'];?>');" class="form-control" value="<?php echo number_format($invoice_supplier_lists[$i]['invoice_supplier_list_import_duty'] * $invoice_supplier_lists[$i]['invoice_supplier_list_import_duty'],2);  ?>"  />
+                                                <input name="invoice_supplier_list_duty[]" autocomplete="off" type="text" style="text-align:right;" onchange="calculate('<?php echo $invoice_supplier['import_duty'];?>');" class="form-control" value="<?php echo number_format($invoice_supplier_lists[$i]['invoice_supplier_list_import_duty'] * $invoice_supplier_lists[$i]['invoice_supplier_list_qty'],2);  ?>"  />
                                             </td>
                                         </tr>
                                     </table>

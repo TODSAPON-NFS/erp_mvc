@@ -6,6 +6,12 @@ if( (int)$invoice_customer['customer_branch'] * 1 == 0){
     $branch =  "สาขา " . ((int)$invoice_customer['customer_branch'] * 1) ;
 }
 
+if($invoice_customer['invoice_customer_close']  == 1){
+    $cancel = " Cancelled";
+} else {
+    $cancel =  "";
+}
+
 $po = explode(":" , $invoice_customer_lists[0]['invoice_customer_list_remark']);
 
 for($page_index=0 ; $page_index < $page_max ; $page_index++){
@@ -60,7 +66,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                 '.$invoice_customer['customer_code'].'
             </td>
             <td style="font-size:14px;padding-right:60px;" align="right">
-                <b> PAGE. '.($page_index + 1).'/'.$page_max.'</b> 
+                <b>'.$cancel.' &nbsp;&nbsp;&nbsp; PAGE. '.($page_index + 1).'/'.$page_max.'</b> 
             </td> 
     </table>
 
@@ -159,7 +165,6 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
                     <td class="td-list" valign="top" align="right" width="100">'.  number_format($invoice_customer_lists[$i]['invoice_customer_list_price'],2).'</td>
                     <td class="td-list td-padding" valign="top" align="right" width="130">'.  number_format($invoice_customer_lists[$i]['invoice_customer_list_qty'] * $invoice_customer_lists[$i]['invoice_customer_list_price'],2).'</td>
                     
-
                 </tr>
                 ';
     }

@@ -287,7 +287,7 @@ for($page_index=0 ; $page_index < $page_max ; $page_index++){
             for($i = count($purchase_order_lists) % $lines ; $i < $lines; $i++){
                 $html[$page_index] .= ' 
                     <tr class="odd gradeX">
-                            <td align="center" style="height:48px;"> 
+                            <td align="center" style="height:72px;"> 
                             
                             </td> 
                             <td align="center">
